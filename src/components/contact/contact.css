@@ -1,0 +1,23 @@
+.contact-section .contact-img {
+    padding: 8px 10px;
+    max-width: 100%;
+    padding: 10px;
+    position: relative;
+    display: flex;
+}
+
+.contact-section .contact-img img {
+    border-radius: 3px;
+    height: auto !important;
+    max-height: 200px;
+    max-width: 100%;
+    width: auto !important;
+    margin: 20px auto !important;
+}
+
+/* MOBILES*/
+@media screen and (max-width: 768px) {
+.contact-section small {
+    font-size: .7rem!important;
+}
+}

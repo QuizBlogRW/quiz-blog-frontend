@@ -1,0 +1,109 @@
+.about-section .jumbotron {
+    padding: 30px !important;
+    border-radius: 50px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset,
+        rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+}
+
+.about-section .introduct .jumbotron p {
+    text-align: justify;
+    text-justify: inter-word;
+    font-size: 1.2rem;
+}
+
+.about-section .memberImg {
+    padding: 20px !important;
+}
+
+.about-section .memberText {
+    padding: 10px !important;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.about-section .memberImg img {
+    border: 2px solid #157A6E;
+    border-radius: 50%;
+    -moz-box-shadow: 2px 2px 5px 0 rgba(61, 70, 164, .75);
+    -webkit-box-shadow: 2px 2px 5px 0 rgb(61 70 164 / 75%);
+    box-shadow: 2px 2px 5px 0 rgb(61 70 164 / 75%);
+}
+
+.about-section div.social {
+    margin-top: 10px;
+    border: 1px solid #157A6E;
+    border-radius: 5px;
+}
+
+.about-section .introduct .intro-img {
+    padding: 8px 10px;
+    max-width: 100%;
+    padding: 10px;
+    position: relative;
+    display: flex;
+}
+
+.about-section .introduct .intro-img img {
+    border-radius: 3px;
+    height: auto !important;
+    max-height: 400px;
+    max-width: 100%;
+    width: auto !important;
+    margin: 20px auto !important;
+}
+
+.about-section .introduct .intro-text {
+    vertical-align: middle !important;
+    margin: 0 auto !important;
+}
+
+.about-section .introduct p {
+    text-align: justify;
+    text-justify: inter-word;
+    font-size: 1.4rem;
+}
+
+
+/* MOBILES*/
+@media screen and (max-width: 768px) {
+    .about-section .jumbotron {
+        margin: 10px !important;
+        padding: 10px !important;
+        border-radius: 20px;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset,
+            rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+    }
+
+    .about-section h5 {
+        font-size: .9rem;
+    }
+
+    .about-section h2 {
+        font-size: 1.2rem;
+        font-weight: 900;
+    }
+
+    .about-section .introduct h1 {
+        font-size: 1.4rem !important;
+    }
+
+    .about-section .introduct h2 {
+        font-size: 1.3rem !important;
+    }
+
+    .about-section .introduct h3 {
+        font-size: 1.2rem !important;
+    }
+
+    .about-section .memberText h4 {
+        font-size: 1.13rem !important;
+    }
+
+    .about-section .memberText h6 {
+        font-size: .92rem !important;
+    }
+
+    .about-section .introduct p {
+        font-size: .85rem !important;
+    }
+}
