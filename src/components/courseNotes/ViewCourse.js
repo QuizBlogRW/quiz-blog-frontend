@@ -127,7 +127,7 @@ const ViewCourse = ({ auth, getChaptersByCourse, chaptersBy, getOneCourse, delet
                             </Card>)) :
 
                         <Alert color="danger" className="d-flex justify-content-between border border-warning">
-                            <strong>No chapters yet for this quiz!</strong>
+                            <strong>No chapters yet for this course!</strong>
                             {auth.user.role !== 'Visitor' ?
                                 <Button outline color="success">
                                     <strong><AddChapter auth={auth} course={oneCourse.oneCourse} /></strong>
