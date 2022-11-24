@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { setSubscribers, deleteSubscriber } from '../../redux/subscribers/subscribers.actions'
 import trash from '../../images/trash.svg';
 import SpinningBubbles from '../rLoading/SpinningBubbles';
+import moment from 'moment'
 
 const SubscribersTabPane = ({ subscribedUsers, setSubscribers, deleteSubscriber }) => {
 
@@ -35,9 +36,12 @@ const SubscribersTabPane = ({ subscribedUsers, setSubscribers, deleteSubscriber 
                                         <th scope="row" className="table-dark">{index + 1}</th>
                                         <td className='text-uppercase'>
                                             {subscribedUser.name.split(' ').slice(0, 2).join(' ')}
-                                            </td>
+                                        </td>
                                         <td className='text-lowercase'>{subscribedUser.email}</td>
-                                        <td>{subscribedUser.subscription_date.split('T').slice(0, 2).join(' at ')}</td>
+                                        <td>
+                                            {moment(new Date(subscribedUser.subscription_date))
+                                                .format('YYYY-MM-DD, HH:MM')}
+                                        </td>
                                         <td className="table-dark">
                                             <Button size="sm" color="link" className="mt-0 p-0" onClick={() => deleteSubscriber(subscribedUser._id)}>
                                                 <img src={trash} alt="" width="16" height="16" />

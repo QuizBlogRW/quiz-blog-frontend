@@ -2,6 +2,7 @@ import React from 'react'
 import EditUser from './EditUser';
 import trash from '../../images/trash.svg';
 import uploadimage from '../../images/uploadimage.svg';
+import moment from 'moment'
 
 import { Col, Toast, ToastBody, ToastHeader } from 'reactstrap';
 
@@ -28,7 +29,8 @@ const UserToast = ({ auth, user, fromSearch, deleteUser }) => {
                             <small className='font-weight-bolder text-truncate text-capitalize text-dark'>{(user.faculty && user.faculty.title) || 'No Faculty'}</small>
                             <small className='font-weight-bolder text-secondary text-truncate text-capitalize'>{(user.level && user.level.title) || 'No Level'}</small>
 
-                            <small className='font-weight-bolder text-secondary text-truncate text-capitalize pt-3'><i>Registered on {user && user.register_date.split('T').slice(0, 1)}</i></small>
+                            <small className='font-weight-bolder text-secondary text-truncate text-capitalize pt-3'><i>Registered on {moment(new Date(user && user.register_date))
+                                .format('YYYY-MM-DD, HH:MM')}</i></small>
                         </div>
 
                         <div className="illustration d-flex flex-column w-50">

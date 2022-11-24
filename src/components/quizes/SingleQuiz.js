@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { Row, Col, Toast, ToastBody, ToastHeader, Breadcrumb, BreadcrumbItem, ListGroup, ListGroupItem } from 'reactstrap';
-import ReactLoading from "react-loading";
 import LoginModal from '../auth/LoginModal'
-import Webmaster from '../webmaster/Webmaster'
+import moment from 'moment'
 import { Link, useParams } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { setQuizes } from '../../redux/quizes/quizes.actions'
@@ -53,7 +52,12 @@ const SingleQuiz = ({ auth, allQuizes, setQuizes }) => {
                                                         {question.answerOptions.map(answer =>
                                                             <ListGroupItem color={answer.isCorrect ? 'success' : ''}>{answer.answerText}</ListGroupItem>)}
                                                     </ListGroup>
-                                                    <small>Created on {question.creation_date.split('T').slice(0, 1)}</small>
+                                                    <small>
+                                                        <i>
+                                                            {moment(new Date(question.creation_date))
+                                                                .format('YYYY-MM-DD, HH:MM')}
+                                                        </i>
+                                                    </small>
                                                 </ToastBody>
 
                                             </Toast>

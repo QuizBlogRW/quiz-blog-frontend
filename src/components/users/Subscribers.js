@@ -5,6 +5,7 @@ import { setSubscribers, deleteSubscriber } from '../../redux/subscribers/subscr
 import trash from '../../images/trash.svg'
 import LoginModal from '../auth/LoginModal'
 import SpinningBubbles from '../rLoading/SpinningBubbles'
+import moment from 'moment'
 
 const Subscribers = ({ auth, subscribedUsers, setSubscribers, deleteSubscriber }) => {
 
@@ -54,7 +55,12 @@ const Subscribers = ({ auth, subscribedUsers, setSubscribers, deleteSubscriber }
                                                     {subscribedUser.name.split(' ').slice(0, 2).join(' ')}
                                                 </td>
                                                 <td className='text-lowercase'>{subscribedUser.email}</td>
-                                                <td>{subscribedUser.subscription_date.split('T').slice(0, 2).join(' at ')}</td>
+                                                <td>
+                                                    <i>
+                                                        {moment(new Date(subscribedUser.subscription_date))
+                                                            .format('YYYY-MM-DD, HH:MM')}
+                                                    </i>
+                                                </td>
                                                 <td className="table-dark">
                                                     <Button size="sm" color="link" className="mt-0 p-0" onClick={() => deleteSubscriber(subscribedUser._id)}>
                                                         <img src={trash} alt="" width="16" height="16" />

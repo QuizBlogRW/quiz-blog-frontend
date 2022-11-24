@@ -3,6 +3,7 @@ import { Col, Card, Button, CardTitle, CardText, Alert } from 'reactstrap'
 import { Link } from "react-router-dom"
 import DeleteIcon from '../../images/remove.svg'
 import ReplyContactModal from './ReplyContactModal'
+import moment from 'moment'
 
 const ContactCard = ({ contactsToUse, currentUser, deleteContact }) => {
 
@@ -37,26 +38,53 @@ const ContactCard = ({ contactsToUse, currentUser, deleteContact }) => {
                                 </div>
                             </CardTitle>
 
-                            <CardText>{contact.message}</CardText>
-                            <small className="text-info">
-                                <i>Sent on {contact.contact_date.split('T').slice(0, 2).join(' at ')}</i>
-                            </small>
-                            <br />
-                            {contact.replies && contact.replies.length > 0 ? <p className="font-weight-bold">Replies ({contact.replies.length})</p> : null}
+                            <CardText
+                                style={{
+                                    whiteSpace: "pre",
+                                    padding: "10px",
+                                    borderTop: ".1px solid #BFC9CA",
+                                    borderBottom: ".3px solid #BFC9CA",
+                                    borderRadius: "10px",
+                                }}>
+                                {contact.message}
+                                <small className="text-info">
+                                    <i className='text-right d-block'>
+                                        {moment(new Date(contact.contact_date))
+                                            .format('YYYY-MM-DD, HH:MM')}
+                                    </i>
+                                </small>
+                            </CardText>
+                            {contact.replies && contact.replies.length > 0 ? <h5 className="font-weight-bold text-primary text-center text-uppercase">
+                                <u>Replies ({contact.replies.length})</u>
+                            </h5> : null}
 
                             {contact && contact.replies.map((reply) =>
                                 <ul key={reply._id} className="pl-1">
 
-                                    <li style={{ listStyle: "none" }} className="text-info">
-                                        <strong>{reply.reply_name}</strong>&nbsp;
-                                        <small>({reply.email})</small> said:
-
-                                        <br />
-                                        <div className="text-dark">
-                                            <i className="d-block">
+                                    <li style={{ listStyle: "none" }} className="text-warning">
+                                        <div className='mb-1 mb-lg-2 mt-lg-3 p-1 p-lg-2'>
+                                            <strong>{reply.reply_name}</strong>&nbsp;
+                                            <small>({reply.email})</small> said:
+                                        </div>
+                                        <div
+                                            className="text-dark"
+                                            style={{
+                                                whiteSpace: "pre",
+                                                padding: "10px",
+                                                borderTop: ".1px solid #D1F2EB",
+                                                borderBottom: ".3px solid #D1F2EB",
+                                                borderRadius: "10px",
+                                            }}>
+                                            <p style={{ color: "#0B5345" }}>
                                                 {reply.message}
-                                            </i>
-                                            <small>{reply.reply_date.split('T').slice(0, 2).join(' at ')}</small>
+                                            </p>
+
+                                            <small className="text-info text-right d-block">
+                                                <i>
+                                                    {moment(new Date(reply.reply_date))
+                                                        .format('YYYY-MM-DD, HH:MM')}
+                                                </i>
+                                            </small>
                                         </div>
                                     </li>
                                 </ul>

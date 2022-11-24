@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 // import PdfDocument from "./PdfDocument";
 import { getTakerScores } from '../../redux/scores/scores.actions'
 import SpinningBubbles from '../rLoading/SpinningBubbles';
+import moment from 'moment'
 
 const ReportsAdmin = ({ auth, scores, getTakerScores }) => {
 
@@ -89,7 +90,8 @@ const ReportsAdmin = ({ auth, scores, getTakerScores }) => {
                                             : null}
 
                                         <small className="text-center">
-                                            On {score.test_date.split('T').slice(0, 2).join(' at ')}
+                                            On {moment(new Date(score.test_date))
+                                                    .format('YYYY-MM-DD, HH:MM')}
                                         </small>
                                     </ToastBody>
                                 </Toast>
