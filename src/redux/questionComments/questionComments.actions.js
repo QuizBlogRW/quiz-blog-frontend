@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { returnErrors } from "../error/error.actions";
 import { returnSuccess } from '../success/success.actions'
-import { GET_COMMENTS, GET_COMMENTS_FAIL, GET_ONE_COMMENT, GET_ONE_COMMENT_FAIL, GET_QUIZ_COMMENTS, GET_QUIZ_COMMENTS_FAIL, CREATE_COMMENT, CREATE_COMMENT_FAIL, DELETE_COMMENT, DELETE_COMMENT_FAIL, UPDATE_COMMENT, UPDATE_COMMENT_FAIL, COMMENTS_LOADING } from "./quizComments.types"
+import { GET_COMMENTS, GET_COMMENTS_FAIL, GET_ONE_COMMENT, GET_ONE_COMMENT_FAIL, GET_QUESTION_COMMENTS, GET_QUESTION_COMMENTS_FAIL, GET_COMMENTS_BY_QUIZ, GET_COMMENTS_BY_QUIZ_FAIL, COMMENTS_BY_QUIZ_LOADING, CREATE_COMMENT, CREATE_COMMENT_FAIL, DELETE_COMMENT, DELETE_COMMENT_FAIL, UPDATE_COMMENT, UPDATE_COMMENT_FAIL, COMMENTS_LOADING } from "./questionComments.types"
 import { tokenConfig } from '../auth/auth.actions'
 import { apiURL } from '../config'
 
@@ -11,12 +11,12 @@ const axiosInstance = axios.create({
 })
 
 // View all comments
-export const getAllComments = () => async (dispatch, getState) => {
+export const getComments = () => async (dispatch, getState) => {
   await dispatch(getCommentsLoading())
 
   try {
     await axiosInstance
-      .get('/api/quizComments', tokenConfig(getState))
+      .get('/api/questionComments', tokenConfig(getState))
       .then(res =>
         dispatch({
           type: GET_COMMENTS,
@@ -29,22 +29,41 @@ export const getAllComments = () => async (dispatch, getState) => {
   }
 }
 
-// View quiz comments
-export const getQuizComments = (quizID) => async (dispatch, getState) => {
+// View question comments
+export const getQuestionComments = (questionID) => async (dispatch, getState) => {
   await dispatch(getCommentsLoading())
 
   try {
     await axiosInstance
-      .get(`/api/quizComments/comments-on/${quizID}`, tokenConfig(getState))
+      .get(`/api/questionComments/comments-on/${questionID}`, tokenConfig(getState))
       .then(res =>
         dispatch({
-          type: GET_QUIZ_COMMENTS,
+          type: GET_QUESTION_COMMENTS,
           payload: res.data,
         }))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response.data, err && err.response.status, 'GET_QUIZ_COMMENTS_FAIL'))
-    dispatch({ type: GET_QUIZ_COMMENTS_FAIL })
+    dispatch(returnErrors(err && err.response.data, err && err.response.status, 'GET_QUESTION_COMMENTS_FAIL'))
+    dispatch({ type: GET_QUESTION_COMMENTS_FAIL })
+  }
+}
+
+// View quiz comments
+export const getCommentsByQuiz = (quizID) => async (dispatch, getState) => {
+  await dispatch(getCommentsByQuizLoading())
+
+  try {
+    await axiosInstance
+      .get(`/api/questionComments/quiz/${quizID}`, tokenConfig(getState))
+      .then(res =>
+        dispatch({
+          type: GET_COMMENTS_BY_QUIZ,
+          payload: res.data,
+        }))
+
+  } catch (err) {
+    dispatch(returnErrors(err && err.response.data, err && err.response.status, 'GET_COMMENTS_BY_QUIZ_FAIL'))
+    dispatch({ type: GET_COMMENTS_BY_QUIZ_FAIL })
   }
 }
 
@@ -54,7 +73,7 @@ export const getOneComment = (commentId) => async (dispatch, getState) => {
 
   try {
     await axiosInstance
-      .get(`/api/quizComments/${commentId}`, tokenConfig(getState))
+      .get(`/api/questionComments/${commentId}`, tokenConfig(getState))
       .then(res =>
         dispatch({
           type: GET_ONE_COMMENT,
@@ -72,7 +91,7 @@ export const createComment = (newComment) => async (dispatch, getState) => {
 
   try {
     await axiosInstance
-      .post('/api/quizComments', newComment, tokenConfig(getState))
+      .post('/api/questionComments', newComment, tokenConfig(getState))
       .then(res =>
         dispatch({
           type: CREATE_COMMENT,
@@ -94,7 +113,7 @@ export const updateComment = updatedComment => async (dispatch, getState) => {
 
   try {
     await axiosInstance
-      .put(`/api/quizComments/${updatedComment.commentID}`, updatedComment, tokenConfig(getState))
+      .put(`/api/questionComments/${updatedComment.commentID}`, updatedComment, tokenConfig(getState))
       .then(() =>
         dispatch({
           type: UPDATE_COMMENT,
@@ -144,6 +163,15 @@ export const getCommentsLoading = () => {
   return {
     //action 
     type: COMMENTS_LOADING
+
+  }
+}
+
+export const getCommentsByQuizLoading = () => {
+  //Return an action to the reducer
+  return {
+    //action 
+    type: COMMENTS_BY_QUIZ_LOADING
 
   }
 }

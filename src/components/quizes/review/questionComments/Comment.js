@@ -5,7 +5,7 @@ import moment from 'moment'
 const Comment = ({ comment }) => {
 
     return (
-        <div>
+        <div className='mt-3'>
             <Toast style={{ maxWidth: '100%' }}>
                 <ToastHeader icon="warning" className="text-success">
                     {comment.sender && comment.sender.name}

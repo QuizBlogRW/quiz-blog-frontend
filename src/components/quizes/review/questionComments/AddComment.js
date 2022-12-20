@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { Button, Form, FormGroup, Input, Alert } from 'reactstrap'
 import { connect } from 'react-redux'
-import { createComment } from '../../../../redux/quizComments/quizComments.actions'
+import { createComment } from '../../../../redux/questionComments/questionComments.actions'
 
-const AddComment = ({ createComment, currentUser, quiz, errors, successful }) => {
+const AddComment = ({ createComment, currentUser, question, quiz, errors, successful }) => {
 
     const [comment, setComment] = useState('')
     const userId = currentUser && currentUser._id
@@ -34,9 +34,10 @@ const AddComment = ({ createComment, currentUser, quiz, errors, successful }) =>
             return
         }
 
-        // Create new Quiz object
+        // Create new question object
         const newComment = {
             sender: userId,
+            question,
             quiz,
             comment,
         }
@@ -50,7 +51,6 @@ const AddComment = ({ createComment, currentUser, quiz, errors, successful }) =>
     return (
 
         <>
-
             {/* Error frontend*/}
             {errorsState.length > 0 ?
                 errorsState.map(err =>

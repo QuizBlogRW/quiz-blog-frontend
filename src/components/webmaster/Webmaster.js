@@ -11,7 +11,7 @@ import BlogPostsTabPane from '../blog/blogPosts/BlogPostsTabPane'
 import DownloadsTabPane from './DownloadsTabPane'
 import ContactsTabPane from '../contacts/ContactsTabPane'
 import SpinningBubbles from '../rLoading/SpinningBubbles'
-import ViewComments from '../quizes/review/quizComments/ViewComments'
+import ViewComments from '../quizes/review/questionComments/ViewComments'
 import TopRow from './TopRow.js'
 
 const Webmaster = ({ auth, categories, courseCategories }) => {

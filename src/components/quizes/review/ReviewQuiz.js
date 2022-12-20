@@ -6,7 +6,7 @@ import SpinningBubbles from '../../rLoading/SpinningBubbles'
 import { connect } from 'react-redux'
 import { getOneScore } from '../../../redux/scores/scores.actions'
 import ReviewView from './ReviewView'
-import QuizComments from './quizComments/QuizComments'
+import QuestionComments from './questionComments/QuestionComments'
 import OnLastAnswer from './OnLastAnswer'
 import TitleRow from './TitleRow'
 import NotAuthenticated from '../../auth/NotAuthenticated'
@@ -92,7 +92,7 @@ const ReviewQuiz = ({ auth, sC, getOneScore }) => {
                                                             setLastAnswer={setLastAnswer}
                                                             setCurrentQuestion={setCurrentQuestion} />
 
-                                                        <QuizComments quizID={sC.oneScore.quiz && sC.oneScore.quiz._id} currentUser={auth && auth.user} />
+                                                        <QuestionComments questionID={curRevQn && curRevQn._id} quizID={sC.oneScore.quiz && sC.oneScore.quiz._id} currentUser={auth && auth.user} />
                                                     </div>
                                                     : <SpinningBubbles title='question' />}
 
@@ -102,7 +102,7 @@ const ReviewQuiz = ({ auth, sC, getOneScore }) => {
 
                                     <Row className="main d-flex flex-column justify-content-center rounded border border-primary my-5 py-4 w-80 text-center">
                                         <h1 className="text-danger font-weight-bolder">404</h1>
-                                        <h4>Quiz's questions unavailable! Refresh!!</h4>
+                                        <h4>Quiz's questions unavailable! Refresh!</h4>
                                         <Button color="info" style={{ width: "120px" }} className="mx-auto mt-4"><a href="/webmaster" className="text-white">Back</a></Button>
                                     </Row> :
 
