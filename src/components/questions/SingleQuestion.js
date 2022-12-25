@@ -10,6 +10,7 @@ import trash from '../../images/trash.svg'
 import EditIcon from '../../images/edit.svg'
 import ChangeQuizModal from './ChangeQuizModal'
 import SpinningBubbles from '../rLoading/SpinningBubbles'
+import QuestionComments from '../quizes/review/questionComments/QuestionComments'
 
 const SingleQuestion = ({ auth, quest, getOneQuestion, deleteQuestion }) => {
 
@@ -102,6 +103,10 @@ const SingleQuestion = ({ auth, quest, getOneQuestion, deleteQuestion }) => {
                                     )}
                                 </ListGroup>
 
+                            </Row>
+
+                            <Row className='d-flex flex-column my-4'>
+                                <QuestionComments questionID={thisQuestion._id} quizID={thisQnQZ._id} currentUser={auth && auth.user} fromSingleQuestion={true}/>
                             </Row>
                         </div> :
 

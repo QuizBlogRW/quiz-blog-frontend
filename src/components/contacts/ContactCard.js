@@ -32,7 +32,7 @@ const ContactCard = ({ contactsToUse, currentUser, deleteContact }) => {
                                             thisContact={contact} />
 
                                     </Button>
-                                    <Button size="sm" color="link" className={`mr-2 ${uRole === 'Admin' ? '' : 'd-none'}`} onClick={() => deleteContact(contact._id)}>
+                                    <Button size="sm" color="link" className={`mr-2 ${(uRole === 'Admin' || uRole === 'SuperAdmin') ? '' : 'd-none'}`} onClick={() => deleteContact(contact._id)}>
                                         <img src={DeleteIcon} alt="" width="16" height="16" />
                                     </Button>
                                 </div>

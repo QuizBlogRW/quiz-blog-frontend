@@ -3,7 +3,7 @@ import { Container, Col, Row, Card, Button, CardTitle, CardText, Spinner } from 
 import { Link, useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { getOneQuiz } from '../../redux/quizes/quizes.actions'
-import QuizVideos from './QuizVideos'
+import EmbeddedVideos from './EmbeddedVideos'
 // import ChallengeeModal from './ChallengeeModal'
 
 const GetReady = ({ auth, qZ, getOneQuiz }) => {
@@ -72,7 +72,7 @@ const GetReady = ({ auth, qZ, getOneQuiz }) => {
 
                             </Col>
                         </Row>
-                        <QuizVideos quiz={qZ} currentUser={currentUser}/>
+                        <EmbeddedVideos quiz={qZ} currentUser={currentUser}/>
                     </div>
 
                 </Container> :

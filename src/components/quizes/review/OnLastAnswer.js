@@ -11,7 +11,7 @@ const OnLastAnswer = ({ isAuthenticated, thisQuiz, goBack }) => {
               <h5 className="text-center font-weight-bold">Reviewing finished!</h5>
 
               <Link to={`/view-quiz/${thisQuiz.slug}`}>
-                  <button type="button" className="btn btn-outline-success">
+                  <button type="button" className="mt-3 btn btn-outline-success">
                       Retake
                   </button>
               </Link>

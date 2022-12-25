@@ -1,4 +1,4 @@
-import { GET_COMMENTS, GET_COMMENTS_FAIL, GET_ONE_COMMENT, GET_ONE_COMMENT_FAIL, GET_QUESTION_COMMENTS, GET_QUESTION_COMMENTS_FAIL, GET_COMMENTS_BY_QUIZ, GET_COMMENTS_BY_QUIZ_FAIL, COMMENTS_BY_QUIZ_LOADING, CREATE_COMMENT, CREATE_COMMENT_FAIL, DELETE_COMMENT, DELETE_COMMENT_FAIL, UPDATE_COMMENT, UPDATE_COMMENT_FAIL, COMMENTS_LOADING } from "./questionComments.types"
+import { GET_COMMENTS, GET_COMMENTS_FAIL, GET_ONE_COMMENT, GET_ONE_COMMENT_FAIL, GET_QUESTION_COMMENTS, GET_QUESTION_COMMENTS_FAIL, GET_COMMENTS_BY_QUIZ, GET_COMMENTS_BY_QUIZ_FAIL, COMMENTS_BY_QUIZ_LOADING, CREATE_COMMENT, CREATE_COMMENT_FAIL, DELETE_COMMENT, DELETE_COMMENT_FAIL, UPDATE_COMMENT, UPDATE_COMMENT_FAIL, COMMENTS_LOADING, GET_PAGINATED_COMMENTS, GET_PAGINATED_COMMENTS_FAIL, PAGINATED_COMMENTS_LOADING, GET_PENDING_COMMENTS, GET_PENDING_COMMENTS_FAIL, PENDING_COMMENTS_LOADING, APPROVE_COMMENT, REJECT_COMMENT, APPROVE_COMMENT_FAIL, REJECT_COMMENT_FAIL } from "./questionComments.types"
 
 const INITIAL_STATE = {
   allComments: [],
@@ -6,7 +6,13 @@ const INITIAL_STATE = {
   isLoading: true,
   isByQuizLoading: true,
   oneComment: '',
-  questionComments: []
+  questionComments: [],
+
+  paginatedComments: [],
+  isPaginatedLoading: true,
+
+  pendingComments: [],
+  isPendingLoading: true,
 }
 
 const questionCommentsReducer = (state = INITIAL_STATE, action) => {
@@ -18,6 +24,21 @@ const questionCommentsReducer = (state = INITIAL_STATE, action) => {
         ...state,
         isLoading: false,
         allComments: action.payload
+      }
+
+    case GET_PAGINATED_COMMENTS:
+      return {
+        ...state,
+        isPaginatedLoading: false,
+        paginatedComments: action.payload.qnComments,
+        totalPages: action.payload.totalPages,
+      }
+
+    case GET_PENDING_COMMENTS:
+      return {
+        ...state,
+        isPendingLoading: false,
+        pendingComments: action.payload
       }
 
     case GET_QUESTION_COMMENTS:
@@ -54,6 +75,10 @@ const questionCommentsReducer = (state = INITIAL_STATE, action) => {
     case GET_ONE_COMMENT_FAIL:
     case GET_QUESTION_COMMENTS_FAIL:
     case GET_COMMENTS_BY_QUIZ_FAIL:
+    case GET_PAGINATED_COMMENTS_FAIL:
+    case GET_PENDING_COMMENTS_FAIL:
+    case APPROVE_COMMENT_FAIL:
+    case REJECT_COMMENT_FAIL:
       return {
         ...state,
         msg: "Failed!"
@@ -76,6 +101,23 @@ const questionCommentsReducer = (state = INITIAL_STATE, action) => {
         })
       }
 
+    case APPROVE_COMMENT:
+    case REJECT_COMMENT:
+      return {
+        ...state,
+        allComments: state.allComments.map((comment) => {
+
+          if (comment._id === action.payload.commentID) {
+
+            return {
+              ...comment,
+              status: action.payload.status
+            }
+
+          } else return comment;
+        })
+      }
+
     case DELETE_COMMENT:
       return {
         ...state,
@@ -86,6 +128,18 @@ const questionCommentsReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isLoading: true
+      }
+
+    case PAGINATED_COMMENTS_LOADING:
+      return {
+        ...state,
+        isPaginatedLoading: true
+      }
+
+    case PENDING_COMMENTS_LOADING:
+      return {
+        ...state,
+        isPendingLoading: true
       }
 
     case COMMENTS_BY_QUIZ_LOADING:

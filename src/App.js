@@ -13,6 +13,7 @@ import { loadUser } from './redux/auth/auth.actions'
 
 // components
 import Contact from './components/contact/Contact'
+import ContactChat from './components/contacts/chat/ContactChat'
 import FaqCollapse from './components/faqs/FaqCollapse'
 import About from './components/about/About'
 
@@ -170,6 +171,7 @@ const App = ({ auth, categories, courseCategories, bPcats, setCategories, getCou
                 {/* <Route exact path="/challenge/:quizSlug/:userId/" render={() => <SelectChallengee auth={auth} />} /> */}
 
                 <Route exact path="/contact" render={() => <Contact auth={auth} />} />
+                <Route exact path="/contact-chat" render={() => <ContactChat auth={auth} />} />
                 <Route exact path="/faqs" render={() => <FaqCollapse auth={auth} />} />
                 <Route path="/all-categories" render={() => <AllCategories categories={categories} />} />
                 <Route path="/course-notes" render={() => <Index auth={auth} />} />

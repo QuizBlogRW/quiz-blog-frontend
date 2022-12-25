@@ -18,13 +18,13 @@ const DownloadsTable = ({ downloadsToUse, currentUser, pageNo, deleteDownload })
                         <th scope="col">File</th>
                         <th scope="col">Chapter</th>
                         <th scope="col">Course</th>
-                        <th scope="col" className={`${uRole === 'Admin' ? '' : 'd-none'}`}>❌</th>
+                        <th scope="col" className={`${(uRole === 'Admin' || uRole === 'SuperAdmin') ? '' : 'd-none'}`}>❌</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     {downloadsToUse && downloadsToUse.map((download, index) => {
-                        
+
                         const user = download && (uRole === 'Creator') ? download.users_downloads_name : download && (uRole === 'Visitor') ? currentUser && currentUser.name : download.downloaded_by && download.downloaded_by.name
 
                         const note = download && (uRole === 'Creator') ? download.notes_downloads_title : download.notes && download.notes.title
@@ -35,7 +35,7 @@ const DownloadsTable = ({ downloadsToUse, currentUser, pageNo, deleteDownload })
 
                         const dat = download && (uRole === 'Creator') ? new Date(download.updatedAt) : new Date(download.createdAt)
 
-                        const numero = uRole === 'Admin' ? ((pageNo - 1) * 20) + index + 1 : index + 1
+                        const numero = (uRole === 'Admin' || uRole === 'SuperAdmin') ? ((pageNo - 1) * 20) + index + 1 : index + 1
 
                         return (
                             <tr key={index}>
@@ -45,7 +45,7 @@ const DownloadsTable = ({ downloadsToUse, currentUser, pageNo, deleteDownload })
                                 <td>{note && note}</td>
                                 <td>{chap && chap}</td>
                                 <td>{cours && cours}</td>
-                                <td className={`table-dark ${uRole === 'Admin' ? '' : 'd-none'}`}>
+                                <td className={`table-dark ${(uRole === 'Admin' || uRole === 'SuperAdmin') ? '' : 'd-none'}`}>
                                     <Button size="sm" color="link" className="mt-0 p-0" onClick={() => deleteDownload(download._id)}>
                                         <img src={trash} alt="" width="16" height="16" />
                                     </Button>

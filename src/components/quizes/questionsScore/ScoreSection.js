@@ -56,13 +56,13 @@ const ScoreSection = ({ newScoreId, score, qnsLength, thisQuiz, auth, toReview, 
                     </> :
 
                     <button type="button" className="btn btn-outline-warning mt-3 mt-sm-0 p-0">
-                        <LoginModal 
-                        textContent={'Login to review answers'} 
-                        textColor={'text-info'} 
-                        isAuthenticated={auth.isAuthenticated} />
+                        <LoginModal
+                            textContent={'Login to review answers'}
+                            textColor={'text-info'}
+                            isAuthenticated={auth.isAuthenticated} />
                     </button>}
 
-                {uRole === 'Admin' ?
+                {(uRole === 'Admin' || uRole === 'SuperAdmin') ?
                     // <PDFDownloadLink
                     //     document={<PdfDocument review={toReview} />}
                     //     fileName={`${toReview.title.split(' ').join('-')}.pdf`}

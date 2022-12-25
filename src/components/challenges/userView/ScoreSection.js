@@ -64,7 +64,7 @@ const ScoreSection = ({ score, qnsLength, thisChQz, auth, toReview, createChScor
                             isAuthenticated={auth.isAuthenticated} />
                     </button>}
 
-                {uRole === 'Admin' ?
+                {(uRole === 'Admin' || uRole === 'SuperAdmin') ?
                     Object.entries(toReview).length > 0 ?
                         // <PDFDownloadLink
                         //     document={<PdfDocument review={toReview && toReview} />}

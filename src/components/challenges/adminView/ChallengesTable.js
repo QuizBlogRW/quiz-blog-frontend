@@ -31,7 +31,7 @@ const ChallengesTable = ({ chQuizzesToUse, currentUser, deleteChQuiz, categories
                             <th scope="col">DATE</th>
                             <th scope="col">DURATION</th>
                             <th scope="col">VIEW</th>
-                            <th scope="col" className={`${uRole === 'Admin' ? '' : 'd-none'}`}>❌</th>
+                            <th scope="col" className={`${(uRole === 'Admin' || uRole === 'SuperAdmin') ? '' : 'd-none'}`}>❌</th>
                         </tr>
                     </thead>
 
@@ -58,7 +58,7 @@ const ChallengesTable = ({ chQuizzesToUse, currentUser, deleteChQuiz, categories
                                 <td>
                                     <Link to={`/edit-challenge/${chQuiz._id}`}>View</Link>
                                 </td>
-                                <td className={`table-dark ${uRole === 'Admin' ? '' : 'd-none'}`}>
+                                <td className={`table-dark ${(uRole === 'Admin' || uRole === 'SuperAdmin') ? '' : 'd-none'}`}>
                                     <Button size="sm" color="link" className="mt-0 p-0" onClick={() => deleteChQuiz(chQuiz._id)}>
                                         <img src={trash} alt="" width="16" height="16" />
                                     </Button>

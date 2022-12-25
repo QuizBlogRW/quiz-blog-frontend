@@ -6,15 +6,13 @@ import Pagination from '../webmaster/Pagination'
 import PageOf from '../webmaster/PageOf'
 import ContactCard from './ContactCard'
 import SpinningBubbles from '../rLoading/SpinningBubbles'
-import io from 'socket.io-client';
-
 
 const ContactsTabPane = ({ currentUser, contacts, getContacts, getUserContacts, deleteContact }) => {
 
     const userEmail = currentUser && currentUser.email
     const uRole = currentUser && currentUser.role
     const totPages = contacts && contacts.totalPages
-    const contactsToUse = contacts && (uRole === 'Admin' || uRole === 'Creator') ? contacts.allContacts : contacts.userContacts
+    const contactsToUse = contacts && ((uRole === 'Admin' || uRole === 'SuperAdmin') || uRole === 'Creator') ? contacts.allContacts : contacts.userContacts
 
     const [pageNo, setPageNo] = useState(1)
     const [numberOfPages, setNumberOfPages] = useState(0)
@@ -30,16 +28,6 @@ const ContactsTabPane = ({ currentUser, contacts, getContacts, getUserContacts, 
         }
     }, [getContacts, getUserContacts, pageNo, userEmail, totPages, uRole])
 
-    const socket = io.connect('http://localhost:4000');
-
-    // Listen for messages
-    socket.on('message', (data) => {
-        console.log(data);
-    });
-
-    // Send a message
-    socket.emit('sendMessage', { message: 'Hello from the frontend!' });
-
     return (
         <TabPane tabId="5">
 
@@ -47,7 +35,7 @@ const ContactsTabPane = ({ currentUser, contacts, getContacts, getUserContacts, 
                 <SpinningBubbles title='contacts' /> :
 
                 <Row>
-                    {uRole === 'Admin' ?
+                    {(uRole === 'Admin' || uRole === 'SuperAdmin') ?
                         <PageOf pageNo={pageNo} numberOfPages={numberOfPages} /> : null}
 
                     <ContactCard

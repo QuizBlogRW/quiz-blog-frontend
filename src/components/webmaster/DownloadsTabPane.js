@@ -12,7 +12,7 @@ const DownloadsTabPane = ({ currentUser, downloads, getDownloads, getCreatorDown
     const uId = currentUser && currentUser._id
     const uRole = currentUser && currentUser.role
     const totPages = downloads && downloads.totalPages
-    const downloadsToUse = downloads && (uRole === 'Admin') ? downloads.allDownloads :
+    const downloadsToUse = downloads && ((uRole === 'Admin' || uRole === 'SuperAdmin')) ? downloads.allDownloads :
         downloads && (uRole === 'Creator') ? downloads.creatorDownloads : downloads.userDownloads
 
     const [pageNo, setPageNo] = useState(1);
@@ -20,7 +20,7 @@ const DownloadsTabPane = ({ currentUser, downloads, getDownloads, getCreatorDown
 
     // Lifecycle methods
     useEffect(() => {
-        if (uRole === 'Admin') {
+        if ((uRole === 'Admin' || uRole === 'SuperAdmin')) {
             getDownloads(pageNo)
             setNumberOfPages(totPages)
         }
@@ -39,7 +39,7 @@ const DownloadsTabPane = ({ currentUser, downloads, getDownloads, getCreatorDown
                 <SpinningBubbles title='downloads' /> :
 
                 <Row>
-                    {uRole === 'Admin' ?
+                    {(uRole === 'Admin' || uRole === 'SuperAdmin') ?
                         <PageOf pageNo={pageNo} numberOfPages={numberOfPages} /> : null}
 
                     <DownloadsTable

@@ -23,7 +23,7 @@ const BPTable = ({ bpostsToUse, currentUser, deleteBlogPost }) => {
                             <th scope="col">CREATOR</th>
                             <th scope="col">DATE</th>
                             <th scope="col">EDIT</th>
-                            <th scope="col" className={`${uRole === 'Admin' ? '' : 'd-none'}`}>❌</th>
+                            <th scope="col" className={`${(uRole === 'Admin' || uRole === 'SuperAdmin') ? '' : 'd-none'}`}>❌</th>
                         </tr>
                     </thead>
 
@@ -44,10 +44,10 @@ const BPTable = ({ bpostsToUse, currentUser, deleteBlogPost }) => {
                                 <td>{catg && catg}</td>
                                 <td>{creator && creator}</td>
                                 <td>{date && moment(date).format('YYYY-MM-DD, HH:MM')}</td>
-                                <td className={`${(uRole === 'Admin' || creat._id === usr._id) ? '' : 'd-none'}`}>
+                                <td className={`${((uRole === 'Admin' || uRole === 'SuperAdmin') || creat._id === usr._id) ? '' : 'd-none'}`}>
                                     <Link to={`/edit-bpost/${bPost.slug}`}>Edit</Link>
                                 </td>
-                                <td className={`${(uRole === 'Admin' || creat._id === usr._id) ? '' : 'd-none'}`}>
+                                <td className={`${((uRole === 'Admin' || uRole === 'SuperAdmin') || creat._id === usr._id) ? '' : 'd-none'}`}>
                                     <Button size="sm" color="link" className="mt-0 p-0" onClick={() => deleteBlogPost(bPost._id)}>
                                         <img src={trash} alt="" width="16" height="16" />
                                     </Button>

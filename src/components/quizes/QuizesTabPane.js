@@ -1,34 +1,42 @@
 import React, { useState, useEffect } from 'react'
 import { Row, Col, TabPane, ListGroup, ListGroupItem, Alert } from 'reactstrap'
 import SpinningBubbles from '../rLoading/SpinningBubbles'
+import ReactLoading from "react-loading";
 import { connect } from 'react-redux'
-import SearchInput from '../SearchInput'
-import { setQuestions, setQuestionsLoading } from '../../redux/questions/questions.actions'
-import { setQuizes, deleteQuiz } from '../../redux/quizes/quizes.actions'
+import { setQuestions } from '../../redux/questions/questions.actions'
+import { setPaginatedQuizes, setAllNoLimitQuizes, deleteQuiz } from '../../redux/quizes/quizes.actions'
 import QuizToast from './QuizToast'
+import SearchInput from '../SearchInput'
+import Pagination from '../webmaster/Pagination'
+import PageOf from '../webmaster/PageOf'
 
-const QuizesTabPane = ({ auth, categories, quizes, questionsData, setQuizes, setQuestions, deleteQuiz }) => {
+const QuizesTabPane = ({ auth, categories, quizes, questions, allNoLimit, allNoLimitLoading, setPaginatedQuizes, setAllNoLimitQuizes, setQuestions, deleteQuiz }) => {
 
+    const [pageNo, setPageNo] = useState(1)
+    const [numberOfPages, setNumberOfPages] = useState(0)
+    const totPages = quizes && quizes.totalPages
     const [searchKey, setSearchKey] = useState('')
     const [searchKeyQ, setSearchKeyQ] = useState('')
     const currentUser = auth.user
+    const uRole = currentUser && currentUser.role
 
     // Lifecycle methods
     useEffect(() => {
-        setQuizes()
+        setPaginatedQuizes(pageNo)
+        setNumberOfPages(totPages)
         setQuestions()
-    }, [setQuestions, setQuizes])
+        setAllNoLimitQuizes()
+    }, [setQuestions, setPaginatedQuizes, setAllNoLimitQuizes, pageNo, totPages])
 
-
-    // Quizzes to use
-    const allQuizzes = quizes && quizes.allQuizes
-    const creatorQuizzes = quizes.allQuizes && quizes.allQuizes
+    // Quizzes to use - CREATED BY ROUTE
+    const allQuizzes = quizes && quizes.paginatedQuizes
+    const creatorQuizzes = quizes.paginatedQuizes && quizes.paginatedQuizes
         .filter(quiz => quiz.created_by && quiz.created_by._id === currentUser._id)
     const quizzesToUse = currentUser.role === 'Admin' ? allQuizzes : creatorQuizzes
 
     // Questions to use
-    const allQuestions = questionsData && questionsData
-    const creatorQuestions = questionsData && questionsData
+    const allQuestions = questions && questions.questionsData
+    const creatorQuestions = questions && questions.questionsData
         .filter(question => question.created_by && question.created_by._id === currentUser._id)
     const questionsToUse = currentUser.role === 'Admin' ? allQuestions : creatorQuestions
 
@@ -37,19 +45,30 @@ const QuizesTabPane = ({ auth, categories, quizes, questionsData, setQuizes, set
         <TabPane tabId="2">
 
             {quizes.isLoading ?
-            
-                <SpinningBubbles title='quizes' /> :
+
+                <SpinningBubbles title='paginated quizes' /> :
 
                 quizzesToUse && quizzesToUse.length > 0 ?
                     <>
-                        <Row className="mt-0">
-                            <Col sm="6">
-                                <SearchInput setSearchKey={setSearchKey} placeholder=" Search quizes here ...  " />
-                            </Col>
-                            <Col sm="6">
-                                <SearchInput setSearchKey={setSearchKeyQ} placeholder=" Search questions here ...  " />
-                            </Col>
-                        </Row>
+                        {(uRole === 'Admin' || uRole === 'SuperAdmin') ?
+                            <PageOf pageNo={pageNo} numberOfPages={numberOfPages} /> : null}
+
+
+
+                        {
+                            // SEARCH BARS
+                            allNoLimitLoading || questions.isLoading ?
+                                <div className="p-1 m-1 d-flex justify-content-center align-items-center">
+                                    <ReactLoading type="bubbles" color="#33FFFC" /> </div> :
+                                <Row className="mt-0">
+                                    <Col sm="6">
+                                        <SearchInput setSearchKey={setSearchKey} placeholder=" Search quizes here ...  " />
+                                    </Col>
+                                    <Col sm="6">
+                                        <SearchInput setSearchKey={setSearchKeyQ} placeholder=" Search questions here ...  " />
+                                    </Col>
+                                </Row>
+                        }
 
                         {/* Search questions */}
                         <Row>
@@ -72,18 +91,31 @@ const QuizesTabPane = ({ auth, categories, quizes, questionsData, setQuizes, set
                             </ListGroup>
                         </Row>
 
-                        {/* Search quizes */}
+                        {/* SEARCH QUIZES */}
                         <Row>
-                            {quizzesToUse && quizzesToUse
+                            {allNoLimit && allNoLimit
                                 .filter(quiz => {
 
                                     if (searchKey === "") {
-                                        return quiz
+                                        return null
                                     } else if (quiz.title.toLowerCase().includes(searchKey.toLowerCase())) {
                                         return quiz
                                     }
                                     return null
                                 })
+                                .map(quiz => <QuizToast
+                                    fromSearch={true}
+                                    key={quiz._id}
+                                    auth={auth}
+                                    categories={categories}
+                                    quiz={quiz && quiz}
+                                    deleteQuiz={deleteQuiz}
+                                    currentUser={currentUser} />)}
+                        </Row>
+
+                        {/* LIMITED QUIZZES */}
+                        <Row>
+                            {quizzesToUse && quizzesToUse
                                 .map(quiz => <QuizToast
                                     key={quiz._id}
                                     auth={auth}
@@ -92,19 +124,26 @@ const QuizesTabPane = ({ auth, categories, quizes, questionsData, setQuizes, set
                                     deleteQuiz={deleteQuiz}
                                     currentUser={currentUser} />)}
                         </Row>
+
+                        {/* PAGINATION */}
+                        {uRole !== 'Visitor' ?
+                            <>
+                                <Pagination pageNo={pageNo} setPageNo={setPageNo} numberOfPages={numberOfPages} />
+                            </> : null}
                     </> :
                     <Alert color="danger" className="w-100 text-center">
                         You have not created any quiz yet!
                     </Alert>
             }
-
         </TabPane>
     )
 }
 
 const mapStateToProps = state => ({
     quizes: state.quizesReducer,
-    questionsData: state.questionsReducer.questionsData
+    questions: state.questionsReducer,
+    allNoLimit: state.quizesReducer.allQuizesNoLimit,
+    allNoLimitLoading: state.quizesReducer.isNoLimitLoading,
 })
 
-export default connect(mapStateToProps, { setQuizes, setQuestions, setQuestionsLoading, deleteQuiz })(QuizesTabPane)
+export default connect(mapStateToProps, { setPaginatedQuizes, setAllNoLimitQuizes, setQuestions, deleteQuiz })(QuizesTabPane)

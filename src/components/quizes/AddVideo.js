@@ -4,8 +4,9 @@ import { connect } from 'react-redux'
 import { clearErrors } from '../../redux/error/error.actions'
 import { clearSuccess } from '../../redux/success/success.actions'
 import { addVidLink } from '../../redux/quizes/quizes.actions'
+import { addFaqVidLink } from '../../redux/faqs/faqs.actions'
 
-const AddVideo = ({ addVidLink, quizID, errors, successful, clearErrors, clearSuccess }) => {
+const AddVideo = ({ addVidLink, addFaqVidLink, isFromFaqs, faqID, quizID, errors, successful, clearErrors, clearSuccess }) => {
 
     const [vidLinkState, setVidLinkState] = useState({
         vtitle: '',
@@ -57,7 +58,9 @@ const AddVideo = ({ addVidLink, quizID, errors, successful, clearErrors, clearSu
         }
 
         // Attempt to create
-        addVidLink(newVidLink, quizID)
+        isFromFaqs ?
+            addFaqVidLink(newVidLink, faqID) :
+            addVidLink(newVidLink, quizID)
 
         setVidLinkState({
             vtitle: '',
@@ -68,7 +71,7 @@ const AddVideo = ({ addVidLink, quizID, errors, successful, clearErrors, clearSu
     return (
         <div>
             <NavLink onClick={toggle} className="text-success p-1 border rounded  border-warning">
-                <b>+</b> Video Link
+                <b>+</b>Video
             </NavLink>
 
             <Modal isOpen={modal} toggle={toggle}>
@@ -132,4 +135,4 @@ const mapStateToProps = state => ({
     successful: state.successReducer
 })
 
-export default connect(mapStateToProps, { addVidLink, clearErrors, clearSuccess })(AddVideo)
+export default connect(mapStateToProps, { addVidLink, addFaqVidLink, clearErrors, clearSuccess })(AddVideo)

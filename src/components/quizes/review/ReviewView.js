@@ -24,7 +24,7 @@ const ReviewView = ({ qnsAll, curRevQn, lastAnswer, currentQuestion, setLastAnsw
     return (
         <Row>
             <Col>
-                <div className='answer d-flex flex-column mx-auto mt-2 w-50'>
+                <div className='answer d-flex flex-column mx-auto mt-2 w-100'>
                     <Form>
 
                         {curRevQnOpts && curRevQnOpts.map((answerOption, index) => (
@@ -38,9 +38,9 @@ const ReviewView = ({ qnsAll, curRevQn, lastAnswer, currentQuestion, setLastAnsw
                                     ${!answerOption.isCorrect && !answerOption.choosen ?
                                             'border border-secondary' :
                                             null}`}
-                                    readOnly
                                 />
                                 <FormFeedback
+                                style={{fontSize: ".7rem"}}
                                     valid={answerOption.isCorrect}
                                     invalid={(!answerOption.isCorrect && answerOption.choosen).toString()}>
                                     {answerOption.isCorrect && answerOption.choosen ? 'You got this right!' :
@@ -48,9 +48,11 @@ const ReviewView = ({ qnsAll, curRevQn, lastAnswer, currentQuestion, setLastAnsw
                                             answerOption.isCorrect ? 'Correct answer!' : null}
                                 </FormFeedback>
                                 {answerOption.explanations ?
-                                    <small className="text-dark border mb-1 pl-1">
-                                        👉 {answerOption.explanations}
-                                    </small> :
+                                    <div className="border rounded p-1 p-lg-2 mt-2">
+                                        <small className="text-dark mb-1 pl-1" style={{fontSize: ".8rem"}}>
+                                            👉 {answerOption.explanations}
+                                        </small>
+                                    </div> :
                                     null}
                             </FormGroup>
                         ))}

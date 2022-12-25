@@ -19,7 +19,7 @@ const TitleRow = ({ thisReview, score, qnsAll, curRevQn, currentQuestion, uRole 
                         </small>
                     </span>
 
-                    {/* {uRole === 'Admin' ?
+                    {/* {(uRole === 'Admin' || uRole === 'SuperAdmin') ?
                         <PDFDownloadLink
                             document={<PdfDocument review={thisReview} />}
                             fileName={`${thisReview.title.split(' ').join('-')}.pdf`}
@@ -41,11 +41,11 @@ const TitleRow = ({ thisReview, score, qnsAll, curRevQn, currentQuestion, uRole 
 
                 </div>
 
-                <div className='question-section mt-sm-5 mx-auto w-75'>
+                <div className='question-section my-4 mt-sm-5 mx-auto w-75'>
                     <h4 className='question-count text-uppercase text-center text-secondary font-weight-bold'>
                         <span>Question <b style={{ color: "#B4654A" }}>{currentQuestion + 1}</b></span>/{qnsAll.length}
                     </h4>
-                    <h5 className='q-txt my-sm-4 font-weight-bold text-center'>{curRevQn && curRevQn.questionText}</h5>
+                    <h5 className='q-txt my-4 font-weight-bold text-center'>{curRevQn && curRevQn.questionText}</h5>
 
                 </div>
             </Col>

@@ -879,6 +879,18 @@ form.subscribe-form:hover,
         margin-bottom: 1rem;
     }
 
+    div.chat-view.vh-100 {
+        height: auto !important;
+    }
+
+    div.chat-view.vh-100 h4 {
+        font-size: .9rem !important;
+    }
+
+    div.chat-view.vh-100 h5 {
+        font-size: .8rem !important;
+    }
+
     div .contact>div {
         padding: 0 !important;
     }
@@ -960,8 +972,20 @@ form.subscribe-form:hover,
         font-size: 1.1rem;
     }
 
+    .question-view h5 {
+        font-size: .8rem !important;
+    }
+
     .question-view .answer .form-check strong {
-        font-size: .9rem;
+        font-size: .5rem !important;
+    }
+
+    .question-view .answer input {
+        font-size: .6rem !important;
+    }
+
+    .question-view .answer small {
+        font-size: .45rem !important;
     }
 
     .question-section p.card-text {

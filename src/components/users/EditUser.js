@@ -105,6 +105,7 @@ const EditUser = ({ uId, auth, uName, uRole, uEmail, updateUser }) => {
                                     </Label>
 
                                     <Input type="select" name="role" placeholder="Category role ..." className="mb-3" onChange={onChangeHandler} value={userState.role}>
+                                        <option>SuperAdmin</option>
                                         <option>Admin</option>
                                         <option>Creator</option>
                                         <option>Visitor</option>

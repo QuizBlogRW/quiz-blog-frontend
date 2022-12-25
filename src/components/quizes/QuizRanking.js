@@ -3,11 +3,12 @@ import ReactLoading from "react-loading"
 import LoginModal from '../auth/LoginModal'
 import Webmaster from '../webmaster/Webmaster'
 import { Link, useParams } from 'react-router-dom'
-import { Row, Table, Breadcrumb, BreadcrumbItem } from 'reactstrap'
+import { Row, Col, Table, Breadcrumb, BreadcrumbItem } from 'reactstrap'
 import { connect } from 'react-redux'
 import { setRankingScores } from '../../redux/scores/scores.actions'
 import SpinningBubbles from '../rLoading/SpinningBubbles'
 import AddVideo from './AddVideo'
+import ViewQuizComments from './ViewQuizComments'
 
 const QuizRanking = ({ auth, scores, setRankingScores }) => {
 
@@ -30,61 +31,63 @@ const QuizRanking = ({ auth, scores, setRankingScores }) => {
 
             currentUser.role !== 'Visitor' ?
                 <>
-                        <div className="mt-5 mx-5 single-category">
-                            <Row className="mb-0 mb-lg-3 mx-0 d-flex justify-content-around align-items-center">
-                                <Breadcrumb>
-                                    <BreadcrumbItem>
+                    <div className="mt-5 mx-5 single-category">
+                        <Row className="mb-0 mb-lg-3 mx-0 d-flex justify-content-around align-items-center">
+                            <Breadcrumb>
+                                <BreadcrumbItem>
                                     <Link to="/webmaster">{cTitle && cTitle}</Link>
-                                    </BreadcrumbItem>
-                                <BreadcrumbItem active>{qTitile && qTitile}&nbsp; - Ranking</BreadcrumbItem>
-                                </Breadcrumb>
+                                </BreadcrumbItem>
+                                <BreadcrumbItem active>{qTitile && qTitile}&nbsp; - Comments & Ranking</BreadcrumbItem>
+                            </Breadcrumb>
 
                             {currentUser && currentUser.role === 'Admin' ?
-                                <AddVideo quizID={quizID}/> : null}
+                                <AddVideo quizID={quizID} /> : null}
 
-                            </Row>
-                        </div>
+                        </Row>
+                    </div>
                     <Row className="mx-2 mx-lg-5">
 
-                        {scores.isLoading ?
-                            <div className="d-flex justify-content-center align-items-center" style={{ height: "40vh" }}>
-                                <ReactLoading type="spinningBubbles" color="#33FFFC" />
-                            </div> :
+                        <Col sm="6" style={{ height: "95%" }} className="my-2 overflow-auto">
+                            <ViewQuizComments quizID={quizID}/>
+                        </Col>
 
-                            currentUser && currentUser.role === 'Admin' ?
+                        <Col sm="6" style={{ height: "95%" }} className="my-2 overflow-auto">
 
-                                <Table hover responsive>
+                            {scores.isLoading ?
+                                <div className="d-flex justify-content-center align-items-center" style={{ height: "40vh" }}>
+                                    <ReactLoading type="spinningBubbles" color="#33FFFC" />
+                                </div> :
 
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Quiz Name</th>
-                                            <th>Marks</th>
-                                            <th>Out of</th>
-                                        </tr>
-                                    </thead>
+                                currentUser && currentUser.role === 'Admin' ?
 
-                                    <tbody>
+                                    <Table hover responsive>
 
-                                        {rankings && rankings.map(rank => (
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                                <th>Marks</th>
+                                            </tr>
+                                        </thead>
 
-                                            rank && rank.quiz && quizID === rank.quiz._id ?
-                                                <tr key={rank._id}>
-                                                    <th scope="row">{i++}</th>
-                                                    <td>{rank.taken_by ? rank.taken_by.name : 'No name'}</td>
-                                                    <td>{rank.taken_by ? rank.taken_by.email : 'No mail'}</td>
-                                                    <td>{rank.quiz.title}</td>
-                                                    <td>{rank.marks}</td>
-                                                    <td>{rank.out_of}</td>
-                                                </tr> : null))}
-                                    </tbody>
-                                </Table> :
-                                <p className="d-block text-danger text-uppercase font-weight-bolder vh-100">
-                                    You are not allowed to view this ...
+                                        <tbody>
+
+                                            {rankings && rankings.map(rank => (
+
+                                                rank && rank.quiz && quizID === rank.quiz._id ?
+                                                    <tr key={rank._id}>
+                                                        <th scope="row">{i++}</th>
+                                                        <td>{rank.taken_by ? rank.taken_by.name : 'No name'}</td>
+                                                        <td>{rank.taken_by ? rank.taken_by.email : 'No mail'}</td>
+                                                        <td>{rank.marks}/{rank.out_of}</td>
+                                                    </tr> : null))}
+                                        </tbody>
+                                    </Table> :
+                                    <p className="d-block text-danger text-uppercase font-weight-bolder vh-100">
+                                        You are not allowed to view this ...
                                     </p>
-                        }
+                            }</Col>
 
                     </Row>
                 </> :

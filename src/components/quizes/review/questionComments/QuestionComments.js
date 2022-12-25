@@ -7,7 +7,7 @@ import { getQuizComments } from '../../../../redux/quizComments/quizComments.act
 import Comment from './Comment'
 import AddComment from './AddComment'
 
-const QuestionComments = ({ commentsByQuiz, getCommentsByQuiz, qComments, getQuestionComments, quizComments, getQuizComments, currentUser, questionID, quizID }) => {
+const QuestionComments = ({ commentsByQuiz, getCommentsByQuiz, qComments, getQuestionComments, quizComments, getQuizComments, currentUser, questionID, quizID, fromSingleQuestion }) => {
 
   // Lifecycle methods
   useEffect(() => {
@@ -25,10 +25,9 @@ const QuestionComments = ({ commentsByQuiz, getCommentsByQuiz, qComments, getQue
         <Col sm={12} className="mt-2 comments-card">
           <Card body>
             <AddComment question={questionID}
-              quiz={quizID} currentUser={currentUser} />
+              quiz={quizID} currentUser={currentUser} fromSingleQuestion={fromSingleQuestion}/>
           </Card>
         </Col>
-
 
         {commentsByQuiz.isLoading ?
           <SpinningBubbles title='comments' /> :
@@ -75,7 +74,6 @@ const QuestionComments = ({ commentsByQuiz, getCommentsByQuiz, qComments, getQue
                   {quizComments && quizComments.map((qzC, index) =>
                     <div key={index} className='border border-secondary rounded m-1 p-2'>
                       <Comment comment={qzC} />
-                      {console.log(quizComments)}
                     </div>
                   )}
                 </Card>}

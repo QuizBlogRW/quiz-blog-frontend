@@ -69,6 +69,9 @@ const Contact = ({ auth, errors, successful, clearErrors, clearSuccess, sendMsg 
         // Attempt to contact
         sendMsg(contactMsg);
 
+        window.setTimeout(() => window.location.href = "/contact-chat", 4000)
+
+
         // Reset fields
         setState({
             contact_name: '',

@@ -67,11 +67,18 @@ const ViewNotePaper = ({ auth, nPaper, getOneNotePaper }) => {
                                         <div className='answer d-flex justify-content-center mx-auto mt-2 w-lg-50'>
 
                                             {notes_file.split('.').pop().toLowerCase() === 'pdf' ?
-                                                <a href={`/view-pdf-notes/${noteSlug}`} className="text-white">
-                                                    <Button className="btn btn-outline-primary mt-3">
-                                                        View
-                                                    </Button>
-                                                </a> :
+                                                <>
+                                                    <a href={`/view-pdf-notes/${noteSlug}`} className="text-white">
+                                                        <Button className="btn btn-outline-primary mt-3">
+                                                            View
+                                                        </Button>
+                                                    </a>
+                                                    <a href={notes_file}>
+                                                        <Button className="btn btn-outline-primary mt-3">
+                                                            Download
+                                                        </Button>
+                                                    </a>
+                                                </> :
                                                 <a href={notes_file}>
                                                     <Button className="btn btn-outline-primary mt-3">
                                                         Download

@@ -3,7 +3,7 @@ import { Badge } from 'reactstrap'
 
 const PageOf = ({ pageNo, numberOfPages }) => {
     return (
-        <div className="text-right mb-3 w-100">
+        <div className="text-right my-3 w-100">
             <span className='border rounded border-warning p-2 bg-warning'>
                 <Badge color="success">
                     <b className='text-white'>{pageNo}</b>

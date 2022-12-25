@@ -3,7 +3,7 @@ import { Button, Form, FormGroup, Input, Alert } from 'reactstrap'
 import { connect } from 'react-redux'
 import { createComment } from '../../../../redux/questionComments/questionComments.actions'
 
-const AddComment = ({ createComment, currentUser, question, quiz, errors, successful }) => {
+const AddComment = ({ createComment, currentUser, question, quiz, errors, successful, fromSingleQuestion }) => {
 
     const [comment, setComment] = useState('')
     const userId = currentUser && currentUser._id
@@ -43,7 +43,7 @@ const AddComment = ({ createComment, currentUser, question, quiz, errors, succes
         }
 
         // Attempt to create
-        createComment(newComment)
+        createComment(newComment, fromSingleQuestion)
 
         setComment('')
     }

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import dashimg from '../../images/dashboard.svg'
 
 const TopRow = ({ currentUser }) => {
-  
+
   return (
     <Row className="m-lg-4 px-lg-5 d-flex justify-content-around align-items-center text-primary">
 
@@ -35,7 +35,7 @@ const TopRow = ({ currentUser }) => {
 
         {currentUser.role !== 'Visitor' ?
           <ul className="list-unstyled">
-            {currentUser.role === 'Admin' ?
+            {currentUser.role === 'Admin' || currentUser.role === 'SuperAdmin' ?
               <>
                 <li>
                   <small><strong><u>
@@ -67,6 +67,13 @@ const TopRow = ({ currentUser }) => {
                 <Link to="/schools" className="text-info p-0">Schools</Link>
               </u></strong></small>
             </li>
+
+            <li>
+              <small><strong><u>
+                <Link to="/contact-chat" className="text-info p-0">Chat</Link>
+              </u></strong></small>
+            </li>
+
           </ul> :
           null}
       </div>

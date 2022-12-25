@@ -1,10 +1,18 @@
-import { GET_CONTACTS, GET_CONTACT, ADD_CONTACT, DELETE_CONTACT, ADD_CONTACT_FAIL, DELETE_CONTACT_FAIL, CONTACTS_LOADING, REPLY_CONTACT, REPLY_CONTACT_FAIL, GET_USER_CONTACTS, GET_USER_CONTACTS_FAIL } from "./contacts.types"
+import { GET_CONTACTS, GET_CONTACT, GET_ONE_CONTACT, GET_ONE_CONTACT_FAIL, ONE_CONTACT_LOADING, ADD_CONTACT, DELETE_CONTACT, ADD_CONTACT_FAIL, DELETE_CONTACT_FAIL, CONTACTS_LOADING, REPLY_CONTACT, REPLY_CONTACT_FAIL, GET_USER_CONTACTS, GET_USER_CONTACTS_FAIL, GET_ROOM_MESSAGES, GET_ROOM_MESSAGES_FAIL, ROOM_LOADING, ADD_ROOMS_MESSAGE, ADD_ROOMS_MESSAGE_FAIL, GET_CREATE_CHAT_ROOM, GET_CREATE_CHAT_ROOM_FAIL } from "./contacts.types"
 
 const INITIAL_STATE = {
   allContacts: [],
   userContacts: [],
+  oneContact: null,
   totalPages: 0,
-  isLoading: true
+
+  oneChatRoom: null,
+  roomsMessages: [],
+  oneRoomMessages: [],
+
+  isLoading: true,
+  isOneLoading: true,
+  isRoomLoading: true,
 }
 
 const contactsReducer = (state = INITIAL_STATE, action) => {
@@ -19,6 +27,33 @@ const contactsReducer = (state = INITIAL_STATE, action) => {
         totalPages: action.payload.totalPages,
       }
 
+    case GET_ONE_CONTACT:
+      return {
+        ...state,
+        isOneLoading: false,
+        oneContact: action.payload
+      }
+
+    case GET_CREATE_CHAT_ROOM:
+      return {
+        ...state,
+        isRoomLoading: false,
+        oneChatRoom: action.payload
+      }
+
+    case GET_ROOM_MESSAGES:
+      return {
+        ...state,
+        isRoomLoading: false,
+        oneRoomMessages: action.payload
+      }
+
+    case ADD_ROOMS_MESSAGE:
+      return {
+        ...state,
+        roomsMessages: [...state.roomsMessages, action.payload]
+      }
+
     case GET_USER_CONTACTS:
       return {
         ...state,
@@ -31,6 +66,7 @@ const contactsReducer = (state = INITIAL_STATE, action) => {
         ...state,
         allContacts: action.payload
       }
+      
 
     case ADD_CONTACT:
       return {
@@ -42,9 +78,17 @@ const contactsReducer = (state = INITIAL_STATE, action) => {
     case DELETE_CONTACT_FAIL:
     case REPLY_CONTACT_FAIL:
     case GET_USER_CONTACTS_FAIL:
+    case GET_ONE_CONTACT_FAIL:
+    case GET_ROOM_MESSAGES_FAIL:
+    case ADD_ROOMS_MESSAGE_FAIL:
+    case GET_CREATE_CHAT_ROOM_FAIL:
       return {
         ...state,
-        allContacts: null
+        allContacts: [],
+        userContacts: [],
+        oneContact: null,
+        oneRoomMessages: [],
+        roomsMessages: []
       }
 
     case DELETE_CONTACT:
@@ -76,6 +120,17 @@ const contactsReducer = (state = INITIAL_STATE, action) => {
         isLoading: true
       }
 
+    case ONE_CONTACT_LOADING:
+      return {
+        ...state,
+        isOneLoading: true
+      }
+
+    case ROOM_LOADING:
+      return {
+        ...state,
+        isRoomLoading: true
+      }
 
     default:
       return state

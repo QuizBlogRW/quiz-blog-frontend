@@ -13,7 +13,7 @@ const ScoresTabPane = ({ currentUser, scores, setScores, getCreatorScores, getTa
     const uId = currentUser && currentUser._id
     const uRole = currentUser && currentUser.role
     const totPages = scores && scores.totalPages
-    const scoresToUse = scores && (uRole === 'Admin') ? scores.allScores :
+    const scoresToUse = scores && (uRole === 'Admin' || uRole === 'SuperAdmin') ? scores.allScores :
         scores && (uRole === 'Creator') ? scores.creatorScores : scores.takerScores
 
     const [pageNo, setPageNo] = useState(1);
@@ -21,7 +21,7 @@ const ScoresTabPane = ({ currentUser, scores, setScores, getCreatorScores, getTa
 
     // Lifecycle methods
     useEffect(() => {
-        if (uRole === 'Admin') {
+        if ((uRole === 'Admin' || uRole === 'SuperAdmin')) {
             setScores(pageNo)
             setNumberOfPages(totPages)
         }
@@ -42,7 +42,7 @@ const ScoresTabPane = ({ currentUser, scores, setScores, getCreatorScores, getTa
                     <SpinningBubbles title='scores' /> :
 
                     <Row>
-                        {uRole === 'Admin' ?
+                        {(uRole === 'Admin' || uRole === 'SuperAdmin') ?
                             <PageOf pageNo={pageNo} numberOfPages={numberOfPages} /> : null}
 
                         <ScoresTable

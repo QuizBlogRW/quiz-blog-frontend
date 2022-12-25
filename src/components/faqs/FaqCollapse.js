@@ -11,6 +11,8 @@ import SpinningBubbles from '../rLoading/SpinningBubbles'
 import CreateFaq from './CreateFaq'
 import EditFaq from './EditFaq'
 import DeleteFaq from './DeleteFaq'
+import AddVideo from '../quizes/AddVideo'
+import EmbeddedVideos from '../quizes/EmbeddedVideos'
 
 const FaqCollapse = ({ auth, faqs, getFaqs }) => {
 
@@ -104,6 +106,7 @@ const FaqCollapse = ({ auth, faqs, getFaqs }) => {
                                                         <Button size="sm" color="link" className="mx-2" >
                                                             <DeleteFaq faqID={faq._id} />
                                                         </Button>
+                                                        <AddVideo faqID={faq._id} isFromFaqs={true} />
                                                     </>
                                                     : null
                                             }
@@ -123,6 +126,8 @@ const FaqCollapse = ({ auth, faqs, getFaqs }) => {
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <EmbeddedVideos faq={faq} isFromFaqs={true} currentUser={currentUser} />
                                     </Collapse>
                                 </li>
                             )

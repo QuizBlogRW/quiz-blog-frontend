@@ -69,7 +69,7 @@ const CreateFaq = ({ currentUser, createFq, errors, successful, clearErrors, cle
 
     return (
         <div>
-            <NavLink onClick={toggle} className="text-success p-1 border rounded  border-warning">
+            <NavLink onClick={toggle} className="text-success p-1 my-2 border rounded  border-warning">
                 <b>+</b> FAQ
             </NavLink>
 

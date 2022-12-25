@@ -29,7 +29,7 @@ const BroadcastsCard = ({ broadcastsToUse, currentUser, deleteBroadcast }) => {
                                 </Link>
 
                                 <div className="action-btns">
-                                    <Button size="sm" color="white" className={`mr-2 ${uRole === 'Admin' ? '' : 'd-none'}`} onClick={() => deleteBroadcast(broadcast._id)}>
+                                    <Button size="sm" color="white" className={`mr-2 ${(uRole === 'Admin' || uRole === 'SuperAdmin') ? '' : 'd-none'}`} onClick={() => deleteBroadcast(broadcast._id)}>
                                         <img src={DeleteIcon} alt="" width="12" height="12" />
                                     </Button>
                                 </div>

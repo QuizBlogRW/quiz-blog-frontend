@@ -13,7 +13,7 @@ const UsersTabPane = ({ auth, users, getUsers, deleteUser }) => {
         getUsers();
     }, [getUsers]);
 
-    const adminsCreators = users && users.users.filter(user => user.role === "Admin" || user.role === "Creator")
+    const adminsCreators = users && users.users.filter(user => user.role === "SuperAdmin" || user.role === "Admin" || user.role === "Creator")
 
     const [searchKey, setSearchKey] = useState('')
 
@@ -28,24 +28,24 @@ const UsersTabPane = ({ auth, users, getUsers, deleteUser }) => {
                         <SearchInput setSearchKey={setSearchKey} placeholder={` Search here any user from ${users.users.length} available users...  `} />
 
                         {searchKey === "" ? null :
+                            <Row>
+                                {users && users.users
+                                    .map(user => (
 
-                            users && users.users
-                                .map(user => (
+                                        user.name.toLowerCase().includes(searchKey.toLowerCase()) ?
 
-                                    user.name.toLowerCase().includes(searchKey.toLowerCase()) ?
-                                        <UserToast auth={auth} key={user._id} user={user} deleteUser={deleteUser} fromSearch={true} />
-                                        : null
-                                ))}
+                                            <UserToast auth={auth} key={user._id} user={user} deleteUser={deleteUser} fromSearch={true} />
+                                            : null
+                                    ))}
+                            </Row>}
 
                         <p className="text-center my-3 font-weight-bolder text-underline">
                             <u>Admin and Creators</u>
                         </p>
                         <Row>
-
                             {adminsCreators && adminsCreators.map(aCreator => (
                                 <UserToast auth={auth} key={aCreator._id} user={aCreator} deleteUser={deleteUser} />
                             ))}
-
                         </Row>
 
                         <p className="text-center my-3 font-weight-bolder text-underline">
@@ -56,7 +56,6 @@ const UsersTabPane = ({ auth, users, getUsers, deleteUser }) => {
                             {users && users.users.map(newUser => (
                                 <UserToast auth={auth} key={newUser._id} user={newUser} deleteUser={deleteUser} />
                             )).slice(0, 8)}
-
                         </Row>
                     </>
             }

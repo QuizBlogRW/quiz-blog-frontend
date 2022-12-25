@@ -11,7 +11,7 @@ import BlogPostsTabPane from '../blog/blogPosts/BlogPostsTabPane'
 import DownloadsTabPane from './DownloadsTabPane'
 import ContactsTabPane from '../contacts/ContactsTabPane'
 import SpinningBubbles from '../rLoading/SpinningBubbles'
-import ViewComments from '../quizes/review/questionComments/ViewComments'
+import CommentsTabPane from '../quizes/review/questionComments/CommentsTabPane'
 import TopRow from './TopRow.js'
 
 const Webmaster = ({ auth, categories, courseCategories }) => {
@@ -106,7 +106,7 @@ const Webmaster = ({ auth, categories, courseCategories }) => {
 
                             {
                                 // Admin only
-                                currentUser.role === 'Admin' ?
+                                currentUser.role === 'Admin' || currentUser.role === 'SuperAdmin' ?
                                     <>
                                         <NavItem>
                                             <NavLink
@@ -146,10 +146,10 @@ const Webmaster = ({ auth, categories, courseCategories }) => {
                             <PostCategoriesTabPane auth={auth} />
                             <BlogPostsTabPane auth={auth} />
 
-                            {currentUser.role === 'Admin' ?
+                            {currentUser.role === 'Admin' || currentUser.role === 'SuperAdmin' ?
                                 <>
                                     <UsersTabPane auth={auth} />
-                                    <ViewComments currentUser={currentUser} />
+                                    <CommentsTabPane currentUser={currentUser} />
                                 </> : null}
                         </TabContent>
                     </Col>

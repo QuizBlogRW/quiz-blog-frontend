@@ -21,7 +21,7 @@ const ScoresTable = ({ scoresToUse, currentUser, pageNo, deleteScore }) => {
                         <th scope="col">Marks</th>
                         <th scope="col">Out of</th>
                         <th scope="col">Reviewing</th>
-                        <th scope="col" className={`${uRole === 'Admin' ? '' : 'd-none'}`}>❌</th>
+                        <th scope="col" className={`${(uRole === 'Admin' || uRole === 'SuperAdmin') ? '' : 'd-none'}`}>❌</th>
                     </tr>
                 </thead>
 
@@ -36,7 +36,7 @@ const ScoresTable = ({ scoresToUse, currentUser, pageNo, deleteScore }) => {
 
                         let date = score && new Date(score.test_date)
 
-                        const numero = uRole === 'Admin' ? ((pageNo - 1) * 20) + index + 1 : index + 1
+                        const numero = (uRole === 'Admin' || uRole === 'SuperAdmin') ? ((pageNo - 1) * 20) + index + 1 : index + 1
 
                         return (<tr key={index}>
                             <th scope="row" className="table-dark">{numero && numero}</th>
@@ -55,7 +55,7 @@ const ScoresTable = ({ scoresToUse, currentUser, pageNo, deleteScore }) => {
                             <td>
                                 <Link to={`/review-quiz/${score && score.id}`}>Review</Link>
                             </td>
-                            <td className={`table-dark ${uRole === 'Admin' ? '' : 'd-none'}`}>
+                            <td className={`table-dark ${(uRole === 'Admin' || uRole === 'SuperAdmin') ? '' : 'd-none'}`}>
                                 <Button size="sm" color="link" className="mt-0 p-0" onClick={() => deleteScore(score._id)}>
                                     <img src={trash} alt="" width="16" height="16" />
                                 </Button>

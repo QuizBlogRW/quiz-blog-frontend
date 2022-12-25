@@ -5,14 +5,14 @@ import trash from '../../images/trash.svg';
 import AddIcon from '../../images/plus.svg';
 import { Col, Toast, ToastBody, ToastHeader } from 'reactstrap';
 
-const QuizToast = ({ auth, categories, quiz, deleteQuiz }) => {
+const QuizToast = ({ fromSearch, auth, categories, quiz, deleteQuiz }) => {
 
     return (
 
         <Col sm="3" key={quiz._id} className="mt-3 quiz-toast">
 
-            <Toast>
-                <ToastHeader className="text-success">
+            <Toast className={fromSearch ? 'bg-info text-white py-3 px-1 px-sm-3 my-2 my-sm-3 border' : 'py-3 px-1 px-sm-3 my-2 my-sm-3 border'}>
+                <ToastHeader className={`mb-0 ${fromSearch ? 'text-white' : 'text-primary'} text-uppercase`}>
                     <Link to={`/quiz-ranking/${quiz._id}`}>
                         <strong>{quiz.title}</strong>
                         <small>&nbsp;(Ranking)</small>
@@ -32,7 +32,7 @@ const QuizToast = ({ auth, categories, quiz, deleteQuiz }) => {
                 <ToastBody>
                     {quiz.description}
                     <br />
-                    <small className="mb-2 text-success font-weight-bold">
+                    <small className="mb-2 text-dark font-weight-bold">
                         🧑 By {quiz.created_by && quiz.created_by.name}
                     </small>
                     <br />
@@ -47,7 +47,7 @@ const QuizToast = ({ auth, categories, quiz, deleteQuiz }) => {
                                     <li style={{ listStyle: "none" }}>
                                         {index + 1}.&nbsp;
 
-                                        <Link to={`/view-question/${question._id}`}>
+                                        <Link to={`/view-question/${question._id}`} style={{ color: fromSearch ? 'khaki': 'blueviolet' }}>
                                             {question.questionText}
                                         </Link>
                                         <strong className="text-danger">&nbsp;

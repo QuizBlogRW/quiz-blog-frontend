@@ -86,12 +86,12 @@ const ReportsAdmin = ({ auth, scores, getTakerScores }) => {
                                             //     }
                                             // </PDFDownloadLink> 
                                             <p>Not available</p>
-                                            
+
                                             : null}
 
                                         <small className="text-center">
                                             On {moment(new Date(score.test_date))
-                                                    .format('YYYY-MM-DD, HH:MM')}
+                                                .format('YYYY-MM-DD, HH:MM')}
                                         </small>
                                     </ToastBody>
                                 </Toast>

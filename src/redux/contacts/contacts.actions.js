@@ -1,4 +1,4 @@
-import { GET_CONTACTS, ADD_CONTACT, DELETE_CONTACT, ADD_CONTACT_FAIL, DELETE_CONTACT_FAIL, REPLY_CONTACT_FAIL, CONTACTS_LOADING, REPLY_CONTACT, GET_USER_CONTACTS, GET_USER_CONTACTS_FAIL } from "./contacts.types";
+import { GET_CONTACTS, GET_CONTACTS_FAIL, GET_ONE_CONTACT, GET_ONE_CONTACT_FAIL, ONE_CONTACT_LOADING, ADD_CONTACT, DELETE_CONTACT, ADD_CONTACT_FAIL, DELETE_CONTACT_FAIL, REPLY_CONTACT_FAIL, CONTACTS_LOADING, REPLY_CONTACT, GET_USER_CONTACTS, GET_USER_CONTACTS_FAIL, GET_ROOM_MESSAGES, GET_ROOM_MESSAGES_FAIL, ROOM_LOADING, ADD_ROOMS_MESSAGE, ADD_ROOMS_MESSAGE_FAIL, GET_CREATE_CHAT_ROOM, GET_CREATE_CHAT_ROOM_FAIL } from "./contacts.types";
 import axios from 'axios';
 import { tokenConfig } from '../auth/auth.actions'
 import { returnErrors } from "../error/error.actions";
@@ -23,10 +23,30 @@ export const getContacts = (pageNo) => async (dispatch, getState) => {
           type: GET_CONTACTS,
           payload: res.data,
         }))
+
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status))
+    dispatch(returnErrors(err.response.data, err.response.status, 'GET_CONTACTS_FAIL'));
+    dispatch({ type: GET_CONTACTS_FAIL })
   }
 };
+
+// Get one contact
+export const getOneContact = (contactId) => async (dispatch, getState) => {
+  await dispatch(setOneContactLoading())
+
+  try {
+    await axiosInstance
+      .get(`/api/contacts/${contactId}`, tokenConfig(getState))
+      .then(res =>
+        dispatch({
+          type: GET_ONE_CONTACT,
+          payload: res.data
+        }))
+  } catch (err) {
+    dispatch(returnErrors(err.response.data, err.response.status, 'GET_ONE_CONTACT_FAIL'))
+    dispatch({ type: GET_ONE_CONTACT_FAIL })
+  }
+}
 
 // View all msgs by a user
 export const getUserContacts = (userEmail) => async (dispatch, getState) => {
@@ -58,9 +78,9 @@ export const sendMsg = (contactMsg) => async (dispatch) => {
         }))
       .then(res =>
         dispatch(
-          returnSuccess('Message sent! Reloading the page ...', 200, 'ADD_CONTACT'),
+          returnSuccess('Message sent! Redirecting to the chatting page ...', 200, 'ADD_CONTACT'),
           // Reload after 4 seconds
-          window.setTimeout(() => window.location.reload(), 4000)
+          // window.setTimeout(() => window.location.reload(), 4000)
         ))
 
   } catch (err) {
@@ -82,9 +102,9 @@ export const replyContact = (idToUpdate, reply) => async (dispatch, getState) =>
         }))
       .then(res =>
         dispatch(
-          returnSuccess('Reply sent! Reloading the page ...', 200, 'REPLY_CONTACT'),
+          returnSuccess('Reply sent!', 200, 'REPLY_CONTACT'),
           // Reload after 4 seconds
-          window.setTimeout(() => window.location.reload(), 4000)
+          // window.setTimeout(() => window.location.reload(), 4000)
         ))
 
   } catch (err) {
@@ -119,11 +139,90 @@ export const deleteContact = id => async (dispatch, getState) => {
   }
 }
 
+// Get chat room messages - Get the room if it exists, if it doesn't, create it
+export const getCreateRoom = (room1ON1ToGet) => async (dispatch, getState) => {
+  await dispatch(setRoomLoading())
+
+  try {
+    await axiosInstance
+      .post(`/api/chatrooms/rooms/room/${room1ON1ToGet.roomName}`, room1ON1ToGet, tokenConfig(getState))
+      .then(res =>
+        dispatch({
+          type: GET_CREATE_CHAT_ROOM,
+          payload: res.data
+        }))
+  } catch (err) {
+    dispatch(returnErrors(err.response.data, err.response.status, 'GET_CREATE_CHAT_ROOM_FAIL'))
+    dispatch({ type: GET_CREATE_CHAT_ROOM_FAIL })
+  }
+}
+
+// Get chat room messages - Get the room if it exists, if it doesn't, create it
+export const getRoomMessages = (roomID) => async (dispatch, getState) => {
+  await dispatch(setRoomLoading())
+
+  try {
+    await axiosInstance
+      .get(`/api/chatrooms/messages/room/${roomID}`, tokenConfig(getState))
+      .then(res =>
+        dispatch({
+          type: GET_ROOM_MESSAGES,
+          payload: res.data
+        }))
+  } catch (err) {
+    dispatch(returnErrors(err.response.data, err.response.status, 'GET_ROOM_MESSAGES_FAIL'))
+    dispatch({ type: GET_ROOM_MESSAGES_FAIL })
+  }
+}
+
+// Send messages to the room 
+export const sendRoomMessage = (roomMessage) => async (dispatch, getState) => {
+
+  try {
+    await axiosInstance
+      .post('/api/chatrooms/messages', roomMessage, tokenConfig(getState))
+      .then(res =>
+        dispatch({
+          type: ADD_ROOMS_MESSAGE,
+          payload: res.data
+        }))
+      .then(res =>
+        dispatch(
+          returnSuccess('Message sent!', 200, 'ADD_ROOMS_MESSAGE'),
+          // Reload after 4 seconds
+          // window.setTimeout(() => window.location.reload(), 4000)
+        ))
+
+  } catch (err) {
+    dispatch(returnErrors(err.response.data, err.response.status, 'ADD_ROOMS_MESSAGE_FAIL'));
+    dispatch({ type: ADD_ROOMS_MESSAGE_FAIL })
+  }
+};
+
+
 export const setContactsLoading = () => {
   //Return an action to the reducer
   return {
     //action 
     type: CONTACTS_LOADING
+
+  }
+}
+
+export const setOneContactLoading = () => {
+  //Return an action to the reducer
+  return {
+    //action 
+    type: ONE_CONTACT_LOADING
+
+  }
+}
+
+export const setRoomLoading = () => {
+  //Return an action to the reducer
+  return {
+    //action 
+    type: ROOM_LOADING
 
   }
 }
