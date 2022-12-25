@@ -33,7 +33,7 @@ const Challenges = ({ auth, chQuizzes, getChQuizes, deleteChQuiz, categories }) 
                             isAuthenticated={isAuthenticated} />
                 }
             </div> :
-            curUserRole === 'Admin' ?
+            curUserRole === 'Admin' || curUserRole === 'SuperAdmin' ?
                 <div className='mx-4 my-5'>
 
                     {chQuizzes.isLoading ?

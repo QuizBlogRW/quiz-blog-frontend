@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Col, Card, Alert } from 'reactstrap'
 import ReactLoading from "react-loading"
 import { connect } from 'react-redux'
@@ -12,28 +12,25 @@ const PendingComments = ({ currentUser, getPendingComments, approveComment, reje
         getPendingComments()
     }, [getPendingComments])
 
-    // const uRole = currentUser && currentUser.role
-    const [pendCommentsState, setPendCommentsState] = useState([])
-    useEffect(() => { setPendCommentsState(questionComments && questionComments.pendingComments) }, [questionComments])
+    const uRole = currentUser && currentUser.role
 
     return (
-
         questionComments.pendingCommentsLoading ?
             <div className="p-1 m-1 d-flex justify-content-center align-items-center">
                 <ReactLoading type="bubbles" color="#33FFFC" />Pending comments ...</div> :
 
-            pendCommentsState && pendCommentsState.length > 0 ?
+            questionComments && questionComments.pendingComments.length > 0 ?
                 <>
                     <h5 className='text-center w-100 my-4 font-weight-bold'>
-                        PENDING COMMENTS ({pendCommentsState && pendCommentsState.length})
+                        PENDING COMMENTS ({questionComments && questionComments.pendingComments.length})
                     </h5>
 
                     <Col sm={12} className="mt-2 comments-card">
                         <Card body>
                             {
                                 // PENDING QUESTION COMMENTS
-                                pendCommentsState.map((comment, i) => (
-                                    <Comment comment={comment} isFromPending={true} approveComment={approveComment} rejectComment={rejectComment} key={i} />
+                                questionComments.pendingComments.map((comment, i) => (
+                                    <Comment comment={comment} isFromPending={true} uRole={uRole} approveComment={approveComment} rejectComment={rejectComment} key={i} />
                                 ))}
                         </Card>
                     </Col>

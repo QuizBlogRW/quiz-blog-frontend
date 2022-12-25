@@ -69,7 +69,7 @@ const FaqCollapse = ({ auth, faqs, getFaqs }) => {
                     <hr className="my-2" style={{ height: "2px", borderWidth: 0, color: "#157A6E", backgroundColor: "#157A6E" }} />
                 </Jumbotron>
 
-                {currentUser && currentUser.role === 'Admin' ?
+                {(currentUser && currentUser.role) === 'Admin' || currentUser.role === 'SuperAdmin' ?
                     <Row className="m-lg-4 px-lg-5 d-flex justify-content-around align-items-center text-primary">
                         <CreateFaq currentUser={currentUser} />
                     </Row> : null}
@@ -97,7 +97,7 @@ const FaqCollapse = ({ auth, faqs, getFaqs }) => {
                                             </Button>
 
                                             {
-                                                currentUser && currentUser.role === 'Admin' ?
+                                                (currentUser && currentUser.role) === 'Admin' || currentUser.role === 'SuperAdmin' ?
                                                     <>
                                                         <Button size="sm" color="link" className="mx-2">
                                                             <EditFaq auth={auth} faqToEdit={faq} />

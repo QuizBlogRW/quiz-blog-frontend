@@ -16,7 +16,7 @@ const AddBlogPost = ({ auth, createBlogPost, errors, successful, clearErrors, cl
     const userLoading = auth && auth.isLoading
     const currentUser = auth && auth.user
     const curUserRole = currentUser && currentUser.role
-    const isAuthorized = curUserRole === 'Admin' || curUserRole === 'Creator'
+    const isAuthorized = curUserRole === 'Admin' || curUserRole === 'SuperAdmin' || curUserRole === 'Creator'
 
     const { bPCatID } = useParams()
     const [bPState, setBPState] = useState({
@@ -177,8 +177,8 @@ const AddBlogPost = ({ auth, createBlogPost, errors, successful, clearErrors, cl
                         </Col>
 
                         <Col sm="4" className="mt-md-2">
-                            <UploadPostPhotos currentUser={currentUser}/>
-                            <YourImages currentUser={currentUser} /> 
+                            <UploadPostPhotos currentUser={currentUser} />
+                            <YourImages currentUser={currentUser} />
                         </Col>
                     </Row>
                 </> :

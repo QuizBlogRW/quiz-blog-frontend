@@ -24,7 +24,7 @@ export const getComments = () => async (dispatch, getState) => {
         }))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response.data, err && err.response.status, 'GET_COMMENTS_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_COMMENTS_FAIL'))
     dispatch({ type: GET_COMMENTS_FAIL })
   }
 }
@@ -43,7 +43,7 @@ export const getPaginatedComments = (pageNo) => async (dispatch, getState) => {
         }))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response.data, err && err.response.status, 'GET_PAGINATED_COMMENTS_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_PAGINATED_COMMENTS_FAIL'))
     dispatch({ type: GET_PAGINATED_COMMENTS_FAIL })
   }
 }
@@ -62,7 +62,7 @@ export const getPendingComments = () => async (dispatch, getState) => {
         }))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response.data, err && err.response.status, 'GET_PENDING_COMMENTS_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_PENDING_COMMENTS_FAIL'))
     dispatch({ type: GET_PENDING_COMMENTS_FAIL })
   }
 }
@@ -82,7 +82,7 @@ export const getQuestionComments = (questionID) => async (dispatch, getState) =>
         }))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response.data, err && err.response.status, 'GET_QUESTION_COMMENTS_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_QUESTION_COMMENTS_FAIL'))
     dispatch({ type: GET_QUESTION_COMMENTS_FAIL })
   }
 }
@@ -101,7 +101,7 @@ export const getCommentsByQuiz = (quizID) => async (dispatch, getState) => {
         }))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response.data, err && err.response.status, 'GET_COMMENTS_BY_QUIZ_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_COMMENTS_BY_QUIZ_FAIL'))
     dispatch({ type: GET_COMMENTS_BY_QUIZ_FAIL })
   }
 }

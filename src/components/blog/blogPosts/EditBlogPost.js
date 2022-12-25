@@ -43,7 +43,7 @@ const EditBlogPost = ({ auth, updateBlogPost, getOneBlogPost, getPostCategories,
 
   const creatorID = bPToUse.creator && bPToUse.creator._id
   const currentUserID = bPToUse.creator && bPToUse.creator._id
-  const isAuthorized = curUserRole === 'Admin' || currentUserID === creatorID
+  const isAuthorized = (curUserRole === 'Admin' || curUserRole === 'SuperAdmin' || currentUserID === creatorID)
 
   // Alert
   const [visible, setVisible] = useState(true)

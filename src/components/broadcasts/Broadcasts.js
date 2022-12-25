@@ -33,7 +33,7 @@ const Broadcasts = ({ auth, broadcasts, setBroadcasts, deleteBroadcast }) => {
                             isAuthenticated={isAuthenticated} />
                 }
             </div> :
-            curUserRole === 'Admin' ?
+            curUserRole === 'Admin' || curUserRole === 'SuperAdmin' ?
                 <div className='mx-4 my-5'>
 
                     {broadcasts.isLoading ?

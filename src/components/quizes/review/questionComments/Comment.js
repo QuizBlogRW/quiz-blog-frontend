@@ -3,7 +3,9 @@ import { Toast, ToastHeader, ToastBody, CardTitle, Button } from 'reactstrap'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
 
-const Comment = ({ comment, isFromPending, rejectComment, approveComment }) => {
+const Comment = ({ comment, uRole, isFromPending, rejectComment, approveComment }) => {
+
+
 
     const questionID = comment && comment.question && comment.question._id
     const quizID = comment && comment.quiz && comment.quiz._id
@@ -19,9 +21,9 @@ const Comment = ({ comment, isFromPending, rejectComment, approveComment }) => {
                     {comment.quiz && comment.quiz.title}
                 </Link>
 
-                {isFromPending ?
+                {(isFromPending && uRole === "SuperAdmin") ?
                     <span>
-                        <Button sm color="success" className='mx-1 text-white text-uppercase'
+                        <Button color="success" className='mx-1 text-white text-uppercase'
                             onClick={() => approveComment({
                                 commentID: comment && comment._id,
                                 status: "Approved"
@@ -29,7 +31,7 @@ const Comment = ({ comment, isFromPending, rejectComment, approveComment }) => {
                             Approve
                         </Button>
 
-                        <Button sm color="danger" className='mx-1 text-white text-uppercase'
+                        <Button color="danger" className='mx-1 text-white text-uppercase'
                             onClick={() => rejectComment({
                                 commentID: comment && comment._id,
                                 status: "Rejected"
@@ -38,8 +40,8 @@ const Comment = ({ comment, isFromPending, rejectComment, approveComment }) => {
                         </Button>
                     </span> :
 
-                    <Button sm className={`${comment.status === 'Pending' ? 'text-warning' : 
-                        comment.status === 'Rejected' ? 'text-danger': 'text-success'} bg-white text-uppercase`}>
+                    <Button className={`${comment.status === 'Pending' ? 'text-warning' :
+                        comment.status === 'Rejected' ? 'text-danger' : 'text-success'} bg-white text-uppercase`}>
                         {comment.status}
                     </Button>
                 }

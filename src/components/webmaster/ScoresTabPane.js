@@ -21,7 +21,7 @@ const ScoresTabPane = ({ currentUser, scores, setScores, getCreatorScores, getTa
 
     // Lifecycle methods
     useEffect(() => {
-        if ((uRole === 'Admin' || uRole === 'SuperAdmin')) {
+        if (uRole === 'Admin' || uRole === 'SuperAdmin') {
             setScores(pageNo)
             setNumberOfPages(totPages)
         }

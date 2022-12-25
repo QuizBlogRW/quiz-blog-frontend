@@ -14,10 +14,14 @@ const UserToast = ({ auth, user, fromSearch, deleteUser }) => {
             <Toast>
                 <ToastHeader className="text-dark overflow-auto">
                     <strong>{user.email}</strong>
+
+                    {(auth && auth.user && auth.user.role) === 'SuperAdmin' ?
                     <div className="actions text-secondary d-flex">
                         <img src={trash} alt="" width="16" height="16" className="mx-4 mt-1" onClick={() => deleteUser(user._id)} />
                         <EditUser auth={auth} uId={user._id} uName={user.name} uRole={user.role} uEmail={user.email} />
-                    </div>
+                    </div>: 
+                    <span></span>}
+                    
                 </ToastHeader>
 
                 <ToastBody className={` ${fromSearch ? 'bg-light text-dark' : ''}`}>

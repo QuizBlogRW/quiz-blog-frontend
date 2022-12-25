@@ -32,13 +32,13 @@ const QuizesTabPane = ({ auth, categories, quizes, questions, allNoLimit, allNoL
     const allQuizzes = quizes && quizes.paginatedQuizes
     const creatorQuizzes = quizes.paginatedQuizes && quizes.paginatedQuizes
         .filter(quiz => quiz.created_by && quiz.created_by._id === currentUser._id)
-    const quizzesToUse = currentUser.role === 'Admin' ? allQuizzes : creatorQuizzes
+    const quizzesToUse = currentUser.role === 'Admin' || currentUser.role === 'SuperAdmin' ? allQuizzes : creatorQuizzes
 
     // Questions to use
     const allQuestions = questions && questions.questionsData
     const creatorQuestions = questions && questions.questionsData
         .filter(question => question.created_by && question.created_by._id === currentUser._id)
-    const questionsToUse = currentUser.role === 'Admin' ? allQuestions : creatorQuestions
+    const questionsToUse = currentUser.role === 'Admin' || currentUser.role === 'SuperAdmin' ? allQuestions : creatorQuestions
 
     return (
 

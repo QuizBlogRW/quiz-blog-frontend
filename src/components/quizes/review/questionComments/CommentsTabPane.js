@@ -11,7 +11,6 @@ import SearchInput from '../../../SearchInput'
 import Pagination from '../../../webmaster/Pagination'
 import PageOf from '../../../webmaster/PageOf'
 
-
 const CommentsTabPane = ({ currentUser, questionComments, allQuizComments, getComments, getPaginatedComments, getAllComments }) => {
 
     const totPages = questionComments && questionComments.totalPages
@@ -39,7 +38,7 @@ const CommentsTabPane = ({ currentUser, questionComments, allQuizComments, getCo
         <TabPane tabId="9">
 
             <Row>
-                <PendingComments />
+                <PendingComments currentUser={currentUser} />
             </Row>
 
             <Row>

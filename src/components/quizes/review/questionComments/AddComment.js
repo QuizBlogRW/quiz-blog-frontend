@@ -1,12 +1,17 @@
 import React, { useState } from 'react'
-import { Button, Form, FormGroup, Input, Alert } from 'reactstrap'
+import { Button, Form, FormGroup, Input, Alert, Progress } from 'reactstrap'
 import { connect } from 'react-redux'
+import { clearErrors } from '../../../../redux/error/error.actions'
+import { clearSuccess } from '../../../../redux/success/success.actions'
 import { createComment } from '../../../../redux/questionComments/questionComments.actions'
 
-const AddComment = ({ createComment, currentUser, question, quiz, errors, successful, fromSingleQuestion }) => {
+const AddComment = ({ createComment, currentUser, question, quiz, errors, successful, clearErrors, clearSuccess, fromSingleQuestion }) => {
 
     const [comment, setComment] = useState('')
     const userId = currentUser && currentUser._id
+
+    // progress
+    const [progress, setProgress] = useState(false)
 
     // Alert
     const [visible, setVisible] = useState(true)
@@ -17,6 +22,8 @@ const AddComment = ({ createComment, currentUser, question, quiz, errors, succes
 
     const onChangeHandler = (e) => {
         setErrorsState([])
+        clearErrors()
+        clearSuccess()
         setComment(e.target.value)
     }
 
@@ -44,8 +51,10 @@ const AddComment = ({ createComment, currentUser, question, quiz, errors, succes
 
         // Attempt to create
         createComment(newComment, fromSingleQuestion)
-
         setComment('')
+        
+        // Display the progress bar
+        setProgress(true)
     }
 
     return (
@@ -72,6 +81,8 @@ const AddComment = ({ createComment, currentUser, question, quiz, errors, succes
                     </Alert> : null
             }
 
+            {(progress && !successful.id && !errors.id) ? <Progress animated color="warning" value={100} className='mb-2' /> : null}
+
             <Form onSubmit={onSubmitHandler}>
                 <FormGroup>
                     <Input type="textarea" rows="3" name="comment" placeholder="Your comment ..." className="mb-3" minLength="4" maxLength="1000" onChange={onChangeHandler} />
@@ -86,4 +97,4 @@ const mapStateToProps = state => ({
     successful: state.successReducer
 })
 
-export default connect(mapStateToProps, { createComment })(AddComment)
+export default connect(mapStateToProps, { createComment, clearErrors, clearSuccess })(AddComment)

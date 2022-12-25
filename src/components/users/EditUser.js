@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input, Alert } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input, Alert, Progress } from 'reactstrap';
 import LoginModal from '../auth/LoginModal'
 import Webmaster from '../webmaster/Webmaster'
 import { connect } from 'react-redux';
 import { updateUser } from '../../redux/auth/auth.actions'
+import { clearErrors } from '../../redux/error/error.actions'
+import { clearSuccess } from '../../redux/success/success.actions'
 import EditIcon from '../../images/edit.svg';
 import SpinningBubbles from '../rLoading/SpinningBubbles';
 
-const EditUser = ({ uId, auth, uName, uRole, uEmail, updateUser }) => {
+const EditUser = ({ uId, auth, uName, uRole, uEmail, errors, successful, clearErrors, clearSuccess, updateUser }) => {
 
     const [userState, setUserState] = useState({
         uId,
@@ -15,6 +17,13 @@ const EditUser = ({ uId, auth, uName, uRole, uEmail, updateUser }) => {
         role: uRole,
         email: uEmail
     })
+
+    // progress
+    const [progress, setProgress] = useState(false)
+
+    // Alert
+    const [visible, setVisible] = useState(true)
+    const onDismiss = () => setVisible(false)
 
     // Errors state on form
     const [errorsState, setErrorsState] = useState([])
@@ -26,6 +35,9 @@ const EditUser = ({ uId, auth, uName, uRole, uEmail, updateUser }) => {
     const toggle = () => setModal(!modal);
 
     const onChangeHandler = e => {
+        setErrorsState([])
+        clearErrors()
+        clearSuccess()
         setUserState({ ...userState, [e.target.name]: e.target.value });
     };
 
@@ -59,10 +71,8 @@ const EditUser = ({ uId, auth, uName, uRole, uEmail, updateUser }) => {
         // Attempt to update
         updateUser(updatedUser);
 
-        // close the modal
-        if (modal) {
-            toggle();
-        }
+        // Display the progress bar
+        setProgress(true)
     }
     return (
         auth.isAuthenticated ?
@@ -82,13 +92,37 @@ const EditUser = ({ uId, auth, uName, uRole, uEmail, updateUser }) => {
 
                         <ModalBody>
 
+                            {/* Error frontend*/}
                             {errorsState.length > 0 ?
                                 errorsState.map(err =>
-                                    <Alert color="danger" key={Math.floor(Math.random() * 1000)} className='border border-warning'>
+                                    <Alert color="danger" isOpen={visible} toggle={onDismiss} key={Math.floor(Math.random() * 1000)} className='border border-warning'>
                                         {err}
                                     </Alert>) :
                                 null
                             }
+
+                            {/* Error frontend*/}
+                            {errorsState.length > 0 ?
+                                errorsState.map(err =>
+                                    <Alert color="danger" isOpen={visible} toggle={onDismiss} key={Math.floor(Math.random() * 1000)} className='border border-warning'>
+                                        {err}
+                                    </Alert>) :
+                                null
+                            }
+
+                            {/* Error backend */}
+                            {errors.id ?
+                                <Alert isOpen={visible} toggle={onDismiss} color='danger'>
+                                    <small>{errors.msg && errors.msg.msg}</small>
+                                </Alert> :
+
+                                successful.id ?
+                                    <Alert color='success' isOpen={visible} toggle={onDismiss} className='border border-warning'>
+                                        <small>{successful.msg && successful.msg}</small>
+                                    </Alert> : null
+                            }
+
+                            {(progress && !successful.id && !errors.id) ? <Progress animated color="warning" value={100} className='mb-2' /> : null}
 
                             <Form onSubmit={onSubmitHandler}>
 
@@ -144,4 +178,9 @@ const EditUser = ({ uId, auth, uName, uRole, uEmail, updateUser }) => {
     );
 }
 
-export default connect(null, { updateUser })(EditUser);
+const mapStateToProps = state => ({
+    errors: state.errorReducer,
+    successful: state.successReducer
+})
+
+export default connect(mapStateToProps, { updateUser, clearErrors, clearSuccess })(EditUser);

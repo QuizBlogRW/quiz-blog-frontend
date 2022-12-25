@@ -17,7 +17,7 @@ const ReportsAdmin = ({ auth, scores, getTakerScores }) => {
 
     useEffect(() => {
         if (currentUser) {
-            if (currentUser.role === 'Admin' || currentUser.role === 'Creator') {
+            if (currentUser.role === 'Admin' || currentUser.role === 'SuperAdmin' || currentUser.role === 'Creator') {
                 getTakerScores(currentUser._id)
             }
             else {
@@ -66,7 +66,7 @@ const ReportsAdmin = ({ auth, scores, getTakerScores }) => {
                                             </strong>
                                         </p>
 
-                                        {currentUser.role === 'Admin' ?
+                                        {currentUser.role === 'Admin' || currentUser.role === 'SuperAdmin' ?
                                             // <PDFDownloadLink
                                             //     document={<PdfDocument review={score.review} />}
                                             //     fileName={`${score.review.title && score.review.title.split(' ').join('-')}.pdf`}

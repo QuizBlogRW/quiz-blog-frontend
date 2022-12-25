@@ -184,8 +184,13 @@ export const updateUser = updatedUser => async (dispatch, getState) => {
         dispatch({
           type: UPDATE_USER,
           payload: updatedUser
-        }),
-        alert('UPDATED!'))
+        }))
+      .then(res =>
+        dispatch(
+          returnSuccess('User updated! Reloading the page ...', 200, 'UPDATE_USER'),
+          // Reload after 3 seconds
+          window.setTimeout(() => window.location.reload(), 3000)
+        ))
 
   } catch (err) {
     dispatch(returnErrors(err.response.data, err.response.status, 'UPDATE_USER_FAIL'))
@@ -207,8 +212,8 @@ export const updateProfile = updatedProfile => async (dispatch, getState) => {
       .then(res =>
         dispatch(
           returnSuccess('Changes are saved! Reloading the page ...', 200, 'UPDATE_PROFILE'),
-          // Reload after 7 seonds
-          window.setTimeout(() => window.location.reload(), 7000)
+          // Reload after 4 seconds
+          window.setTimeout(() => window.location.reload(), 4000)
         ))
 
   } catch (err) {

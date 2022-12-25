@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react'
-import { Row, TabPane } from 'reactstrap';
+import { Row, TabPane } from 'reactstrap'
 import { connect } from 'react-redux'
 import SearchInput from '../SearchInput'
 import { getUsers, deleteUser } from '../../redux/auth/auth.actions'
-import UserToast from './UserToast';
-import SpinningBubbles from '../rLoading/SpinningBubbles';
+import UserToast from './UserToast'
+import SpinningBubbles from '../rLoading/SpinningBubbles'
 
 const UsersTabPane = ({ auth, users, getUsers, deleteUser }) => {
 
     // Lifecycle methods
     useEffect(() => {
-        getUsers();
-    }, [getUsers]);
+        getUsers()
+    }, [getUsers])
 
     const adminsCreators = users && users.users.filter(user => user.role === "SuperAdmin" || user.role === "Admin" || user.role === "Creator")
 

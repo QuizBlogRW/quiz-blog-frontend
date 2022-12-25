@@ -40,7 +40,7 @@ const QuizRanking = ({ auth, scores, setRankingScores }) => {
                                 <BreadcrumbItem active>{qTitile && qTitile}&nbsp; - Comments & Ranking</BreadcrumbItem>
                             </Breadcrumb>
 
-                            {currentUser && currentUser.role === 'Admin' ?
+                            {(((currentUser && currentUser.role) === 'Admin') || (currentUser.role === 'SuperAdmin')) ?
                                 <AddVideo quizID={quizID} /> : null}
 
                         </Row>
@@ -48,7 +48,7 @@ const QuizRanking = ({ auth, scores, setRankingScores }) => {
                     <Row className="mx-2 mx-lg-5">
 
                         <Col sm="6" style={{ height: "95%" }} className="my-2 overflow-auto">
-                            <ViewQuizComments quizID={quizID}/>
+                            <ViewQuizComments quizID={quizID} />
                         </Col>
 
                         <Col sm="6" style={{ height: "95%" }} className="my-2 overflow-auto">
@@ -58,7 +58,7 @@ const QuizRanking = ({ auth, scores, setRankingScores }) => {
                                     <ReactLoading type="spinningBubbles" color="#33FFFC" />
                                 </div> :
 
-                                currentUser && currentUser.role === 'Admin' ?
+                                (((currentUser && currentUser.role) === 'Admin') || (currentUser.role === 'SuperAdmin')) ?
 
                                     <Table hover responsive>
 

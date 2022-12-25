@@ -37,7 +37,7 @@ const Webmaster = ({ auth, categories, courseCategories }) => {
     return (
         auth.isAuthenticated ?
             <>
-                <TopRow currentUser={currentUser}/>
+                <TopRow currentUser={currentUser} />
                 <Row className="m-lg-5">
                     <Col sm="12" className="px-0 mb-4 mb-sm-0 d-flex justify-content-around">
 
