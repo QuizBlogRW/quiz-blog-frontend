@@ -48,7 +48,7 @@ const BlogPosts = ({ getBlogPosts, blgPosts }) => {
                                         </div>}>
 
                                             <ListGroup flush color="warning" className="px-lg-3 my-1">
-                                                <ListGroupItem href="#" tag="a" color="alert-link" className='d-flex flex-column flex-lg-row justify-content-between align-items-center'>
+                                                <ListGroupItem href="#" tag="span" color="alert-link" className='d-flex flex-column flex-lg-row justify-content-between align-items-center'>
 
                                                     <Link to={`/view-blog-post/${slug}`}>
                                                         <b className='text-uppercase text-primary post-title'>{title}</b>

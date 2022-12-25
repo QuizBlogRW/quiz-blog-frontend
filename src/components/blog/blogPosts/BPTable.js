@@ -22,7 +22,7 @@ const BPTable = ({ bpostsToUse, currentUser, deleteBlogPost }) => {
                             <th scope="col">CATEGORY</th>
                             <th scope="col">CREATOR</th>
                             <th scope="col">DATE</th>
-                            <th scope="col">EDIT</th>
+                            <th scope="col" className={`${(uRole === 'Admin' || uRole === 'SuperAdmin') ? '' : 'd-none'}`}>EDIT</th>
                             <th scope="col" className={`${(uRole === 'Admin' || uRole === 'SuperAdmin') ? '' : 'd-none'}`}>❌</th>
                         </tr>
                     </thead>

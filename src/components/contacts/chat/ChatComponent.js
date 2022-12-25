@@ -69,7 +69,7 @@ const ChatComponent = ({ socket, onlineList, currentUser, chatId, cntct, getOneC
         const { message } = contactState
 
         // VALIDATE
-        if (currentUser.email.length < 4 || message.length < 4) {
+        if (currentUser.email.length < 4 || message.length < 1) {
             setErrorsState(['Insufficient info!'])
             return
         }

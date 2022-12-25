@@ -37,7 +37,7 @@ const EmbeddedVideos = ({ quiz, faq, isFromFaqs, currentUser, deleteVideo }) => 
                         <CardTitle tag="small" className='question-count text-uppercase text-center text-success font-weight-bold'>
                             {vid && vid.vtitle}
                             <Button size="sm" color="white" className={`mr-2 ${(currentUser && currentUser.role) === 'Admin' || currentUser.role === 'SuperAdmin' ? '' : 'd-none'}`} onClick={() => delHandler(vid._id)}>
-                                &nbsp&nbsp&nbsp<img src={DeleteIcon} alt="" width="10" height="10" />
+                                &nbsp;&nbsp;&nbsp;<img src={DeleteIcon} alt="" width="10" height="10" />
                             </Button>
                         </CardTitle>
 

@@ -63,7 +63,7 @@ const SingleQuestion = ({ auth, quest, getOneQuestion, deleteQuestion }) => {
 
                             <Row className="m-2 m-lg-4 d-block text-primary">
 
-                                <div className="d-lg-flex mb-5 justify-content-between align-items-baseline title-actions">
+                                <div className="d-lg-flex my-3 justify-content-between align-items-baseline title-actions text-uppercase">
                                     <h4 className="mb-4">{thisQuestion && thisQuestion.questionText}</h4>
 
                                     {
@@ -89,16 +89,18 @@ const SingleQuestion = ({ auth, quest, getOneQuestion, deleteQuestion }) => {
                                     </div>}
 
                                 <ListGroup>
-                                    {thisQuestion && thisQuestion.answerOptions.map(answerOpt => (
+                                    {thisQuestion && thisQuestion.answerOptions.map((answerOpt, i) => (
 
                                         <span key={answerOpt._id}>
-                                            <ListGroupItem color={answerOpt.isCorrect ? 'success' : ''} key={answerOpt._id}>
-                                                {answerOpt.answerText}
+                                            <ListGroupItem color={answerOpt.isCorrect ? 'success' : ''} key={answerOpt._id} className="mt-4 font-weight-bold">
+                                                {i + 1}. {answerOpt.answerText}
                                             </ListGroupItem>
 
-                                            <small className="text-dark border mb-2 pl-2">
-                                                {answerOpt.explanations}
-                                            </small>
+                                            <div className='border rounded mt-1 p-2'>
+                                                <small className="text-dark">
+                                                    {answerOpt.explanations}
+                                                </small>
+                                            </div>
                                         </span>)
                                     )}
                                 </ListGroup>
@@ -106,7 +108,7 @@ const SingleQuestion = ({ auth, quest, getOneQuestion, deleteQuestion }) => {
                             </Row>
 
                             <Row className='d-flex flex-column my-4'>
-                                <QuestionComments questionID={thisQuestion._id} quizID={thisQnQZ._id} currentUser={auth && auth.user} fromSingleQuestion={true}/>
+                                <QuestionComments questionID={thisQuestion._id} quizID={thisQnQZ._id} currentUser={auth && auth.user} fromSingleQuestion={true} />
                             </Row>
                         </div> :
 

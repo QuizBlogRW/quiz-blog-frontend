@@ -65,7 +65,7 @@ const RoomChatComponent = ({ socket, onlineList, currentUser, room1ON1ToGet, cha
         const { message_content, message_sender, message_receiver } = roomMessageState
 
         // VALIDATE
-        if (!message_sender || !message_receiver || !roomIDState || message_content.length < 4) {
+        if (!message_sender || !message_receiver || !roomIDState || message_content.length < 1) {
             setErrorsState(['Missing info!'])
             return
         }

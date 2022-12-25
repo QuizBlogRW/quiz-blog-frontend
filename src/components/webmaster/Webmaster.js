@@ -88,13 +88,15 @@ const Webmaster = ({ auth, categories, courseCategories }) => {
                                 </NavLink>
                             </NavItem>
 
-                            <NavItem>
-                                <NavLink
-                                    className={classnames({ active: activeTab === '7' })}
-                                    onClick={() => { toggle('7') }}>
-                                    <u>BP Categories</u>
-                                </NavLink>
-                            </NavItem>
+                            { // CAUSING PROBLEMS WHEN VISITOR IS LOGGED IN
+                                currentUser.role !== 'Visitor' ?
+                                    <NavItem>
+                                        <NavLink
+                                            className={classnames({ active: activeTab === '7' })}
+                                            onClick={() => { toggle('7') }}>
+                                            <u>BP Categories</u>
+                                        </NavLink>
+                                    </NavItem> : null}
 
                             <NavItem>
                                 <NavLink
@@ -143,7 +145,11 @@ const Webmaster = ({ auth, categories, courseCategories }) => {
                             <ScoresTabPane currentUser={currentUser} />
                             <DownloadsTabPane currentUser={currentUser} />
                             <ContactsTabPane currentUser={currentUser} />
-                            <PostCategoriesTabPane auth={auth} />
+
+                            { // CAUSING PROBLEMS WHEN VISITOR IS LOGGED IN
+                                currentUser.role !== 'Visitor' ?
+                                    <PostCategoriesTabPane auth={auth} /> : null}
+
                             <BlogPostsTabPane auth={auth} />
 
                             {currentUser.role === 'Admin' || currentUser.role === 'SuperAdmin' ?
