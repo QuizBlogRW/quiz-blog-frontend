@@ -54,7 +54,6 @@ import SingleQuestion from './components/questions/SingleQuestion'
 import EditQuestion from './components/questions/EditQuestion'
 
 // webmaster
-import ReportsAdmin from './components/webmaster/ReportsAdmin'
 import Broadcasts from './components/broadcasts/Broadcasts'
 
 // courseNotes
@@ -165,7 +164,6 @@ const App = ({ auth, categories, courseCategories, bPcats, setCategories, getCou
                 <Route exact path="/edit-question/:questionId" render={() => <EditQuestion auth={auth} categories={categories} />} />
 
                 <Route exact path="/review-quiz/:reviewId" render={() => <ReviewQuiz auth={auth} />} />
-                <Route exact path="/reports-admin" render={() => <ReportsAdmin auth={auth} />} />
                 <Route exact path="/quiz-ranking/:quizID" render={() => <QuizRanking auth={auth} />} />
                 <Route exact path="/questions-create/:quizSlug" render={() => <CreateQuestions auth={auth} categories={categories} />} />
                 {/* <Route exact path="/challenge/:quizSlug/:userId/" render={() => <SelectChallengee auth={auth} />} /> */}

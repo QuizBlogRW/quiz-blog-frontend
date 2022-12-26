@@ -1,11 +1,9 @@
 import React, { useState } from 'react'
 import { Button, Form, FormGroup, Input, Alert, Progress } from 'reactstrap'
 import { connect } from 'react-redux'
-import { clearErrors } from '../../../../redux/error/error.actions'
-import { clearSuccess } from '../../../../redux/success/success.actions'
 import { createComment } from '../../../../redux/questionComments/questionComments.actions'
 
-const AddComment = ({ createComment, currentUser, question, quiz, errors, successful, clearErrors, clearSuccess, fromSingleQuestion }) => {
+const AddComment = ({ createComment, currentUser, question, quiz, errors, successful, fromSingleQuestion }) => {
 
     const [comment, setComment] = useState('')
     const userId = currentUser && currentUser._id
@@ -22,8 +20,6 @@ const AddComment = ({ createComment, currentUser, question, quiz, errors, succes
 
     const onChangeHandler = (e) => {
         setErrorsState([])
-        clearErrors()
-        clearSuccess()
         setComment(e.target.value)
     }
 
@@ -97,4 +93,4 @@ const mapStateToProps = state => ({
     successful: state.successReducer
 })
 
-export default connect(mapStateToProps, { createComment, clearErrors, clearSuccess })(AddComment)
+export default connect(mapStateToProps, { createComment })(AddComment)

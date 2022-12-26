@@ -5,8 +5,6 @@ import { Link } from 'react-router-dom'
 
 const Comment = ({ comment, uRole, isFromPending, rejectComment, approveComment }) => {
 
-
-
     const questionID = comment && comment.question && comment.question._id
     const quizID = comment && comment.quiz && comment.quiz._id
     const questionTEXT = comment && comment.question && comment.question.questionText
@@ -20,6 +18,7 @@ const Comment = ({ comment, uRole, isFromPending, rejectComment, approveComment 
                 <Link to={`/quiz-ranking/${quizID && quizID}`} style={{ color: "khaki" }}>
                     {comment.quiz && comment.quiz.title}
                 </Link>
+                {console.log(uRole)}
 
                 {(isFromPending && uRole === "SuperAdmin") ?
                     <span>
@@ -39,6 +38,8 @@ const Comment = ({ comment, uRole, isFromPending, rejectComment, approveComment 
                             Reject
                         </Button>
                     </span> :
+                    
+                    uRole === "Visitor" ? null:
 
                     <Button className={`${comment.status === 'Pending' ? 'text-warning' :
                         comment.status === 'Rejected' ? 'text-danger' : 'text-success'} bg-white text-uppercase`}>

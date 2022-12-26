@@ -67,6 +67,7 @@ const ReviewQuiz = ({ auth, sC, getOneScore }) => {
                                                 imgLoaded ?
                                                     <div className="question-view">
                                                         <TitleRow
+                                                            thisQuiz={sC.oneScore.quiz}
                                                             thisReview={sC.oneScore.review}
                                                             score={sC.oneScore.marks}
                                                             qnsAll={qnsAll}

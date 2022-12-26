@@ -41,7 +41,7 @@ const QuestionComments = ({ commentsByQuiz, getCommentsByQuiz, qComments, getQue
 
                   {qComments && qComments.map((comment, i) =>
                     <div key={i} className='border border-secondary rounded m-1 p-2'>
-                      <Comment comment={comment} key={i} />
+                      <Comment comment={comment} key={i} uRole={currentUser && currentUser.role} />
                     </div>
                   )}
                 </Card>
@@ -67,13 +67,13 @@ const QuestionComments = ({ commentsByQuiz, getCommentsByQuiz, qComments, getQue
                       <small className='text-uppercase font-weight-bolder py-2 mt-4'>
                         {comment.question.questionText}
                       </small>
-                      <Comment comment={comment} />
+                      <Comment comment={comment} uRole={currentUser && currentUser.role} />
                     </div>
                   )}
 
                   {quizComments && quizComments.map((qzC, index) =>
                     <div key={index} className='border border-secondary rounded m-1 p-2'>
-                      <Comment comment={qzC} />
+                      <Comment comment={qzC} uRole={currentUser && currentUser.role} />
                     </div>
                   )}
                 </Card>}

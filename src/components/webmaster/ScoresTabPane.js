@@ -54,13 +54,6 @@ const ScoresTabPane = ({ currentUser, scores, setScores, getCreatorScores, getTa
                         {uRole !== 'Visitor' ?
                             <>
                                 <Pagination pageNo={pageNo} setPageNo={setPageNo} numberOfPages={numberOfPages} />
-                                <div className="your-past-scores my-3 w-100 text-center">
-                                    <Link to="/reports-admin">
-                                        <Button outline color="info" size="sm">
-                                            Click here for your past scores
-                                        </Button>
-                                    </Link>
-                                </div>
                             </> : null}
                     </Row>}
         </TabPane>

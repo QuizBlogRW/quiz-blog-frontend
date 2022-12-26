@@ -1,43 +1,54 @@
 import React from 'react'
-// import { PDFDownloadLink } from "@react-pdf/renderer"
-// import PdfDocument from "../../webmaster/PdfDocument"
 import { Col, Row, Button } from 'reactstrap'
 
-const TitleRow = ({ thisReview, score, qnsAll, curRevQn, currentQuestion, uRole }) => {
+import PdfDocument from '../../webmaster/pdfs/PdfDocument'
+import ReactDOMServer from 'react-dom/server';
+import html2pdf from 'html2pdf.js'
+
+const TitleRow = ({ thisReview, score, thisQuiz, qnsAll, curRevQn, currentQuestion, uRole }) => {
+
+    const thisQuizTitle = thisQuiz && thisQuiz.title
+
+    const createPDF = () => {
+        // Select the web page element to convert to PDF
+        const element = <PdfDocument review={thisReview} />
+        const elementString = ReactDOMServer.renderToString(element);
+
+        // Set the PDF options
+        const options = {
+            margin: [0.1, 0.1, 0.1, 0.1],
+            filename: `${thisQuizTitle}-shared-by-QuizBlog.pdf`,
+            image: { type: 'jpeg', quality: 0.98, background: '#fff', border: '1px solid #fff' },
+            html2canvas: { scale: 2, useCORS: true, logging: true, letterRendering: true, allowTaint: true, scrollX: 0, scrollY: -window.scrollY },
+            pagebreak: { mode: ['avoid-all', 'css', 'legacy'] },
+            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait', compressPDF: true, precision: 16 }
+        }
+
+        // Generate the PDF file
+        html2pdf().set(options).from(elementString).save()
+    }
+
     return (
         <Row>
             <Col>
                 <div className="mb-sm-5 d-flex justify-content-around">
                     <Button outline color="success" size="sm">
-                        <a href="/webmaster" className="text-dark">Your past scores</a>
+                        <a href="/webmaster" className="text-dark">Dashboard</a>
                     </Button>
 
                     <span>
                         <h6 className="text-warning d-inline">Reviewing ...</h6>
                         <small className="text-info">
                             &nbsp; Score: ~{Math.round(score * 100 / qnsAll.length)}%
-                        </small>
+                        </small> 
                     </span>
 
-                    {/* {(uRole === 'Admin' || uRole === 'SuperAdmin') ?
-                        <PDFDownloadLink
-                            document={<PdfDocument review={thisReview} />}
-                            fileName={`${thisReview.title.split(' ').join('-')}.pdf`}
-                            style={{
-                                textDecoration: "none",
-                                padding: "3px 5px",
-                                color: "white",
-                                backgroundColor: "#157a6e",
-                                border: "1px solid #ffc107",
-                                borderRadius: "4px",
-                                display: "block",
-                                width: "fit-content"
-                            }}
-                        >
-                            {({ blob, url, loading, error }) =>
-                                loading ? 'Preparing document...' : 'Download pdf'
-                            }
-                        </PDFDownloadLink> : null} */}
+                    {(uRole === 'Admin' || uRole === 'SuperAdmin') &&
+                        <Button color="success"
+                            className="mt-3 mt-sm-0 share-btn mx-1 mx-md-0"
+                            onClick={createPDF}>
+                            Download PDF
+                        </Button>}
 
                 </div>
 

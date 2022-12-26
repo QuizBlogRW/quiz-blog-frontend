@@ -99,7 +99,7 @@ const CommentsTabPane = ({ currentUser, questionComments, allQuizComments, getCo
                                             return null
                                         })
                                         .map(cmnt => (
-                                            <Comment comment={cmnt} key={cmnt._id} />
+                                            <Comment comment={cmnt} key={cmnt._id} uRole={uRole} />
                                         ))}
                                 </ListGroup>
                             </Row>
@@ -111,7 +111,7 @@ const CommentsTabPane = ({ currentUser, questionComments, allQuizComments, getCo
                                         {
                                             // PAGINATED QUESTION COMMENTS
                                             pagComments.map((comment, i) => (
-                                                <Comment comment={comment} key={i} />
+                                                <Comment comment={comment} key={i} uRole={uRole} />
                                             ))}
 
                                         {
@@ -123,7 +123,7 @@ const CommentsTabPane = ({ currentUser, questionComments, allQuizComments, getCo
                                                 // ALL QUIZ COMMENTS ARE LOADED
                                                 <>
                                                     {allQuizCmts.length > 0 && allQuizCmts.map((comment, i) => (
-                                                        showAll && <Comment comment={comment} key={i} />
+                                                        showAll && <Comment comment={comment} key={i} uRole={uRole} />
                                                     ))}
 
                                                     <Button color="warning" outline className='mt-2 mx-auto d-block text-success text-uppercase font-weight-bolder'
