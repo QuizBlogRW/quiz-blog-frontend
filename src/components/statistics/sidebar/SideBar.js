@@ -25,6 +25,7 @@ const SideBar = ({ isOpen, toggle }) => (
         <SubMenu title="Users Stats" icon={'group'} items={submenus[1]} />
         <SubMenu title="Quizzes" icon={'keyboard-o'} items={submenus[2]} />
         <SubMenu title="Notes" icon={'book'} items={submenus[3]} />
+        <SubMenu title="Categories" icon={'book'} items={submenus[4]} />
 
         <NavItem>
           <NavLink tag={Link} to={"/statistics/about"}>
@@ -66,38 +67,42 @@ const submenus = [
       target: "new-50-users",
     },
     {
-      title: "20 With Image",
-      target: "20-with-image",
+      title: "With Image",
+      target: "with-image",
     },
     {
-      title: "20 With School",
-      target: "20-with-school",
+      title: "With School",
+      target: "with-school",
     },
     {
-      title: "20 With Level",
-      target: "20-with-level",
+      title: "With Level",
+      target: "with-level",
     },
     {
-      title: "20 With Faculty",
-      target: "20-with-faculty",
+      title: "With Faculty",
+      target: "with-faculty",
     },
     {
-      title: "20 With Interests",
-      target: "20-with-interests",
+      title: "With Interests",
+      target: "with-interests",
     },
     {
-      title: "20 With About",
-      target: "20-with-about",
+      title: "With About",
+      target: "with-about",
+    },
+    {
+      title: "All Users",
+      target: "all-users",
     },
   ],
   [
     {
-      title: "Top 20 Quizzing",
-      target: "top-20-quizzing",
+      title: "Top 100 Quizzing",
+      target: "top-100-quizzing",
     },
     {
-      title: "Top 20 Downloaders",
-      target: "top-20-downloaders",
+      title: "Top 100 Downloaders",
+      target: "top-100-downloaders",
     },
   ],
   [
@@ -118,6 +123,16 @@ const submenus = [
     {
       title: "Notes Stats",
       target: "notes-stats",
+    },
+  ],
+  [
+    {
+      title: "Quiz Categories",
+      target: "quiz-categories-stats",
+    },
+    {
+      title: "Notes Categories",
+      target: "notes-categories-stats",
     },
   ],
 ];

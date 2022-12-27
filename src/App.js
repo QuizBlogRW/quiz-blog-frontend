@@ -71,7 +71,7 @@ import ViewBlogPost from './components/blog/public/ViewBlogPost'
 import ByCategory from './components/blog/public/ByCategory'
 
 // Statistics
-import New50Users from './components/statistics/content/users/New50Users'
+import UsersStats from './components/statistics/content/users/UsersStats'
 
 // components
 const Header = lazy(() => import('./components/Header'))
@@ -213,26 +213,30 @@ const App = ({ auth, categories, courseCategories, bPcats, setCategories, getCou
                         <Route path="/statistics/contacts" element={<ContactChat auth={auth} />} />
 
                         {/* USERS */}
-                        <Route path="/statistics/new-50-users" element={<New50Users />} />
-                        <Route path="/statistics/20-with-image" element={"20-with-image"} />
-                        <Route path="/statistics/20-with-school" element={"20-with-school"} />
-                        <Route path="/statistics/20-with-level" element={"20-with-level"} />
-                        <Route path="/statistics/20-with-faculty" element={"20-with-faculty"} />
-                        <Route path="/statistics/20-with-interests" element={"20-with-interests"} />
-                        <Route path="/statistics/20-with-about" element={"20-with-about"} />
+                        <Route path="/statistics/new-50-users" element={<UsersStats />} />
+                        <Route path="/statistics/with-image" element={<UsersStats />} />
+                        <Route path="/statistics/with-school" element={<UsersStats />} />
+                        <Route path="/statistics/with-level" element={<UsersStats />} />
+                        <Route path="/statistics/with-faculty" element={<UsersStats />} />
+                        <Route path="/statistics/with-interests" element={<UsersStats />} />
+                        <Route path="/statistics/with-about" element={<UsersStats />} />
+                        <Route path="/statistics/all-users" element={<UsersStats />} />
 
                         {/* USERS STATS */}
-                        <Route path="/statistics/top-20-quizzing" element={"top-20-quizzing"} />
-                        <Route path="/statistics/top-20-downloaders" element={"top-20-downloaders"} />
-
+                        <Route path="/statistics/top-100-quizzing" element={<UsersStats />} />
+                        <Route path="/statistics/top-100-downloaders" element={<UsersStats />} />
 
                         {/* QUIZ STATS */}
-                        <Route path="/statistics/top-20-quizzes" element={"top-20-quizzes"} />
-                        <Route path="/statistics/quizzes-stats" element={"quizzes-stats"} />
+                        <Route path="/statistics/top-20-quizzes" element={<UsersStats />} />
+                        <Route path="/statistics/quizzes-stats" element={<UsersStats />} />
 
                         {/* NOTES STATS */}
-                        <Route path="/statistics/top-20-notes" element={"top-20-notes"} />
-                        <Route path="/statistics/notes-stats" element={"notes-stats"} />
+                        <Route path="/statistics/top-20-notes" element={<UsersStats />} />
+                        <Route path="/statistics/notes-stats" element={<UsersStats />} />
+
+                        {/* QUIZ CATEGORIES STATS */}
+                        <Route path="/statistics/quiz-categories-stats" element={<UsersStats />} />
+                        <Route path="/statistics/notes-categories-stats" element={<UsersStats />} />
                     </Route>
 
                     <Route path="/*" element={<Placeholder />} />

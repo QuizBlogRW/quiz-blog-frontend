@@ -39,6 +39,12 @@ const TopRow = ({ currentUser }) => {
               <>
                 <li>
                   <small><strong><u>
+                    <Link to="/statistics" className="text-info p-0">Statistics</Link>
+                  </u></strong></small>
+                </li>
+
+                <li>
+                  <small><strong><u>
                     <Link to="/broadcasts" className="text-info p-0">Broadcasts</Link>
                   </u></strong></small>
                 </li>

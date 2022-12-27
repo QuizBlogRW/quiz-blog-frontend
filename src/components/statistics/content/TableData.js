@@ -3,10 +3,11 @@ import { Table } from 'reactstrap'
 import ExcelButton from './ExcelButton'
 
 const TableData = ({ data, filename }) => {
-    
+
     return (
         <div>
-            <ExcelButton data={data} filename={filename}/>
+            <ExcelButton data={data} filename={filename} />
+
             <Table bordered hover responsive size="sm" striped>
 
                 <thead>
@@ -20,7 +21,7 @@ const TableData = ({ data, filename }) => {
                                 <th key={index} className="text-uppercase">
                                     {title}
                                 </th>
-                            )) 
+                            ))
                         }
                     </tr>
                 </thead>
@@ -35,7 +36,23 @@ const TableData = ({ data, filename }) => {
                                 {
                                     Object.keys(item).map((key, index) => (
                                         <td key={index}>
-                                            {item[key]}
+
+                                            {typeof item[key] === 'object' ?
+
+                                                // IF IT IS NOT NULL AND IT IS AN ARRAY
+                                                Array.isArray(item[key]) ?
+                                                    item[key].map((interest, index) => (
+                                                        interest.favorite + (index === item[key].length - 1 ? '' : '; ')
+                                                    )) :
+                                                    // IF IT IS NOT NULL AND IT IS A PURE OBJECT
+                                                    item[key] !== null ? item[key].title :
+
+                                                        null :
+
+                                                // IF IS NOT AN OBJECT - STRING, NUMBER, BOOLEAN
+                                                item[key]
+
+                                            }
                                         </td>
                                     ))}
                             </tr>

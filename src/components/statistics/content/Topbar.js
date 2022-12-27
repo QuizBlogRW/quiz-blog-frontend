@@ -52,9 +52,7 @@ const Topbar = ({ toggleSidebar, auth }) => {
           </NavItem>
 
           <NavItem>
-            <NavLink>
               <Logout />
-            </NavLink>
           </NavItem>
 
         </Nav>
@@ -63,5 +61,4 @@ const Topbar = ({ toggleSidebar, auth }) => {
     </Navbar>
   )
 }
-
 export default Topbar
