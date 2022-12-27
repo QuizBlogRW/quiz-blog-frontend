@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { Container, Col, Row, Button } from 'reactstrap'
-import { useParams, useHistory } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import CyclonLoading from '../../rLoading/CyclonLoading'
 import SpinningBubbles from '../../rLoading/SpinningBubbles'
 import { connect } from 'react-redux'
@@ -35,9 +35,10 @@ const ReviewQuiz = ({ auth, sC, getOneScore }) => {
         getOneScore(reviewId)
     }, [getOneScore, reviewId])
 
-    const history = useHistory()
+    const navigate = useNavigate();
+    
     const goBack = () => {
-        history.goBack()
+        navigate.goBack();
     }
 
     return (

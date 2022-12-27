@@ -125,44 +125,50 @@ const Header = ({ auth, categories }) => {
         </NavbarText>
     </>)
 
-    return (
-        <header style={{ boxShadow: "0 2px 10px -1px rgba(0,0,0,0.75)" }} className="sticky-top">
 
-            <Navbar color="primary" light expand="lg" className="px-0 px-lg-5 py-md-3">
-                <NavbarBrand href="/" className="text-white" style={{ fontWeight: "900" }}>
-                    <img src={logo} alt="Quiz Blog Logo" />
-                </NavbarBrand>
+    // If the route starts with /statistics, then don't show the footer
+    if (location.pathname.startsWith('/statistics')) {
+        return null
 
-                <Collapse navbar className="mx-2 py-1 m-sm-0">
-                    <Nav className="mr-auto d-none d-lg-flex" navbar></Nav>
+    } else
+        return (
+            <header style={{ boxShadow: "0 2px 10px -1px rgba(0,0,0,0.75)" }} className="sticky-top">
 
-                    {
-                        location.pathname !== '/' ?
+                <Navbar color="primary" light expand="lg" className="px-0 px-lg-5 py-md-3">
+                    <NavbarBrand href="/" className="text-white" style={{ fontWeight: "900" }}>
+                        <img src={logo} alt="Quiz Blog Logo" />
+                    </NavbarBrand>
 
-                            <Button color="success" size="md" className="ml-1 mr-2 px-md-2 mr-md-4 back-home">
-                                <Link to="/" className="text-white back-home-link">Back Home</Link>
-                            </Button> : null}
+                    <Collapse navbar className="mx-2 py-1 m-sm-0">
+                        <Nav className="mr-auto d-none d-lg-flex" navbar></Nav>
 
-                    <CatDropdown categories={categories} />
+                        {
+                            location.pathname !== '/' ?
 
-                    <NavbarText className="mr-2 mr-md-4">
-                        <Link to="/course-notes" className="text-white">Notes</Link>
-                    </NavbarText>
-                    <NavbarText className="mr-2 mr-md-4">
-                        <Link to="/blog" className="text-white">Blog</Link>
-                    </NavbarText>
-                    <NavbarText className="mr-2 mr-md-4">
-                        <Link to="/about" className="text-white">About</Link>
-                    </NavbarText>
-                    <NavbarText className="mr-1 mr-md-4">
-                        <Link to="/contact" className="text-white">Contact</Link>
-                    </NavbarText>
-                    {auth.isAuthenticated ? authLinks : guestLinks}
-                </Collapse>
+                                <Button color="success" size="md" className="ml-1 mr-2 px-md-2 mr-md-4 back-home">
+                                    <Link to="/" className="text-white back-home-link">Back Home</Link>
+                                </Button> : null}
 
-            </Navbar>
-        </header>
-    )
+                        <CatDropdown categories={categories} />
+
+                        <NavbarText className="mr-2 mr-md-4">
+                            <Link to="/course-notes" className="text-white">Notes</Link>
+                        </NavbarText>
+                        <NavbarText className="mr-2 mr-md-4">
+                            <Link to="/blog" className="text-white">Blog</Link>
+                        </NavbarText>
+                        <NavbarText className="mr-2 mr-md-4">
+                            <Link to="/about" className="text-white">About</Link>
+                        </NavbarText>
+                        <NavbarText className="mr-1 mr-md-4">
+                            <Link to="/contact" className="text-white">Contact</Link>
+                        </NavbarText>
+                        {auth.isAuthenticated ? authLinks : guestLinks}
+                    </Collapse>
+
+                </Navbar>
+            </header>
+        )
 }
 
 export default Header

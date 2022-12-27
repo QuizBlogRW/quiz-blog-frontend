@@ -7,7 +7,11 @@ import '@fortawesome/fontawesome-free/css/fontawesome.min.css'
 const Footer = () => {
     let location = useLocation()
 
-    if (!(location.pathname === '/questions')) {
+    // If the route starts with /questions, /webmaster or /statistics, then don't show the footer
+    if (location.pathname.startsWith('/questions') || location.pathname.startsWith('/webmaster') || location.pathname.startsWith('/statistics')) {
+        return null
+
+    } else
 
         return (
             <footer className="mainfooter mt-1" role="contentinfo">
@@ -90,8 +94,6 @@ const Footer = () => {
                 </div>
             </footer>
         )
-    }
-    else return null
 }
 
 export default Footer

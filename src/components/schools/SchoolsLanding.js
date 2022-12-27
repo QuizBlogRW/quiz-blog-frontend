@@ -1,27 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { Row, Col, Form, FormGroup, Label, Input, Button, Alert } from 'reactstrap';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import 'react-tabs/style/react-tabs.css';
-import DeleteIcon from '../../images/remove.svg';
+import React, { useState, useEffect } from 'react'
+import { Row, Col, Form, FormGroup, Label, Input, Button, Alert } from 'reactstrap'
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
+import 'react-tabs/style/react-tabs.css'
+import DeleteIcon from '../../images/remove.svg'
 import { connect } from 'react-redux'
-import { getSchools, deleteSchool } from '../../redux/schools/schools.actions';
-import { fetchSchoolLevels, deleteLevel } from '../../redux/levels/levels.actions';
-import AddSchool from './AddSchool';
-import AddLevel from './AddLevel';
-import AddFaculty from './AddFaculty';
-import EditSchoolModal from './EditSchoolModal';
-import ReactLoading from "react-loading";
+import { getSchools, deleteSchool } from '../../redux/schools/schools.actions'
+import { fetchSchoolLevels, deleteLevel } from '../../redux/levels/levels.actions'
+import AddSchool from './AddSchool'
+import AddLevel from './AddLevel'
+import AddFaculty from './AddFaculty'
+import EditSchoolModal from './EditSchoolModal'
+import ReactLoading from "react-loading"
 import LoginModal from '../auth/LoginModal'
 import Webmaster from '../webmaster/Webmaster'
-import FacultiesCollapse from './FacultiesCollapse';
-import EditLevelModal from './EditLevelModal';
-import SpinningBubbles from '../rLoading/SpinningBubbles';
+import FacultiesCollapse from './FacultiesCollapse'
+import EditLevelModal from './EditLevelModal'
+import SpinningBubbles from '../rLoading/SpinningBubbles'
 
 
 const SchoolsLanding = ({ getSchools, fetchSchoolLevels, schools, schoolLevels, deleteLevel, deleteSchool, auth }) => {
 
     // Lifecycle methods
-    useEffect(() => { getSchools() }, [getSchools]);
+    useEffect(() => { getSchools() }, [getSchools])
 
     const [schoolState, setSchoolState] = useState([])
     useEffect(() => { setSchoolState(schools && schools.allSchools) }, [schools])
@@ -161,6 +161,6 @@ const SchoolsLanding = ({ getSchools, fetchSchoolLevels, schools, schoolLevels, 
 const mapStateToProps = state => ({
     schools: state.schoolsReducer,
     schoolLevels: state.levelsReducer.schoolLevels
-});
+})
 
-export default connect(mapStateToProps, { getSchools, fetchSchoolLevels, deleteLevel, deleteSchool })(SchoolsLanding);
+export default connect(mapStateToProps, { getSchools, fetchSchoolLevels, deleteLevel, deleteSchool })(SchoolsLanding)

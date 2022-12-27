@@ -24,19 +24,19 @@ const RelatedPosts = ({ bPCatID, bposts, getBlogPostsByCategory }) => {
                     Related Posts
                 </Alert>
 
-                {bposts && bposts.blogPostsByCategory.sort(() => 0.5 - Math.random()).slice(0, 7).map(blogPost => (
+                {bposts && bposts.blogPostsByCategory && bposts.blogPostsByCategory.sort(() => 0.5 - Math.random()).slice(0, 7).map(blogPost => (
 
-                    <Media key={blogPost._id} className="mt-0 p-3 border-bottom blogPost-title d-flex flex-column flex-lg-row">
+                    <Media key={blogPost && blogPost._id} className="mt-0 p-3 border-bottom blogPost-title d-flex flex-column flex-lg-row">
 
                         <Media left href="#" className="m-auto d-flex justify-content-center align-items-center relatedLatestImage">
-                            <img src={blogPost.post_image || altImage} alt={blogPost.brand} />
+                            <img src={blogPost && blogPost.post_image || altImage} alt={blogPost && blogPost.brand} />
                         </Media>
 
                         <Media body className="w-100">
                             <Media heading className="p-2 py-lg-0 mb-0 h-100 d-flex flex-column justify-content-between">
 
                                 <h6 className="text-left mt-3 mt-lg-0 mb-2 post-link">
-                                    <a href={`/view-blog-post/${blogPost.slug}`} className="font-weight-light">{blogPost.title}</a>
+                                    <a href={`/view-blog-post/${blogPost && blogPost.slug}`} className="font-weight-light">{blogPost && blogPost.title}</a>
                                 </h6>
 
                                 <div className="text-muted m-0">

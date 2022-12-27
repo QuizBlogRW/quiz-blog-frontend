@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { Prompt } from 'react-router-dom'
 import { Col, Row, Input, Label, FormGroup } from 'reactstrap'
 import SpinningBubbles from '../../rLoading/SpinningBubbles'
 import CountDownChallenge from './CountDownChallenge'
@@ -11,24 +10,10 @@ const QuestionsViewChallenge = ({ qnsLength, chDur, curQnIndex, currentQn, curQn
     const onLoad = useCallback(() => { setImgLoaded(true) }, [])
     useEffect(() => { onLoad() }, [onLoad])
 
-    // Alerting user before leaving
-    useEffect(() => {
-        window.addEventListener('beforeunload', alertUser)
-        return () => {
-            window.removeEventListener('beforeunload', alertUser)
-        }
-    }, [])
-    const alertUser = e => {
-        e.preventDefault()
-        e.returnValue = ''
-    }
-
     return (
 
         imgLoaded ?
             <div className="question-view">
-
-                <Prompt message="ARE YOU SURE YOU WANT TO LEAVE THIS CHALLENGE?" />
 
                 {/* Countdown */}
                 <CountDownChallenge

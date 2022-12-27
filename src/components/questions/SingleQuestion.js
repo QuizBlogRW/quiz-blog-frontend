@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { Row, ListGroup, ListGroupItem, Breadcrumb, BreadcrumbItem } from 'reactstrap'
-import { Link, useParams, useHistory } from 'react-router-dom'
+import { Link, useParams, useNavigate } from 'react-router-dom'
 import ReactLoading from "react-loading"
 import LoginModal from '../auth/LoginModal'
 import Webmaster from '../webmaster/Webmaster'
@@ -22,11 +22,11 @@ const SingleQuestion = ({ auth, quest, getOneQuestion, deleteQuestion }) => {
         getOneQuestion(questionId)
     }, [getOneQuestion, questionId])
 
-    const { push } = useHistory()
-
+    const navigate = useNavigate();
+    
     const deleteQn = () => {
         deleteQuestion(questionId)
-        push('/webmaster')
+        navigate('/webmaster');
     }
 
     const thisQuestion = quest && quest.oneQuestion

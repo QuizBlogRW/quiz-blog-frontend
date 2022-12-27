@@ -1,5 +1,5 @@
 import React, { useEffect, lazy, Suspense, useState } from 'react'
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
+import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom"
 import { Link } from "react-router-dom"
 import { Spinner, Toast, ToastHeader } from 'reactstrap'
 
@@ -70,12 +70,16 @@ import EditBlogPost from './components/blog/blogPosts/EditBlogPost'
 import ViewBlogPost from './components/blog/public/ViewBlogPost'
 import ByCategory from './components/blog/public/ByCategory'
 
+// Statistics
+import New50Users from './components/statistics/content/users/New50Users'
+
 // components
 const Header = lazy(() => import('./components/Header'))
 const Footer = lazy(() => import('./components/footer/Footer'))
 
 // lazy loading posts
 const Webmaster = lazy(() => import('./components/webmaster/Webmaster'))
+const Statistics = lazy(() => import('./components/statistics/Statistics'))
 const Posts = lazy(() => import('./components/posts/Posts'))
 const AllPosts = lazy(() => import('./components/posts/AllPosts'))
 const ViewNotePaper = lazy(() => import('./components/posts/notes/ViewNotePaper'))
@@ -110,19 +114,23 @@ const App = ({ auth, categories, courseCategories, bPcats, setCategories, getCou
     return (
         <Router>
 
-            <Toast isOpen={modal} className={`mw-100 popup-toast`}>
-                <ToastHeader toggle={toggle} className="bg-warning" icon="danger">
-                    <p className='text-dark text-center font-weight-bolder d-block mb-0'>
-                        Your profile is {`${percentage && percentage}`} % up to date!
-                        &nbsp;&nbsp;&nbsp;
-                        <Link to={`/edit-profile/${auth.user && auth.user._id}`}>
-                            <strong className='px-1 text-underline text-danger bg-dark'>Consider updating ...</strong>
-                        </Link>
-                    </p>
-                </ToastHeader>
-            </Toast>
+            <Suspense fallback={<div className="p-3 m-3 d-flex justify-content-center align-items-center">
+                <Spinner style={{ width: '8rem', height: '8rem' }} />
+            </div>}>
 
-            {/* <Toast isOpen={modal} className={`mw-100 popup-toast`}>
+                <Toast isOpen={modal} className={`mw-100 popup-toast`}>
+                    <ToastHeader toggle={toggle} className="bg-warning" icon="danger">
+                        <p className='text-dark text-center font-weight-bolder d-block mb-0'>
+                            Your profile is {`${percentage && percentage}`} % up to date!
+                            &nbsp;&nbsp;&nbsp;
+                            <Link to={`/edit-profile/${auth.user && auth.user._id}`}>
+                                <strong className='px-1 text-underline text-danger bg-dark'>Consider updating ...</strong>
+                            </Link>
+                        </p>
+                    </ToastHeader>
+                </Toast>
+
+                {/* <Toast isOpen={modal} className={`mw-100 popup-toast`}>
                 <ToastHeader toggle={toggle} className={`${successful.id ? 'bg-dark' : 'bg-danger'}`}>
                     {successful.id ?
                         <p className='text-white text-center d-block mb-0'>
@@ -135,75 +143,100 @@ const App = ({ auth, categories, courseCategories, bPcats, setCategories, getCou
                 </ToastHeader>
             </Toast> */}
 
-            <Suspense fallback={<div className="p-3 m-3 d-flex justify-content-center align-items-center">
-                <Spinner style={{ width: '8rem', height: '8rem' }} />
-            </div>}>
                 <Header auth={auth} categories={categories} />
-            </Suspense>
 
-            <Switch>
-                <Route path="/about" component={About} />
-                <Route path="/privacy" component={Privacy} />
-                <Route path="/disclaimer" component={Disclaimer} />
-                <Route exact path="/unsubscribe" render={() => <Unsubscribe auth={auth} />} />
-                <Route exact path="/forgot-password" component={ForgotPassword} />
-                <Route exact path="/reset-password" render={() => <ResetPassword auth={auth} />} />
+                <Routes fallback={
+                    <div className="p-3 m-3 d-flex justify-content-center align-items-center">
+                        <Spinner style={{ width: '8rem', height: '8rem' }} />
+                    </div>
+                }>
+                    <Route path="/about" element={<About />} />
+                    <Route path="/privacy" element={<Privacy />} />
+                    <Route path="/disclaimer" element={<Disclaimer />} />
 
-                <Route exact path="/category/:categoryId" render={() => <SingleCategory auth={auth} categories={categories} />} />
-                <Route exact path="/edit-profile/:userId" render={() => <EditProfile auth={auth} />} />
-                <Route exact path="/view-quiz/:quizSlug" render={() => <GetReady auth={auth} />} />
-                <Route exact path="/attempt-quiz/:quizSlug" render={() => <QuizQuestions auth={auth} categories={categories} />} />
+                    <Route exact path="/unsubscribe" element={<Unsubscribe auth={auth} />} />
+                    <Route exact path="/forgot-password" element={<ForgotPassword />} />
+                    <Route exact path="/reset-password" element={<ResetPassword auth={auth} />} />
 
-                <Route exact path="/take-challenge/:challengeId" render={() => <TakeChallenge auth={auth} categories={categories} />} />
-                <Route exact path="/edit-challenge/:challengeId" render={() => <EditChallengeQuiz auth={auth} />} />
-                <Route exact path="/view-challenge/:challengeId" render={() => <ViewChallenge auth={auth} />} />
-                <Route exact path="/challenges" render={() => <Challenges auth={auth} />} />
-                <Route exact path="/all-challenges" render={() => <AllChallenges />} />
+                    <Route exact path="/category/:categoryId" element={<SingleCategory auth={auth} categories={categories} />} />
+                    <Route exact path="/edit-profile/:userId" element={<EditProfile auth={auth} />} />
+                    <Route exact path="/view-quiz/:quizSlug" element={<GetReady auth={auth} />} />
+                    <Route exact path="/attempt-quiz/:quizSlug" element={<QuizQuestions auth={auth} categories={categories} />} />
 
-                <Route exact path="/view-question/:questionId" render={() => <SingleQuestion auth={auth} />} />
-                <Route exact path="/edit-question/:questionId" render={() => <EditQuestion auth={auth} categories={categories} />} />
+                    <Route exact path="/take-challenge/:challengeId" element={<TakeChallenge auth={auth} categories={categories} />} />
+                    <Route exact path="/edit-challenge/:challengeId" element={<EditChallengeQuiz auth={auth} />} />
+                    <Route exact path="/view-challenge/:challengeId" element={<ViewChallenge auth={auth} />} />
+                    <Route exact path="/challenges" element={<Challenges auth={auth} />} />
+                    <Route exact path="/all-challenges" element={<AllChallenges />} />
 
-                <Route exact path="/review-quiz/:reviewId" render={() => <ReviewQuiz auth={auth} />} />
-                <Route exact path="/quiz-ranking/:quizID" render={() => <QuizRanking auth={auth} />} />
-                <Route exact path="/questions-create/:quizSlug" render={() => <CreateQuestions auth={auth} categories={categories} />} />
-                {/* <Route exact path="/challenge/:quizSlug/:userId/" render={() => <SelectChallengee auth={auth} />} /> */}
+                    <Route exact path="/view-question/:questionId" element={<SingleQuestion auth={auth} />} />
+                    <Route exact path="/edit-question/:questionId" element={<EditQuestion auth={auth} categories={categories} />} />
 
-                <Route exact path="/contact" render={() => <Contact auth={auth} />} />
-                <Route exact path="/contact-chat" render={() => <ContactChat auth={auth} />} />
-                <Route exact path="/faqs" render={() => <FaqCollapse auth={auth} />} />
-                <Route path="/all-categories" render={() => <AllCategories categories={categories} />} />
-                <Route path="/course-notes" render={() => <Index auth={auth} />} />
-                <Route exact path="/view-course/:courseId" render={() => <ViewCourse auth={auth} />} />
-                <Route exact path="/schools" render={() => <SchoolsLanding auth={auth} />} />
-                <Route exact path="/logs" render={() => <UserLogs auth={auth} />} />
-                <Route exact path="/subscribers" render={() => <Subscribers auth={auth} />} />
-                <Route exact path="/broadcasts" render={() => <Broadcasts auth={auth} />} />
+                    <Route exact path="/review-quiz/:reviewId" element={<ReviewQuiz auth={auth} />} />
 
-                <Route exact path="/blog" render={() => <AllBlogPosts bPcats={bPcats}/>} />
-                <Route exact path="/blog/:bPCatID" render={() => <ByCategory bPcats={bPcats} />} />
-                <Route exact path="/create-bpost/:bPCatID" render={() => <AddBlogPost auth={auth} />} />
-                <Route exact path="/edit-bpost/:bPSlug" render={() => <EditBlogPost auth={auth} />} />
-                <Route exact path="/view-blog-post/:bPSlug" render={() => <ViewBlogPost />} />
+                    <Route exact path="/quiz-ranking/:quizID" element={<QuizRanking auth={auth} />} />
+                    <Route exact path="/questions-create/:quizSlug" element={<CreateQuestions auth={auth} categories={categories} />} />
+                    {/* <Route exact path="/challenge/:quizSlug/:userId/" element={<SelectChallengee auth={auth} />} /> */}
 
-                <Route path="/ads.txt">
-                    google.com, pub-8918850949540829, DIRECT, f08c47fec0942fa0
-                </Route>
+                    <Route exact path="/contact" element={<Contact auth={auth} />} />
+                    <Route exact path="/contact-chat" element={<ContactChat auth={auth} />} />
+                    <Route exact path="/faqs" element={<FaqCollapse auth={auth} />} />
+                    <Route path="/all-categories" element={<AllCategories categories={categories} />} />
+                    <Route path="/course-notes" element={<Index auth={auth} />} />
+                    <Route exact path="/view-course/:courseId" element={<ViewCourse auth={auth} />} />
+                    <Route exact path="/schools" element={<SchoolsLanding auth={auth} />} />
+                    <Route exact path="/logs" element={<UserLogs auth={auth} />} />
+                    <Route exact path="/subscribers" element={<Subscribers auth={auth} />} />
+                    <Route exact path="/broadcasts" element={<Broadcasts auth={auth} />} />
 
-                <Suspense fallback={<div className="p-5 m-5 d-flex justify-content-center align-items-center">
-                    <Spinner style={{ width: '10rem', height: '10rem' }} />
-                </div>}>
-                    <Route exact path="/"><Posts categories={categories} auth={auth} /></Route>
-                    <Route exact path="/allposts"><AllPosts /></Route>
-                    <Route exact path="/view-note-paper/:noteSlug" render={() => <ViewNotePaper auth={auth} />} />
-                    <Route exact path="/view-pdf-notes/:noteSlug" render={() => <ViewPDF auth={auth} />} />
-                    <Route exact path="/webmaster"><Webmaster auth={auth} categories={categories} courseCategories={courseCategories} /></Route>
-                </Suspense>
-                <Route path="/*"><Placeholder /></Route>
-            </Switch>
+                    <Route exact path="/blog" element={<AllBlogPosts bPcats={bPcats} />} />
+                    <Route exact path="/blog/:bPCatID" element={<ByCategory bPcats={bPcats} />} />
+                    <Route exact path="/create-bpost/:bPCatID" element={<AddBlogPost auth={auth} />} />
+                    <Route exact path="/edit-bpost/:bPSlug" element={<EditBlogPost auth={auth} />} />
+                    <Route exact path="/view-blog-post/:bPSlug" element={<ViewBlogPost />} />
 
-            <Suspense fallback={<div className="p-3 m-3 d-flex justify-content-center align-items-center">
-                <Spinner style={{ width: '8rem', height: '8rem' }} />
-            </div>}>
+                    <Route path="/ads.txt" element={<div>
+                        google.com, pub-8918850949540829, DIRECT, f08c47fec0942fa0</div>} />
+
+                    <Route exact path="/" element={<Posts categories={categories} auth={auth} />} />
+                    <Route exact path="/allposts" element={<AllPosts />} />
+                    <Route exact path="/view-note-paper/:noteSlug" element={<ViewNotePaper auth={auth} />} />
+                    <Route exact path="/view-pdf-notes/:noteSlug" element={<ViewPDF auth={auth} />} />
+
+                    <Route exact path="/webmaster" element={<Webmaster auth={auth} categories={categories} courseCategories={courseCategories} />} />
+
+                    {/* STATISTICS DASHBOARD */}
+                    <Route path="/statistics" element={<Statistics auth={auth} />}>
+                        <Route path="/statistics/about" element={<About />} />
+                        <Route path="/statistics/blogposts" element={<Placeholder auth={auth} />} />
+                        <Route path="/statistics/faqs" element={<FaqCollapse auth={auth} />} />
+                        <Route path="/statistics/contacts" element={<ContactChat auth={auth} />} />
+
+                        {/* USERS */}
+                        <Route path="/statistics/new-50-users" element={<New50Users />} />
+                        <Route path="/statistics/20-with-image" element={"20-with-image"} />
+                        <Route path="/statistics/20-with-school" element={"20-with-school"} />
+                        <Route path="/statistics/20-with-level" element={"20-with-level"} />
+                        <Route path="/statistics/20-with-faculty" element={"20-with-faculty"} />
+                        <Route path="/statistics/20-with-interests" element={"20-with-interests"} />
+                        <Route path="/statistics/20-with-about" element={"20-with-about"} />
+
+                        {/* USERS STATS */}
+                        <Route path="/statistics/top-20-quizzing" element={"top-20-quizzing"} />
+                        <Route path="/statistics/top-20-downloaders" element={"top-20-downloaders"} />
+
+
+                        {/* QUIZ STATS */}
+                        <Route path="/statistics/top-20-quizzes" element={"top-20-quizzes"} />
+                        <Route path="/statistics/quizzes-stats" element={"quizzes-stats"} />
+
+                        {/* NOTES STATS */}
+                        <Route path="/statistics/top-20-notes" element={"top-20-notes"} />
+                        <Route path="/statistics/notes-stats" element={"notes-stats"} />
+                    </Route>
+
+                    <Route path="/*" element={<Placeholder />} />
+                </Routes>
                 <Footer />
             </Suspense>
         </Router>
@@ -213,8 +246,8 @@ const App = ({ auth, categories, courseCategories, bPcats, setCategories, getCou
 const mapStateToProps = state => ({
     auth: state.authReducer,
     categories: state.categoriesReducer,
-    courseCategories: state.courseCategoriesReducer,     
-    bPcats: state.postCategoriesReducer,     
+    courseCategories: state.courseCategoriesReducer,
+    bPcats: state.postCategoriesReducer,
     errors: state.errorReducer,
     successful: state.successReducer
 })
