@@ -12,7 +12,7 @@ const Topbar = ({ toggleSidebar, auth }) => {
   return (
     <Navbar color="light" light 
     className="navbar shadow-sm p-3 my-2 bg-white rounded" expand="md"
-      style={{ position: "-webkit-sticky", position: "sticky", top: "0", zIndex: "2"}}>
+      style={{ position: "sticky", top: "0", zIndex: "2"}}>
 
       <Button color="info" onClick={toggleSidebar}>
         <i className="fa fa-align-left mr-2"></i>

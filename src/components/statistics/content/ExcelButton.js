@@ -11,7 +11,9 @@ const ExcelButton = ({ data, filename }) => {
             if (obj[key] === "") {
                 data[index][key] = null
             }
+            return null
         })
+        return null
     })
 
     // CONVERT THE OBJECTS TO ARRAYS
@@ -27,18 +29,22 @@ const ExcelButton = ({ data, filename }) => {
     dataArr.unshift(headers)
 
     // IF THE VALUE IN dataArr IS AN OBJECT, AND HAS PROPERTY title, THEN CHANGE THE VALUE TO title
-    dataArr && dataArr.map((arr, index) => {
+    dataArr && dataArr.map((arr) => {
         arr.map((item, index) => {
             if (typeof item === 'object' && item !== null) {
 
-                item.hasOwnProperty('title') ?
-                arr[index] = item.title :
+                if(item.hasOwnProperty('title')) {
+                    arr[index] = item.title
+                }
                 // IF IT IS AN ARRAY
-                Array.isArray(item) ?
-                arr[index] = item.map(interest => interest.favorite).join('; ') :
-                null
+                else if (Array.isArray(item)) {
+                    arr[index] = item.map(interest => interest.favorite).join('; ')
+                }
+                else arr[index] = null
             }
+            return null
         })
+        return null
     })
 
     const handleExport = () => {

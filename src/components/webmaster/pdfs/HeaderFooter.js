@@ -7,7 +7,7 @@ const HeaderFooter = ({ styles, fromFooter }) => {
         <div style={{ backgroundColor: "#157a6e", padding: "5px 10px" }}>
             <div style={styles.reviewHeader}>
 
-                <img src={logo} style={styles.reviewHeaderImage} />
+                <img src={logo} style={styles.reviewHeaderImage} alt="Logo" />
 
                 <ul className="social-network social-circle d-flex align-items-center">
 

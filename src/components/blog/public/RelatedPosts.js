@@ -29,7 +29,7 @@ const RelatedPosts = ({ bPCatID, bposts, getBlogPostsByCategory }) => {
                     <Media key={blogPost && blogPost._id} className="mt-0 p-3 border-bottom blogPost-title d-flex flex-column flex-lg-row">
 
                         <Media left href="#" className="m-auto d-flex justify-content-center align-items-center relatedLatestImage">
-                            <img src={blogPost && blogPost.post_image || altImage} alt={blogPost && blogPost.brand} />
+                            <img src={(blogPost && blogPost.post_image) || altImage} alt={blogPost && blogPost.brand} />
                         </Media>
 
                         <Media body className="w-100">

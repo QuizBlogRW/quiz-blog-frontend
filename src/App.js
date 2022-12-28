@@ -1,5 +1,5 @@
 import React, { useEffect, lazy, Suspense, useState } from 'react'
-import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import { Link } from "react-router-dom"
 import { Spinner, Toast, ToastHeader } from 'reactstrap'
 
@@ -83,7 +83,6 @@ const Statistics = lazy(() => import('./components/statistics/Statistics'))
 const Posts = lazy(() => import('./components/posts/Posts'))
 const AllPosts = lazy(() => import('./components/posts/AllPosts'))
 const ViewNotePaper = lazy(() => import('./components/posts/notes/ViewNotePaper'))
-const ViewPDF = lazy(() => import('./components/posts/notes/ViewPDF'))
 
 const App = ({ auth, categories, courseCategories, bPcats, setCategories, getCourseCategories, getPostCategories }) => {
 
@@ -201,8 +200,6 @@ const App = ({ auth, categories, courseCategories, bPcats, setCategories, getCou
                     <Route exact path="/" element={<Posts categories={categories} auth={auth} />} />
                     <Route exact path="/allposts" element={<AllPosts />} />
                     <Route exact path="/view-note-paper/:noteSlug" element={<ViewNotePaper auth={auth} />} />
-                    <Route exact path="/view-pdf-notes/:noteSlug" element={<ViewPDF auth={auth} />} />
-
                     <Route exact path="/webmaster" element={<Webmaster auth={auth} categories={categories} courseCategories={courseCategories} />} />
 
                     {/* STATISTICS DASHBOARD */}

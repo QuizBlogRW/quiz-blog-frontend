@@ -25,7 +25,7 @@ const ViewBlogPost = ({ bposts, getOneBlogPost }) => {
     const bPCatID = bpToUse && bpToUse.postCategory && bpToUse.postCategory._id
 
     return (
-        <Container className="blog-post-view p-0 p-lg-5 mw-100" style={{ backgroundColor: bpToUse && bpToUse.bgColor || '#f3f3f2' }}>
+        <Container className="blog-post-view p-0 p-lg-5 mw-100" style={{ backgroundColor: (bpToUse && bpToUse.bgColor) || '#f3f3f2' }}>
             <Row className="viewed-details pb-lg-2">
 
                 <Col sm="8" className="mx-0 py-2 px-0 pl-lg-2 pr-lg-4 choosen-blogPost">

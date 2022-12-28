@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React from 'react'
 import { Row, Col } from 'reactstrap'
 import '@fortawesome/fontawesome-free/css/fontawesome.min.css'
 import '../../footer/footer.css'
@@ -54,10 +54,6 @@ const styles = {
 
 const PdfDocument = ({ review }) => {
 
-    const [imgLoaded, setImgLoaded] = useState(false)
-    const onLoad = useCallback(() => { setImgLoaded(true) }, [])
-    useEffect(() => { onLoad() }, [onLoad])
-
     return (
         <Row>
             <Col style={styles.page}>
@@ -82,7 +78,7 @@ const PdfDocument = ({ review }) => {
                                 {question && question.question_image ?
                                     <div style={{ display: 'block' }}>
                                         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '10px' }}>
-                                            <img src={question.question_image} style={styles.reviewImage} onLoad={onLoad} />
+                                            <img src={question.question_image} style={styles.reviewImage} alt="question" />
                                         </div>
                                     </div> : null}
 

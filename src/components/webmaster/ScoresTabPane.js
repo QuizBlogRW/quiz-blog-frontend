@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { Row, TabPane, Button } from 'reactstrap';
+import { Row, TabPane } from 'reactstrap';
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 import { setScores, getCreatorScores, getTakerScores, deleteScore } from '../../redux/scores/scores.actions'
 import Pagination from './Pagination';
 import PageOf from './PageOf';
