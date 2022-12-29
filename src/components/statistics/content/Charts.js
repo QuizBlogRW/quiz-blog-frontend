@@ -1,4 +1,4 @@
-import React, {useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Chart } from "react-google-charts"
 import { connect } from 'react-redux'
 import { getDailyUserRegistration } from '../../../redux/statistics/statistics.actions'
