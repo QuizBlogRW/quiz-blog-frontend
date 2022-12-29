@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, lazy, Suspense } from 'react'
 import { connect } from 'react-redux'
 import { getCourseCategories, deleteCourseCategory } from '../../redux/courseCategories/courseCategories.actions'
 import { getCoursesByCategory } from '../../redux/courses/courses.actions'
@@ -8,9 +8,11 @@ import EditCourseCategoryModal from './EditCourseCategoryModal'
 import AddCourse from './AddCourse'
 import CoursesHolder from './CoursesHolder'
 import CategoriesHome from './CategoriesHome'
-import { Row, Col, Breadcrumb, BreadcrumbItem, Button, Collapse, Navbar, NavbarBrand, Nav, NavItem, NavLink, ListGroup, ListGroupItem } from 'reactstrap'
+import { Row, Col, Breadcrumb, BreadcrumbItem, Button, Collapse, Navbar, NavbarBrand, Nav, NavItem, NavLink, ListGroup, ListGroupItem, Spinner } from 'reactstrap'
 import DeleteIcon from '../../images/remove.svg'
 import SpinningBubbles from '../rLoading/SpinningBubbles'
+
+const InFeedAd = lazy(() => import('../adsenses/InFeedAd'))
 
 
 const Index = ({ auth, getCourseCategories, courseCategories, courses, getCoursesByCategory, deleteCourseCategory }) => {
@@ -168,7 +170,14 @@ const Index = ({ auth, getCourseCategories, courseCategories, courses, getCourse
 
                                     <>
                                         {/* WHEN CATEGORY SELECTED*/}
-                                        <Row className="text-center d-block py-lg-3">
+                                        <Row className="text-center d-block py-lg-3 w-100">
+
+                                            <Suspense fallback={<div className="p-3 m-3 d-flex justify-content-center align-items-center w-100">
+                                                <Spinner style={{ width: '5rem', height: '5rem' }} />{' '}
+                                            </div>}>
+                                                <InFeedAd />
+                                            </Suspense>
+
                                             <h4 className="d-block font-weight-bold" style={{ color: "#157A6E " }}>
                                                 Available Courses
                                             </h4>

@@ -9,13 +9,9 @@ import PageOf from '../../webmaster/PageOf'
 import ContactChatCard from './ContactChatCard'
 import ChatComponent from './ChatComponent'
 import SpinningBubbles from '../../rLoading/SpinningBubbles'
-import io from 'socket.io-client';
 import RoomChatComponent from './RoomChatComponent'
 
-// const socket = io.connect('https://quiz-blog-rw-server.onrender.com/');
-const socket = io.connect('http://localhost:4000');
-
-const ContactChat = ({ auth, contacts, getContacts, getUserContacts, deleteContact }) => {
+const ContactChat = ({ auth, socket, onlineList, contacts, getContacts, getUserContacts, deleteContact }) => {
 
     const currentUser = auth && auth.user
     const userEmail = currentUser && currentUser.email
@@ -24,8 +20,6 @@ const ContactChat = ({ auth, contacts, getContacts, getUserContacts, deleteConta
     const contactsToUse = contacts && ((uRole === 'Admin' || uRole === 'SuperAdmin') || uRole === 'Creator') ? contacts.allContacts : contacts.userContacts
     const [pageNo, setPageNo] = useState(1)
     const [numberOfPages, setNumberOfPages] = useState(0)
-
-    const [onlineList, setOnlineList] = useState([])
 
     // Lifecycle methods
     useEffect(() => {
@@ -38,23 +32,6 @@ const ContactChat = ({ auth, contacts, getContacts, getUserContacts, deleteConta
         }
     }, [getContacts, getUserContacts, pageNo, userEmail, totPages, uRole])
 
-    useEffect(() => {
-
-        if (currentUser && currentUser.email) {
-
-            // Telling the server that a user has joined
-            socket.emit('frontJoinedUser', { user_id: currentUser._id, username: currentUser && currentUser.name, email: currentUser && currentUser.email });
-
-            // Receiving the last joined user
-            socket.on('backJoinedUser', (joinedUser) => {
-                console.log("Joined user: " + JSON.stringify(joinedUser));
-            });
-
-            socket.on('onlineUsersList', onlineUsers => {
-                setOnlineList(onlineUsers)
-            });
-        }
-    }, [currentUser]);
 
     const [isChatOpen, setIsChatOpen] = useState(false);
     const [isRoomChatOpen, setIsRoomChatOpen] = useState(false);
@@ -67,6 +44,7 @@ const ContactChat = ({ auth, contacts, getContacts, getUserContacts, deleteConta
         setChatId(chat_id);
     }
 
+    // When joining the room
     const openChat1on1Room = ({ roomName, sender, receiver, whoToChat, username }) => {
         // Join the room
         if (roomName !== '' && username !== '') {

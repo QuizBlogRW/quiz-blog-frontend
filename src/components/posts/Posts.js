@@ -12,6 +12,7 @@ const RightSide = lazy(() => import('./RightSide'))
 const Popular = lazy(() => import('./Popular'))
 const ResponsiveAd = lazy(() => import('../adsenses/ResponsiveAd'))
 const SquareAd = lazy(() => import('../adsenses/SquareAd'))
+const InFeedAd = lazy(() => import('../adsenses/InFeedAd'))
 const NotesPapers = lazy(() => import('./notes/NotesPapers'))
 const Challenges = lazy(() => import('./challenges/Challenges'))
 const BlogPosts = lazy(() => import('../blog/public/BlogPosts'))
@@ -46,11 +47,13 @@ const Posts = ({ setQuizes, setAllNoLimitQuizes, limitedQuizes, limitedQuizesLoa
             </blockquote>
 
             <Row className="mt-lg-5 mx-0 px-1 px-lg-5">
-                <Suspense fallback={<div className="p-3 m-3 d-flex justify-content-center align-items-center">
-                    <Spinner style={{ width: '8rem', height: '8rem' }} />
-                </div>}>
-                    <CarouselQuiz />
-                </Suspense>
+                <Col sm="12">
+                    <Suspense fallback={<div className="p-3 m-3 d-flex justify-content-center align-items-center">
+                        <Spinner style={{ width: '8rem', height: '8rem' }} />
+                    </div>}>
+                        <CarouselQuiz />
+                    </Suspense>
+                </Col>
             </Row>
 
             <Row className="mt-5 mx-0">
@@ -75,7 +78,7 @@ const Posts = ({ setQuizes, setAllNoLimitQuizes, limitedQuizes, limitedQuizesLoa
 
             <Row className="mt-5 mx-0 py-sm-3 quizzes-list">
 
-                <Col sm="8" className="px-1 px-lg-4 mt-md-2">
+                <Col sm="8" className="px-1 px-lg-4 mt-md-2 w-100">
                     <h3 className="mb-3 text-danger text-center font-weight-bold pt-2">NEWEST QUIZZES</h3>
 
                     {limitedQuizesLoading ?
@@ -103,10 +106,17 @@ const Posts = ({ setQuizes, setAllNoLimitQuizes, limitedQuizes, limitedQuizesLoa
                             {limitedQuizes && limitedQuizes
                                 .map(quiz => (
                                     quiz.questions.length > 5 ?
-                                        <Suspense key={quiz._id} fallback={<div className="p-3 m-3 d-flex justify-content-center align-items-center">
+                                        <Suspense key={quiz._id} fallback={<div className="p-3 m-3 d-flex justify-content-center align-items-center w-100">
                                             <Spinner style={{ width: '8rem', height: '8rem' }} />
                                         </div>}>
                                             <PostItem quiz={quiz} />
+
+                                            {/* ON HALF THE NUMBER OF QUIZZES, DIPLAY THE InFeedAd */}
+                                            {limitedQuizes.indexOf(quiz) === Math.floor(limitedQuizes.length / 2) ?
+                                            
+                                            <div className='w-100'>
+                                                    <InFeedAd />
+                                            </div> : null}
                                         </Suspense> : null
                                 ))}
 
@@ -125,7 +135,13 @@ const Posts = ({ setQuizes, setAllNoLimitQuizes, limitedQuizes, limitedQuizesLoa
                     <Popular />
 
                     {/* Google square ad */}
-                    <SquareAd />
+                    <Row className='w-100'>
+                        <Col sm="12" className='w-100'>
+                            <div className='w-100'>
+                                <SquareAd />
+                            </div>
+                        </Col>
+                    </Row>
                 </Col>
 
                 <RightSide categories={categories} />
@@ -149,7 +165,14 @@ const Posts = ({ setQuizes, setAllNoLimitQuizes, limitedQuizes, limitedQuizesLoa
                 <Challenges />
             </Suspense>
 
-            <ResponsiveAd />
+            <Row className='w-100'>
+                <Col sm="12" className='w-100'>
+                    <div className='w-100'>
+                        <ResponsiveAd />
+                    </div>
+                </Col>
+            </Row>
+
         </Container>
     )
 }

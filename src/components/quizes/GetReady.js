@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, lazy, Suspense } from 'react'
 import { Container, Col, Row, Card, Button, CardTitle, CardText, Spinner } from 'reactstrap';
 import { Link, useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { getOneQuiz } from '../../redux/quizes/quizes.actions'
 import EmbeddedVideos from './EmbeddedVideos'
 // import ChallengeeModal from './ChallengeeModal'
+
+const ResponsiveHorizontal = lazy(() => import('../adsenses/ResponsiveHorizontal'))
 
 const GetReady = ({ auth, qZ, getOneQuiz }) => {
 
@@ -70,9 +72,18 @@ const GetReady = ({ auth, qZ, getOneQuiz }) => {
                                     </small>
                                 </Card>
 
+                                <Suspense fallback={<div className="p-1 m-1 d-flex justify-content-center align-items-center w-100">
+                                    <Spinner color="primary" />
+                                </div>}>
+                                    <div className='w-100'>
+                                        {/* Google responsive 1 ad */}
+                                        <ResponsiveHorizontal />
+                                    </div>
+                                </Suspense>
+
                             </Col>
                         </Row>
-                        <EmbeddedVideos quiz={qZ} currentUser={currentUser}/>
+                        <EmbeddedVideos quiz={qZ} currentUser={currentUser} />
                     </div>
 
                 </Container> :

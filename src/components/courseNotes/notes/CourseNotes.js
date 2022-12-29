@@ -47,24 +47,25 @@ const CourseNotes = ({ auth, chapter, getNotes, deleteNotes, removeQzNt, saveDow
 
                             note.chapter === chapter._id ?
 
-                                <Col key={note._id} sm="12" className="mb-3 resouces-card c-notes">
+                                <Col key={note._id} sm="12" className="mb-3 resouces-card c-notes w-100">
 
                                     <Card className="d-flex flex-row p-1">
-                                        <CardImg top width="100px" src={img} alt="Card image cap" className="pl-1" />
-                                        <CardBody>
+                                        <CardImg top width="12%" src={img} alt="Card image cap" className="pl-1" />
+                                        <CardBody style={{ width: "77%" }}>
 
-                                            <CardTitle tag="h6" className="text-info font-weight-bold mb-1">
+                                            <CardTitle tag="h6" className="text-info font-weight-bold mb-1"
+                                                style={{ fontSize: ".7rem" }}>
                                                 {note.title}
                                             </CardTitle>
 
-                                            <CardSubtitle tag="small" className="mb-2 text-muted font-weight-bolder">
+                                            <CardSubtitle tag="small" className="mb-2 text-muted font-weight-bolder" style={{ fontSize: ".6rem" }}>
                                                 {note.courseCategory.title}
                                             </CardSubtitle>
 
                                             <CardText className="mb-1">
                                                 <small>{note.description}</small>
                                                 <br />
-                                                <i className="font-weight-bolder text-info" style={{ fontSize: ".6rem" }}>
+                                                <i className="font-weight-bolder text-info" style={{ fontSize: ".5rem" }}>
                                                     {note.notes_file.split('/').pop().replace(/%20|%5B|%5D/g, ' ')}
                                                 </i>
                                             </CardText>
@@ -94,9 +95,9 @@ const CourseNotes = ({ auth, chapter, getNotes, deleteNotes, removeQzNt, saveDow
 
                                             <div className="action-btns">
 
-                                                <Button size="sm" color="success" onClick={() => onDownload(note)}>
-                                                    <a href={note.notes_file} className="text-white">Download</a></Button>
-
+                                                <Button size="sm" color="success">
+                                                    <a href={note.notes_file} className="text-white" onClick={() => onDownload(note)} target="_blank" rel="noreferrer">Download</a>
+                                                </Button>
 
                                                 {auth.user.role !== 'Visitor' ?
                                                     <><Button size="sm" color="link" className="mx-2">

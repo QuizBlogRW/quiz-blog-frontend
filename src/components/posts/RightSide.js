@@ -55,7 +55,7 @@ const RightSide = ({ auth, subscribeToNewsLetter, clearErrors, error, categories
     }
 
     return (
-        <Col sm="4" className='d-flex flex-column justify-content-around'>
+        <Col sm="4" className='d-flex flex-column justify-content-around w-100'>
             {/* <AdSense.Google
                 client='ca-pub-8918850949540829'
                 slot='5114335506'
@@ -64,6 +64,14 @@ const RightSide = ({ auth, subscribeToNewsLetter, clearErrors, error, categories
                 format="fluid"
             /> */}
             {/* <GoogleAds slot="5114335506" /> */}
+            {/* Google square ad */}
+            <Row className='w-100'>
+                <Col sm="12" className='w-100'>
+                    <div className='w-100'>
+                        <SquareAd />
+                    </div>
+                </Col>
+            </Row>
             <Row className="mb-4 my-1 d-none d-lg-flex side-category">
                 <Suspense
                     fallback=
@@ -74,11 +82,14 @@ const RightSide = ({ auth, subscribeToNewsLetter, clearErrors, error, categories
                     }>
                     <ViewCategory categories={categories} />
                 </Suspense>
-
-                {/* Google square ad */}
-                <SquareAd />
             </Row>
-            <ResponsiveAd />
+            <Row className='w-100'>
+                <Col sm="12" className='w-100'>
+                    <div className='w-100'>
+                        <ResponsiveAd />
+                    </div>
+                </Col>
+            </Row>
             {/* <GoogleAds slot="9642045284" /> */}
 
             <Row className="mb-5">
@@ -110,7 +121,13 @@ const RightSide = ({ auth, subscribeToNewsLetter, clearErrors, error, categories
             </Row>
 
             {/* Google square ad */}
-            <SquareAd />
+            <Row className='w-100'>
+                <Col sm="12" className='w-100'>
+                    <div className='w-100'>
+                        <SquareAd />
+                    </div>
+                </Col>
+            </Row>
 
         </Col>
     )

@@ -36,7 +36,7 @@ const ReviewQuiz = ({ auth, sC, getOneScore }) => {
     }, [getOneScore, reviewId])
 
     const navigate = useNavigate();
-    
+
     const goBack = () => {
         navigate.goBack();
     }
@@ -49,7 +49,13 @@ const ReviewQuiz = ({ auth, sC, getOneScore }) => {
 
                 !sC.isLoading ?
                     <>
-                        <Row><Col sm="6"><ResponsiveAd /></Col></Row>
+                        <Row className='w-100'>
+                            <Col sm="6" className='w-100'>
+                                <div className='w-100'>
+                                    <ResponsiveAd />
+                                </div>
+                            </Col>
+                        </Row>
                         {
                             sC.oneScore ?
 
@@ -114,7 +120,17 @@ const ReviewQuiz = ({ auth, sC, getOneScore }) => {
                                     <Button color="info" style={{ width: "120px" }} className="mx-auto mt-4"><a href="/webmaster" className="text-white">Back</a></Button>
                                 </Row>}
 
-                        <Row><Col sm="6"><SquareAd /></Col></Row></> :
+                        <Row>
+                            <Col sm="6">
+                                <Row className='w-100'>
+                                    <Col sm="12" className='w-100'>
+                                        <div className='w-100'>
+                                            <SquareAd />
+                                        </div>
+                                    </Col>
+                                </Row>
+                            </Col>
+                        </Row></> :
 
                     <CyclonLoading /> :
 

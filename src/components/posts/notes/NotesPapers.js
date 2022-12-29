@@ -8,6 +8,10 @@ import { getLandingDisplayNotes, getLandingDisplayNotesNoLimit } from '../../../
 
 const ResponsiveAd = lazy(() => import('../../adsenses/ResponsiveAd'))
 const SquareAd = lazy(() => import('../../adsenses/SquareAd'))
+const SideResizable = lazy(() => import('../../adsenses/SideResizable'))
+const ResponsiveHorizontal = lazy(() => import('../../adsenses/ResponsiveHorizontal'))
+const GridMultiplex = lazy(() => import('../../adsenses/GridMultiplex'))
+const InFeedAd = lazy(() => import('../../adsenses/InFeedAd'))
 const NotesPapersItem = lazy(() => import('./NotesPapersItem'))
 
 const NotesPapers = ({ getLandingDisplayNotes, getLandingDisplayNotesNoLimit, lDLimitedNotes, lDLimitedNotesLoading }) => {
@@ -24,16 +28,39 @@ const NotesPapers = ({ getLandingDisplayNotes, getLandingDisplayNotesNoLimit, lD
     return (
 
         <>
-            <Row sm="12" className="px-1 px-lg-4 my-1">
+            <Row className="px-1 px-lg-4 my-1 w-100">
                 {/* Google responsive 1 ad */}
-                <ResponsiveAd />
+                    <Col sm="12" className='w-100'>
+                        <div className='w-100'>
+                            <ResponsiveAd />
+                        </div>
+                    </Col>
             </Row>
 
             <Row className="m-1 m-sm-3 p-1 px-sm-5 notes-paper">
 
-                {/* <Col sm="8" className="px-1 px-lg-4 mt-md-2"> */}
-                <Col sm="12" className="px-0 px-sm-5">
+                <Col sm="12" className="px-1 y-1 w-100">
+                    <Suspense fallback={<div className="p-1 m-1 d-flex justify-content-center align-items-center w-100">
+                        <Spinner color="primary" />
+                    </div>}>
+                        <div className='w-100'>
+                            <ResponsiveHorizontal />
+                        </div>
+                    </Suspense>
+
                     <h3 className="mt-0 mt-lg-3 pt-4 py-lg-3 text-danger text-center font-weight-bold">NEWEST NOTES & PAST PAPERS</h3>
+                </Col>
+
+                <Col sm="4" className='p-1 p-lg-2 d-flex flex-column justify-content-around w-100'>
+                    <Suspense fallback={<div className="p-1 m-1 d-flex justify-content-center align-items-center w-100">
+                        <Spinner color="primary" />
+                    </div>}>
+                        <div className='w-100'>
+                            <SideResizable />
+                        </div>
+                    </Suspense>
+                </Col>
+                <Col sm="8" className="px-0 px-sm-5 w-100">
 
                     {lDLimitedNotesLoading ?
                         <div className="p-5 m-5 d-flex justify-content-center align-items-center">
@@ -65,6 +92,13 @@ const NotesPapers = ({ getLandingDisplayNotes, getLandingDisplayNotesNoLimit, lD
                                         <Spinner style={{ width: '8rem', height: '8rem' }} />
                                     </div>}>
                                         <NotesPapersItem note={note} />
+
+                                        {/* Google in-feed ad when half the number of notes*/}
+                                        {lDLimitedNotes.length > 0 && lDLimitedNotes.indexOf(note) === Math.floor(lDLimitedNotes.length / 2) ?
+                                            <Col sm="12" className="w-100">
+                                                <InFeedAd />
+                                            </Col> : null}
+
                                     </Suspense>
                                 ))}
 
@@ -80,13 +114,25 @@ const NotesPapers = ({ getLandingDisplayNotes, getLandingDisplayNotesNoLimit, lD
                                     </Link>
                                 </div> :
                                 null}
+
+                            <Suspense fallback={<div className="p-1 m-1 d-flex justify-content-center align-items-center">
+                                <Spinner color="primary" />
+                            </div>}>
+                                <GridMultiplex />
+                            </Suspense>
                         </>
                     }
                 </Col>
             </Row>
-            <Row className="my-1">
+            <Row className="my-1 w-100">
                 {/* Google square ad */}
-                <SquareAd />
+                <Row className='w-100'>
+                    <Col sm="12" className='w-100'>
+                        <div className='w-100'>
+                            <SquareAd />
+                        </div>
+                    </Col>
+                </Row>
             </Row>
         </>
     )

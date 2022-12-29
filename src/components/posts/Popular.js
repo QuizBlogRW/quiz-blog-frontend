@@ -1,5 +1,5 @@
 import React, { useEffect, lazy } from 'react'
-import { ListGroup, ListGroupItem, Badge, Card, CardImg, CardBody, CardText } from 'reactstrap'
+import { Col, Row, ListGroup, ListGroupItem, Badge, Card, CardImg, CardBody, CardText } from 'reactstrap'
 import { connect } from 'react-redux'
 import uploadimage from '../../images/avatar.svg'
 import { getPopularToday, getUserOfMonth } from '../../redux/scores/scores.actions'
@@ -20,9 +20,13 @@ const Popular = ({ getPopularToday, popularQuizes, getUserOfMonth }) => {
 
         <>
             {/* Google square ad */}
-            <span className="d-block d-lg-none">
-                <SquareAd />
-            </span>
+            <Row className="d-block d-lg-none">
+                <Col sm="12 w-100">
+                    <div className='w-100'>
+                        <SquareAd />
+                    </div>
+                </Col>
+            </Row>
 
             <div className="popular my-2 mt-3 mt-lg-5 py-3 d-flex flex-column flex-lg-row justify-content-between">
 

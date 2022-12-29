@@ -27,7 +27,7 @@ const AllBlogPosts = ({ bPcats, bposts, getBlogPosts }) => {
         <Col sm="1" className="mt-md-2">
         </Col>
 
-        <Col sm="3" className="mt-md-2">
+        <Col sm="3" className="mt-md-2 w-100">
 
           {bPcats.isLoading ?
             <SpinningBubbles title='...' /> :
@@ -51,7 +51,9 @@ const AllBlogPosts = ({ bPcats, bposts, getBlogPosts }) => {
 
             </div>}
             
-          <ResponsiveAd />
+          <div className='w-100'>
+            <ResponsiveAd />
+          </div>
         </Col>
 
         <Col sm="6" className="mt-md-2">
@@ -74,7 +76,7 @@ const AllBlogPosts = ({ bPcats, bposts, getBlogPosts }) => {
           </Suspense>
         </Col>
 
-        <Col sm="2" className="mt-md-2">
+        <Col sm="2" className="mt-md-2 w-100">
           <SquareAd />
         </Col>
       </Row>

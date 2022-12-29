@@ -3,6 +3,10 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import { Link } from "react-router-dom"
 import { Spinner, Toast, ToastHeader } from 'reactstrap'
 
+// Socket Settings
+import io from 'socket.io-client';
+import { apiURL } from './redux/config'
+
 // REDUX
 import { connect } from 'react-redux'
 import store from './redux/store'
@@ -84,6 +88,8 @@ const Posts = lazy(() => import('./components/posts/Posts'))
 const AllPosts = lazy(() => import('./components/posts/AllPosts'))
 const ViewNotePaper = lazy(() => import('./components/posts/notes/ViewNotePaper'))
 
+const socket = io.connect(apiURL);
+
 const App = ({ auth, categories, courseCategories, bPcats, setCategories, getCourseCategories, getPostCategories }) => {
 
     useEffect(() => {
@@ -93,6 +99,29 @@ const App = ({ auth, categories, courseCategories, bPcats, setCategories, getCou
         getPostCategories()
     }, [setCategories, getCourseCategories, getPostCategories])
 
+    const currentUser = auth && auth.user
+    
+    // Socket join on user load
+    const [onlineList, setOnlineList] = useState([])
+
+    useEffect(() => {
+        if (currentUser && currentUser.email) {
+
+            // Telling the server that a user has joined
+            socket.emit('frontJoinedUser', { user_id: currentUser._id, username: currentUser && currentUser.name, email: currentUser && currentUser.email, role: currentUser && currentUser.role });
+
+            // Receiving the last joined user
+            socket.on('backJoinedUser', (joinedUser) => {
+                console.log("Joined user: " + JSON.stringify(joinedUser));
+            });
+
+            socket.on('onlineUsersList', onlineUsers => {
+                setOnlineList(onlineUsers)
+            });
+        }
+    }, [currentUser]);
+
+    // Profile non empty details
     const NonEmptyFields = auth.isAuthenticated && Object
         .keys(auth.user)
         .filter(x => auth.user[x].length !== 0 || auth.user[x] !== '')
@@ -178,7 +207,7 @@ const App = ({ auth, categories, courseCategories, bPcats, setCategories, getCou
                     {/* <Route exact path="/challenge/:quizSlug/:userId/" element={<SelectChallengee auth={auth} />} /> */}
 
                     <Route exact path="/contact" element={<Contact auth={auth} />} />
-                    <Route exact path="/contact-chat" element={<ContactChat auth={auth} />} />
+                    <Route exact path="/contact-chat" element={<ContactChat auth={auth} socket={socket} onlineList={onlineList} />} />
                     <Route exact path="/faqs" element={<FaqCollapse auth={auth} />} />
                     <Route path="/all-categories" element={<AllCategories categories={categories} />} />
                     <Route path="/course-notes" element={<Index auth={auth} />} />
@@ -200,10 +229,10 @@ const App = ({ auth, categories, courseCategories, bPcats, setCategories, getCou
                     <Route exact path="/" element={<Posts categories={categories} auth={auth} />} />
                     <Route exact path="/allposts" element={<AllPosts />} />
                     <Route exact path="/view-note-paper/:noteSlug" element={<ViewNotePaper auth={auth} />} />
-                    <Route exact path="/webmaster" element={<Webmaster auth={auth} categories={categories} courseCategories={courseCategories} />} />
+                    <Route exact path="/webmaster" element={<Webmaster auth={auth} socket={socket} onlineList={onlineList} categories={categories} courseCategories={courseCategories} />} />
 
                     {/* STATISTICS DASHBOARD */}
-                    <Route path="/statistics" element={<Statistics auth={auth} />}>
+                    <Route exact path="/statistics" element={<Statistics auth={auth} />}>
                         <Route path="/statistics/about" element={<About />} />
                         <Route path="/statistics/blogposts" element={<Placeholder auth={auth} />} />
                         <Route path="/statistics/faqs" element={<FaqCollapse auth={auth} />} />

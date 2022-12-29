@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
-class SquareAd extends Component {
+
+class GridMultiplex extends Component {
+
     googleInit = null
 
     componentDidMount() {
@@ -18,13 +20,11 @@ class SquareAd extends Component {
         return (
             <ins
                 className="adsbygoogle"
-                style={{ display: "block", maxWidth: "100%", margin: "0 auto", textAlign: "center", overflowX: "hidden", overflowY: "hidden", overflow: "hidden", overflowWrap: "normal", whiteSpace: "nowrap" }}
+                style={{ display: "block", maxWidth: "100%", margin: "0 auto", textAlign: "center",  overflowX: "hidden", overflowY: "hidden", overflow: "hidden", overflowWrap: "normal", whiteSpace: "nowrap" }}
+                data-ad-format="autorelaxed"
                 data-ad-client="ca-pub-8918850949540829"
-                data-ad-slot="4338324359"
-                data-ad-format="auto"
-                data-full-width-responsive="true"></ins>
-        )
+                data-ad-slot="9064066298"></ins>)
     }
 }
 
-export default SquareAd
+export default GridMultiplex

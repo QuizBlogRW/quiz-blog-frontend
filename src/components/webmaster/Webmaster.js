@@ -14,7 +14,7 @@ import SpinningBubbles from '../rLoading/SpinningBubbles'
 import CommentsTabPane from '../quizes/review/questionComments/CommentsTabPane'
 import TopRow from './TopRow.js'
 
-const Webmaster = ({ auth, categories, courseCategories }) => {
+const Webmaster = ({ auth, socket, onlineList, categories, courseCategories }) => {
 
     const currentUser = auth && auth.user
 
@@ -37,7 +37,7 @@ const Webmaster = ({ auth, categories, courseCategories }) => {
     return (
         auth.isAuthenticated ?
             <>
-                <TopRow currentUser={currentUser} />
+                <TopRow currentUser={currentUser} socket={socket} onlineList={onlineList} />
                 <Row className="m-lg-5">
                     <Col sm="12" className="px-0 mb-4 mb-sm-0 d-flex justify-content-around">
 

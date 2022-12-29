@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Container, Row, Button, Form, Input, Alert } from 'reactstrap';
+import { Container, Row, Col, Button, Form, Input, Alert } from 'reactstrap';
 import ResponsiveAd from '../adsenses/ResponsiveAd';
 import SquareAd from '../adsenses/SquareAd';
 
@@ -55,7 +55,11 @@ const ForgotPassword = ({ error, sendResetLink }) => {
 
                         <small>Provide your email to recover your account</small>
                         {/* Google square ad */}
-                        <SquareAd />
+                        <Row className='w-100'>
+                            <Col sm="12" className='w-100'>
+                                <SquareAd />
+                            </Col>
+                        </Row>
 
                         <Form className="my-4" onSubmit={onSubmitHandler}>
 
@@ -79,7 +83,13 @@ const ForgotPassword = ({ error, sendResetLink }) => {
 
                         </Form>
                         {/* Google responsive 1 ad */}
-                        <ResponsiveAd />
+                        <Row className='w-100'>
+                            <Col sm="12" className='w-100'>
+                                <div className='w-100'>
+                                    <ResponsiveAd />
+                                </div>
+                            </Col>
+                        </Row>
                     </>
 
                 }

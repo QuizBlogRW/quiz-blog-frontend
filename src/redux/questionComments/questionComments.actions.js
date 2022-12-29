@@ -193,8 +193,8 @@ export const approveComment = approvedComment => async (dispatch, getState) => {
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'APPROVE_COMMENT_FAIL'));
-    dispatch({ type: APPROVE_COMMENT_FAIL });
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'APPROVE_COMMENT_FAIL'))
+    dispatch({ type: APPROVE_COMMENT_FAIL })
   }
 }
 
@@ -218,8 +218,8 @@ export const rejectComment = rejectedComment => async (dispatch, getState) => {
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'REJECT_COMMENT_FAIL'));
-    dispatch({ type: REJECT_COMMENT_FAIL });
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'REJECT_COMMENT_FAIL'))
+    dispatch({ type: REJECT_COMMENT_FAIL })
   }
 }
 
@@ -243,7 +243,7 @@ export const deleteComment = id => async (dispatch, getState) => {
           ))
     }
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'DELETE_COMMENT_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'DELETE_COMMENT_FAIL'))
     dispatch({ type: DELETE_COMMENT_FAIL })
   }
 }

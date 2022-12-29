@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Row, Jumbotron, Button } from 'reactstrap'
+import React, { useEffect, useState, lazy, Suspense } from 'react'
+import { Row, Col, Jumbotron, Button, Spinner } from 'reactstrap'
 import { Collapse } from "react-collapse"
 import { connect } from 'react-redux'
 import classNames from "classnames"
@@ -13,6 +13,9 @@ import EditFaq from './EditFaq'
 import DeleteFaq from './DeleteFaq'
 import AddVideo from '../quizes/AddVideo'
 import EmbeddedVideos from '../quizes/EmbeddedVideos'
+
+const GridMultiplex = lazy(() => import('../adsenses/GridMultiplex'))
+const InFeedAd = lazy(() => import('../adsenses/InFeedAd'))
 
 const FaqCollapse = ({ auth, faqs, getFaqs }) => {
 
@@ -54,7 +57,7 @@ const FaqCollapse = ({ auth, faqs, getFaqs }) => {
         faqs.isLoading ?
             <SpinningBubbles title='faqs' /> :
 
-            <div className='py-0 px-3 py-lg-5'>
+            <div className='py-0 px-3 py-lg-5 w-100'>
                 <Jumbotron className="p-2 my-3 my-sm-0 text-center border border-info">
                     <h1 className="display-5 font-weight-bold text-success">
                         Frequently Asked Questions
@@ -69,10 +72,17 @@ const FaqCollapse = ({ auth, faqs, getFaqs }) => {
                     <hr className="my-2" style={{ height: "2px", borderWidth: 0, color: "#157A6E", backgroundColor: "#157A6E" }} />
                 </Jumbotron>
 
-                {(currentUser && currentUser.role) === 'Admin' || currentUser.role === 'SuperAdmin' ?
+                {(currentUser && currentUser.role) === 'Admin' || (currentUser && currentUser.role) === 'SuperAdmin' ?
                     <Row className="m-lg-4 px-lg-5 d-flex justify-content-around align-items-center text-primary">
                         <CreateFaq currentUser={currentUser} />
-                    </Row> : null}
+                    </Row> :
+
+                    <Suspense fallback={<div className="p-3 m-3 d-flex justify-content-center align-items-center w-100">
+                        <Spinner style={{ width: '5rem', height: '5rem' }} />{' '}
+                    </div>}>
+                        <InFeedAd />
+                    </Suspense>
+                }
 
                 <Row className="m-lg-4 px-lg-5 d-flex justify-content-around align-items-center text-primary">
 
@@ -134,6 +144,14 @@ const FaqCollapse = ({ auth, faqs, getFaqs }) => {
                         })
                         }
                     </ul>
+
+                    <Col sm="12">
+                        <Suspense fallback={<div className="p-3 m-3 d-flex justify-content-center align-items-center">
+                            <Spinner style={{ width: '5rem', height: '5rem' }} />{' '}
+                        </div>}>
+                            <GridMultiplex />
+                        </Suspense>
+                    </Col>
                 </Row>
             </div>
 

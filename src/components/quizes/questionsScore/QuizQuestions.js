@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { Container } from 'reactstrap'
+import React, { useState, useEffect, lazy, Suspense } from 'react'
+import { Container, Spinner } from 'reactstrap'
 import { useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { getOneQuiz } from '../../../redux/quizes/quizes.actions'
@@ -11,6 +11,9 @@ import LoadingQuestions from '../../rLoading/LoadingQuestions'
 import NoQuestions from './NoQuestions'
 import Unavailable from './Unavailable'
 import RelatedNotes from './RelatedNotes'
+
+const ResponsiveAd = lazy(() => import('../../adsenses/ResponsiveAd'))
+const GridMultiplex = lazy(() => import('../../adsenses/GridMultiplex'))
 
 const QuizQuestions = ({ qZ, getOneQuiz, auth, categories }) => {
 
@@ -155,8 +158,23 @@ const QuizQuestions = ({ qZ, getOneQuiz, auth, categories }) => {
                                     thisQId={thisQuiz && thisQuiz._id}
                                     categories={categories.allcategories}
                                     categoryId={thisQuiz.category && thisQuiz.category._id} />
+
+                                <Suspense fallback={<div className="p-1 m-1 d-flex justify-content-center align-items-center w-100">
+                                    <Spinner color="primary" />
+                                </div>}>
+                                    <div className='w-100'>
+                                        <ResponsiveAd />
+                                    </div>
+                                </Suspense>
+
                                 <RelatedNotes
                                     ccatgID={thisQuiz.category && thisQuiz.category.courseCategory} />
+
+                                <Suspense fallback={<div className="p-1 m-1 d-flex justify-content-center align-items-center">
+                                    <Spinner color="primary" />
+                                </div>}>
+                                    <GridMultiplex />
+                                </Suspense>
                             </> : null}
                     </div> :
 

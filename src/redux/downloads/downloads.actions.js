@@ -2,7 +2,7 @@ import axios from 'axios'
 import { returnErrors } from '../error/error.actions'
 import { returnSuccess } from '../success/success.actions'
 import { SAVE_DOWNLOAD, SAVE_DOWNLOAD_FAIL, GET_DOWNLOADS, GET_DOWNLOADS_FAIL, DELETE_DOWNLOAD, DELETE_DOWNLOAD_FAIL, DOWNLOADS_LOADING, GET_CREATOR_DOWNLOADS, GET_CREATOR_DOWNLOADS_FAIL, GET_USER_DOWNLOADS, GET_USER_DOWNLOADS_FAIL } from "./downloads.types"
-import { tokenConfig, uploadConfig } from '../auth/auth.actions'
+import { tokenConfig } from '../auth/auth.actions'
 import { apiURL } from '../config'
 
 // Axios instance
@@ -43,7 +43,7 @@ export const getCreatorDownloads = (uId) => async (dispatch, getState) => {
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err.response && err.response.data, err.response.status, 'GET_CREATOR_DOWNLOADS_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_CREATOR_DOWNLOADS_FAIL'))
     dispatch({ type: GET_CREATOR_DOWNLOADS_FAIL })
   }
 }
@@ -61,30 +61,33 @@ export const getUserDownloads = (userId) => async (dispatch, getState) => {
           payload: res.data
         }))
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'GET_USER_DOWNLOADS_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_USER_DOWNLOADS_FAIL'))
     dispatch({ type: GET_USER_DOWNLOADS_FAIL })
   }
 }
+
 
 // Save download downloads
 export const saveDownload = (newDownload) => async (dispatch, getState) => {
 
   try {
     await axiosInstance
-      .post('/api/downloads', newDownload, uploadConfig(getState))
+      .post('/api/downloads', newDownload, tokenConfig(getState))
       .then(res =>
         dispatch({
           type: SAVE_DOWNLOAD,
           payload: res.data
         }))
       .then(res =>
-        dispatch(returnSuccess('Saved download successfully!', 200, 'SAVE_DOWNLOAD')))
+        dispatch(
+          returnSuccess('Saved download!', 200, 'SAVE_DOWNLOAD')))
 
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'SAVE_DOWNLOAD_FAIL'))
+    dispatch(returnErrors(err && err.response.data, err && err.response.status, 'SAVE_DOWNLOAD_FAIL'));
     dispatch({ type: SAVE_DOWNLOAD_FAIL })
   }
-}
+};
+
 
 // Delete a download
 export const deleteDownload = id => async (dispatch, getState) => {
@@ -105,7 +108,7 @@ export const deleteDownload = id => async (dispatch, getState) => {
           ))
     }
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'DELETE_DOWNLOAD_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'DELETE_DOWNLOAD_FAIL'))
     dispatch({ type: DELETE_DOWNLOAD_FAIL })
   }
 }

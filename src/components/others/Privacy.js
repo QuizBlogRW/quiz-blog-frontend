@@ -1,5 +1,6 @@
 import React from 'react'
 import ResponsiveAd from '../adsenses/ResponsiveAd';
+import { Row, Col } from "reactstrap";
 
 import SquareAd from '../adsenses/SquareAd';
 
@@ -19,7 +20,13 @@ const Privacy = () => {
                 <p>The words of which the initial letter is capitalized have meanings defined under the following conditions. The following definitions shall have the same meaning regardless of whether they appear in singular or in plural.</p>
 
                 {/* Google responsive 1 ad */}
-                <ResponsiveAd />
+                <Row className='w-100'>
+                    <Col sm="12" className='w-100'>
+                        <div className='w-100'>
+                            <ResponsiveAd />
+                        </div>
+                    </Col>
+                </Row>
 
                 <h2>Definitions</h2>
                 <p>For the purposes of this Privacy Policy:</p>
@@ -88,7 +95,11 @@ const Privacy = () => {
                 <p>Cookies can be &quot;Persistent&quot; or &quot;Session&quot; Cookies. Persistent Cookies remain on Your personal computer or mobile device when You go offline, while Session Cookies are deleted as soon as You close Your web browser.</p>
 
                 {/* Google square ad */}
-                <SquareAd />
+                <Row className='w-100'>
+                    <Col sm="12" className='w-100'>
+                        <SquareAd />
+                    </Col>
+                </Row>
 
                 <p>We use both Session and Persistent Cookies for the purposes set out below:</p>
                 <ul>

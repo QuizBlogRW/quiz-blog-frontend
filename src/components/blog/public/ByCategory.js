@@ -51,8 +51,11 @@ const ByCategory = ({ bPcats, bposts, getBlogPostsByCategory }) => {
                             </ListGroup>
 
                         </div>}
-
-                    <ResponsiveAd />
+                    <Row>
+                        <div className='w-100'>
+                            <ResponsiveAd />
+                        </div>
+                    </Row>
                 </Col>
 
                 <Col sm="6" className="mt-md-2">
@@ -75,7 +78,7 @@ const ByCategory = ({ bPcats, bposts, getBlogPostsByCategory }) => {
                     </Suspense>
                 </Col>
 
-                <Col sm="2" className="mt-md-2">
+                <Col sm="2" className="mt-md-2 w-100">
                     <SquareAd />
                 </Col>
             </Row>

@@ -55,9 +55,11 @@ const Posts = ({ setQuizes, quizes, allNoLimit, allNoLimitLoading, setAllNoLimit
             </Row>
 
             <Row className="mt-lg-5">
-                <Col sm="2" className="mt-md-2">
+                <Col sm="2" className="mt-md-2 w-100">
                     {/* Google responsive 1 ad */}
-                    <ResponsiveAd />
+                    <div className='w-100'>
+                        <ResponsiveAd />
+                    </div>
                 </Col>
 
                 <Col sm="8" className="mt-md-2">
@@ -109,9 +111,15 @@ const Posts = ({ setQuizes, quizes, allNoLimit, allNoLimitLoading, setAllNoLimit
                     </Suspense>
                 </Col>
 
-                <Col sm="2" className="mt-md-2">
+                <Col sm="2" className="mt-md-2 w-100">
                     {/* Google square ad */}
-                    <SquareAd />
+                    <Row className='w-100'>
+                        <Col sm="12" className='w-100'>
+                            <div className='w-100'>
+                                <SquareAd />
+                            </div>
+                        </Col>
+                    </Row>
                 </Col>
             </Row>
         </Container>

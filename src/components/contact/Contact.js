@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Jumbotron, Button, Col, Row, Form, FormGroup, Input, Alert } from 'reactstrap';
-import ResponsiveAd from '../adsenses/ResponsiveAd';
-import SquareAd from '../adsenses/SquareAd';
-
+import { Jumbotron, Button, Col, Row, Form, FormGroup, Input, Alert } from 'reactstrap'
+import SquareAd from '../adsenses/SquareAd'
+import ResponsiveHorizontal from '../adsenses/ResponsiveHorizontal'
 import { sendMsg } from '../../redux/contacts/contacts.actions'
 import { clearErrors } from '../../redux/error/error.actions'
 import { clearSuccess } from '../../redux/success/success.actions'
 import './contact.css'
-import mail from '../../../src/images/mail.svg';
+import mail from '../../../src/images/mail.svg'
+
 
 const Contact = ({ auth, errors, successful, clearErrors, clearSuccess, sendMsg }) => {
 
     const currentUser = auth && auth.user
     // Alert
-    const [visible, setVisible] = useState(true);
-    const onDismiss = () => setVisible(false);
+    const [visible, setVisible] = useState(true)
+    const onDismiss = () => setVisible(false)
 
     // Errors state on form
     const [errorsState, setErrorsState] = useState([])
@@ -38,24 +38,24 @@ const Contact = ({ auth, errors, successful, clearErrors, clearSuccess, sendMsg 
         clearSuccess()
         const { name, value } = e.target
         setState(state => ({ ...state, [name]: value }))
-    };
+    }
 
     const onContact = e => {
-        e.preventDefault();
+        e.preventDefault()
 
-        const { contact_name, email, message } = state;
+        const { contact_name, email, message } = state
 
         // VALIDATE
         if (contact_name.length < 3 || email.length < 4 || message.length < 4) {
-            setErrorsState(['Insufficient info!']);
+            setErrorsState(['Insufficient info!'])
             return
         }
         else if (contact_name.length > 100) {
-            setErrorsState(['Name is too long!']);
+            setErrorsState(['Name is too long!'])
             return
         }
         else if (message.length > 1000) {
-            setErrorsState(['Message is too long!']);
+            setErrorsState(['Message is too long!'])
             return
         }
 
@@ -64,10 +64,10 @@ const Contact = ({ auth, errors, successful, clearErrors, clearSuccess, sendMsg 
             contact_name,
             email,
             message
-        };
+        }
 
         // Attempt to contact
-        sendMsg(contactMsg);
+        sendMsg(contactMsg)
 
         window.setTimeout(() => window.location.href = "/contact-chat", 4000)
 
@@ -94,8 +94,11 @@ const Contact = ({ auth, errors, successful, clearErrors, clearSuccess, sendMsg 
             </Jumbotron>
 
             <Row className="mx-sm-2 px-sm-1 mx-md-5 px-md-5 py-lg-5 mt-5 contact d-md-flex justify-content-center">
-                {/* Google responsive 1 ad */}
-                <ResponsiveAd />
+
+                <div className='w-100'>
+                    {/* Google responsive 1 ad */}
+                    <ResponsiveHorizontal />
+                </div>
 
                 <Col sm="6" className="mb-5 px-lg-5">
                     <small className='font-weight-bolder text-info'>
@@ -144,9 +147,14 @@ const Contact = ({ auth, errors, successful, clearErrors, clearSuccess, sendMsg 
                         </FormGroup>
                         <Button color="primary">Send</Button>
                     </Form>
+
+                    {/* Google square ad */}
+                    <Row className='w-100'>
+                        <Col sm="12" className='w-100'>
+                            <SquareAd />
+                        </Col>
+                    </Row>
                 </Col>
-                {/* Google square ad */}
-                <SquareAd />
             </Row>
         </div>
     )

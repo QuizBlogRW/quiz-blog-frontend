@@ -1,12 +1,15 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, lazy, Suspense } from 'react'
 import { Container, Col, Row, Card, Button, CardTitle, CardText, Spinner } from 'reactstrap'
 import { Link, useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { getOneNotePaper } from '../../../redux/notes/notes.actions'
+import { saveDownload } from '../../../redux/downloads/downloads.actions'
 import LoginModal from '../../auth/LoginModal'
 import SpinningBubbles from '../../rLoading/SpinningBubbles'
 
-const ViewNotePaper = ({ auth, nPaper, getOneNotePaper }) => {
+const GridMultiplex = lazy(() => import('../../adsenses/GridMultiplex'))
+
+const ViewNotePaper = ({ auth, nPaper, getOneNotePaper, saveDownload }) => {
 
     // Access route parameters
     const { noteSlug } = useParams()
@@ -18,6 +21,17 @@ const ViewNotePaper = ({ auth, nPaper, getOneNotePaper }) => {
     const { title, description, courseCategory, course, chapter, notes_file, createdAt } = nPaper.oneNotePaper
 
     let date = new Date(createdAt)
+
+    const onDownload = (note) => {
+        const newDownload = {
+            notes: note._id,
+            chapter: note.chapter,
+            course: note.course,
+            courseCategory: note.courseCategory,
+            downloaded_by: auth.user ? auth.user._id : null
+        }
+        saveDownload(newDownload)
+    }
 
     return (
         nPaper.isOneNotePaperLoading ?
@@ -58,7 +72,7 @@ const ViewNotePaper = ({ auth, nPaper, getOneNotePaper }) => {
                                                 auth.isLoading ?
                                                     <SpinningBubbles /> :
                                                     <LoginModal
-                                                        textContent={'Login first to download this file'}
+                                                        textContent={'Login to download this file'}
                                                         textColor={'text-danger font-weight-bolder my-5 border rounded'}
                                                         isAuthenticated={auth.isAuthenticated} />
                                             }
@@ -66,11 +80,11 @@ const ViewNotePaper = ({ auth, nPaper, getOneNotePaper }) => {
 
                                         <div className='answer d-flex justify-content-center mx-auto mt-2 w-lg-50'>
 
-                                                <a href={notes_file}>
-                                                    <Button className="btn btn-outline-primary mt-3">
-                                                        Download
-                                                    </Button>
-                                                </a>
+                                            <a href={notes_file} target="_blank" rel="noreferrer">
+                                                <Button className="btn btn-outline-primary mt-3" onClick={() => onDownload(nPaper && nPaper.oneNotePaper)}>
+                                                    Download
+                                                </Button>
+                                            </a>
 
                                             <Link to={'/'}>
                                                 <Button className="btn btn-outline-primary mt-3">
@@ -87,8 +101,17 @@ const ViewNotePaper = ({ auth, nPaper, getOneNotePaper }) => {
 
                             </Col>
                         </Row>
-                    </div>
 
+                        <Row>
+                            <Col sm="12">
+                                <Suspense fallback={<div className="p-1 m-1 d-flex justify-content-center align-items-center">
+                                    <Spinner color="primary" />
+                                </div>}>
+                                    <GridMultiplex />
+                                </Suspense>
+                            </Col>
+                        </Row>
+                    </div>
                 </Container> :
 
                 <div className="pt-5 d-flex justify-content-center align-items-center">
@@ -105,4 +128,4 @@ const mapStateToProps = state => ({
     nPaper: state.notesReducer
 })
 
-export default connect(mapStateToProps, { getOneNotePaper })(ViewNotePaper)
+export default connect(mapStateToProps, { getOneNotePaper, saveDownload })(ViewNotePaper)

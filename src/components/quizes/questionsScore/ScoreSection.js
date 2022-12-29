@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { lazy, Suspense } from 'react'
 import ReactDOMServer from 'react-dom/server';
-import { Button } from 'reactstrap'
+import { Button, Spinner } from 'reactstrap'
 import { Link } from 'react-router-dom'
 import html2pdf from 'html2pdf.js'
 
@@ -9,6 +9,8 @@ import LoginModal from '../../auth/LoginModal'
 import { connect } from 'react-redux'
 import { createScore } from '../../../redux/scores/scores.actions'
 import PdfDocument from '../../webmaster/pdfs/PdfDocument'
+
+const ResponsiveHorizontal = lazy(() => import('../../adsenses/ResponsiveHorizontal'))
 
 const ScoreSection = ({ newScoreId, score, qnsLength, thisQuiz, auth, toReview, createScore, quizToReview, passMark }) => {
 
@@ -39,6 +41,16 @@ const ScoreSection = ({ newScoreId, score, qnsLength, thisQuiz, auth, toReview, 
 
     return (
         <div className='p-sm-5 score-section text-center' id='pdf-container'>
+
+            <Suspense fallback={<div className="p-1 m-1 d-flex justify-content-center align-items-center w-100">
+                <Spinner color="primary" />
+            </div>}>
+                <div className='w-100'>
+                    {/* Google responsive 1 ad */}
+                    <ResponsiveHorizontal />
+                </div>
+            </Suspense>
+
             <h5>You got <b style={{ color: "#B4654A" }}>{score}</b> questions right from <b style={{ color: "#B4654A" }}>{qnsLength}</b>.
 
                 <small className="text-info">

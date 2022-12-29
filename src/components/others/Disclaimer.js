@@ -1,5 +1,6 @@
 import React from 'react'
 import ResponsiveAd from '../adsenses/ResponsiveAd';
+import { Row, Col } from "reactstrap";
 
 import SquareAd from '../adsenses/SquareAd';
 
@@ -15,7 +16,13 @@ const Disclaimer = () => {
 
                 <h2>Disclaimers for quizblog.rw</h2>
                 {/* Google responsive 1 ad */}
-                <ResponsiveAd />
+                <Row className='w-100'>
+                    <Col sm="12" className='w-100'>
+                        <div className='w-100'>
+                            <ResponsiveAd />
+                        </div>
+                    </Col>
+                </Row>
 
                 <p>All the information on this website - https://www.quizblog.rw - is published in good faith and for general information purpose only. quizblog.rw does not make any warranties about the completeness, reliability and accuracy of this information. Any action you take upon the information you find on this website (quizblog.rw), is strictly at your own risk. quizblog.rw will not be liable for any losses and/or damages in connection with the use of our website.</p>
 
@@ -32,7 +39,11 @@ const Disclaimer = () => {
                 <p>Should we update, amend or make any changes to this document, those changes will be prominently posted here.</p>
 
                 {/* Google square ad */}
-                <SquareAd />
+                <Row className='w-100'>
+                    <Col sm="12" className='w-100'>
+                        <SquareAd />
+                    </Col>
+                </Row>
             </div>
 
         </div>

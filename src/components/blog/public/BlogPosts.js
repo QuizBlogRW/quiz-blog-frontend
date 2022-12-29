@@ -21,9 +21,11 @@ const BlogPosts = ({ getBlogPosts, blgPosts }) => {
 
     return (
         <>
-            <Row sm="12" className="px-1 px-lg-4 my-1">
+            <Row sm="12" className="px-1 px-lg-4 my-1 w-100">
                 {/* Google responsive 1 ad */}
-                <ResponsiveAd />
+                <div className='w-100'>
+                    <ResponsiveAd />
+                </div>
             </Row>
 
             <Row className="m-1 m-sm-3 p-1 px-sm-5 blogPosts border border-info rounded">
@@ -83,9 +85,12 @@ const BlogPosts = ({ getBlogPosts, blgPosts }) => {
                     }
                 </Col>
             </Row>
-            <Row className="my-1">
-                {/* Google square ad */}
-                <SquareAd />
+            <Row className='w-100'>
+                <Col sm="12" className='w-100'>
+                    <div className='w-100'>
+                        <SquareAd />
+                    </div>
+                </Col>
             </Row>
         </>
     )

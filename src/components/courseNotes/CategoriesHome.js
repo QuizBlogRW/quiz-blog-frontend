@@ -1,13 +1,15 @@
-import React from 'react';
-import { Jumbotron, Button } from 'reactstrap'
+import React, { lazy, Suspense } from 'react'
+import { Jumbotron, Button, Spinner } from 'reactstrap'
 import LoginModal from '../auth/LoginModal'
-import SpinningBubbles from '../rLoading/SpinningBubbles';
+import SpinningBubbles from '../rLoading/SpinningBubbles'
+
+const GridMultiplex = lazy(() => import('../adsenses/GridMultiplex'))
 
 const CategoriesHome = ({ auth }) => {
 
     return (
         auth.isAuthenticated ?
-
+<>
             <Jumbotron className="mx-3">
                 <h3 className="font-weight-bold mb-lg-4 categories-home-head">Hello, {auth.user && auth.user ? auth.user.name : ''}!</h3>
 
@@ -27,7 +29,17 @@ const CategoriesHome = ({ auth }) => {
                         \nhttps://www.quizblog.rw/course-notes`}>Share</a>
                     </Button>
                 </p>
-            </Jumbotron> :
+            </Jumbotron> 
+
+            {/* GridMultiplex Ad in a Suspense */}
+            <Suspense fallback={<div className="p-3 m-3 d-flex justify-content-center align-items-center">
+                <Spinner style={{ width: '5rem', height: '5rem' }} />{' '}
+            </div>}>
+                <GridMultiplex />
+            </Suspense>
+            
+            
+            </>:
 
             // If not authenticated or loading
             <div className="vh-100 d-flex justify-content-center align-items-center text-danger">
