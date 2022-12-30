@@ -10,16 +10,17 @@ const Adverts = ({ adverts, getAdverts }) => {
     }, [getAdverts])
 
     // const allAdverts = adverts && adverts.allAdverts
-    const allAdverts0 = adverts && adverts.allAdverts && adverts.allAdverts[0]
+    const lastAdvert = adverts && adverts.allAdverts &&
+        adverts.allAdverts[adverts.allAdverts.length - 1]
 
     return (
         <div className='d-flex flex-column justify-content-center align-items-center p-1 mt-5 mt-lg-0'>
-            <img 
-                src={allAdverts0 && allAdverts0.advert_image} alt="adv"
-                style={{maxWidth: "100%" }} />
+            <img
+                src={lastAdvert && lastAdvert.advert_image} alt="adv"
+                style={{ maxWidth: "100%" }} />
 
             <p className="legend mt-3 p-1 border rounded" style={{ background: "#ff6666" }}>
-                {allAdverts0 && allAdverts0.caption}
+                {lastAdvert && lastAdvert.caption}
             </p>
         </div>
     )
