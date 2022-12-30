@@ -24,7 +24,7 @@ export const getFaqs = () => async (dispatch, getState) => {
         }))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response.data, err && err.response.status, 'GET_FAQS_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_FAQS_FAIL'))
     dispatch({ type: GET_FAQS_FAIL })
   }
 }
@@ -43,7 +43,7 @@ export const getOneFaq = (faqId) => async (dispatch, getState) => {
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'GET_ONE_FAQ_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_ONE_FAQ_FAIL'))
     dispatch({ type: GET_ONE_FAQ_FAIL })
   }
 }
