@@ -94,7 +94,7 @@ const faqsReducer = (state = INITIAL_STATE, action) => {
     case DELETE_FAQ:
       return {
         ...state,
-        allFaqs: state.allFaqs.filter(brdcst => brdcst._id !== action.payload)
+        allFaqs: state.allFaqs.filter(faq => faq._id !== action.payload)
       }
 
     case FAQS_LOADING:

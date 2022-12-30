@@ -32,7 +32,11 @@ const Notification = ({ errorsState, progress, errors, successful, }) => {
             </Alert> : null
       }
 
-      {(progress && !successful.id && !errors.id) ? <Progress animated color="warning" value={100} className='mb-2' /> : null}
+      {progress &&
+        <div className={`${errors.id || successful.msg ? 'd-none' : ''} text-center text-danger font-weight-bolder`}>
+          {progress - 1}%
+          <Progress animated color="info" value={progress - 1} className='mb-2' />
+        </div>}
 
     </>
   )

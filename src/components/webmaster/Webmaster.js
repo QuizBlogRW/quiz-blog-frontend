@@ -12,6 +12,7 @@ import DownloadsTabPane from './DownloadsTabPane'
 import ContactsTabPane from '../contacts/ContactsTabPane'
 import SpinningBubbles from '../rLoading/SpinningBubbles'
 import CommentsTabPane from '../quizes/review/questionComments/CommentsTabPane'
+import AdvertsTabPane from './adverts/AdvertsTabPane'
 import TopRow from './TopRow.js'
 
 const Webmaster = ({ auth, socket, onlineList, categories, courseCategories }) => {
@@ -126,6 +127,14 @@ const Webmaster = ({ auth, socket, onlineList, categories, courseCategories }) =
                                             </NavLink>
                                         </NavItem>
 
+                                        <NavItem>
+                                            <NavLink
+                                                className={classnames({ active: activeTab === '10' })}
+                                                onClick={() => { toggle('10') }}>
+                                                <u>Adverts</u>
+                                            </NavLink>
+                                        </NavItem>
+
                                     </> : null
                             }
 
@@ -156,6 +165,7 @@ const Webmaster = ({ auth, socket, onlineList, categories, courseCategories }) =
                                 <>
                                     <UsersTabPane auth={auth} />
                                     <CommentsTabPane currentUser={currentUser} />
+                                    <AdvertsTabPane auth={auth} />
                                 </> : null}
                         </TabContent>
                     </Col>

@@ -21,6 +21,7 @@ import questionCommentsReducer from './questionComments/questionComments.reducer
 // import challengesReducer from './challenges/challenges.reducer'
 import challengeQuizesReducer from './challenges/challengeQuizzes/challengeQuizzes.reducer'
 import statisticsReducer from './statistics/statistics.reducer'
+import advertsReducer from './adverts/adverts.reducer'
 
 // Schools
 import schoolsReducer from './schools/schools.reducer'
@@ -32,6 +33,6 @@ import postCategoriesReducer from './blog/postCategories/postCategories.reducer'
 import blogPostsReducer from './blog/blogPosts/blogPosts.reducer'
 import imageUploadsReducer from './blog/blogPosts/uploadImages/uploadImages.reducer'
 
-const rootReducer = combineReducers({ subscribersReducer, questionsReducer, errorReducer, successReducer, authReducer, categoriesReducer, quizesReducer, scoresReducer, contactsReducer, broadcastsReducer, courseCategoriesReducer, coursesReducer, chaptersReducer, notesReducer, downloadsReducer, schoolsReducer, levelsReducer, facultiesReducer, logsReducer, faqsReducer, quizCommentsReducer, questionCommentsReducer, challengeQuizesReducer, postCategoriesReducer, blogPostsReducer, imageUploadsReducer, statisticsReducer })
+const rootReducer = combineReducers({ subscribersReducer, questionsReducer, errorReducer, successReducer, authReducer, categoriesReducer, quizesReducer, scoresReducer, contactsReducer, broadcastsReducer, courseCategoriesReducer, coursesReducer, chaptersReducer, notesReducer, downloadsReducer, schoolsReducer, levelsReducer, facultiesReducer, logsReducer, faqsReducer, quizCommentsReducer, questionCommentsReducer, challengeQuizesReducer, postCategoriesReducer, blogPostsReducer, imageUploadsReducer, statisticsReducer, advertsReducer })
 
 export default rootReducer
