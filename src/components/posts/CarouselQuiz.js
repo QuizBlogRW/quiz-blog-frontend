@@ -85,17 +85,17 @@ const CarouselQuiz = ({ adverts, getAdverts }) => {
         )
     })
 
-    // adverts items to the carousel
-    const advertItems = allAdverts && allAdverts.map(advert => {
-        return (
-            <CarouselItem className="custom-tag" tag="div" key={advert._id}
-                onExiting={() => setAnimating(true)}
-                onExited={() => setAnimating(false)}>
-                <img src={advert.advert_image} alt={advert.altText} />
-                <CarouselCaption className="text-yellow mx-auto" captionText={advert.caption} captionHeader={advert.altText} />
-            </CarouselItem>
-        )
-    })
+    // // adverts items to the carousel
+    // const advertItems = allAdverts && allAdverts.map(advert => {
+    //     return (
+    //         <CarouselItem className="custom-tag" tag="div" key={advert._id}
+    //             onExiting={() => setAnimating(true)}
+    //             onExited={() => setAnimating(false)}>
+    //             <img src={advert.advert_image} alt={advert.altText} />
+    //             <CarouselCaption className="text-yellow mx-auto" captionText={advert.caption} captionHeader={advert.altText} />
+    //         </CarouselItem>
+    //     )
+    // })
 
     return (
         <Row className="quiz-carousel w-100 mx-0 d-flex">
