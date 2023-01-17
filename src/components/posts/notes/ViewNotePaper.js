@@ -93,8 +93,13 @@ const ViewNotePaper = ({ auth, nPaper, getOneNotePaper, saveDownload }) => {
                                             </Link>
                                         </div>
                                     }
+                                    
                                     <small className="mt-3 text-info">
-                                        ~{courseCategory.title} | {course.title} | {chapter.title}~
+                                        ~
+                                        {courseCategory && courseCategory.title} |
+                                        {course && course.title} |
+                                        {chapter && chapter.title}
+                                        ~
                                     </small>
 
                                 </Card>

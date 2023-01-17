@@ -34,13 +34,13 @@ const DownloadsTable = ({ downloadsToUse, currentUser, pageNo, deleteDownload })
                         const cours = download && (uRole === 'Creator') ? download.courses_downloads_title : download.course && download.course.title
 
                         const dat = download && (uRole === 'Creator') ? new Date(download.updatedAt) : new Date(download.createdAt)
-
+                        
                         const numero = (uRole === 'Admin' || uRole === 'SuperAdmin') ? ((pageNo - 1) * 20) + index + 1 : index + 1
 
                         return (
                             <tr key={index}>
                                 <th scope="row" className="table-dark">{numero && numero}</th>
-                                <td>{dat && moment(dat).format('YYYY-MM-DD, HH:MM')}</td>
+                                <td>{dat && moment(dat).format('YYYY-MM-DD, HH:mm')}</td>
                                 <td className='text-uppercase'>{user && user}</td>
                                 <td>{note && note}</td>
                                 <td>{chap && chap}</td>

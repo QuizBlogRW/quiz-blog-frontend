@@ -52,6 +52,7 @@ const EditPictureModal = ({ auth, updateProfileImage, errors, successful, clearE
 
     // Attempt to upload
     updateProfileImage(formData, uId)
+
     // Display the progress bar
     setProgress(true)
   }

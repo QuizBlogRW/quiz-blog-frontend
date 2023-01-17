@@ -10,7 +10,7 @@ const Comment = ({ comment, uRole, isFromPending, rejectComment, approveComment 
     const questionTEXT = comment && comment.question && comment.question.questionText
     const commentSender = comment && comment.sender && comment.sender.name
     const commentDate = comment && comment.createdAt
-    const formattedCDate = commentDate && moment(commentDate).format('YYYY-MM-DD, HH:MM')
+    const formattedCDate = commentDate && moment(commentDate).format('YYYY-MM-DD, HH:mm')
 
     return (
         <div className="my-3">
@@ -18,7 +18,6 @@ const Comment = ({ comment, uRole, isFromPending, rejectComment, approveComment 
                 <Link to={`/quiz-ranking/${quizID && quizID}`} style={{ color: "khaki" }}>
                     {comment.quiz && comment.quiz.title}
                 </Link>
-                {console.log(uRole)}
 
                 {(isFromPending && uRole === "SuperAdmin") ?
                     <span>
@@ -38,13 +37,13 @@ const Comment = ({ comment, uRole, isFromPending, rejectComment, approveComment 
                             Reject
                         </Button>
                     </span> :
-                    
-                    uRole === "Visitor" ? null:
 
-                    <Button className={`${comment.status === 'Pending' ? 'text-warning' :
-                        comment.status === 'Rejected' ? 'text-danger' : 'text-success'} bg-white text-uppercase`}>
-                        {comment.status}
-                    </Button>
+                    uRole === "Visitor" ? null :
+
+                        <Button className={`${comment.status === 'Pending' ? 'text-warning' :
+                            comment.status === 'Rejected' ? 'text-danger' : 'text-success'} bg-white text-uppercase`}>
+                            {comment.status}
+                        </Button>
                 }
 
             </CardTitle>

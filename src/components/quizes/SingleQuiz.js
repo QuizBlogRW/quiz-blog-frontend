@@ -55,7 +55,7 @@ const SingleQuiz = ({ auth, allQuizes, setQuizes }) => {
                                                     <small>
                                                         <i>
                                                             {moment(new Date(question.creation_date))
-                                                                .format('YYYY-MM-DD, HH:MM')}
+                                                                .format('YYYY-MM-DD, HH:mm')}
                                                         </i>
                                                     </small>
                                                 </ToastBody>

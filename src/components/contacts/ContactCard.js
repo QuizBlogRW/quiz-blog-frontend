@@ -50,7 +50,7 @@ const ContactCard = ({ contactsToUse, currentUser, deleteContact }) => {
                                 <small className="text-info">
                                     <i className='text-right d-block'>
                                         {moment(new Date(contact.contact_date))
-                                            .format('YYYY-MM-DD, HH:MM')}
+                                            .format('YYYY-MM-DD, HH:mm')}
                                     </i>
                                 </small>
                             </CardText>
@@ -82,7 +82,7 @@ const ContactCard = ({ contactsToUse, currentUser, deleteContact }) => {
                                             <small className="text-info text-right d-block">
                                                 <i>
                                                     {moment(new Date(reply.reply_date))
-                                                        .format('YYYY-MM-DD, HH:MM')}
+                                                        .format('YYYY-MM-DD, HH:mm')}
                                                 </i>
                                             </small>
                                         </div>

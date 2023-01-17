@@ -44,7 +44,7 @@ const ContactChatCard = ({ openChat, contactsToUse, currentUser, deleteContact }
                             <small className="d-flex align-items-center text-info" style={{ fontSize: ".65rem" }}>
                                 <i>
                                     {moment(new Date(contact.contact_date))
-                                        .format('YYYY-MM-DD, HH:MM')}
+                                        .format('YYYY-MM-DD, HH:mm')}
                                 </i>
                             </small>
 

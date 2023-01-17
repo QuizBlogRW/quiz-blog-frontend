@@ -40,7 +40,7 @@ const ScoresTable = ({ scoresToUse, currentUser, pageNo, deleteScore }) => {
 
                         return (<tr key={index}>
                             <th scope="row" className="table-dark">{numero && numero}</th>
-                            <td>{date && moment(date).format('YYYY-MM-DD, HH:MM')}</td>
+                            <td>{date && moment(date).format('YYYY-MM-DD, HH:mm')}</td>
                             <td className='text-uppercase'>
                                 {taker && taker}
                             </td>

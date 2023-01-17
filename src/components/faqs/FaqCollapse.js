@@ -107,7 +107,7 @@ const FaqCollapse = ({ auth, faqs, getFaqs }) => {
                                             </Button>
 
                                             {
-                                                (currentUser && currentUser.role) === 'Admin' || currentUser.role === 'SuperAdmin' ?
+                                                (currentUser && currentUser.role) === 'Admin' || (currentUser && currentUser.role) === 'SuperAdmin' ?
                                                     <>
                                                         <Button size="sm" color="link" className="mx-2">
                                                             <EditFaq auth={auth} faqToEdit={faq} />

@@ -13,7 +13,9 @@ const SideBar = ({ isOpen, toggle }) => (
       <span color="info" onClick={toggle} style={{ color: "#fff" }}>
         &times;
       </span>
+      <a href="/statistics">
       <h3>Quiz Blog Statistics</h3>
+      </a>
     </div>
 
     <div className="side-menu">

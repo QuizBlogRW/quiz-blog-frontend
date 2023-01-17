@@ -40,7 +40,7 @@ const SubscribersTabPane = ({ subscribedUsers, setSubscribers, deleteSubscriber 
                                         <td className='text-lowercase'>{subscribedUser.email}</td>
                                         <td>
                                             {moment(new Date(subscribedUser.subscription_date))
-                                                .format('YYYY-MM-DD, HH:MM')}
+                                                .format('YYYY-MM-DD, HH:mm')}
                                         </td>
                                         <td className="table-dark">
                                             <Button size="sm" color="link" className="mt-0 p-0" onClick={() => deleteSubscriber(subscribedUser._id)}>

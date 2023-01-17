@@ -11,6 +11,7 @@ import RelatedPosts from './RelatedPosts'
 import LatestPosts from './LatestPosts'
 import altImage from '../../../images/dashboard.svg'
 import BackLikeShare from './BackLikeShare'
+import FollowUs from './FollowUs'
 
 const ViewBlogPost = ({ bposts, getOneBlogPost }) => {
 
@@ -52,10 +53,12 @@ const ViewBlogPost = ({ bposts, getOneBlogPost }) => {
                                     <img src={bpToUse.post_image || altImage} alt="" />
                                 </div>
 
-                                <Markdown rehypePlugins={[rehypeHighlight]}>{bpToUse.markdown}
+                                <Markdown rehypePlugins={[rehypeHighlight]} escapeHtml={false}>{bpToUse.markdown}
                                 </Markdown>
                             </div>
                             <BackLikeShare articleName={bpToUse.title} articleCreator={bpToUse.creator && bpToUse.creator.name} />
+
+                            <FollowUs />
                         </>}
                 </Col>
 

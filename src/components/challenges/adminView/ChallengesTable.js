@@ -53,7 +53,7 @@ const ChallengesTable = ({ chQuizzesToUse, currentUser, deleteChQuiz, categories
                                 <td>{catg && catg}</td>
                                 <td>{qns && qns}</td>
                                 <td>{creator && creator}</td>
-                                <td>{date && moment(date).format('YYYY-MM-DD, HH:MM')}</td>
+                                <td>{date && moment(date).format('YYYY-MM-DD, HH:mm')}</td>
                                 <td>{duration && duration}</td>
                                 <td>
                                     <Link to={`/edit-challenge/${chQuiz._id}`}>View</Link>

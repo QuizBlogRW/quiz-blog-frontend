@@ -8,11 +8,13 @@ import SpinningBubbles from '../../rLoading/SpinningBubbles'
 import { clearErrors } from '../../../redux/error/error.actions'
 import { clearSuccess } from '../../../redux/success/success.actions'
 import { connect } from 'react-redux'
-import { getAdverts } from '../../../redux/adverts/adverts.actions'
+import { getAdverts, changeStatus } from '../../../redux/adverts/adverts.actions'
+import adImage from '../../../images/Logo Med-Blog.svg'
 
-const AdvertsTabPane = ({ auth, adverts, getAdverts }) => {
+const AdvertsTabPane = ({ auth, adverts, getAdverts, changeStatus }) => {
 
     const allAdverts = adverts && adverts.allAdverts
+    const uRole = auth && auth.user && auth.user.role
 
     // Lifecycle method
     useEffect(() => {
@@ -53,14 +55,27 @@ const AdvertsTabPane = ({ auth, adverts, getAdverts }) => {
                                         </Button>
                                     </CardTitle>
 
-                                    <Row style={{fontSize: ".7rem"}}>
+                                    <Row style={{ fontSize: ".7rem" }}>
                                         <Col sm="6">
                                             <CardText className='my-4'>{advert.owner}</CardText>
                                             <CardText className='my-4'>{advert.email}</CardText>
                                             <CardText className='my-4'>{advert.phone}</CardText>
+
+                                            {uRole === "SuperAdmin" || uRole === "Admin" ?
+                                                <span>
+                                                    <Button color={`${advert.status === "Active" ? 'danger' : 'success'}`} className='mx-1 text-white text-uppercase'
+                                                        onClick={() => changeStatus({
+                                                            advertID: advert && advert._id,
+                                                            status: advert.status === "Active" ? "Inactive" : "Active"
+                                                        })}>
+                                                        {advert.status === "Active" ? "Deactivate" : "Activate"}
+                                                    </Button>
+                                                </span>
+                                                : null}
                                         </Col>
+
                                         <Col sm="6">
-                                            <CardImg top width="20px" src={advert && advert.advert_image} alt="Card image cap" />
+                                            <CardImg top width="20px" src={advert.advert_image ? advert.advert_image : adImage} alt="Card image cap" />
                                         </Col>
                                     </Row>
                                 </Card>
@@ -68,7 +83,6 @@ const AdvertsTabPane = ({ auth, adverts, getAdverts }) => {
                         ))}
                     </Row>
             }
-
         </TabPane>
     )
 }
@@ -79,4 +93,4 @@ const mapStateToProps = state => ({
     adverts: state.advertsReducer
 })
 
-export default connect(mapStateToProps, { getAdverts, clearErrors, clearSuccess })(AdvertsTabPane)
+export default connect(mapStateToProps, { getAdverts, changeStatus, clearErrors, clearSuccess })(AdvertsTabPane)

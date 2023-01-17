@@ -140,7 +140,7 @@ const ChatComponent = ({ socket, onlineList, currentUser, chatId, cntct, getOneC
                 <small className="text-info">
                     <i className='text-left d-block mt-2' style={{ fontSize: ".7rem", color: "#6a89cc" }}>
                         {moment(new Date(contact.contact_date))
-                            .format('YYYY-MM-DD, HH:MM')}
+                            .format('YYYY-MM-DD, HH:mm')}
                     </i>
                 </small>
 
@@ -162,7 +162,7 @@ const ChatComponent = ({ socket, onlineList, currentUser, chatId, cntct, getOneC
 
                         <small className="text-info">
                             <i className={`${reply.email === currentUser.email ? 'text-right' : 'text-left'} d-block mt-2`} style={{ fontSize: ".7rem", color: "#999" }}>
-                                {moment(new Date(reply.reply_date)).format('YYYY-MM-DD, HH:MM')}
+                                {moment(new Date(reply.reply_date)).format('YYYY-MM-DD, HH:mm')}
                             </i>
                         </small>
                     </div>

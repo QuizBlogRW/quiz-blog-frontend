@@ -60,6 +60,10 @@ const AddNotesModal = ({ auth, chapter, createNotes, errors, successful, clearEr
             setErrorsState(['Title is too long!'])
             return
         }
+        else if (!chapter) {
+            setErrorsState(['The chapter is required!'])
+            return
+        }
         else if (!notes_file) {
             setErrorsState(['The file is required!'])
             return

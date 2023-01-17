@@ -37,9 +37,11 @@ const CourseNotes = ({ auth, chapter, getNotes, deleteNotes, removeQzNt, saveDow
                 <>
                     {auth.user.role !== 'Visitor' ?
                         <Row>
-                            <Button size="sm" outline color="danger" className="ml-auto mr-1 mx-sm-auto my-2 add-notes-btn">
-                                <strong><AddNotesModal auth={auth} chapter={chapter} /></strong>
-                            </Button>
+                            {chapter ?
+                                <Button size="sm" outline color="success" className="ml-auto mr-1 mx-sm-auto my-2 add-notes-btn">
+                                    <strong><AddNotesModal auth={auth} chapter={chapter} /></strong>
+                                </Button> : null
+                            }
                         </Row> : null}
 
                     <Row>
@@ -66,7 +68,7 @@ const CourseNotes = ({ auth, chapter, getNotes, deleteNotes, removeQzNt, saveDow
                                                 <small>{note.description}</small>
                                                 <br />
                                                 <i className="font-weight-bolder text-info" style={{ fontSize: ".5rem" }}>
-                                                    {note.notes_file.split('/').pop().replace(/%20|%5B|%5D/g, ' ')}
+                                                    {note.notes_file && note.notes_file.split('/').pop().replace(/%20|%5B|%5D/g, ' ')}
                                                 </i>
                                             </CardText>
 

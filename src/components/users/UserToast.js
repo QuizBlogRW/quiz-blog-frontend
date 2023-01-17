@@ -16,12 +16,12 @@ const UserToast = ({ auth, user, fromSearch, deleteUser }) => {
                     <strong>{user.email}</strong>
 
                     {(auth && auth.user && auth.user.role) === 'SuperAdmin' ?
-                    <div className="actions text-secondary d-flex">
-                        <img src={trash} alt="" width="16" height="16" className="mx-4 mt-1" onClick={() => deleteUser(user._id)} />
-                        <EditUser auth={auth} uId={user._id} uName={user.name} uRole={user.role} uEmail={user.email} />
-                    </div>: 
-                    <span></span>}
-                    
+                        <div className="actions text-secondary d-flex">
+                            <img src={trash} alt="" width="16" height="16" className="mx-4 mt-1" onClick={() => deleteUser(user._id)} />
+                            <EditUser auth={auth} uId={user._id} uName={user.name} uRole={user.role} uEmail={user.email} />
+                        </div> :
+                        <span></span>}
+
                 </ToastHeader>
 
                 <ToastBody className={` ${fromSearch ? 'bg-light text-dark' : ''}`}>
@@ -34,7 +34,7 @@ const UserToast = ({ auth, user, fromSearch, deleteUser }) => {
                             <small className='font-weight-bolder text-secondary text-truncate text-capitalize'>{(user.level && user.level.title) || 'No Level'}</small>
 
                             <small className='font-weight-bolder text-secondary text-truncate text-capitalize pt-3'><i>Registered on {moment(new Date(user && user.register_date))
-                                .format('YYYY-MM-DD, HH:MM')}</i></small>
+                                .format('YYYY-MM-DD, HH:mm')}</i></small>
                         </div>
 
                         <div className="illustration d-flex flex-column w-50">

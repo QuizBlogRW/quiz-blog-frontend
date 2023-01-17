@@ -121,14 +121,14 @@ const App = ({ auth, categories, courseCategories, bPcats, setCategories, getCou
         }
     }, [currentUser]);
 
-    // Profile non empty details
+    // Profile non empty details - Those with not empty strings and not null values
     const NonEmptyFields = auth.isAuthenticated && Object
         .keys(auth.user)
-        .filter(x => auth.user[x].length !== 0 || auth.user[x] !== '')
+        .filter(key => ((auth.user[key] && auth.user[key]) !== '') 
+        && ((auth.user[key] && auth.user[key]) !== null)) 
         .length
 
     const percentage = (NonEmptyFields - 3) * 10
-
     // const initial = successful.id ? true : errors.id ? true : false
     const initial = (auth.isAuthenticated && percentage < 100) ? true : false
 

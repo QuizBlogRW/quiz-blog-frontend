@@ -28,23 +28,23 @@ const Footer = () => {
 
                                 <ul className="social-network social-circle">
 
-                                    <li><a href="https://api.whatsapp.com/send?phone=250780579067" className="icoWhatsapp" title="Whatsapp">
+                                    <li><a href="https://api.whatsapp.com/send?phone=250780579067" className="icoWhatsapp" title="Whatsapp" target="_blank" rel="noreferrer">
                                         <i className="fa fa-whatsapp"></i>
                                     </a></li>
 
-                                    <li><a href="https://web.facebook.com/quizblog.rw" className="icoFacebook" title="Facebook">
+                                    <li><a href="https://web.facebook.com/quizblog.rw" className="icoFacebook" title="Facebook" target="_blank" rel="noreferrer">
                                         <i className="fa fa-facebook"></i>
                                     </a></li>
 
-                                    <li><a href="https://www.linkedin.com/company/quiz-blog/" className="icoLinkedin" title="Linkedin">
+                                    <li><a href="https://www.linkedin.com/company/quiz-blog/" className="icoLinkedin" title="Linkedin" target="_blank" rel="noreferrer">
                                         <i className="fa fa-linkedin"></i>
                                     </a></li>
 
-                                    <li><a href="https://www.instagram.com/quizblog.rw/" className="icoInstagram" title="Instagram">
+                                    <li><a href="https://www.instagram.com/quizblog.rw/" className="icoInstagram" title="Instagram" target="_blank" rel="noreferrer">
                                         <i className="fa fa-instagram"></i>
                                     </a></li>
 
-                                    <li><a href="https://twitter.com/QuizblogRw" className="icoTwitter" title="Twitter">
+                                    <li><a href="https://twitter.com/QuizblogRw" className="icoTwitter" title="Twitter" target="_blank" rel="noreferrer">
                                         <i className="fa fa-twitter"></i>
                                     </a></li>
                                 </ul>

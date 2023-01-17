@@ -52,8 +52,6 @@ const CreateAdvert = ({ auth, clearErrors, clearSuccess, createAdvert }) => {
 
         const { caption, phone, owner, email, advert_image } = advertState
 
-        console.log(advert_image)
-        console.log(advertState)
         const formData = new FormData()
 
         // VALIDATE
@@ -115,28 +113,28 @@ const CreateAdvert = ({ auth, clearErrors, clearSuccess, createAdvert }) => {
                                         <strong>Caption</strong>
                                     </Label>
 
-                                    <Input type="text" name="caption" id="name" placeholder="Advert caption ..." className="mb-3" onChange={onChangeHandler} value={advertState.caption}/>
+                                    <Input type="text" name="caption" placeholder="Advert caption ..." className="mb-3" onChange={onChangeHandler} value={advertState.caption}/>
 
                                     <Label for="owner">
                                         <strong>Owner</strong>
                                     </Label>
 
-                                    <Input type="text" name="owner" id="owner" placeholder="Advert owner ..." className="mb-3" onChange={onChangeHandler} value={advertState.owner} />
+                                    <Input type="text" name="owner" placeholder="Advert owner ..." className="mb-3" onChange={onChangeHandler} value={advertState.owner} />
 
                                     <Label for="email">
                                         <strong>Email</strong>
                                     </Label>
 
-                                    <Input type="text" name="email" id="email" placeholder="Email ..." className="mb-3" onChange={onChangeHandler} value={advertState.email} />
+                                    <Input type="text" name="email" placeholder="Email ..." className="mb-3" onChange={onChangeHandler} value={advertState.email} />
 
 
                                     <Label for="phone">
                                         <strong>Phone</strong>
                                     </Label>
 
-                                    <Input type="text" name="phone" id="phone" placeholder="Phone ..." className="mb-3" onChange={onChangeHandler} value={advertState.phone} />
+                                    <Input type="text" name="phone" placeholder="Phone ..." className="mb-3" onChange={onChangeHandler} value={advertState.phone} />
 
-                                    <Label for="image">
+                                    <Label for="advert_image">
                                         <strong>Image</strong> 
                                         <small className="text-info"> (.jpg, .jpeg, .png, .svg)</small>
                                     </Label>

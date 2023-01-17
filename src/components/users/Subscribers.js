@@ -58,7 +58,7 @@ const Subscribers = ({ auth, subscribedUsers, setSubscribers, deleteSubscriber }
                                                 <td>
                                                     <i>
                                                         {moment(new Date(subscribedUser.subscription_date))
-                                                            .format('YYYY-MM-DD, HH:MM')}
+                                                            .format('YYYY-MM-DD, HH:mm')}
                                                     </i>
                                                 </td>
                                                 <td className="table-dark">

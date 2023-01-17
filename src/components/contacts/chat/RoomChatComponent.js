@@ -147,7 +147,7 @@ const RoomChatComponent = ({ socket, onlineList, currentUser, room1ON1ToGet, cha
 
                                 <small className="text-info">
                                     <i className={`${roomMsg.sender === currentUser._id ? 'text-right' : 'text-left'} d-block mt-2`} style={{ fontSize: ".7rem", color: "#999" }}>
-                                        {moment(new Date(roomMsg.createdAt)).format('YYYY-MM-DD, HH:MM')}
+                                        {moment(new Date(roomMsg.createdAt)).format('YYYY-MM-DD, HH:mm')}
                                     </i>
                                 </small>
                             </div>

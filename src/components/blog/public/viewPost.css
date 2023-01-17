@@ -110,6 +110,14 @@
     color: #fff !important;
 }
 
+/* Follow us */
+.container.blog-post-view .viewed-details .back-share .like-share .social-network li.follow-us {
+    background-color: khaki !important;
+    padding: 9px 5px;
+    border: .5px solid #fff;
+    border-radius: 50%;
+}
+
 .container.blog-post-view .viewed-details .post-details .post-photo {
     margin: 8px 0 24px;
     max-width: 100%;

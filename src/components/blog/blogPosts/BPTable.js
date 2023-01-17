@@ -43,7 +43,7 @@ const BPTable = ({ bpostsToUse, currentUser, deleteBlogPost }) => {
                                 <td className='text-uppercase'>{bPTitle && bPTitle}</td>
                                 <td>{catg && catg}</td>
                                 <td>{creator && creator}</td>
-                                <td>{date && moment(date).format('YYYY-MM-DD, HH:MM')}</td>
+                                <td>{date && moment(date).format('YYYY-MM-DD, HH:mm')}</td>
                                 <td className={`${((uRole === 'Admin' || uRole === 'SuperAdmin') || creat._id === usr._id) ? '' : 'd-none'}`}>
                                     <Link to={`/edit-bpost/${bPost.slug}`}>Edit</Link>
                                 </td>
