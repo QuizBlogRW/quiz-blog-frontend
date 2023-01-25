@@ -1,12 +1,16 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import EditUser from './EditUser';
 import trash from '../../images/trash.svg';
 import uploadimage from '../../images/uploadimage.svg';
 import moment from 'moment'
+import { authContext } from '../../appContexts';
 
 import { Col, Toast, ToastBody, ToastHeader } from 'reactstrap';
 
-const UserToast = ({ auth, user, fromSearch, deleteUser }) => {
+const UserToast = ({ user, fromSearch, deleteUser }) => {
+
+    // context
+    const auth = useContext(authContext)
 
     return (
         <Col sm="3" key={user._id} className={`mt-3 users-toast`}>
@@ -18,7 +22,7 @@ const UserToast = ({ auth, user, fromSearch, deleteUser }) => {
                     {(auth && auth.user && auth.user.role) === 'SuperAdmin' ?
                         <div className="actions text-secondary d-flex">
                             <img src={trash} alt="" width="16" height="16" className="mx-4 mt-1" onClick={() => deleteUser(user._id)} />
-                            <EditUser auth={auth} uId={user._id} uName={user.name} uRole={user.role} uEmail={user.email} />
+                            <EditUser uId={user._id} uName={user.name} uRole={user.role} uEmail={user.email} />
                         </div> :
                         <span></span>}
 

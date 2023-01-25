@@ -1,12 +1,16 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
 import { Row, Alert } from 'reactstrap'
 import { connect } from 'react-redux'
 import { getChQuizes, deleteChQuiz } from '../../../redux/challenges/challengeQuizzes/challengeQuizzes.actions'
 import LoginModal from '../../auth/LoginModal'
 import SpinningBubbles from '../../rLoading/SpinningBubbles'
 import ChallengesTable from './ChallengesTable'
+import { authContext } from '../../../appContexts'
 
-const Challenges = ({ auth, chQuizzes, getChQuizes, deleteChQuiz, categories }) => {
+const Challenges = ({ chQuizzes, getChQuizes, deleteChQuiz, categories }) => {
+
+    // context
+    const auth = useContext(authContext)
 
     const chQuizzesToUse = chQuizzes && chQuizzes.allChQuizzes
 
@@ -29,8 +33,7 @@ const Challenges = ({ auth, chQuizzes, getChQuizes, deleteChQuiz, categories }) 
                         <SpinningBubbles title='subscribers' /> :
                         <LoginModal
                             textContent={'Login first to access subscribers'}
-                            textColor={'text-danger font-weight-bolder my-5 border rounded'}
-                            isAuthenticated={isAuthenticated} />
+                            textColor={'text-danger font-weight-bolder my-5 border rounded'} />
                 }
             </div> :
             curUserRole === 'Admin' || curUserRole === 'SuperAdmin' ?

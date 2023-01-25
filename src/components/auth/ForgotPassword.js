@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Container, Row, Col, Button, Form, Input, Alert } from 'reactstrap';
 import ResponsiveAd from '../adsenses/ResponsiveAd';
 import SquareAd from '../adsenses/SquareAd';
-
 import { connect } from 'react-redux';
 import { sendResetLink } from '../../redux/auth/auth.actions';
 

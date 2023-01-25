@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input, CustomInput, NavLink, Alert, Progress } from 'reactstrap'
 import LoginModal from '../../auth/LoginModal'
 import Webmaster from '../../webmaster/Webmaster'
@@ -8,8 +8,12 @@ import { connect } from 'react-redux'
 import { updateNotes } from '../../../redux/notes/notes.actions'
 import EditIcon from '../../../images/edit.svg'
 import SpinningBubbles from '../../rLoading/SpinningBubbles'
+import { authContext } from '../../../appContexts'
 
-const EditNotesModal = ({ idToUpdate, editTitle, editDesc, auth, updateNotes, errors, successful, clearErrors, clearSuccess }) => {
+const EditNotesModal = ({ idToUpdate, editTitle, editDesc, updateNotes, errors, successful, clearErrors, clearSuccess }) => {
+
+    // Auth context
+    const auth = useContext(authContext)
 
     const [notesState, setNotesState] = useState({
         idToUpdate,
@@ -161,7 +165,7 @@ const EditNotesModal = ({ idToUpdate, editTitle, editDesc, auth, updateNotes, er
                     </Modal>
                 </div> :
 
-                <Webmaster auth={auth} /> :
+                <Webmaster /> :
 
             // If not authenticated or loading
             <div className="vh-100 d-flex justify-content-center align-items-center text-danger">
@@ -170,8 +174,7 @@ const EditNotesModal = ({ idToUpdate, editTitle, editDesc, auth, updateNotes, er
                         <SpinningBubbles /> :
                         <LoginModal
                             textContent={'Login first'}
-                            textColor={'text-danger font-weight-bolder my-5 border rounded'}
-                            isAuthenticated={auth.isAuthenticated} />
+                            textColor={'text-danger font-weight-bolder my-5 border rounded'}  />
                 }
             </div>
     )

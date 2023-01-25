@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Button, Row, Col, Form, FormGroup, Label, Input, CustomInput, Breadcrumb, BreadcrumbItem, Alert, Progress } from 'reactstrap'
 import { Link, useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -11,8 +11,12 @@ import LoginModal from '../../auth/LoginModal'
 import Webmaster from '../../webmaster/Webmaster'
 import SpinningBubbles from '../../rLoading/SpinningBubbles'
 import ChallengeQuestions from './ChallengeQuestions'
+import { authContext } from '../../../appContexts'
 
-const EditChallengeQuiz = ({ auth, addChQuestion, deleteChQuestion, getOneChQuiz, oneChQuiz, successful, errors, clearErrors, clearSuccess }) => {
+const EditChallengeQuiz = ({ addChQuestion, deleteChQuestion, getOneChQuiz, oneChQuiz, successful, errors, clearErrors, clearSuccess }) => {
+
+    // Auth context
+    const auth = useContext(authContext)
 
     // Access route parameters
     const { challengeId } = useParams()
@@ -251,7 +255,7 @@ const EditChallengeQuiz = ({ auth, addChQuestion, deleteChQuestion, getOneChQuiz
                     </Form>
                     <ChallengeQuestions oneChQuiz={oneChQuiz} deleteChQuestion={deleteChQuestion} />
                 </> :
-                <Webmaster auth={auth} /> :
+                <Webmaster /> :
 
             // If not authenticated or loading
             <div className="vh-100 d-flex justify-content-center align-items-center text-danger">
@@ -260,8 +264,7 @@ const EditChallengeQuiz = ({ auth, addChQuestion, deleteChQuestion, getOneChQuiz
                         <SpinningBubbles /> :
                         <LoginModal
                             textContent={'Login first'}
-                            textColor={'text-danger font-weight-bolder my-5 border rounded'}
-                            isAuthenticated={auth.isAuthenticated} />
+                            textColor={'text-danger font-weight-bolder my-5 border rounded'} />
                 }
             </div>
     )

@@ -1,14 +1,18 @@
-import React, { useEffect, lazy, Suspense } from 'react'
+import React, { useEffect, lazy, Suspense, useContext } from 'react'
 import { Container, Col, Row, Card, Button, CardTitle, CardText, Spinner } from 'reactstrap';
 import { Link, useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { getOneQuiz } from '../../redux/quizes/quizes.actions'
 import EmbeddedVideos from './EmbeddedVideos'
 // import ChallengeeModal from './ChallengeeModal'
+import { authContext } from '../../appContexts'
 
 const ResponsiveHorizontal = lazy(() => import('../adsenses/ResponsiveHorizontal'))
 
-const GetReady = ({ auth, qZ, getOneQuiz }) => {
+const GetReady = ({ qZ, getOneQuiz }) => {
+
+    // context
+    const auth = useContext(authContext)
 
     const currentUser = auth && auth.user
 

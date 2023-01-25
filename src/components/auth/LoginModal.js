@@ -1,11 +1,17 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useContext } from 'react'
 import RegisterModal from './RegisterModal'
 import { Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input, NavLink, Alert } from 'reactstrap'
 import { connect } from 'react-redux'
 import { login } from '../../redux/auth/auth.actions'
 import { clearErrors } from '../../redux/error/error.actions'
+import { authContext } from '../../appContexts'
+import ReactLoading from "react-loading"
 
-const LoginModal = ({ errors, clearErrors, login, isAuthenticated, textColor, textContent }) => {
+const LoginModal = ({ errors, clearErrors, login, textColor, textContent }) => {
+    // context 
+    const auth = useContext(authContext)
+    const isAuthenticated = auth && auth.isAuthenticated
+
     //properties of the modal
     const [loginState, setLoginState] = useState({
         // initialy doesn't show
@@ -13,6 +19,11 @@ const LoginModal = ({ errors, clearErrors, login, isAuthenticated, textColor, te
         password: '',
         msg: null
     })
+
+    // loadingLogin
+    const [loadingLogin, setLoadingLogin] = useState(false)
+
+    let atHome = false
 
     //properties of the modal
     const [modalLogin, setModalLogin] = useState(false)
@@ -31,12 +42,14 @@ const LoginModal = ({ errors, clearErrors, login, isAuthenticated, textColor, te
         if (errors && errors.id === 'LOGIN_FAIL') {
             setLoginState(loginState => ({ ...loginState, msg: errors.msg && errors.msg }))
             setModalLogin(true)
+            setLoadingLogin(false)
         }
 
         // If Authenticated, Close modalLogin
         if (modalLogin) {
             if (isAuthenticated) {
                 toggle()
+                setLoadingLogin(false)
             }
         }
     }, [errors, isAuthenticated, modalLogin, toggle])
@@ -57,7 +70,15 @@ const LoginModal = ({ errors, clearErrors, login, isAuthenticated, textColor, te
             email,
             password
         }
-        login(user)
+
+        // if current page is /, set atHome to true
+        window.location.pathname === '/' ? atHome = true : atHome = false
+
+        // Set loading to true
+        setLoadingLogin(true)
+
+        // Attempt to login
+        login(user, atHome)
     }
 
     return (
@@ -74,6 +95,20 @@ const LoginModal = ({ errors, clearErrors, login, isAuthenticated, textColor, te
                 <ModalHeader toggle={toggle} className="bg-primary text-white">
                     Login
                 </ModalHeader>
+
+                {
+                    // Loading login
+                    loadingLogin ?
+                        <>
+                            <ReactLoading
+                                type="spin"
+                                color="#641e16"
+                                className='mx-auto my-2' />
+                            <p className='text-center my-1 text-warning'>Logging you in...</p>
+                        </> :
+                        null
+                }
+
                 <ModalBody>
 
                     {loginState.msg ? (

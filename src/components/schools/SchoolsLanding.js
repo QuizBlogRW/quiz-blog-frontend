@@ -43,12 +43,12 @@ const SchoolsLanding = ({ getSchools, fetchSchoolLevels, schools, schoolLevels, 
 
             auth.user.role === 'Visitor' ?
 
-                <Webmaster auth={auth} /> :
+                <Webmaster /> :
                 <>
                     <Row className="add-school mt-lg-5 mx-lg-5 px-lg-5 py-lg-3 d-flex justify-content-around align-items-center border rounded">
                         <h5 className='font-weight-bolder text-info d-none d-sm-block'>SCHOOLS | LEVELS | FACULTIES | YEARS</h5>
                         <Button size="lg" outline color="dark" className="m-2 m-sm-0 ml-auto p-0 p-sm-1">
-                            <strong><AddSchool auth={auth} /></strong>
+                            <strong><AddSchool /></strong>
                         </Button>
                     </Row>
 
@@ -80,14 +80,14 @@ const SchoolsLanding = ({ getSchools, fetchSchoolLevels, schools, schoolLevels, 
                         <div className="d-flex align-items-center">
                             {schoolToEdit && <span>
                                 <Button size="sm" color="link" className="mx-1">
-                                    <EditSchoolModal auth={auth} idToUpdate={schoolToEdit} />
+                                    <EditSchoolModal idToUpdate={schoolToEdit} />
                                 </Button>
                                 <Button size="sm" color="link" className="mr-1" onClick={() => deleteSchool(schoolToEdit)}>
                                     <img src={DeleteIcon} alt="" width="14" height="14" />
                                 </Button>
                             </span>}
                             <Button size="md" outline color="warning" className="ml-auto mb-3 mb-sm-0">
-                                <strong><AddLevel auth={auth} schools={schoolState} /></strong>
+                                <strong><AddLevel schools={schoolState} /></strong>
                             </Button>
                         </div>
 
@@ -109,7 +109,7 @@ const SchoolsLanding = ({ getSchools, fetchSchoolLevels, schools, schoolLevels, 
                                                             </h6>
                                                             <span>
                                                                 <Button size="sm" color="link" className="mx-1">
-                                                                    <EditLevelModal auth={auth} idToUpdate={level._id} editTitle={level.title} />
+                                                                    <EditLevelModal idToUpdate={level._id} editTitle={level.title} />
                                                                 </Button>
                                                                 <Button size="sm" color="link" className="mr-1" onClick={() => deleteLevel(level._id)}>
                                                                     <img src={DeleteIcon} alt="" width="14" height="14" />
@@ -128,12 +128,12 @@ const SchoolsLanding = ({ getSchools, fetchSchoolLevels, schools, schoolLevels, 
                                                     <Row className="mt-lg-3 ml-lg-5 pl-lg-5 pt-lg-3 d-flex justify-content-around align-items-center">
                                                         <Button size="md" outline color="info" className="ml-auto">
                                                             <strong>
-                                                                <AddFaculty auth={auth} facultyLevel={level} />
+                                                                <AddFaculty facultyLevel={level} />
                                                             </strong>
                                                         </Button>
                                                     </Row>
 
-                                                    <FacultiesCollapse auth={auth} levelID={level._id} />
+                                                    <FacultiesCollapse levelID={level._id} />
                                                 </TabPanel>
                                             )}
                                     </Tabs>
@@ -150,8 +150,7 @@ const SchoolsLanding = ({ getSchools, fetchSchoolLevels, schools, schoolLevels, 
                         <SpinningBubbles /> :
                         <LoginModal
                             textContent={'Login first'}
-                            textColor={'text-danger font-weight-bolder my-5 border rounded'}
-                            isAuthenticated={auth.isAuthenticated} />
+                            textColor={'text-danger font-weight-bolder my-5 border rounded'} />
                 }
             </div>
     )

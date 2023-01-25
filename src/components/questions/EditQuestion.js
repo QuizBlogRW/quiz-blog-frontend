@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { Button, Row, Col, Form, FormGroup, Label, Input, CustomInput, Breadcrumb, BreadcrumbItem, Alert, Progress } from 'reactstrap'
 import LoginModal from '../auth/LoginModal'
@@ -8,8 +8,11 @@ import { getOneQuestion, updateQuestion } from '../../redux/questions/questions.
 import { clearErrors } from '../../redux/error/error.actions'
 import { clearSuccess } from '../../redux/success/success.actions'
 import SpinningBubbles from '../rLoading/SpinningBubbles'
+import { authContext } from '../../appContexts'
 
-const EditQuestion = ({ auth, updateQuestion, quest, getOneQuestion, successful, clearErrors, clearSuccess, errors }) => {
+const EditQuestion = ({ updateQuestion, quest, getOneQuestion, successful, clearErrors, clearSuccess, errors }) => {
+
+    const auth = useContext(authContext)
 
     // Access route parameters & history
     const { questionId } = useParams()
@@ -244,7 +247,7 @@ const EditQuestion = ({ auth, updateQuestion, quest, getOneQuestion, successful,
 
                 </Form> :
 
-                <Webmaster auth={auth} /> :
+                <Webmaster /> :
 
             // If not authenticated or loading
             <div className="vh-100 d-flex justify-content-center align-items-center text-danger">
@@ -253,8 +256,7 @@ const EditQuestion = ({ auth, updateQuestion, quest, getOneQuestion, successful,
                         <SpinningBubbles /> :
                         <LoginModal
                             textContent={'Login first'}
-                            textColor={'text-danger font-weight-bolder my-5 border rounded'}
-                            isAuthenticated={auth.isAuthenticated} />
+                            textColor={'text-danger font-weight-bolder my-5 border rounded'} />
                 }
             </div>
     )

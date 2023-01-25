@@ -1,11 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input, NavLink, Alert } from 'reactstrap'
 import { connect } from 'react-redux'
 import { clearErrors } from '../../redux/error/error.actions'
 import { clearSuccess } from '../../redux/success/success.actions'
 import { createFq } from '../../redux/faqs/faqs.actions'
+import { authContext } from '../../appContexts'
 
-const CreateFaq = ({ currentUser, createFq, errors, successful, clearErrors, clearSuccess }) => {
+const CreateFaq = ({ createFq, errors, successful, clearErrors, clearSuccess }) => {
+
+    // context
+    const { currentUser } = useContext(authContext)
 
     const [faqsState, setFaqsState] = useState({
         title: '',

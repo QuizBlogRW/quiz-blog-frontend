@@ -1,16 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input, Alert, Progress } from 'reactstrap';
 import LoginModal from '../auth/LoginModal'
 import Webmaster from '../webmaster/Webmaster'
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'
 import { updateUser } from '../../redux/auth/auth.actions'
 import { clearErrors } from '../../redux/error/error.actions'
 import { clearSuccess } from '../../redux/success/success.actions'
 import EditIcon from '../../images/edit.svg';
 import SpinningBubbles from '../rLoading/SpinningBubbles';
+import { authContext } from '../../appContexts'
 
-const EditUser = ({ uId, auth, uName, uRole, uEmail, errors, successful, clearErrors, clearSuccess, updateUser }) => {
+const EditUser = ({ uId, uName, uRole, uEmail, errors, successful, clearErrors, clearSuccess, updateUser }) => {
 
+    // context
+    const auth = useContext(authContext)
+
+    // state
     const [userState, setUserState] = useState({
         uId,
         name: uName,
@@ -162,7 +167,7 @@ const EditUser = ({ uId, auth, uName, uRole, uEmail, errors, successful, clearEr
                     </Modal>
                 </div> :
 
-                <Webmaster auth={auth} /> :
+                <Webmaster /> :
 
             // If not authenticated or loading
             <div className="vh-100 d-flex justify-content-center align-items-center text-danger">
@@ -171,8 +176,7 @@ const EditUser = ({ uId, auth, uName, uRole, uEmail, errors, successful, clearEr
                         <SpinningBubbles /> :
                         <LoginModal
                             textContent={'Login first'}
-                            textColor={'text-danger font-weight-bolder my-5 border rounded'}
-                            isAuthenticated={auth.isAuthenticated} />
+                            textColor={'text-danger font-weight-bolder my-5 border rounded'} />
                 }
             </div>
     );

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Button, Form, FormGroup, Label, Input, Row, Col, CustomInput, Alert, Breadcrumb, BreadcrumbItem, Progress } from 'reactstrap'
 import { connect } from 'react-redux'
 import LoginModal from '../../auth/LoginModal'
@@ -9,9 +9,11 @@ import { createBlogPost } from '../../../redux/blog/blogPosts/blogPosts.actions'
 import SpinningBubbles from '../../rLoading/SpinningBubbles'
 import UploadPostPhotos from './UploadPostPhotos'
 import YourImages from './YourImages'
+import { authContext } from '../../../appContexts'
 
-const AddBlogPost = ({ auth, createBlogPost, errors, successful, clearErrors, clearSuccess }) => {
+const AddBlogPost = ({ createBlogPost, errors, successful, clearErrors, clearSuccess }) => {
 
+    const auth = useContext(authContext)
     const isAuthenticated = auth && auth.isAuthenticated
     const userLoading = auth && auth.isLoading
     const currentUser = auth && auth.user
@@ -97,8 +99,7 @@ const AddBlogPost = ({ auth, createBlogPost, errors, successful, clearErrors, cl
                         <SpinningBubbles title='blog posts' /> :
                         <LoginModal
                             textContent={'Login first to access blog posts'}
-                            textColor={'text-danger font-weight-bolder my-5 border rounded'}
-                            isAuthenticated={isAuthenticated} />
+                            textColor={'text-danger font-weight-bolder my-5 border rounded'} />
                 }
             </div> :
 

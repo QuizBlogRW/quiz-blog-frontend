@@ -1,12 +1,15 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
 import { Container, Col, Row, Card, Button, CardTitle, CardText, Spinner } from 'reactstrap'
 import { Link, useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { getOneChQuiz } from '../../../redux/challenges/challengeQuizzes/challengeQuizzes.actions'
 import LoginModal from '../../auth/LoginModal'
 import SpinningBubbles from '../../rLoading/SpinningBubbles'
+import { authContext } from '../../../appContexts'
 
-const ViewChallenge = ({ auth, chQuiz, getOneChQuiz }) => {
+const ViewChallenge = ({ chQuiz, getOneChQuiz }) => {
+
+    const auth = useContext(authContext)
 
     // Access route parameters
     const { challengeId } = useParams()
@@ -60,8 +63,7 @@ const ViewChallenge = ({ auth, chQuiz, getOneChQuiz }) => {
                                                     <SpinningBubbles /> :
                                                     <LoginModal
                                                         textContent={'Login first to take the challenge'}
-                                                        textColor={'text-danger font-weight-bolder my-5 border rounded'}
-                                                        isAuthenticated={auth.isAuthenticated} />
+                                                        textColor={'text-danger font-weight-bolder my-5 border rounded'} />
                                             }
                                         </div> :
 

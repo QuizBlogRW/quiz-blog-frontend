@@ -6,7 +6,7 @@ import { getUsers, deleteUser } from '../../redux/auth/auth.actions'
 import UserToast from './UserToast'
 import SpinningBubbles from '../rLoading/SpinningBubbles'
 
-const UsersTabPane = ({ auth, users, getUsers, deleteUser }) => {
+const UsersTabPane = ({ users, getUsers, deleteUser }) => {
 
     // Lifecycle methods
     useEffect(() => {
@@ -34,7 +34,7 @@ const UsersTabPane = ({ auth, users, getUsers, deleteUser }) => {
 
                                         user.name.toLowerCase().includes(searchKey.toLowerCase()) ?
 
-                                            <UserToast auth={auth} key={user._id} user={user} deleteUser={deleteUser} fromSearch={true} />
+                                            <UserToast key={user._id} user={user} deleteUser={deleteUser} fromSearch={true} />
                                             : null
                                     ))}
                             </Row>}
@@ -44,7 +44,7 @@ const UsersTabPane = ({ auth, users, getUsers, deleteUser }) => {
                         </p>
                         <Row>
                             {adminsCreators && adminsCreators.map(aCreator => (
-                                <UserToast auth={auth} key={aCreator._id} user={aCreator} deleteUser={deleteUser} />
+                                <UserToast key={aCreator._id} user={aCreator} deleteUser={deleteUser} />
                             ))}
                         </Row>
 
@@ -54,7 +54,7 @@ const UsersTabPane = ({ auth, users, getUsers, deleteUser }) => {
                         <Row>
 
                             {users && users.users.map(newUser => (
-                                <UserToast auth={auth} key={newUser._id} user={newUser} deleteUser={deleteUser} />
+                                <UserToast key={newUser._id} user={newUser} deleteUser={deleteUser} />
                             )).slice(0, 8)}
                         </Row>
                     </>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
 import { Row, Button, Table, Alert } from 'reactstrap'
 import { connect } from 'react-redux'
 import { setSubscribers, deleteSubscriber } from '../../redux/subscribers/subscribers.actions'
@@ -6,8 +6,11 @@ import trash from '../../images/trash.svg'
 import LoginModal from '../auth/LoginModal'
 import SpinningBubbles from '../rLoading/SpinningBubbles'
 import moment from 'moment'
+import { authContext } from '../../appContexts'
 
-const Subscribers = ({ auth, subscribedUsers, setSubscribers, deleteSubscriber }) => {
+const Subscribers = ({ subscribedUsers, setSubscribers, deleteSubscriber }) => {
+
+    const auth = useContext(authContext)
 
     // Lifecycle methods
     useEffect(() => {
@@ -27,8 +30,7 @@ const Subscribers = ({ auth, subscribedUsers, setSubscribers, deleteSubscriber }
                         <SpinningBubbles title='subscribers' /> :
                         <LoginModal
                             textContent={'Login first to access subscribers'}
-                            textColor={'text-danger font-weight-bolder my-5 border rounded'}
-                            isAuthenticated={isAuthenticated} />
+                            textColor={'text-danger font-weight-bolder my-5 border rounded'} />
                 }
             </div> :
             curUser === 'Admin' ?

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom'
 import { Button, Row, Col, Form, FormGroup, Label, Input, Breadcrumb, BreadcrumbItem, Alert, Progress } from 'reactstrap';
 import LoginModal from '../auth/LoginModal'
@@ -8,8 +8,12 @@ import { getSchools } from '../../redux/schools/schools.actions';
 import { fetchSchoolLevels } from '../../redux/levels/levels.actions';
 import { fetchLevelFaculties } from '../../redux/faculties/faculties.actions';
 import SpinningBubbles from '../rLoading/SpinningBubbles';
+import { authContext } from '../../appContexts';
 
-const EditProfile = ({ auth, getSchools, schools, fetchSchoolLevels, schoolLevels, fetchLevelFaculties, levelFaculties, updateProfile, errors, successful }) => {
+const EditProfile = ({ getSchools, schools, fetchSchoolLevels, schoolLevels, fetchLevelFaculties, levelFaculties, updateProfile, errors, successful }) => {
+
+    // Context
+    const auth = useContext(authContext)
 
     // Access route parameters & history
     const { userId } = useParams()
@@ -311,8 +315,7 @@ const EditProfile = ({ auth, getSchools, schools, fetchSchoolLevels, schoolLevel
                         <SpinningBubbles /> :
                         <LoginModal
                             textContent={'Login first'}
-                            textColor={'text-danger font-weight-bolder my-5 border rounded'}
-                            isAuthenticated={auth.isAuthenticated} />
+                            textColor={'text-danger font-weight-bolder my-5 border rounded'} />
                 }
             </div>
     )

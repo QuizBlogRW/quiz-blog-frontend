@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Col, Row, TabPane, Card, Alert, ListGroup, Button } from 'reactstrap'
 import SpinningBubbles from '../../../rLoading/SpinningBubbles'
 import ReactLoading from "react-loading"
@@ -10,8 +10,12 @@ import PendingComments from './PendingComments'
 import SearchInput from '../../../SearchInput'
 import Pagination from '../../../webmaster/Pagination'
 import PageOf from '../../../webmaster/PageOf'
+import { currentUserContext } from '../../../../appContexts'
 
-const CommentsTabPane = ({ currentUser, questionComments, allQuizComments, getComments, getPaginatedComments, getAllComments }) => {
+const CommentsTabPane = ({ questionComments, allQuizComments, getComments, getPaginatedComments, getAllComments }) => {
+
+    // context
+    const currentUser = useContext(currentUserContext)
 
     const totPages = questionComments && questionComments.totalPages
     const uRole = currentUser && currentUser.role

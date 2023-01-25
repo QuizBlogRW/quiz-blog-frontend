@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Container, Row } from 'reactstrap';
 import { Link } from 'react-router-dom'
 import LoginModal from '../auth/LoginModal'
@@ -6,8 +6,12 @@ import LoginModal from '../auth/LoginModal'
 import { connect } from 'react-redux';
 import { deleteSubscriber } from '../../redux/subscribers/subscribers.actions';
 import SpinningBubbles from '../rLoading/SpinningBubbles';
+import { authContext } from '../../appContexts';
 
-const Unsubscribe = ({ auth, deleteSubscriber }) => {
+const Unsubscribe = ({ deleteSubscriber }) => {
+
+    // context
+    const auth = useContext(authContext)
 
     const [unsubscribed, setUnsubscribed] = useState(false);
 
@@ -47,8 +51,7 @@ const Unsubscribe = ({ auth, deleteSubscriber }) => {
                         <SpinningBubbles /> :
                         <LoginModal
                             textContent={'Login first'}
-                            textColor={'text-danger font-weight-bolder my-5 border rounded'}
-                            isAuthenticated={auth.isAuthenticated} />
+                            textColor={'text-danger font-weight-bolder my-5 border rounded'} />
                 }
             </div>
     )

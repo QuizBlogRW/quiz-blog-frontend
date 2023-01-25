@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useContext, useCallback } from 'react'
 import { Container, Col, Row, Button } from 'reactstrap'
 import { useParams, useNavigate } from 'react-router-dom'
 import CyclonLoading from '../../rLoading/CyclonLoading'
@@ -13,8 +13,11 @@ import NotAuthenticated from '../../auth/NotAuthenticated'
 // import SimilarQuizes from './SimilarQuizes'
 import ResponsiveAd from '../../adsenses/ResponsiveAd'
 import SquareAd from '../../adsenses/SquareAd'
+import { authContext } from '../../../appContexts'
 
-const ReviewQuiz = ({ auth, sC, getOneScore }) => {
+const ReviewQuiz = ({ sC, getOneScore }) => {
+
+    const auth = useContext(authContext)
 
     const [currentQuestion, setCurrentQuestion] = useState(0)
     const [lastAnswer, setLastAnswer] = useState(false)
@@ -134,7 +137,7 @@ const ReviewQuiz = ({ auth, sC, getOneScore }) => {
 
                     <CyclonLoading /> :
 
-                <NotAuthenticated auth={auth} />
+                <NotAuthenticated />
             }
         </Container>)
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Collapse, Navbar, NavbarBrand, Nav, NavbarText, Button, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, ListGroup, ListGroupItem } from 'reactstrap'
 import { Link, useLocation } from "react-router-dom"
 import RegisterModal from './auth/RegisterModal'
@@ -8,19 +8,24 @@ import CatDropdown from './CatDropdown'
 import logo from '../images/quizLogo.svg'
 import '@fortawesome/fontawesome-free/css/fontawesome.min.css'
 import EditPictureModal from './auth/EditPictureModal'
+import { authContext } from '../appContexts'
 
-const Header = ({ auth, categories }) => {
+const Header = () => {
 
+    // context
+    const auth = useContext(authContext)
+
+    // state
     const [isOpen, setIsOpen] = useState(false)
     const toggle = () => setIsOpen(!isOpen)
-
+    
     let location = useLocation()
 
     const authLinks = (
         <>
             <NavbarText className="mx-0 p-0 mr-1 text-warning d-flex justify-content-center align-items-center toDashboard">
 
-                <EditPictureModal auth={auth} />
+                <EditPictureModal />
 
                 <Link to="/#">
                     <small className="text-warning ml-2 d-none d-lg-flex">
@@ -28,12 +33,13 @@ const Header = ({ auth, categories }) => {
                     </small>
                 </Link>
 
-                <Dropdown isOpen={isOpen} toggle={toggle}>
+                <Dropdown isOpen={isOpen} toggle={() => setIsOpen(!isOpen)}>
                     <DropdownToggle>
                         <span className='profileDropDown mx-2 mx-lg-3'>
                             <i className={`fa fa-angle-${isOpen ? 'up' : 'down'}`}></i>
                         </span>
                     </DropdownToggle>
+
                     <DropdownMenu onClick={toggle}>
                         <DropdownItem header>
                             <ListGroup>
@@ -43,7 +49,7 @@ const Header = ({ auth, categories }) => {
 
                                 <ListGroupItem>
                                     {auth.user && auth.user.school ?
-                                        <Link to="#/">
+                                        <Link to={`/edit-profile/${auth.user && auth.user._id}`}>
                                             <span className={`${auth.user && !auth.user.school ? 'text-danger' : ''}`}>
                                                 {(auth.user && auth.user.school.title)}
                                             </span>
@@ -55,7 +61,7 @@ const Header = ({ auth, categories }) => {
 
                                 <ListGroupItem>
                                     {auth.user && auth.user.level ?
-                                        <Link to="#/">
+                                        <Link to={`/edit-profile/${auth.user && auth.user._id}`}>
                                             <span className={`${auth.user && !auth.user.level ? 'text-danger' : ''}`}>
                                                 {(auth.user && auth.user.level.title)}
                                             </span>
@@ -67,7 +73,7 @@ const Header = ({ auth, categories }) => {
 
                                 <ListGroupItem>
                                     {auth.user && auth.user.faculty ?
-                                        <Link to="#/">
+                                        <Link to={`/edit-profile/${auth.user && auth.user._id}`}>
                                             <span className={`${auth.user && !auth.user.faculty ? 'text-danger' : ''}`}>
                                                 {(auth.user && auth.user.faculty.title)}
                                             </span>
@@ -79,7 +85,7 @@ const Header = ({ auth, categories }) => {
 
                                 <ListGroupItem>
                                     {auth.user && auth.user.year ?
-                                        <Link to="#/">
+                                        <Link to={`/edit-profile/${auth.user && auth.user._id}`}>
                                             <span className={`${auth.user && !auth.user.year ? 'text-danger' : ''}`}>
                                                 {(auth.user && auth.user.year)}
                                             </span>
@@ -108,6 +114,7 @@ const Header = ({ auth, categories }) => {
                         </DropdownItem>
 
                     </DropdownMenu>
+
                 </Dropdown>
             </NavbarText>
 
@@ -118,13 +125,12 @@ const Header = ({ auth, categories }) => {
 
     const guestLinks = (<>
         <NavbarText className="mr-1 login-modal">
-            <LoginModal isAuthenticated={auth.isAuthenticated} />
+            <LoginModal />
         </NavbarText>
         <NavbarText className="mr-1 register-modal">
-            <RegisterModal isAuthenticated={auth.isAuthenticated} />
+            <RegisterModal />
         </NavbarText>
     </>)
-
 
     // If the route starts with /statistics, then don't show the footer
     if (location.pathname.startsWith('/statistics')) {
@@ -149,18 +155,18 @@ const Header = ({ auth, categories }) => {
                                     <Link to="/" className="text-white back-home-link">Back Home</Link>
                                 </Button> : null}
 
-                        <CatDropdown categories={categories} />
+                        <CatDropdown />
 
                         <NavbarText className="mr-2 mr-md-4">
                             <Link to="/course-notes" className="text-white">Notes</Link>
                         </NavbarText>
-                        <NavbarText className="mr-2 mr-md-4">
+                        <NavbarText className="mr-1 mr-md-4">
                             <Link to="/blog" className="text-white">Blog</Link>
                         </NavbarText>
-                        <NavbarText className="mr-2 mr-md-4">
+                        <NavbarText className="mr-1 mr-md-4">
                             <Link to="/about" className="text-white">About</Link>
                         </NavbarText>
-                        <NavbarText className="mr-1 mr-md-4">
+                        <NavbarText className="mr-0 mr-md-4">
                             <Link to="/contact" className="text-white">Contact</Link>
                         </NavbarText>
                         {auth.isAuthenticated ? authLinks : guestLinks}

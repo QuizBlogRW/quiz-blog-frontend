@@ -62,8 +62,7 @@ const ChallengeeModal = ({ auth, users, getUsers, quizID }) => {
                                 <SpinningBubbles /> :
                                 <LoginModal
                                     textContent={'Login first'}
-                                    textColor={'text-danger font-weight-bolder my-5 border rounded'}
-                                    isAuthenticated={auth.isAuthenticated} />
+                                    textColor={'text-danger font-weight-bolder my-5 border rounded'} />
                         }
                     </div>}
 

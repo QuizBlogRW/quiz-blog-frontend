@@ -1,14 +1,17 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
 import { Row, Col, Card, Button, CardTitle, CardText, TabPane } from 'reactstrap'
 import { connect } from 'react-redux'
-import { getPostCategories } from '../../../redux/blog/postCategories/postCategories.actions'
+import { getPostCategories, deletePostCategory } from '../../../redux/blog/postCategories/postCategories.actions'
 import { Link } from 'react-router-dom'
 import EditBPCategory from './EditBPCategory'
-import DeleteBPCategory from './DeleteBPCategory'
 import CreateBPCategory from './CreateBPCategory'
 import SpinningBubbles from '../../rLoading/SpinningBubbles'
+import trash from '../../../images/trash.svg'
+import { authContext } from '../../../appContexts'
 
-const PostCategoriesTabPane = ({ auth, bPcats, getPostCategories }) => {
+const PostCategoriesTabPane = ({ bPcats, getPostCategories, deletePostCategory }) => {
+
+  const auth = useContext(authContext)
 
   useEffect(() => {
     getPostCategories()
@@ -18,7 +21,7 @@ const PostCategoriesTabPane = ({ auth, bPcats, getPostCategories }) => {
     <TabPane tabId="7">
 
       <Button size="sm" outline color="info" className="mx-3 mb-2 p-2 btn btn-warning">
-        <CreateBPCategory auth={auth} />
+        <CreateBPCategory />
       </Button>
 
       {bPcats.isLoading ?
@@ -43,18 +46,15 @@ const PostCategoriesTabPane = ({ auth, bPcats, getPostCategories }) => {
                   </Button>
 
                   {
-                    auth.user.role === 'Admin' ?
+                    auth.user.role === 'Admin' || auth.user.role === 'SuperAdmin' ?
                       <>
                         <Button size="sm" color="link" className="mx-2">
                           <EditBPCategory
-                            auth={auth}
                             categoryToEdit={category} />
                         </Button>
 
-                        <Button size="sm" color="link" className="mx-2" >
-                          <DeleteBPCategory
-                            catTitle={category.title}
-                            catID={category._id} />
+                        <Button size="sm" color="link" className="mx-2 mt-0 p-0" onClick={() => deletePostCategory(category._id)}>
+                          <img src={trash} alt="" width="16" height="16" />
                         </Button>
                       </>
                       : null
@@ -76,4 +76,4 @@ const mapStateToProps = state => ({
   bPcats: state.postCategoriesReducer
 })
 
-export default connect(mapStateToProps, { getPostCategories })(PostCategoriesTabPane)
+export default connect(mapStateToProps, { getPostCategories, deletePostCategory })(PostCategoriesTabPane)

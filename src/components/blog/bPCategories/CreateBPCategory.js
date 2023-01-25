@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
 import { connect } from 'react-redux'
 import LoginModal from '../../auth/LoginModal'
@@ -8,8 +8,11 @@ import { createPostCategory } from '../../../redux/blog/postCategories/postCateg
 import Webmaster from '../../webmaster/Webmaster'
 import SpinningBubbles from '../../rLoading/SpinningBubbles'
 import Notification from '../../categories/Notification'
+import { authContext } from '../../../appContexts'
 
-const CreateBPCategory = ({ auth, clearErrors, clearSuccess, createPostCategory }) => {
+const CreateBPCategory = ({ clearErrors, clearSuccess, createPostCategory }) => {
+
+    const auth = useContext(authContext)
 
     const [bPCategoryState, setBPCategoryState] = useState({
         title: '',
@@ -120,7 +123,7 @@ const CreateBPCategory = ({ auth, clearErrors, clearSuccess, createPostCategory 
                     </Modal>
                 </div> :
 
-                <Webmaster auth={auth} /> :
+                <Webmaster /> :
 
             // If not authenticated or loading
             <div className="vh-100 d-flex justify-content-center align-items-center text-danger">
@@ -129,8 +132,7 @@ const CreateBPCategory = ({ auth, clearErrors, clearSuccess, createPostCategory 
                         <SpinningBubbles /> :
                         <LoginModal
                             textContent={'Login first'}
-                            textColor={'text-danger font-weight-bolder my-5 border rounded'}
-                            isAuthenticated={auth.isAuthenticated} />
+                            textColor={'text-danger font-weight-bolder my-5 border rounded'} />
                 }
             </div>
     )

@@ -73,7 +73,7 @@ const AddLevel = ({ auth, createLevel, schools, errors, successful, clearErrors,
 
             auth.user.role === 'Visitor' ?
 
-                <Webmaster auth={auth} /> :
+                <Webmaster /> :
 
                 <div>
                     <NavLink onClick={toggle} className="text-success p-0">
@@ -154,8 +154,7 @@ const AddLevel = ({ auth, createLevel, schools, errors, successful, clearErrors,
                         <SpinningBubbles /> :
                         <LoginModal
                             textContent={'Login first'}
-                            textColor={'text-danger font-weight-bolder my-5 border rounded'}
-                            isAuthenticated={auth.isAuthenticated} />
+                            textColor={'text-danger font-weight-bolder my-5 border rounded'} />
                 }
             </div>
     );

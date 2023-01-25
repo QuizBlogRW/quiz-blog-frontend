@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input, NavLink, CustomInput } from 'reactstrap'
 import LoginModal from '../../auth/LoginModal'
 import { clearErrors } from '../../../redux/error/error.actions'
@@ -8,8 +8,12 @@ import { createAdvert } from '../../../redux/adverts/adverts.actions'
 import Webmaster from '../Webmaster'
 import SpinningBubbles from '../../rLoading/SpinningBubbles'
 import Notification from '../../categories/Notification'
+import { authContext } from '../../../appContexts'
 
-const CreateAdvert = ({ auth, clearErrors, clearSuccess, createAdvert }) => {
+const CreateAdvert = ({ clearErrors, clearSuccess, createAdvert }) => {
+
+    // context
+    const auth = useContext(authContext)
 
     const [advertState, setAdvertState] = useState({
         caption: '',
@@ -113,7 +117,7 @@ const CreateAdvert = ({ auth, clearErrors, clearSuccess, createAdvert }) => {
                                         <strong>Caption</strong>
                                     </Label>
 
-                                    <Input type="text" name="caption" placeholder="Advert caption ..." className="mb-3" onChange={onChangeHandler} value={advertState.caption}/>
+                                    <Input type="text" name="caption" placeholder="Advert caption ..." className="mb-3" onChange={onChangeHandler} value={advertState.caption} />
 
                                     <Label for="owner">
                                         <strong>Owner</strong>
@@ -135,7 +139,7 @@ const CreateAdvert = ({ auth, clearErrors, clearSuccess, createAdvert }) => {
                                     <Input type="text" name="phone" placeholder="Phone ..." className="mb-3" onChange={onChangeHandler} value={advertState.phone} />
 
                                     <Label for="advert_image">
-                                        <strong>Image</strong> 
+                                        <strong>Image</strong>
                                         <small className="text-info"> (.jpg, .jpeg, .png, .svg)</small>
                                     </Label>
 
@@ -152,7 +156,7 @@ const CreateAdvert = ({ auth, clearErrors, clearSuccess, createAdvert }) => {
                     </Modal>
                 </div> :
 
-                <Webmaster auth={auth} /> :
+                <Webmaster /> :
 
             // If not authenticated or loading
             <div className="vh-100 d-flex justify-content-center align-items-center text-danger">
@@ -161,8 +165,7 @@ const CreateAdvert = ({ auth, clearErrors, clearSuccess, createAdvert }) => {
                         <SpinningBubbles /> :
                         <LoginModal
                             textContent={'Login first'}
-                            textColor={'text-danger font-weight-bolder my-5 border rounded'}
-                            isAuthenticated={auth.isAuthenticated} />
+                            textColor={'text-danger font-weight-bolder my-5 border rounded'} />
                 }
             </div>
     )

@@ -1,12 +1,15 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
 import { Row, Alert } from 'reactstrap'
 import { connect } from 'react-redux'
 import { setBroadcasts, deleteBroadcast } from '../../redux/broadcasts/broadcasts.actions'
 import BroadcastsCard from './BroadcastCard'
 import LoginModal from '../auth/LoginModal'
 import SpinningBubbles from '../rLoading/SpinningBubbles'
+import { authContext } from '../../appContexts'
 
-const Broadcasts = ({ auth, broadcasts, setBroadcasts, deleteBroadcast }) => {
+const Broadcasts = ({ broadcasts, setBroadcasts, deleteBroadcast }) => {
+    
+    const auth = useContext(authContext)
 
     const broadcastsToUse = broadcasts && broadcasts.allBroadcasts
 
@@ -29,8 +32,7 @@ const Broadcasts = ({ auth, broadcasts, setBroadcasts, deleteBroadcast }) => {
                         <SpinningBubbles title='subscribers' /> :
                         <LoginModal
                             textContent={'Login first to access subscribers'}
-                            textColor={'text-danger font-weight-bolder my-5 border rounded'}
-                            isAuthenticated={isAuthenticated} />
+                            textColor={'text-danger font-weight-bolder my-5 border rounded'} />
                 }
             </div> :
             curUserRole === 'Admin' || curUserRole === 'SuperAdmin' ?

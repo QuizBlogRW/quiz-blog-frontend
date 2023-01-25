@@ -51,7 +51,7 @@ const NotesPapers = ({ getLandingDisplayNotes, getLandingDisplayNotesNoLimit, lD
                     <h3 className="mt-0 mt-lg-3 pt-4 py-lg-3 text-danger text-center font-weight-bold">NEWEST NOTES & PAST PAPERS</h3>
                 </Col>
 
-                <Col sm="4" className='p-1 p-lg-2 d-flex flex-column justify-content-around w-100'>
+                <Col sm="3" className='p-1 p-lg-2 d-flex flex-column justify-content-around w-100'>
                     <Suspense fallback={<div className="p-1 m-1 d-flex justify-content-center align-items-center w-100">
                         <Spinner color="primary" />
                     </div>}>
@@ -60,7 +60,7 @@ const NotesPapers = ({ getLandingDisplayNotes, getLandingDisplayNotesNoLimit, lD
                         </div>
                     </Suspense>
                 </Col>
-                <Col sm="8" className="px-0 px-sm-5 w-100">
+                <Col sm="9" className="px-0 px-sm-5 w-100">
 
                     {lDLimitedNotesLoading ?
                         <div className="p-5 m-5 d-flex justify-content-center align-items-center">

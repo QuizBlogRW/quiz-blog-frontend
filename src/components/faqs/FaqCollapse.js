@@ -1,4 +1,4 @@
-import React, { useEffect, useState, lazy, Suspense } from 'react'
+import React, { useEffect, useState, lazy, Suspense, useContext } from 'react'
 import { Row, Col, Jumbotron, Button, Spinner } from 'reactstrap'
 import { Collapse } from "react-collapse"
 import { connect } from 'react-redux'
@@ -13,11 +13,14 @@ import EditFaq from './EditFaq'
 import DeleteFaq from './DeleteFaq'
 import AddVideo from '../quizes/AddVideo'
 import EmbeddedVideos from '../quizes/EmbeddedVideos'
+import { authContext } from '../../appContexts'
 
 const GridMultiplex = lazy(() => import('../adsenses/GridMultiplex'))
 const InFeedAd = lazy(() => import('../adsenses/InFeedAd'))
 
-const FaqCollapse = ({ auth, faqs, getFaqs }) => {
+const FaqCollapse = ({ faqs, getFaqs }) => {
+
+    const auth = useContext(authContext)
 
     const faqsToUse = faqs && faqs.allFaqs
     const currentUser = auth && auth.user
@@ -74,7 +77,7 @@ const FaqCollapse = ({ auth, faqs, getFaqs }) => {
 
                 {(currentUser && currentUser.role) === 'Admin' || (currentUser && currentUser.role) === 'SuperAdmin' ?
                     <Row className="m-lg-4 px-lg-5 d-flex justify-content-around align-items-center text-primary">
-                        <CreateFaq currentUser={currentUser} />
+                        <CreateFaq />
                     </Row> :
 
                     <Suspense fallback={<div className="p-3 m-3 d-flex justify-content-center align-items-center w-100">
@@ -110,7 +113,7 @@ const FaqCollapse = ({ auth, faqs, getFaqs }) => {
                                                 (currentUser && currentUser.role) === 'Admin' || (currentUser && currentUser.role) === 'SuperAdmin' ?
                                                     <>
                                                         <Button size="sm" color="link" className="mx-2">
-                                                            <EditFaq auth={auth} faqToEdit={faq} />
+                                                            <EditFaq faqToEdit={faq} />
                                                         </Button>
 
                                                         <Button size="sm" color="link" className="mx-2" >

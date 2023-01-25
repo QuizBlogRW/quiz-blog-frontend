@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { connect } from 'react-redux'
 import { Jumbotron, Button, Col, Row, Form, FormGroup, Input, Alert } from 'reactstrap'
 import SquareAd from '../adsenses/SquareAd'
@@ -8,9 +8,11 @@ import { clearErrors } from '../../redux/error/error.actions'
 import { clearSuccess } from '../../redux/success/success.actions'
 import './contact.css'
 import mail from '../../../src/images/mail.svg'
+import { authContext } from '../../appContexts'
 
+const Contact = ({ errors, successful, clearErrors, clearSuccess, sendMsg }) => {
 
-const Contact = ({ auth, errors, successful, clearErrors, clearSuccess, sendMsg }) => {
+    const auth = useContext(authContext)
 
     const currentUser = auth && auth.user
     // Alert

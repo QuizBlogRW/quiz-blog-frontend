@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Row, TabPane } from 'reactstrap';
 import { getDownloads, getCreatorDownloads, getUserDownloads, deleteDownload } from '../../redux/downloads/downloads.actions'
 import { connect } from 'react-redux'
@@ -6,8 +6,12 @@ import Pagination from './Pagination';
 import PageOf from './PageOf';
 import DownloadsTable from './DownloadsTable';
 import SpinningBubbles from '../rLoading/SpinningBubbles';
+import { currentUserContext } from '../../appContexts'
 
-const DownloadsTabPane = ({ currentUser, downloads, getDownloads, getCreatorDownloads, getUserDownloads, deleteDownload }) => {
+const DownloadsTabPane = ({ downloads, getDownloads, getCreatorDownloads, getUserDownloads, deleteDownload }) => {
+
+    // context
+    const currentUser = useContext(currentUserContext)
 
     const uId = currentUser && currentUser._id
     const uRole = currentUser && currentUser.role

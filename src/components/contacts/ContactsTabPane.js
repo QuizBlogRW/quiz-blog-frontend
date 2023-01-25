@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Row, TabPane } from 'reactstrap'
 import { connect } from 'react-redux'
 import { getContacts, getUserContacts, deleteContact } from '../../redux/contacts/contacts.actions'
@@ -6,8 +6,12 @@ import Pagination from '../webmaster/Pagination'
 import PageOf from '../webmaster/PageOf'
 import ContactCard from './ContactCard'
 import SpinningBubbles from '../rLoading/SpinningBubbles'
+import { currentUserContext } from '../../appContexts'
 
-const ContactsTabPane = ({ currentUser, contacts, getContacts, getUserContacts, deleteContact }) => {
+const ContactsTabPane = ({ contacts, getContacts, getUserContacts, deleteContact }) => {
+
+    // context
+    const currentUser = useContext(currentUserContext)
 
     const userEmail = currentUser && currentUser.email
     const uRole = currentUser && currentUser.role

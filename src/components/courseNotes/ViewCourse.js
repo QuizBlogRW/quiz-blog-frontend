@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { useParams } from 'react-router-dom'
 import ReactLoading from "react-loading";
 import LoginModal from '../auth/LoginModal'
@@ -11,9 +11,11 @@ import { getOneCourse } from '../../redux/courses/courses.actions'
 import DeleteIcon from '../../images/remove.svg';
 import { Container, Card, Button, CardTitle, CardText, Alert, Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import SpinningBubbles from '../rLoading/SpinningBubbles';
+import { authContext } from '../../appContexts'
 
-const ViewCourse = ({ auth, getChaptersByCourse, chaptersBy, getOneCourse, deleteChapter, oneCourse }) => {
+const ViewCourse = ({ getChaptersByCourse, chaptersBy, getOneCourse, deleteChapter, oneCourse }) => {
 
+    const auth = useContext(authContext)
     const [activeIndex, setActiveIndex] = useState(null);
 
     const collapse = index => {
@@ -39,8 +41,7 @@ const ViewCourse = ({ auth, getChaptersByCourse, chaptersBy, getOneCourse, delet
                         <SpinningBubbles /> :
                         <LoginModal
                             textContent={'Login first'}
-                            textColor={'text-danger font-weight-bolder my-5 border rounded'}
-                            isAuthenticated={auth.isAuthenticated} />
+                            textColor={'text-danger font-weight-bolder my-5 border rounded'} />
                 }
             </div> :
 
@@ -62,7 +63,7 @@ const ViewCourse = ({ auth, getChaptersByCourse, chaptersBy, getOneCourse, delet
                                 </>
                                 {auth.user.role !== 'Visitor' ?
                                     <Button outline color="warning" className="ml-auto">
-                                        <strong><AddChapter auth={auth} course={oneCourse.oneCourse} /></strong>
+                                        <strong><AddChapter course={oneCourse.oneCourse} /></strong>
                                     </Button> : null}
 
                             </Breadcrumb>
@@ -92,7 +93,7 @@ const ViewCourse = ({ auth, getChaptersByCourse, chaptersBy, getOneCourse, delet
 
                                         <span className="ml-auto">
                                             <Button size="sm" color="link" className="mx-2">
-                                                <EditChapterModal auth={auth} idToUpdate={chapter._id} editTitle={chapter.title} editDesc={chapter.description} />
+                                                <EditChapterModal idToUpdate={chapter._id} editTitle={chapter.title} editDesc={chapter.description} />
                                             </Button>
 
                                             <Button size="sm" color="link" className="mr-2" onClick={() => deleteChapter(chapter._id)}>
@@ -118,7 +119,7 @@ const ViewCourse = ({ auth, getChaptersByCourse, chaptersBy, getOneCourse, delet
 
                                         <div id={`collapse${index}`} className={`collapse ${(activeIndex === index || activeIndex === null) ? 'show' : ''}`} aria-labelledby={`heading${index}`} data-parent="#accordion">
                                             <div className="card-body">
-                                                <CourseNotes chapter={chapter} auth={auth} />
+                                                <CourseNotes chapter={chapter} />
                                             </div>
                                         </div>
                                     </div>
@@ -130,7 +131,7 @@ const ViewCourse = ({ auth, getChaptersByCourse, chaptersBy, getOneCourse, delet
                             <strong>No chapters yet for this course!</strong>
                             {auth.user.role !== 'Visitor' ?
                                 <Button outline color="success">
-                                    <strong><AddChapter auth={auth} course={oneCourse.oneCourse} /></strong>
+                                    <strong><AddChapter course={oneCourse.oneCourse} /></strong>
                                 </Button> : null}
                         </Alert> :
                     <ReactLoading type="spinningBubbles" color="#33FFFC" />

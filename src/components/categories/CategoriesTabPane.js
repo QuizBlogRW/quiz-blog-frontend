@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Row, Col, Card, Button, CardTitle, CardText, TabPane } from 'reactstrap'
 import { Link } from "react-router-dom"
 import AddQuiz from '../quizes/AddQuiz'
@@ -6,14 +6,20 @@ import EditCategory from './EditCategory'
 import DeleteCategory from './DeleteCategory'
 import CreateCategory from '../categories/CreateCategory'
 import SpinningBubbles from '../rLoading/SpinningBubbles'
+import { authContext, categoriesContext, courseCategoriesContext } from '../../appContexts'
 
-const CategoriesTabPane = ({ auth, categories, courseCategories }) => {
+const CategoriesTabPane = () => {
+
+    // Context
+    const auth = useContext(authContext)
+    const categories = useContext(categoriesContext)
+    const courseCategories = useContext(courseCategoriesContext)
 
     return (
         <TabPane tabId="1">
 
             <Button size="sm" outline color="info" className="mx-3 mb-2 p-2 btn btn-warning">
-                <CreateCategory auth={auth} courseCategories={courseCategories.allCourseCategories} />
+                <CreateCategory courseCategories={courseCategories.allCourseCategories} />
             </Button>
 
             {categories.isLoading ?
@@ -36,16 +42,15 @@ const CategoriesTabPane = ({ auth, categories, courseCategories }) => {
 
                                     <Button size="sm" outline color="info" className="mx-2">
                                         <strong>
-                                            <AddQuiz category={category} auth={auth} />
+                                            <AddQuiz category={category} />
                                         </strong>
                                     </Button>
 
                                     {
-                                        auth.user.role === 'Admin' ?
+                                        auth.user.role === 'Admin' || auth.user.role === 'SuperAdmin' ?
                                             <>
                                                 <Button size="sm" color="link" className="mx-2">
                                                     <EditCategory
-                                                        auth={auth}
                                                         categoryToEdit={category}
                                                         courseCategories={courseCategories.allCourseCategories} />
                                                 </Button>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { connect } from 'react-redux'
 import LoginModal from './LoginModal'
 import uploadimage from '../../images/uploadimage.svg'
@@ -7,8 +7,12 @@ import { clearErrors } from '../../redux/error/error.actions'
 import { clearSuccess } from '../../redux/success/success.actions'
 import { Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Alert, CustomInput, Progress, UncontrolledTooltip } from 'reactstrap'
 import SpinningBubbles from '../rLoading/SpinningBubbles'
+import { authContext } from '../../appContexts'
 
-const EditPictureModal = ({ auth, updateProfileImage, errors, successful, clearErrors, clearSuccess }) => {
+const EditPictureModal = ({ updateProfileImage, errors, successful, clearErrors, clearSuccess }) => {
+
+  // Get the user id and image from the auth context
+  const auth = useContext(authContext)
 
   const uId = auth && auth.user._id
   const userImage = auth && auth.user.image
@@ -125,8 +129,7 @@ const EditPictureModal = ({ auth, updateProfileImage, errors, successful, clearE
             <SpinningBubbles /> :
             <LoginModal
               textContent={'Login first'}
-              textColor={'text-danger font-weight-bolder my-5 border rounded'}
-              isAuthenticated={auth.isAuthenticated} />
+              textColor={'text-danger font-weight-bolder my-5 border rounded'} />
         }
       </div>
   )

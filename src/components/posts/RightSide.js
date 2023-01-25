@@ -65,9 +65,9 @@ const RightSide = ({ auth, subscribeToNewsLetter, clearErrors, error, categories
             /> */}
             {/* <GoogleAds slot="5114335506" /> */}
             {/* Google square ad */}
-            <Row className='w-100'>
-                <Col sm="12" className='w-100'>
-                    <div className='w-100'>
+            <Row className='w-100 d-flex justify-content-center align-items-center'>
+                <Col sm="12" className='w-100 d-flex justify-content-center align-items-center'>
+                    <div className='w-100 d-flex justify-content-center align-items-center'>
                         <SquareAd />
                     </div>
                 </Col>
@@ -83,9 +83,9 @@ const RightSide = ({ auth, subscribeToNewsLetter, clearErrors, error, categories
                     <ViewCategory categories={categories} />
                 </Suspense>
             </Row>
-            <Row className='w-100'>
-                <Col sm="12" className='w-100'>
-                    <div className='w-100'>
+            <Row className='w-100 d-flex justify-content-center align-items-center'>
+                <Col sm="12" className='w-100 d-flex justify-content-center align-items-center'>
+                    <div className='w-100 d-flex justify-content-center align-items-center'>
                         <ResponsiveAd />
                     </div>
                 </Col>
@@ -121,9 +121,9 @@ const RightSide = ({ auth, subscribeToNewsLetter, clearErrors, error, categories
             </Row>
 
             {/* Google square ad */}
-            <Row className='w-100'>
-                <Col sm="12" className='w-100'>
-                    <div className='w-100'>
+            <Row className='w-100 d-flex justify-content-center align-items-center'>
+                <Col sm="12" className='w-100 d-flex justify-content-center align-items-center'>
+                    <div className='w-100 d-flex justify-content-center align-items-center'>
                         <SquareAd />
                     </div>
                 </Col>

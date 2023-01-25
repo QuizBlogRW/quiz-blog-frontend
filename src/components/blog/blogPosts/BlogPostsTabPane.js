@@ -5,7 +5,7 @@ import { getBlogPosts, deleteBlogPost } from '../../../redux/blog/blogPosts/blog
 import SpinningBubbles from '../../rLoading/SpinningBubbles'
 import BPTable from './BPTable'
 
-const BlogPostsTabPane = ({ auth, bposts, getBlogPosts, deleteBlogPost }) => {
+const BlogPostsTabPane = ({ bposts, getBlogPosts, deleteBlogPost }) => {
 
     const bpostsToUse = bposts && bposts.allBlogPosts
 
@@ -14,8 +14,6 @@ const BlogPostsTabPane = ({ auth, bposts, getBlogPosts, deleteBlogPost }) => {
         getBlogPosts()
     }, [getBlogPosts])
 
-    const currentUser = auth && auth.user
-
     return (
         <TabPane tabId="8" className='mx-4 my-5'>
             {bposts.isLoading ?
@@ -23,8 +21,7 @@ const BlogPostsTabPane = ({ auth, bposts, getBlogPosts, deleteBlogPost }) => {
                 <Row>
                     <BPTable
                         bpostsToUse={bpostsToUse}
-                        deleteBlogPost={deleteBlogPost}
-                        currentUser={currentUser} />
+                        deleteBlogPost={deleteBlogPost} />
                 </Row>
             }
         </TabPane>

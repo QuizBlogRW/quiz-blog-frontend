@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input, NavLink, Alert, Progress } from 'reactstrap'
 import AddIcon from '../../images/plus.svg'
 import LoginModal from '../auth/LoginModal'
@@ -8,8 +8,12 @@ import { clearErrors } from '../../redux/error/error.actions'
 import { clearSuccess } from '../../redux/success/success.actions'
 import { createCourse } from '../../redux/courses/courses.actions'
 import SpinningBubbles from '../rLoading/SpinningBubbles'
+import { authContext } from '../../appContexts'
 
-const AddCourse = ({ auth, createCourse, categoryId, errors, successful, clearErrors, clearSuccess }) => {
+const AddCourse = ({ createCourse, categoryId, errors, successful, clearErrors, clearSuccess }) => {
+
+    // context
+    const auth = useContext(authContext)
 
     const [courseState, setCourseState] = useState({
         title: '',
@@ -144,7 +148,7 @@ const AddCourse = ({ auth, createCourse, categoryId, errors, successful, clearEr
                     </Modal>
                 </div> :
 
-                <Webmaster auth={auth} /> :
+                <Webmaster /> :
 
             // If not authenticated or loading
             // If not authenticated or loading
@@ -154,8 +158,7 @@ const AddCourse = ({ auth, createCourse, categoryId, errors, successful, clearEr
                         <SpinningBubbles /> :
                         <LoginModal
                             textContent={'Login first'}
-                            textColor={'text-danger font-weight-bolder my-5 border rounded'}
-                            isAuthenticated={auth.isAuthenticated} />
+                            textColor={'text-danger font-weight-bolder my-5 border rounded'} />
                 }
             </div>
     )

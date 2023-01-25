@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Row, Col, TabContent, Nav, NavItem, NavLink } from 'reactstrap'
 import classnames from 'classnames'
 import LoginModal from '../auth/LoginModal'
@@ -14,10 +14,15 @@ import SpinningBubbles from '../rLoading/SpinningBubbles'
 import CommentsTabPane from '../quizes/review/questionComments/CommentsTabPane'
 import AdvertsTabPane from './adverts/AdvertsTabPane'
 import TopRow from './TopRow.js'
+import { authContext, socketContext, onlineListContext, currentUserContext } from '../../appContexts'
 
-const Webmaster = ({ auth, socket, onlineList, categories, courseCategories }) => {
+const Webmaster = () => {
 
-    const currentUser = auth && auth.user
+    // Context
+    const auth = useContext(authContext)
+    const socket = useContext(socketContext)
+    const onlineList = useContext(onlineListContext)
+    const currentUser = useContext(currentUserContext)
 
     // State
     const [activeTab, setActiveTab] = useState('1')
@@ -146,26 +151,26 @@ const Webmaster = ({ auth, socket, onlineList, categories, courseCategories }) =
 
                             {currentUser.role !== 'Visitor' ?
                                 <>
-                                    <CategoriesTabPane auth={auth} categories={categories} courseCategories={courseCategories} />
-                                    <QuizesTabPane auth={auth} categories={categories} />
+                                    <CategoriesTabPane />
+                                    <QuizesTabPane />
                                 </> : null}
 
                             {/* Any user authenticated */}
-                            <ScoresTabPane currentUser={currentUser} />
-                            <DownloadsTabPane currentUser={currentUser} />
-                            <ContactsTabPane currentUser={currentUser} />
+                            <ScoresTabPane />
+                            <DownloadsTabPane />
+                            <ContactsTabPane />
 
                             { // CAUSING PROBLEMS WHEN VISITOR IS LOGGED IN
                                 currentUser.role !== 'Visitor' ?
-                                    <PostCategoriesTabPane auth={auth} /> : null}
+                                    <PostCategoriesTabPane /> : null}
 
-                            <BlogPostsTabPane auth={auth} />
+                            <BlogPostsTabPane />
 
                             {currentUser.role === 'Admin' || currentUser.role === 'SuperAdmin' ?
                                 <>
-                                    <UsersTabPane auth={auth} />
-                                    <CommentsTabPane currentUser={currentUser} />
-                                    <AdvertsTabPane auth={auth} />
+                                    <UsersTabPane />
+                                    <CommentsTabPane />
+                                    <AdvertsTabPane />
                                 </> : null}
                         </TabContent>
                     </Col>
@@ -180,8 +185,7 @@ const Webmaster = ({ auth, socket, onlineList, categories, courseCategories }) =
                         <SpinningBubbles /> :
                         <LoginModal
                             textContent={'Login first'}
-                            textColor={'text-danger font-weight-bolder my-5 border rounded'}
-                            isAuthenticated={auth.isAuthenticated} />
+                            textColor={'text-danger font-weight-bolder my-5 border rounded'} />
                 }
             </div>
     )

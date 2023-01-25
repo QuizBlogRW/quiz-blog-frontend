@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input, NavLink, Alert, Progress } from 'reactstrap'
 import AddIcon from '../../images/plus.svg'
 import LoginModal from '../auth/LoginModal'
@@ -8,8 +8,12 @@ import { clearErrors } from '../../redux/error/error.actions'
 import { clearSuccess } from '../../redux/success/success.actions'
 import { createCourseCategory } from '../../redux/courseCategories/courseCategories.actions'
 import SpinningBubbles from '../rLoading/SpinningBubbles'
+import { authContext } from '../../appContexts'
 
-const AddCourseCategory = ({ auth, createCourseCategory, errors, successful, clearErrors, clearSuccess }) => {
+const AddCourseCategory = ({ createCourseCategory, errors, successful, clearErrors, clearSuccess }) => {
+
+    // context
+    const auth = useContext(authContext)
 
     const [cCatState, setCCatState] = useState({
         title: '',
@@ -78,7 +82,7 @@ const AddCourseCategory = ({ auth, createCourseCategory, errors, successful, cle
 
             auth.user.role === 'Visitor' ?
 
-                <Webmaster auth={auth} /> :
+                <Webmaster /> :
 
                 <div>
                     <NavLink onClick={toggle} className="text-success p-0">
@@ -156,8 +160,7 @@ const AddCourseCategory = ({ auth, createCourseCategory, errors, successful, cle
                         <SpinningBubbles /> :
                         <LoginModal
                             textContent={'Login first'}
-                            textColor={'text-danger font-weight-bolder my-5 border rounded'}
-                            isAuthenticated={auth.isAuthenticated} />
+                            textColor={'text-danger font-weight-bolder my-5 border rounded'} />
                 }
             </div>
     )

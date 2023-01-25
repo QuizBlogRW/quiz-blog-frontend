@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Row, TabPane } from 'reactstrap';
 import { connect } from 'react-redux'
 import { setScores, getCreatorScores, getTakerScores, deleteScore } from '../../redux/scores/scores.actions'
@@ -6,8 +6,12 @@ import Pagination from './Pagination';
 import PageOf from './PageOf';
 import ScoresTable from './ScoresTable'
 import SpinningBubbles from '../rLoading/SpinningBubbles';
+import { currentUserContext } from '../../appContexts'
 
-const ScoresTabPane = ({ currentUser, scores, setScores, getCreatorScores, getTakerScores, deleteScore }) => {
+const ScoresTabPane = ({ scores, setScores, getCreatorScores, getTakerScores, deleteScore }) => {
+
+    // context
+    const currentUser = useContext(currentUserContext)
 
     const uId = currentUser && currentUser._id
     const uRole = currentUser && currentUser.role

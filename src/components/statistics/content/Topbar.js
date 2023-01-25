@@ -1,9 +1,14 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import { Navbar, Button, NavbarToggler, Collapse, Nav, NavItem, NavLink } from "reactstrap"
 import { Link } from "react-router-dom"
 import Logout from '../../auth/Logout'
+import { authContext } from '../../../appContexts'
 
-const Topbar = ({ toggleSidebar, auth }) => {
+const Topbar = ({ toggleSidebar }) => {
+
+  // context 
+  const auth = useContext(authContext)
+
   const [topbarIsOpen, setTopbarOpen] = useState(true)
   const toggleTopbar = () => setTopbarOpen(!topbarIsOpen)
 

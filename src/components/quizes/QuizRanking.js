@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
 import ReactLoading from "react-loading"
 import LoginModal from '../auth/LoginModal'
 import Webmaster from '../webmaster/Webmaster'
@@ -9,8 +9,11 @@ import { setRankingScores } from '../../redux/scores/scores.actions'
 import SpinningBubbles from '../rLoading/SpinningBubbles'
 import AddVideo from './AddVideo'
 import ViewQuizComments from './ViewQuizComments'
+import { authContext } from '../../appContexts'
 
-const QuizRanking = ({ auth, scores, setRankingScores }) => {
+const QuizRanking = ({ scores, setRankingScores }) => {
+
+    const auth = useContext(authContext)
 
     const { quizID } = useParams()
     const currentUser = auth && auth.user
@@ -91,7 +94,7 @@ const QuizRanking = ({ auth, scores, setRankingScores }) => {
 
                     </Row>
                 </> :
-                <Webmaster auth={auth} /> :
+                <Webmaster /> :
 
             // If not authenticated or loading
             <div className="vh-100 d-flex justify-content-center align-items-center text-danger">
@@ -100,8 +103,7 @@ const QuizRanking = ({ auth, scores, setRankingScores }) => {
                         <SpinningBubbles /> :
                         <LoginModal
                             textContent={'Login first'}
-                            textColor={'text-danger font-weight-bolder my-5 border rounded'}
-                            isAuthenticated={auth.isAuthenticated} />
+                            textColor={'text-danger font-weight-bolder my-5 border rounded'}  />
                 }
             </div>
     )

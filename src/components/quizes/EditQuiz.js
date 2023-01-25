@@ -1,14 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input, Alert } from 'reactstrap'
 import LoginModal from '../auth/LoginModal'
 import Webmaster from '../webmaster/Webmaster'
-
 import { connect } from 'react-redux'
 import { updateQuiz } from '../../redux/quizes/quizes.actions'
 import EditIcon from '../../images/edit.svg'
 import SpinningBubbles from '../rLoading/SpinningBubbles'
+import { authContext, categoriesContext } from '../../appContexts'
 
-const EditQuiz = ({ categories, quizToEdit, auth, updateQuiz }) => {
+const EditQuiz = ({ quizToEdit, updateQuiz }) => {
+
+    // context
+    const auth = useContext(authContext)
+    const categories = useContext(categoriesContext)
 
     const [quizState, setQuizState] = useState({
         quizID: quizToEdit._id,
@@ -132,7 +136,7 @@ const EditQuiz = ({ categories, quizToEdit, auth, updateQuiz }) => {
                     </Modal>
                 </div> :
 
-                <Webmaster auth={auth} /> :
+                <Webmaster /> :
 
             // If not authenticated or loading
             <div className="vh-100 d-flex justify-content-center align-items-center text-danger">
@@ -141,8 +145,7 @@ const EditQuiz = ({ categories, quizToEdit, auth, updateQuiz }) => {
                         <SpinningBubbles /> :
                         <LoginModal
                             textContent={'Login first'}
-                            textColor={'text-danger font-weight-bolder my-5 border rounded'}
-                            isAuthenticated={auth.isAuthenticated} />
+                            textColor={'text-danger font-weight-bolder my-5 border rounded'} />
                 }
             </div>
     )

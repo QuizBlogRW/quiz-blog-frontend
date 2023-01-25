@@ -8,7 +8,7 @@ import { connect } from 'react-redux'
 import { getFaculties, deleteFaculty } from '../../redux/faculties/faculties.actions'
 import EditFacultyModal from './EditFacultyModal'
 
-const FacultiesCollapse = ({ auth, getFaculties, deleteFaculty, faculties, levelID }) => {
+const FacultiesCollapse = ({ getFaculties, deleteFaculty, faculties, levelID }) => {
 
     // Lifecycle methods
     useEffect(() => { getFaculties() }, [getFaculties])
@@ -34,7 +34,7 @@ const FacultiesCollapse = ({ auth, getFaculties, deleteFaculty, faculties, level
 
                         <span className='d-flex mr-3'>
                             <Button size="sm" color="link" className="mx-2">
-                                <EditFacultyModal auth={auth} idToUpdate={faculty._id} editTitle={faculty.title} />
+                                <EditFacultyModal idToUpdate={faculty._id} editTitle={faculty.title} />
                             </Button>
 
                             <Button size="sm" color="link" className="mr-2" onClick={() => deleteFaculty(faculty._id)}>

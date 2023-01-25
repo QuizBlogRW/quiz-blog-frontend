@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { Row, Col, Toast, ToastBody, ToastHeader, TabPane, ListGroup, ListGroupItem } from 'reactstrap';
 import SearchInput from '../SearchInput'
 import { connect } from 'react-redux'
 import { Link } from "react-router-dom";
 import { setQuizes } from '../../redux/quizes/quizes.actions'
 import SpinningBubbles from '../rLoading/SpinningBubbles';
+import { categoriesContext } from '../../appContexts';
 
-const AllCategories = ({ categories, quizes, setQuizes }) => {
+const AllCategories = ({ quizes, setQuizes }) => {
+
+    // context
+    const categories = useContext(categoriesContext)
 
     const [searchKeyC, setSearchKeyC] = useState('')
     const [searchKeyQ, setSearchKeyQ] = useState('')

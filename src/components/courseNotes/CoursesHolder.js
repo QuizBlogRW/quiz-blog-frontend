@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Card, Button, CardTitle, CardText } from 'reactstrap'
 import { deleteCourse } from '../../redux/courses/courses.actions';
 import LoginModal from '../auth/LoginModal'
 import DeleteIcon from '../../images/remove.svg';
 import AddChapter from './AddChapter'
 import EditCourseModal from './EditCourseModal'
-
 import { connect } from 'react-redux';
 import SpinningBubbles from '../rLoading/SpinningBubbles';
+import { authContext } from '../../appContexts';
 
-const CoursesHolder = ({ auth, courses, deleteCourse }) => {
+const CoursesHolder = ({ courses, deleteCourse }) => {
+
+    // context
+    const auth = useContext(authContext);
 
     return (
 
@@ -32,11 +35,11 @@ const CoursesHolder = ({ auth, courses, deleteCourse }) => {
                             {auth.user.role !== 'Visitor' ?
                                 <span>
                                     <Button outline color="warning">
-                                        <strong><AddChapter auth={auth} course={course} /></strong>
+                                        <strong><AddChapter course={course} /></strong>
                                     </Button>
 
                                     <Button size="sm" color="link" className="mx-2">
-                                        <EditCourseModal auth={auth} idToUpdate={course._id} editTitle={course.title} editDesc={course.description} />
+                                        <EditCourseModal idToUpdate={course._id} editTitle={course.title} editDesc={course.description} />
                                     </Button>
 
                                     <Button size="sm" color="link" className="mr-2" onClick={() => deleteCourse(course._id)}>
@@ -55,8 +58,7 @@ const CoursesHolder = ({ auth, courses, deleteCourse }) => {
                         <SpinningBubbles /> :
                         <LoginModal
                             textContent={'Login first'}
-                            textColor={'text-danger font-weight-bolder my-5 border rounded'}
-                            isAuthenticated={auth.isAuthenticated} />
+                            textColor={'text-danger font-weight-bolder my-5 border rounded'} />
                 }
             </div>
     );

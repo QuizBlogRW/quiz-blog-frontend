@@ -21,7 +21,7 @@ const QuizToast = ({ fromSearch, auth, categories, quiz, deleteQuiz }) => {
                     <div className="actions text-secondary d-flex">
                         <img src={trash} alt="" width="16" height="16" className="mr-3 mt-1" onClick={() => deleteQuiz(quiz._id)} />
 
-                        <EditQuiz auth={auth} categories={categories} quizToEdit={quiz && quiz} />
+                        <EditQuiz quizToEdit={quiz && quiz} />
 
                         <Link to={`/questions-create/${quiz.slug}`} className="text-secondary">
                             <img src={AddIcon} alt="" width="12" height="12" className="" /> <small>Questions</small>

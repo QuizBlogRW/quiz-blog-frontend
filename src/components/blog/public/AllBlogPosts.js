@@ -1,4 +1,4 @@
-import React, { useEffect, lazy, Suspense } from 'react'
+import React, { useEffect, lazy, Suspense, useContext } from 'react'
 import { Container, Col, Row, Spinner, ListGroup, ListGroupItem } from 'reactstrap'
 import ReactLoading from "react-loading"
 import { connect } from 'react-redux'
@@ -8,10 +8,14 @@ import SquareAd from '../../adsenses/SquareAd'
 import SpinningBubbles from '../../rLoading/SpinningBubbles'
 import './allBlogPosts.css'
 import { Link, useLocation } from 'react-router-dom'
+import { bPcatsContext } from '../../../appContexts'
 
 const BlogPostItem = lazy(() => import('./BlogPostItem'))
 
-const AllBlogPosts = ({ bPcats, bposts, getBlogPosts }) => {
+const AllBlogPosts = ({ bposts, getBlogPosts }) => {
+
+  // context
+  const bPcats = useContext(bPcatsContext)
 
   let location = useLocation()
 

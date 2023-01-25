@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { connect } from 'react-redux'
 import { createNotes } from '../../../redux/notes/notes.actions'
 import LoginModal from '../../auth/LoginModal'
@@ -8,8 +8,12 @@ import { clearErrors } from '../../../redux/error/error.actions'
 import { clearSuccess } from '../../../redux/success/success.actions'
 import { Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input, NavLink, Alert, CustomInput, Progress } from 'reactstrap'
 import SpinningBubbles from '../../rLoading/SpinningBubbles'
+import { authContext } from '../../../appContexts'
 
-const AddNotesModal = ({ auth, chapter, createNotes, errors, successful, clearErrors, clearSuccess }) => {
+const AddNotesModal = ({ chapter, createNotes, errors, successful, clearErrors, clearSuccess }) => {
+
+    // context
+    const { auth } = useContext(authContext)
 
     const [notesState, setNotesState] = useState({
         title: '',
@@ -176,7 +180,7 @@ const AddNotesModal = ({ auth, chapter, createNotes, errors, successful, clearEr
                     </Modal>
                 </div> :
 
-                <Webmaster auth={auth} /> :
+                <Webmaster /> :
 
             // If not authenticated or loading
             <div className="vh-100 d-flex justify-content-center align-items-center text-danger">
@@ -185,8 +189,7 @@ const AddNotesModal = ({ auth, chapter, createNotes, errors, successful, clearEr
                         <SpinningBubbles /> :
                         <LoginModal
                             textContent={'Login first'}
-                            textColor={'text-danger font-weight-bolder my-5 border rounded'}
-                            isAuthenticated={auth.isAuthenticated} />
+                            textColor={'text-danger font-weight-bolder my-5 border rounded'} />
                 }
             </div>
     )

@@ -10,7 +10,7 @@ import LoadingQuestions from '../../rLoading/LoadingQuestions'
 import NoQuestions from './NoQuestions'
 import Unavailable from './Unavailable'
 
-const TakeChallenge = ({ chQz, getOneChQuiz, auth }) => {
+const TakeChallenge = ({ chQz, getOneChQuiz }) => {
 
     // Access route parameters & get the challenge
     const { challengeId } = useParams()
@@ -126,7 +126,6 @@ const TakeChallenge = ({ chQz, getOneChQuiz, auth }) => {
                                     score={score}
                                     qnsLength={qnsLength}
                                     thisChQz={thisChQz}
-                                    auth={auth}
                                     toReview={reviewDetails.review}
                                     chToReview={chToReview}
                                     passMark={passMark} /> :

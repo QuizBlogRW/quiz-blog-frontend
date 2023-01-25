@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy, Suspense } from 'react'
+import React, { useState, useEffect, lazy, Suspense, useContext } from 'react'
 import { connect } from 'react-redux'
 import { getCourseCategories, deleteCourseCategory } from '../../redux/courseCategories/courseCategories.actions'
 import { getCoursesByCategory } from '../../redux/courses/courses.actions'
@@ -11,12 +11,15 @@ import CategoriesHome from './CategoriesHome'
 import { Row, Col, Breadcrumb, BreadcrumbItem, Button, Collapse, Navbar, NavbarBrand, Nav, NavItem, NavLink, ListGroup, ListGroupItem, Spinner } from 'reactstrap'
 import DeleteIcon from '../../images/remove.svg'
 import SpinningBubbles from '../rLoading/SpinningBubbles'
+import { authContext } from '../../appContexts'
 
 const InFeedAd = lazy(() => import('../adsenses/InFeedAd'))
 
 
-const Index = ({ auth, getCourseCategories, courseCategories, courses, getCoursesByCategory, deleteCourseCategory }) => {
+const Index = ({ getCourseCategories, courseCategories, courses, getCoursesByCategory, deleteCourseCategory }) => {
 
+    const auth = useContext(authContext)
+    
     const [collapsed, setCollapsed] = useState(true)
     const toggleNavbar = () => setCollapsed(!collapsed)
 
@@ -41,8 +44,7 @@ const Index = ({ auth, getCourseCategories, courseCategories, courses, getCourse
                         <SpinningBubbles title='course categories' /> :
                         <LoginModal
                             textContent={'Login first to access notes'}
-                            textColor={'text-danger font-weight-bolder my-5 border rounded'}
-                            isAuthenticated={auth.isAuthenticated} />
+                            textColor={'text-danger font-weight-bolder my-5 border rounded'} />
                 }
             </div> :
 
@@ -57,7 +59,7 @@ const Index = ({ auth, getCourseCategories, courseCategories, courses, getCourse
 
                             {auth.user.role === 'Admin' || auth.user.role === 'Creator' ?
                                 <Button size="sm" outline color="info" className="ml-auto">
-                                    <strong><AddCourseCategory auth={auth} /></strong>
+                                    <strong><AddCourseCategory /></strong>
                                 </Button> : null}
                         </Breadcrumb>
                     </Col>
@@ -146,7 +148,7 @@ const Index = ({ auth, getCourseCategories, courseCategories, courses, getCourse
                                 {!activeTab || activeTab === 'header' ?
 
                                     <div className={`tab-pane fade show active`} id={`v-pills-header`} role="tabpanel" aria-labelledby={`v-pills-header-tab`}>
-                                        <CategoriesHome auth={auth} />
+                                        <CategoriesHome />
 
 
                                         {/* DUPLICATED CATEGORIES NAVBAR FOR MOBILE USERS */}
@@ -191,11 +193,11 @@ const Index = ({ auth, getCourseCategories, courseCategories, courses, getCourse
 
                                                     <span className='d-flex'>
                                                         <Button size="sm" outline color="info" className="d-block ml-auto mr-lg-3 my-2">
-                                                            <strong><AddCourse auth={auth} categoryId={cCategory._id} /></strong>
+                                                            <strong><AddCourse categoryId={cCategory._id} /></strong>
                                                         </Button>
 
                                                         <Button size="sm" color="link" className="mx-2">
-                                                            <EditCourseCategoryModal auth={auth} idToUpdate={cCategory._id} editTitle={cCategory.title} editDesc={cCategory.description} />
+                                                            <EditCourseCategoryModal idToUpdate={cCategory._id} editTitle={cCategory.title} editDesc={cCategory.description} />
                                                         </Button>
 
                                                         <Button size="sm" color="link" className="mr-2" onClick={() => deleteCourseCategory(cCategory._id)}>
@@ -203,7 +205,7 @@ const Index = ({ auth, getCourseCategories, courseCategories, courses, getCourse
                                                         </Button>
                                                     </span> : null}
 
-                                                <CoursesHolder auth={auth} courses={courses} />
+                                                <CoursesHolder courses={courses} />
 
                                                 {cCategory._id === '60f2b2f7bdbf4c47f0fd9430' ?
                                                     <div className="d-flex" id="video-professsor-messer">

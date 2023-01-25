@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Row, Col, Toast, ToastBody, ToastHeader, Breadcrumb, BreadcrumbItem } from 'reactstrap'
 import { Link, useParams } from 'react-router-dom'
 import SpinningBubbles from '../rLoading/SpinningBubbles'
+import { categoriesContext } from '../../appContexts'
 
-const SingleCategory = ({ categories }) => {
+const SingleCategory = () => {
+
+    // context
+    const categories = useContext(categoriesContext)
 
     // Access route parameters
     const { categoryId } = useParams()

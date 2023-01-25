@@ -55,9 +55,9 @@ const Posts = ({ setQuizes, quizes, allNoLimit, allNoLimitLoading, setAllNoLimit
             </Row>
 
             <Row className="mt-lg-5">
-                <Col sm="2" className="mt-md-2 w-100">
+                <Col sm="2" className="mt-md-2 w-100 d-flex justify-content-center align-items-center">
                     {/* Google responsive 1 ad */}
-                    <div className='w-100'>
+                    <div className='w-100 d-flex justify-content-center align-items-center'>
                         <ResponsiveAd />
                     </div>
                 </Col>
@@ -111,11 +111,11 @@ const Posts = ({ setQuizes, quizes, allNoLimit, allNoLimitLoading, setAllNoLimit
                     </Suspense>
                 </Col>
 
-                <Col sm="2" className="mt-md-2 w-100">
+                <Col sm="2" className="mt-md-2 w-100 d-flex justify-content-center align-items-center">
                     {/* Google square ad */}
-                    <Row className='w-100'>
-                        <Col sm="12" className='w-100'>
-                            <div className='w-100'>
+                    <Row className='w-100 d-flex justify-content-center align-items-center'>
+                        <Col sm="12" className='w-100 d-flex justify-content-center align-items-center'>
+                            <div className='w-100 d-flex justify-content-center align-items-center'>
                                 <SquareAd />
                             </div>
                         </Col>

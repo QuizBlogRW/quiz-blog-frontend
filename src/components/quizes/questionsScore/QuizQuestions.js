@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy, Suspense } from 'react'
+import React, { useState, useEffect, lazy, Suspense, useContext } from 'react'
 import { Container, Spinner } from 'reactstrap'
 import { useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -11,11 +11,14 @@ import LoadingQuestions from '../../rLoading/LoadingQuestions'
 import NoQuestions from './NoQuestions'
 import Unavailable from './Unavailable'
 import RelatedNotes from './RelatedNotes'
+import { categoriesContext } from '../../../appContexts'
 
 const ResponsiveAd = lazy(() => import('../../adsenses/ResponsiveAd'))
 const GridMultiplex = lazy(() => import('../../adsenses/GridMultiplex'))
 
-const QuizQuestions = ({ qZ, getOneQuiz, auth, categories }) => {
+const QuizQuestions = ({ qZ, getOneQuiz }) => {
+
+    const categories = useContext(categoriesContext)
 
     // Access route parameters & get the quiz
     const { quizSlug } = useParams()
@@ -133,7 +136,6 @@ const QuizQuestions = ({ qZ, getOneQuiz, auth, categories }) => {
                                     score={score}
                                     qnsLength={qnsLength}
                                     thisQuiz={thisQuiz}
-                                    auth={auth}
                                     toReview={reviewDetails.review}
                                     quizToReview={quizToReview}
                                     passMark={passMark}

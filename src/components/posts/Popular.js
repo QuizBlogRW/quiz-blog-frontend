@@ -21,8 +21,8 @@ const Popular = ({ getPopularToday, popularQuizes, getUserOfMonth }) => {
         <>
             {/* Google square ad */}
             <Row className="d-block d-lg-none">
-                <Col sm="12 w-100">
-                    <div className='w-100'>
+                <Col sm="12 w-100 d-flex justify-content-center align-items-center">
+                    <div className='w-100 d-flex justify-content-center align-items-center'>
                         <SquareAd />
                     </div>
                 </Col>

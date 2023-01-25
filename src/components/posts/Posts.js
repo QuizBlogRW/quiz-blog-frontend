@@ -1,10 +1,11 @@
-import React, { useEffect, useState, lazy, Suspense } from 'react'
+import React, { useEffect, useState, lazy, Suspense, useContext } from 'react'
 import { Container, Col, Row, Button, Spinner } from 'reactstrap'
 import ReactLoading from "react-loading"
 // import SearchInput from '../SearchInput'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { setQuizes, setAllNoLimitQuizes } from '../../redux/quizes/quizes.actions'
+import { categoriesContext } from '../../appContexts'
 
 const CarouselQuiz = lazy(() => import('./CarouselQuiz'))
 const PostItem = lazy(() => import('./PostItem'))
@@ -18,7 +19,9 @@ const Challenges = lazy(() => import('./challenges/Challenges'))
 const BlogPosts = lazy(() => import('../blog/public/BlogPosts'))
 const ViewCategory = lazy(() => import('../categories/ViewCategory'))
 
-const Posts = ({ setQuizes, setAllNoLimitQuizes, limitedQuizes, limitedQuizesLoading, categories }) => {
+const Posts = ({ setQuizes, setAllNoLimitQuizes, limitedQuizes, limitedQuizesLoading }) => {
+
+    const categories = useContext(categoriesContext)
 
     // const [searchKey, setSearchKey] = useState('')
     const [limit] = useState(10)
@@ -114,7 +117,7 @@ const Posts = ({ setQuizes, setAllNoLimitQuizes, limitedQuizes, limitedQuizesLoa
                                             {/* ON HALF THE NUMBER OF QUIZZES, DIPLAY THE InFeedAd */}
                                             {limitedQuizes.indexOf(quiz) === Math.floor(limitedQuizes.length / 2) ?
                                             
-                                            <div className='w-100'>
+                                            <div className='w-100 d-flex justify-content-center align-items-center'>
                                                     <InFeedAd />
                                             </div> : null}
                                         </Suspense> : null
@@ -135,9 +138,9 @@ const Posts = ({ setQuizes, setAllNoLimitQuizes, limitedQuizes, limitedQuizesLoa
                     <Popular />
 
                     {/* Google square ad */}
-                    <Row className='w-100'>
-                        <Col sm="12" className='w-100'>
-                            <div className='w-100'>
+                    <Row className='w-100 d-flex justify-content-center align-items-center'>
+                        <Col sm="12" className='w-100 d-flex justify-content-center align-items-center'>
+                            <div className='w-100 d-flex justify-content-center align-items-center'>
                                 <SquareAd />
                             </div>
                         </Col>
@@ -165,9 +168,9 @@ const Posts = ({ setQuizes, setAllNoLimitQuizes, limitedQuizes, limitedQuizesLoa
                 <Challenges />
             </Suspense>
 
-            <Row className='w-100'>
-                <Col sm="12" className='w-100'>
-                    <div className='w-100'>
+            <Row className='w-100 d-flex justify-content-center align-items-center'>
+                <Col sm="12" className='w-100 d-flex justify-content-center align-items-center'>
+                    <div className='w-100 d-flex justify-content-center align-items-center'>
                         <ResponsiveAd />
                     </div>
                 </Col>

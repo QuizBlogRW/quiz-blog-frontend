@@ -1,4 +1,4 @@
-import React, { useEffect, lazy, Suspense } from 'react'
+import React, { useEffect, lazy, Suspense, useContext } from 'react'
 import { Container, Col, Row, Card, Button, CardTitle, CardText, Spinner } from 'reactstrap'
 import { Link, useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -6,10 +6,13 @@ import { getOneNotePaper } from '../../../redux/notes/notes.actions'
 import { saveDownload } from '../../../redux/downloads/downloads.actions'
 import LoginModal from '../../auth/LoginModal'
 import SpinningBubbles from '../../rLoading/SpinningBubbles'
+import { authContext } from '../../../appContexts'
 
 const GridMultiplex = lazy(() => import('../../adsenses/GridMultiplex'))
 
-const ViewNotePaper = ({ auth, nPaper, getOneNotePaper, saveDownload }) => {
+const ViewNotePaper = ({ nPaper, getOneNotePaper, saveDownload }) => {
+
+    const auth = useContext(authContext)
 
     // Access route parameters
     const { noteSlug } = useParams()
@@ -73,8 +76,7 @@ const ViewNotePaper = ({ auth, nPaper, getOneNotePaper, saveDownload }) => {
                                                     <SpinningBubbles /> :
                                                     <LoginModal
                                                         textContent={'Login to download this file'}
-                                                        textColor={'text-danger font-weight-bolder my-5 border rounded'}
-                                                        isAuthenticated={auth.isAuthenticated} />
+                                                        textColor={'text-danger font-weight-bolder my-5 border rounded'} />
                                             }
                                         </div> :
 

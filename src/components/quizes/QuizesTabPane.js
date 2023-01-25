@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Row, Col, TabPane, ListGroup, ListGroupItem, Alert } from 'reactstrap'
 import SpinningBubbles from '../rLoading/SpinningBubbles'
 import ReactLoading from "react-loading";
@@ -9,8 +9,13 @@ import QuizToast from './QuizToast'
 import SearchInput from '../SearchInput'
 import Pagination from '../webmaster/Pagination'
 import PageOf from '../webmaster/PageOf'
+import { authContext, categoriesContext } from '../../appContexts'
 
-const QuizesTabPane = ({ auth, categories, quizes, questions, allNoLimit, allNoLimitLoading, setPaginatedQuizes, setAllNoLimitQuizes, setQuestions, deleteQuiz }) => {
+const QuizesTabPane = ({ quizes, questions, allNoLimit, allNoLimitLoading, setPaginatedQuizes, setAllNoLimitQuizes, setQuestions, deleteQuiz }) => {
+
+    // context
+    const auth = useContext(authContext)
+    const categories = useContext(categoriesContext)
 
     const [pageNo, setPageNo] = useState(1)
     const [numberOfPages, setNumberOfPages] = useState(0)
@@ -106,7 +111,6 @@ const QuizesTabPane = ({ auth, categories, quizes, questions, allNoLimit, allNoL
                                 .map(quiz => <QuizToast
                                     fromSearch={true}
                                     key={quiz._id}
-                                    auth={auth}
                                     categories={categories}
                                     quiz={quiz && quiz}
                                     deleteQuiz={deleteQuiz}
@@ -118,7 +122,6 @@ const QuizesTabPane = ({ auth, categories, quizes, questions, allNoLimit, allNoL
                             {quizzesToUse && quizzesToUse
                                 .map(quiz => <QuizToast
                                     key={quiz._id}
-                                    auth={auth}
                                     categories={categories}
                                     quiz={quiz && quiz}
                                     deleteQuiz={deleteQuiz}

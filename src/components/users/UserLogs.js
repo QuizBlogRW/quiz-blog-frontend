@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Row, Button, Table, Alert } from 'reactstrap'
 import { connect } from 'react-redux'
 import { getLogs, deleteLog } from '../../redux/logs/logs.actions'
 import trash from '../../images/trash.svg'
 import LoginModal from '../auth/LoginModal'
 import SpinningBubbles from '../rLoading/SpinningBubbles'
+import { authContext } from '../../appContexts'
 
-const UserLogs = ({ auth, getLogs, deleteLog, userLogs }) => {
+const UserLogs = ({ getLogs, deleteLog, userLogs }) => {
+
+  const auth = useContext(authContext)
 
   useEffect(() => { getLogs() }, [getLogs])
   const [logsState, setLogsState] = useState([])
@@ -25,8 +28,7 @@ const UserLogs = ({ auth, getLogs, deleteLog, userLogs }) => {
             <SpinningBubbles title='logs' /> :
             <LoginModal
               textContent={'Login first to access logs'}
-              textColor={'text-danger font-weight-bolder my-5 border rounded'}
-              isAuthenticated={auth.isAuthenticated} />
+              textColor={'text-danger font-weight-bolder my-5 border rounded'} />
         }
       </div> :
 

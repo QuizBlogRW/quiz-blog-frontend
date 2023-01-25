@@ -1,11 +1,16 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useContext } from 'react'
 import LoginModal from './LoginModal'
 import { Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input, NavLink, Alert } from 'reactstrap'
 import { connect } from 'react-redux'
 import { register } from '../../redux/auth/auth.actions'
 import { clearErrors } from '../../redux/error/error.actions'
+import { authContext } from '../../appContexts'
+import ReactLoading from "react-loading"
 
-const RegisterModal = ({ errors, clearErrors, isAuthenticated, register }) => {
+const RegisterModal = ({ errors, clearErrors, register }) => {
+    // context
+    const auth = useContext(authContext)
+    const isAuthenticated = auth && auth.isAuthenticated
 
     const [registerState, setRegisterState] = useState({
         // initialy doesn't show
@@ -14,6 +19,11 @@ const RegisterModal = ({ errors, clearErrors, isAuthenticated, register }) => {
         password: '',
         msg: null
     })
+
+    // loadingRegister
+    const [loadingRegister, setLoadingRegister] = useState(false)
+
+    let atHome = false
 
     //properties of the modal
     const [modalReg, setModalReg] = useState(false)
@@ -33,12 +43,14 @@ const RegisterModal = ({ errors, clearErrors, isAuthenticated, register }) => {
         if (errors && errors.id === 'REGISTER_FAIL') {
             setRegisterState(registerState => ({ ...registerState, msg: errors.msg && errors.msg }))
             setModalReg(true)
+            setLoadingRegister(false)
         }
 
         // If Authenticated, Close modalReg
         if (modalReg) {
             if (isAuthenticated) {
                 toggle()
+                setLoadingRegister(false)
             }
         }
     }, [errors, isAuthenticated, modalReg, toggle])
@@ -60,7 +72,15 @@ const RegisterModal = ({ errors, clearErrors, isAuthenticated, register }) => {
             email,
             password
         }
-        register(newUser)
+
+        // if current page is /, set atHome to true
+        window.location.pathname === '/' ? atHome = true : atHome = false
+
+        // Set loading to true
+        setLoadingRegister(true)
+
+        // Attempt to register
+        register(newUser, atHome)
     }
 
     return (
@@ -71,6 +91,20 @@ const RegisterModal = ({ errors, clearErrors, isAuthenticated, register }) => {
                 <ModalHeader toggle={toggle} className="bg-primary text-white">
                     Register
                 </ModalHeader>
+
+                {
+                    // Register loading
+                    loadingRegister ?
+                        <>
+                            <ReactLoading
+                                type="spin"
+                                color="#641e16"
+                                className='mx-auto my-2' />
+                            <p className='text-center my-1 text-warning'>Registering you in...</p>
+                        </> :
+                        null
+                }
+
                 <ModalBody>
 
                     {registerState.msg ? (
@@ -98,7 +132,7 @@ const RegisterModal = ({ errors, clearErrors, isAuthenticated, register }) => {
 
                     <div className="d-flex">
                         <p className="p-2">Having account?</p>
-                        <LoginModal isAuthenticated={isAuthenticated} />
+                        <LoginModal />
                     </div>
                 </ModalBody>
             </Modal>

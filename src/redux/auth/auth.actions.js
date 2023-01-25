@@ -140,7 +140,7 @@ export const register = ({ name, email, password }) => dispatch => {
 }
 
 // Login User
-export const login = ({ email, password }) => async dispatch => {
+export const login = ({ email, password }, atHome) => async dispatch => {
 
   // Headers
   const config = {
@@ -160,6 +160,12 @@ export const login = ({ email, password }) => async dispatch => {
           type: LOGIN_SUCCESS,
           payload: res.data
         }))
+      .then(res =>
+        dispatch(
+          returnSuccess('Logged in! Reloading the page ...', 200, 'LOGIN_SUCCESS'),
+          // Reload after 2 seconds if at home page
+          atHome ? window.setTimeout(() => window.location.reload(), 2000) : null
+        ))
 
   } catch (err) {
     dispatch(returnErrors(err.response.data, err.response.status, 'LOGIN_FAIL'))

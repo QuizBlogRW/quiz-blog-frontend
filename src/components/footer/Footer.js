@@ -5,6 +5,7 @@ import logo from '../../images/quizLogo.svg'
 import '@fortawesome/fontawesome-free/css/fontawesome.min.css'
 
 const Footer = () => {
+
     let location = useLocation()
 
     // If the route starts with /questions, /webmaster or /statistics, then don't show the footer
@@ -86,7 +87,7 @@ const Footer = () => {
 
                         <div className="row">
                             <div className="col-md-12 copy">
-                                <p className="text-center">&copy; Copyright 2022 - Quiz Blog.  All Rights Reserved.</p>
+                                <p className="text-center">&copy; Copyright {new Date().getFullYear()} - Quiz Blog.  All Rights Reserved.</p>
                             </div>
                         </div>
 

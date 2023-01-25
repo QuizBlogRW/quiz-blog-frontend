@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
 import { Row, ListGroup, ListGroupItem, Breadcrumb, BreadcrumbItem } from 'reactstrap'
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import ReactLoading from "react-loading"
@@ -11,8 +11,12 @@ import EditIcon from '../../images/edit.svg'
 import ChangeQuizModal from './ChangeQuizModal'
 import SpinningBubbles from '../rLoading/SpinningBubbles'
 import QuestionComments from '../quizes/review/questionComments/QuestionComments'
+import { authContext } from '../../appContexts'
 
-const SingleQuestion = ({ auth, quest, getOneQuestion, deleteQuestion }) => {
+const SingleQuestion = ({ quest, getOneQuestion, deleteQuestion }) => {
+
+    // Context
+    const auth = useContext(authContext)
 
     // Access route parameters
     const { questionId } = useParams()
@@ -67,11 +71,10 @@ const SingleQuestion = ({ auth, quest, getOneQuestion, deleteQuestion }) => {
                                     <h4 className="mb-4">{thisQuestion && thisQuestion.questionText}</h4>
 
                                     {
-                                        auth.user.role === 'Admin' || (thisQnCrt && auth.user._id === thisQnCrt._id) ?
+                                        auth.user.role === 'SuperAdmin' || auth.user.role === 'Admin' || (thisQnCrt && auth.user._id === thisQnCrt._id) ?
 
                                             <div className="actions d-flex align-items-center">
                                                 <ChangeQuizModal
-                                                    auth={auth}
                                                     questionID={thisQuestion && thisQuestion._id}
                                                     questionCatID={thisQnCat && thisQnCat._id}
                                                     quizID={thisQnQZ && thisQnQZ._id} />
@@ -120,7 +123,7 @@ const SingleQuestion = ({ auth, quest, getOneQuestion, deleteQuestion }) => {
                             </Breadcrumb>
                         </Row> :
 
-                <Webmaster auth={auth} /> :
+                <Webmaster /> :
             // If not authenticated or loading
             <div className="vh-100 d-flex justify-content-center align-items-center text-danger">
                 {
@@ -128,8 +131,7 @@ const SingleQuestion = ({ auth, quest, getOneQuestion, deleteQuestion }) => {
                         <SpinningBubbles /> :
                         <LoginModal
                             textContent={'Login first'}
-                            textColor={'text-danger font-weight-bolder my-5 border rounded'}
-                            isAuthenticated={auth.isAuthenticated} />
+                            textColor={'text-danger font-weight-bolder my-5 border rounded'} />
                 }
             </div>
     )

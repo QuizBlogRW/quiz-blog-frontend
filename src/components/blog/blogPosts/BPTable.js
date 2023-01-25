@@ -1,11 +1,14 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Table, Button, Alert } from 'reactstrap'
 import { Link } from "react-router-dom"
 import moment from 'moment'
 import trash from '../../../images/trash.svg'
+import { currentUserContext } from '../../../appContexts'
 
-const BPTable = ({ bpostsToUse, currentUser, deleteBlogPost }) => {
+const BPTable = ({ bpostsToUse, deleteBlogPost }) => {
 
+    // context
+    const currentUser = useContext(currentUserContext)
     const uRole = currentUser && currentUser.role
     const usr = currentUser && currentUser
 

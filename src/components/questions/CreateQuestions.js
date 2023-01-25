@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 import { Button, Row, Col, Form, FormGroup, Label, Input, CustomInput, Breadcrumb, BreadcrumbItem, Alert, Progress } from 'reactstrap'
@@ -10,8 +10,11 @@ import { getOneQuiz, notifying } from '../../redux/quizes/quizes.actions'
 import { clearErrors } from '../../redux/error/error.actions'
 import { clearSuccess } from '../../redux/success/success.actions'
 import SpinningBubbles from '../rLoading/SpinningBubbles'
+import { authContext } from '../../appContexts'
 
-const CreateQuestions = ({ auth, addQuestion, getOneQuiz, oneQuiz, notifying, setQuestions, successful, clearErrors, clearSuccess, errors }) => {
+const CreateQuestions = ({ addQuestion, getOneQuiz, oneQuiz, notifying, setQuestions, successful, clearErrors, clearSuccess, errors }) => {
+
+    const auth = useContext(authContext)
 
     // Access route parameters
     const { quizSlug } = useParams()
@@ -278,7 +281,7 @@ const CreateQuestions = ({ auth, addQuestion, getOneQuiz, oneQuiz, notifying, se
                     </FormGroup>
 
                 </Form> :
-                <Webmaster auth={auth} /> :
+                <Webmaster /> :
 
             // If not authenticated or loading
             <div className="vh-100 d-flex justify-content-center align-items-center text-danger">
@@ -287,8 +290,7 @@ const CreateQuestions = ({ auth, addQuestion, getOneQuiz, oneQuiz, notifying, se
                         <SpinningBubbles /> :
                         <LoginModal
                             textContent={'Login first'}
-                            textColor={'text-danger font-weight-bolder my-5 border rounded'}
-                            isAuthenticated={auth.isAuthenticated} />
+                            textColor={'text-danger font-weight-bolder my-5 border rounded'} />
                 }
             </div>
     )

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Button } from 'reactstrap'
 import { Link } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
@@ -8,8 +8,12 @@ import MarksStatus from "./MarksStatus"
 import LoginModal from '../../auth/LoginModal'
 import { connect } from 'react-redux'
 import { createChScore } from '../../../redux/challenges/challengeScores/challengeScores.actions'
+import { authContext } from '../../../appContexts'
 
-const ScoreSection = ({ score, qnsLength, thisChQz, auth, toReview, createChScore, chToReview, passMark }) => {
+const ScoreSection = ({ score, qnsLength, thisChQz, toReview, createChScore, chToReview, passMark }) => {
+
+    // context
+    const auth = useContext(authContext)
 
     const uRole = auth.user && auth.user.role
     const uId = auth.user && auth.user._id
@@ -60,8 +64,7 @@ const ScoreSection = ({ score, qnsLength, thisChQz, auth, toReview, createChScor
                     <button type="button" className="btn btn-outline-warning mt-3 mt-sm-0 p-0">
                         <LoginModal
                             textContent={'Login to review answers'}
-                            textColor={'text-info'}
-                            isAuthenticated={auth.isAuthenticated} />
+                            textColor={'text-info'} />
                     </button>}
 
                 {(uRole === 'Admin' || uRole === 'SuperAdmin') ?

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
 import { connect } from 'react-redux'
 import LoginModal from '../../auth/LoginModal'
 import { Link } from 'react-router-dom'
@@ -11,8 +11,12 @@ import EditNotesModal from './EditNotesModal'
 import AddRelatedQuiz from './AddRelatedQuiz'
 import { Row, Col, Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button } from 'reactstrap'
 import SpinningBubbles from '../../rLoading/SpinningBubbles'
+import { authContext } from '../../../appContexts'
 
-const CourseNotes = ({ auth, chapter, getNotes, deleteNotes, removeQzNt, saveDownload, notes }) => {
+const CourseNotes = ({ chapter, getNotes, deleteNotes, removeQzNt, saveDownload, notes }) => {
+
+    // context
+    const auth = useContext(authContext)
 
     useEffect(() => { getNotes() }, [getNotes])
 
@@ -39,7 +43,7 @@ const CourseNotes = ({ auth, chapter, getNotes, deleteNotes, removeQzNt, saveDow
                         <Row>
                             {chapter ?
                                 <Button size="sm" outline color="success" className="ml-auto mr-1 mx-sm-auto my-2 add-notes-btn">
-                                    <strong><AddNotesModal auth={auth} chapter={chapter} /></strong>
+                                    <strong><AddNotesModal chapter={chapter} /></strong>
                                 </Button> : null
                             }
                         </Row> : null}
@@ -103,7 +107,7 @@ const CourseNotes = ({ auth, chapter, getNotes, deleteNotes, removeQzNt, saveDow
 
                                                 {auth.user.role !== 'Visitor' ?
                                                     <><Button size="sm" color="link" className="mx-2">
-                                                        <EditNotesModal auth={auth} idToUpdate={note._id} editTitle={note.title} editDesc={note.description} />
+                                                        <EditNotesModal idToUpdate={note._id} editTitle={note.title} editDesc={note.description} />
                                                     </Button>
 
                                                         <Button size="sm" color="link" className="mr-2" onClick={() => deleteNotes(note._id)}>
@@ -125,8 +129,7 @@ const CourseNotes = ({ auth, chapter, getNotes, deleteNotes, removeQzNt, saveDow
                         <SpinningBubbles /> :
                         <LoginModal
                             textContent={'Login first'}
-                            textColor={'text-danger font-weight-bolder my-5 border rounded'}
-                            isAuthenticated={auth.isAuthenticated} />
+                            textColor={'text-danger font-weight-bolder my-5 border rounded'} />
                 }
             </div>)
 }

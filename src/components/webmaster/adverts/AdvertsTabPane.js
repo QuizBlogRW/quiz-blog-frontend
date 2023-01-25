@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
 import { Row, Col, Card, Button, CardTitle, CardText, TabPane, Alert, CardImg } from 'reactstrap'
 import { Link } from "react-router-dom"
 // import EditAdvert from './EditAdvert'
@@ -10,11 +10,15 @@ import { clearSuccess } from '../../../redux/success/success.actions'
 import { connect } from 'react-redux'
 import { getAdverts, changeStatus } from '../../../redux/adverts/adverts.actions'
 import adImage from '../../../images/Logo Med-Blog.svg'
+import { currentUserContext } from '../../../appContexts'
 
-const AdvertsTabPane = ({ auth, adverts, getAdverts, changeStatus }) => {
+const AdvertsTabPane = ({ adverts, getAdverts, changeStatus }) => {
+
+    // context
+    const currentUser = useContext(currentUserContext)
 
     const allAdverts = adverts && adverts.allAdverts
-    const uRole = auth && auth.user && auth.user.role
+    const uRole = currentUser && currentUser.role
 
     // Lifecycle method
     useEffect(() => {
@@ -25,7 +29,7 @@ const AdvertsTabPane = ({ auth, adverts, getAdverts, changeStatus }) => {
         <TabPane tabId="10">
 
             <Button size="sm" outline color="info" className="m-3 mb-2 p-2 btn btn-warning">
-                <CreateAdvert auth={auth} clearErrors={clearErrors} clearSuccess={clearSuccess} />
+                <CreateAdvert clearErrors={clearErrors} clearSuccess={clearSuccess} />
             </Button>
 
             {adverts.isLoading ?

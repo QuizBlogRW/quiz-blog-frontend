@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Row, Col } from 'reactstrap'
 import { connect } from 'react-redux'
 import { Link } from "react-router-dom"
@@ -10,9 +10,15 @@ import ContactChatCard from './ContactChatCard'
 import ChatComponent from './ChatComponent'
 import SpinningBubbles from '../../rLoading/SpinningBubbles'
 import RoomChatComponent from './RoomChatComponent'
+import { authContext, socketContext, onlineListContext } from '../../../appContexts'
 
-const ContactChat = ({ auth, socket, onlineList, contacts, getContacts, getUserContacts, deleteContact }) => {
+const ContactChat = ({ contacts, getContacts, getUserContacts, deleteContact }) => {
 
+    // Contexts
+    const auth = useContext(authContext)
+    const socket = useContext(socketContext)
+    const onlineList = useContext(onlineListContext)
+    
     const currentUser = auth && auth.user
     const userEmail = currentUser && currentUser.email
     const uRole = currentUser && currentUser.role
@@ -138,8 +144,7 @@ const ContactChat = ({ auth, socket, onlineList, contacts, getContacts, getUserC
                         <SpinningBubbles /> :
                         <LoginModal
                             textContent={'Login first'}
-                            textColor={'text-danger font-weight-bolder my-5 border rounded'}
-                            isAuthenticated={auth.isAuthenticated} />
+                            textColor={'text-danger font-weight-bolder my-5 border rounded'}  />
                 }
             </div>
     )

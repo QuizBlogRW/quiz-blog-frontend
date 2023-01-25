@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
 import LoginModal from '../auth/LoginModal'
 import { clearErrors } from '../../redux/error/error.actions'
@@ -8,7 +8,12 @@ import { createCategory } from '../../redux/categories/categories.actions'
 import Webmaster from '../webmaster/Webmaster'
 import SpinningBubbles from '../rLoading/SpinningBubbles'
 import Notification from './Notification'
-const CreateCategory = ({ auth, clearErrors, clearSuccess, courseCategories, createCategory }) => {
+import { authContext } from '../../appContexts'
+
+const CreateCategory = ({ clearErrors, clearSuccess, courseCategories, createCategory }) => {
+
+    // context
+    const auth = useContext(authContext)
 
     const [categoryState, setCategoryState] = useState({
         name: '',
@@ -139,7 +144,7 @@ const CreateCategory = ({ auth, clearErrors, clearSuccess, courseCategories, cre
                     </Modal>
                 </div> :
 
-                <Webmaster auth={auth} /> :
+                <Webmaster /> :
 
             // If not authenticated or loading
             <div className="vh-100 d-flex justify-content-center align-items-center text-danger">
@@ -148,8 +153,7 @@ const CreateCategory = ({ auth, clearErrors, clearSuccess, courseCategories, cre
                         <SpinningBubbles /> :
                         <LoginModal
                             textContent={'Login first'}
-                            textColor={'text-danger font-weight-bolder my-5 border rounded'}
-                            isAuthenticated={auth.isAuthenticated} />
+                            textColor={'text-danger font-weight-bolder my-5 border rounded'} />
                 }
             </div>
     )

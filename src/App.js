@@ -15,6 +15,9 @@ import { getCourseCategories } from './redux/courseCategories/courseCategories.a
 import { getPostCategories } from './redux/blog/postCategories/postCategories.actions'
 import { loadUser } from './redux/auth/auth.actions'
 
+// CONTEXTS
+import { authContext, currentUserContext, socketContext, onlineListContext, categoriesContext, courseCategoriesContext, bPcatsContext } from './appContexts'
+
 // components
 import Contact from './components/contact/Contact'
 import ContactChat from './components/contacts/chat/ContactChat'
@@ -100,7 +103,7 @@ const App = ({ auth, categories, courseCategories, bPcats, setCategories, getCou
     }, [setCategories, getCourseCategories, getPostCategories])
 
     const currentUser = auth && auth.user
-    
+
     // Socket join on user load
     const [onlineList, setOnlineList] = useState([])
 
@@ -124,8 +127,8 @@ const App = ({ auth, categories, courseCategories, bPcats, setCategories, getCou
     // Profile non empty details - Those with not empty strings and not null values
     const NonEmptyFields = auth.isAuthenticated && Object
         .keys(auth.user)
-        .filter(key => ((auth.user[key] && auth.user[key]) !== '') 
-        && ((auth.user[key] && auth.user[key]) !== null)) 
+        .filter(key => ((auth.user[key] && auth.user[key]) !== '')
+            && ((auth.user[key] && auth.user[key]) !== null))
         .length
 
     const percentage = (NonEmptyFields - 3) * 10
@@ -140,25 +143,34 @@ const App = ({ auth, categories, courseCategories, bPcats, setCategories, getCou
     const toggle = () => setModal(!modal)
 
     return (
-        <Router>
+        // Contexts
+        <authContext.Provider value={auth}>
+            <currentUserContext.Provider value={currentUser}>
+                <categoriesContext.Provider value={categories}>
+                    <courseCategoriesContext.Provider value={courseCategories}>
+                        <bPcatsContext.Provider value={bPcats}>
+                        <socketContext.Provider value={socket}>
+                            <onlineListContext.Provider value={onlineList}>
 
-            <Suspense fallback={<div className="p-3 m-3 d-flex justify-content-center align-items-center">
-                <Spinner style={{ width: '8rem', height: '8rem' }} />
-            </div>}>
+                                {/* router */}
+                                <Router>
+                                    <Suspense fallback={<div className="p-3 m-3 d-flex justify-content-center align-items-center">
+                                        <Spinner style={{ width: '8rem', height: '8rem' }} />
+                                    </div>}>
 
-                <Toast isOpen={modal} className={`mw-100 popup-toast`}>
-                    <ToastHeader toggle={toggle} className="bg-warning" icon="danger">
-                        <p className='text-dark text-center font-weight-bolder d-block mb-0'>
-                            Your profile is {`${percentage && percentage}`} % up to date!
-                            &nbsp;&nbsp;&nbsp;
-                            <Link to={`/edit-profile/${auth.user && auth.user._id}`}>
-                                <strong className='px-1 text-underline text-danger bg-dark'>Consider updating ...</strong>
-                            </Link>
-                        </p>
-                    </ToastHeader>
-                </Toast>
+                                        <Toast isOpen={modal} className={`mw-100 popup-toast`}>
+                                            <ToastHeader toggle={toggle} className="bg-warning" icon="danger">
+                                                <p className='text-dark text-center font-weight-bolder d-block mb-0'>
+                                                    Your profile is {`${percentage && percentage}`} % up to date!
+                                                    &nbsp;&nbsp;&nbsp;
+                                                    <Link to={`/edit-profile/${auth.user && auth.user._id}`}>
+                                                        <strong className='px-1 text-underline text-danger bg-dark'>Consider updating ...</strong>
+                                                    </Link>
+                                                </p>
+                                            </ToastHeader>
+                                        </Toast>
 
-                {/* <Toast isOpen={modal} className={`mw-100 popup-toast`}>
+                                        {/* <Toast isOpen={modal} className={`mw-100 popup-toast`}>
                 <ToastHeader toggle={toggle} className={`${successful.id ? 'bg-dark' : 'bg-danger'}`}>
                     {successful.id ?
                         <p className='text-white text-center d-block mb-0'>
@@ -171,105 +183,113 @@ const App = ({ auth, categories, courseCategories, bPcats, setCategories, getCou
                 </ToastHeader>
             </Toast> */}
 
-                <Header auth={auth} categories={categories} />
+                                        <Header />
 
-                <Routes fallback={
-                    <div className="p-3 m-3 d-flex justify-content-center align-items-center">
-                        <Spinner style={{ width: '8rem', height: '8rem' }} />
-                    </div>
-                }>
-                    <Route path="/about" element={<About />} />
-                    <Route path="/privacy" element={<Privacy />} />
-                    <Route path="/disclaimer" element={<Disclaimer />} />
+                                        <Routes fallback={
+                                            <div className="p-3 m-3 d-flex justify-content-center align-items-center">
+                                                <Spinner style={{ width: '8rem', height: '8rem' }} />
+                                            </div>
+                                        }>
+                                            <Route path="/about" element={<About />} />
+                                            <Route path="/privacy" element={<Privacy />} />
+                                            <Route path="/disclaimer" element={<Disclaimer />} />
 
-                    <Route exact path="/unsubscribe" element={<Unsubscribe auth={auth} />} />
-                    <Route exact path="/forgot-password" element={<ForgotPassword />} />
-                    <Route exact path="/reset-password" element={<ResetPassword auth={auth} />} />
+                                            <Route exact path="/unsubscribe" element={<Unsubscribe />} />
+                                            <Route exact path="/forgot-password" element={<ForgotPassword />} />
+                                            <Route exact path="/reset-password" element={<ResetPassword />} />
 
-                    <Route exact path="/category/:categoryId" element={<SingleCategory auth={auth} categories={categories} />} />
-                    <Route exact path="/edit-profile/:userId" element={<EditProfile auth={auth} />} />
-                    <Route exact path="/view-quiz/:quizSlug" element={<GetReady auth={auth} />} />
-                    <Route exact path="/attempt-quiz/:quizSlug" element={<QuizQuestions auth={auth} categories={categories} />} />
+                                            <Route exact path="/category/:categoryId" element={<SingleCategory />} />
+                                            <Route exact path="/edit-profile/:userId" element={<EditProfile />} />
+                                            <Route exact path="/view-quiz/:quizSlug" element={<GetReady />} />
+                                            <Route exact path="/attempt-quiz/:quizSlug" element={<QuizQuestions />} />
 
-                    <Route exact path="/take-challenge/:challengeId" element={<TakeChallenge auth={auth} categories={categories} />} />
-                    <Route exact path="/edit-challenge/:challengeId" element={<EditChallengeQuiz auth={auth} />} />
-                    <Route exact path="/view-challenge/:challengeId" element={<ViewChallenge auth={auth} />} />
-                    <Route exact path="/challenges" element={<Challenges auth={auth} />} />
-                    <Route exact path="/all-challenges" element={<AllChallenges />} />
+                                            <Route exact path="/take-challenge/:challengeId" element={<TakeChallenge />} />
+                                            <Route exact path="/edit-challenge/:challengeId" element={<EditChallengeQuiz />} />
+                                            <Route exact path="/view-challenge/:challengeId" element={<ViewChallenge />} />
+                                            <Route exact path="/challenges" element={<Challenges />} />
+                                            <Route exact path="/all-challenges" element={<AllChallenges />} />
 
-                    <Route exact path="/view-question/:questionId" element={<SingleQuestion auth={auth} />} />
-                    <Route exact path="/edit-question/:questionId" element={<EditQuestion auth={auth} categories={categories} />} />
+                                            <Route exact path="/view-question/:questionId" element={<SingleQuestion />} />
+                                            <Route exact path="/edit-question/:questionId" element={<EditQuestion />} />
 
-                    <Route exact path="/review-quiz/:reviewId" element={<ReviewQuiz auth={auth} />} />
+                                            <Route exact path="/review-quiz/:reviewId" element={<ReviewQuiz />} />
 
-                    <Route exact path="/quiz-ranking/:quizID" element={<QuizRanking auth={auth} />} />
-                    <Route exact path="/questions-create/:quizSlug" element={<CreateQuestions auth={auth} categories={categories} />} />
-                    {/* <Route exact path="/challenge/:quizSlug/:userId/" element={<SelectChallengee auth={auth} />} /> */}
+                                            <Route exact path="/quiz-ranking/:quizID" element={<QuizRanking />} />
+                                            <Route exact path="/questions-create/:quizSlug" element={<CreateQuestions />} />
+                                            {/* <Route exact path="/challenge/:quizSlug/:userId/" element={<SelectChallengee />} /> */}
 
-                    <Route exact path="/contact" element={<Contact auth={auth} />} />
-                    <Route exact path="/contact-chat" element={<ContactChat auth={auth} socket={socket} onlineList={onlineList} />} />
-                    <Route exact path="/faqs" element={<FaqCollapse auth={auth} />} />
-                    <Route path="/all-categories" element={<AllCategories categories={categories} />} />
-                    <Route path="/course-notes" element={<Index auth={auth} />} />
-                    <Route exact path="/view-course/:courseId" element={<ViewCourse auth={auth} />} />
-                    <Route exact path="/schools" element={<SchoolsLanding auth={auth} />} />
-                    <Route exact path="/logs" element={<UserLogs auth={auth} />} />
-                    <Route exact path="/subscribers" element={<Subscribers auth={auth} />} />
-                    <Route exact path="/broadcasts" element={<Broadcasts auth={auth} />} />
+                                            <Route exact path="/contact" element={<Contact />} />
+                                            <Route exact path="/contact-chat" element={<ContactChat />} />
+                                            <Route exact path="/faqs" element={<FaqCollapse />} />
+                                            <Route path="/all-categories" element={<AllCategories />} />
+                                            <Route path="/course-notes" element={<Index />} />
+                                            <Route exact path="/view-course/:courseId" element={<ViewCourse />} />
+                                            <Route exact path="/schools" element={<SchoolsLanding />} />
+                                            <Route exact path="/logs" element={<UserLogs />} />
+                                            <Route exact path="/subscribers" element={<Subscribers />} />
+                                            <Route exact path="/broadcasts" element={<Broadcasts />} />
 
-                    <Route exact path="/blog" element={<AllBlogPosts bPcats={bPcats} />} />
-                    <Route exact path="/blog/:bPCatID" element={<ByCategory bPcats={bPcats} />} />
-                    <Route exact path="/create-bpost/:bPCatID" element={<AddBlogPost auth={auth} />} />
-                    <Route exact path="/edit-bpost/:bPSlug" element={<EditBlogPost auth={auth} />} />
-                    <Route exact path="/view-blog-post/:bPSlug" element={<ViewBlogPost />} />
+                                            <Route exact path="/blog" element={<AllBlogPosts />} />
+                                            <Route exact path="/blog/:bPCatID" element={<ByCategory />} />
+                                            <Route exact path="/create-bpost/:bPCatID" element={<AddBlogPost />} />
+                                            <Route exact path="/edit-bpost/:bPSlug" element={<EditBlogPost />} />
+                                            <Route exact path="/view-blog-post/:bPSlug" element={<ViewBlogPost />} />
 
-                    <Route path="/ads.txt" element={<div>
-                        google.com, pub-8918850949540829, DIRECT, f08c47fec0942fa0</div>} />
+                                            <Route path="/ads.txt" element={<div>
+                                                google.com, pub-8918850949540829, DIRECT, f08c47fec0942fa0</div>} />
 
-                    <Route exact path="/" element={<Posts categories={categories} auth={auth} />} />
-                    <Route exact path="/allposts" element={<AllPosts />} />
-                    <Route exact path="/view-note-paper/:noteSlug" element={<ViewNotePaper auth={auth} />} />
-                    <Route exact path="/webmaster" element={<Webmaster auth={auth} socket={socket} onlineList={onlineList} categories={categories} courseCategories={courseCategories} />} />
+                                            <Route exact path="/" element={<Posts />} />
+                                            <Route exact path="/allposts" element={<AllPosts />} />
+                                            <Route exact path="/view-note-paper/:noteSlug" element={<ViewNotePaper />} />
+                                            <Route exact path="/webmaster" element={<Webmaster />} />
 
-                    {/* STATISTICS DASHBOARD */}
-                    <Route exact path="/statistics" element={<Statistics auth={auth} />}>
-                        <Route path="/statistics/about" element={<About />} />
-                        <Route path="/statistics/blogposts" element={<Placeholder auth={auth} />} />
-                        <Route path="/statistics/faqs" element={<FaqCollapse auth={auth} />} />
-                        <Route path="/statistics/contacts" element={<ContactChat auth={auth} />} />
+                                            {/* STATISTICS DASHBOARD */}
+                                            <Route exact path="/statistics" element={<Statistics />}>
+                                                <Route path="/statistics/about" element={<About />} />
+                                                <Route path="/statistics/blogposts" element={<Placeholder />} />
+                                                <Route path="/statistics/faqs" element={<FaqCollapse />} />
+                                                <Route path="/statistics/contacts" element={<ContactChat />} />
 
-                        {/* USERS */}
-                        <Route path="/statistics/new-50-users" element={<UsersStats />} />
-                        <Route path="/statistics/with-image" element={<UsersStats />} />
-                        <Route path="/statistics/with-school" element={<UsersStats />} />
-                        <Route path="/statistics/with-level" element={<UsersStats />} />
-                        <Route path="/statistics/with-faculty" element={<UsersStats />} />
-                        <Route path="/statistics/with-interests" element={<UsersStats />} />
-                        <Route path="/statistics/with-about" element={<UsersStats />} />
-                        <Route path="/statistics/all-users" element={<UsersStats />} />
+                                                {/* USERS */}
+                                                <Route path="/statistics/new-50-users" element={<UsersStats />} />
+                                                <Route path="/statistics/with-image" element={<UsersStats />} />
+                                                <Route path="/statistics/with-school" element={<UsersStats />} />
+                                                <Route path="/statistics/with-level" element={<UsersStats />} />
+                                                <Route path="/statistics/with-faculty" element={<UsersStats />} />
+                                                <Route path="/statistics/with-interests" element={<UsersStats />} />
+                                                <Route path="/statistics/with-about" element={<UsersStats />} />
+                                                <Route path="/statistics/all-users" element={<UsersStats />} />
 
-                        {/* USERS STATS */}
-                        <Route path="/statistics/top-100-quizzing" element={<UsersStats />} />
-                        <Route path="/statistics/top-100-downloaders" element={<UsersStats />} />
+                                                {/* USERS STATS */}
+                                                <Route path="/statistics/top-100-quizzing" element={<UsersStats />} />
+                                                <Route path="/statistics/top-100-downloaders" element={<UsersStats />} />
 
-                        {/* QUIZ STATS */}
-                        <Route path="/statistics/top-20-quizzes" element={<UsersStats />} />
-                        <Route path="/statistics/quizzes-stats" element={<UsersStats />} />
+                                                {/* QUIZ STATS */}
+                                                <Route path="/statistics/top-20-quizzes" element={<UsersStats />} />
+                                                <Route path="/statistics/quizzes-stats" element={<UsersStats />} />
 
-                        {/* NOTES STATS */}
-                        <Route path="/statistics/top-20-notes" element={<UsersStats />} />
-                        <Route path="/statistics/notes-stats" element={<UsersStats />} />
+                                                {/* NOTES STATS */}
+                                                <Route path="/statistics/top-20-notes" element={<UsersStats />} />
+                                                <Route path="/statistics/notes-stats" element={<UsersStats />} />
 
-                        {/* QUIZ CATEGORIES STATS */}
-                        <Route path="/statistics/quiz-categories-stats" element={<UsersStats />} />
-                        <Route path="/statistics/notes-categories-stats" element={<UsersStats />} />
-                    </Route>
+                                                {/* QUIZ CATEGORIES STATS */}
+                                                <Route path="/statistics/quiz-categories-stats" element={<UsersStats />} />
+                                                <Route path="/statistics/notes-categories-stats" element={<UsersStats />} />
+                                            </Route>
 
-                    <Route path="/*" element={<Placeholder />} />
-                </Routes>
-                <Footer />
-            </Suspense>
-        </Router>
+                                            <Route path="/*" element={<Placeholder />} />
+                                        </Routes>
+                                        <Footer />
+                                    </Suspense>
+                                </Router>
+
+                            </onlineListContext.Provider>
+                        </socketContext.Provider>
+                        </bPcatsContext.Provider>
+                    </courseCategoriesContext.Provider>
+                </categoriesContext.Provider>
+            </currentUserContext.Provider>
+        </authContext.Provider>
     )
 }
 

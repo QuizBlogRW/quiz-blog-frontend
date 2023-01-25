@@ -83,7 +83,7 @@ const EditFacultyModal = ({ auth, updateFaculty, idToUpdate, editTitle, errors, 
 
             auth.user.role === 'Visitor' ?
 
-                <Webmaster auth={auth} /> :
+                <Webmaster /> :
 
                 <div>
                     <NavLink onClick={toggle} className="text-dark p-0">
@@ -163,8 +163,7 @@ const EditFacultyModal = ({ auth, updateFaculty, idToUpdate, editTitle, errors, 
                         <SpinningBubbles /> :
                         <LoginModal
                             textContent={'Login first'}
-                            textColor={'text-danger font-weight-bolder my-5 border rounded'}
-                            isAuthenticated={auth.isAuthenticated} />
+                            textColor={'text-danger font-weight-bolder my-5 border rounded'} />
                 }
             </div>
     );
