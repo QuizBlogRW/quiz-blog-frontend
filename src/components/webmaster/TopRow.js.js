@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Row, Alert, Button } from 'reactstrap'
 import { Link } from 'react-router-dom'
 import dashimg from '../../images/dashboard.svg'
+import { currentUserContext, onlineListContext } from '../../appContexts'
 
-const TopRow = ({ currentUser, onlineList }) => {
+const TopRow = () => {
 
+  const onlineList = useContext(onlineListContext)
+  const currentUser = useContext(currentUserContext)
   let isAdminOnline = false
 
   // Find through online list if there is atleast one user with SuperAdmin, Admin or Creator role

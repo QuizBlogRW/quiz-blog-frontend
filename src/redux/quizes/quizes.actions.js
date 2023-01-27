@@ -2,7 +2,7 @@ import axios from 'axios'
 
 import { returnErrors } from '../error/error.actions'
 import { returnSuccess } from '../success/success.actions'
-import { SET_QUIZES, GET_ONE_QUIZ, GET_ONE_QUIZ_FAIL, GET_CATEGORY_QUIZES, GET_CATEGORY_QUIZES_FAIL, CREATE_QUIZ, CREATE_QUIZ_FAIL, DELETE_QUIZ, DELETE_QUIZ_FAIL, UPDATE_QUIZ, UPDATE_QUIZ_FAIL, QUIZES_LOADING, NOTIFY_USERS, NOTIFY_USERS_FAIL, SET_ALL_QUIZES, ALL_QUIZES_LOADING, ADD_VIDEO_LINK, ADD_VIDEO_LINK_FAIL, DELETE_VIDEO, DELETE_VIDEO_FAIL, GET_NOTES_QUIZES, GET_NOTES_QUIZES_FAIL, GET_PAGINATED_QUIZES } from "./quizes.types"
+import { SET_QUIZES, GET_ONE_QUIZ, GET_ONE_QUIZ_LOADING, GET_ONE_QUIZ_FAIL, GET_CATEGORY_QUIZES, GET_CATEGORY_QUIZES_FAIL, CREATE_QUIZ, CREATE_QUIZ_FAIL, DELETE_QUIZ, DELETE_QUIZ_FAIL, UPDATE_QUIZ, UPDATE_QUIZ_FAIL, QUIZES_LOADING, NOTIFY_USERS, NOTIFY_USERS_FAIL, SET_ALL_QUIZES, ALL_QUIZES_LOADING, ADD_VIDEO_LINK, ADD_VIDEO_LINK_FAIL, DELETE_VIDEO, DELETE_VIDEO_FAIL, GET_NOTES_QUIZES, GET_NOTES_QUIZES_FAIL, GET_PAGINATED_QUIZES, PAGINATED_QUIZES_LOADING } from "./quizes.types"
 
 import { tokenConfig } from '../auth/auth.actions'
 import { apiURL } from '../config'
@@ -14,7 +14,7 @@ const axiosInstance = axios.create({
 
 
 export const setPaginatedQuizes = (pageNo) => async (dispatch, getState) => {
-  await dispatch(setQuizesLoading())
+  await dispatch(setPaginatedQuizesLoading())
 
   try {
     await axiosInstance
@@ -69,9 +69,8 @@ export const setAllNoLimitQuizes = () => async (dispatch) => {
 
 // View one quiz
 export const getOneQuiz = (quizSlug) => async (dispatch) => {
-  await dispatch(setQuizesLoading())
+  await dispatch(setOneQuizLoading())
   
-
   try {
     await axiosInstance
       .get(`/api/quizes/${quizSlug}`)
@@ -93,7 +92,6 @@ export const getOneQuiz = (quizSlug) => async (dispatch) => {
 export const getQuizesByCategory = (categoryID) => async (dispatch, getState) => {
   await dispatch(setQuizesLoading())
   
-
   try {
     await axiosInstance
       .get(`/api/quizes/category/${categoryID}`, tokenConfig(getState))
@@ -115,7 +113,6 @@ export const getQuizesByCategory = (categoryID) => async (dispatch, getState) =>
 export const getQuizesByNotes = (courseCategoryID) => async (dispatch, getState) => {
   await dispatch(setQuizesLoading())
   
-
   try {
     await axiosInstance
       .get(`/api/quizes/course-notes/${courseCategoryID}`, tokenConfig(getState))
@@ -302,7 +299,22 @@ export const setQuizesLoading = () => {
     type: QUIZES_LOADING
 
   }
-  
+}
+
+export const setPaginatedQuizesLoading = () => {
+  //Return an action to the reducer
+  return {
+    //action
+    type: PAGINATED_QUIZES_LOADING
+  }
+}
+
+export const setOneQuizLoading = () => {
+  //Return an action to the reducer
+  return {
+    //action
+    type: GET_ONE_QUIZ_LOADING
+  }
 }
 
 export const setAllNoLimitQuizesLoading = () => {
@@ -310,7 +322,5 @@ export const setAllNoLimitQuizesLoading = () => {
   return {
     //action 
     type: ALL_QUIZES_LOADING
-
   }
-  
 }

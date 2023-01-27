@@ -1,12 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Col, Card, Button, CardTitle, CardText, Alert } from 'reactstrap'
 import { Link } from "react-router-dom"
 import DeleteIcon from '../../images/remove.svg'
 import ReplyContactModal from './ReplyContactModal'
 import moment from 'moment'
+import { currentUserContext } from '../../appContexts'
 
-const ContactCard = ({ contactsToUse, currentUser, deleteContact }) => {
+const ContactCard = ({ contactsToUse, deleteContact }) => {
 
+    // Context
+    const currentUser = useContext(currentUserContext)
     const uRole = currentUser && currentUser.role
 
     return (

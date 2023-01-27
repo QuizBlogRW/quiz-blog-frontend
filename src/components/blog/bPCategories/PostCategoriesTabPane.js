@@ -7,11 +7,11 @@ import EditBPCategory from './EditBPCategory'
 import CreateBPCategory from './CreateBPCategory'
 import SpinningBubbles from '../../rLoading/SpinningBubbles'
 import trash from '../../../images/trash.svg'
-import { authContext } from '../../../appContexts'
+import { currentUserContext } from '../../../appContexts'
 
 const PostCategoriesTabPane = ({ bPcats, getPostCategories, deletePostCategory }) => {
 
-  const auth = useContext(authContext)
+  const currentUser = useContext(currentUserContext)
 
   useEffect(() => {
     getPostCategories()
@@ -46,7 +46,7 @@ const PostCategoriesTabPane = ({ bPcats, getPostCategories, deletePostCategory }
                   </Button>
 
                   {
-                    auth.user.role === 'Admin' || auth.user.role === 'SuperAdmin' ?
+                    currentUser.role === 'Admin' || currentUser.role === 'SuperAdmin' ?
                       <>
                         <Button size="sm" color="link" className="mx-2">
                           <EditBPCategory

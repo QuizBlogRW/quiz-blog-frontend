@@ -8,15 +8,15 @@ import MarksStatus from "./MarksStatus"
 import LoginModal from '../../auth/LoginModal'
 import { connect } from 'react-redux'
 import { createChScore } from '../../../redux/challenges/challengeScores/challengeScores.actions'
-import { authContext } from '../../../appContexts'
+import { currentUserContext } from '../../../appContexts'
 
 const ScoreSection = ({ score, qnsLength, thisChQz, toReview, createChScore, chToReview, passMark }) => {
 
     // context
-    const auth = useContext(authContext)
+    const currentUser = useContext(currentUserContext)
 
-    const uRole = auth.user && auth.user.role
-    const uId = auth.user && auth.user._id
+    const uRole = currentUser && currentUser.role
+    const uId = currentUser && currentUser._id
     const thisChQzId = thisChQz && thisChQz._id
     const thisChQzCatId = thisChQz && thisChQz.category && thisChQz.category._id
     const [newScoreId] = useState(uuidv4())

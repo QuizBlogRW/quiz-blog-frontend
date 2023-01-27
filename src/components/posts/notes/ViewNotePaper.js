@@ -6,12 +6,13 @@ import { getOneNotePaper } from '../../../redux/notes/notes.actions'
 import { saveDownload } from '../../../redux/downloads/downloads.actions'
 import LoginModal from '../../auth/LoginModal'
 import SpinningBubbles from '../../rLoading/SpinningBubbles'
-import { authContext } from '../../../appContexts'
+import { authContext, currentUserContext } from '../../../appContexts'
 
 const GridMultiplex = lazy(() => import('../../adsenses/GridMultiplex'))
 
 const ViewNotePaper = ({ nPaper, getOneNotePaper, saveDownload }) => {
 
+    const currentUser = useContext(currentUserContext)
     const auth = useContext(authContext)
 
     // Access route parameters
@@ -31,7 +32,7 @@ const ViewNotePaper = ({ nPaper, getOneNotePaper, saveDownload }) => {
             chapter: note.chapter,
             course: note.course,
             courseCategory: note.courseCategory,
-            downloaded_by: auth.user ? auth.user._id : null
+            downloaded_by: currentUser ? currentUser._id : null
         }
         saveDownload(newDownload)
     }

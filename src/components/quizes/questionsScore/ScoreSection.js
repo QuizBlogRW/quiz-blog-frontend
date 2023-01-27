@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react'
+import React, { lazy, Suspense, useContext  } from 'react'
 import ReactDOMServer from 'react-dom/server';
 import { Button, Spinner } from 'reactstrap'
 import { Link } from 'react-router-dom'
@@ -9,13 +9,18 @@ import LoginModal from '../../auth/LoginModal'
 import { connect } from 'react-redux'
 import { createScore } from '../../../redux/scores/scores.actions'
 import PdfDocument from '../../webmaster/pdfs/PdfDocument'
+import { currentUserContext } from '../../../appContexts'
 
 const ResponsiveHorizontal = lazy(() => import('../../adsenses/ResponsiveHorizontal'))
 
-const ScoreSection = ({ newScoreId, score, qnsLength, thisQuiz, auth, toReview, createScore, quizToReview, passMark }) => {
+const ScoreSection = ({ newScoreId, score, qnsLength, thisQuiz, toReview, createScore, quizToReview, passMark }) => {
 
-    const uRole = auth.user && auth.user.role
-    const uId = auth.user && auth.user._id
+    // context
+    const currentUser = useContext(currentUserContext)
+
+    const uRole = currentUser && currentUser.role
+    const uId = currentUser && currentUser._id
+
     const thisQuizId = thisQuiz && thisQuiz._id
     const thisQuizTitle = thisQuiz && thisQuiz.title
     const thisQuizCatId = thisQuiz && thisQuiz.category && thisQuiz.category._id

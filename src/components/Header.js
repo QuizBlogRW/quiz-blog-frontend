@@ -8,12 +8,13 @@ import CatDropdown from './CatDropdown'
 import logo from '../images/quizLogo.svg'
 import '@fortawesome/fontawesome-free/css/fontawesome.min.css'
 import EditPictureModal from './auth/EditPictureModal'
-import { authContext } from '../appContexts'
+import { authContext, currentUserContext } from '../appContexts'
 
 const Header = () => {
 
     // context
     const auth = useContext(authContext)
+    const currentUser = useContext(currentUserContext)
 
     // state
     const [isOpen, setIsOpen] = useState(false)
@@ -29,7 +30,7 @@ const Header = () => {
 
                 <Link to="/#">
                     <small className="text-warning ml-2 d-none d-lg-flex">
-                        {auth.user && auth.user ? auth.user.name.split(" ")[0] : ''}
+                        {currentUser && currentUser ? currentUser.name.split(" ")[0] : ''}
                     </small>
                 </Link>
 
@@ -45,52 +46,52 @@ const Header = () => {
                             <ListGroup>
 
                                 <ListGroupItem className='bg-warning'>
-                                    <h6 className='mb-0 font-weight-bolder text-white text-uppercase'>{auth.user && auth.user ? auth.user.name.split(" ")[0] : ''}</h6></ListGroupItem>
+                                    <h6 className='mb-0 font-weight-bolder text-white text-uppercase'>{currentUser && currentUser ? currentUser.name.split(" ")[0] : ''}</h6></ListGroupItem>
 
                                 <ListGroupItem>
-                                    {auth.user && auth.user.school ?
-                                        <Link to={`/edit-profile/${auth.user && auth.user._id}`}>
-                                            <span className={`${auth.user && !auth.user.school ? 'text-danger' : ''}`}>
-                                                {(auth.user && auth.user.school.title)}
+                                    {currentUser && currentUser.school ?
+                                        <Link to={`/edit-profile/${currentUser && currentUser._id}`}>
+                                            <span className={`${currentUser && !currentUser.school ? 'text-danger' : ''}`}>
+                                                {(currentUser && currentUser.school.title)}
                                             </span>
                                         </Link> :
-                                        <Link to={`/edit-profile/${auth.user && auth.user._id}`}>
+                                        <Link to={`/edit-profile/${currentUser && currentUser._id}`}>
                                             Please add a school
                                         </Link>}
                                 </ListGroupItem>
 
                                 <ListGroupItem>
-                                    {auth.user && auth.user.level ?
-                                        <Link to={`/edit-profile/${auth.user && auth.user._id}`}>
-                                            <span className={`${auth.user && !auth.user.level ? 'text-danger' : ''}`}>
-                                                {(auth.user && auth.user.level.title)}
+                                    {currentUser && currentUser.level ?
+                                        <Link to={`/edit-profile/${currentUser && currentUser._id}`}>
+                                            <span className={`${currentUser && !currentUser.level ? 'text-danger' : ''}`}>
+                                                {(currentUser && currentUser.level.title)}
                                             </span>
                                         </Link> :
-                                        <Link to={`/edit-profile/${auth.user && auth.user._id}`}>
+                                        <Link to={`/edit-profile/${currentUser && currentUser._id}`}>
                                             Please add a level
                                         </Link>}
                                 </ListGroupItem>
 
                                 <ListGroupItem>
-                                    {auth.user && auth.user.faculty ?
-                                        <Link to={`/edit-profile/${auth.user && auth.user._id}`}>
-                                            <span className={`${auth.user && !auth.user.faculty ? 'text-danger' : ''}`}>
-                                                {(auth.user && auth.user.faculty.title)}
+                                    {currentUser && currentUser.faculty ?
+                                        <Link to={`/edit-profile/${currentUser && currentUser._id}`}>
+                                            <span className={`${currentUser && !currentUser.faculty ? 'text-danger' : ''}`}>
+                                                {(currentUser && currentUser.faculty.title)}
                                             </span>
                                         </Link> :
-                                        <Link to={`/edit-profile/${auth.user && auth.user._id}`}>
+                                        <Link to={`/edit-profile/${currentUser && currentUser._id}`}>
                                             Please add a faculty
                                         </Link>}
                                 </ListGroupItem>
 
                                 <ListGroupItem>
-                                    {auth.user && auth.user.year ?
-                                        <Link to={`/edit-profile/${auth.user && auth.user._id}`}>
-                                            <span className={`${auth.user && !auth.user.year ? 'text-danger' : ''}`}>
-                                                {(auth.user && auth.user.year)}
+                                    {currentUser && currentUser.year ?
+                                        <Link to={`/edit-profile/${currentUser && currentUser._id}`}>
+                                            <span className={`${currentUser && !currentUser.year ? 'text-danger' : ''}`}>
+                                                {(currentUser && currentUser.year)}
                                             </span>
                                         </Link> :
-                                        <Link to={`/edit-profile/${auth.user && auth.user._id}`}>
+                                        <Link to={`/edit-profile/${currentUser && currentUser._id}`}>
                                             Please add a year
                                         </Link>}
                                 </ListGroupItem>
@@ -104,7 +105,7 @@ const Header = () => {
                         </DropdownItem>
 
                         <DropdownItem text>
-                            <Link to={`/edit-profile/${auth.user && auth.user._id}`}>
+                            <Link to={`/edit-profile/${currentUser && currentUser._id}`}>
                                 Edit Profile
                             </Link>
                         </DropdownItem>

@@ -1,11 +1,13 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import { Table, Button, Alert } from 'reactstrap';
 import moment from 'moment'
 import { Link } from "react-router-dom"
 import trash from '../../images/trash.svg';
+import { currentUserContext } from '../../appContexts'
 
-const ScoresTable = ({ scoresToUse, currentUser, pageNo, deleteScore }) => {
+const ScoresTable = ({ scoresToUse, pageNo, deleteScore }) => {
 
+    const currentUser = useContext(currentUserContext)
     const uRole = currentUser && currentUser.role
 
     return (

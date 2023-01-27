@@ -6,12 +6,12 @@ import EditCategory from './EditCategory'
 import DeleteCategory from './DeleteCategory'
 import CreateCategory from '../categories/CreateCategory'
 import SpinningBubbles from '../rLoading/SpinningBubbles'
-import { authContext, categoriesContext, courseCategoriesContext } from '../../appContexts'
+import { currentUserContext, categoriesContext, courseCategoriesContext } from '../../appContexts'
 
 const CategoriesTabPane = () => {
 
     // Context
-    const auth = useContext(authContext)
+    const currentUser = useContext(currentUserContext)
     const categories = useContext(categoriesContext)
     const courseCategories = useContext(courseCategoriesContext)
 
@@ -47,7 +47,7 @@ const CategoriesTabPane = () => {
                                     </Button>
 
                                     {
-                                        auth.user.role === 'Admin' || auth.user.role === 'SuperAdmin' ?
+                                        currentUser.role === 'Admin' || currentUser.role === 'SuperAdmin' ?
                                             <>
                                                 <Button size="sm" color="link" className="mx-2">
                                                     <EditCategory

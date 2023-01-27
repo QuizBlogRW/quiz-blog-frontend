@@ -9,14 +9,14 @@ import { setRankingScores } from '../../redux/scores/scores.actions'
 import SpinningBubbles from '../rLoading/SpinningBubbles'
 import AddVideo from './AddVideo'
 import ViewQuizComments from './ViewQuizComments'
-import { authContext } from '../../appContexts'
+import { authContext, currentUserContext } from '../../appContexts'
 
 const QuizRanking = ({ scores, setRankingScores }) => {
 
     const auth = useContext(authContext)
-
+    const currentUser = useContext(currentUserContext)
+    
     const { quizID } = useParams()
-    const currentUser = auth && auth.user
 
     useEffect(() => {
         setRankingScores(quizID)

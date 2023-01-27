@@ -9,12 +9,12 @@ import QuizToast from './QuizToast'
 import SearchInput from '../SearchInput'
 import Pagination from '../webmaster/Pagination'
 import PageOf from '../webmaster/PageOf'
-import { authContext, categoriesContext } from '../../appContexts'
+import { categoriesContext, currentUserContext } from '../../appContexts'
 
 const QuizesTabPane = ({ quizes, questions, allNoLimit, allNoLimitLoading, setPaginatedQuizes, setAllNoLimitQuizes, setQuestions, deleteQuiz }) => {
 
     // context
-    const auth = useContext(authContext)
+    const currentUser = useContext(currentUserContext)
     const categories = useContext(categoriesContext)
 
     const [pageNo, setPageNo] = useState(1)
@@ -22,7 +22,6 @@ const QuizesTabPane = ({ quizes, questions, allNoLimit, allNoLimitLoading, setPa
     const totPages = quizes && quizes.totalPages
     const [searchKey, setSearchKey] = useState('')
     const [searchKeyQ, setSearchKeyQ] = useState('')
-    const currentUser = auth.user
     const uRole = currentUser && currentUser.role
 
     // Lifecycle methods
@@ -49,7 +48,7 @@ const QuizesTabPane = ({ quizes, questions, allNoLimit, allNoLimitLoading, setPa
 
         <TabPane tabId="2">
 
-            {quizes.isLoading ?
+            {quizes.isPaginatedLoading ?
 
                 <SpinningBubbles title='paginated quizes' /> :
 
@@ -57,8 +56,6 @@ const QuizesTabPane = ({ quizes, questions, allNoLimit, allNoLimitLoading, setPa
                     <>
                         {(uRole === 'Admin' || uRole === 'SuperAdmin') ?
                             <PageOf pageNo={pageNo} numberOfPages={numberOfPages} /> : null}
-
-
 
                         {
                             // SEARCH BARS

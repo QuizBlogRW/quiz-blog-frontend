@@ -7,12 +7,13 @@ import AddChapter from './AddChapter'
 import EditCourseModal from './EditCourseModal'
 import { connect } from 'react-redux';
 import SpinningBubbles from '../rLoading/SpinningBubbles';
-import { authContext } from '../../appContexts';
+import { authContext, currentUserContext } from '../../appContexts';
 
 const CoursesHolder = ({ courses, deleteCourse }) => {
 
     // context
     const auth = useContext(authContext);
+    const currentUser = useContext(currentUserContext);
 
     return (
 
@@ -32,7 +33,7 @@ const CoursesHolder = ({ courses, deleteCourse }) => {
                                 <a href={`/view-course/${course._id}`} className="text-white">View Notes</a>
                             </Button>
 
-                            {auth.user.role !== 'Visitor' ?
+                            {currentUser.role !== 'Visitor' ?
                                 <span>
                                     <Button outline color="warning">
                                         <strong><AddChapter course={course} /></strong>

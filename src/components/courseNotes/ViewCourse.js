@@ -11,11 +11,13 @@ import { getOneCourse } from '../../redux/courses/courses.actions'
 import DeleteIcon from '../../images/remove.svg';
 import { Container, Card, Button, CardTitle, CardText, Alert, Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import SpinningBubbles from '../rLoading/SpinningBubbles';
-import { authContext } from '../../appContexts'
+import { authContext, currentUserContext } from '../../appContexts'
 
 const ViewCourse = ({ getChaptersByCourse, chaptersBy, getOneCourse, deleteChapter, oneCourse }) => {
 
     const auth = useContext(authContext)
+    const currentUser = useContext(currentUserContext)
+
     const [activeIndex, setActiveIndex] = useState(null);
 
     const collapse = index => {
@@ -61,7 +63,7 @@ const ViewCourse = ({ getChaptersByCourse, chaptersBy, getOneCourse, deleteChapt
                                     <BreadcrumbItem tag="a" href="/course-notes">Courses Home</BreadcrumbItem>
                                     <BreadcrumbItem active tag="span">Chapters</BreadcrumbItem>
                                 </>
-                                {auth.user.role !== 'Visitor' ?
+                                {currentUser.role !== 'Visitor' ?
                                     <Button outline color="warning" className="ml-auto">
                                         <strong><AddChapter course={oneCourse.oneCourse} /></strong>
                                     </Button> : null}
@@ -89,7 +91,7 @@ const ViewCourse = ({ getChaptersByCourse, chaptersBy, getOneCourse, deleteChapt
 
                                 <CardTitle tag="h5" className="font-weight-bolder mb-0 d-flex">
                                     Chapter - {index + 1}.&nbsp;{chapter.title}
-                                    {auth.user.role !== 'Visitor' ?
+                                    {currentUser.role !== 'Visitor' ?
 
                                         <span className="ml-auto">
                                             <Button size="sm" color="link" className="mx-2">
@@ -129,7 +131,7 @@ const ViewCourse = ({ getChaptersByCourse, chaptersBy, getOneCourse, deleteChapt
 
                         <Alert color="danger" className="d-flex justify-content-between border border-warning">
                             <strong>No chapters yet for this course!</strong>
-                            {auth.user.role !== 'Visitor' ?
+                            {currentUser.role !== 'Visitor' ?
                                 <Button outline color="success">
                                     <strong><AddChapter course={oneCourse.oneCourse} /></strong>
                                 </Button> : null}

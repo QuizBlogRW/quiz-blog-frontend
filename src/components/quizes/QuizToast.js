@@ -1,11 +1,11 @@
 import React from 'react'
-import { Link } from "react-router-dom";
-import EditQuiz from './EditQuiz';
-import trash from '../../images/trash.svg';
-import AddIcon from '../../images/plus.svg';
-import { Col, Toast, ToastBody, ToastHeader } from 'reactstrap';
+import { Link } from "react-router-dom"
+import EditQuiz from './EditQuiz'
+import trash from '../../images/trash.svg'
+import AddIcon from '../../images/plus.svg'
+import { Col, Toast, ToastBody, ToastHeader } from 'reactstrap'
 
-const QuizToast = ({ fromSearch, auth, categories, quiz, deleteQuiz }) => {
+const QuizToast = ({ fromSearch, quiz, deleteQuiz }) => {
 
     return (
 
@@ -15,7 +15,7 @@ const QuizToast = ({ fromSearch, auth, categories, quiz, deleteQuiz }) => {
                 <ToastHeader className={`mb-0 ${fromSearch ? 'text-white' : 'text-primary'} text-uppercase`}>
                     <Link to={`/quiz-ranking/${quiz._id}`}>
                         <strong>{quiz.title}</strong>
-                        <small>&nbsp;(Ranking)</small>
+                        <small>&nbsp(Ranking)</small>
                     </Link>
 
                     <div className="actions text-secondary d-flex">
@@ -45,12 +45,12 @@ const QuizToast = ({ fromSearch, auth, categories, quiz, deleteQuiz }) => {
                             {quiz && quiz.questions.map((question, index) =>
                                 <ul key={question._id} className="pl-1">
                                     <li style={{ listStyle: "none" }}>
-                                        {index + 1}.&nbsp;
+                                        {index + 1}.&nbsp
 
                                         <Link to={`/view-question/${question._id}`} style={{ color: fromSearch ? 'khaki': 'blueviolet' }}>
                                             {question.questionText}
                                         </Link>
-                                        <strong className="text-danger">&nbsp;
+                                        <strong className="text-danger">&nbsp
                                             ({question.answerOptions.length} answers)</strong>
                                     </li>
                                 </ul>
@@ -62,6 +62,6 @@ const QuizToast = ({ fromSearch, auth, categories, quiz, deleteQuiz }) => {
             </Toast>
 
         </Col>)
-};
+}
 
-export default QuizToast;
+export default QuizToast

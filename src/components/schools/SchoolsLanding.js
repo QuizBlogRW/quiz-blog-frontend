@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Row, Col, Form, FormGroup, Label, Input, Button, Alert } from 'reactstrap'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import 'react-tabs/style/react-tabs.css'
@@ -16,9 +16,13 @@ import Webmaster from '../webmaster/Webmaster'
 import FacultiesCollapse from './FacultiesCollapse'
 import EditLevelModal from './EditLevelModal'
 import SpinningBubbles from '../rLoading/SpinningBubbles'
+import { authContext, currentUserContext } from '../../appContexts'
 
+const SchoolsLanding = ({ getSchools, fetchSchoolLevels, schools, schoolLevels, deleteLevel, deleteSchool }) => {
 
-const SchoolsLanding = ({ getSchools, fetchSchoolLevels, schools, schoolLevels, deleteLevel, deleteSchool, auth }) => {
+    // context
+    const auth = useContext(authContext)
+    const currentUser = useContext(currentUserContext)
 
     // Lifecycle methods
     useEffect(() => { getSchools() }, [getSchools])
@@ -41,7 +45,7 @@ const SchoolsLanding = ({ getSchools, fetchSchoolLevels, schools, schoolLevels, 
 
         auth.isAuthenticated ?
 
-            auth.user.role === 'Visitor' ?
+            currentUser.role === 'Visitor' ?
 
                 <Webmaster /> :
                 <>

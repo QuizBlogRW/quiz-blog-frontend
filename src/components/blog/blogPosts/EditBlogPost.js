@@ -10,11 +10,12 @@ import { getPostCategories } from '../../../redux/blog/postCategories/postCatego
 import SpinningBubbles from '../../rLoading/SpinningBubbles'
 import UploadPostPhotos from './UploadPostPhotos'
 import YourImages from './YourImages'
-import { authContext } from '../../../appContexts'
+import { authContext, currentUserContext } from '../../../appContexts'
 
 const EditBlogPost = ({ updateBlogPost, getOneBlogPost, getPostCategories, bPcats, bposts, errors, successful, clearErrors, clearSuccess }) => {
 
   const auth = useContext(authContext)
+  const currentUser = useContext(currentUserContext)
   
   const { bPSlug } = useParams()
   // Lifecycle methods
@@ -41,7 +42,7 @@ const EditBlogPost = ({ updateBlogPost, getOneBlogPost, getPostCategories, bPcat
   const bPCategories = bPcats && bPcats.allPostCategories
   const isAuthenticated = auth && auth.isAuthenticated
   const userLoading = auth && auth.isLoading
-  const currentUser = auth && auth.user
+
   const curUserRole = currentUser && currentUser.role
 
   const creatorID = bPToUse.creator && bPToUse.creator._id

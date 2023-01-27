@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Col, Row, CardTitle, Card, Button } from 'reactstrap'
 import SpinningBubbles from '../../../rLoading/SpinningBubbles'
 import { connect } from 'react-redux'
@@ -6,8 +6,11 @@ import { getCommentsByQuiz, getQuestionComments } from '../../../../redux/questi
 import { getQuizComments } from '../../../../redux/quizComments/quizComments.actions'
 import Comment from './Comment'
 import AddComment from './AddComment'
+import { currentUserContext } from '../../../../appContexts'
 
-const QuestionComments = ({ commentsByQuiz, getCommentsByQuiz, qComments, getQuestionComments, quizComments, getQuizComments, currentUser, questionID, quizID, fromSingleQuestion }) => {
+const QuestionComments = ({ commentsByQuiz, getCommentsByQuiz, qComments, getQuestionComments, quizComments, getQuizComments, questionID, quizID, fromSingleQuestion }) => {
+  
+  const currentUser = useContext(currentUserContext)
 
   // Lifecycle methods
   useEffect(() => {

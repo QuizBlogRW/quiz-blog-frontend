@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useContext } from 'react'
 import { Form, FormGroup, Button, Input, Alert } from 'reactstrap'
 import { connect } from 'react-redux'
 import { getOneContact, replyContact } from '../../../redux/contacts/contacts.actions'
@@ -6,8 +6,12 @@ import moment from 'moment'
 import SpinningBubbles from '../../rLoading/SpinningBubbles'
 import { clearErrors } from '../../../redux/error/error.actions'
 import { clearSuccess } from '../../../redux/success/success.actions'
+import { currentUserContext } from '../../../appContexts'
 
-const ChatComponent = ({ socket, onlineList, currentUser, chatId, cntct, getOneContact, replyContact, errors, successful, clearErrors, clearSuccess }) => {
+const ChatComponent = ({ socket, onlineList, chatId, cntct, getOneContact, replyContact, errors, successful, clearErrors, clearSuccess }) => {
+
+    // context
+    const currentUser = useContext(currentUserContext)
 
     const contact = cntct && cntct.oneContact
     const lastMessageRef = useRef(null);

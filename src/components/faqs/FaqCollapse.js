@@ -13,17 +13,16 @@ import EditFaq from './EditFaq'
 import DeleteFaq from './DeleteFaq'
 import AddVideo from '../quizes/AddVideo'
 import EmbeddedVideos from '../quizes/EmbeddedVideos'
-import { authContext } from '../../appContexts'
+import { currentUserContext } from '../../appContexts'
 
 const GridMultiplex = lazy(() => import('../adsenses/GridMultiplex'))
 const InFeedAd = lazy(() => import('../adsenses/InFeedAd'))
 
 const FaqCollapse = ({ faqs, getFaqs }) => {
 
-    const auth = useContext(authContext)
+    const currentUser = useContext(currentUserContext)
 
     const faqsToUse = faqs && faqs.allFaqs
-    const currentUser = auth && auth.user
 
     // Lifecycle methods
     useEffect(() => {

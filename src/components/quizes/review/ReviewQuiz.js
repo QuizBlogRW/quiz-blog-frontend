@@ -13,11 +13,12 @@ import NotAuthenticated from '../../auth/NotAuthenticated'
 // import SimilarQuizes from './SimilarQuizes'
 import ResponsiveAd from '../../adsenses/ResponsiveAd'
 import SquareAd from '../../adsenses/SquareAd'
-import { authContext } from '../../../appContexts'
+import { authContext, currentUserContext } from '../../../appContexts'
 
 const ReviewQuiz = ({ sC, getOneScore }) => {
 
     const auth = useContext(authContext)
+    const currentUser = useContext(currentUserContext)
 
     const [currentQuestion, setCurrentQuestion] = useState(0)
     const [lastAnswer, setLastAnswer] = useState(false)
@@ -83,7 +84,7 @@ const ReviewQuiz = ({ sC, getOneScore }) => {
                                                             qnsAll={qnsAll}
                                                             curRevQn={curRevQn}
                                                             currentQuestion={currentQuestion}
-                                                            uRole={auth.user.role} />
+                                                            uRole={currentUser.role} />
 
                                                         {/* Image */}
                                                         {curRevQn && curRevQn.question_image ?
@@ -103,7 +104,7 @@ const ReviewQuiz = ({ sC, getOneScore }) => {
                                                             setLastAnswer={setLastAnswer}
                                                             setCurrentQuestion={setCurrentQuestion} />
 
-                                                        <QuestionComments questionID={curRevQn && curRevQn._id} quizID={sC.oneScore.quiz && sC.oneScore.quiz._id} currentUser={auth && auth.user} />
+                                                        <QuestionComments questionID={curRevQn && curRevQn._id} quizID={sC.oneScore.quiz && sC.oneScore.quiz._id} currentUser={auth && currentUser} />
                                                     </div>
                                                     : <SpinningBubbles title='question' />}
 

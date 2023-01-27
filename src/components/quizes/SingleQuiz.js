@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { Row, Col, Toast, ToastBody, ToastHeader, Breadcrumb, BreadcrumbItem, ListGroup, ListGroupItem } from 'reactstrap';
 import LoginModal from '../auth/LoginModal'
 import moment from 'moment'
@@ -6,8 +6,13 @@ import { Link, useParams } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { setQuizes } from '../../redux/quizes/quizes.actions'
 import SpinningBubbles from '../rLoading/SpinningBubbles';
+import { authContext, currentUserContext } from '../../appContexts';
 
-const SingleQuiz = ({ auth, allQuizes, setQuizes }) => {
+const SingleQuiz = ({ allQuizes, setQuizes }) => {
+
+    // Get auth context
+    const auth = useContext(authContext);
+    const currentUser = useContext(currentUserContext);
 
     // Lifecycle methods
     useEffect(() => {
@@ -20,7 +25,7 @@ const SingleQuiz = ({ auth, allQuizes, setQuizes }) => {
     return (
         auth.isAuthenticated ?
 
-            auth.user.role !== 'Visitor' ?
+            currentUser.role !== 'Visitor' ?
 
                 <>
                     {allQuizes && allQuizes.map(quiz => (
@@ -66,7 +71,7 @@ const SingleQuiz = ({ auth, allQuizes, setQuizes }) => {
                                 </Row>
                             </div> : null))}
                 </> :
-                <Reports userId={auth.user._id} /> :
+                <Reports userId={currentUser._id} /> :
 
             // If not authenticated or loading
             <div className="vh-100 d-flex justify-content-center align-items-center text-danger">

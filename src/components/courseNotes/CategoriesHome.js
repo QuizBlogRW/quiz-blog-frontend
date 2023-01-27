@@ -2,19 +2,20 @@ import React, { lazy, Suspense, useContext } from 'react'
 import { Jumbotron, Button, Spinner } from 'reactstrap'
 import LoginModal from '../auth/LoginModal'
 import SpinningBubbles from '../rLoading/SpinningBubbles'
-import { authContext } from '../../appContexts'
+import { authContext, currentUserContext } from '../../appContexts'
 
 const GridMultiplex = lazy(() => import('../adsenses/GridMultiplex'))
 
 const CategoriesHome = () => {
 
     const auth = useContext(authContext)
+    const currentUser = useContext(currentUserContext)
 
     return (
         auth.isAuthenticated ?
             <>
                 <Jumbotron className="mx-3">
-                    <h3 className="font-weight-bold mb-lg-4 categories-home-head">Hello, {auth.user && auth.user ? auth.user.name : ''}!</h3>
+                    <h3 className="font-weight-bold mb-lg-4 categories-home-head">Hello, {currentUser && currentUser ? currentUser.name : ''}!</h3>
 
                     <p className="lead">This is Quiz Blog simple courses and resources portal, a nice way to explore different resources that can give you enough information related to your learning and your course success.</p>
                     <hr className="my-2" />

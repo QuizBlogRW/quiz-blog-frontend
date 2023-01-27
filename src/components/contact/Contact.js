@@ -8,13 +8,12 @@ import { clearErrors } from '../../redux/error/error.actions'
 import { clearSuccess } from '../../redux/success/success.actions'
 import './contact.css'
 import mail from '../../../src/images/mail.svg'
-import { authContext } from '../../appContexts'
+import { currentUserContext } from '../../appContexts'
 
 const Contact = ({ errors, successful, clearErrors, clearSuccess, sendMsg }) => {
 
-    const auth = useContext(authContext)
+    const currentUser = useContext(currentUserContext)
 
-    const currentUser = auth && auth.user
     // Alert
     const [visible, setVisible] = useState(true)
     const onDismiss = () => setVisible(false)

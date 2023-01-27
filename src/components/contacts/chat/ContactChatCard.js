@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Card, Button, CardTitle, CardText, Alert } from 'reactstrap'
 import DeleteIcon from '../../../images/remove.svg'
 import moment from 'moment'
+import { currentUserContext } from '../../../appContexts'
 
-const ContactChatCard = ({ openChat, contactsToUse, currentUser, deleteContact }) => {
+const ContactChatCard = ({ openChat, contactsToUse, deleteContact }) => {
 
+    // Context
+    const currentUser = useContext(currentUserContext)
     const uRole = currentUser && currentUser.role
 
     return (

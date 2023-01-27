@@ -1,12 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input, Alert } from 'reactstrap'
 import { connect } from 'react-redux'
 import { replyContact } from '../../redux/contacts/contacts.actions'
 import { clearErrors } from '../../redux/error/error.actions'
 import { clearSuccess } from '../../redux/success/success.actions'
+import { currentUserContext } from '../../appContexts'
 
-const ReplyContactModal = ({ currentUser, replyContact, thisContact, errors, successful, clearErrors, clearSuccess }) => {
+const ReplyContactModal = ({ replyContact, thisContact, errors, successful, clearErrors, clearSuccess }) => {
 
+    // context
+    const currentUser = useContext(currentUserContext)
+
+    // State
     const [contactState, setContactState] = useState({
         email: 'quizblog.rw@gmail.com',
         message: '',

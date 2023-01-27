@@ -8,12 +8,13 @@ import { getSchools } from '../../redux/schools/schools.actions';
 import { fetchSchoolLevels } from '../../redux/levels/levels.actions';
 import { fetchLevelFaculties } from '../../redux/faculties/faculties.actions';
 import SpinningBubbles from '../rLoading/SpinningBubbles';
-import { authContext } from '../../appContexts';
+import { authContext, currentUserContext } from '../../appContexts';
 
 const EditProfile = ({ getSchools, schools, fetchSchoolLevels, schoolLevels, fetchLevelFaculties, levelFaculties, updateProfile, errors, successful }) => {
 
     // Context
     const auth = useContext(authContext)
+    const currentUser = useContext(currentUserContext)
 
     // Access route parameters & history
     const { userId } = useParams()
@@ -23,7 +24,7 @@ const EditProfile = ({ getSchools, schools, fetchSchoolLevels, schoolLevels, fet
     const onDismiss = () => setVisible(false);
     const [progress, setProgress] = useState(false);
 
-    const profile = auth && auth.user
+    const profile = currentUser && currentUser
     const [profileState, setProfileState] = useState(profile)
     useEffect(() => { setProfileState(profile) }, [profile])
 
@@ -151,8 +152,8 @@ const EditProfile = ({ getSchools, schools, fetchSchoolLevels, schoolLevels, fet
 
                 <Row className="mb-0 mb-lg-3 mx-0">
                     <Breadcrumb>
-                        <BreadcrumbItem>{auth.user && auth.user.name}</BreadcrumbItem>
-                        <BreadcrumbItem>{auth.user && auth.user.email}</BreadcrumbItem>
+                        <BreadcrumbItem>{currentUser && currentUser.name}</BreadcrumbItem>
+                        <BreadcrumbItem>{currentUser && currentUser.email}</BreadcrumbItem>
                         <BreadcrumbItem active>Edit Profile</BreadcrumbItem>
                     </Breadcrumb>
                 </Row>

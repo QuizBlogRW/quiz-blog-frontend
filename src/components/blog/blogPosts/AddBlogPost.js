@@ -9,14 +9,17 @@ import { createBlogPost } from '../../../redux/blog/blogPosts/blogPosts.actions'
 import SpinningBubbles from '../../rLoading/SpinningBubbles'
 import UploadPostPhotos from './UploadPostPhotos'
 import YourImages from './YourImages'
-import { authContext } from '../../../appContexts'
+import { authContext, currentUserContext } from '../../../appContexts'
 
 const AddBlogPost = ({ createBlogPost, errors, successful, clearErrors, clearSuccess }) => {
 
     const auth = useContext(authContext)
+    const currentUser = useContext(currentUserContext)
+
+
     const isAuthenticated = auth && auth.isAuthenticated
     const userLoading = auth && auth.isLoading
-    const currentUser = auth && auth.user
+
     const curUserRole = currentUser && currentUser.role
     const isAuthorized = curUserRole === 'Admin' || curUserRole === 'SuperAdmin' || curUserRole === 'Creator'
 
@@ -72,7 +75,7 @@ const AddBlogPost = ({ createBlogPost, errors, successful, clearErrors, clearSuc
         formData.append('markdown', markdown)
         formData.append('post_image', post_image)
         formData.append('bgColor', bgColor)
-        formData.append('creator', auth.isLoading === false ? auth.user._id : null)
+        formData.append('creator', auth.isLoading === false ? currentUser._id : null)
 
         const onUploadProgress = (data) => {
             //Set the progress value to show the progress bar

@@ -120,7 +120,7 @@ const QuizQuestions = ({ qZ, getOneQuiz }) => {
         setCurQnUsrTrueChoices(0)
     }
 
-    if (!qZ.isLoading) {
+    if (!qZ.isOneQuizLoading) {
 
         return (
 

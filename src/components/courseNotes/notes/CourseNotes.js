@@ -11,12 +11,13 @@ import EditNotesModal from './EditNotesModal'
 import AddRelatedQuiz from './AddRelatedQuiz'
 import { Row, Col, Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button } from 'reactstrap'
 import SpinningBubbles from '../../rLoading/SpinningBubbles'
-import { authContext } from '../../../appContexts'
+import { authContext, currentUserContext } from '../../../appContexts'
 
 const CourseNotes = ({ chapter, getNotes, deleteNotes, removeQzNt, saveDownload, notes }) => {
 
     // context
     const auth = useContext(authContext)
+    const currentUser = useContext(currentUserContext)
 
     useEffect(() => { getNotes() }, [getNotes])
 
@@ -26,7 +27,7 @@ const CourseNotes = ({ chapter, getNotes, deleteNotes, removeQzNt, saveDownload,
             chapter: note.chapter,
             course: note.course,
             courseCategory: note.courseCategory,
-            downloaded_by: auth.user ? auth.user._id : null
+            downloaded_by: currentUser ? currentUser._id : null
         }
         saveDownload(newDownload)
     }
@@ -39,7 +40,7 @@ const CourseNotes = ({ chapter, getNotes, deleteNotes, removeQzNt, saveDownload,
                 <SpinningBubbles title='notes' /> :
 
                 <>
-                    {auth.user.role !== 'Visitor' ?
+                    {currentUser.role !== 'Visitor' ?
                         <Row>
                             {chapter ?
                                 <Button size="sm" outline color="success" className="ml-auto mr-1 mx-sm-auto my-2 add-notes-btn">
@@ -90,7 +91,7 @@ const CourseNotes = ({ chapter, getNotes, deleteNotes, removeQzNt, saveDownload,
                                                                         {qz.title}
                                                                     </Link>
 
-                                                                    {auth.user.role !== 'Visitor' ?
+                                                                    {currentUser.role !== 'Visitor' ?
                                                                         <Button size="sm" color="link" className="ml-2" onClick={() => removeQzNt(note._id, qz && qz._id)}>
                                                                             <img src={DeleteIcon} alt="" width="10" height="10" />
                                                                         </Button> : null}
@@ -105,7 +106,7 @@ const CourseNotes = ({ chapter, getNotes, deleteNotes, removeQzNt, saveDownload,
                                                     <a href={note.notes_file} className="text-white" onClick={() => onDownload(note)} target="_blank" rel="noreferrer">Download</a>
                                                 </Button>
 
-                                                {auth.user.role !== 'Visitor' ?
+                                                {currentUser.role !== 'Visitor' ?
                                                     <><Button size="sm" color="link" className="mx-2">
                                                         <EditNotesModal idToUpdate={note._id} editTitle={note.title} editDesc={note.description} />
                                                     </Button>

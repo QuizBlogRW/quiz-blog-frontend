@@ -9,14 +9,14 @@ import { authContext } from '../../appContexts'
 const CreateFaq = ({ createFq, errors, successful, clearErrors, clearSuccess }) => {
 
     // context
-    const { currentUser } = useContext(authContext)
+    const currentUser = useContext(authContext)
 
     const [faqsState, setFaqsState] = useState({
         title: '',
         answer: '',
         created_by: currentUser ? currentUser._id : null
     })
-    
+
     // Alert
     const [visible, setVisible] = useState(true)
     const onDismiss = () => setVisible(false)

@@ -5,16 +5,14 @@ import { connect } from 'react-redux'
 import { getOneQuiz } from '../../redux/quizes/quizes.actions'
 import EmbeddedVideos from './EmbeddedVideos'
 // import ChallengeeModal from './ChallengeeModal'
-import { authContext } from '../../appContexts'
+import { currentUserContext } from '../../appContexts'
 
 const ResponsiveHorizontal = lazy(() => import('../adsenses/ResponsiveHorizontal'))
 
 const GetReady = ({ qZ, getOneQuiz }) => {
 
     // context
-    const auth = useContext(authContext)
-
-    const currentUser = auth && auth.user
+    const currentUser = useContext(currentUserContext)
 
     // Access route parameters
     const { quizSlug } = useParams()
@@ -23,7 +21,7 @@ const GetReady = ({ qZ, getOneQuiz }) => {
         getOneQuiz(quizSlug);
     }, [getOneQuiz, quizSlug]);
 
-    if (!qZ.isLoading) {
+    if (!qZ.isOneQuizLoading) {
 
         return (
 

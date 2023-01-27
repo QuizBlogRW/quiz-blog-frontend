@@ -11,7 +11,7 @@ import CategoriesHome from './CategoriesHome'
 import { Row, Col, Breadcrumb, BreadcrumbItem, Button, Collapse, Navbar, NavbarBrand, Nav, NavItem, NavLink, ListGroup, ListGroupItem, Spinner } from 'reactstrap'
 import DeleteIcon from '../../images/remove.svg'
 import SpinningBubbles from '../rLoading/SpinningBubbles'
-import { authContext } from '../../appContexts'
+import { authContext, currentUserContext } from '../../appContexts'
 
 const InFeedAd = lazy(() => import('../adsenses/InFeedAd'))
 
@@ -19,6 +19,7 @@ const InFeedAd = lazy(() => import('../adsenses/InFeedAd'))
 const Index = ({ getCourseCategories, courseCategories, courses, getCoursesByCategory, deleteCourseCategory }) => {
 
     const auth = useContext(authContext)
+    const currentUser = useContext(currentUserContext)
     
     const [collapsed, setCollapsed] = useState(true)
     const toggleNavbar = () => setCollapsed(!collapsed)
@@ -57,7 +58,7 @@ const Index = ({ getCourseCategories, courseCategories, courses, getCoursesByCat
                                 Welcome to Quiz Blog Course Resources Portal
                             </BreadcrumbItem>
 
-                            {auth.user.role === 'Admin' || auth.user.role === 'Creator' ?
+                            {currentUser.role === 'Admin' || currentUser.role === 'Creator' ?
                                 <Button size="sm" outline color="info" className="ml-auto">
                                     <strong><AddCourseCategory /></strong>
                                 </Button> : null}
@@ -189,7 +190,7 @@ const Index = ({ getCourseCategories, courseCategories, courses, getCoursesByCat
                                             <div key={cCategory._id} className={`tab-pane fade ${activeTab === cCategory.title ? 'show active' : ''}`} id={`v-pills-${cCategory.title}`} role="tabpanel" aria-labelledby={`v-pills-${cCategory.title}-tab`}>
 
                                                 {/* Edit category */}
-                                                {auth.user.role === 'Admin' || (cCategory.created_by && auth.user._id === cCategory.created_by) ?
+                                                {currentUser.role === 'Admin' || (cCategory.created_by && currentUser._id === cCategory.created_by) ?
 
                                                     <span className='d-flex'>
                                                         <Button size="sm" outline color="info" className="d-block ml-auto mr-lg-3 my-2">

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, lazy, Suspense } from 'react'
+import React, { useEffect, useState, lazy, Suspense, useContext } from 'react'
 import { Col, Row, Form, FormGroup, Input, Button, Alert, Spinner } from 'reactstrap'
 import subscribe from '../../images/undraw_subscribe.svg'
 // import AdSense from 'react-adsense'
@@ -10,10 +10,11 @@ const ViewCategory = lazy(() => import('../categories/ViewCategory'))
 // const GoogleAds = lazy(() => import('../adsenses/GoogleAds'))
 const SquareAd = lazy(() => import('../adsenses/SquareAd'))
 const ResponsiveAd = lazy(() => import('../adsenses/ResponsiveAd'))
+const { currentUserContext } = require('../../appContexts')
 
-const RightSide = ({ auth, subscribeToNewsLetter, clearErrors, error, categories }) => {
+const RightSide = ({ subscribeToNewsLetter, clearErrors, error, categories }) => {
 
-    const currentUser = auth && auth.user
+    const currentUser = useContext(currentUserContext)
 
     const [subscriberState, setsubscriberState] = useState({
         name: '',

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useContext } from 'react'
 import { Form, FormGroup, Button, Input, Alert } from 'reactstrap'
 import { connect } from 'react-redux'
 import { getCreateRoom, getRoomMessages, sendRoomMessage } from '../../../redux/contacts/contacts.actions'
@@ -6,8 +6,12 @@ import moment from 'moment'
 import SpinningBubbles from '../../rLoading/SpinningBubbles'
 import { clearErrors } from '../../../redux/error/error.actions'
 import { clearSuccess } from '../../../redux/success/success.actions'
+import { currentUserContext } from '../../../appContexts'
 
-const RoomChatComponent = ({ socket, onlineList, currentUser, room1ON1ToGet, chatRoom, roomMessages, getCreateRoom, getRoomMessages, sendRoomMessage, errors, successful, clearErrors, clearSuccess }) => {
+const RoomChatComponent = ({ socket, onlineList, room1ON1ToGet, chatRoom, roomMessages, getCreateRoom, getRoomMessages, sendRoomMessage, errors, successful, clearErrors, clearSuccess }) => {
+
+    // Get current user from context
+    const currentUser = useContext(currentUserContext)
 
     const roomID = chatRoom && chatRoom.oneChatRoom && chatRoom.oneChatRoom._id
     const roomMsgesss = roomMessages && roomMessages.oneRoomMessages

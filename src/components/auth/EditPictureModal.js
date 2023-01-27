@@ -7,15 +7,16 @@ import { clearErrors } from '../../redux/error/error.actions'
 import { clearSuccess } from '../../redux/success/success.actions'
 import { Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Alert, CustomInput, Progress, UncontrolledTooltip } from 'reactstrap'
 import SpinningBubbles from '../rLoading/SpinningBubbles'
-import { authContext } from '../../appContexts'
+import { authContext, currentUserContext } from '../../appContexts'
 
 const EditPictureModal = ({ updateProfileImage, errors, successful, clearErrors, clearSuccess }) => {
 
   // Get the user id and image from the auth context
   const auth = useContext(authContext)
+  const currentUser = useContext(currentUserContext)
 
-  const uId = auth && auth.user._id
-  const userImage = auth && auth.user.image
+  const uId = currentUser && currentUser._id
+  const userImage = currentUser && currentUser.image
 
   const [profileImageState, setProfileImageState] = useState()
   const [progress, setProgress] = useState(false)

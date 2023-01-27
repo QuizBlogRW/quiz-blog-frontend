@@ -10,16 +10,16 @@ import ContactChatCard from './ContactChatCard'
 import ChatComponent from './ChatComponent'
 import SpinningBubbles from '../../rLoading/SpinningBubbles'
 import RoomChatComponent from './RoomChatComponent'
-import { authContext, socketContext, onlineListContext } from '../../../appContexts'
+import { authContext, currentUserContext, socketContext, onlineListContext } from '../../../appContexts'
 
 const ContactChat = ({ contacts, getContacts, getUserContacts, deleteContact }) => {
 
     // Contexts
     const auth = useContext(authContext)
+    const currentUser = useContext(currentUserContext)
     const socket = useContext(socketContext)
     const onlineList = useContext(onlineListContext)
     
-    const currentUser = auth && auth.user
     const userEmail = currentUser && currentUser.email
     const uRole = currentUser && currentUser.role
     const totPages = contacts && contacts.totalPages

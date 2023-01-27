@@ -1,18 +1,21 @@
-import { SET_QUIZES, GET_ONE_QUIZ, GET_ONE_QUIZ_FAIL, GET_CATEGORY_QUIZES, GET_CATEGORY_QUIZES_FAIL, CREATE_QUIZ, CREATE_QUIZ_FAIL, DELETE_QUIZ, DELETE_QUIZ_FAIL, UPDATE_QUIZ, UPDATE_QUIZ_FAIL, QUIZES_LOADING, NOTIFY_USERS, NOTIFY_USERS_FAIL, SET_ALL_QUIZES, ALL_QUIZES_LOADING, ADD_VIDEO_LINK, ADD_VIDEO_LINK_FAIL, DELETE_VIDEO, DELETE_VIDEO_FAIL, GET_NOTES_QUIZES, GET_NOTES_QUIZES_FAIL, GET_PAGINATED_QUIZES, GET_PAGINATED_QUIZES_FAIL } from "./quizes.types";
+import { SET_QUIZES, GET_ONE_QUIZ, GET_ONE_QUIZ_LOADING, GET_ONE_QUIZ_FAIL, GET_CATEGORY_QUIZES, GET_CATEGORY_QUIZES_FAIL, CREATE_QUIZ, CREATE_QUIZ_FAIL, DELETE_QUIZ, DELETE_QUIZ_FAIL, UPDATE_QUIZ, UPDATE_QUIZ_FAIL, QUIZES_LOADING, NOTIFY_USERS, NOTIFY_USERS_FAIL, SET_ALL_QUIZES, ALL_QUIZES_LOADING, ADD_VIDEO_LINK, ADD_VIDEO_LINK_FAIL, DELETE_VIDEO, DELETE_VIDEO_FAIL, GET_NOTES_QUIZES, GET_NOTES_QUIZES_FAIL, GET_PAGINATED_QUIZES, GET_PAGINATED_QUIZES_FAIL, PAGINATED_QUIZES_LOADING } from "./quizes.types"
 
 const INITIAL_STATE = {
   allQuizes: [],
   categoryQuizes: [],
   notesQuizes: [],
-  oneQuiz: '',
   isLoading: true,
+
+  oneQuiz: '',
+  isOneQuizLoading: true,
 
   allQuizesNoLimit: [],
   isNoLimitLoading: true,
 
   paginatedQuizes: [],
+  isPaginatedLoading: true,
   totalPages: 0,
-};
+}
 
 const quizesReducer = (state = INITIAL_STATE, action) => {
 
@@ -23,14 +26,14 @@ const quizesReducer = (state = INITIAL_STATE, action) => {
         ...state,
         isLoading: false,
         allQuizes: action.payload
-      };
+      }
 
     case GET_PAGINATED_QUIZES:
       return {
         ...state,
-        isLoading: false,
+        isPaginatedLoading: false,
         paginatedQuizes: action.payload.quizes,
-        totalPages: action.payload.totalPages,
+        totalPages: action.payload.totalPages
       }
 
     case SET_ALL_QUIZES:
@@ -38,40 +41,40 @@ const quizesReducer = (state = INITIAL_STATE, action) => {
         ...state,
         isNoLimitLoading: false,
         allQuizesNoLimit: action.payload
-      };
+      }
 
     case GET_ONE_QUIZ:
       return {
         ...state,
-        isLoading: false,
+        isOneQuizLoading: false,
         oneQuiz: action.payload
-      };
+      }
 
     case GET_CATEGORY_QUIZES:
       return {
         ...state,
         isLoading: false,
         categoryQuizes: action.payload
-      };
+      }
 
     case GET_NOTES_QUIZES:
       return {
         ...state,
         isLoading: false,
         notesQuizes: action.payload
-      };
+      }
 
     case CREATE_QUIZ:
       return {
         ...state,
         allQuizes: [...state.allQuizes, action.payload]
-      };
+      }
 
     case NOTIFY_USERS:
       return {
         ...state,
         newQuizInfo: action.payload
-      };
+      }
 
     case CREATE_QUIZ_FAIL:
     case DELETE_QUIZ_FAIL:
@@ -86,7 +89,7 @@ const quizesReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         msg: "Failed!"
-      };
+      }
 
     case ADD_VIDEO_LINK:
       return {
@@ -100,7 +103,7 @@ const quizesReducer = (state = INITIAL_STATE, action) => {
               video_links: [...quiz.video_links, action.payload]
             }
 
-          } else return quiz;
+          } else return quiz
         })
       }
 
@@ -120,7 +123,7 @@ const quizesReducer = (state = INITIAL_STATE, action) => {
               oldCategoryID: action.payload.oldCategoryID
             }
 
-          } else return quiz;
+          } else return quiz
         })
       }
 
@@ -135,7 +138,7 @@ const quizesReducer = (state = INITIAL_STATE, action) => {
               ...quiz,
               video_links: quiz.video_links.filter(vidlink => vidlink._id !== action.payload.vId)
             }
-          } else return quiz;
+          } else return quiz
         })
       }
 
@@ -151,6 +154,18 @@ const quizesReducer = (state = INITIAL_STATE, action) => {
         isLoading: true
       }
 
+    case PAGINATED_QUIZES_LOADING:
+      return {
+        ...state,
+        isPaginatedLoading: true
+      }
+
+    case GET_ONE_QUIZ_LOADING:
+      return {
+        ...state,
+        isOneQuizLoading: true
+      }
+
     case ALL_QUIZES_LOADING:
       return {
         ...state,
@@ -158,8 +173,8 @@ const quizesReducer = (state = INITIAL_STATE, action) => {
       }
 
     default:
-      return state;
+      return state
   }
-};
+}
 
-export default quizesReducer;
+export default quizesReducer

@@ -6,12 +6,13 @@ import LoginModal from '../auth/LoginModal'
 import { connect } from 'react-redux';
 import { deleteSubscriber } from '../../redux/subscribers/subscribers.actions';
 import SpinningBubbles from '../rLoading/SpinningBubbles';
-import { authContext } from '../../appContexts';
+import { authContext, currentUserContext } from '../../appContexts';
 
 const Unsubscribe = ({ deleteSubscriber }) => {
 
     // context
     const auth = useContext(authContext)
+    const currentUser = useContext(currentUserContext)
 
     const [unsubscribed, setUnsubscribed] = useState(false);
 
@@ -19,7 +20,7 @@ const Unsubscribe = ({ deleteSubscriber }) => {
         e.preventDefault();
 
         // Attempt unsubscribe
-        deleteSubscriber(auth.user.email);
+        deleteSubscriber(currentUser.email);
         setUnsubscribed(true)
     }
 
