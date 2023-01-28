@@ -13,7 +13,7 @@ import { authContext } from '../../../appContexts'
 const AddNotesModal = ({ chapter, createNotes, errors, successful, clearErrors, clearSuccess }) => {
 
     // context
-    const { auth } = useContext(authContext)
+    const auth = useContext(authContext)
 
     const [notesState, setNotesState] = useState({
         title: '',
@@ -105,7 +105,7 @@ const AddNotesModal = ({ chapter, createNotes, errors, successful, clearErrors, 
             notes_file: ''
         })
     }
-
+    console.log(auth)
     return (
         auth.isAuthenticated ?
 
