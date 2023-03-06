@@ -31,7 +31,10 @@ const BlogPosts = ({ getBlogPosts, blgPosts }) => {
             <Row className="m-1 m-sm-3 p-1 px-sm-5 blogPosts border border-info rounded">
 
                 <Col sm="12" className="py-lg-3 px-0">
-                    <h3 className="mt-0 text-danger text-center font-weight-bold">BLOG POSTS</h3>
+                    <h3 className="inversed-title mt-0 mt-lg-3 pt-4 py-lg-3 text-danger text-center font-weight-bold">
+                        <span class="part1">BLOG</span>
+                        <span class="part2">POSTS</span>
+                    </h3>
 
                     {blgPosts.isLoading ?
                         <div className="p-5 m-5 d-flex justify-content-center align-items-center">
@@ -69,6 +72,14 @@ const BlogPosts = ({ getBlogPosts, blgPosts }) => {
                                                     </span>
                                                 </ListGroupItem>
                                             </ListGroup>
+
+                                            {/* ad when half the number of notes*/}
+                                            {AllBPs.length > 2 && AllBPs.indexOf(bp) === Math.floor(AllBPs.length / 2) &&
+                                                <div className='w-100'>
+                                                    <SquareAd />
+                                                </div>
+                                            }
+
                                         </Suspense>)
                                 }
                                 )}
@@ -77,19 +88,12 @@ const BlogPosts = ({ getBlogPosts, blgPosts }) => {
                             <div className="mt-sm-5 mb-sm-4 d-flex justify-content-center">
                                 <Link to="/blog">
                                     <Button outline color="warning" className='view-all-btn'>
-                                        View all posts
+                                        More articles here &nbsp;👉
                                     </Button>
                                 </Link>
                             </div>
                         </>
                     }
-                </Col>
-            </Row>
-            <Row className='w-100'>
-                <Col sm="12" className='w-100'>
-                    <div className='w-100'>
-                        <SquareAd />
-                    </div>
                 </Col>
             </Row>
         </>

@@ -45,8 +45,10 @@ const Posts = ({ setQuizes, setAllNoLimitQuizes, limitedQuizes, limitedQuizesLoa
         <Container className="posts main w-100 px-0 mt-4">
 
             <blockquote className="blockquote text-center mt-3 mt-sm-5">
-                <h1 className="mb-0 lead text-uppercase font-weight-bold">Knowing matter, so does quizzing!</h1>
-                <small className="text-muted px-1 ml-lg-2">&nbsp;~&nbsp; Welcome, test your knowledge as you wish! &nbsp;~&nbsp;</small>
+                <h1 className="mb-2 lead text-uppercase font-weight-bold">Knowing matter, so does quizzing!</h1>
+                <small className="text-muted p-1 ml-lg-2">
+                    &nbsp;~&nbsp; Welcome, test your knowledge as you wish! &nbsp;~&nbsp;
+                    </small>
             </blockquote>
 
             <Row className="mt-lg-5 mx-0 px-1 px-lg-5">
@@ -82,7 +84,10 @@ const Posts = ({ setQuizes, setAllNoLimitQuizes, limitedQuizes, limitedQuizesLoa
             <Row className="mt-5 mx-0 py-sm-3 quizzes-list">
 
                 <Col sm="8" className="px-1 px-lg-4 mt-md-2 w-100">
-                    <h3 className="mb-3 text-danger text-center font-weight-bold pt-2">NEWEST QUIZZES</h3>
+                    <h3 className="inversed-title mt-0 mt-lg-3 pt-4 py-lg-3 text-danger text-center font-weight-bold pt-2">
+                        <span class="part1">NEWEST</span>
+                        <span class="part2">QUIZZES</span>
+                    </h3>
 
                     {limitedQuizesLoading ?
                         <div className="p-5 m-5 d-flex justify-content-center align-items-center">
@@ -114,12 +119,12 @@ const Posts = ({ setQuizes, setAllNoLimitQuizes, limitedQuizes, limitedQuizesLoa
                                         </div>}>
                                             <PostItem quiz={quiz} />
 
-                                            {/* ON HALF THE NUMBER OF QUIZZES, DIPLAY THE InFeedAd */}
-                                            {limitedQuizes.indexOf(quiz) === Math.floor(limitedQuizes.length / 2) ?
-                                            
-                                            <div className='w-100 d-flex justify-content-center align-items-center'>
-                                                    <InFeedAd />
-                                            </div> : null}
+                                            {/* ON HALF THE NUMBER OF QUIZZES, DIPLAY THE ad */}
+                                            {limitedQuizes.length > 0 && limitedQuizes.indexOf(quiz) === Math.floor(limitedQuizes.length / 2) ?
+
+                                                <div className='w-100 d-flex justify-content-center align-items-center'>
+                                                    <SquareAd />
+                                                </div> : null}
                                         </Suspense> : null
                                 ))}
 
@@ -128,7 +133,7 @@ const Posts = ({ setQuizes, setAllNoLimitQuizes, limitedQuizes, limitedQuizesLoa
                                 <div className="my-4 d-flex justify-content-center">
                                     <Link to="/allposts">
                                         <Button outline color="info" className='view-all-btn'>
-                                            View all quizes
+                                            More Quizzes Here &nbsp;<i className="fa fa-arrow-right"></i>
                                         </Button>
                                     </Link>
                                 </div> :
@@ -137,11 +142,11 @@ const Posts = ({ setQuizes, setAllNoLimitQuizes, limitedQuizes, limitedQuizesLoa
                     }
                     <Popular />
 
-                    {/* Google square ad */}
+                    {/* ad */}
                     <Row className='w-100 d-flex justify-content-center align-items-center'>
                         <Col sm="12" className='w-100 d-flex justify-content-center align-items-center'>
                             <div className='w-100 d-flex justify-content-center align-items-center'>
-                                <SquareAd />
+                                <InFeedAd/>
                             </div>
                         </Col>
                     </Row>
@@ -150,7 +155,7 @@ const Posts = ({ setQuizes, setAllNoLimitQuizes, limitedQuizes, limitedQuizesLoa
                 <RightSide categories={categories} />
             </Row>
 
-            <Suspense fallback={<div className="p-3 m-3 d-flex justify-content-center align-items-center">
+            <Suspense fallback={<div className="p-3 d-flex justify-content-center align-items-center">
                 <Spinner style={{ width: '8rem', height: '8rem' }} />
             </div>}>
                 <BlogPosts />

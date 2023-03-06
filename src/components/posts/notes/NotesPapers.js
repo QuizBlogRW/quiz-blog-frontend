@@ -30,28 +30,15 @@ const NotesPapers = ({ getLandingDisplayNotes, getLandingDisplayNotesNoLimit, lD
         <>
             <Row className="px-1 px-lg-4 my-1 w-100">
                 {/* Google responsive 1 ad */}
-                    <Col sm="12" className='w-100'>
-                        <div className='w-100'>
-                            <ResponsiveAd />
-                        </div>
-                    </Col>
+                <Col sm="12" className='w-100'>
+                    <div className='w-100'>
+                        <ResponsiveAd />
+                    </div>
+                </Col>
             </Row>
 
-            <Row className="m-1 m-sm-3 p-1 px-sm-5 notes-paper">
-
-                <Col sm="12" className="px-1 y-1 w-100">
-                    <Suspense fallback={<div className="p-1 m-1 d-flex justify-content-center align-items-center w-100">
-                        <Spinner color="primary" />
-                    </div>}>
-                        <div className='w-100'>
-                            <ResponsiveHorizontal />
-                        </div>
-                    </Suspense>
-
-                    <h3 className="mt-0 mt-lg-3 pt-4 py-lg-3 text-danger text-center font-weight-bold">NEWEST NOTES & PAST PAPERS</h3>
-                </Col>
-
-                <Col sm="3" className='p-1 p-lg-2 d-flex flex-column justify-content-around w-100'>
+            <Row className="px-1 px-lg-4 my-1 w-100">
+                <Col sm="6" className='p-1 p-lg-2 d-flex flex-column justify-content-around w-100'>
                     <Suspense fallback={<div className="p-1 m-1 d-flex justify-content-center align-items-center w-100">
                         <Spinner color="primary" />
                     </div>}>
@@ -60,7 +47,23 @@ const NotesPapers = ({ getLandingDisplayNotes, getLandingDisplayNotesNoLimit, lD
                         </div>
                     </Suspense>
                 </Col>
-                <Col sm="9" className="px-0 px-sm-5 w-100">
+                <Col sm="6" className='w-100'>
+                    <div className='w-100'>
+                        <SquareAd />
+                    </div>
+                </Col>
+            </Row>
+
+            <Row className="m-1 p-1 px-sm-5 notes-paper">
+                <Col sm="12" className="px-1 y-1 w-100">
+                    <h3 className="inversed-title mt-0 mt-lg-3 pt-4 py-lg-3 text-danger text-center font-weight-bold">
+                        <span class="part1">NEWEST NOTES</span>
+                        <span style={{textDecoration: "none"}}> & </span>
+                        <span class="part2">PAST PAPERS</span>
+                    </h3>
+                </Col>
+
+                <Col sm="12" className="px-0 px-sm-5 w-100">
 
                     {lDLimitedNotesLoading ?
                         <div className="p-5 m-5 d-flex justify-content-center align-items-center">
@@ -109,7 +112,7 @@ const NotesPapers = ({ getLandingDisplayNotes, getLandingDisplayNotesNoLimit, lD
                                 <div className="mt-sm-5 mb-sm-4 d-flex justify-content-center">
                                     <Link to="/course-notes">
                                         <Button outline color="info" className='view-all-btn'>
-                                            View all notes
+                                            More Notes & Past Papers &nbsp; <i className="fa fa-arrow-right"></i>
                                         </Button>
                                     </Link>
                                 </div> :
@@ -124,15 +127,17 @@ const NotesPapers = ({ getLandingDisplayNotes, getLandingDisplayNotesNoLimit, lD
                     }
                 </Col>
             </Row>
+
             <Row className="my-1 w-100">
-                {/* Google square ad */}
-                <Row className='w-100'>
-                    <Col sm="12" className='w-100'>
+                <Col sm="12" className="px-1 y-1 w-100">
+                    <Suspense fallback={<div className="p-1 m-1 d-flex justify-content-center align-items-center w-100">
+                        <Spinner color="primary" />
+                    </div>}>
                         <div className='w-100'>
-                            <SquareAd />
+                            <ResponsiveHorizontal />
                         </div>
-                    </Col>
-                </Row>
+                    </Suspense>
+                </Col>
             </Row>
         </>
     )

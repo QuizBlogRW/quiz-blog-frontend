@@ -17,6 +17,7 @@ const CourseNotes = ({ chapter, getNotes, deleteNotes, removeQzNt, saveDownload,
 
     // context
     const auth = useContext(authContext)
+    const isAuth = auth && auth.isAuthenticated
     const currentUser = useContext(currentUserContext)
 
     useEffect(() => { getNotes() }, [getNotes])
@@ -34,7 +35,7 @@ const CourseNotes = ({ chapter, getNotes, deleteNotes, removeQzNt, saveDownload,
 
     return (
 
-        auth.isAuthenticated ?
+        isAuth && isAuth ?
 
             notes.isLoading ?
                 <SpinningBubbles title='notes' /> :

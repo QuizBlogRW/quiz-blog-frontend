@@ -8,12 +8,16 @@ import { clearErrors } from '../../../redux/error/error.actions'
 import { clearSuccess } from '../../../redux/success/success.actions'
 import { Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input, NavLink, Alert, CustomInput, Progress } from 'reactstrap'
 import SpinningBubbles from '../../rLoading/SpinningBubbles'
-import { authContext } from '../../../appContexts'
+import { authContext, currentUserContext } from '../../../appContexts'
 
 const AddNotesModal = ({ chapter, createNotes, errors, successful, clearErrors, clearSuccess }) => {
 
     // context
     const auth = useContext(authContext)
+    const currentUser = useContext(currentUserContext)
+
+    const isAuth = auth && auth.isAuthenticated
+    const uRole = currentUser && currentUser.role
 
     const [notesState, setNotesState] = useState({
         title: '',
@@ -89,7 +93,7 @@ const AddNotesModal = ({ chapter, createNotes, errors, successful, clearErrors, 
         formData.append('chapter', chapter._id)
         formData.append('course', chapter.course._id)
         formData.append('courseCategory', chapter.courseCategory)
-        formData.append('uploaded_by', auth.user ? auth.user._id : null)
+        formData.append('uploaded_by', currentUser ? currentUser._id : null)
 
         const onUploadProgress = (data) => {
             //Set the progress value to show the progress bar
@@ -105,11 +109,11 @@ const AddNotesModal = ({ chapter, createNotes, errors, successful, clearErrors, 
             notes_file: ''
         })
     }
-    console.log(auth)
-    return (
-        auth.isAuthenticated ?
 
-            auth.user.role !== 'Visitor' ?
+    return (
+        isAuth && isAuth ?
+
+            uRole !== 'Visitor' ?
 
                 <div>
                     <NavLink onClick={toggle} className="text-success p-0">
@@ -185,7 +189,7 @@ const AddNotesModal = ({ chapter, createNotes, errors, successful, clearErrors, 
             // If not authenticated or loading
             <div className="vh-100 d-flex justify-content-center align-items-center text-danger">
                 {
-                    auth.isLoading ?
+                    auth && auth.isLoading ?
                         <SpinningBubbles /> :
                         <LoginModal
                             textContent={'Login first'}

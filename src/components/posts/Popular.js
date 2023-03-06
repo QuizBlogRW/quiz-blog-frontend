@@ -31,7 +31,7 @@ const Popular = ({ getPopularToday, popularQuizes, getUserOfMonth }) => {
             <div className="popular my-2 mt-3 mt-lg-5 py-3 d-flex flex-column flex-lg-row justify-content-between">
 
                 <div className={`w-75 mx-lg-2 ${popularQuizes && popularQuizes.popularQuizes.length > 0 ? '' : 'd-none'}`}>
-                    <h6 className="text-uppercase font-weight-bold mb-3 mb-lg-4 text-center"><u>Top 3 Popular Quizes Today</u></h6>
+                    <h6 className="text-uppercase fancy font-weight-bold mb-3 mb-lg-4 text-center"><u>Top 3 Popular Quizes Today</u></h6>
 
                     {!popularQuizes.isLoading ?
                         <ListGroup numbered="true" >
@@ -47,7 +47,7 @@ const Popular = ({ getPopularToday, popularQuizes, getUserOfMonth }) => {
                 </div>
 
                 <div className="month-user px-1 w-25">
-                    <h6 className="text-uppercase font-weight-bold mb-3 mb-lg-4 text-center"><u>User of the Month</u></h6>
+                    <h6 className="text-uppercase fancy font-weight-bold mb-3 mb-lg-4 text-center"><u>User of the Month</u></h6>
 
                     <Card className="p-0 px-1 pt-1 monthly-user">
                         <span><CardImg src={userOfTheMonth.uPhoto || uploadimage} top width="100%" /></span>

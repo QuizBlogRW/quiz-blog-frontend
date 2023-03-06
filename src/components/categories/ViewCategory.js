@@ -10,8 +10,13 @@ const ViewCategory = ({ categories }) => {
             category.quizes.length > 1 ?
 
                 <React.Fragment key={category._id}>
-                    <Button outline id={category.title.split(' ').join('-').replace(/[^a-zA-Z0-9]/g, '-')} block className="px-1 mt-2 mob-cat-btn d-flex align-items-center">
-                        <small className='text-truncate text-uppercase font-weight-bolder'>{category.title}</small>
+                    <Button outline 
+                    id={category.title.split(' ').join('-').replace(/[^a-zA-Z0-9]/g, '-')} block 
+                    className="mt-2 mob-cat-btn d-flex align-items-center">
+
+                        <small className='text-truncate text-uppercase font-weight-bolder'>
+                            {category.title}
+                            </small>
                         <i className={`fa fa-angle-down ml-auto`}></i>
                     </Button>
 
