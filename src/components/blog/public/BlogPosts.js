@@ -55,11 +55,11 @@ const BlogPosts = ({ getBlogPosts, blgPosts }) => {
                                             <ListGroup flush color="warning" className="px-lg-3 my-1">
                                                 <ListGroupItem href="#" tag="span" color="alert-link" className='d-flex flex-column flex-lg-row justify-content-between align-items-center'>
 
-                                                    <Link to={`/view-blog-post/${slug}`}>
+                                                    <Link to={`/view-blog-post/${slug}`} className="w-100">
                                                         <b className='text-uppercase text-primary post-title'>{title}</b>
                                                     </Link>
 
-                                                    <span className="text-dark view-blog-post">
+                                                    <span className="w-100 text-dark view-blog-post">
                                                         <small className='px-1'>
                                                             {postCategory && postCategory.title}
                                                         </small>|

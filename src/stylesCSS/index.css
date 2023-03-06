@@ -4,14 +4,14 @@ body {
     font-display: swap !important;
 }
 
+iframe {
+    z-index: 1 !important;
+}
+
 /* MAKING ADS DON'T APPEAR BEFORE CONTENT */
 /* iframe {
     z-index: -11111111 !important;
 } */
-
-iframe {
-    z-index: 1 !important;
-}
 
 /* reset-css file or css global file */
 .row {
