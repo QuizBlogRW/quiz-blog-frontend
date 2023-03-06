@@ -5,8 +5,12 @@ body {
 }
 
 /* MAKING ADS DON'T APPEAR BEFORE CONTENT */
-iframe {
+/* iframe {
     z-index: -11111111 !important;
+} */
+
+iframe {
+    z-index: 1 !important;
 }
 
 /* reset-css file or css global file */
