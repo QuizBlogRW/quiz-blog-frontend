@@ -1,10 +1,13 @@
-import { GET_BLOG_POSTS, GET_BLOG_POSTS_FAIL, GET_ONE_BLOG_POST, GET_ONE_BLOG_POST_FAIL, GET_BLOG_POSTS_BY_CATEGORY, GET_BLOG_POSTS_BY_CATEGORY_FAIL, CREATE_BLOG_POST, CREATE_BLOG_POST_FAIL, DELETE_BLOG_POST, DELETE_BLOG_POST_FAIL, UPDATE_BLOG_POST, UPDATE_BLOG_POST_FAIL, BLOG_POSTS_LOADING } from "./blogPosts.types";
+import { GET_BLOG_POSTS, GET_BLOG_POSTS_FAIL, GET_ONE_BLOG_POST, GET_ONE_BLOG_POST_FAIL, GET_BLOG_POSTS_BY_CATEGORY, GET_BLOG_POSTS_BY_CATEGORY_FAIL, CREATE_BLOG_POST, CREATE_BLOG_POST_FAIL, DELETE_BLOG_POST, DELETE_BLOG_POST_FAIL, UPDATE_BLOG_POST, UPDATE_BLOG_POST_FAIL, BLOG_POSTS_LOADING, ONE_BLOG_POST_LOADING } from "./blogPosts.types";
 
 const INITIAL_STATE = {
   allBlogPosts: [],
+  isLoading: true,
+  
   oneBlogPost: '',
+  isOneLoading: true,
+
   blogPostsByCategory: [],
-  isLoading: true
 };
 
 const blogPostsReducer = (state = INITIAL_STATE, action) => {
@@ -21,7 +24,7 @@ const blogPostsReducer = (state = INITIAL_STATE, action) => {
     case GET_ONE_BLOG_POST:
       return {
         ...state,
-        isLoading: false,
+        isOneLoading: false,
         oneBlogPost: action.payload
       };
 
@@ -48,6 +51,7 @@ const blogPostsReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isLoading: false,
+        isOneLoading: false,
         msg: "Failed!"
       };
 
@@ -80,6 +84,12 @@ const blogPostsReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isLoading: true
+      }
+
+    case ONE_BLOG_POST_LOADING:
+      return {
+        ...state,
+        isOneLoading: true
       }
 
     default:

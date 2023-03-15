@@ -2,6 +2,8 @@ import React, { useEffect, lazy, Suspense, useContext } from 'react'
 import { Container, Col, Row, Card, Button, CardTitle, CardText, Spinner } from 'reactstrap'
 import { Link, useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
+import moment from 'moment'
+
 import { getOneNotePaper } from '../../../redux/notes/notes.actions'
 import { saveDownload } from '../../../redux/downloads/downloads.actions'
 import LoginModal from '../../auth/LoginModal'
@@ -23,8 +25,6 @@ const ViewNotePaper = ({ nPaper, getOneNotePaper, saveDownload }) => {
     }, [getOneNotePaper, noteSlug])
 
     const { title, description, courseCategory, course, chapter, notes_file, createdAt } = nPaper.oneNotePaper
-
-    let date = new Date(createdAt)
 
     const onDownload = (note) => {
         const newDownload = {
@@ -66,7 +66,9 @@ const ViewNotePaper = ({ nPaper, getOneNotePaper, saveDownload }) => {
 
                                     <CardText>{description}</CardText>
 
-                                    <small className='text-center text-info font-weight-bolder'>{date.toDateString()}</small>
+                                    <small className='text-center text-info font-weight-bolder'>
+                                        {moment(new Date(createdAt)).format('DD MMM YYYY, HH:mm')}
+                                    </small>
 
                                     {!auth.isAuthenticated ?
 

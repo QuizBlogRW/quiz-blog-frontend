@@ -2,6 +2,8 @@ import React, { useEffect } from 'react'
 import { Media, Alert } from 'reactstrap'
 import ReactLoading from "react-loading"
 import { connect } from 'react-redux'
+import moment from 'moment'
+
 import { getBlogPostsByCategory } from '../../../redux/blog/blogPosts/blogPosts.actions'
 import altImage from '../../../images/dashboard.svg'
 import './relatedLatest.css'
@@ -51,14 +53,12 @@ const RelatedPosts = ({ bPCatID, bposts, getBlogPostsByCategory }) => {
                                     </small>
 
                                     <small className={`text-primary`}>
-                                        {new Date(blogPost && blogPost.createdAt).toLocaleString('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit' })}
+                                        {moment(blogPost && blogPost.createdAt).format('YYYY-MM-DD')}
                                     </small>
-
                                 </div>
                             </Media>
 
                         </Media>
-
                     </Media>
                 ))}
             </div>

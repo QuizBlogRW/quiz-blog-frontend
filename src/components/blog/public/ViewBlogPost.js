@@ -1,22 +1,25 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import Markdown from 'react-markdown'
 import rehypeHighlight from 'rehype-highlight'
 import { connect } from 'react-redux'
 import ReactLoading from "react-loading"
 import { useParams } from 'react-router-dom'
 import { Container, Row, Col } from 'reactstrap'
-import './viewPost.css'
+import moment from 'moment'
+
 import { getOneBlogPost } from '../../../redux/blog/blogPosts/blogPosts.actions'
+import { createBlogPostView } from '../../../redux/blog/blogPosts/blogPostsViews/blogPostsViews.actions'
+import { currentUserContext } from '../../../appContexts'
 import RelatedPosts from './RelatedPosts'
 import LatestPosts from './LatestPosts'
 import altImage from '../../../images/dashboard.svg'
 import BackLikeShare from './BackLikeShare'
 import FollowUs from './FollowUs'
+import './viewPost.css'
 
-const ViewBlogPost = ({ bposts, getOneBlogPost }) => {
+const ViewBlogPost = ({ bposts, getOneBlogPost, createBlogPostView }) => {
 
     const { bPSlug } = useParams()
-    // Lifecycle methods
 
     useEffect(() => {
         getOneBlogPost(bPSlug)
@@ -24,6 +27,40 @@ const ViewBlogPost = ({ bposts, getOneBlogPost }) => {
 
     const bpToUse = bposts && bposts.oneBlogPost
     const bPCatID = bpToUse && bpToUse.postCategory && bpToUse.postCategory._id
+
+    // blogPost, viewer, device, country
+    const viewer = useContext(currentUserContext)
+    const [newBlogPostView, setNewBlogPostView] = useState()
+
+    // USE http://ip-api.com/json/ to get country
+    useEffect(() => {
+        fetch('http://ip-api.com/json/')
+            .then(res => res.json())
+            .then(data => {
+
+                setNewBlogPostView(prevView => {
+                    return {
+                        ...prevView,
+                        blogPost: bpToUse && bpToUse._id,
+                        viewer: viewer && viewer._id,
+                        device: navigator.userAgent.match(/Android|iPhone|iPad|iPod|Windows Phone/i) ? 'mobile' : 'desktop',
+                        country: data.country
+                    }
+                });
+
+            })
+    }, [viewer, bpToUse])
+
+    // USE REF TO CHECK IF createBlogPostView WAS CALLED BEFORE
+    const isCreateCalled = useRef(false)
+
+    // CALL createBlogPostView IF IT WAS NOT CALLED BEFORE
+    useEffect(() => {
+        if (newBlogPostView && newBlogPostView.blogPost && !isCreateCalled.current) {
+            createBlogPostView(newBlogPostView)
+            isCreateCalled.current = true
+        }
+    }, [newBlogPostView, createBlogPostView])
 
     return (
         <Container className="blog-post-view p-0 p-lg-5 mw-100" style={{ backgroundColor: (bpToUse && bpToUse.bgColor) || '#f3f3f2' }}>
@@ -44,7 +81,7 @@ const ViewBlogPost = ({ bposts, getOneBlogPost }) => {
                                     <p className='text-center'>{bpToUse.title}</p>
                                     <small>
                                         <b>
-                                            Posted by {bpToUse.creator && bpToUse.creator.name} on {new Date(bpToUse.createdAt).toLocaleString('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit' })}
+                                            Posted by {bpToUse.creator && bpToUse.creator.name} on {moment(new Date(bpToUse && bpToUse.createdAt)).format('DD MMM YYYY, HH:mm')}
                                         </b>
                                     </small>
                                 </h2>
@@ -76,4 +113,4 @@ const mapStateToProps = state => ({
     bposts: state.blogPostsReducer
 })
 
-export default connect(mapStateToProps, { getOneBlogPost })(ViewBlogPost)
+export default connect(mapStateToProps, { getOneBlogPost, createBlogPostView })(ViewBlogPost)

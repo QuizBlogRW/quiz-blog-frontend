@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { Collapse, Navbar, NavbarBrand, Nav, NavbarText, Button, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, ListGroup, ListGroupItem } from 'reactstrap'
 import { Link, useLocation } from "react-router-dom"
 import RegisterModal from './auth/RegisterModal'
@@ -8,19 +8,39 @@ import CatDropdown from './CatDropdown'
 import logo from '../images/quizLogo.svg'
 import '@fortawesome/fontawesome-free/css/fontawesome.min.css'
 import EditPictureModal from './auth/EditPictureModal'
-import { authContext, currentUserContext } from '../appContexts'
+import { authContext, currentUserContext, socketContext } from '../appContexts'
+import { useToasts } from 'react-toast-notifications';
 
 const Header = () => {
 
     // context
     const auth = useContext(authContext)
     const currentUser = useContext(currentUserContext)
+    const socket = useContext(socketContext)
 
     // state
     const [isOpen, setIsOpen] = useState(false)
     const toggle = () => setIsOpen(!isOpen)
-    
+
+    // notifications
+    const { addToast } = useToasts()
+
+    // location hook from react-router-dom    
     let location = useLocation()
+
+    // Get the new messages sent from users
+    useEffect(() => {
+        if (currentUser && currentUser.role !== 'Visitor') {
+            socket.on('contactMsgServer', (contactMsg) => {
+                if (currentUser.role !== 'Visitor') {
+                    addToast(`${contactMsg.contact_name}: \n ${contactMsg.message}`, {
+                        appearance: 'info',
+                        autoDismiss: true,
+                    })
+                }
+            })
+        }
+    }, [currentUser, socket, addToast])
 
     const authLinks = (
         <>
@@ -125,7 +145,7 @@ const Header = () => {
         </>)
 
     const guestLinks = (<>
-        <NavbarText className="mr-1 login-modal">
+        <NavbarText className="mr-0 mr-sm-1 login-modal">
             <LoginModal />
         </NavbarText>
         <NavbarText className="mr-1 register-modal">
@@ -141,12 +161,12 @@ const Header = () => {
         return (
             <header style={{ boxShadow: "0 2px 10px -1px rgba(0,0,0,0.75)" }} className="sticky-top">
 
-                <Navbar color="primary" light expand="lg" className="px-0 px-lg-5 py-md-3">
+                <Navbar color="primary" light expand="lg" className="px-0 px-lg-5 py-2 py-md-3">
                     <NavbarBrand href="/" className="text-white" style={{ fontWeight: "900" }}>
                         <img src={logo} alt="Quiz Blog Logo" />
                     </NavbarBrand>
 
-                    <Collapse navbar className="mx-2 py-1 m-sm-0">
+                    <Collapse navbar className="mx-1 mx-sm-2 py-1 m-sm-0">
                         <Nav className="mr-auto d-none d-lg-flex" navbar></Nav>
 
                         {
@@ -158,7 +178,7 @@ const Header = () => {
 
                         <CatDropdown />
 
-                        <NavbarText className="mr-2 mr-md-4">
+                        <NavbarText className="mr-1 mr-md-4">
                             <Link to="/course-notes" className="text-white">Notes</Link>
                         </NavbarText>
                         <NavbarText className="mr-1 mr-md-4">
@@ -167,7 +187,7 @@ const Header = () => {
                         <NavbarText className="mr-1 mr-md-4">
                             <Link to="/about" className="text-white">About</Link>
                         </NavbarText>
-                        <NavbarText className="mr-0 mr-md-4">
+                        <NavbarText className="mr-1 mr-md-4">
                             <Link to="/contact" className="text-white">Contact</Link>
                         </NavbarText>
                         {auth.isAuthenticated ? authLinks : guestLinks}

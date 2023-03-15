@@ -32,7 +32,8 @@ import facultiesReducer from './faculties/faculties.reducer'
 import postCategoriesReducer from './blog/postCategories/postCategories.reducer'
 import blogPostsReducer from './blog/blogPosts/blogPosts.reducer'
 import imageUploadsReducer from './blog/blogPosts/uploadImages/uploadImages.reducer'
+import blogPostsViewsReducer from './blog/blogPosts/blogPostsViews/blogPostsViews.reducer'
 
-const rootReducer = combineReducers({ subscribersReducer, questionsReducer, errorReducer, successReducer, authReducer, categoriesReducer, quizesReducer, scoresReducer, contactsReducer, broadcastsReducer, courseCategoriesReducer, coursesReducer, chaptersReducer, notesReducer, downloadsReducer, schoolsReducer, levelsReducer, facultiesReducer, logsReducer, faqsReducer, quizCommentsReducer, questionCommentsReducer, challengeQuizesReducer, postCategoriesReducer, blogPostsReducer, imageUploadsReducer, statisticsReducer, advertsReducer })
+const rootReducer = combineReducers({ subscribersReducer, questionsReducer, errorReducer, successReducer, authReducer, categoriesReducer, quizesReducer, scoresReducer, contactsReducer, broadcastsReducer, courseCategoriesReducer, coursesReducer, chaptersReducer, notesReducer, downloadsReducer, schoolsReducer, levelsReducer, facultiesReducer, logsReducer, faqsReducer, quizCommentsReducer, questionCommentsReducer, challengeQuizesReducer, postCategoriesReducer, blogPostsReducer, imageUploadsReducer, blogPostsViewsReducer, statisticsReducer, advertsReducer })
 
 export default rootReducer

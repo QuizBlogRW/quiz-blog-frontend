@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { returnErrors } from "../../error/error.actions"
 import { returnSuccess } from '../../success/success.actions'
-import { GET_BLOG_POSTS, GET_BLOG_POSTS_FAIL, GET_ONE_BLOG_POST, GET_ONE_BLOG_POST_FAIL, GET_BLOG_POSTS_BY_CATEGORY, GET_BLOG_POSTS_BY_CATEGORY_FAIL, CREATE_BLOG_POST, CREATE_BLOG_POST_FAIL, DELETE_BLOG_POST, DELETE_BLOG_POST_FAIL, UPDATE_BLOG_POST, UPDATE_BLOG_POST_FAIL, BLOG_POSTS_LOADING } from "./blogPosts.types"
+import { GET_BLOG_POSTS, GET_BLOG_POSTS_FAIL, GET_ONE_BLOG_POST, GET_ONE_BLOG_POST_FAIL, GET_BLOG_POSTS_BY_CATEGORY, GET_BLOG_POSTS_BY_CATEGORY_FAIL, CREATE_BLOG_POST, CREATE_BLOG_POST_FAIL, DELETE_BLOG_POST, DELETE_BLOG_POST_FAIL, UPDATE_BLOG_POST, UPDATE_BLOG_POST_FAIL, BLOG_POSTS_LOADING, ONE_BLOG_POST_LOADING } from "./blogPosts.types"
 import { tokenConfig, uploadConfig } from '../../auth/auth.actions'
 import { apiURL } from '../../config'
 
@@ -31,7 +31,7 @@ export const getBlogPosts = (limit, skip) => async (dispatch, getState) => {
 
 // View one blog post at a time
 export const getOneBlogPost = (bPSlug) => async (dispatch, getState) => {
-  await dispatch(getBlogPostsLoading())
+  await dispatch(getOneBlogPostsLoading())
 
   try {
     await axiosInstance
@@ -148,6 +148,11 @@ export const getBlogPostsLoading = () => {
   return {
     //action 
     type: BLOG_POSTS_LOADING
-
   }
 }
+
+  export const getOneBlogPostsLoading = () => {
+    return {
+      type: ONE_BLOG_POST_LOADING
+    }
+  }

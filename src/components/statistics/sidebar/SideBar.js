@@ -27,19 +27,13 @@ const SideBar = ({ isOpen, toggle }) => (
         <SubMenu title="Users Stats" icon={'group'} items={submenus[1]} />
         <SubMenu title="Quizzes" icon={'keyboard-o'} items={submenus[2]} />
         <SubMenu title="Notes" icon={'book'} items={submenus[3]} />
-        <SubMenu title="Categories" icon={'book'} items={submenus[4]} />
+        <SubMenu title="Categories" icon={'group'} items={submenus[4]} />
+        <SubMenu title="Blog Posts" icon={'book'} items={submenus[5]} />
 
         <NavItem>
           <NavLink tag={Link} to={"/statistics/about"}>
             <i className="fa fa-address-book mr-2"></i>
             About
-          </NavLink>
-        </NavItem>
-
-        <NavItem>
-          <NavLink tag={Link} to={"/statistics/blogposts"}>
-            <i className="fa fa-info mr-2"></i>
-            Blog Posts
           </NavLink>
         </NavItem>
 
@@ -135,6 +129,24 @@ const submenus = [
     {
       title: "Notes Categories",
       target: "notes-categories-stats",
+    },
+  ],
+  [
+    {
+      title: "Recent 10 Views",
+      target: "recent-ten-views",
+    },
+    {
+      title: "Recent on Mobile",
+      target: "recent-ten-on-mobile",
+    },
+    {
+      title: "Recent on Desktop",
+      target: "recent-ten-on-desktop",
+    },
+    {
+      title: "Today's Views",
+      target: "todays-posts-views",
     },
   ],
 ];

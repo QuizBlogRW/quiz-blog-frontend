@@ -3,6 +3,7 @@ import { Row, Col, Card, Button, CardTitle, CardText, TabPane } from 'reactstrap
 import { connect } from 'react-redux'
 import { getPostCategories, deletePostCategory } from '../../../redux/blog/postCategories/postCategories.actions'
 import { Link } from 'react-router-dom'
+
 import EditBPCategory from './EditBPCategory'
 import CreateBPCategory from './CreateBPCategory'
 import SpinningBubbles from '../../rLoading/SpinningBubbles'

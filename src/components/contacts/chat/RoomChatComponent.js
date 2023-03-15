@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from 'react'
-import { Form, FormGroup, Button, Input, Alert } from 'reactstrap'
+import { Form, FormGroup, Button, Input } from 'reactstrap'
 import { connect } from 'react-redux'
 import { getCreateRoom, getRoomMessages, sendRoomMessage } from '../../../redux/contacts/contacts.actions'
 import moment from 'moment'
@@ -8,7 +8,7 @@ import { clearErrors } from '../../../redux/error/error.actions'
 import { clearSuccess } from '../../../redux/success/success.actions'
 import { currentUserContext } from '../../../appContexts'
 
-const RoomChatComponent = ({ socket, onlineList, room1ON1ToGet, chatRoom, roomMessages, getCreateRoom, getRoomMessages, sendRoomMessage, errors, successful, clearErrors, clearSuccess }) => {
+const RoomChatComponent = ({ socket, onlineList, room1ON1ToGet, chatRoom, roomMessages, getCreateRoom, getRoomMessages, sendRoomMessage, clearErrors, clearSuccess }) => {
 
     // Get current user from context
     const currentUser = useContext(currentUserContext)
@@ -42,11 +42,11 @@ const RoomChatComponent = ({ socket, onlineList, room1ON1ToGet, chatRoom, roomMe
     const [typingStatus, setTypingStatus] = useState('');
 
     // Alert
-    const [visible, setVisible] = useState(true)
-    const onDismiss = () => setVisible(false)
+    // const [visible, setVisible] = useState(true)
+    // const onDismiss = () => setVisible(false)
 
     // Errors state on form
-    const [errorsState, setErrorsState] = useState([])
+    const [setErrorsState] = useState([])
 
     // Typing state on form
     const handleTyping = () =>
@@ -178,17 +178,18 @@ const RoomChatComponent = ({ socket, onlineList, room1ON1ToGet, chatRoom, roomMe
                     </Button>
                 </Form>
 
+
                 {/* Error frontend*/}
-                {errorsState.length > 0 ?
+                {/* {errorsState.length > 0 ?
                     errorsState.map(err =>
                         <Alert color="danger" isOpen={visible} toggle={onDismiss} key={Math.floor(Math.random() * 1000)} className='border border-warning'>
                             {err}
                         </Alert>) :
                     null
-                }
+                } */}
 
                 {/* Error backend */}
-                {errors.id ?
+                {/* {errors.id ?
                     <Alert isOpen={visible} toggle={onDismiss} color='danger'>
                         <small>{errors.msg && errors.msg.msg}</small>
                     </Alert> :
@@ -197,7 +198,8 @@ const RoomChatComponent = ({ socket, onlineList, room1ON1ToGet, chatRoom, roomMe
                         <Alert color='success' isOpen={visible} toggle={onDismiss} className='border border-warning'>
                             <small>{successful.msg && successful.msg}</small>
                         </Alert> : null
-                }
+                } */}
+
             </div>
     )
 }

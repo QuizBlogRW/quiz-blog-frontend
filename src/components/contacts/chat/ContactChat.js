@@ -11,6 +11,7 @@ import ChatComponent from './ChatComponent'
 import SpinningBubbles from '../../rLoading/SpinningBubbles'
 import RoomChatComponent from './RoomChatComponent'
 import { authContext, currentUserContext, socketContext, onlineListContext } from '../../../appContexts'
+import { useToasts } from 'react-toast-notifications'
 
 const ContactChat = ({ contacts, getContacts, getUserContacts, deleteContact }) => {
 
@@ -27,6 +28,9 @@ const ContactChat = ({ contacts, getContacts, getUserContacts, deleteContact }) 
     const [pageNo, setPageNo] = useState(1)
     const [numberOfPages, setNumberOfPages] = useState(0)
 
+    // Notifications
+    const { addToast } = useToasts();
+
     // Lifecycle methods
     useEffect(() => {
         if (uRole !== 'Visitor') {
@@ -39,6 +43,19 @@ const ContactChat = ({ contacts, getContacts, getUserContacts, deleteContact }) 
     }, [getContacts, getUserContacts, pageNo, userEmail, totPages, uRole])
 
 
+    // Notifications for joined user
+    useEffect(() => {
+        if (currentUser && currentUser.role !== 'Visitor') {
+            // Receiving the last joined user
+            socket.on('backJoinedUser', joinedUser => {
+                    addToast(`${joinedUser.username} is online!`, {
+                        appearance: 'info',
+                        autoDismiss: true,
+                    })
+            })
+        }
+    }, [currentUser, socket, addToast])
+    
     const [isChatOpen, setIsChatOpen] = useState(false);
     const [isRoomChatOpen, setIsRoomChatOpen] = useState(false);
     const [chatId, setChatId] = useState('');

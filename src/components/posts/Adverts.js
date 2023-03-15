@@ -16,7 +16,7 @@ const Adverts = ({ adverts, getActiveAdverts }) => {
             }
             return (prevState + 1) % allActiveAdverts.length
         })
-    }, [adShow])
+    }, [allActiveAdverts])
 
     // Lifecycle method
     useEffect(() => {
@@ -39,18 +39,18 @@ const Adverts = ({ adverts, getActiveAdverts }) => {
             {advertToDisplay ?
                 <>
                     <img
-                        src={advertToDisplay && advertToDisplay.advert_image} alt="adv"
+                        src={advertToDisplay && advertToDisplay.advert_image} alt="Quiz Blog Rwanda"
                         style={{ maxWidth: "100%" }} />
-                    <p className="legend mt-3 p-1 border rounded" style={{ background: "#ff6666" }}>
+                    <p className="legend mt-2 mb-0 p-1 border rounded" style={{ background: "#ff6666" }}>
                         {advertToDisplay && advertToDisplay.caption}
                     </p>
                 </> : 
 
                 <>
                     <img
-                        src={adPlaceholder && adPlaceholder} alt="adv"
+                        src={adPlaceholder && adPlaceholder} alt="Quiz Blog Rwanda"
                         style={{ maxWidth: "100%" }} />
-                    <p className="legend mt-3 mb-0 p-1 border rounded" style={{ background: "#ff6666" }}>
+                    <p className="legend mt-2 mb-0 p-1 border rounded" style={{ background: "#ff6666" }}>
                         "Welcome to Quiz Blog. Take and review any multiple choice questions quiz you want from Quiz Blog."
                     </p>
                 </>}

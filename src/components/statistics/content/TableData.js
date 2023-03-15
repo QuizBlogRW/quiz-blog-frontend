@@ -1,6 +1,7 @@
 import React from 'react'
 import { Table } from 'reactstrap'
 import ExcelButton from './ExcelButton'
+import moment from 'moment'
 
 const TableData = ({ data, filename }) => {
 
@@ -33,25 +34,29 @@ const TableData = ({ data, filename }) => {
                                 <th scope="row">
                                     {index + 1}
                                 </th>
+                                
                                 {
+                                    // EXTRACTION OF DATA FROM THE OBJECT
                                     Object.keys(item).map((key, index) => (
                                         <td key={index}>
+                                            {
+                                                // IF IT IS AN OBJECT, ARRAY, NULL
+                                                typeof item[key] === 'object' ?
 
-                                            {typeof item[key] === 'object' ?
+                                                    // IF IT IS NOT NULL AND IT IS AN ARRAY
+                                                    Array.isArray(item[key]) ?
+                                                        item[key].map((interest, index) => (
+                                                            interest.favorite + (index === item[key].length - 1 ? '' : '; ')
+                                                        )) :
+                                                        // IF IT IS NOT NULL AND IT IS A PURE OBJECT
+                                                        item[key] !== null ? item[key].title :
 
-                                                // IF IT IS NOT NULL AND IT IS AN ARRAY
-                                                Array.isArray(item[key]) ?
-                                                    item[key].map((interest, index) => (
-                                                        interest.favorite + (index === item[key].length - 1 ? '' : '; ')
-                                                    )) :
-                                                    // IF IT IS NOT NULL AND IT IS A PURE OBJECT
-                                                    item[key] !== null ? item[key].title :
+                                                            // IF IT IS TYPE OF MONGOOSE DATE - CONVERT TO MOMEMT DATE
 
-                                                        null :
-
-                                                // IF IS NOT AN OBJECT - STRING, NUMBER, BOOLEAN
-                                                item[key]
-
+                                                                null :
+                                                    // CHECK IF IT IS A DATE
+                                                    Date.parse(item[key]) ? moment(item[key]).format('DD-MM-YYYY, HH:mm:ss') :
+                                                    item[key]
                                             }
                                         </td>
                                     ))}

@@ -27,7 +27,7 @@ const NotesPapers = ({ getLandingDisplayNotes, getLandingDisplayNotesNoLimit, lD
 
     return (
 
-        <>
+        <div style={{ background: "#eeeded"}}>
             <Row className="px-1 px-lg-4 my-1 w-100">
                 {/* Google responsive 1 ad */}
                 <Col sm="12" className='w-100'>
@@ -109,7 +109,7 @@ const NotesPapers = ({ getLandingDisplayNotes, getLandingDisplayNotesNoLimit, lD
                             {/* Newest 10 notes */}
                             {lDLimitedNotes.length > 0 ?
 
-                                <div className="mt-sm-5 mb-sm-4 d-flex justify-content-center">
+                                <div className="mt-4 mt-sm-5 mb-sm-4 d-flex justify-content-center">
                                     <Link to="/course-notes">
                                         <Button outline color="info" className='view-all-btn'>
                                             More Notes & Past Papers &nbsp; <i className="fa fa-arrow-right"></i>
@@ -139,7 +139,7 @@ const NotesPapers = ({ getLandingDisplayNotes, getLandingDisplayNotesNoLimit, lD
                     </Suspense>
                 </Col>
             </Row>
-        </>
+        </div>
     )
 }
 

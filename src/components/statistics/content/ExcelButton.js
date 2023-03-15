@@ -1,6 +1,7 @@
 import React from 'react'
 import * as XLSX from 'xlsx';
 import { Button } from 'reactstrap'
+import moment from 'moment'
 
 const ExcelButton = ({ data, filename }) => {
 
@@ -31,15 +32,23 @@ const ExcelButton = ({ data, filename }) => {
     // IF THE VALUE IN dataArr IS AN OBJECT, AND HAS PROPERTY title, THEN CHANGE THE VALUE TO title
     dataArr && dataArr.map((arr) => {
         arr.map((item, index) => {
+            // CHECK IF IT IS A DATE
+            if (Date.parse(item)) {
+                arr[index] = moment(item).format('DD-MM-YYYY, HH:mm:ss')
+            }
+
             if (typeof item === 'object' && item !== null) {
 
                 if(item.hasOwnProperty('title')) {
                     arr[index] = item.title
                 }
+
                 // IF IT IS AN ARRAY
                 else if (Array.isArray(item)) {
                     arr[index] = item.map(interest => interest.favorite).join('; ')
                 }
+
+                // IF IT IS NULL
                 else arr[index] = null
             }
             return null

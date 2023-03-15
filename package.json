@@ -22,6 +22,7 @@
     "react-router-dom": "^6.6.1",
     "react-scripts": "4.0.1",
     "react-tabs": "^3.2.3",
+    "react-toast-notifications": "^2.5.1",
     "react-transition-group": "^4.4.1",
     "reactstrap": "^8.9.0",
     "redux": "^4.0.5",

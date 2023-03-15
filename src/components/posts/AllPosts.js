@@ -1,15 +1,15 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react'
-import { Container, Col, Row, Spinner, Button } from 'reactstrap';
-import ReactLoading from "react-loading";
+import { Container, Col, Row, Spinner, Button } from 'reactstrap'
+import ReactLoading from "react-loading"
 
 import { connect } from 'react-redux'
 import { subscribeToNewsLetter } from '../../redux/subscribers/subscribers.actions'
 import { setQuizes, setAllNoLimitQuizes } from '../../redux/quizes/quizes.actions'
-import ResponsiveAd from '../adsenses/ResponsiveAd';
-import SquareAd from '../adsenses/SquareAd';
+import ResponsiveAd from '../adsenses/ResponsiveAd'
+import SquareAd from '../adsenses/SquareAd'
 import SearchInput from '../SearchInput'
 
-const PostItem = lazy(() => import('./PostItem'));
+const PostItem = lazy(() => import('./PostItem'))
 
 const Posts = ({ setQuizes, quizes, allNoLimit, allNoLimitLoading, setAllNoLimitQuizes }) => {
 
@@ -20,10 +20,10 @@ const Posts = ({ setQuizes, quizes, allNoLimit, allNoLimitLoading, setAllNoLimit
         animationName: "slidein",
         animationIterationCount: "infinite",
         animationDirection: "alternate"
-    };
+    }
 
-    const [limit] = useState(20);
-    const [skip, setSkip] = useState(0);
+    const [limit] = useState(20)
+    const [skip, setSkip] = useState(0)
     const [searchKey, setSearchKey] = useState('')
 
     const nextPage = () => {
@@ -36,21 +36,24 @@ const Posts = ({ setQuizes, quizes, allNoLimit, allNoLimitLoading, setAllNoLimit
 
     // Lifecycle methods
     useEffect(() => {
-        setQuizes(limit, skip);
-        setAllNoLimitQuizes();
-    }, [setQuizes, setAllNoLimitQuizes, limit, skip]);
+        setQuizes(limit, skip)
+        setAllNoLimitQuizes()
+    }, [setQuizes, setAllNoLimitQuizes, limit, skip])
 
     return (
         <Container className="posts main mt-4">
 
-            <blockquote className="blockquote text-center mt-4">
-                <h1 className="mb-0 lead text-uppercase font-weight-bold">Knowing matter, so does quizzing!</h1>
-                <small className="text-muted ml-2">Welcome, test your knowledge as you wish!</small>
+            <blockquote className="blockquote text-center mt-3 mt-sm-5">
+                <h1 className="mb-2 lead text-uppercase font-weight-bold">Knowing matter, so does quizzing!</h1>
+                <small className="text-muted p-1 ml-lg-2">
+                    &nbsp;~&nbsp; Welcome, test your knowledge as you wish! &nbsp;~&nbsp;
+                </small>
             </blockquote>
-
-            <Row className="mt-4 mx-0">
+            
+            <Row className="mt-5 mx-0">
                 <div style={mystyle} className="soon">
-                    <h4 className='d-inline border border-success rounded p-lg-1'>Ready? Let's link you to your exam success! 🍾🎉</h4>
+                    <h4 className='d-inline border border-success rounded p-lg-1'>
+                        Ready? Let's link you to your exam success! 🍾🎉</h4>
                 </div>
             </Row>
 
@@ -96,7 +99,9 @@ const Posts = ({ setQuizes, quizes, allNoLimit, allNoLimitLoading, setAllNoLimit
                                         ))}
 
                                 {quizes && quizes.allQuizes.map(quiz => (
-                                    <PostItem key={quiz._id} quiz={quiz} />
+                                    quiz.questions.length > 5 ?
+                                    <PostItem key={quiz._id} quiz={quiz} />:
+                                    null
                                 ))}
 
                                 <div className="w-100 d-flex justify-content-around mx-auto my-3 overflow-auto pb-2">

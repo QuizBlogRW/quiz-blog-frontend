@@ -8,11 +8,12 @@ import { clearErrors } from '../../redux/error/error.actions'
 import { clearSuccess } from '../../redux/success/success.actions'
 import './contact.css'
 import mail from '../../../src/images/mail.svg'
-import { currentUserContext } from '../../appContexts'
+import { currentUserContext, socketContext } from '../../appContexts'
 
 const Contact = ({ errors, successful, clearErrors, clearSuccess, sendMsg }) => {
 
     const currentUser = useContext(currentUserContext)
+    const socket = useContext(socketContext)
 
     // Alert
     const [visible, setVisible] = useState(true)
@@ -70,8 +71,10 @@ const Contact = ({ errors, successful, clearErrors, clearSuccess, sendMsg }) => 
         // Attempt to contact
         sendMsg(contactMsg)
 
-        window.setTimeout(() => window.location.href = "/contact-chat", 4000)
+        // Emit to the server that a new message has been sent
+        socket.emit('contactMsgClient', contactMsg)
 
+        window.setTimeout(() => window.location.href = "/contact-chat", 4000)
 
         // Reset fields
         setState({

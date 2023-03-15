@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Chart } from "react-google-charts"
 import { connect } from 'react-redux'
 import { getDailyUserRegistration } from '../../../redux/statistics/statistics.actions'
+import SpinningBubbles from '../../rLoading/SpinningBubbles'
 
 const options = {
     chart: {
@@ -40,25 +41,29 @@ const Charts = ({ dailyReg, getDailyUserRegistration }) => {
     }, [getDailyUserRegistration])
 
     const dataSet = dailyReg && dailyReg.dailyUserRegistration && dailyReg.dailyUserRegistration.usersStats
-    
+
 
     // Convert the array of objects to an array of arrays for the chart by only picking the date and the number of users
-    let titles = [ "DATE", "USERS"]
+    let titles = ["DATE", "USERS"]
     let userData = dataSet && dataSet.map(user => [user.date, user.users])
 
     // Add the titles to the beginning of the array and the data one by one to the end of the array
     let data = userData && [titles, ...userData]
 
     return (
-        <div className="p-3 mt-5 bg-warning text-info border rounded">
-            <Chart
-                chartType="Line"
-                width="100%"
-                height="400px"
-                data={data}
-                options={options}
-            />
-        </div>
+
+        dailyReg.isDailyUserRegistrationLoading ? 
+            <SpinningBubbles title='User Registration Statistics' /> :
+
+            <div className="p-3 mt-5 bg-warning text-info border rounded">
+                <Chart
+                    chartType="Line"
+                    width="100%"
+                    height="400px"
+                    data={data}
+                    options={options}
+                />
+            </div>
 
     );
 }

@@ -62,13 +62,13 @@ const CarouselQuiz = ({ adverts, getAdverts }) => {
     // IF THE ADVERTS ARRAY LENGTH IS GREATER THAN 0, THEN SET THE WIDTH OF THE CAROUSEL TO 8 COLUMNS, AND THE ADVERTS TO 4 COLUMNS, ELSE SET THE WIDTH OF THE CAROUSEL TO 12 COLUMNS, AND THE ADVERTS TO 0 COLUMNS
     // Use the useEffect hook to set the carousel and advert widths based on the allAdverts variable
     useEffect(() => {
-        if (allAdverts && allAdverts.length > 0) {
+        // if (allAdverts && allAdverts.length > 0) {
             setCarouselWidth(8)
             setAdvertWidth(4)
-        } else {
-            setCarouselWidth(12)
-            setAdvertWidth(0)
-        }
+        // } else {
+        //     setCarouselWidth(12)
+        //     setAdvertWidth(0)
+        // }
     }, [allAdverts])
 
     const slides = items.map((item) => {
@@ -95,7 +95,6 @@ const CarouselQuiz = ({ adverts, getAdverts }) => {
                     <CarouselControl direction="prev" directionText="Previous" onClickHandler={previousC} />
                     <CarouselControl direction="next" directionText="Next" onClickHandler={nextC} />
                 </Carousel>
-
             </Col>
 
             <Col sm={advertWidth} className="d-flex justify-content-center align-items-center">

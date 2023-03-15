@@ -16,7 +16,6 @@ const AddBlogPost = ({ createBlogPost, errors, successful, clearErrors, clearSuc
     const auth = useContext(authContext)
     const currentUser = useContext(currentUserContext)
 
-
     const isAuthenticated = auth && auth.isAuthenticated
     const userLoading = auth && auth.isLoading
 

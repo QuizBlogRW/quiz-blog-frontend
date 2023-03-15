@@ -16,7 +16,13 @@ import AdvertsTabPane from './adverts/AdvertsTabPane'
 import TopRow from './TopRow.js'
 import { authContext, socketContext, onlineListContext, currentUserContext } from '../../appContexts'
 
+// NOTIFICATIONS
+import { useToasts } from 'react-toast-notifications';
+
 const Webmaster = () => {
+
+    // Notifications
+    const { addToast } = useToasts();
 
     // Context
     const auth = useContext(authContext)
@@ -34,6 +40,25 @@ const Webmaster = () => {
         }
     }, [currentUser])
 
+    // Display notification if user is connected
+    useEffect(() => {
+        if (currentUser && currentUser.role !== 'Visitor') {
+            addToast(`Welcome ${currentUser.name}!`, {
+                appearance: 'success',
+                autoDismiss: true,
+            })
+
+            // Receiving the last joined user
+            socket.on('backJoinedUser', joinedUser => {
+                if (currentUser.role !== 'Visitor') {
+                    addToast(`${joinedUser.username} is online!`, {
+                        appearance: 'info',
+                        autoDismiss: true,
+                    })
+                }
+            })
+        }
+    }, [currentUser, socket, addToast])
 
     const toggle = tab => {
         if (activeTab !== tab) setActiveTab(tab)

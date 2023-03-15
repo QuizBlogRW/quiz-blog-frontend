@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { Row, TabPane } from 'reactstrap'
 import { connect } from 'react-redux'
+
 import { getBlogPosts, deleteBlogPost } from '../../../redux/blog/blogPosts/blogPosts.actions'
 import SpinningBubbles from '../../rLoading/SpinningBubbles'
 import BPTable from './BPTable'
