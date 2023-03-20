@@ -54,8 +54,8 @@ const TableData = ({ data, filename }) => {
                                                             // IF IT IS TYPE OF MONGOOSE DATE - CONVERT TO MOMEMT DATE
 
                                                                 null :
-                                                    // CHECK IF IT IS A DATE
-                                                    Date.parse(item[key]) ? moment(item[key]).format('DD-MM-YYYY, HH:mm:ss') :
+                                                    // // CHECK IF IT IS A DATE
+                                                    // Date.parse(item[key]) ? moment(item[key]).format('DD-MM-YYYY, HH:mm:ss') :
                                                     item[key]
                                             }
                                         </td>
