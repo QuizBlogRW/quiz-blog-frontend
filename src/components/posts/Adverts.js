@@ -41,7 +41,7 @@ const Adverts = ({ adverts, getActiveAdverts }) => {
                     <img
                         src={advertToDisplay && advertToDisplay.advert_image} alt="Quiz Blog Rwanda"
                         style={{ maxWidth: "100%" }} />
-                    <p className="legend mt-2 mb-0 p-1 border rounded" style={{ background: "#ff6666" }}>
+                    <p className="legend mt-2 mb-0 p-1 border rounded text-center" style={{ background: "#ff6666" }}>
                         {advertToDisplay && advertToDisplay.caption}
                     </p>
                 </> : 
@@ -50,7 +50,7 @@ const Adverts = ({ adverts, getActiveAdverts }) => {
                     <img
                         src={adPlaceholder && adPlaceholder} alt="Quiz Blog Rwanda"
                         style={{ maxWidth: "100%" }} />
-                    <p className="legend mt-2 mb-0 p-1 border rounded" style={{ background: "#ff6666" }}>
+                    <p className="legend mt-2 mb-0 p-1 border rounded text-center" style={{ background: "#ff6666" }}>
                         "Welcome to Quiz Blog. Take and review any multiple choice questions quiz you want from Quiz Blog."
                     </p>
                 </>}

@@ -32,11 +32,19 @@ const ViewBlogPost = ({ bposts, getOneBlogPost, createBlogPostView }) => {
     const viewer = useContext(currentUserContext)
     const [newBlogPostView, setNewBlogPostView] = useState()
 
-    // USE http://ip-api.com/json/ to get country
+    // to get country
     useEffect(() => {
-        fetch('http://ip-api.com/json/')
-            .then(res => res.json())
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
             .then(data => {
+                const ipAddress = data.ip;
+                console.log(`IP address: ${ipAddress}`);
+                // Now we can use the GeoJS API to get the location data.
+                return fetch(`https://get.geojs.io/v1/ip/geo/${ipAddress}.json`);
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
 
                 setNewBlogPostView(prevView => {
                     return {
@@ -47,8 +55,8 @@ const ViewBlogPost = ({ bposts, getOneBlogPost, createBlogPostView }) => {
                         country: data.country
                     }
                 });
-
             })
+            .catch(error => console.error(error));
     }, [viewer, bpToUse])
 
     // USE REF TO CHECK IF createBlogPostView WAS CALLED BEFORE

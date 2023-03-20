@@ -49,7 +49,7 @@ const Index = ({ getCourseCategories, courseCategories, courses, getCoursesByCat
                 }
             </div> :
 
-            <div className="course-notes">
+            <div className="course-notes px-3">
 
                 <Row className="mt-lg-5">
                     <Col>

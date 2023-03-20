@@ -69,7 +69,7 @@ const Webmaster = () => {
         auth.isAuthenticated ?
             <>
                 <TopRow currentUser={currentUser} socket={socket} onlineList={onlineList} />
-                <Row className="m-lg-5">
+                <Row className="m-lg-5 mx-2">
                     <Col sm="12" className="px-0 mb-4 mb-sm-0 d-flex justify-content-around">
 
                         <Nav tabs className="webmaster-navbar d-block d-sm-flex mb-0 mb-lg-5 p-2 border rounded border-success bg-light text-uppercase font-weight-bolder">

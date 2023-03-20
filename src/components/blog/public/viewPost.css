@@ -64,7 +64,7 @@
 }
 
 .container.blog-post-view .viewed-details .back-share .like-share p {
-    font-size: .8rem;
+    font-size: .8rem!important;
     line-height: .8;
     font-weight: 600 !important;
 }
@@ -227,6 +227,17 @@
 
 @media screen and (max-width: 768px) {
 
+    .container.blog-post-view {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+
+    .container.blog-post-view h4 {
+        font-size: .9rem;
+        font-weight: 900 !important;
+        text-align: center;
+    }
+
     .container.blog-post-view .viewed-details h1 {
         font-size: 1.1rem;
         font-weight: 900;
@@ -257,17 +268,6 @@
         font-weight: 900;
     }
 
-    .container.blog-post-view {
-        padding-left: 0 !important;
-        padding-right: 0 !important;
-    }
-
-    .container.blog-post-view h4 {
-        font-size: .9rem;
-        font-weight: 900 !important;
-        text-align: center;
-    }
-
     .container.blog-post-view .viewed-details .post-details ol,
     .container.blog-post-view .viewed-details .post-details ul {
         font-size: .7rem !important;
@@ -275,7 +275,7 @@
     }
 
     .container.blog-post-view .viewed-details p {
-        font-size: .7rem !important;
+        font-size: .9rem !important;
         margin-bottom: .4rem;
     }
 
@@ -349,6 +349,15 @@
     .container.blog-post-view .sidebar-content {
         padding-left: 5px;
         padding-right: 5px;
+    }
+
+    .container.blog-post-view .viewed-details .back-share {
+        height: 80px;
+    }
+
+    .container.blog-post-view .viewed-details .back-share .like-share {
+        width: 100% !important;
+        height: 100% !important;
     }
 
 }

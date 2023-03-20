@@ -21,7 +21,7 @@ const TopRow = () => {
   const animatedButton = 'btn btn-warning btn-lg btn-block text-center text-uppercase font-weight-bold shadow-sm animated infinite pulse blink_me'
 
   return (
-    <Row className="m-lg-4 px-lg-5 d-flex justify-content-around align-items-center text-primary">
+    <Row className="mx-1 m-lg-4 px-lg-5 d-flex justify-content-around align-items-center text-primary">
 
       <div className="dashboard-img d-none d-sm-block">
         <img src={dashimg} alt="dashimg" />

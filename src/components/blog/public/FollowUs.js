@@ -4,7 +4,7 @@ import '@fortawesome/fontawesome-free/css/fontawesome.min.css'
 const FollowUs = ({ articleName, articleCreator }) => {
     return (
         <div className="back-share px-2 d-flex justify-content-between align-items-center mt-3 bg-success">
-            <div className="like-share d-flex justify-content-around align-items-center">
+            <div className="like-share d-flex flex-column flex-sm-row justify-content-around align-items-center w-100">
 
                 <p className='mb-0 mx-lg-3 text-white'>Follow us on our social media</p>
                 <ul className='d-flex mb-0'>

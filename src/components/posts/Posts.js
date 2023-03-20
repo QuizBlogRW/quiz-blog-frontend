@@ -69,7 +69,7 @@ const Posts = ({ setQuizes, setAllNoLimitQuizes, limitedQuizes, limitedQuizesLoa
             </Row>
 
             <hr />
-            <Row className="mt-3 px-2 d-flex d-lg-none mobile-categories side-category">
+            <Row className="m-2 mt-lg-3 px-2 d-flex d-lg-none mobile-categories side-category">
                 <Suspense
                     fallback=
                     {
