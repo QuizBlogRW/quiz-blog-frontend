@@ -34,8 +34,8 @@ const BlogPosts = ({ getBlogPosts, blgPosts }) => {
             <Row className="p-2 p-sm-3 px-sm-5">
                 <Col sm="12" className="py-lg-3 px-0">
                     <h3 className="inversed-title mt-0 mt-lg-3 pt-4 py-lg-3 text-danger text-center font-weight-bold">
-                        <span class="part1">BLOG</span>
-                        <span class="part2">POSTS</span>
+                        <span className="part1">BLOG</span>
+                        <span className="part2">POSTS</span>
                     </h3>
 
                     {blgPosts.isLoading ?

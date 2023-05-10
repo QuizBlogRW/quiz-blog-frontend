@@ -400,6 +400,15 @@ nav .dropdown-item-text a button {
     border: 1px solid #cecece;
     border-radius: 10px; */
     padding: 1rem;
+    /* BACKGROUND IMAGE WITH PARALLAX STYLE */
+    background-image: url(../images/blogposts.png);
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    --tw-bg-opacity: 1;
+    background-color: rgb(5 23 38 / var(--tw-bg-opacity));
+    width: 100%;
 }
 
 .blogPosts {
@@ -417,6 +426,16 @@ nav .dropdown-item-text a button {
     padding: 1rem !important;
     /* border: 1px solid #157A6E;
     border-radius: 10px; */
+
+    /* BACKGROUND IMAGE WITH PARALLAX STYLE */
+    background-image: url(../images/bp.png);
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    --tw-bg-opacity: 1;
+    background-color: rgb(5 23 38 / var(--tw-bg-opacity));
+    width: 100%;
 }
 
 

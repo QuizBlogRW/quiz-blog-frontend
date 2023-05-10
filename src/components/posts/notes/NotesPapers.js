@@ -57,9 +57,9 @@ const NotesPapers = ({ getLandingDisplayNotes, getLandingDisplayNotesNoLimit, lD
             <Row className="m-1 p-1 px-sm-5 notes-paper">
                 <Col sm="12" className="px-1 y-1 w-100">
                     <h3 className="inversed-title mt-0 mt-lg-3 pt-4 py-lg-3 text-danger text-center font-weight-bold">
-                        <span class="part1">NEWEST NOTES</span>
+                        <span className="part1">NEWEST NOTES</span>
                         <span style={{textDecoration: "none"}}> & </span>
-                        <span class="part2">PAST PAPERS</span>
+                        <span className="part2">PAST PAPERS</span>
                     </h3>
                 </Col>
 

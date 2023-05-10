@@ -85,8 +85,8 @@ const Posts = ({ setQuizes, setAllNoLimitQuizes, limitedQuizes, limitedQuizesLoa
 
                 <Col sm="8" className="px-1 px-lg-4 mt-md-2 w-100">
                     <h3 className="inversed-title mt-0 mt-lg-3 pt-4 py-lg-3 text-danger text-center font-weight-bold pt-2">
-                        <span class="part1">NEWEST</span>
-                        <span class="part2">QUIZZES</span>
+                        <span className="part1">NEWEST</span>
+                        <span className="part2">QUIZZES</span>
                     </h3>
 
                     {limitedQuizesLoading ?

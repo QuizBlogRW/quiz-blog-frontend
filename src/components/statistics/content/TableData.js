@@ -1,7 +1,6 @@
 import React from 'react'
 import { Table } from 'reactstrap'
 import ExcelButton from './ExcelButton'
-import moment from 'moment'
 
 const TableData = ({ data, filename }) => {
 
