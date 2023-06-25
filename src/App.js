@@ -283,6 +283,7 @@ const App = ({ auth, categories, courseCategories, bPcats, setCategories, getCou
                                                     <Route path="/statistics/recent-ten-on-mobile" element={<BlogStats />} />
                                                     <Route path="/statistics/recent-ten-on-desktoprecent-ten-on-desktop" element={<BlogStats />} />
                                                     <Route path="/statistics/todays-posts-views" element={<BlogStats />} />
+                                                    <Route path="/statistics/all-posts-views" element={<BlogStats />} />
 
                                                 </Route>
 

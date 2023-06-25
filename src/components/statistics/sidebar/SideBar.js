@@ -148,6 +148,10 @@ const submenus = [
       title: "Today's Views",
       target: "todays-posts-views",
     },
+    {
+      title: "All Views",
+      target: "all-posts-views",
+    },
   ],
 ];
 

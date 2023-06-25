@@ -33,7 +33,7 @@ const TableData = ({ data, filename }) => {
                                 <th scope="row">
                                     {index + 1}
                                 </th>
-                                
+
                                 {
                                     // EXTRACTION OF DATA FROM THE OBJECT
                                     Object.keys(item).map((key, index) => (
@@ -48,14 +48,17 @@ const TableData = ({ data, filename }) => {
                                                             interest.favorite + (index === item[key].length - 1 ? '' : '; ')
                                                         )) :
                                                         // IF IT IS NOT NULL AND IT IS A PURE OBJECT
-                                                        item[key] !== null ? item[key].title :
+                                                        item[key] !== null && item[key].title ? item[key].title :
+                                                            item[key] && item[key].name ? item[key].name :
 
-                                                            // IF IT IS TYPE OF MONGOOSE DATE - CONVERT TO MOMEMT DATE
-
+                                                                // IF IT IS TYPE OF MONGOOSE DATE - CONVERT TO MOMEMT DATE
                                                                 null :
                                                     // // CHECK IF IT IS A DATE
                                                     // Date.parse(item[key]) ? moment(item[key]).format('DD-MM-YYYY, HH:mm:ss') :
                                                     item[key]
+                                            }
+                                            {
+                                                console.log(item[key] && item[key].name)
                                             }
                                         </td>
                                     ))}

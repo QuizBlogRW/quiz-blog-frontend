@@ -15,7 +15,7 @@ const HeaderFooter = ({ styles, fromFooter }) => {
                         <i className="fa fa-whatsapp"></i>
                     </a></li>
 
-                    <li><a href="https://web.facebook.com/quizblog.rw" className="icoFacebook" title="Facebook">
+                    <li><a href="https://www.facebook.com/QuizblogRw/" className="icoFacebook" title="Facebook">
                         <i className="fa fa-facebook"></i>
                     </a></li>
 
@@ -23,7 +23,7 @@ const HeaderFooter = ({ styles, fromFooter }) => {
                         <i className="fa fa-linkedin"></i>
                     </a></li>
 
-                    <li><a href="https://www.instagram.com/quizblog.rw/" className="icoInstagram" title="Instagram">
+                    <li><a href="https://www.instagram.com/quizblogrw/" className="icoInstagram" title="Instagram">
                         <i className="fa fa-instagram"></i>
                     </a></li>
 

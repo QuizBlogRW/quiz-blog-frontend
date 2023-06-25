@@ -33,7 +33,7 @@ const Footer = () => {
                                         <i className="fa fa-whatsapp"></i>
                                     </a></li>
 
-                                    <li><a href="https://web.facebook.com/quizblog.rw" className="icoFacebook" title="Facebook" target="_blank" rel="noreferrer">
+                                    <li><a href="https://www.facebook.com/QuizblogRw/" className="icoFacebook" title="Facebook" target="_blank" rel="noreferrer">
                                         <i className="fa fa-facebook"></i>
                                     </a></li>
 
@@ -41,7 +41,7 @@ const Footer = () => {
                                         <i className="fa fa-linkedin"></i>
                                     </a></li>
 
-                                    <li><a href="https://www.instagram.com/quizblog.rw/" className="icoInstagram" title="Instagram" target="_blank" rel="noreferrer">
+                                    <li><a href="https://www.instagram.com/quizblogrw/" className="icoInstagram" title="Instagram" target="_blank" rel="noreferrer">
                                         <i className="fa fa-instagram"></i>
                                     </a></li>
 

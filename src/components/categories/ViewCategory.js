@@ -24,7 +24,7 @@ const ViewCategory = ({ categories }) => {
                         <ListGroup>
                             {category.quizes.map(quiz =>
                                 <ListGroupItem key={quiz._id} className="d-flex justify-content-between px-1">
-                                    <Link to={`/view-quiz/${quiz.slug}`} className="m-0 text-capitalize mob-quiz">
+                                    <Link to={`/view-quiz/${quiz.slug}`} className="m-0 text-capitalize mob-quiz text-info">
                                         {quiz.title}
                                     </Link>
                                     <Badge color="info" className="ml-lg-2">{quiz.questions.length > 30 ? '30' : quiz.questions.length}</Badge>

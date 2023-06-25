@@ -52,7 +52,7 @@ const SchoolsLanding = ({ getSchools, fetchSchoolLevels, schools, schoolLevels, 
                     <Row className="add-school mt-lg-5 mx-lg-5 px-lg-5 py-lg-3 d-flex justify-content-around align-items-center border rounded">
                         <h5 className='font-weight-bolder text-info d-none d-sm-block'>SCHOOLS | LEVELS | FACULTIES | YEARS</h5>
                         <Button size="lg" outline color="dark" className="m-2 m-sm-0 ml-auto p-0 p-sm-1">
-                            <strong><AddSchool /></strong>
+                            <strong><AddSchool auth={auth} currentUser={currentUser} /></strong>
                         </Button>
                     </Row>
 
@@ -84,14 +84,14 @@ const SchoolsLanding = ({ getSchools, fetchSchoolLevels, schools, schoolLevels, 
                         <div className="d-flex align-items-center">
                             {schoolToEdit && <span>
                                 <Button size="sm" color="link" className="mx-1">
-                                    <EditSchoolModal idToUpdate={schoolToEdit} />
+                                    <EditSchoolModal idToUpdate={schoolToEdit} auth={auth} currentUser={currentUser} />
                                 </Button>
                                 <Button size="sm" color="link" className="mr-1" onClick={() => deleteSchool(schoolToEdit)}>
                                     <img src={DeleteIcon} alt="" width="14" height="14" />
                                 </Button>
                             </span>}
                             <Button size="md" outline color="warning" className="ml-auto mb-3 mb-sm-0">
-                                <strong><AddLevel schools={schoolState} /></strong>
+                                <strong><AddLevel schools={schoolState} auth={auth} currentUser={currentUser} /></strong>
                             </Button>
                         </div>
 
@@ -113,7 +113,7 @@ const SchoolsLanding = ({ getSchools, fetchSchoolLevels, schools, schoolLevels, 
                                                             </h6>
                                                             <span>
                                                                 <Button size="sm" color="link" className="mx-1">
-                                                                    <EditLevelModal idToUpdate={level._id} editTitle={level.title} />
+                                                                    <EditLevelModal idToUpdate={level._id} editTitle={level.title} auth={auth} currentUser={currentUser} />
                                                                 </Button>
                                                                 <Button size="sm" color="link" className="mr-1" onClick={() => deleteLevel(level._id)}>
                                                                     <img src={DeleteIcon} alt="" width="14" height="14" />
@@ -132,12 +132,12 @@ const SchoolsLanding = ({ getSchools, fetchSchoolLevels, schools, schoolLevels, 
                                                     <Row className="mt-lg-3 ml-lg-5 pl-lg-5 pt-lg-3 d-flex justify-content-around align-items-center">
                                                         <Button size="md" outline color="info" className="ml-auto">
                                                             <strong>
-                                                                <AddFaculty facultyLevel={level} />
+                                                                <AddFaculty facultyLevel={level} auth={auth} currentUser={currentUser} />
                                                             </strong>
                                                         </Button>
                                                     </Row>
 
-                                                    <FacultiesCollapse levelID={level._id} />
+                                                    <FacultiesCollapse levelID={level._id} auth={auth} currentUser={currentUser} />
                                                 </TabPanel>
                                             )}
                                     </Tabs>

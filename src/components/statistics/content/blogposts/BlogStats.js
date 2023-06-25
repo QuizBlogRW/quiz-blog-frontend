@@ -5,9 +5,9 @@ import TableData from '../TableData'
 import ReactLoading from "react-loading"
 import { useLocation } from "react-router-dom"
 
-import { getRecentTenViews } from '../../../../redux/blog/blogPosts/blogPostsViews/blogPostsViews.actions'
+import { getRecentTenViews, getBlogPostsViews } from '../../../../redux/blog/blogPosts/blogPostsViews/blogPostsViews.actions'
 
-const BlogStats = ({ getRecentTenViews, stats }) => {
+const BlogStats = ({ getRecentTenViews, getBlogPostsViews, stats }) => {
 
     const [blogStats, setBlogStats] = useState([])
     const [blogStatsLoading, setBlogStatsLoading] = useState(false)
@@ -23,10 +23,14 @@ const BlogStats = ({ getRecentTenViews, stats }) => {
                 getRecentTenViews()
                 break;
 
+            case "/statistics/all-posts-views":
+                getBlogPostsViews()
+                break;
+
             default:
                 break;
         }
-    }, [location, getRecentTenViews])
+    }, [location, getRecentTenViews, getBlogPostsViews])
 
     // Updating the state according to the current route and the data returned from the server
     useEffect(() => {
@@ -34,6 +38,11 @@ const BlogStats = ({ getRecentTenViews, stats }) => {
 
             case "/statistics/recent-ten-views":
                 setBlogStats(stats.recentTenViews)
+                setBlogStatsLoading(stats.isLoading)
+                break;
+
+            case "/statistics/all-posts-views":
+                setBlogStats(stats.allBlogPostsViews)
                 setBlogStatsLoading(stats.isLoading)
                 break;
 
@@ -68,4 +77,4 @@ const BlogStats = ({ getRecentTenViews, stats }) => {
 
 const mapStateToProps = state => ({ stats: state.blogPostsViewsReducer })
 
-export default connect(mapStateToProps, { getRecentTenViews })(BlogStats)
+export default connect(mapStateToProps, { getRecentTenViews, getBlogPostsViews })(BlogStats)

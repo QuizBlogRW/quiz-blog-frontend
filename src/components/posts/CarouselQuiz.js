@@ -86,10 +86,10 @@ const CarouselQuiz = ({ adverts, getAdverts }) => {
     })
 
     return (
-        <Row className="quiz-carousel w-100 mx-0 d-flex">
+        <Row className="quiz-carousel w-100 mx-0 d-flex justify-content-center align-items-center">
             <Col sm={carouselWidth} className="d-flex px-0">
 
-                <Carousel activeIndex={activeIndex} next={nextC} previous={previousC}>
+                <Carousel activeIndex={activeIndex} next={nextC} previous={previousC} className="w-100">
                     <CarouselIndicators items={items} activeIndex={activeIndex} onClickHandler={goToIndexCar} />
                     {slides}
                     <CarouselControl direction="prev" directionText="Previous" onClickHandler={previousC} />

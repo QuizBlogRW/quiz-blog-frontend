@@ -81,7 +81,7 @@ const AddSchool = ({ auth, createSchool, errors, successful, clearErrors, clearS
     }
 
     return (
-        auth.isAuthenticated ?
+        auth && auth.isAuthenticated ?
 
             auth.user.role === 'Visitor' ?
 

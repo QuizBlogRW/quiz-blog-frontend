@@ -45,9 +45,9 @@ const Posts = ({ setQuizes, setAllNoLimitQuizes, limitedQuizes, limitedQuizesLoa
         <Container className="posts main w-100 px-0 mt-4">
 
             <blockquote className="blockquote text-center mt-2 mt-sm-4">
-                <h1 className="mb-3 lead text-uppercase font-weight-bold">Knowing matter, so does quizzing!</h1>
+                <h1 className="mb-3 lead text-uppercase font-weight-bold">Knowledge matters, and so does the joy of quizzing!</h1>
                 <small className="text-muted p-1 ml-lg-2">
-                    &nbsp;~&nbsp; Welcome, test your knowledge as you wish! &nbsp;~&nbsp;
+                    &nbsp;~&nbsp; Welcome! Explore and test your knowledge as you please! &nbsp;~&nbsp;
                 </small>
             </blockquote>
 
@@ -64,7 +64,7 @@ const Posts = ({ setQuizes, setAllNoLimitQuizes, limitedQuizes, limitedQuizesLoa
             <Row className="mt-5 mx-0">
                 <div style={mystyle} className="soon">
                     <h4 className='d-inline border border-success rounded p-lg-1'>
-                        Ready? Let's link you to your exam success! 🍾🎉</h4>
+                        Get ready for exam success! Let's make it happen together! 🍾🎉</h4>
                 </div>
             </Row>
 

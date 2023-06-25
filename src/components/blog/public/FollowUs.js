@@ -11,27 +11,27 @@ const FollowUs = ({ articleName, articleCreator }) => {
                     <li>
                         <ul className="social-network social-circle">
                             <li className='follow-us'>
-                                <a href={`https://www.instagram.com/quizblog.rw/`} target="_blank" rel="noreferrer" className="icoInstagram" title="Instagram">
-                                <i className="fa fa-instagram"></i>
-                            </a>
+                                <a href={`https://www.instagram.com/quizblogrw/`} target="_blank" rel="noreferrer" className="icoInstagram" title="Instagram">
+                                    <i className="fa fa-instagram"></i>
+                                </a>
                             </li>
 
                             <li className='follow-us'>
                                 <a href={`http://twitter.com/share?text=${articleName}&url=${window.location.href}&hashtags=${articleName},QuizBlog,${articleCreator}`} target="_blank" rel="noreferrer" className="icoTwitter" title="Twitter">
-                                <i className="fa fa-twitter"></i>
-                            </a>
+                                    <i className="fa fa-twitter"></i>
+                                </a>
                             </li>
 
                             <li className='follow-us'>
-                                <a href={`https://web.facebook.com/quizblog.rw`} target="_blank" rel="noreferrer" className="icoFacebook" title="Facebook">
-                                <i className="fa fa-facebook"></i>
-                            </a>
+                                <a href={`https://www.facebook.com/QuizblogRw/`} target="_blank" rel="noreferrer" className="icoFacebook" title="Facebook">
+                                    <i className="fa fa-facebook"></i>
+                                </a>
                             </li>
 
                             <li className='follow-us'>
                                 <a href={`https://www.linkedin.com/company/quiz-blog/`} target="_blank" rel="noreferrer" className="icoLinkedin" title="Linkedin">
-                                <i className="fa fa-linkedin"></i>
-                            </a></li>
+                                    <i className="fa fa-linkedin"></i>
+                                </a></li>
 
                         </ul>
                     </li>

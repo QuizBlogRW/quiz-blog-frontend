@@ -292,18 +292,19 @@ nav .dropdown-item-text a button {
 }
 
 .mob-cat-btn {
-    border: 1px solid #157A6E !important;
+    border: 1px solid #ffffff !important;
     border-radius: 15px 15px 0 0 !important;
-    color: #157A6E !important;
+    color: #ffffff !important;
     cursor: pointer;
     padding: 7px 10px !important;
     text-decoration: none;
     text-shadow: 0px 1px 0px #ffffff;
+    background-color: #157A6E !important;
 }
 
 .mob-cat-btn:hover {
-    background-color: #157A6E !important;
-    color: #ffffff !important;
+    color: #157A6E !important;
+    background-color: #ffffff !important;
 }
 
 .fancy {
@@ -457,7 +458,8 @@ nav .dropdown-item-text a button {
 .posts .card.card-body.bg-secondary,
 .challenges .card.card-body.bg-secondary {
     background-color: #ffffe2 !important;
-    border: none;
+    border: 2px solid #157A6E !important;
+    border-radius: 10px !important;
 }
 
 .navbar-light .navbar-toggler {
@@ -1362,8 +1364,6 @@ form.subscribe-form:hover,
 
 /* MOBILES*/
 @media(max-width: 414px) {
-
-
     nav .collapse .login-modal a,
     nav .collapse .register-modal a {
         border: 1px solid #ffc107;
@@ -1393,7 +1393,7 @@ form.subscribe-form:hover,
 
     .mobile-categories .mob-quiz {
         font-size: .8rem;
-        color: #17a2b8;
+        color: #eeff00!important;
         font-weight: 900;
     }
 

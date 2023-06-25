@@ -28,7 +28,7 @@ const Popular = ({ getPopularToday, popularQuizes, getUserOfMonth }) => {
                 </Col>
             </Row>
 
-            <div className="popular my-2 mt-3 mt-lg-5 py-3 d-flex flex-column flex-lg-row justify-content-between">
+            <div className="popular my-2 mt-3 mt-lg-5 py-3 d-flex flex-column flex-lg-row justify-content-between bg-white shadow-sm">
 
                 <div className={`w-75 mx-lg-2 ${popularQuizes && popularQuizes.popularQuizes.length > 0 ? '' : 'd-none'}`}>
                     <h6 className="text-uppercase fancy font-weight-bold mb-3 mb-lg-4 text-center"><u>Top 3 Popular Quizes Today</u></h6>
