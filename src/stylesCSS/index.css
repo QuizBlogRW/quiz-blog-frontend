@@ -1393,9 +1393,30 @@ form.subscribe-form:hover,
 
     .mobile-categories .mob-quiz {
         font-size: .8rem;
-        color: #eeff00!important;
+        color: #4e91e9!important;
         font-weight: 900;
     }
+                .posts blockquote h1 {
+                    font-size: .8rem;
+                    margin: 5px 10px !important;
+                }
+        
+                .posts blockquote small {
+                    font-size: .55rem !important;
+                }
+        
+                .posts h3 {
+                    font-size: .8rem;
+                }
+        
+                .posts h4 {
+                    font-size: .55rem !important;
+                    padding: 3px 6px !important;
+                }
+        
+                .posts .details {
+                    font-size: 0.35rem !important;
+                }
 
     .course-notes .row .col {
         padding-right: 0;
