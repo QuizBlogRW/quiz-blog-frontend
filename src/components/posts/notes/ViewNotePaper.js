@@ -54,9 +54,9 @@ const ViewNotePaper = ({ nPaper, getOneNotePaper, saveDownload }) => {
 
             notes_file && notes_file ?
 
-                <Container className="main d-flex flex-column justify-content-center rounded border border-primary my-5 py-4 w-80">
+                <Container className="main mx-0 d-flex flex-column justify-content-center rounded border border-primary my-5 py-4 w-80">
 
-                    <div className="question-view">
+                    <div className="question-view p-2">
                         <Row>
                             <Col>
                                 <Card body className='question-section text-center my-2 mx-auto w-75'>
@@ -98,7 +98,7 @@ const ViewNotePaper = ({ nPaper, getOneNotePaper, saveDownload }) => {
                                             </Link>
                                         </div>
                                     }
-                                    
+
                                     <small className="mt-3 text-info">
                                         ~
                                         {courseCategory && courseCategory.title} |

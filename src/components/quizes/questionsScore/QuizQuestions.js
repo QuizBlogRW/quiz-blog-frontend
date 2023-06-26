@@ -130,8 +130,8 @@ const QuizQuestions = ({ qZ, getOneQuiz }) => {
 
                 qnsLength > 0 ?
 
-                    <div key={Math.floor(Math.random() * 1000)}>
-                        <Container className="main d-flex flex-column justify-content-center rounded border border-primary my-5 py-4 w-80">
+                    <div key={Math.floor(Math.random() * 1000)} className="py-3 d-flex justify-content-center align-items-center flex-column">
+                        <Container className="main mx-0 d-flex flex-column justify-content-center rounded border border-primary my-5 py-4 w-80">
 
                             {showScore ?
                                 <ScoreSection

@@ -13,7 +13,7 @@ const QuestionsView = ({ qnsLength, curQnIndex, currentQn, curQnOpts, checkedSta
     return (
 
         imgLoaded ?
-            <div className="question-view">
+            <div className="question-view p-2">
 
                 {/* Countdown */}
                 <CountDown
@@ -42,7 +42,7 @@ const QuestionsView = ({ qnsLength, curQnIndex, currentQn, curQnOpts, checkedSta
                     <Row>
                         <Col>
                             <div className="my-3 mx-sm-5 px-sm-5 d-flex justify-content-center align-items-center">
-                                <img className="w-100 mt-2 mt-lg-0 mx-sm-5 px-sm-5" src={currentQn && currentQn.question_image} onLoad={onLoad} alt="Question Illustration" />
+                                <img className="w-100 mt-2 mt-lg-0 mx-sm-5 px-sm-5 w-100" src={currentQn && currentQn.question_image} onLoad={onLoad} alt="Question Illustration" />
                             </div>
                         </Col>
                     </Row> : null}

@@ -45,7 +45,7 @@ const TitleRow = ({ thisReview, score, thisQuiz, qnsAll, curRevQn, currentQuesti
 
                     {(uRole === 'Admin' || uRole === 'SuperAdmin') &&
                         <Button color="success"
-                            className="mt-3 mt-sm-0 share-btn mx-1 mx-md-0"
+                            className="mt-sm-0 share-btn mx-1 mx-md-0"
                             onClick={createPDF}>
                             Download PDF
                         </Button>}

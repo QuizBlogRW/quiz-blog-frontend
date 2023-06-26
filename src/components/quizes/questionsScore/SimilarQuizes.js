@@ -6,14 +6,14 @@ import Unavailable from './Unavailable'
 
 const SimilarQuizes = ({ thisQId, categories, categoryId }) => {
 
-    const thisCat = categories.find(c => c._id === categoryId)
+    const thisCat = categories && categories.find(c => c._id === categoryId)
     const thisCatQzs = thisCat && thisCat.quizes
 
     return (
         thisCatQzs && thisCatQzs.filter(q => q._id !== thisQId).length > 0 ?
             <>
                 {
-                    <Row className="similar-quizes mx-3">
+                    <Row className="similar-quizes mx-sm-3 w-100">
                         <h4 className="text-center col-12 mb-4 font-weight-bolder text-uppercase text-underline">
                             Related quizes you may also like to take</h4>
                         {

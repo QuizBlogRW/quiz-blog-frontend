@@ -45,7 +45,7 @@ const ScoreSection = ({ newScoreId, score, qnsLength, thisQuiz, toReview, create
     }
 
     useEffect(() => {
-        if (uRole) {
+        if (uRole && score && qnsLength && thisQuizId && thisQuizCatId && uId) {
             createScore({
                 id: newScoreId,
                 marks: score,
@@ -56,7 +56,7 @@ const ScoreSection = ({ newScoreId, score, qnsLength, thisQuiz, toReview, create
                 taken_by: uId
             });
         }
-    }, [createScore, newScoreId, score, qnsLength, thisQuizCatId, thisQuizId, quizToReview, uId, uRole]);
+    }, []);
 
 
     return (

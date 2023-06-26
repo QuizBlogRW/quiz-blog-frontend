@@ -27,13 +27,13 @@ const GetReady = ({ qZ, getOneQuiz }) => {
 
             qZ.oneQuiz && qZ.oneQuiz.questions.length > 0 ?
 
-                <Container className="main d-flex flex-column justify-content-center rounded border border-primary my-3 my-lg-5 py-lg-4 w-80">
+            <div className="py-3 d-flex justify-content-center align-items-center flex-column">
+                <Container className="main mx-0 d-flex flex-column justify-content-center rounded border border-primary my-3 my-lg-5 py-lg-4 w-80">
 
-                    <div className="question-view">
+                    <div className="question-view p-2">
 
                         <Row>
                             <Col>
-
                                 <Card body className='question-section text-center my-2 mx-auto w-75 p-2 p-lg-5'>
                                     <CardTitle tag="h5" className='question-count text-uppercase text-center text-secondary font-weight-bold'>
                                         {qZ.oneQuiz.title}&nbsp;({qZ.oneQuiz.questions && qZ.oneQuiz.questions.length})
@@ -88,7 +88,8 @@ const GetReady = ({ qZ, getOneQuiz }) => {
                         <EmbeddedVideos quiz={qZ} currentUser={currentUser} />
                     </div>
 
-                </Container> :
+                </Container> 
+                </div>:
 
                 <div className="py-5 d-flex justify-content-center align-items-center">
                     <h4 className="py-lg-5 my-lg-5 text-danger">This quiz is not available yet! <a href="/allposts">click here for more quizes!</a></h4>

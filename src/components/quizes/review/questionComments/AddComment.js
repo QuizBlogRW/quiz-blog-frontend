@@ -82,7 +82,7 @@ const AddComment = ({ createComment, currentUser, question, quiz, errors, succes
             <Form onSubmit={onSubmitHandler}>
                 <FormGroup>
                     <Input type="textarea" rows="3" name="comment" placeholder="Your comment ..." className="mb-3" minLength="4" maxLength="1000" onChange={onChangeHandler} />
-                    <Button color="success" style={{ marginTop: '1rem' }}>Send</Button>
+                    <Button color="success" style={{ marginTop: '0.5rem', width: '50%', marginLeft: '25%'  }}>Send</Button>
                 </FormGroup>
             </Form>
         </>)

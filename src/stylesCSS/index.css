@@ -1118,12 +1118,26 @@ form.subscribe-form:hover,
         font-size: 1rem;
     }
 
-    .question-view h4 {
+    .question-view .btn,
+    .score-section .btn {
+        font-size: .4rem !important;
+        padding-left: 0.2rem;
+        padding-right: 0.2rem;
+    }
+
+    .question-view h4,
+    .score-section h4 {
         font-size: 1.1rem;
     }
 
-    .question-view h5 {
+    .question-view h5, 
+    .score-section h5 {
         font-size: .8rem !important;
+    }
+
+    .question-view h6, .question-view small, 
+    .score-section h6, .score-section small {
+        font-size: .5rem !important;
     }
 
     .question-view .answer .form-check strong {
@@ -1364,6 +1378,7 @@ form.subscribe-form:hover,
 
 /* MOBILES*/
 @media(max-width: 414px) {
+
     nav .collapse .login-modal a,
     nav .collapse .register-modal a {
         border: 1px solid #ffc107;
@@ -1393,30 +1408,31 @@ form.subscribe-form:hover,
 
     .mobile-categories .mob-quiz {
         font-size: .8rem;
-        color: #4e91e9!important;
+        color: #4e91e9 !important;
         font-weight: 900;
     }
-                .posts blockquote h1 {
-                    font-size: .8rem;
-                    margin: 5px 10px !important;
-                }
-        
-                .posts blockquote small {
-                    font-size: .55rem !important;
-                }
-        
-                .posts h3 {
-                    font-size: .8rem;
-                }
-        
-                .posts h4 {
-                    font-size: .55rem !important;
-                    padding: 3px 6px !important;
-                }
-        
-                .posts .details {
-                    font-size: 0.35rem !important;
-                }
+
+    .posts blockquote h1 {
+        font-size: .8rem;
+        margin: 5px 10px !important;
+    }
+
+    .posts blockquote small {
+        font-size: .55rem !important;
+    }
+
+    .posts h3 {
+        font-size: .8rem;
+    }
+
+    .posts h4 {
+        font-size: .55rem !important;
+        padding: 3px 6px !important;
+    }
+
+    .posts .details {
+        font-size: 0.35rem !important;
+    }
 
     .course-notes .row .col {
         padding-right: 0;

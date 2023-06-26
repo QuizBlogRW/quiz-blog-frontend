@@ -39,9 +39,9 @@ const ViewChallenge = ({ chQuiz, getOneChQuiz }) => {
 
             questions && questions.length > 0 ?
 
-                <Container className="main d-flex flex-column justify-content-center rounded border border-primary my-5 py-4 w-80">
+                <Container className="main mx-0 d-flex flex-column justify-content-center rounded border border-primary my-5 py-4 w-80">
 
-                    <div className="question-view">
+                    <div className="question-view p-2">
                         <Row>
                             <Col>
 

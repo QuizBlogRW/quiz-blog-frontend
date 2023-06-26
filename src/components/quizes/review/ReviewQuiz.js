@@ -10,15 +10,16 @@ import QuestionComments from './questionComments/QuestionComments'
 import OnLastAnswer from './OnLastAnswer'
 import TitleRow from './TitleRow'
 import NotAuthenticated from '../../auth/NotAuthenticated'
-// import SimilarQuizes from './SimilarQuizes'
+// import SimilarQuizes from '../questionsScore/SimilarQuizes'
 import ResponsiveAd from '../../adsenses/ResponsiveAd'
 import SquareAd from '../../adsenses/SquareAd'
-import { authContext, currentUserContext } from '../../../appContexts'
+import { authContext, currentUserContext, categoriesContext } from '../../../appContexts'
 
 const ReviewQuiz = ({ sC, getOneScore }) => {
 
     const auth = useContext(authContext)
     const currentUser = useContext(currentUserContext)
+    // const categories = useContext(categoriesContext)
 
     const [currentQuestion, setCurrentQuestion] = useState(0)
     const [lastAnswer, setLastAnswer] = useState(false)
@@ -66,7 +67,7 @@ const ReviewQuiz = ({ sC, getOneScore }) => {
                                 qnsAll.length > 0 ?
 
                                     <>
-                                        <Row className="main d-flex flex-column justify-content-center rounded border border-primary my-5 py-4 w-80" key={Math.floor(Math.random() * 1000)}>
+                                        <Row className="main mx-0 d-flex flex-column justify-content-center rounded border border-primary my-lg-5 py-lg-4 w-80" key={Math.floor(Math.random() * 1000)}>
 
                                             {lastAnswer ?
 
@@ -76,7 +77,7 @@ const ReviewQuiz = ({ sC, getOneScore }) => {
                                                     goBack={goBack} /> :
 
                                                 imgLoaded ?
-                                                    <div className="question-view">
+                                                    <div className="question-view p-2">
                                                         <TitleRow
                                                             thisQuiz={sC.oneScore.quiz}
                                                             thisReview={sC.oneScore.review}
@@ -91,7 +92,7 @@ const ReviewQuiz = ({ sC, getOneScore }) => {
                                                             <Row>
                                                                 <Col>
                                                                     <div className="my-3 mx-sm-5 px-sm-5 d-flex justify-content-center align-items-center">
-                                                                        <img className="mt-2 mt-lg-0 mx-sm-5 px-sm-5" src={curRevQn && curRevQn.question_image} onLoad={onLoad} alt="Question Illustration" />
+                                                                        <img className="mt-2 mt-lg-0 mx-sm-5 px-sm-5 w-100" src={curRevQn && curRevQn.question_image} onLoad={onLoad} alt="Question Illustration" />
                                                                     </div>
                                                                 </Col>
                                                             </Row> : null}
@@ -109,16 +110,16 @@ const ReviewQuiz = ({ sC, getOneScore }) => {
                                                     : <SpinningBubbles title='question' />}
 
                                         </Row>
-                                        {/* <SimilarQuizes categoryId={sC.oneScore.quiz && sC.oneScore.quiz.category} /> */}
+                                        {/* <SimilarQuizes categoryId={sC.oneScore.quiz && sC.oneScore.quiz.category} thisQId={sC.oneScore.quiz && sC.oneScore.quiz._id} categories={categories} /> */}
                                     </> :
 
-                                    <Row className="main d-flex flex-column justify-content-center rounded border border-primary my-5 py-4 w-80 text-center">
+                                    <Row className="main mx-0 d-flex flex-column justify-content-center rounded border border-primary my-5 py-4 w-80 text-center">
                                         <h1 className="text-danger font-weight-bolder">404</h1>
                                         <h4>Quiz's questions unavailable! Refresh!</h4>
                                         <Button color="info" style={{ width: "120px" }} className="mx-auto mt-4"><a href="/webmaster" className="text-white">Back</a></Button>
                                     </Row> :
 
-                                <Row className="main d-flex flex-column justify-content-center rounded border border-primary my-5 py-4 w-80 text-center">
+                                <Row className="main mx-0 d-flex flex-column justify-content-center rounded border border-primary my-5 py-4 w-80 text-center">
                                     <h1 className="text-danger font-weight-bolder">404</h1>
                                     <h4>The page you're looking for is not found!</h4>
                                     <Button color="info" style={{ width: "120px" }} className="mx-auto mt-4"><a href="/webmaster" className="text-white">Back</a></Button>
@@ -138,7 +139,7 @@ const ReviewQuiz = ({ sC, getOneScore }) => {
 
                     <CyclonLoading /> :
 
-                <NotAuthenticated />
+                <NotAuthenticated auth={auth} />
             }
         </Container>)
 }

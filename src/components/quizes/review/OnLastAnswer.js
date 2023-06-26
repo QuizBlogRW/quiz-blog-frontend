@@ -6,7 +6,7 @@ const OnLastAnswer = ({ isAuthenticated, thisQuiz, goBack }) => {
   return (
       isAuthenticated ?
 
-          <div className='score-section text-center'>
+          <div className='score-section text-center py-4'>
 
               <h5 className="text-center font-weight-bold">Reviewing finished!</h5>
 
