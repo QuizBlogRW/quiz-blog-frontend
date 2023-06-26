@@ -109,16 +109,18 @@ const QuizQuestions = ({ qZ, getOneQuiz }) => {
             setCurQnIndex(currentIndex + 1) : setShowScore(true)
     }
 
-    if (trueAnsNbr === choices) {
-        if (trueAnsNbr === curQnUsrTrueChoices) {
-            setScore(score + 1)
+    useEffect(() => {
+        if (trueAnsNbr === choices) {
+            if (trueAnsNbr === curQnUsrTrueChoices) {
+                setScore(score + 1)
+            }
+            goToNextQuestion(curQnIndex, qnsLength)
+            setCheckedState([])
+            setSelected('')
+            setChoices(0)
+            setCurQnUsrTrueChoices(0)
         }
-        goToNextQuestion(curQnIndex, qnsLength)
-        setCheckedState([])
-        setSelected('')
-        setChoices(0)
-        setCurQnUsrTrueChoices(0)
-    }
+    }, [trueAnsNbr, choices, curQnUsrTrueChoices, curQnIndex, qnsLength, score])
 
     if (!qZ.isOneQuizLoading) {
 

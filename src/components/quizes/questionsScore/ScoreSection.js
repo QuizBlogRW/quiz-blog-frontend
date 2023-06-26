@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useContext  } from 'react'
+import React, { lazy, Suspense, useContext, useEffect } from 'react'
 import ReactDOMServer from 'react-dom/server';
 import { Button, Spinner } from 'reactstrap'
 import { Link } from 'react-router-dom'
@@ -44,6 +44,21 @@ const ScoreSection = ({ newScoreId, score, qnsLength, thisQuiz, toReview, create
         html2pdf().set(options).from(elementString).save()
     }
 
+    useEffect(() => {
+        if (uRole) {
+            createScore({
+                id: newScoreId,
+                marks: score,
+                out_of: qnsLength,
+                category: thisQuizCatId,
+                quiz: thisQuizId,
+                review: quizToReview,
+                taken_by: uId
+            });
+        }
+    }, [createScore, newScoreId, score, qnsLength, thisQuizCatId, thisQuizId, quizToReview, uId, uRole]);
+
+
     return (
         <div className='p-sm-5 score-section text-center' id='pdf-container'>
 
@@ -72,15 +87,6 @@ const ScoreSection = ({ newScoreId, score, qnsLength, thisQuiz, toReview, create
                 </a>
 
                 {uRole ?
-                    createScore({
-                        id: newScoreId,
-                        marks: score,
-                        out_of: qnsLength,
-                        category: thisQuizCatId,
-                        quiz: thisQuizId,
-                        review: quizToReview,
-                        taken_by: uId
-                    }) &&
                     <>
                         <Button color="success" className="mt-3 mt-sm-0 share-btn mx-1 mx-md-0">
                             <i className="fa fa-whatsapp"></i>&nbsp;
