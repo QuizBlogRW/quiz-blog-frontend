@@ -14,7 +14,6 @@ import ResponsiveAd from '../../adsenses/ResponsiveAd'
 import SquareAd from '../../adsenses/SquareAd'
 import { authContext, currentUserContext } from '../../../appContexts'
 
-
 const ReviewQuiz = ({ sC, getOneScore, createScore }) => {
 
     const auth = useContext(authContext)
@@ -128,7 +127,10 @@ const ReviewQuiz = ({ sC, getOneScore, createScore }) => {
                                             async () => {
                                                 const scoreCreation = createScore(newScoreToSave)
                                                 if (scoreCreation) {
-                                                    window.location.reload()
+                                                    // reload after 3 seconds
+                                                    setTimeout(() => {
+                                                        window.location.reload()
+                                                    }, 3000)
                                                 }
                                                 else {
                                                     alert('Error saving score!')

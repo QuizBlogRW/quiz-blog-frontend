@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react'
 import { Container } from 'reactstrap'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { getOneQuiz } from '../../../redux/quizes/quizes.actions'
 import { createScore } from '../../../redux/scores/scores.actions'
 import { v4 as uuidv4 } from 'uuid'
 import QuestionsView from './QuestionsView'
@@ -10,18 +9,21 @@ import LoadingQuestions from '../../rLoading/LoadingQuestions'
 import NoQuestions from './NoQuestions'
 import Unavailable from './Unavailable'
 
-const QuizQuestions = ({ qZ, getOneQuiz, createScore, uId }) => {
+const QuizQuestions = ({ createScore, uId }) => {
 
     // Access route parameters & get the quiz
     const { quizSlug } = useParams()
     const navigate = useNavigate()
+    const location = useLocation()
+
+    // ACCESS Link Tag State
+    const quizState = location.state
 
     // Get the quiz
-    useEffect(() => { getOneQuiz(quizSlug) }, [getOneQuiz, quizSlug])
     const [newScoreId, setNewScoreId] = useState();
 
     // Question setup
-    const thisQuiz = qZ && qZ.oneQuiz
+    const thisQuiz = quizState && quizState.oneQuiz
     const qnsLength = thisQuiz && thisQuiz.questions && thisQuiz.questions.length
     const [curQnIndex, setCurQnIndex] = useState(0)
     const currentQn = thisQuiz && thisQuiz.questions[curQnIndex]
@@ -180,7 +182,7 @@ const QuizQuestions = ({ qZ, getOneQuiz, createScore, uId }) => {
 
     }, [trueAnsNbr, choices, curQnUsrTrueChoices, curQnIndex, qnsLength, score, goToNextQuestion])
 
-    if (!qZ.isOneQuizLoading) {
+    if (!quizState.isOneQuizLoading) {
 
         return (
 
@@ -219,8 +221,4 @@ const QuizQuestions = ({ qZ, getOneQuiz, createScore, uId }) => {
     }
 }
 
-const mapStateToProps = state => ({
-    qZ: state.quizesReducer
-})
-
-export default connect(mapStateToProps, { getOneQuiz, createScore })(QuizQuestions)
+export default connect(null, { createScore })(QuizQuestions)
