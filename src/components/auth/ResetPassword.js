@@ -67,7 +67,7 @@ const ResetPassword = ({ sendNewPassword }) => {
 
                 {showResetSuccess ?
                     <h6 className="font-weight-bold my-5 py-5 text-success">
-                        Account reset successful, Please Login!
+                        Account reset successful!
                     </h6> :
 
                     <>

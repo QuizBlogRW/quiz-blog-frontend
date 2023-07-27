@@ -2,6 +2,7 @@ import React from 'react'
 import { Container, Row, Button } from 'reactstrap'
 
 const NoQuestions = () => {
+
     return (
         <Container className="main mx-0 d-flex flex-column justify-content-center rounded border border-primary my-5 py-4 w-80">
             <Row className="main mx-0 d-flex flex-column justify-content-center rounded border border-primary my-5 py-4 w-80 text-center">

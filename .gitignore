@@ -33,6 +33,7 @@ yarn-error.log*
 * copy.js
 * copy.json
 * copy.md
+/backup
 
 
 /client/src/components/questions/* copy.js

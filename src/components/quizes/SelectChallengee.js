@@ -138,7 +138,7 @@ const SelectChallengee = ({ qZ, getOneQuiz, auth, createScore, getUsers, users }
                                             {Math.round(score * 100 / qZ.oneQuiz.questions.length) < passMark ?
                                                 <>
                                                     <h6 className="text-center text-danger my-3">
-                                                        You failed! you need more reading and practice to succeed. Please contact us for more important books, guidance that may help you.
+                                                        You did not succeed this time. To improve your performance, it is essential to dedicate more time to reading and practicing. We recommend reaching out to us for further assistance, such as valuable books and guidance that can aid you on your journey to success.
                                                     </h6>
 
                                                     <Link to="/contact" className="text-success">
@@ -188,7 +188,7 @@ const SelectChallengee = ({ qZ, getOneQuiz, auth, createScore, getUsers, users }
 
                                                 <>
                                                     <h6 className="text-center text-danger my-3">
-                                                        You failed! you need more reading and practice to succeed. Please contact us for more important books, guidance that may help you.
+                                                        You did not succeed this time. To improve your performance, it is essential to dedicate more time to reading and practicing. We recommend reaching out to us for further assistance, such as valuable books and guidance that can aid you on your journey to success.
                                                     </h6>
 
                                                     <Link to="/contact" className="text-success">

@@ -1,25 +1,24 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react'
 import { Container, Col, Row, Button } from 'reactstrap'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import CyclonLoading from '../../rLoading/CyclonLoading'
 import SpinningBubbles from '../../rLoading/SpinningBubbles'
 import { connect } from 'react-redux'
-import { getOneScore } from '../../../redux/scores/scores.actions'
+import { getOneScore, createScore } from '../../../redux/scores/scores.actions'
 import ReviewView from './ReviewView'
 import QuestionComments from './questionComments/QuestionComments'
 import OnLastAnswer from './OnLastAnswer'
 import TitleRow from './TitleRow'
 import NotAuthenticated from '../../auth/NotAuthenticated'
-// import SimilarQuizes from '../questionsScore/SimilarQuizes'
 import ResponsiveAd from '../../adsenses/ResponsiveAd'
 import SquareAd from '../../adsenses/SquareAd'
-import { authContext, currentUserContext, categoriesContext } from '../../../appContexts'
+import { authContext, currentUserContext } from '../../../appContexts'
 
-const ReviewQuiz = ({ sC, getOneScore }) => {
+
+const ReviewQuiz = ({ sC, getOneScore, createScore }) => {
 
     const auth = useContext(authContext)
     const currentUser = useContext(currentUserContext)
-    // const categories = useContext(categoriesContext)
 
     const [currentQuestion, setCurrentQuestion] = useState(0)
     const [lastAnswer, setLastAnswer] = useState(false)
@@ -29,6 +28,8 @@ const ReviewQuiz = ({ sC, getOneScore }) => {
 
     // Access route parameters
     const { reviewId } = useParams()
+    const location = useLocation();
+    const newScoreToSave = location.state
 
     // Load the image
     const [imgLoaded, setImgLoaded] = useState(false)
@@ -110,7 +111,6 @@ const ReviewQuiz = ({ sC, getOneScore }) => {
                                                     : <SpinningBubbles title='question' />}
 
                                         </Row>
-                                        {/* <SimilarQuizes categoryId={sC.oneScore.quiz && sC.oneScore.quiz.category} thisQId={sC.oneScore.quiz && sC.oneScore.quiz._id} categories={categories} /> */}
                                     </> :
 
                                     <Row className="main mx-0 d-flex flex-column justify-content-center rounded border border-primary my-5 py-4 w-80 text-center">
@@ -121,7 +121,22 @@ const ReviewQuiz = ({ sC, getOneScore }) => {
 
                                 <Row className="main mx-0 d-flex flex-column justify-content-center rounded border border-primary my-5 py-4 w-80 text-center">
                                     <h1 className="text-danger font-weight-bolder">404</h1>
-                                    <h4>The page you're looking for is not found!</h4>
+                                    <h4>Your score in not saved!</h4>
+                                    <Button color="info"
+                                        className="mx-auto mt-4"
+                                        onClick={
+                                            async () => {
+                                                const scoreCreation = createScore(newScoreToSave)
+                                                if (scoreCreation) {
+                                                    window.location.reload()
+                                                }
+                                                else {
+                                                    alert('Error saving score!')
+                                                }
+                                            }
+                                        }>
+                                        Save your score first!
+                                    </Button>
                                     <Button color="info" style={{ width: "120px" }} className="mx-auto mt-4"><a href="/webmaster" className="text-white">Back</a></Button>
                                 </Row>}
 
@@ -148,4 +163,4 @@ const mapStateToProps = state => ({
     sC: state.scoresReducer
 })
 
-export default connect(mapStateToProps, { getOneScore })(ReviewQuiz)
+export default connect(mapStateToProps, { getOneScore, createScore })(ReviewQuiz)

@@ -1,27 +1,22 @@
-import React, { useState, useEffect, lazy, Suspense, useContext } from 'react'
-import { Container, Spinner } from 'reactstrap'
-import { useParams } from 'react-router-dom'
+import React, { useState, useEffect, useMemo, useCallback } from 'react'
+import { Container } from 'reactstrap'
+import { useParams, useNavigate } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { getOneQuiz } from '../../../redux/quizes/quizes.actions'
+import { createScore } from '../../../redux/scores/scores.actions'
 import { v4 as uuidv4 } from 'uuid'
-import ScoreSection from './ScoreSection'
 import QuestionsView from './QuestionsView'
-import SimilarQuizes from './SimilarQuizes'
 import LoadingQuestions from '../../rLoading/LoadingQuestions'
 import NoQuestions from './NoQuestions'
 import Unavailable from './Unavailable'
-import RelatedNotes from './RelatedNotes'
-import { categoriesContext } from '../../../appContexts'
 
-const ResponsiveAd = lazy(() => import('../../adsenses/ResponsiveAd'))
-const GridMultiplex = lazy(() => import('../../adsenses/GridMultiplex'))
-
-const QuizQuestions = ({ qZ, getOneQuiz }) => {
-
-    const categories = useContext(categoriesContext)
+const QuizQuestions = ({ qZ, getOneQuiz, createScore, uId }) => {
 
     // Access route parameters & get the quiz
     const { quizSlug } = useParams()
+    const navigate = useNavigate()
+
+    // Get the quiz
     useEffect(() => { getOneQuiz(quizSlug) }, [getOneQuiz, quizSlug])
     const [newScoreId, setNewScoreId] = useState();
 
@@ -47,10 +42,8 @@ const QuizQuestions = ({ qZ, getOneQuiz }) => {
 
     // Scores & Review
     const [score, setScore] = useState(0)
-    const [showScore, setShowScore] = useState(false)
     const [quizToReview, setQuizToReview] = useState({})
     const passMark = thisQuiz.category && thisQuiz.category._id === '60e9a2ba82f7830015c317f1' ? 80 : 50
-    const reviewDetails = { review: quizToReview && quizToReview }
 
     // Function to change selected answer
     const handleOnChange = (event, position) => {
@@ -103,11 +96,70 @@ const QuizQuestions = ({ qZ, getOneQuiz }) => {
         setNewScoreId(uuidv4())
     }
 
+
+    const [saveScoreLoading, setSaveScoreLoading] = useState(false)
+    // Save score to database function
+    const scoreToSave = useMemo(() => ({
+        id: newScoreId,
+        marks: score,
+        out_of: qnsLength,
+        category: thisQuiz && thisQuiz.category && thisQuiz.category._id,
+        quiz: thisQuiz && thisQuiz._id,
+        review: quizToReview,
+        taken_by: uId
+    }), [newScoreId, score, qnsLength, thisQuiz, quizToReview, uId])
+
+    const saveScore = useCallback(async () => {
+
+        // SET LOADING
+        setSaveScoreLoading(true)
+
+        // ATTEMPT TO SAVE SCORE
+        try {
+            const scoreSaving = await createScore(scoreToSave)
+
+            if (scoreSaving) {
+                setSaveScoreLoading(false)
+            }
+            else {
+                setSaveScoreLoading(false)
+            }
+
+        } catch (err) {
+            console.log(err)
+        }
+
+    }, [createScore, scoreToSave])
+
     // Going to next question
-    const goToNextQuestion = (currentIndex, QuestionsLength) => {
-        currentIndex + 1 < QuestionsLength ?
-            setCurQnIndex(currentIndex + 1) : setShowScore(true)
-    }
+    const goToNextQuestion = useCallback((currentIndex, QuestionsLength) => {
+        // REVIEW ANSWERS
+        const reviewDetails = { review: quizToReview && quizToReview }
+
+        // NAVIGATE TO NEXT QUESTION
+        if (currentIndex + 1 < QuestionsLength) {
+            setCurQnIndex(currentIndex + 1)
+        }
+        else {
+            // SAVE SCORE
+            saveScore()
+
+            // NAVIGATE TO QUIZ RESULTS
+            const quizResults = {
+                score: score,
+                qnsLength: QuestionsLength,
+                passMark: passMark,
+                thisQuiz: thisQuiz,
+                quizToReview: reviewDetails.review,
+                newScoreId: newScoreId,
+                review: quizToReview,
+            }
+
+            // NAVIGATE TO QUIZ RESULTS PAGE
+            navigate(`/quiz-results/${quizSlug}`, { state: quizResults })
+        }
+    }, [quizToReview, score, passMark, thisQuiz, navigate, quizSlug, newScoreId, saveScore])
+
 
     useEffect(() => {
         if (trueAnsNbr === choices) {
@@ -120,7 +172,13 @@ const QuizQuestions = ({ qZ, getOneQuiz }) => {
             setChoices(0)
             setCurQnUsrTrueChoices(0)
         }
-    }, [trueAnsNbr, choices, curQnUsrTrueChoices, curQnIndex, qnsLength, score])
+
+        // clean up the saving score
+        return () => {
+            setSaveScoreLoading(false)
+        }
+
+    }, [trueAnsNbr, choices, curQnUsrTrueChoices, curQnIndex, qnsLength, score, goToNextQuestion])
 
     if (!qZ.isOneQuizLoading) {
 
@@ -132,60 +190,28 @@ const QuizQuestions = ({ qZ, getOneQuiz }) => {
 
                     <div key={Math.floor(Math.random() * 1000)} className="py-3 d-flex justify-content-center align-items-center flex-column">
                         <Container className="main mx-0 d-flex flex-column justify-content-center rounded border border-primary my-5 py-4 w-80">
-
-                            {showScore ?
-                                <ScoreSection
-                                    score={score}
-                                    qnsLength={qnsLength}
-                                    thisQuiz={thisQuiz}
-                                    toReview={reviewDetails.review}
-                                    quizToReview={quizToReview}
-                                    passMark={passMark}
-                                    newScoreId={newScoreId} /> :
-
-                                <QuestionsView
-                                    qnsLength={qnsLength}
-                                    curQnIndex={curQnIndex}
-                                    currentQn={currentQn}
-                                    curQnOpts={curQnOpts}
-                                    checkedState={checkedState}
-                                    selected={selected}
-                                    score={score}
-                                    handleOnChange={handleOnChange}
-                                    goToNextQuestion={goToNextQuestion}
-                                    setCurQnIndex={setCurQnIndex} />}
+                            <QuestionsView
+                                qnsLength={qnsLength}
+                                curQnIndex={curQnIndex}
+                                currentQn={currentQn}
+                                curQnOpts={curQnOpts}
+                                checkedState={checkedState}
+                                selected={selected}
+                                score={score}
+                                handleOnChange={handleOnChange}
+                                goToNextQuestion={goToNextQuestion}
+                                setCurQnIndex={setCurQnIndex} />
                         </Container>
-
-                        {showScore ?
-                            <>
-                                <SimilarQuizes
-                                    thisQId={thisQuiz && thisQuiz._id}
-                                    categories={categories.allcategories}
-                                    categoryId={thisQuiz.category && thisQuiz.category._id} />
-
-                                <Suspense fallback={<div className="p-1 m-1 d-flex justify-content-center align-items-center w-100">
-                                    <Spinner color="primary" />
-                                </div>}>
-                                    <div className='w-100'>
-                                        <ResponsiveAd />
-                                    </div>
-                                </Suspense>
-
-                                <RelatedNotes
-                                    ccatgID={thisQuiz.category && thisQuiz.category.courseCategory} />
-
-                                <Suspense fallback={<div className="p-1 m-1 d-flex justify-content-center align-items-center">
-                                    <Spinner color="primary" />
-                                </div>}>
-                                    <GridMultiplex />
-                                </Suspense>
-                            </> : null}
                     </div> :
 
                     <NoQuestions /> :
 
                 <Unavailable title='Quiz' link='/allposts' more='quizes' />
         )
+    }
+
+    else if (saveScoreLoading) {
+        return (<LoadingQuestions />)
     }
 
     else {
@@ -197,4 +223,4 @@ const mapStateToProps = state => ({
     qZ: state.quizesReducer
 })
 
-export default connect(mapStateToProps, { getOneQuiz })(QuizQuestions)
+export default connect(mapStateToProps, { getOneQuiz, createScore })(QuizQuestions)

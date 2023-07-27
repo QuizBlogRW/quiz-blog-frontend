@@ -113,8 +113,6 @@ const RoomChatComponent = ({ socket, onlineList, room1ON1ToGet, chatRoom, roomMe
     const matchingUsr = onlineList.find((user) => user.username === room1ON1ToGet.whoToChat);
     const status = matchingUsr && matchingUsr.username === room1ON1ToGet.whoToChat ? '🟢' : '🔴'
 
-    // Avoiding the component from reloading on state change
-
     return (
         roomMessages.isRoomLoading ? <SpinningBubbles title='chat messages' /> :
 

@@ -29,7 +29,13 @@ const Biographies = () => {
                     <h6 className="font-weight-bolder">Owner and Idea Innovator</h6>
                     <div className="mt-lg-2">
                         <small className='text-justify'>
-                            Patrice Bruce NDATIMANA is a passionate student nurse who is happy to help others. He is a hard worker, initiative, self-motivated, highly adaptable, persistent person, able to complete assigned tasks within the deadline, and capable of working under any challenging situation. He is an ICT enthusiast and he is currently an undergraduate student at the University of Rwanda, College of Medicine and Health Sciences at Rwamagana campus where he is doing a Bachelor with Honors in Nursing. He worked at NAEB/PRICE as Data Entry Officer in 2019, and he is interested in data management and data entry of various types.
+                            Patrice Bruce NDATIMANA is an enthusiastic and caring student nurse who finds joy in assisting others. Known for his strong work ethic, he takes the initiative and remains self-motivated in all his endeavors. Patrice is highly adaptable and persistent, demonstrating the ability to complete assigned tasks promptly, even in challenging situations.
+
+                            Apart from his passion for nursing, Patrice is an avid ICT enthusiast. Currently pursuing his undergraduate degree at the University of Rwanda, College of Medicine and Health Sciences in Rwamagana campus, he is dedicated to achieving a Bachelor's with Honors in Nursing.
+
+                            In 2019, Patrice gained valuable experience as a Data Entry Officer at NAEB/PRICE. This opportunity sparked his interest in data management and data entry across various domains, further fueling his passion for the field.
+
+                            Patrice's diverse skill set and compassionate nature make him an asset in any professional setting. His commitment to helping others and enthusiasm for technology open up exciting opportunities for his future career.
                         </small>
                     </div>
 
@@ -65,7 +71,9 @@ const Biographies = () => {
                     <h6 className="font-weight-bolder">Application Developer</h6>
                     <div className="mt-lg-2">
                         <small className='text-justify'>
-                            Niyomwungeri Parmenide ISHIMWE is a well-disciplined engineer who believes passionately in new computing technologies. He is an ICT enthusiast and passionate about solving the problem using ICT knowledge and skills. He puts great effort to learn and discover new skills and latest technologies and hence developing them to achieve newer experiences. He is comfortable working on small and big projects personally and with teams and usually striving for customer satisfaction. He holds a Bachelor's degree with honors in Computer Science from the University of Rwanda. He is an experienced full- stack web developer, as he worked on various designs and development software projects.
+                            Niyomwungeri Parmenide ISHIMWE is a dedicated engineer with a strong belief in the potential of cutting-edge computing technologies. He is an enthusiastic advocate for Information and Communication Technology (ICT) and is passionate about using his knowledge and skills to solve problems. Parmenide is always eager to learn and explore new skills and the latest technologies, constantly striving to enhance his expertise and gain fresh experiences.
+
+                            Whether it's working on small individual projects or collaborating with teams on larger ventures, Parmenide puts in great effort to ensure customer satisfaction. His commitment to excellence led him to achieve a Bachelor's degree with honors in Computer Science from the University of Rwanda. With his extensive experience as a full-stack web developer, he has successfully worked on a variety of design and development software projects, showcasing his versatility and proficiency in the field.
                         </small>
                     </div>
                     <div className="social w-100 d-flex justify-content-around mx-0 px-md-1 py-md-1">
@@ -111,7 +119,11 @@ const Biographies = () => {
                     <h6 className="font-weight-bolder">Content Creator and Social Media Manager</h6>
                     <div className="mt-lg-2">
                         <small className='text-justify'>
-                            Thierry TUYIZERE is a student nurse University of Rwanda, College of Medicine and Health Science (UR-CMHS), doing Bachelor of Sciences (Hons) in Nursing. He is a young man who likes and is interested in technology. He is a CERTIFIED Social Media Manager, Typographer, and an award winning essay writer. He likes using and working with internet creating something helpful to others. Since 2020, He has worked with different organizations and groups as a typographer/graphic designer and a social media manager.
+                            Thierry TUYIZERE is a dedicated student nurse currently pursuing a Bachelor of Sciences (Hons) in Nursing at the University of Rwanda, College of Medicine and Health Science (UR-CMHS). Alongside his passion for healthcare, he also possesses a keen interest in technology. Thierry holds certifications as a Social Media Manager and Typographer, and his talent as an essay writer has earned him prestigious awards.
+
+                            With a love for creating meaningful content on the internet, Thierry enjoys using technology to develop projects that benefit others. Since 2020, he has been actively involved with various organizations and groups, lending his skills as a typographer and graphic designer. Additionally, he has served as a proficient social media manager, contributing to the success of numerous ventures.
+
+                            Thierry's diverse talents and dedication to both nursing and technology make him a promising individual with a bright future ahead.
                         </small>
                     </div>
 

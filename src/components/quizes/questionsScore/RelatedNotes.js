@@ -7,11 +7,11 @@ import Unavailable from './Unavailable'
 import SpinningBubbles from '../../rLoading/SpinningBubbles'
 
 const RelatedNotes = ({ getNotesByCCatg, notesCCatg, ccatgID }) => {
+
   useEffect(() => {
-    if (ccatgID) {
-      getNotesByCCatg(ccatgID)
-    }
-  }, [])
+    getNotesByCCatg(ccatgID)
+  }
+    , [getNotesByCCatg, ccatgID])
 
   const thisCatNotes = notesCCatg && notesCCatg.notesByCCatg
 

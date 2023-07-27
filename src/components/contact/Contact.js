@@ -93,7 +93,7 @@ const Contact = ({ errors, successful, clearErrors, clearSuccess, sendMsg }) => 
                 </h1>
 
                 <p className="lead mb-1">
-                    Quiz-Blog was developed to provide multi-category quizzes and learning materials helping students to sharpen their minds and prepare for their exams.Its blog articles are related to studies and helps students to understand more from what they learn.
+                    Quiz-Blog was made to offer different types of quizzes and study materials that help students improve their thinking skills and get ready for exams. Our blog articles are about various subjects and help students understand their lessons better.
                 </p>
             </Jumbotron>
 

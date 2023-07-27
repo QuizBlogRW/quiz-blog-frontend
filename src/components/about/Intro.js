@@ -21,7 +21,7 @@ const Intro = () => {
                     </h2>
 
                     <p className="lead mb-4">
-                        Quiz-Blog was developed to provide multi-category quizzes and learning materials helping students to sharpen their minds and prepare for their exams. Its blog articles are related to studies and helps students to understand more from what they learn.
+                        Quiz-Blog was made to offer different types of quizzes and study materials that help students improve their thinking skills and get ready for exams. Our blog articles are about various subjects and help students understand their lessons better.
                     </p>
                 </Col>
             </Row>
@@ -34,19 +34,19 @@ const Intro = () => {
                     </h2>
 
                     <p>
-                        The innovator, BRUCE started university studies in November 2019. That was exciting to him but again tough because learning was different from high school. Because, self-directed learning takes much time than in high school and students have to find questions that will help them revise what lecturers have provided during classes, He started getting used to this but it was bringing some troubles.
+                        BRUCE, the innovator, began his university studies in November 2019, which brought excitement but also presented challenges as learning was different from high school. Self-directed learning required more time, and students had to find relevant questions to revise what they learned in lectures. While he was adapting to this new approach, he faced difficulties.
                     </p>
 
                     <p>
-                        He remembers on December 19, 2020 while he was learning, he tried to do some tests and correct some past papers (known as IBICUPURI). Unfortunately, tests were few, others were without answers and this brought struggle to his studies as it was hard to determine his learning efficiency. He asked himself whether this happens to his fellow students and he came to find out it was the same. This prompted him an idea of creating a website that can help him and his fellows to improve their learning. He talked to his brother PARMENIDE who develops web apps and told him about the idea and asked if he can create a website which will provide Multiple Choice Questions.
+                        On December 19, 2020, while studying, BRUCE attempted tests and past papers (known as IBICUPURI). However, he encountered a problem – there were only a few tests, some without answers, making it hard to assess his learning progress. He wondered if other students faced the same issue and discovered that they did. This inspired him to create a website that would help him and his peers improve their learning. He shared his idea with his brother PARMENIDE, a web app developer, who agreed to help create a website with Multiple Choice Questions (MCQs).
                     </p>
 
                     <p>
-                        On February 2, 2021, he created the first prototype and called it Med-Blog. He thought that He wanted a web to publish medical related blogs but this wasn’t his idea. He wanted a website which will provide MCQs. So, he changed it and started to work on the website which he had in his idea. May 17, 2021 is the date when Quiz-Blog officially started. He then started sharing it with people, uploading different quizzes as he was also working with fellows on developing it to a more standard way.
+                        On February 2, 2021, BRUCE created the first prototype, initially naming it Med-Blog, thinking it would publish medical blogs. However, he later realized that the true vision was to provide MCQs. Thus, he renamed it and began working on the website according to his original idea. On May 17, 2021, Quiz-Blog officially launched, and BRUCE started sharing it with others, uploading various quizzes and refining the platform with the help of his team.
                     </p>
 
                     <p>
-                        Quiz-blog started with health sciences courses but now with the expanded team, it is making it a wide mean of helping people both Rwandans and others to sharpen their mind and perform better in classes and in different courses.
+                        Initially focused on health sciences courses, Quiz-Blog expanded its team and now aims to assist both Rwandans and others in enhancing their minds and achieving better academic performance across various subjects and courses.
                     </p>
 
                     <hr className="my-2" style={{ height: "2px", borderWidth: 0, color: "#157A6E", backgroundColor: "#157A6E" }} />

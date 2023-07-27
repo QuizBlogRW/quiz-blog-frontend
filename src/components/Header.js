@@ -13,12 +13,12 @@ import { useToasts } from 'react-toast-notifications';
 
 const Header = () => {
 
-    // context
+    // context from appContexts
     const auth = useContext(authContext)
     const currentUser = useContext(currentUserContext)
     const socket = useContext(socketContext)
 
-    // state
+    // state for dropdown
     const [isOpen, setIsOpen] = useState(false)
     const toggle = () => setIsOpen(!isOpen)
 

@@ -146,7 +146,7 @@ export const getUserOfMonth = () => async (dispatch, getState) => {
 export const createScore = (newScore) => async (dispatch, getState) => {
 
   try {
-    await axiosInstance
+    const res = await axiosInstance
       .post('/api/scores', newScore, tokenConfig(getState))
       .then(res =>
         dispatch({
@@ -154,9 +154,17 @@ export const createScore = (newScore) => async (dispatch, getState) => {
           payload: res.data
         }))
 
+    // return true if score is created
+    if (res) {
+      return true
+    }
+
   } catch (err) {
     dispatch(returnErrors(err.response.data, err.response.status, 'CREATE_SCORE_FAIL'));
     dispatch({ type: CREATE_SCORE_FAIL })
+
+    // return false if score is not created
+    return false
   }
 };
 
