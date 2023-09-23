@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Button } from 'reactstrap';
-import bruce from '../../images/bruce.jpg'
+import bruce from '../../images/Bruce.jpg'
 import parmenide from '../../images/nide.JPG'
 import thierry from '../../images/thierry.jpeg'
 import annick from '../../images/annick.png'
@@ -99,7 +99,7 @@ const Biographies = () => {
                     <h6 className="font-weight-bolder"> Co-founder, Content Creator, and Social Media Manager</h6>
                     <div className="mt-lg-2">
                         <small className='text-justify'>
-                            Thierry is a dedicated student nurse currently pursuing a Bachelor of Sciences (Hons) in Nursing at the University of Rwanda, College of Medicine and Health Science (UR-CMHS). Alongside his passion for healthcare, he also possesses a keen interest in technology. He holds certifications as a Social Media Manager and Typographer, and his talent as an essay writer has earned him prestigious awards. With a love for creating meaningful content on the internet, he enjoys using technology to develop projects that benefit others. Since 2020, he has been actively involved with various organizations and groups, lending his skills as a typographer and graphic designer. 
+                            Thierry is a dedicated student nurse currently pursuing a Bachelor of Sciences (Hons) in Nursing at the University of Rwanda, College of Medicine and Health Science (UR-CMHS). Alongside his passion for healthcare, he also possesses a keen interest in technology. He holds certifications as a Social Media Manager and Typographer, and his talent as an essay writer has earned him prestigious awards. With a love for creating meaningful content on the internet, he enjoys using technology to develop projects that benefit others. Since 2020, he has been actively involved with various organizations and groups, lending his skills as a typographer and graphic designer.
                             <br /><br />
                             Additionally, Thierry has served as a proficient social media manager, contributing to the success of numerous ventures. his diverse talents and dedication to both nursing and technology make him a promising individual with a bright future ahead.
                         </small>
@@ -156,7 +156,7 @@ const Biographies = () => {
                     <div className="mt-lg-2">
                         <small className='text-justify'>
                             Parmenide is a dedicated engineer with a strong belief in the potential of cutting-edge computing technologies. He is an enthusiastic advocate for ICT and is passionate about using his knowledge and skills to solve problems. He is always eager to learn and explore new skills and the latest technologies, constantly striving to enhance his expertise and gain fresh experiences. Whether it's working on small individual projects or collaborating with teams on larger ventures, Parmenide puts in great effort to ensure customer satisfaction. His commitment to excellence led him to achieve a Bsc(honors) in Computer Science from the University of Rwanda.
-                            
+
                             <br /><br />
                             With his extensive experience as a full-stack software developer, he has successfully worked on a variety of design and development software projects, showcasing his versatility and proficiency in the field.
                         </small>
