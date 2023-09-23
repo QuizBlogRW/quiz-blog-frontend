@@ -213,6 +213,17 @@ nav .dropdown-item-text a button {
     }
 }
 
+.fadeIn {
+    opacity: 0;
+    transform: translateY(120px);
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.fadeIn.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 .posts {
     max-width: 100% !important;
     padding: 0;

@@ -63,6 +63,75 @@
     font-size: 1.4rem;
 }
 
+.memberImg img {
+    opacity: 0;
+    animation: fadeIn 1s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.social img, .social span {
+    animation: bounce 8s ease infinite;
+}
+
+@keyframes bounce {
+
+    0%,
+    50%,
+    100% {
+        transform: translateY(0);
+    }
+
+    25% {
+        transform: translateY(-6px);
+    }
+
+    75% {
+        transform: translateY(6px);
+    }
+}
+
+.memberText, .intro-text, .how-started {
+    transform: scale(0);
+    animation: zoomIn 1s ease-out forwards;
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0.8);
+    }
+
+    to {
+        transform: scale(1);
+    }
+}
+h2 {
+    color: initial;
+    transition: color 0.5s;
+}
+
+h2:hover {
+    color: #ffea00;
+}
+
+.introduct {
+    background-color: #d6dbd8;
+}
+.introduct h1 span {
+    color: #ffea00!important;
+    background-color:#157A6E;
+    padding-left: 1.2rem;
+    padding-right: 1.8rem;
+    clip-path: polygon(0% 0%, 90% 0%, 100% 50%, 90% 100%, 0% 100%);
+}
 
 /* MOBILES*/
 @media screen and (max-width: 768px) {
