@@ -118,6 +118,7 @@ const QuizQuestions = ({ createScore, uId }) => {
 
         // ATTEMPT TO SAVE SCORE
         try {
+            console.log(scoreToSave)
             const scoreSaving = await createScore(scoreToSave)
 
             if (scoreSaving) {
