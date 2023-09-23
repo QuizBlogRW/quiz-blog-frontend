@@ -3,11 +3,11 @@ import { returnErrors } from "../error/error.actions";
 import { returnSuccess } from '../success/success.actions'
 import { GET_COURSE_CATEGORIES, GET_COURSE_CATEGORIES_FAIL, CREATE_COURSE_CATEGORY, CREATE_COURSE_CATEGORY_FAIL, DELETE_COURSE_CATEGORY, DELETE_COURSE_CATEGORY_FAIL, UPDATE_COURSE_CATEGORY, UPDATE_COURSE_CATEGORY_FAIL, COURSE_CATEGORIES_LOADING } from "./courseCategories.types";
 import { tokenConfig } from '../auth/auth.actions'
-import { apiURL } from '../config'
+import { apiURL, devApiURL } from '../config'
 
 // Axios instance
 const axiosInstance = axios.create({
-  baseURL: apiURL,
+  baseURL: process.env.NODE_ENV === 'development' ? devApiURL : apiURL,
 });
 
 // View all course categories

@@ -3,11 +3,11 @@ import { returnErrors } from "../error/error.actions"
 import { returnSuccess } from '../success/success.actions'
 import { SET_CATEGORIES, GET_ONE_CATEGORY, GET_ONE_CATEGORY_FAIL, SET_CATEGORIES_FAIL, CREATE_CATEGORY, CREATE_CATEGORY_FAIL, DELETE_CATEGORY, DELETE_CATEGORY_FAIL, UPDATE_CATEGORY, UPDATE_CATEGORY_FAIL, CATEGORY_LOADING, CATEGORIES_LOADING } from "./categories.types"
 import { tokenConfig } from '../auth/auth.actions'
-import { apiURL } from '../config'
+import { apiURL, devApiURL } from '../config'
 
 // Axios instance
 const axiosInstance = axios.create({
-  baseURL: apiURL,
+  baseURL: process.env.NODE_ENV === 'development' ? devApiURL : apiURL,
 })
 
 // View all categories

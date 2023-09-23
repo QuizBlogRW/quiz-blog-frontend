@@ -3,11 +3,11 @@ import { returnErrors } from "../../../error/error.actions"
 import { returnSuccess } from '../../../success/success.actions'
 import { GET_IMAGE_UPLOADS, GET_IMAGE_UPLOADS_FAIL, GET_ONE_IMAGE_UPLOAD, GET_ONE_IMAGE_UPLOAD_FAIL, GET_IMAGE_UPLOADS_BY_OWNER, GET_IMAGE_UPLOADS_BY_OWNER_FAIL, CREATE_IMAGE_UPLOAD, CREATE_IMAGE_UPLOAD_FAIL, DELETE_IMAGE_UPLOAD, DELETE_IMAGE_UPLOAD_FAIL, UPDATE_IMAGE_UPLOAD, UPDATE_IMAGE_UPLOAD_FAIL, IMAGE_UPLOADS_LOADING } from "./uploadImages.types"
 import { tokenConfig, uploadConfig } from '../../../auth/auth.actions'
-import { apiURL } from '../../../config'
+import { apiURL, devApiURL } from '../../../config'
 
 // Axios instance
 const axiosInstance = axios.create({
-  baseURL: apiURL,
+  baseURL: process.env.NODE_ENV === 'development' ? devApiURL : apiURL,
 })
 
 // View all image uploads
@@ -104,7 +104,7 @@ export const updateBlogPost = updatedImgUpload => async (dispatch, getState) => 
           type: UPDATE_IMAGE_UPLOAD,
           payload: updatedImgUpload
         }))
-       
+
       // Reload the page
       .then(res =>
         dispatch(

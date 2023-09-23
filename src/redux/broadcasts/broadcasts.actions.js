@@ -3,11 +3,11 @@ import { returnErrors } from "../error/error.actions";
 import { returnSuccess } from '../success/success.actions'
 import { SET_BROADCASTS, SET_BROADCASTS_FAIL, GET_ONE_BROADCAST, GET_ONE_BROADCAST_FAIL, CREATE_BROADCAST, CREATE_BROADCAST_FAIL, DELETE_BROADCAST, DELETE_BROADCAST_FAIL, BROADCASTS_LOADING } from "./broadcasts.types"
 import { tokenConfig } from '../auth/auth.actions'
-import { apiURL } from '../config'
+import { apiURL, devApiURL } from '../config'
 
 // Axios instance
 const axiosInstance = axios.create({
-  baseURL: apiURL,
+  baseURL: process.env.NODE_ENV === 'development' ? devApiURL : apiURL,
 })
 
 // View all broadcasts
@@ -78,7 +78,7 @@ export const deleteBroadcast = id => async (dispatch, getState) => {
   try {
     if (window.confirm("This broadcast will be deleted permanently!")) {
       await axiosInstance
-      .delete(`/api/broadcasts/${id}`, tokenConfig(getState))
+        .delete(`/api/broadcasts/${id}`, tokenConfig(getState))
         .then(() =>
           dispatch({
             type: DELETE_BROADCAST,

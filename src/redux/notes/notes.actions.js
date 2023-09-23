@@ -6,11 +6,11 @@ import {
   GET_NOTES_BY_COURSE_CATEGORY, NOTES_BY_COURSE_CATEGORY_LOADING, ADD_NOTES_QUIZZES, ADD_NOTES_QUIZZES_FAIL, REMOVE_QUIZ_NOTES, REMOVE_QUIZ_NOTES_FAIL
 } from "./notes.types"
 import { tokenConfig, uploadConfig } from '../auth/auth.actions'
-import { apiURL } from '../config'
+import { apiURL, devApiURL } from '../config'
 
 // Axios instance
 const axiosInstance = axios.create({
-  baseURL: apiURL,
+  baseURL: process.env.NODE_ENV === 'development' ? devApiURL : apiURL,
 })
 
 // View all notes

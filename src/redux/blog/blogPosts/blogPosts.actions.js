@@ -3,11 +3,11 @@ import { returnErrors } from "../../error/error.actions"
 import { returnSuccess } from '../../success/success.actions'
 import { GET_BLOG_POSTS, GET_BLOG_POSTS_FAIL, GET_ONE_BLOG_POST, GET_ONE_BLOG_POST_FAIL, GET_BLOG_POSTS_BY_CATEGORY, GET_BLOG_POSTS_BY_CATEGORY_FAIL, CREATE_BLOG_POST, CREATE_BLOG_POST_FAIL, DELETE_BLOG_POST, DELETE_BLOG_POST_FAIL, UPDATE_BLOG_POST, UPDATE_BLOG_POST_FAIL, BLOG_POSTS_LOADING, ONE_BLOG_POST_LOADING } from "./blogPosts.types"
 import { tokenConfig, uploadConfig } from '../../auth/auth.actions'
-import { apiURL } from '../../config'
+import { apiURL, devApiURL } from '../../config'
 
 // Axios instance
 const axiosInstance = axios.create({
-  baseURL: apiURL,
+  baseURL: process.env.NODE_ENV === 'development' ? devApiURL : apiURL,
 })
 
 // View all blog posts
@@ -104,7 +104,7 @@ export const updateBlogPost = updatedBP => async (dispatch, getState) => {
           type: UPDATE_BLOG_POST,
           payload: updatedBP
         }))
-       
+
       // Reload the page
       .then(res =>
         dispatch(
@@ -151,8 +151,8 @@ export const getBlogPostsLoading = () => {
   }
 }
 
-  export const getOneBlogPostsLoading = () => {
-    return {
-      type: ONE_BLOG_POST_LOADING
-    }
+export const getOneBlogPostsLoading = () => {
+  return {
+    type: ONE_BLOG_POST_LOADING
   }
+}

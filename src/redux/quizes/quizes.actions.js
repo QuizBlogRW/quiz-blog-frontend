@@ -5,11 +5,11 @@ import { returnSuccess } from '../success/success.actions'
 import { SET_QUIZES, GET_ONE_QUIZ, GET_ONE_QUIZ_LOADING, GET_ONE_QUIZ_FAIL, GET_CATEGORY_QUIZES, GET_CATEGORY_QUIZES_FAIL, CREATE_QUIZ, CREATE_QUIZ_FAIL, DELETE_QUIZ, DELETE_QUIZ_FAIL, UPDATE_QUIZ, UPDATE_QUIZ_FAIL, QUIZES_LOADING, NOTIFY_USERS, NOTIFY_USERS_FAIL, SET_ALL_QUIZES, ALL_QUIZES_LOADING, ADD_VIDEO_LINK, ADD_VIDEO_LINK_FAIL, DELETE_VIDEO, DELETE_VIDEO_FAIL, GET_NOTES_QUIZES, GET_NOTES_QUIZES_FAIL, GET_PAGINATED_QUIZES, PAGINATED_QUIZES_LOADING } from "./quizes.types"
 
 import { tokenConfig } from '../auth/auth.actions'
-import { apiURL } from '../config'
+import { apiURL, devApiURL } from '../config'
 
 // Axios instance
 const axiosInstance = axios.create({
-  baseURL: apiURL,
+  baseURL: process.env.NODE_ENV === 'development' ? devApiURL : apiURL,
 })
 
 
@@ -32,7 +32,7 @@ export const setPaginatedQuizes = (pageNo) => async (dispatch, getState) => {
 // View limited quizes
 export const setQuizes = (limit, skip) => async (dispatch) => {
   await dispatch(setQuizesLoading())
-  
+
   try {
     await axiosInstance
       .get(`/api/quizes?limit=${limit}&skip=${skip}`)
@@ -43,7 +43,7 @@ export const setQuizes = (limit, skip) => async (dispatch) => {
         }))
   } catch (err) {
     dispatch(returnErrors(err.response.data, err.response.status))
-    
+
   }
 }
 
@@ -51,7 +51,7 @@ export const setQuizes = (limit, skip) => async (dispatch) => {
 // View all quizes
 export const setAllNoLimitQuizes = () => async (dispatch) => {
   await dispatch(setAllNoLimitQuizesLoading())
-  
+
   try {
     await axiosInstance
       .get(`/api/quizes`)
@@ -62,7 +62,7 @@ export const setAllNoLimitQuizes = () => async (dispatch) => {
         }))
   } catch (err) {
     dispatch(returnErrors(err.response.data, err.response.status))
-    
+
   }
 }
 
@@ -70,7 +70,7 @@ export const setAllNoLimitQuizes = () => async (dispatch) => {
 // View one quiz
 export const getOneQuiz = (quizSlug) => async (dispatch) => {
   await dispatch(setOneQuizLoading())
-  
+
   try {
     await axiosInstance
       .get(`/api/quizes/${quizSlug}`)
@@ -82,7 +82,7 @@ export const getOneQuiz = (quizSlug) => async (dispatch) => {
       )
   } catch (err) {
     dispatch(returnErrors(err.response.data, err.response.status, 'GET_ONE_QUIZ_FAIL'))
-    
+
     dispatch({ type: GET_ONE_QUIZ_FAIL })
   }
 }
@@ -91,7 +91,7 @@ export const getOneQuiz = (quizSlug) => async (dispatch) => {
 // Get quizes by category
 export const getQuizesByCategory = (categoryID) => async (dispatch, getState) => {
   await dispatch(setQuizesLoading())
-  
+
   try {
     await axiosInstance
       .get(`/api/quizes/category/${categoryID}`, tokenConfig(getState))
@@ -103,7 +103,7 @@ export const getQuizesByCategory = (categoryID) => async (dispatch, getState) =>
       )
   } catch (err) {
     dispatch(returnErrors(err.response.data, err.response.status, 'GET_CATEGORY_QUIZES_FAIL'))
-    
+
     dispatch({ type: GET_CATEGORY_QUIZES_FAIL })
   }
 }
@@ -112,7 +112,7 @@ export const getQuizesByCategory = (categoryID) => async (dispatch, getState) =>
 // Get quizes by notes course category
 export const getQuizesByNotes = (courseCategoryID) => async (dispatch, getState) => {
   await dispatch(setQuizesLoading())
-  
+
   try {
     await axiosInstance
       .get(`/api/quizes/course-notes/${courseCategoryID}`, tokenConfig(getState))
@@ -124,7 +124,7 @@ export const getQuizesByNotes = (courseCategoryID) => async (dispatch, getState)
       )
   } catch (err) {
     dispatch(returnErrors(err.response.data, err.response.status, 'GET_NOTES_QUIZES_FAIL'))
-    
+
     dispatch({ type: GET_NOTES_QUIZES_FAIL })
   }
 }
@@ -151,7 +151,7 @@ export const createQuiz = (newQuiz) => async (dispatch, getState) => {
 
   } catch (err) {
     dispatch(returnErrors(err.response.data, err.response.status, 'CREATE_QUIZ_FAIL'))
-    
+
     dispatch({ type: CREATE_QUIZ_FAIL })
   }
 }
@@ -179,7 +179,7 @@ export const notifying = (newQuizInfo) => async (dispatch, getState) => {
 
   } catch (err) {
     dispatch(returnErrors(err.response.data, err.response.status, 'NOTIFY_USERS_FAIL'))
-    
+
     dispatch({ type: NOTIFY_USERS_FAIL })
   }
 }
@@ -207,7 +207,7 @@ export const updateQuiz = updatedQuiz => async (dispatch, getState) => {
 
   } catch (err) {
     dispatch(returnErrors(err.response.data, err.response.status, 'UPDATE_QUIZ_FAIL'))
-    
+
     dispatch({ type: UPDATE_QUIZ_FAIL })
   }
 }
@@ -233,7 +233,7 @@ export const addVidLink = (newVidLink, quizID) => async (dispatch, getState) => 
 
   } catch (err) {
     dispatch(returnErrors(err.response.data, err.response.status, 'ADD_VIDEO_LINK_FAIL'))
-    
+
     dispatch({ type: ADD_VIDEO_LINK_FAIL })
   }
 }
@@ -260,7 +260,7 @@ export const deleteVideo = (vidData, vId) => async (dispatch, getState) => {
 
   } catch (err) {
     dispatch(returnErrors(err.response.data, err.response.status, 'DELETE_VIDEO_FAIL'))
-    
+
     dispatch({ type: DELETE_VIDEO_FAIL })
   }
 }
@@ -287,7 +287,7 @@ export const deleteQuiz = id => async (dispatch, getState) => {
 
   } catch (err) {
     dispatch(returnErrors(err.response.data, err.response.status, 'DELETE_QUIZ_FAIL'))
-    
+
     dispatch({ type: DELETE_QUIZ_FAIL })
   }
 }

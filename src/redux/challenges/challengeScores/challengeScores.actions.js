@@ -3,11 +3,11 @@ import { returnErrors } from "../../error/error.actions";
 import { returnSuccess } from '../../success/success.actions'
 import { GET_CHALLENGE_SCORES, GET_ONE_CHALLENGE_SCORE, GET_ONE_CHALLENGE_SCORE_FAIL, GET_TAKER_CHALLENGE_SCORES, GET_TAKER_CHALLENGE_SCORES_FAIL, CREATE_CHALLENGE_SCORE, CREATE_CHALLENGE_SCORE_FAIL, DELETE_CHALLENGE_SCORE, DELETE_CHALLENGE_SCORE_FAIL, UPDATE_CHALLENGE_SCORE, UPDATE_CHALLENGE_SCORE_FAIL, CHALLENGE_SCORES_LOADING, GET_CREATOR_CHALLENGE_SCORES, GET_CREATOR_CHALLENGE_SCORES_FAIL, GET_RANKING_CHALLENGE_SCORES, GET_RANKING_CHALLENGE_SCORES_FAIL } from "./challengeScores.types";
 import { tokenConfig } from '../../auth/auth.actions'
-import { apiURL } from '../../config'
+import { apiURL, devApiURL } from '../../config'
 
 // Axios instance
 const axiosInstance = axios.create({
-  baseURL: apiURL,
+  baseURL: process.env.NODE_ENV === 'development' ? devApiURL : apiURL,
 })
 
 // View all scores

@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { Button } from 'reactstrap';
 import bruce from '../../images/Bruce.jpg'
-import parmenide from '../../images/nide.JPG'
-import thierry from '../../images/thierry.jpeg'
-import annick from '../../images/annick.png'
-import denyse from '../../images/denyse.png'
+import parmenide from '../../images/nide.jpg'
+import thierry from '../../images/thierry.jpg'
+import annick from '../../images/annick.jpg'
+import denyse from '../../images/denyse.jpg'
 import instagram from '../../../src/images/instagram.svg';
 import linkedin from '../../../src/images/linkedin.svg';
 import facebook from '../../../src/images/facebook.svg';

@@ -2,11 +2,11 @@ import axios from 'axios';
 import { returnErrors } from '../error/error.actions'
 import { GET_CHALLENGES, GET_ONE_CHALLENGE, GET_ONE_CHALLENGE_FAIL, GET_CHALLENGER_CHALLENGES, GET_CHALLENGER_CHALLENGES_FAIL, CREATE_CHALLENGE, CREATE_CHALLENGE_FAIL, DELETE_CHALLENGE, DELETE_CHALLENGE_FAIL, UPDATE_CHALLENGE, UPDATE_CHALLENGE_FAIL, CHALLENGES_LOADING } from "./challenges.types";
 import { tokenConfig } from '../auth/auth.actions'
-import { apiURL } from '../config'
+import { apiURL, devApiURL } from '../config'
 
 // Axios instance
 const axiosInstance = axios.create({
-  baseURL: apiURL,
+  baseURL: process.env.NODE_ENV === 'development' ? devApiURL : apiURL,
 });
 
 // View all challenges

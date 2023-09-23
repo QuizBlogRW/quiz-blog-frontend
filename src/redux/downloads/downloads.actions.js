@@ -3,11 +3,11 @@ import { returnErrors } from '../error/error.actions'
 import { returnSuccess } from '../success/success.actions'
 import { SAVE_DOWNLOAD, SAVE_DOWNLOAD_FAIL, GET_DOWNLOADS, GET_DOWNLOADS_FAIL, DELETE_DOWNLOAD, DELETE_DOWNLOAD_FAIL, DOWNLOADS_LOADING, GET_CREATOR_DOWNLOADS, GET_CREATOR_DOWNLOADS_FAIL, GET_USER_DOWNLOADS, GET_USER_DOWNLOADS_FAIL } from "./downloads.types"
 import { tokenConfig } from '../auth/auth.actions'
-import { apiURL } from '../config'
+import { apiURL, devApiURL } from '../config'
 
 // Axios instance
 const axiosInstance = axios.create({
-  baseURL: apiURL,
+  baseURL: process.env.NODE_ENV === 'development' ? devApiURL : apiURL,
 })
 
 // View all downloads

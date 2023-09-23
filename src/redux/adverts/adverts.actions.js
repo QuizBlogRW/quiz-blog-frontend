@@ -3,12 +3,20 @@ import { returnErrors } from "../error/error.actions";
 import { returnSuccess } from '../success/success.actions'
 import { GET_ADVERTS, GET_ADVERTS_FAIL, GET_ONE_ADVERT, GET_ONE_ADVERT_FAIL, CREATE_ADVERT, CREATE_ADVERT_FAIL, DELETE_ADVERT, DELETE_ADVERT_FAIL, UPDATE_ADVERT, UPDATE_ADVERT_FAIL, ADVERTS_LOADING, GET_ACTIVE_ADVERTS, GET_ACTIVE_ADVERTS_FAIL, CHANGE_ADVERT_STATUS, CHANGE_ADVERT_STATUS_FAIL } from "./adverts.types"
 import { tokenConfig, uploadConfig } from '../auth/auth.actions'
-import { apiURL } from '../config'
+import { apiURL, devApiURL } from '../config'
 
 // Axios instance
 const axiosInstance = axios.create({
-  baseURL: apiURL,
+  baseURL: process.env.NODE_ENV === 'development' ? devApiURL : apiURL,
 })
+
+if (process.env.NODE_ENV === 'production') {
+  // Code to run in production environment
+  console.log('This is a production environment.');
+} else {
+  // Code to run in development environment
+  console.log('This is a development environment.');
+}
 
 // View all adverts
 export const getAdverts = () => async (dispatch, getState) => {

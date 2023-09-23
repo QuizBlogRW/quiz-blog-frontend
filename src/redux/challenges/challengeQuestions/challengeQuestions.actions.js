@@ -3,11 +3,11 @@ import axios from 'axios'
 import { returnErrors } from "../../error/error.actions"
 import { returnSuccess } from '../../success/success.actions'
 import { tokenConfig, uploadConfig } from '../../auth/auth.actions'
-import { apiURL } from '../../config'
+import { apiURL, devApiURL } from '../../config'
 
 // Axios instance
 const axiosInstance = axios.create({
-    baseURL: apiURL,
+    baseURL: process.env.NODE_ENV === 'development' ? devApiURL : apiURL,
 })
 
 // Dispatches an action. This is the only way to trigger a state change.

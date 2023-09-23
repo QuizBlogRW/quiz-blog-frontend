@@ -3,11 +3,11 @@ import { returnErrors } from "../error/error.actions"
 import { returnSuccess } from '../success/success.actions'
 import { GET_LOGS, GET_LOGS_FAIL, LOGS_LOADING, GET_LOG, GET_LOG_FAIL, LOG_LOADING, DELETE_LOG, DELETE_LOG_FAIL } from "./logs.types"
 import { tokenConfig } from '../auth/auth.actions'
-import { apiURL } from '../config'
+import { apiURL, devApiURL } from '../config'
 
 // Axios instance
 const axiosInstance = axios.create({
-  baseURL: apiURL,
+  baseURL: process.env.NODE_ENV === 'development' ? devApiURL : apiURL,
 })
 
 // View all logs

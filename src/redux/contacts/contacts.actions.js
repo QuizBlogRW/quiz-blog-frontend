@@ -3,11 +3,11 @@ import axios from 'axios';
 import { tokenConfig } from '../auth/auth.actions'
 import { returnErrors } from "../error/error.actions";
 import { returnSuccess } from '../success/success.actions'
-import { apiURL } from '../config'
+import { apiURL, devApiURL } from '../config'
 
 // Axios instance
 const axiosInstance = axios.create({
-  baseURL: apiURL,
+  baseURL: process.env.NODE_ENV === 'development' ? devApiURL : apiURL,
 });
 
 // dispatch(action)

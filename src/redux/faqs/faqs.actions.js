@@ -3,11 +3,11 @@ import { returnErrors } from "../error/error.actions";
 import { returnSuccess } from '../success/success.actions'
 import { GET_FAQS, GET_FAQS_FAIL, GET_ONE_FAQ, GET_ONE_FAQ_FAIL, CREATE_FAQ, CREATE_FAQ_FAIL, DELETE_FAQ, DELETE_FAQ_FAIL, UPDATE_FAQ, UPDATE_FAQ_FAIL, FAQS_LOADING, DELETE_VIDEO, DELETE_VIDEO_FAIL, ADD_VIDEO_LINK, ADD_VIDEO_LINK_FAIL } from "./faqs.types"
 import { tokenConfig } from '../auth/auth.actions'
-import { apiURL } from '../config'
+import { apiURL, devApiURL } from '../config'
 
 // Axios instance
 const axiosInstance = axios.create({
-  baseURL: apiURL,
+  baseURL: process.env.NODE_ENV === 'development' ? devApiURL : apiURL,
 })
 
 // View all faqs

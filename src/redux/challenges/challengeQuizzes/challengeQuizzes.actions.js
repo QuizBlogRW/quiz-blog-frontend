@@ -3,11 +3,11 @@ import { returnErrors } from '../../error/error.actions'
 import { returnSuccess } from '../../success/success.actions'
 import { GET_CHALLENGE_QUIZES, GET_ONE_CHALLENGE_QUIZ, GET_ONE_CHALLENGE_QUIZ_FAIL, GET_CATEGORY_CHALLENGE_QUIZES, GET_CATEGORY_CHALLENGE_QUIZES_FAIL, CREATE_CHALLENGE_QUIZ, CREATE_CHALLENGE_QUIZ_FAIL, DELETE_CHALLENGE_QUIZ, DELETE_CHALLENGE_QUIZ_FAIL, UPDATE_CHALLENGE_QUIZ, UPDATE_CHALLENGE_QUIZ_FAIL, CHALLENGE_QUIZES_LOADING, GET_ALL_CHALLENGE_QUIZES, ALL_CHALLENGE_QUIZES_LOADING, GET_NOTES_CHALLENGE_QUIZES, GET_NOTES_CHALLENGE_QUIZES_FAIL } from "./challengeQuizzes.types";
 import { tokenConfig } from '../../auth/auth.actions'
-import { apiURL } from '../../config'
+import { apiURL, devApiURL } from '../../config'
 
 // Axios instance
 const axiosInstance = axios.create({
-  baseURL: apiURL,
+  baseURL: process.env.NODE_ENV === 'development' ? devApiURL : apiURL,
 });
 
 // View limited quizes
