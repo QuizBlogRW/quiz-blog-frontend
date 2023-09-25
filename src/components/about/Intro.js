@@ -6,7 +6,7 @@ const Intro = () => {
     return (
         <div className='introduct pt-lg-5'>
 
-            <h1 className="display-4 font-weight-bold text-center text-success my-4 my-lg-5">
+            <h1 className="display-4 font-weight-bold text-center text-success py-4 my-lg-5">
                 <span>Get To Know</span> Quiz Blog
             </h1>
 
@@ -27,7 +27,7 @@ const Intro = () => {
                 </Col>
             </Row>
 
-            <Row className='px-1 px-lg-5'>
+            <Row className='px-3 px-lg-5'>
                 <Jumbotron className="p-2 my-3 my-lg-5 how-started">
 
                     <h2 className="font-weight-bold text-center text-success my-4">

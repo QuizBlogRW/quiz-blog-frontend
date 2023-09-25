@@ -172,7 +172,7 @@ const Header = () => {
                         {
                             location.pathname !== '/' ?
 
-                                <Button color="success" size="md" className="ml-1 mr-2 px-md-2 mr-md-4 back-home">
+                                <Button color="success" size="md" className="ml-1 mr-2 px-md-2 mr-md-4 back-home d-none d-sm-inline-flex">
                                     <Link to="/" className="text-white back-home-link">Back Home</Link>
                                 </Button> : null}
 

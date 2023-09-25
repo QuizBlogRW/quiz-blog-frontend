@@ -42,8 +42,7 @@ const QuizQuestions = ({ createScore, uId }) => {
     useEffect(() => { selected && setChoices(selected.filter(value => value).length) }, [selected])
     useEffect(() => { selected && setCurQnUsrTrueChoices(selected.filter(value => (value === 'true')).length) }, [selected])
 
-    // Scores & Review
-    const [score, setScore] = useState(0)
+    // Review
     const [quizToReview, setQuizToReview] = useState({})
     const passMark = thisQuiz.category && thisQuiz.category._id === '60e9a2ba82f7830015c317f1' ? 80 : 50
 
@@ -98,18 +97,34 @@ const QuizQuestions = ({ createScore, uId }) => {
         setNewScoreId(uuidv4())
     }
 
-
     const [saveScoreLoading, setSaveScoreLoading] = useState(false)
     // Save score to database function
-    const scoreToSave = useMemo(() => ({
-        id: newScoreId,
-        marks: score,
-        out_of: qnsLength,
-        category: thisQuiz && thisQuiz.category && thisQuiz.category._id,
-        quiz: thisQuiz && thisQuiz._id,
-        review: quizToReview,
-        taken_by: uId
-    }), [newScoreId, score, qnsLength, thisQuiz, quizToReview, uId])
+    const scoreToSave = useMemo(() => {
+
+        const marks = quizToReview && quizToReview.questions && quizToReview.questions
+            .map(qn => {
+                const correctOptions = qn.answerOptions.filter(opt => opt.isCorrect === true);
+                const chosenCorrectOptions = qn.answerOptions.filter(opt => opt.choosen === true && opt.isCorrect === true);
+
+                // Calculate marks for the question based on the ratio of correct chosen options to total correct options
+                if (correctOptions.length > 0) {
+                    return chosenCorrectOptions.length / correctOptions.length;
+                } else {
+                    return 0; // Handle the case where there are no correct options (optional)
+                }
+            })
+            .reduce((a, b) => a + b, 0);
+
+        return {
+            id: newScoreId,
+            marks,
+            out_of: qnsLength,
+            category: thisQuiz && thisQuiz.category && thisQuiz.category._id,
+            quiz: thisQuiz && thisQuiz._id,
+            review: quizToReview,
+            taken_by: uId
+        }
+    }, [uId, thisQuiz, qnsLength, quizToReview, newScoreId])
 
     const saveScore = useCallback(async () => {
 
@@ -118,7 +133,6 @@ const QuizQuestions = ({ createScore, uId }) => {
 
         // ATTEMPT TO SAVE SCORE
         try {
-            console.log(scoreToSave)
             const scoreSaving = await createScore(scoreToSave)
 
             if (scoreSaving) {
@@ -144,12 +158,27 @@ const QuizQuestions = ({ createScore, uId }) => {
             setCurQnIndex(currentIndex + 1)
         }
         else {
+            // CALCULATE THE SCORE FROM THE ANSWERS - reviewDetails.review.questions
+            const marks = reviewDetails.review && reviewDetails.review.questions && reviewDetails.review.questions
+                .map(qn => {
+                    const correctOptions = qn.answerOptions.filter(opt => opt.isCorrect === true);
+                    const chosenCorrectOptions = qn.answerOptions.filter(opt => opt.choosen === true && opt.isCorrect === true);
+
+                    // Calculate marks for the question based on the ratio of correct chosen options to total correct options
+                    if (correctOptions.length > 0) {
+                        return chosenCorrectOptions.length / correctOptions.length;
+                    } else {
+                        return 0; // Handle the case where there are no correct options (optional)
+                    }
+                })
+                .reduce((a, b) => a + b, 0);
+
             // SAVE SCORE
             saveScore()
 
             // NAVIGATE TO QUIZ RESULTS
             const quizResults = {
-                score: score,
+                score: marks,
                 qnsLength: QuestionsLength,
                 passMark: passMark,
                 thisQuiz: thisQuiz,
@@ -161,27 +190,26 @@ const QuizQuestions = ({ createScore, uId }) => {
             // NAVIGATE TO QUIZ RESULTS PAGE
             navigate(`/quiz-results/${quizSlug}`, { state: quizResults })
         }
-    }, [quizToReview, score, passMark, thisQuiz, navigate, quizSlug, newScoreId, saveScore])
+    }, [quizToReview, passMark, thisQuiz, navigate, newScoreId, saveScore])
 
 
     useEffect(() => {
         if (trueAnsNbr === choices) {
-            if (trueAnsNbr === curQnUsrTrueChoices) {
-                setScore(score + 1)
-            }
-            goToNextQuestion(curQnIndex, qnsLength)
             setCheckedState([])
             setSelected('')
             setChoices(0)
             setCurQnUsrTrueChoices(0)
+            goToNextQuestion(curQnIndex, qnsLength)
         }
+
+        console.log('useEffect: trueAnsNbr, choices, curQnUsrTrueChoices, curQnIndex, qnsLength, goToNextQuestion')
 
         // clean up the saving score
         return () => {
             setSaveScoreLoading(false)
         }
 
-    }, [trueAnsNbr, choices, curQnUsrTrueChoices, curQnIndex, qnsLength, score, goToNextQuestion])
+    }, [trueAnsNbr, choices, curQnUsrTrueChoices, curQnIndex, qnsLength, goToNextQuestion])
 
     if (!quizState.isOneQuizLoading) {
 
@@ -200,7 +228,6 @@ const QuizQuestions = ({ createScore, uId }) => {
                                 curQnOpts={curQnOpts}
                                 checkedState={checkedState}
                                 selected={selected}
-                                score={score}
                                 handleOnChange={handleOnChange}
                                 goToNextQuestion={goToNextQuestion}
                                 setCurQnIndex={setCurQnIndex} />

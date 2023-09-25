@@ -49,7 +49,7 @@ const Biographies = () => {
             <h2 className="font-weight-bold text-center text-success mb-4 my-lg-5">
                 <u>Meet our team</u>
             </h2>
-            <div className="row mx-sm-4 my-4 my-sm-5">
+            <div className="row mx-2 mx-sm-4 my-4 my-sm-5">
 
                 <div className="col-12 col-sm-4 px-0 px-sm-3 d-flex flex-column align-items-center justify-content-center">
                     <div className="memberImg">
@@ -92,7 +92,7 @@ const Biographies = () => {
 
             </div>
 
-            <div className="row mx-sm-4 my-4 my-sm-5">
+            <div className="row mx-2 mx-sm-4 my-4 my-sm-5 flex-column-reverse flex-sm-row">
 
                 <div className="memberText col-12 col-sm-8 px-0 px-sm-3">
                     <h4 className="py-3 font-weight-bolder w-100 text-info">Thierry TUYIZERE</h4>
@@ -143,7 +143,7 @@ const Biographies = () => {
 
             <hr />
 
-            <div className="row mx-sm-4 my-4 my-sm-5">
+            <div className="row mx-2 mx-sm-4 my-4 my-sm-5">
                 <div className="col-12 col-sm-4 px-0 px-sm-3 d-flex flex-column align-items-center justify-content-center">
                     <div className="memberImg">
                         <img className="w-100 mt-2 mt-lg-0 fadeIn" src={parmenide && parmenide} alt="quiz" />
@@ -186,7 +186,7 @@ const Biographies = () => {
 
             <hr />
 
-            <div className="row mx-sm-4 my-4 my-sm-5">
+            <div className="row mx-2 mx-sm-4 my-4 my-sm-5 flex-column-reverse flex-sm-row">
                 <div className="memberText col-12 col-sm-8 px-0 px-sm-3">
                     <h4 className="py-3 font-weight-bolder w-100 text-info">Denyse MUKUNDUHIRWE</h4>
                     <h6 className="font-weight-bolder">Co-founder, Content Creator, and Public Relations Manager</h6>
@@ -227,7 +227,7 @@ const Biographies = () => {
             </div>
             <hr />
 
-            <div className="row mx-sm-4 my-4 my-sm-5">
+            <div className="row mx-2 mx-sm-4 my-4 my-sm-5">
 
                 <div className="col-12 col-sm-4 px-0 px-sm-3 d-flex flex-column align-items-center justify-content-center">
                     <div className="memberImg">

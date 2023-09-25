@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { Row, Col, TabPane, ListGroup, ListGroupItem, Alert } from 'reactstrap'
 import SpinningBubbles from '../rLoading/SpinningBubbles'
-import ReactLoading from "react-loading";
+import ReactLoading from "react-loading"
 import { connect } from 'react-redux'
 import { setQuestions } from '../../redux/questions/questions.actions'
 import { setPaginatedQuizes, setAllNoLimitQuizes, deleteQuiz } from '../../redux/quizes/quizes.actions'

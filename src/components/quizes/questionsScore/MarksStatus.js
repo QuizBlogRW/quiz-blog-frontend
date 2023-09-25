@@ -9,7 +9,7 @@ const MarksStatus = ({ score, qnLength, passMark }) => {
 
                 <>
                     <h6 className="text-center text-danger my-3" style={{ fontSize: ".8rem" }}>
-                        You failed! you need more reading and practice to succeed.
+                        Your efforts fell short this time. To achieve success, it's essential to dedicate more time to reading and practicing. 
                         <br />Please contact us for more important books, guidance that may help you.
                     </h6>
 
@@ -21,7 +21,7 @@ const MarksStatus = ({ score, qnLength, passMark }) => {
                 </> :
                 <>
                     <h6 className="text-center text-success my-3" style={{ fontSize: ".8rem" }}>
-                        Congratulations, you passed this test! Remember, the more you practice the more you understand! If you need any related book or help, don't hesitate to contact us!
+                        Congratulations on passing the test! Practice leads to deeper understanding. Reach out for related books or assistance anytime!
                     </h6>
                     <Link to="/contact" className="text-success">
                         <button type="button" className="btn btn-outline-success">

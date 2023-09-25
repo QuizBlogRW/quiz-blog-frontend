@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react'
 import { Container, Col, Row, Button } from 'reactstrap'
-import { useParams, useNavigate, useLocation } from 'react-router-dom'
+import { useParams, useLocation } from 'react-router-dom'
 import CyclonLoading from '../../rLoading/CyclonLoading'
 import SpinningBubbles from '../../rLoading/SpinningBubbles'
 import { connect } from 'react-redux'
@@ -39,13 +39,7 @@ const ReviewQuiz = ({ sC, getOneScore, createScore }) => {
     useEffect(() => {
         getOneScore(reviewId)
     }, [getOneScore, reviewId])
-
-    const navigate = useNavigate();
-
-    const goBack = () => {
-        navigate.goBack();
-    }
-
+    
     return (
 
         <Container>
@@ -73,8 +67,7 @@ const ReviewQuiz = ({ sC, getOneScore, createScore }) => {
 
                                                 <OnLastAnswer
                                                     isAuthenticated={auth.isAuthenticated}
-                                                    thisQuiz={sC.oneScore.quiz}
-                                                    goBack={goBack} /> :
+                                                    thisQuiz={sC.oneScore.quiz} /> :
 
                                                 imgLoaded ?
                                                     <div className="question-view p-2">
