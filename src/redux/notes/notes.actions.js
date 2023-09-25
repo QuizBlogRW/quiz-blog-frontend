@@ -27,7 +27,7 @@ export const getNotes = () => async (dispatch, getState) => {
         }))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response.data, err && err.response.status, 'GET_NOTES_FAIL'))
+    dispatch(returnErrors(err && err && err.response && err.response.data, err && err.response.status, 'GET_NOTES_FAIL'))
     dispatch({ type: GET_NOTES_FAIL })
   }
 }
@@ -46,7 +46,7 @@ export const getLandingDisplayNotes = (limit) => async (dispatch) => {
         }))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response.data, err && err.response.status, 'GET_LANDING_DISPLAY_NOTES_FAIL'))
+    dispatch(returnErrors(err && err && err.response && err.response.data, err && err.response.status, 'GET_LANDING_DISPLAY_NOTES_FAIL'))
     dispatch({ type: GET_LANDING_DISPLAY_NOTES_FAIL })
   }
 }
@@ -65,7 +65,7 @@ export const getLandingDisplayNotesNoLimit = () => async (dispatch) => {
         }))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response.data, err && err.response.status, 'GET_LANDING_DISPLAY_NO_LIMIT_NOTES_FAIL'))
+    dispatch(returnErrors(err && err && err.response && err.response.data, err && err.response.status, 'GET_LANDING_DISPLAY_NO_LIMIT_NOTES_FAIL'))
     dispatch({ type: GET_LANDING_DISPLAY_NO_LIMIT_NOTES_FAIL })
   }
 }
@@ -84,7 +84,7 @@ export const getNotesByCCatg = (ccatgID) => async (dispatch, getState) => {
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'GET_NOTES_BY_COURSE_CATEGORY_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_NOTES_BY_COURSE_CATEGORY_FAIL'))
     dispatch({ type: GET_NOTES_BY_COURSE_CATEGORY_FAIL })
   }
 }
@@ -103,7 +103,7 @@ export const getNotesByChapter = (chapterId) => async (dispatch, getState) => {
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'GET_NOTES_BY_CHAPTER_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_NOTES_BY_CHAPTER_FAIL'))
     dispatch({ type: GET_NOTES_BY_CHAPTER_FAIL })
   }
 }
@@ -122,7 +122,7 @@ export const getOneNotePaper = (noteSlug) => async (dispatch, getState) => {
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'GET_ONE_NOTE_PAPER_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_ONE_NOTE_PAPER_FAIL'))
     dispatch({ type: GET_ONE_NOTE_PAPER_FAIL })
   }
 }
@@ -147,7 +147,7 @@ export const createNotes = (newNotes, onUploadProgress) => async (dispatch, getS
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'CREATE_NOTE_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'CREATE_NOTE_FAIL'))
     dispatch({ type: CREATE_NOTE_FAIL })
   }
 }
@@ -172,7 +172,7 @@ export const updateNotes = (updatedNotes, idToUpdate, onUploadProgress) => async
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'UPDATE_NOTE_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'UPDATE_NOTE_FAIL'))
     dispatch({ type: UPDATE_NOTE_FAIL })
   }
 }
@@ -198,7 +198,7 @@ export const addNotesQuizes = notesQuizzes => async (dispatch, getState) => {
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'ADD_NOTES_QUIZZES_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'ADD_NOTES_QUIZZES_FAIL'))
     dispatch({ type: ADD_NOTES_QUIZZES_FAIL })
   }
 }
@@ -222,7 +222,7 @@ export const deleteNotes = id => async (dispatch, getState) => {
           ))
     }
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'DELETE_NOTE_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'DELETE_NOTE_FAIL'))
     dispatch({ type: DELETE_NOTE_FAIL })
   }
 }
@@ -246,7 +246,7 @@ export const removeQzNt = (noteID, quizID) => async (dispatch, getState) => {
           ))
     }
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'REMOVE_QUIZ_NOTES_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'REMOVE_QUIZ_NOTES_FAIL'))
     dispatch({ type: REMOVE_QUIZ_NOTES_FAIL })
   }
 }

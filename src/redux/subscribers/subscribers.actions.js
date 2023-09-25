@@ -26,7 +26,7 @@ export const setSubscribers = () => async (dispatch, getState) => {
         }),
       )
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status))
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status))
   }
 }
 
@@ -42,7 +42,7 @@ export const subscribeToNewsLetter = (subscribedUser) => async (dispatch) => {
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'SUBSCRIBE_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'SUBSCRIBE_FAIL'))
     dispatch({ type: SUBSCRIBE_FAIL })
   }
 }
@@ -68,7 +68,7 @@ export const deleteSubscriber = uemail => async (dispatch, getState) => {
     }
 
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'DELETE_SUBSCRIBER_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'DELETE_SUBSCRIBER_FAIL'))
     dispatch({ type: DELETE_SUBSCRIBER_FAIL })
   }
 }

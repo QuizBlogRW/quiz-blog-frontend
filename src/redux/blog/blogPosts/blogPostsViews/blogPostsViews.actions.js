@@ -24,7 +24,7 @@ export const getBlogPostsViews = (limit, skip) => async (dispatch, getState) => 
         }))
 
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'GET_BLOG_POSTS_VIEWS_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_BLOG_POSTS_VIEWS_FAIL'))
     dispatch({ type: GET_BLOG_POSTS_VIEWS_FAIL })
   }
 }
@@ -41,7 +41,7 @@ export const getRecentTenViews = () => async (dispatch, getState) => {
           payload: res.data,
         }))
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'GET_RECENT_TEN_VIEWS_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_RECENT_TEN_VIEWS_FAIL'))
     dispatch({ type: GET_RECENT_TEN_VIEWS_FAIL })
   }
 }
@@ -60,7 +60,7 @@ export const getOneBlogPostView = (id) => async (dispatch, getState) => {
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'GET_ONE_BLOG_POST_VIEW_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_ONE_BLOG_POST_VIEW_FAIL'))
     dispatch({ type: GET_ONE_BLOG_POST_VIEW_FAIL })
   }
 }
@@ -83,7 +83,7 @@ export const createBlogPostView = (newBlogPostView) => async (dispatch, getState
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'CREATE_BLOG_POST_VIEW_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'CREATE_BLOG_POST_VIEW_FAIL'))
     dispatch({ type: CREATE_BLOG_POST_VIEW_FAIL })
   }
 }
@@ -110,7 +110,7 @@ export const updateBlogPost = updatedBPV => async (dispatch, getState) => {
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'UPDATE_BLOG_POST_VIEW_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'UPDATE_BLOG_POST_VIEW_FAIL'))
     dispatch({ type: UPDATE_BLOG_POST_VIEW_FAIL })
   }
 }
@@ -134,7 +134,7 @@ export const deleteBlogPost = id => async (dispatch, getState) => {
           ))
     }
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'DELETE_BLOG_POST_VIEW_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'DELETE_BLOG_POST_VIEW_FAIL'))
     dispatch({ type: DELETE_BLOG_POST_VIEW_FAIL })
   }
 }

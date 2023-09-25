@@ -25,10 +25,10 @@ export const get50NewUsers = () => async (dispatch, getState) => {
         }))
       .then(res =>
         dispatch(
-          returnSuccess('Data retrieved successfully!', 200, 'GET_50_NEW_USERS')))
+          returnSuccess('Success', 200, 'GET_50_NEW_USERS')))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_50_NEW_USERS_FAIL'))
+    dispatch(returnErrors(err && err.response && err && err.response && err.response.data, err && err.response && err.response.status, 'GET_50_NEW_USERS_FAIL'))
     dispatch({ type: GET_50_NEW_USERS_FAIL })
   }
 }
@@ -48,10 +48,10 @@ export const getAllUsers = () => async (dispatch, getState) => {
         }))
       .then(res =>
         dispatch(
-          returnSuccess('Data retrieved successfully!', 200, 'GET_ALL_USERS')))
+          returnSuccess('Success', 200, 'GET_ALL_USERS')))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_ALL_USERS_FAIL'))
+    dispatch(returnErrors(err && err.response && err && err.response && err.response.data, err && err.response && err.response.status, 'GET_ALL_USERS_FAIL'))
     dispatch({ type: GET_ALL_USERS_FAIL })
   }
 }
@@ -70,9 +70,9 @@ export const getUsersWithImage = () => async (dispatch, getState) => {
         }))
       .then(res =>
         dispatch(
-          returnSuccess('Data retrieved successfully!', 200, 'GET_USERS_WITH_IMAGE')))
+          returnSuccess('Success', 200, 'GET_USERS_WITH_IMAGE')))
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_USERS_WITH_IMAGE_FAIL'))
+    dispatch(returnErrors(err && err.response && err && err.response && err.response.data, err && err.response && err.response.status, 'GET_USERS_WITH_IMAGE_FAIL'))
     dispatch({ type: GET_USERS_WITH_IMAGE_FAIL })
   }
 }
@@ -91,9 +91,9 @@ export const getUsersWithSchool = () => async (dispatch, getState) => {
         }))
       .then(res =>
         dispatch(
-          returnSuccess('Data retrieved successfully!', 200, 'GET_USERS_WITH_SCHOOL')))
+          returnSuccess('Success', 200, 'GET_USERS_WITH_SCHOOL')))
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_USERS_WITH_SCHOOL_FAIL'))
+    dispatch(returnErrors(err && err.response && err && err.response && err.response.data, err && err.response && err.response.status, 'GET_USERS_WITH_SCHOOL_FAIL'))
     dispatch({ type: GET_USERS_WITH_SCHOOL_FAIL })
   }
 }
@@ -112,9 +112,9 @@ export const getUsersWithLevel = () => async (dispatch, getState) => {
         }))
       .then(res =>
         dispatch(
-          returnSuccess('Data retrieved successfully!', 200, 'GET_USERS_WITH_LEVEL')))
+          returnSuccess('Success', 200, 'GET_USERS_WITH_LEVEL')))
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_USERS_WITH_LEVEL_FAIL'))
+    dispatch(returnErrors(err && err.response && err && err.response && err.response.data, err && err.response && err.response.status, 'GET_USERS_WITH_LEVEL_FAIL'))
     dispatch({ type: GET_USERS_WITH_LEVEL_FAIL })
   }
 }
@@ -133,9 +133,9 @@ export const getUsersWithFaculty = () => async (dispatch, getState) => {
         }))
       .then(res =>
         dispatch(
-          returnSuccess('Data retrieved successfully!', 200, 'GET_USERS_WITH_FACULTY')))
+          returnSuccess('Success', 200, 'GET_USERS_WITH_FACULTY')))
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_USERS_WITH_FACULTY_FAIL'))
+    dispatch(returnErrors(err && err.response && err && err.response && err.response.data, err && err.response && err.response.status, 'GET_USERS_WITH_FACULTY_FAIL'))
     dispatch({ type: GET_USERS_WITH_FACULTY_FAIL })
   }
 }
@@ -154,9 +154,9 @@ export const getUsersWithInterests = () => async (dispatch, getState) => {
         }))
       .then(res =>
         dispatch(
-          returnSuccess('Data retrieved successfully!', 200, 'GET_USERS_WITH_INTERESTS')))
+          returnSuccess('Success', 200, 'GET_USERS_WITH_INTERESTS')))
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_USERS_WITH_INTERESTS_FAIL'))
+    dispatch(returnErrors(err && err.response && err && err.response && err.response.data, err && err.response && err.response.status, 'GET_USERS_WITH_INTERESTS_FAIL'))
     dispatch({ type: GET_USERS_WITH_INTERESTS_FAIL })
   }
 }
@@ -175,9 +175,9 @@ export const getUsersWithAbout = () => async (dispatch, getState) => {
         }))
       .then(res =>
         dispatch(
-          returnSuccess('Data retrieved successfully!', 200, 'GET_USERS_WITH_ABOUT')))
+          returnSuccess('Success', 200, 'GET_USERS_WITH_ABOUT')))
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_USERS_WITH_ABOUT_FAIL'))
+    dispatch(returnErrors(err && err.response && err && err.response && err.response.data, err && err.response && err.response.status, 'GET_USERS_WITH_ABOUT_FAIL'))
     dispatch({ type: GET_USERS_WITH_ABOUT_FAIL })
   }
 }
@@ -196,9 +196,9 @@ export const getTop100Quizzing = () => async (dispatch, getState) => {
         }))
       .then(res =>
         dispatch(
-          returnSuccess('Data retrieved successfully!', 200, 'GET_TOP_100_QUIZZING_USERS')))
+          returnSuccess('Success', 200, 'GET_TOP_100_QUIZZING_USERS')))
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_TOP_100_QUIZZING_USERS_FAIL'))
+    dispatch(returnErrors(err && err.response && err && err.response && err.response.data, err && err.response && err.response.status, 'GET_TOP_100_QUIZZING_USERS_FAIL'))
     dispatch({ type: GET_TOP_100_QUIZZING_USERS_FAIL })
   }
 }
@@ -217,9 +217,9 @@ export const getTop100Downloaders = () => async (dispatch, getState) => {
         }))
       .then(res =>
         dispatch(
-          returnSuccess('Data retrieved successfully!', 200, 'GET_TOP_100_DOWNLOADERS')))
+          returnSuccess('Success', 200, 'GET_TOP_100_DOWNLOADERS')))
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_TOP_100_DOWNLOADERS_FAIL'))
+    dispatch(returnErrors(err && err.response && err && err.response && err.response.data, err && err.response && err.response.status, 'GET_TOP_100_DOWNLOADERS_FAIL'))
     dispatch({ type: GET_TOP_100_DOWNLOADERS_FAIL })
   }
 }
@@ -238,9 +238,9 @@ export const getTop20Quizzes = () => async (dispatch, getState) => {
         }))
       .then(res =>
         dispatch(
-          returnSuccess('Data retrieved successfully!', 200, 'GET_TOP_20_QUIZZES')))
+          returnSuccess('Success', 200, 'GET_TOP_20_QUIZZES')))
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_TOP_20_QUIZZES_FAIL'))
+    dispatch(returnErrors(err && err.response && err && err.response && err.response.data, err && err.response && err.response.status, 'GET_TOP_20_QUIZZES_FAIL'))
     dispatch({ type: GET_TOP_20_QUIZZES_FAIL })
   }
 }
@@ -259,9 +259,9 @@ export const getQuizzesStats = () => async (dispatch, getState) => {
         }))
       .then(res =>
         dispatch(
-          returnSuccess('Data retrieved successfully!', 200, 'GET_QUIZZES_STATS')))
+          returnSuccess('Success', 200, 'GET_QUIZZES_STATS')))
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_QUIZZES_STATS_FAIL'))
+    dispatch(returnErrors(err && err.response && err && err.response && err.response.data, err && err.response && err.response.status, 'GET_QUIZZES_STATS_FAIL'))
     dispatch({ type: GET_QUIZZES_STATS_FAIL })
   }
 }
@@ -280,9 +280,9 @@ export const getTop20Notes = () => async (dispatch, getState) => {
         }))
       .then(res =>
         dispatch(
-          returnSuccess('Data retrieved successfully!', 200, 'GET_TOP_20_NOTES')))
+          returnSuccess('Success', 200, 'GET_TOP_20_NOTES')))
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_TOP_20_NOTES_FAIL'))
+    dispatch(returnErrors(err && err.response && err && err.response && err.response.data, err && err.response && err.response.status, 'GET_TOP_20_NOTES_FAIL'))
     dispatch({ type: GET_TOP_20_NOTES_FAIL })
   }
 }
@@ -302,9 +302,9 @@ export const getNotesStats = () => async (dispatch, getState) => {
         }))
       .then(res =>
         dispatch(
-          returnSuccess('Data retrieved successfully!', 200, 'GET_NOTES_STATS')))
+          returnSuccess('Success', 200, 'GET_NOTES_STATS')))
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_NOTES_STATS_FAIL'))
+    dispatch(returnErrors(err && err.response && err && err.response && err.response.data, err && err.response && err.response.status, 'GET_NOTES_STATS_FAIL'))
     dispatch({ type: GET_NOTES_STATS_FAIL })
   }
 }
@@ -323,9 +323,9 @@ export const getQuizCategoriesStats = () => async (dispatch, getState) => {
         }))
       .then(res =>
         dispatch(
-          returnSuccess('Data retrieved successfully!', 200, 'GET_QUIZ_CATEGORIES_STATS')))
+          returnSuccess('Success', 200, 'GET_QUIZ_CATEGORIES_STATS')))
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_QUIZ_CATEGORIES_STATS_FAIL'))
+    dispatch(returnErrors(err && err.response && err && err.response && err.response.data, err && err.response && err.response.status, 'GET_QUIZ_CATEGORIES_STATS_FAIL'))
     dispatch({ type: GET_QUIZ_CATEGORIES_STATS_FAIL })
   }
 }
@@ -344,9 +344,9 @@ export const getNotesCategoriesStats = () => async (dispatch, getState) => {
         }))
       .then(res =>
         dispatch(
-          returnSuccess('Data retrieved successfully!', 200, 'GET_NOTE_CATEGORIES_STATS')))
+          returnSuccess('Success', 200, 'GET_NOTE_CATEGORIES_STATS')))
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_NOTE_CATEGORIES_STATS_FAIL'))
+    dispatch(returnErrors(err && err.response && err && err.response && err.response.data, err && err.response && err.response.status, 'GET_NOTE_CATEGORIES_STATS_FAIL'))
     dispatch({ type: GET_NOTE_CATEGORIES_STATS_FAIL })
   }
 }
@@ -365,9 +365,9 @@ export const getDailyUserRegistration = () => async (dispatch, getState) => {
         }))
       .then(res =>
         dispatch(
-          returnSuccess('Data retrieved successfully!', 200, 'GET_DAILY_USER_REGISTRATION')))
+          returnSuccess('Success', 200, 'GET_DAILY_USER_REGISTRATION')))
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_DAILY_USER_REGISTRATION_FAIL'))
+    dispatch(returnErrors(err && err.response && err && err.response && err.response.data, err && err.response && err.response.status, 'GET_DAILY_USER_REGISTRATION_FAIL'))
     dispatch({ type: GET_DAILY_USER_REGISTRATION_FAIL })
   }
 }

@@ -14,17 +14,28 @@ const CategoriesHome = () => {
     return (
         auth.isAuthenticated ?
             <>
-                <Jumbotron className="mx-3">
-                    <h3 className="font-weight-bold mb-lg-4 categories-home-head">Hello, {currentUser && currentUser ? currentUser.name : ''}!</h3>
+                <Jumbotron className="mx-3 d-flex justify-content-center align-items-center flex-column">
+                    <h3 className="font-weight-bold my-lg-4 categories-home-head">Hello, {currentUser && currentUser ? currentUser.name : ''}!</h3>
 
-                    <p className="lead">Explore Quiz Blog's user-friendly courses and resources portal to access a wide range of valuable information to support your learning and academic success.</p>
-                    <hr className="my-2" />
-                    <p className="text-muted">With organized categories, you can easily select what you need from the navigation and effortlessly access and download any resource to enhance your learning experience.</p>
+                    <p className="lead">
+                        Discover the user-friendly courses and resource portal at Quiz Blog, where you can access a vast array of valuable information to enhance your learning and achieve academic success.
+                        </p>
 
-                    <p style={{ color: "#157A6E" }}>It does not matter where you go and what you study, what matters most is what you share with yourself and the world. <br />
-                        <small className="text-info"><i><b>- Santosh Kalwar</b></i></small></p>
+                    <hr className="" />
 
-                    <p className="font-weight-bolder share-text">
+                    <p className="text-muted">
+                        With its well-organized categories, you can seamlessly choose the content you require through the navigation, making it effortless to access and download any resource, thus enhancing your overall learning experience.
+                    </p>
+
+                    <p style={{ color: "#157A6E" }} className="font-weight-bolder my-4">
+                        <center>
+                            It does not matter where you go and what you study, what matters most is what you share with yourself and the world. <br />
+                            <small className="text-info">
+                                <i><b>- Santosh Kalwar</b></i></small>
+                        </center>
+                    </p>
+
+                    <p className="share-text my-5 text-center">
                         <i className="fa fa-share-alt"></i> &nbsp;
                         So, if you find this interesting, please don't forget to share it with your friends via social media or any other means you prefer.&nbsp;
                         <Button color="success" className="ml-1 py-1 px-2 mb-0 share-btn">

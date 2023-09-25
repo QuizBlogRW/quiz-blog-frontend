@@ -8,7 +8,7 @@ const MarksStatus = ({ score, qnLength, passMark }) => {
             {Math.round(score * 100 / qnLength) < passMark ?
 
                 <>
-                    <h6 className="text-center text-danger my-3" style={{ fontSize: ".8rem" }}>
+                    <h6 className="text-center text-danger my-5" style={{ fontSize: "1.2rem" }}>
                         Your efforts fell short this time. To achieve success, it's essential to dedicate more time to reading and practicing. 
                         <br />Please contact us for more important books, guidance that may help you.
                     </h6>
@@ -20,7 +20,7 @@ const MarksStatus = ({ score, qnLength, passMark }) => {
                     </Link>
                 </> :
                 <>
-                    <h6 className="text-center text-success my-3" style={{ fontSize: ".8rem" }}>
+                    <h6 className="text-center text-success my-5" style={{ fontSize: "1.2rem" }}>
                         Congratulations on passing the test! Practice leads to deeper understanding. Reach out for related books or assistance anytime!
                     </h6>
                     <Link to="/contact" className="text-success">

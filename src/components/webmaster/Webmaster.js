@@ -14,7 +14,12 @@ import SpinningBubbles from '../rLoading/SpinningBubbles'
 import CommentsTabPane from '../quizes/review/questionComments/CommentsTabPane'
 import AdvertsTabPane from './adverts/AdvertsTabPane'
 import TopRow from './TopRow.js'
-import { authContext, socketContext, onlineListContext, currentUserContext } from '../../appContexts'
+import { apiURL } from '../../redux/config'
+
+// Socket Settings
+import io from 'socket.io-client'
+
+import { authContext, currentUserContext, socketContext, onlineListContext, } from '../../appContexts'
 
 // NOTIFICATIONS
 import { useToasts } from 'react-toast-notifications';
@@ -23,13 +28,27 @@ const Webmaster = () => {
 
     // Notifications
     const { addToast } = useToasts();
+    const socket = React.useMemo(() => io.connect(apiURL), [])
 
     // Context
     const auth = useContext(authContext)
-    const socket = useContext(socketContext)
-    const onlineList = useContext(onlineListContext)
     const currentUser = useContext(currentUserContext)
 
+
+    // Socket join on user load
+    const [onlineList, setOnlineList] = useState([])
+
+    useEffect(() => {
+        if (currentUser && currentUser.email) {
+
+            // Telling the server that a user has joined
+            socket.emit('frontJoinedUser', { user_id: currentUser._id, username: currentUser && currentUser.name, email: currentUser && currentUser.email, role: currentUser && currentUser.role });
+
+            socket.on('onlineUsersList', onlineUsers => {
+                setOnlineList(onlineUsers)
+            });
+        }
+    }, [currentUser, socket])
     // State
     const [activeTab, setActiveTab] = useState('1')
 
@@ -66,154 +85,158 @@ const Webmaster = () => {
 
     // render
     return (
-        auth.isAuthenticated ?
-            <>
-                <TopRow currentUser={currentUser} socket={socket} onlineList={onlineList} />
-                <Row className="m-lg-5 mx-2">
-                    <Col sm="12" className="px-0 mb-4 mb-sm-0 d-flex justify-content-around">
+        <socketContext.Provider value={socket}>
+            <onlineListContext.Provider value={onlineList}>
+                {auth.isAuthenticated ?
+                    <>
+                        <TopRow currentUser={currentUser} socket={socket} onlineList={onlineList} />
+                        <Row className="m-lg-5 mx-2">
+                            <Col sm="12" className="px-0 mb-4 mb-sm-0 d-flex justify-content-around">
 
-                        <Nav tabs className="webmaster-navbar d-block d-sm-flex mb-0 mb-lg-5 p-2 border rounded border-success bg-light text-uppercase font-weight-bolder">
+                                <Nav tabs className="webmaster-navbar d-block d-sm-flex mb-0 mb-lg-5 p-2 border rounded border-success bg-light text-uppercase font-weight-bolder">
 
-                            {
-                                // If the user is Admin or Creator
-                                currentUser.role !== 'Visitor' ?
-                                    <>
-                                        <NavItem>
-                                            <NavLink
-                                                className={classnames({ active: activeTab === '1' })}
-                                                onClick={() => { toggle('1') }}>
-                                                <u>Categories</u>
-                                            </NavLink>
-                                        </NavItem>
+                                    {
+                                        // If the user is Admin or Creator
+                                        currentUser.role !== 'Visitor' ?
+                                            <>
+                                                <NavItem>
+                                                    <NavLink
+                                                        className={classnames({ active: activeTab === '1' })}
+                                                        onClick={() => { toggle('1') }}>
+                                                        <u>Categories</u>
+                                                    </NavLink>
+                                                </NavItem>
 
-                                        <NavItem>
-                                            <NavLink
-                                                className={classnames({ active: activeTab === '2' })}
-                                                onClick={() => { toggle('2') }}>
-                                                <u>Quizes</u>
-                                            </NavLink>
-                                        </NavItem>
-                                    </> : null}
+                                                <NavItem>
+                                                    <NavLink
+                                                        className={classnames({ active: activeTab === '2' })}
+                                                        onClick={() => { toggle('2') }}>
+                                                        <u>Quizes</u>
+                                                    </NavLink>
+                                                </NavItem>
+                                            </> : null}
 
-                            <NavItem>
-                                <NavLink
-                                    className={classnames({ active: activeTab === '3' })}
-                                    onClick={() => { toggle('3') }}>
-                                    <u>Scores</u>
-                                </NavLink>
-                            </NavItem>
-
-                            <NavItem>
-                                <NavLink
-                                    className={classnames({ active: activeTab === '4' })}
-                                    onClick={() => { toggle('4') }}>
-                                    <u>Downloads</u>
-                                </NavLink>
-                            </NavItem>
-
-                            <NavItem>
-                                <NavLink
-                                    className={classnames({ active: activeTab === '5' })}
-                                    onClick={() => { toggle('5') }}>
-                                    <u>Contacts</u>
-                                </NavLink>
-                            </NavItem>
-
-                            { // CAUSING PROBLEMS WHEN VISITOR IS LOGGED IN
-                                currentUser.role !== 'Visitor' ?
                                     <NavItem>
                                         <NavLink
-                                            className={classnames({ active: activeTab === '7' })}
-                                            onClick={() => { toggle('7') }}>
-                                            <u>BP Categories</u>
+                                            className={classnames({ active: activeTab === '3' })}
+                                            onClick={() => { toggle('3') }}>
+                                            <u>Scores</u>
                                         </NavLink>
-                                    </NavItem> : null}
+                                    </NavItem>
 
-                            <NavItem>
-                                <NavLink
-                                    className={classnames({ active: activeTab === '8' })}
-                                    onClick={() => { toggle('8') }}>
-                                    <u>Blog Posts</u>
-                                </NavLink>
-                            </NavItem>
+                                    <NavItem>
+                                        <NavLink
+                                            className={classnames({ active: activeTab === '4' })}
+                                            onClick={() => { toggle('4') }}>
+                                            <u>Downloads</u>
+                                        </NavLink>
+                                    </NavItem>
 
-                            {
-                                // Admin only
-                                currentUser.role === 'Admin' || currentUser.role === 'SuperAdmin' ?
-                                    <>
-                                        <NavItem>
-                                            <NavLink
-                                                className={classnames({ active: activeTab === '6' })}
-                                                onClick={() => { toggle('6') }}>
-                                                <u>Users</u>
-                                            </NavLink>
-                                        </NavItem>
+                                    <NavItem>
+                                        <NavLink
+                                            className={classnames({ active: activeTab === '5' })}
+                                            onClick={() => { toggle('5') }}>
+                                            <u>Contacts</u>
+                                        </NavLink>
+                                    </NavItem>
 
-                                        <NavItem>
-                                            <NavLink
-                                                className={classnames({ active: activeTab === '9' })}
-                                                onClick={() => { toggle('9') }}>
-                                                <u>Comments</u>
-                                            </NavLink>
-                                        </NavItem>
+                                    { // CAUSING PROBLEMS WHEN VISITOR IS LOGGED IN
+                                        currentUser.role !== 'Visitor' ?
+                                            <NavItem>
+                                                <NavLink
+                                                    className={classnames({ active: activeTab === '7' })}
+                                                    onClick={() => { toggle('7') }}>
+                                                    <u>BP Categories</u>
+                                                </NavLink>
+                                            </NavItem> : null}
 
-                                        <NavItem>
-                                            <NavLink
-                                                className={classnames({ active: activeTab === '10' })}
-                                                onClick={() => { toggle('10') }}>
-                                                <u>Adverts</u>
-                                            </NavLink>
-                                        </NavItem>
+                                    <NavItem>
+                                        <NavLink
+                                            className={classnames({ active: activeTab === '8' })}
+                                            onClick={() => { toggle('8') }}>
+                                            <u>Blog Posts</u>
+                                        </NavLink>
+                                    </NavItem>
 
-                                    </> : null
-                            }
+                                    {
+                                        // Admin only
+                                        currentUser.role === 'Admin' || currentUser.role === 'SuperAdmin' ?
+                                            <>
+                                                <NavItem>
+                                                    <NavLink
+                                                        className={classnames({ active: activeTab === '6' })}
+                                                        onClick={() => { toggle('6') }}>
+                                                        <u>Users</u>
+                                                    </NavLink>
+                                                </NavItem>
 
-                        </Nav>
-                    </Col>
+                                                <NavItem>
+                                                    <NavLink
+                                                        className={classnames({ active: activeTab === '9' })}
+                                                        onClick={() => { toggle('9') }}>
+                                                        <u>Comments</u>
+                                                    </NavLink>
+                                                </NavItem>
 
-                    <Col sm="12" className="px-0">
-                        <TabContent activeTab={activeTab}>
+                                                <NavItem>
+                                                    <NavLink
+                                                        className={classnames({ active: activeTab === '10' })}
+                                                        onClick={() => { toggle('10') }}>
+                                                        <u>Adverts</u>
+                                                    </NavLink>
+                                                </NavItem>
 
-                            {currentUser.role !== 'Visitor' ?
-                                <>
-                                    <CategoriesTabPane />
-                                    <QuizesTabPane />
-                                </> : null}
+                                            </> : null
+                                    }
 
-                            {/* Any user authenticated */}
-                            <ScoresTabPane />
-                            <DownloadsTabPane />
-                            <ContactsTabPane />
+                                </Nav>
+                            </Col>
 
-                            { // CAUSING PROBLEMS WHEN VISITOR IS LOGGED IN
-                                currentUser.role !== 'Visitor' ?
-                                    <PostCategoriesTabPane /> : null}
+                            <Col sm="12" className="px-0">
+                                <TabContent activeTab={activeTab}>
 
-                            <BlogPostsTabPane />
+                                    {currentUser.role !== 'Visitor' ?
+                                        <>
+                                            <CategoriesTabPane />
+                                            <QuizesTabPane />
+                                        </> : null}
 
-                            {currentUser.role === 'Admin' || currentUser.role === 'SuperAdmin' ?
-                                <>
-                                    <UsersTabPane />
-                                    <CommentsTabPane />
-                                    <AdvertsTabPane />
-                                </> : null}
-                        </TabContent>
-                    </Col>
+                                    {/* Any user authenticated */}
+                                    <ScoresTabPane />
+                                    <DownloadsTabPane />
+                                    <ContactsTabPane />
 
-                </Row>
-            </> :
+                                    { // CAUSING PROBLEMS WHEN VISITOR IS LOGGED IN
+                                        currentUser.role !== 'Visitor' ?
+                                            <PostCategoriesTabPane /> : null}
 
-            // If not authenticated or loading
-            <div className="vh-100 d-flex justify-content-center align-items-center text-danger">
-                {
-                    auth.isLoading ?
-                        <SpinningBubbles /> :
-                        <LoginModal
-                            textContent={'Login first'}
-                            textColor={'text-danger font-weight-bolder my-5 border rounded'} />
+                                    <BlogPostsTabPane />
+
+                                    {currentUser.role === 'Admin' || currentUser.role === 'SuperAdmin' ?
+                                        <>
+                                            <UsersTabPane />
+                                            <CommentsTabPane />
+                                            <AdvertsTabPane />
+                                        </> : null}
+                                </TabContent>
+                            </Col>
+
+                        </Row>
+                    </> :
+
+                    // If not authenticated or loading
+                    <div className="vh-100 d-flex justify-content-center align-items-center text-danger">
+                        {
+                            auth.isLoading ?
+                                <SpinningBubbles /> :
+                                <LoginModal
+                                    textContent={'Login first'}
+                                    textColor={'text-danger font-weight-bolder my-5 border rounded'} />
+                        }
+                    </div>
                 }
-            </div>
-    )
+            </onlineListContext.Provider>
+        </socketContext.Provider>)
 }
 
 export default Webmaster

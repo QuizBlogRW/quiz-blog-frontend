@@ -22,7 +22,7 @@ export const getLogs = () => async (dispatch, getState) => {
           payload: res.data,
         }))
   } catch (err) {
-    dispatch(returnErrors(err && err.response.data, err && err.response.status, 'GET_LOGS_FAIL'))
+    dispatch(returnErrors(err && err && err.response && err.response.data, err && err.response.status, 'GET_LOGS_FAIL'))
     dispatch({ type: GET_LOGS_FAIL })
   }
 }
@@ -41,7 +41,7 @@ export const getOneLog = (logId) => async (dispatch) => {
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'GET_LOG_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_LOG_FAIL'))
     dispatch({ type: GET_LOG_FAIL })
   }
 }
@@ -63,7 +63,7 @@ export const deleteLog = id => async (dispatch, getState) => {
           window.setTimeout(() => window.location.reload(), 2000)
         ))
   } catch (err) {
-    dispatch(returnErrors(err && err.response.data, err && err.response.status, 'DELETE_LOG_FAIL'))
+    dispatch(returnErrors(err && err && err.response && err.response.data, err && err.response.status, 'DELETE_LOG_FAIL'))
     dispatch({ type: DELETE_LOG_FAIL })
   }
 }

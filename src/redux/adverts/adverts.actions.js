@@ -10,14 +10,6 @@ const axiosInstance = axios.create({
   baseURL: process.env.NODE_ENV === 'development' ? devApiURL : apiURL,
 })
 
-if (process.env.NODE_ENV === 'production') {
-  // Code to run in production environment
-  console.log('This is a production environment.');
-} else {
-  // Code to run in development environment
-  console.log('This is a development environment.');
-}
-
 // View all adverts
 export const getAdverts = () => async (dispatch, getState) => {
   await dispatch(getAdvertsLoading())
@@ -32,7 +24,7 @@ export const getAdverts = () => async (dispatch, getState) => {
         }))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_ADVERTS_FAIL'))
+    dispatch(returnErrors(err && err.response && err && err.response && err.response.data, err && err.response && err.response.status, 'GET_ADVERTS_FAIL'))
     dispatch({ type: GET_ADVERTS_FAIL })
   }
 }
@@ -50,7 +42,7 @@ export const getActiveAdverts = () => async (dispatch, getState) => {
           payload: res.data,
         }))
   } catch (err) {
-    dispatch(returnErrors(err && err.response.data, err && err.response.status, 'GET_ACTIVE_ADVERTS_FAIL'))
+    dispatch(returnErrors(err && err && err.response && err.response.data, err && err.response.status, 'GET_ACTIVE_ADVERTS_FAIL'))
     dispatch({ type: GET_ACTIVE_ADVERTS_FAIL })
   }
 }
@@ -70,7 +62,7 @@ export const getOneAdvert = (AdvertID) => async (dispatch, getState) => {
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'GET_ONE_ADVERT_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_ONE_ADVERT_FAIL'))
     dispatch({ type: GET_ONE_ADVERT_FAIL })
   }
 }
@@ -94,7 +86,7 @@ export const createAdvert = (newAdvert, onUploadProgress) => async (dispatch, ge
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'CREATE_ADVERT_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'CREATE_ADVERT_FAIL'));
     dispatch({ type: CREATE_ADVERT_FAIL })
   }
 };
@@ -121,7 +113,7 @@ export const changeStatus = (advert) => async (dispatch, getState) => {
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'CHANGE_ADVERT_STATUS_FAIL'))
+    dispatch(returnErrors(err && err.response && err && err.response && err.response.data, err && err.response && err.response.status, 'CHANGE_ADVERT_STATUS_FAIL'))
     dispatch({ type: CHANGE_ADVERT_STATUS_FAIL })
   }
 }
@@ -146,7 +138,7 @@ export const updateAdvert = updatedAdvert => async (dispatch, getState) => {
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'UPDATE_ADVERT_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'UPDATE_ADVERT_FAIL'));
     dispatch({ type: UPDATE_ADVERT_FAIL });
   }
 }
@@ -171,7 +163,7 @@ export const deleteAdvert = id => async (dispatch, getState) => {
           ))
     }
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'DELETE_ADVERT_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'DELETE_ADVERT_FAIL'))
     dispatch({ type: DELETE_ADVERT_FAIL })
   }
 }

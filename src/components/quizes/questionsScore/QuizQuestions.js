@@ -11,6 +11,7 @@ import Unavailable from './Unavailable'
 
 const QuizQuestions = ({ createScore, uId }) => {
 
+
     // Access route parameters & get the quiz
     const { quizSlug } = useParams()
     const navigate = useNavigate()
@@ -190,7 +191,7 @@ const QuizQuestions = ({ createScore, uId }) => {
             // NAVIGATE TO QUIZ RESULTS PAGE
             navigate(`/quiz-results/${quizSlug}`, { state: quizResults })
         }
-    }, [quizToReview, passMark, thisQuiz, navigate, newScoreId, saveScore])
+    }, [quizToReview, passMark, thisQuiz, navigate, quizSlug, newScoreId, saveScore])
 
 
     useEffect(() => {
@@ -201,8 +202,6 @@ const QuizQuestions = ({ createScore, uId }) => {
             setCurQnUsrTrueChoices(0)
             goToNextQuestion(curQnIndex, qnsLength)
         }
-
-        console.log('useEffect: trueAnsNbr, choices, curQnUsrTrueChoices, curQnIndex, qnsLength, goToNextQuestion')
 
         // clean up the saving score
         return () => {
@@ -220,7 +219,7 @@ const QuizQuestions = ({ createScore, uId }) => {
                 qnsLength > 0 ?
 
                     <div key={Math.floor(Math.random() * 1000)} className="py-3 d-flex justify-content-center align-items-center flex-column">
-                        <Container className="main mx-0 d-flex flex-column justify-content-center rounded border border-primary my-5 py-4 w-80">
+                        <Container className="main mx-auto d-flex flex-column justify-content-center rounded border border-primary my-5 py-4 w-80">
                             <QuestionsView
                                 qnsLength={qnsLength}
                                 curQnIndex={curQnIndex}

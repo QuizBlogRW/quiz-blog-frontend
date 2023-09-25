@@ -23,7 +23,7 @@ export const setQuestions = () => async (dispatch, getState) => {
                     payload: res.data
                 }))
     } catch (err) {
-        dispatch(returnErrors(err.response.data, err.response.status))
+        dispatch(returnErrors(err && err.response && err.response.data, err.response.status))
     }
 }
 
@@ -40,7 +40,7 @@ export const getOneQuestion = (questionId) => async (dispatch) => {
                     payload: res.data,
                 }))
     } catch (err) {
-        dispatch(returnErrors(err.response.data, err.response.status, 'GET_ONE_QUESTION_FAIL'))
+        dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_ONE_QUESTION_FAIL'))
         dispatch({ type: GET_ONE_QUESTION_FAIL })
     }
 }
@@ -63,7 +63,7 @@ export const addQuestion = (question, onUploadProgress) => async (dispatch, getS
                     window.setTimeout(() => window.location.reload(), 3000)))
 
     } catch (err) {
-        dispatch(returnErrors(err.response.data, err.response.status, 'ADD_QUESTION_FAIL'))
+        dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'ADD_QUESTION_FAIL'))
         dispatch({ type: ADD_QUESTION_FAIL })
     }
 }
@@ -87,7 +87,7 @@ export const updateQuestion = (qtId, updatedQuestion, onUploadProgress) => async
                 ))
 
     } catch (err) {
-        dispatch(returnErrors(err.response.data, err.response.status, 'UPDATE_QUESTION_FAIL'))
+        dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'UPDATE_QUESTION_FAIL'))
         dispatch({ type: UPDATE_QUESTION_FAIL })
     }
 }
@@ -113,7 +113,7 @@ export const deleteQuestion = id => async (dispatch, getState) => {
         }
 
     } catch (err) {
-        dispatch(returnErrors(err.response.data, err.response.status, 'DELETE_QUESTION_FAIL'))
+        dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'DELETE_QUESTION_FAIL'))
         dispatch({ type: DELETE_QUESTION_FAIL })
     }
 }

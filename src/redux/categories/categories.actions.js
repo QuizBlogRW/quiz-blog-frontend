@@ -24,7 +24,7 @@ export const setCategories = () => async (dispatch, getState) => {
         }))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response.data, err && err.response.status, 'SET_CATEGORIES_FAIL'))
+    dispatch(returnErrors(err && err && err.response && err.response.data, err && err.response.status, 'SET_CATEGORIES_FAIL'))
     dispatch({ type: SET_CATEGORIES_FAIL })
   }
 }
@@ -43,7 +43,7 @@ export const getOneCategory = (categoryId) => async (dispatch) => {
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'GET_ONE_CATEGORY_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_ONE_CATEGORY_FAIL'))
     dispatch({ type: GET_ONE_CATEGORY_FAIL })
   }
 }
@@ -68,7 +68,7 @@ export const createCategory = (newCategory) => async (dispatch, getState) => {
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'CREATE_CATEGORY_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'CREATE_CATEGORY_FAIL'))
     dispatch({ type: CREATE_CATEGORY_FAIL })
   }
 }
@@ -93,7 +93,7 @@ export const updateCategory = updatedCatg => async (dispatch, getState) => {
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'UPDATE_CATEGORY_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'UPDATE_CATEGORY_FAIL'))
     dispatch({ type: UPDATE_CATEGORY_FAIL })
   }
 }
@@ -115,7 +115,7 @@ export const deleteCategory = id => async (dispatch, getState) => {
           window.setTimeout(() => window.location.reload(), 2000)
         ))
   } catch (err) {
-    dispatch(returnErrors(err && err.response.data, err && err.response.status, 'DELETE_CATEGORY_FAIL'))
+    dispatch(returnErrors(err && err && err.response && err.response.data, err && err.response.status, 'DELETE_CATEGORY_FAIL'))
     dispatch({ type: DELETE_CATEGORY_FAIL })
   }
 }

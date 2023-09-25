@@ -54,7 +54,7 @@ const ViewNotePaper = ({ nPaper, getOneNotePaper, saveDownload }) => {
 
             notes_file && notes_file ?
 
-                <Container className="main mx-0 d-flex flex-column justify-content-center rounded border border-primary my-5 py-4 w-80">
+                <Container className="main mx-auto d-flex flex-column justify-content-center rounded border border-primary my-5 py-4 w-80">
 
                     <div className="question-view p-2">
                         <Row>

@@ -24,7 +24,7 @@ export const getDownloads = (pageNo) => async (dispatch, getState) => {
         }))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response.data, err && err.response.status, 'GET_DOWNLOADS_FAIL'))
+    dispatch(returnErrors(err && err && err.response && err.response.data, err && err.response.status, 'GET_DOWNLOADS_FAIL'))
     dispatch({ type: GET_DOWNLOADS_FAIL })
   }
 }
@@ -43,7 +43,7 @@ export const getCreatorDownloads = (uId) => async (dispatch, getState) => {
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_CREATOR_DOWNLOADS_FAIL'))
+    dispatch(returnErrors(err && err.response && err && err.response && err.response.data, err && err.response && err.response.status, 'GET_CREATOR_DOWNLOADS_FAIL'))
     dispatch({ type: GET_CREATOR_DOWNLOADS_FAIL })
   }
 }
@@ -61,7 +61,7 @@ export const getUserDownloads = (userId) => async (dispatch, getState) => {
           payload: res.data
         }))
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_USER_DOWNLOADS_FAIL'))
+    dispatch(returnErrors(err && err.response && err && err.response && err.response.data, err && err.response && err.response.status, 'GET_USER_DOWNLOADS_FAIL'))
     dispatch({ type: GET_USER_DOWNLOADS_FAIL })
   }
 }
@@ -83,7 +83,7 @@ export const saveDownload = (newDownload) => async (dispatch, getState) => {
           returnSuccess('Saved download!', 200, 'SAVE_DOWNLOAD')))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response.data, err && err.response.status, 'SAVE_DOWNLOAD_FAIL'));
+    dispatch(returnErrors(err && err && err.response && err.response.data, err && err.response.status, 'SAVE_DOWNLOAD_FAIL'));
     dispatch({ type: SAVE_DOWNLOAD_FAIL })
   }
 };
@@ -108,7 +108,7 @@ export const deleteDownload = id => async (dispatch, getState) => {
           ))
     }
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'DELETE_DOWNLOAD_FAIL'))
+    dispatch(returnErrors(err && err.response && err && err.response && err.response.data, err && err.response && err.response.status, 'DELETE_DOWNLOAD_FAIL'))
     dispatch({ type: DELETE_DOWNLOAD_FAIL })
   }
 }

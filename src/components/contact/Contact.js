@@ -8,12 +8,32 @@ import { clearErrors } from '../../redux/error/error.actions'
 import { clearSuccess } from '../../redux/success/success.actions'
 import './contact.css'
 import mail from '../../../src/images/mail.svg'
-import { currentUserContext, socketContext } from '../../appContexts'
+import { currentUserContext, socketContext, onlineListContext } from '../../appContexts'
+import { apiURL } from '../../redux/config'
+
+// Socket Settings
+import io from 'socket.io-client'
 
 const Contact = ({ errors, successful, clearErrors, clearSuccess, sendMsg }) => {
 
     const currentUser = useContext(currentUserContext)
-    const socket = useContext(socketContext)
+
+    const socket = React.useMemo(() => io.connect(apiURL), [])
+
+    // Socket join on user load
+    const [onlineList, setOnlineList] = useState([])
+
+    useEffect(() => {
+        if (currentUser && currentUser.email) {
+
+            // Telling the server that a user has joined
+            socket.emit('frontJoinedUser', { user_id: currentUser._id, username: currentUser && currentUser.name, email: currentUser && currentUser.email, role: currentUser && currentUser.role });
+
+            socket.on('onlineUsersList', onlineUsers => {
+                setOnlineList(onlineUsers)
+            });
+        }
+    }, [currentUser, socket])
 
     // Alert
     const [visible, setVisible] = useState(true)
@@ -85,82 +105,86 @@ const Contact = ({ errors, successful, clearErrors, clearSuccess, sendMsg }) => 
     }
 
     return (
-        <div className='contact-section py-0 px-3 py-5'>
-            <Jumbotron className="p-2 m-2 m-sm-0 text-center border border-info">
+        <socketContext.Provider value={socket}>
+            <onlineListContext.Provider value={onlineList}>
+                <div className='contact-section py-0 px-3 py-5'>
+                    <Jumbotron className="p-2 m-2 m-sm-0 text-center border border-info">
 
-                <h1 className="display-4 font-weight-bold text-center text-success my-4 mb-lg-5">
-                    Contact Quiz Blog
-                </h1>
+                        <h1 className="display-4 font-weight-bold text-center text-success my-4 mb-lg-5">
+                            Contact Quiz Blog
+                        </h1>
 
-                <p className="lead mb-1">
-                    Quiz-Blog was made to offer different types of quizzes and study materials that help students improve their thinking skills and get ready for exams. Our blog articles are about various subjects and help students understand their lessons better.
-                </p>
-            </Jumbotron>
+                        <p className="lead mb-1">
+                            Quiz-Blog was made to offer different types of quizzes and study materials that help students improve their thinking skills and get ready for exams. Our blog articles are about various subjects and help students understand their lessons better.
+                        </p>
+                    </Jumbotron>
 
-            <Row className="mx-sm-2 px-sm-1 mx-md-5 px-md-5 py-lg-5 mt-5 contact d-md-flex justify-content-center">
+                    <Row className="mx-sm-2 px-sm-1 mx-md-5 px-md-5 py-lg-5 mt-5 contact d-md-flex justify-content-center">
 
-                <div className='w-100'>
-                    {/* Google responsive 1 ad */}
-                    <ResponsiveHorizontal />
-                </div>
+                        <div className='w-100'>
+                            {/* Google responsive 1 ad */}
+                            <ResponsiveHorizontal />
+                        </div>
 
-                <Col sm="6" className="mb-5 px-lg-5">
-                    <small className='font-weight-bolder text-info'>
-                        Do you need further clarifications? Please contact us! 👉
-                    </small>
+                        <Col sm="6" className="mb-5 px-lg-5">
+                            <small className='font-weight-bolder text-info'>
+                                Do you need further clarifications? Please contact us! 👉
+                            </small>
 
-                    <hr className="my-2" />
+                            <hr className="my-2" />
 
-                    <Col sm='6' className='contact-img'>
-                        <img src={mail} alt="" />
-                    </Col>
-                </Col>
+                            <Col sm='6' className='contact-img'>
+                                <img src={mail} alt="" />
+                            </Col>
+                        </Col>
 
-                <Col sm="6" className="mb-5">
-                    {/* Error frontend*/}
-                    {errorsState.length > 0 ?
-                        errorsState.map(err =>
-                            <Alert color="danger" isOpen={visible} toggle={onDismiss} key={Math.floor(Math.random() * 1000)} className='border border-warning'>
-                                {err}
-                            </Alert>) :
-                        null
-                    }
+                        <Col sm="6" className="mb-5">
+                            {/* Error frontend*/}
+                            {errorsState.length > 0 ?
+                                errorsState.map(err =>
+                                    <Alert color="danger" isOpen={visible} toggle={onDismiss} key={Math.floor(Math.random() * 1000)} className='border border-warning'>
+                                        {err}
+                                    </Alert>) :
+                                null
+                            }
 
-                    {/* Error backend */}
-                    {errors.id ?
-                        <Alert isOpen={visible} toggle={onDismiss} color='danger'>
-                            <small>{errors.msg && errors.msg.msg}</small>
-                        </Alert> :
+                            {/* Error backend */}
+                            {errors.id ?
+                                <Alert isOpen={visible} toggle={onDismiss} color='danger'>
+                                    <small>{errors.msg && errors.msg.msg}</small>
+                                </Alert> :
 
-                        successful.id ?
-                            <Alert color='success' isOpen={visible} toggle={onDismiss} className='border border-warning'>
-                                <small>{successful.msg && successful.msg}</small>
-                            </Alert> : null
-                    }
+                                successful.id ?
+                                    <Alert color='success' isOpen={visible} toggle={onDismiss} className='border border-warning'>
+                                        <small>{successful.msg && successful.msg}</small>
+                                    </Alert> : null
+                            }
 
-                    <Form onSubmit={onContact}>
-                        <FormGroup>
-                            <Input type="text" name="contact_name" placeholder="Name" minLength="4" maxLength="30" onChange={onChangeHandler} value={state.contact_name} disabled={currentUser} />
-                        </FormGroup>
-                        <FormGroup>
-                            <Input type="email" name="email" placeholder="Email" onChange={onChangeHandler} value={state.email} disabled={currentUser} />
-                        </FormGroup>
+                            <Form onSubmit={onContact}>
+                                <FormGroup>
+                                    <Input type="text" name="contact_name" placeholder="Name" minLength="4" maxLength="30" onChange={onChangeHandler} value={state.contact_name} disabled={currentUser} />
+                                </FormGroup>
+                                <FormGroup>
+                                    <Input type="email" name="email" placeholder="Email" onChange={onChangeHandler} value={state.email} disabled={currentUser} />
+                                </FormGroup>
 
-                        <FormGroup row>
-                            <Input type="textarea" name="message" placeholder="Message" rows="5" minLength="10" maxLength="1000" onChange={onChangeHandler} value={state.message} />
-                        </FormGroup>
-                        <Button color="primary">Send</Button>
-                    </Form>
+                                <FormGroup row>
+                                    <Input type="textarea" name="message" placeholder="Message" rows="5" minLength="10" maxLength="1000" onChange={onChangeHandler} value={state.message} />
+                                </FormGroup>
+                                <Button color="primary">Send</Button>
+                            </Form>
 
-                    {/* Google square ad */}
-                    <Row className='w-100'>
-                        <Col sm="12" className='w-100'>
-                            <SquareAd />
+                            {/* Google square ad */}
+                            <Row className='w-100'>
+                                <Col sm="12" className='w-100'>
+                                    <SquareAd />
+                                </Col>
+                            </Row>
                         </Col>
                     </Row>
-                </Col>
-            </Row>
-        </div>
+                </div>
+            </onlineListContext.Provider>
+        </socketContext.Provider>
     )
 }
 

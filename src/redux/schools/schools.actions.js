@@ -24,7 +24,7 @@ export const getSchools = () => async (dispatch, getState) => {
         }))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response.data, err && err.response.status, 'GET_SCHOOLS_FAIL'));
+    dispatch(returnErrors(err && err && err.response && err.response.data, err && err.response.status, 'GET_SCHOOLS_FAIL'));
     dispatch({ type: GET_SCHOOLS_FAIL })
   }
 };
@@ -43,7 +43,7 @@ export const getOneSchool = (schoolId) => async (dispatch) => {
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'GET_ONE_SCHOOL_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_ONE_SCHOOL_FAIL'));
     dispatch({ type: GET_ONE_SCHOOL_FAIL })
   }
 };
@@ -67,7 +67,7 @@ export const createSchool = (newSchool) => async (dispatch, getState) => {
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response.data, err && err.response.status, 'CREATE_SCHOOL_FAIL'));
+    dispatch(returnErrors(err && err && err.response && err.response.data, err && err.response.status, 'CREATE_SCHOOL_FAIL'));
     dispatch({ type: CREATE_SCHOOL_FAIL })
   }
 };
@@ -92,7 +92,7 @@ export const updateSchool = updatedsch => async (dispatch, getState) => {
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'UPDATE_SCHOOL_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'UPDATE_SCHOOL_FAIL'));
     dispatch({ type: UPDATE_SCHOOL_FAIL });
   }
 }
@@ -117,7 +117,7 @@ export const deleteSchool = id => async (dispatch, getState) => {
           ))
     }
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'DELETE_SCHOOL_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'DELETE_SCHOOL_FAIL'));
     dispatch({ type: DELETE_SCHOOL_FAIL });
   }
 }

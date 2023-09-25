@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext } from 'react'
 import { Collapse, Navbar, NavbarBrand, Nav, NavbarText, Button, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, ListGroup, ListGroupItem } from 'reactstrap'
 import { Link, useLocation } from "react-router-dom"
 import RegisterModal from './auth/RegisterModal'
@@ -8,39 +8,21 @@ import CatDropdown from './CatDropdown'
 import logo from '../images/quizLogo.svg'
 import '@fortawesome/fontawesome-free/css/fontawesome.min.css'
 import EditPictureModal from './auth/EditPictureModal'
-import { authContext, currentUserContext, socketContext } from '../appContexts'
-import { useToasts } from 'react-toast-notifications';
+import { authContext, currentUserContext } from '../appContexts'
 
 const Header = () => {
 
     // context from appContexts
     const auth = useContext(authContext)
     const currentUser = useContext(currentUserContext)
-    const socket = useContext(socketContext)
 
     // state for dropdown
     const [isOpen, setIsOpen] = useState(false)
     const toggle = () => setIsOpen(!isOpen)
 
-    // notifications
-    const { addToast } = useToasts()
 
     // location hook from react-router-dom    
     let location = useLocation()
-
-    // Get the new messages sent from users
-    useEffect(() => {
-        if (currentUser && currentUser.role !== 'Visitor') {
-            socket.on('contactMsgServer', (contactMsg) => {
-                if (currentUser.role !== 'Visitor') {
-                    addToast(`${contactMsg.contact_name}: \n ${contactMsg.message}`, {
-                        appearance: 'info',
-                        autoDismiss: true,
-                    })
-                }
-            })
-        }
-    }, [currentUser, socket, addToast])
 
     const authLinks = (
         <>

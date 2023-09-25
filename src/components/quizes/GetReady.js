@@ -37,7 +37,7 @@ const GetReady = ({ qZ, getOneQuiz }) => {
             qZ.oneQuiz && qZ.oneQuiz.questions.length > 0 ?
 
                 <div className="py-3 d-flex justify-content-center align-items-center flex-column">
-                    <Container className="main mx-0 d-flex flex-column justify-content-center rounded border border-primary my-3 my-lg-5 py-lg-4 w-80">
+                    <Container className="main mx-auto d-flex flex-column justify-content-center rounded border border-primary my-3 my-lg-5 py-lg-4 w-80">
 
                         <div className="question-view p-2">
 

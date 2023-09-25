@@ -39,7 +39,7 @@ const ReviewQuiz = ({ sC, getOneScore, createScore }) => {
     useEffect(() => {
         getOneScore(reviewId)
     }, [getOneScore, reviewId])
-    
+
     return (
 
         <Container>
@@ -61,7 +61,7 @@ const ReviewQuiz = ({ sC, getOneScore, createScore }) => {
                                 qnsAll.length > 0 ?
 
                                     <>
-                                        <Row className="main mx-0 d-flex flex-column justify-content-center rounded border border-primary my-lg-5 py-lg-4 w-80" key={Math.floor(Math.random() * 1000)}>
+                                        <Row className="main mx-auto d-flex flex-column justify-content-center rounded border border-primary my-lg-5 py-lg-4 w-80" key={Math.floor(Math.random() * 1000)}>
 
                                             {lastAnswer ?
 
@@ -105,13 +105,13 @@ const ReviewQuiz = ({ sC, getOneScore, createScore }) => {
                                         </Row>
                                     </> :
 
-                                    <Row className="main mx-0 d-flex flex-column justify-content-center rounded border border-primary my-5 py-4 w-80 text-center">
+                                    <Row className="main mx-auto d-flex flex-column justify-content-center rounded border border-primary my-5 py-4 w-80 text-center">
                                         <h1 className="text-danger font-weight-bolder">404</h1>
                                         <h4>Quiz's questions unavailable! Refresh!</h4>
                                         <Button color="info" style={{ width: "120px" }} className="mx-auto mt-4"><a href="/webmaster" className="text-white">Back</a></Button>
                                     </Row> :
 
-                                <Row className="main mx-0 d-flex flex-column justify-content-center rounded border border-primary my-5 py-4 w-80 text-center">
+                                <Row className="main mx-auto d-flex flex-column justify-content-center rounded border border-primary my-5 py-4 w-80 text-center">
                                     <h1 className="text-danger font-weight-bolder">404</h1>
                                     <h4>Your score in not saved!</h4>
                                     <Button color="info"

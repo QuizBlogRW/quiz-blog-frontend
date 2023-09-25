@@ -25,7 +25,7 @@ export const getPostCategories = () => async (dispatch, getState) => {
         }))
 
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'GET_POST_CATEGORIES_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_POST_CATEGORIES_FAIL'))
     dispatch({ type: GET_POST_CATEGORIES_FAIL })
   }
 }
@@ -50,7 +50,7 @@ export const createPostCategory = (newPostCategory) => async (dispatch, getState
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'CREATE_POST_CATEGORY_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'CREATE_POST_CATEGORY_FAIL'))
     dispatch({ type: CREATE_POST_CATEGORY_FAIL })
   }
 }
@@ -76,7 +76,7 @@ export const updatePostCategory = updatedPostCatg => async (dispatch, getState) 
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'UPDATE_POST_CATEGORY_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'UPDATE_POST_CATEGORY_FAIL'))
     dispatch({ type: UPDATE_POST_CATEGORY_FAIL })
   }
 }
@@ -100,7 +100,7 @@ export const deletePostCategory = id => async (dispatch, getState) => {
           ))
     }
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'DELETE_POST_CATEGORY_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'DELETE_POST_CATEGORY_FAIL'))
     dispatch({ type: DELETE_POST_CATEGORY_FAIL })
   }
 }

@@ -24,7 +24,7 @@ export const getFaculties = () => async (dispatch, getState) => {
         }))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response.data, err && err.response.status, 'GET_FACULTIES_FAIL'));
+    dispatch(returnErrors(err && err && err.response && err.response.data, err && err.response.status, 'GET_FACULTIES_FAIL'));
     dispatch({ type: GET_FACULTIES_FAIL })
   }
 };
@@ -43,7 +43,7 @@ export const fetchLevelFaculties = (levelID) => async (dispatch, getState) => {
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'FETCH_LEVEL_FACULTIES_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'FETCH_LEVEL_FACULTIES_FAIL'));
     dispatch({ type: FETCH_LEVEL_FACULTIES_FAIL })
   }
 };
@@ -68,7 +68,7 @@ export const createFaculty = (newFaculty) => async (dispatch, getState) => {
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'CREATE_FACULTY_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'CREATE_FACULTY_FAIL'));
     dispatch({ type: CREATE_FACULTY_FAIL })
   }
 };
@@ -92,7 +92,7 @@ export const updateFaculty = updatedFac => async (dispatch, getState) => {
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'UPDATE_FACULTY_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'UPDATE_FACULTY_FAIL'));
     dispatch({ type: UPDATE_FACULTY_FAIL });
   }
 }
@@ -117,7 +117,7 @@ export const deleteFaculty = id => async (dispatch, getState) => {
           ))
     }
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'DELETE_FACULTY_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'DELETE_FACULTY_FAIL'));
     dispatch({ type: DELETE_FACULTY_FAIL });
   }
 }

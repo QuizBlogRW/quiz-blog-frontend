@@ -141,8 +141,6 @@ const Biographies = () => {
             </div>
             <hr />
 
-            <hr />
-
             <div className="row mx-2 mx-sm-4 my-4 my-sm-5">
                 <div className="col-12 col-sm-4 px-0 px-sm-3 d-flex flex-column align-items-center justify-content-center">
                     <div className="memberImg">
@@ -264,7 +262,6 @@ const Biographies = () => {
                 </div>
 
             </div>
-            <hr />
         </>
     )
 }

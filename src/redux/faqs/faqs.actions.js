@@ -24,7 +24,7 @@ export const getFaqs = () => async (dispatch, getState) => {
         }))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_FAQS_FAIL'))
+    dispatch(returnErrors(err && err.response && err && err.response && err.response.data, err && err.response && err.response.status, 'GET_FAQS_FAIL'))
     dispatch({ type: GET_FAQS_FAIL })
   }
 }
@@ -43,7 +43,7 @@ export const getOneFaq = (faqId) => async (dispatch, getState) => {
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_ONE_FAQ_FAIL'))
+    dispatch(returnErrors(err && err.response && err && err.response && err.response.data, err && err.response && err.response.status, 'GET_ONE_FAQ_FAIL'))
     dispatch({ type: GET_ONE_FAQ_FAIL })
   }
 }
@@ -67,7 +67,7 @@ export const createFq = (newFaq) => async (dispatch, getState) => {
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'CREATE_FAQ_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'CREATE_FAQ_FAIL'));
     dispatch({ type: CREATE_FAQ_FAIL })
   }
 };
@@ -92,7 +92,7 @@ export const updateFaq = updatedFaq => async (dispatch, getState) => {
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'UPDATE_FAQ_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'UPDATE_FAQ_FAIL'));
     dispatch({ type: UPDATE_FAQ_FAIL });
   }
 }
@@ -117,7 +117,7 @@ export const addFaqVidLink = (newVidLink, faqID) => async (dispatch, getState) =
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'ADD_VIDEO_LINK_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'ADD_VIDEO_LINK_FAIL'))
 
     dispatch({ type: ADD_VIDEO_LINK_FAIL })
   }
@@ -144,7 +144,7 @@ export const deleteFaqVideo = (vidData, vId) => async (dispatch, getState) => {
     }
 
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'DELETE_VIDEO_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'DELETE_VIDEO_FAIL'))
 
     dispatch({ type: DELETE_VIDEO_FAIL })
   }
@@ -170,7 +170,7 @@ export const deleteFaq = id => async (dispatch, getState) => {
           ))
     }
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status, 'DELETE_FAQ_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'DELETE_FAQ_FAIL'))
     dispatch({ type: DELETE_FAQ_FAIL })
   }
 }
