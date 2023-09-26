@@ -4,13 +4,12 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { createScore } from '../../../redux/scores/scores.actions'
 import { v4 as uuidv4 } from 'uuid'
-import QuestionsView from './QuestionsView'
 import LoadingQuestions from '../../rLoading/LoadingQuestions'
+import QuestionsView from './QuestionsView'
 import NoQuestions from './NoQuestions'
 import Unavailable from './Unavailable'
 
 const QuizQuestions = ({ createScore, uId }) => {
-
 
     // Access route parameters & get the quiz
     const { quizSlug } = useParams()
@@ -45,7 +44,7 @@ const QuizQuestions = ({ createScore, uId }) => {
 
     // Review
     const [quizToReview, setQuizToReview] = useState({})
-    const passMark = thisQuiz.category && thisQuiz.category._id === '60e9a2ba82f7830015c317f1' ? 80 : 50
+    const passMark = thisQuiz && thisQuiz.category && thisQuiz.category._id === '60e9a2ba82f7830015c317f1' ? 80 : 50
 
     // Function to change selected answer
     const handleOnChange = (event, position) => {
@@ -70,15 +69,12 @@ const QuizQuestions = ({ createScore, uId }) => {
         curQnOpts
             .forEach(opt => {
                 if (event && event.target.value === opt.answerText) {
-                    if (opt.choosen === undefined) {
+                    if (opt.choosen === undefined)
                         opt.choosen = true
-                    }
-                    else if (opt.choosen === true) {
+                    else if (opt.choosen === true)
                         opt.choosen = false
-                    }
-                    else if (opt.choosen === false) {
+                    else if (opt.choosen === false)
                         opt.choosen = true
-                    }
                 }
                 else {
                     if (opt.choosen === undefined) {
@@ -108,11 +104,10 @@ const QuizQuestions = ({ createScore, uId }) => {
                 const chosenCorrectOptions = qn.answerOptions.filter(opt => opt.choosen === true && opt.isCorrect === true);
 
                 // Calculate marks for the question based on the ratio of correct chosen options to total correct options
-                if (correctOptions.length > 0) {
+                if (correctOptions.length > 0)
                     return chosenCorrectOptions.length / correctOptions.length;
-                } else {
+                else
                     return 0; // Handle the case where there are no correct options (optional)
-                }
             })
             .reduce((a, b) => a + b, 0);
 
@@ -136,12 +131,11 @@ const QuizQuestions = ({ createScore, uId }) => {
         try {
             const scoreSaving = await createScore(scoreToSave)
 
-            if (scoreSaving) {
+            if (scoreSaving)
                 setSaveScoreLoading(false)
-            }
-            else {
+
+            else
                 setSaveScoreLoading(false)
-            }
 
         } catch (err) {
             console.log(err)
@@ -151,26 +145,28 @@ const QuizQuestions = ({ createScore, uId }) => {
 
     // Going to next question
     const goToNextQuestion = useCallback((currentIndex, QuestionsLength) => {
+
         // REVIEW ANSWERS
         const reviewDetails = { review: quizToReview && quizToReview }
 
         // NAVIGATE TO NEXT QUESTION
-        if (currentIndex + 1 < QuestionsLength) {
+        if (currentIndex + 1 < QuestionsLength)
             setCurQnIndex(currentIndex + 1)
-        }
+
         else {
             // CALCULATE THE SCORE FROM THE ANSWERS - reviewDetails.review.questions
             const marks = reviewDetails.review && reviewDetails.review.questions && reviewDetails.review.questions
                 .map(qn => {
+
                     const correctOptions = qn.answerOptions.filter(opt => opt.isCorrect === true);
                     const chosenCorrectOptions = qn.answerOptions.filter(opt => opt.choosen === true && opt.isCorrect === true);
 
                     // Calculate marks for the question based on the ratio of correct chosen options to total correct options
-                    if (correctOptions.length > 0) {
+                    if (correctOptions.length > 0)
                         return chosenCorrectOptions.length / correctOptions.length;
-                    } else {
+                    
+                    else
                         return 0; // Handle the case where there are no correct options (optional)
-                    }
                 })
                 .reduce((a, b) => a + b, 0);
 
@@ -179,17 +175,19 @@ const QuizQuestions = ({ createScore, uId }) => {
 
             // NAVIGATE TO QUIZ RESULTS
             const quizResults = {
-                score: marks,
+                score: Math.floor(marks),
                 qnsLength: QuestionsLength,
-                passMark: passMark,
-                thisQuiz: thisQuiz,
+                passMark,
+                thisQuiz,
                 quizToReview: reviewDetails.review,
-                newScoreId: newScoreId,
-                review: quizToReview,
+                newScoreId,
+                review: quizToReview
             }
 
             // NAVIGATE TO QUIZ RESULTS PAGE
-            navigate(`/quiz-results/${quizSlug}`, { state: quizResults })
+            navigate(`/quiz-results/${quizSlug}`, {
+                state: quizResults
+            })
         }
     }, [quizToReview, passMark, thisQuiz, navigate, quizSlug, newScoreId, saveScore])
 
@@ -204,9 +202,7 @@ const QuizQuestions = ({ createScore, uId }) => {
         }
 
         // clean up the saving score
-        return () => {
-            setSaveScoreLoading(false)
-        }
+        return () => setSaveScoreLoading(false)
 
     }, [trueAnsNbr, choices, curQnUsrTrueChoices, curQnIndex, qnsLength, goToNextQuestion])
 
@@ -239,13 +235,11 @@ const QuizQuestions = ({ createScore, uId }) => {
         )
     }
 
-    else if (saveScoreLoading) {
+    else if (saveScoreLoading)
         return (<LoadingQuestions />)
-    }
 
-    else {
+    else
         return (<LoadingQuestions />)
-    }
 }
 
 export default connect(null, { createScore })(QuizQuestions)

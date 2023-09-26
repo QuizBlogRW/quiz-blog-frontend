@@ -17,7 +17,7 @@ const TitleRow = ({ thisReview, score, thisQuiz, qnsAll, curRevQn, currentQuesti
         // Set the PDF options
         const options = {
             margin: [0.1, 0.1, 0.1, 0.1],
-            filename: `${thisQuizTitle}-shared-by-QuizBlog.pdf`,
+            filename: `${thisQuizTitle}-shared-by-Quiz-Blog.pdf`,
             image: { type: 'jpeg', quality: 0.98, background: '#fff', border: '1px solid #fff' },
             html2canvas: { scale: 2, useCORS: true, logging: true, letterRendering: true, allowTaint: true, scrollX: 0, scrollY: -window.scrollY },
             pagebreak: { mode: ['avoid-all', 'css', 'legacy'] },
@@ -40,7 +40,7 @@ const TitleRow = ({ thisReview, score, thisQuiz, qnsAll, curRevQn, currentQuesti
                         <h6 className="text-warning d-inline">Reviewing ...</h6>
                         <small className="text-info">
                             &nbsp; Score: ~{Math.round(score * 100 / qnsAll.length)}%
-                        </small> 
+                        </small>
                     </span>
 
                     {(uRole === 'Admin' || uRole === 'SuperAdmin') &&

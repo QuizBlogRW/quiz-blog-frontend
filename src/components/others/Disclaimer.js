@@ -10,7 +10,7 @@ const Disclaimer = () => {
 
             <div className="container main mt-5">
 
-                <h1>Disclaimer for Quiz Blog</h1>
+                <h1>Disclaimer for Quiz-Blog</h1>
 
                 <p>If you require any more information or have any questions about our site's disclaimer, please feel free to contact us by email at quizblog.rw@gmail.com.</p>
 

@@ -16,7 +16,7 @@ const SearchInput = ({ setSearchKey, placeholder }) => {
 
                 <div className="input-group-append" >
                     <span className="input-group-text py-1 by-0" id="basic-addon2" type="submit">
-                        <img src={searchImg} alt="Quiz Blog Search" width="14" height="14" />
+                        <img src={searchImg} alt="Quiz-Blog Search" width="14" height="14" />
                     </span>
                 </div>
             </div>

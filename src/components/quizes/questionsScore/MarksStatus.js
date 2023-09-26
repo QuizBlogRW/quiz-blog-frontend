@@ -13,8 +13,8 @@ const MarksStatus = ({ score, qnLength, passMark }) => {
                         <br />Please contact us for more important books, guidance that may help you.
                     </h6>
 
-                    <Link to="/contact" className="text-success">
-                        <button type="button" className="btn btn-outline-success">
+                    <Link to="/contact" className="text-info">
+                        <button type="button" className="btn btn-outline-info">
                             Contact us for help!
                         </button>
                     </Link>

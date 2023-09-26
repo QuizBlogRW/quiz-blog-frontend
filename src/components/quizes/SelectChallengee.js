@@ -96,7 +96,7 @@ const SelectChallengee = ({ qZ, getOneQuiz, auth, createScore, getUsers, users }
 
                                         <Button color="success" className="mt-3 share-btn">
                                             <i className="fa fa-whatsapp"></i>&nbsp;
-                                            <a className="text-white" href={`https://api.whatsapp.com/send?phone=whatsappphonenumber&text=Attempt this ${qZ.oneQuiz.title} on Quiz Blog
+                                            <a className="text-white" href={`https://api.whatsapp.com/send?phone=whatsappphonenumber&text=Attempt this ${qZ.oneQuiz.title} on Quiz-Blog
                         \nhttps://www.quizblog.rw/view-quiz/${qZ.oneQuiz.slug}`}>Share</a>
                                         </Button>
 

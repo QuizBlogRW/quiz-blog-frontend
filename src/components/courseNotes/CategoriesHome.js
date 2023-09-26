@@ -18,8 +18,8 @@ const CategoriesHome = () => {
                     <h3 className="font-weight-bold my-lg-4 categories-home-head">Hello, {currentUser && currentUser ? currentUser.name : ''}!</h3>
 
                     <p className="lead">
-                        Discover the user-friendly courses and resource portal at Quiz Blog, where you can access a vast array of valuable information to enhance your learning and achieve academic success.
-                        </p>
+                        Discover the user-friendly courses and resource portal at Quiz-Blog, where you can access a vast array of valuable information to enhance your learning and achieve academic success.
+                    </p>
 
                     <hr className="" />
 
@@ -40,7 +40,7 @@ const CategoriesHome = () => {
                         So, if you find this interesting, please don't forget to share it with your friends via social media or any other means you prefer.&nbsp;
                         <Button color="success" className="ml-1 py-1 px-2 mb-0 share-btn">
                             <i className="fa fa-whatsapp"></i>&nbsp;
-                            <a className="text-white" href={`https://api.whatsapp.com/send?phone=whatsappphonenumber&text=View course notes shared by Quiz Blog by logging on
+                            <a className="text-white" href={`https://api.whatsapp.com/send?phone=whatsappphonenumber&text=View course notes shared by Quiz-Blog by logging on
                         \nhttps://www.quizblog.rw/course-notes`}>Share</a>
                         </Button>
                     </p>

@@ -23,7 +23,7 @@ const OnLastAnswer = ({ isAuthenticated, thisQuiz }) => {
 
                 <Button color="success" className="mt-3 share-btn mx-1 mx-md-3">
                     <i className="fa fa-whatsapp"></i>&nbsp;
-                    <a className="text-white" href={`https://api.whatsapp.com/send?phone=whatsappphonenumber&text=Attempt this ${thisQuiz.title} on Quiz Blog
+                    <a className="text-white" href={`https://api.whatsapp.com/send?phone=whatsappphonenumber&text=Attempt this ${thisQuiz.title} on Quiz-Blog
                         \nhttp://www.quizblog.rw/view-quiz/${thisQuiz.slug}`}>Share</a>
                 </Button>
 

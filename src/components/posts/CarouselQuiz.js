@@ -12,7 +12,7 @@ const items = [
         id: 1,
         src: srcQuiz,
         altText: 'Quizes',
-        caption: 'Take any quiz you want from Quiz Blog'
+        caption: 'Take any quiz you want from Quiz-Blog'
     },
     {
         id: 2,
@@ -63,8 +63,8 @@ const CarouselQuiz = ({ adverts, getAdverts }) => {
     // Use the useEffect hook to set the carousel and advert widths based on the allAdverts variable
     useEffect(() => {
         // if (allAdverts && allAdverts.length > 0) {
-            setCarouselWidth(8)
-            setAdvertWidth(4)
+        setCarouselWidth(8)
+        setAdvertWidth(4)
         // } else {
         //     setCarouselWidth(12)
         //     setAdvertWidth(0)

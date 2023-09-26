@@ -52,7 +52,7 @@ const HeaderFooter = ({ styles, fromFooter }) => {
                 <div className="d-block">
                     <hr />
                     <p className="text-center">
-                        &copy; Copyright {new Date().getFullYear()} - Quiz Blog.  All Rights Reserved.
+                        &copy; Copyright {new Date().getFullYear()} - Quiz-Blog.  All Rights Reserved.
                     </p>
                 </div>}
         </div>

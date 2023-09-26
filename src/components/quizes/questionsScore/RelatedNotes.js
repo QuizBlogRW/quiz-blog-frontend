@@ -39,7 +39,7 @@ const RelatedNotes = ({ getNotesByCCatg, notesCCatg, ccatgID }) => {
             ))}
         </Row>
       ) : (
-        <Unavailable title='No related notes available yet' link='/course-notes' more='notes' />
+        <Unavailable title='No related notes available yet 👉' link='/course-notes' more='notes' />
       )
     ) : (
       <SpinningBubbles title='notes' />

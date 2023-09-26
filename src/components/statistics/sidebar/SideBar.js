@@ -14,7 +14,7 @@ const SideBar = ({ isOpen, toggle }) => (
         &times;
       </span>
       <a href="/statistics">
-      <h3>Quiz Blog Statistics</h3>
+        <h3>Quiz-Blog Statistics</h3>
       </a>
     </div>
 
@@ -50,7 +50,7 @@ const SideBar = ({ isOpen, toggle }) => (
             Contacts
           </NavLink>
         </NavItem>
-        
+
       </Nav>
     </div>
   </div>

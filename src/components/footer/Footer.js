@@ -87,7 +87,7 @@ const Footer = () => {
 
                         <div className="row">
                             <div className="col-md-12 copy">
-                                <p className="text-center">&copy; Copyright {new Date().getFullYear()} - Quiz Blog.  All Rights Reserved.</p>
+                                <p className="text-center">&copy; Copyright {new Date().getFullYear()} - Quiz-Blog.  All Rights Reserved.</p>
                             </div>
                         </div>
 

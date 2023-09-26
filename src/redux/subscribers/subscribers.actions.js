@@ -51,7 +51,7 @@ export const subscribeToNewsLetter = (subscribedUser) => async (dispatch) => {
 export const deleteSubscriber = uemail => async (dispatch, getState) => {
 
   try {
-    if (window.confirm("You are unsubscribing to Quiz Blog updates!")) {
+    if (window.confirm("You are unsubscribing to Quiz-Blog updates!")) {
       await axiosInstance
         .delete(`/api/subscribers/${uemail}`, tokenConfig(getState))
         .then(res =>

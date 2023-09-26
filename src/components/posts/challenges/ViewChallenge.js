@@ -76,7 +76,7 @@ const ViewChallenge = ({ chQuiz, getOneChQuiz }) => {
 
                                             <Button color="success" className="mt-3 share-btn mx-1 mx-md-3">
                                                 <i className="fa fa-whatsapp"></i>&nbsp;
-                                                <a className="text-white" href={`https://api.whatsapp.com/send?phone=whatsappphonenumber&text=Take this ${title && title} challenge on Quiz Blog
+                                                <a className="text-white" href={`https://api.whatsapp.com/send?phone=whatsappphonenumber&text=Take this ${title && title} challenge on Quiz-Blog
                         \nhttps://www.quizblog.rw/view-challenge/${_id && _id}`}>Share</a>
                                             </Button>
 

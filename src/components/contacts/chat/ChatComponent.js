@@ -112,7 +112,7 @@ const ChatComponent = ({ socket, onlineList, chatId, cntct, getOneContact, reply
         })
     }, [socket, getOneContact, chatId])
 
-    const whoWith = currentUser.role === 'Visitor' ? { username: 'Quiz Blog Rwanda', email: 'quizblog.rw@gmail.com' } : { username: contact && contact.contact_name, email: contact && contact.email }
+    const whoWith = currentUser.role === 'Visitor' ? { username: 'Quiz-Blog Rwanda', email: 'quizblog.rw@gmail.com' } : { username: contact && contact.contact_name, email: contact && contact.email }
 
     const matchingUsr = onlineList.find((user) => user.email === toMail);
     const status = matchingUsr && matchingUsr.email === whoWith.email ? '🟢' : '🔴'

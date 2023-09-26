@@ -65,7 +65,7 @@ const FaqCollapse = ({ faqs, getFaqs }) => {
                         Frequently Asked Questions
                     </h1>
                     <p className="lead mb-1 text-dark">
-                        Quiz Blog is a web application that provides a multi-category space for people to quiz from.
+                        Quiz-Blog is a web application that provides a multi-category space for people to quiz from.
                     </p>
 
                     <p>It gives people good time to fix what they studied and even prepare for exams.</p>

@@ -145,7 +145,7 @@ const Header = () => {
 
                 <Navbar color="primary" light expand="lg" className="px-0 px-lg-5 py-2 py-md-3">
                     <NavbarBrand href="/" className="text-white" style={{ fontWeight: "900" }}>
-                        <img src={logo} alt="Quiz Blog Logo" />
+                        <img src={logo} alt="Quiz-Blog Logo" />
                     </NavbarBrand>
 
                     <Collapse navbar className="mx-1 mx-sm-2 py-1 m-sm-0">

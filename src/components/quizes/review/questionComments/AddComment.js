@@ -61,17 +61,18 @@ const AddComment = ({ createComment, currentUser, question, quiz, errors, succes
                 errorsState.map(err =>
                     <Alert color="danger" isOpen={visible} toggle={onDismiss} key={Math.floor(Math.random() * 1000)} className='border border-warning'>
                         {err}
+                        {console.log(err)}
                     </Alert>) :
                 null
             }
 
             {/* Error backend */}
-            {errors.id ?
+            {errors.id === 'CREATE_COMMENT_FAIL' ?
                 <Alert isOpen={visible} toggle={onDismiss} color='danger'>
                     <small>{errors.msg && errors.msg.msg}</small>
                 </Alert> :
 
-                successful.id ?
+                successful.id === 'CREATE_COMMENT' ?
                     <Alert color='success' isOpen={visible} toggle={onDismiss} className='border border-warning'>
                         <small>{successful.msg && successful.msg}</small>
                     </Alert> : null

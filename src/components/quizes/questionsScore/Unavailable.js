@@ -7,7 +7,7 @@ const Unavailable = ({ title, link, more }) => {
                 className="py-lg-2 text-danger"
                 style={{ fontSize: "1rem", fontWeight: "bold", }}
                 >
-                {title}!,
+                {title}
                 <a href={link}>
                     &nbsp;<u>click here for more {more}</u>
                 </a>

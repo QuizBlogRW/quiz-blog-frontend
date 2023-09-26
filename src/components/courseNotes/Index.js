@@ -20,7 +20,7 @@ const Index = ({ getCourseCategories, courseCategories, courses, getCoursesByCat
 
     const auth = useContext(authContext)
     const currentUser = useContext(currentUserContext)
-    
+
     const [collapsed, setCollapsed] = useState(true)
     const toggleNavbar = () => setCollapsed(!collapsed)
 
@@ -55,7 +55,7 @@ const Index = ({ getCourseCategories, courseCategories, courses, getCoursesByCat
                     <Col>
                         <Breadcrumb tag="nav" listTag="div">
                             <BreadcrumbItem tag="h5" className="text-success font-weight-bold" style={{ textShadow: "1px 1px .8px #a57d04" }}>
-                                Welcome to Quiz Blog Course Resources Portal
+                                Welcome to Quiz-Blog Course Resources Portal
                             </BreadcrumbItem>
 
                             {currentUser.role === 'Admin' || currentUser.role === 'Creator' ?
@@ -68,7 +68,7 @@ const Index = ({ getCourseCategories, courseCategories, courses, getCoursesByCat
 
                 {courseCategories.isLoading ?
 
-                    <SpinningBubbles title='course categories' />:
+                    <SpinningBubbles title='course categories' /> :
 
                     <Row className="pt-lg-5 courses-content">
 

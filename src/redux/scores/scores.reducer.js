@@ -69,7 +69,8 @@ const scoresReducer = (state = INITIAL_STATE, action) => {
     case CREATE_SCORE:
       return {
         ...state,
-        allScores: [...state.allScores, action.payload]
+        allScores: [...state.allScores, action.payload],
+        isLoading: false,
       }
 
     case CREATE_SCORE_FAIL:
@@ -83,12 +84,14 @@ const scoresReducer = (state = INITIAL_STATE, action) => {
     case GET_RANKING_SCORES_FAIL:
       return {
         ...state,
-        msg: "Failed!"
+        msg: "Failed!",
+        isLoading: false,
       }
 
     case UPDATE_SCORE:
       return {
         ...state,
+        isLoading: false,
         allScores: state.allScores.map((score) => {
 
           if (score._id === action.payload.sId) {
@@ -107,7 +110,8 @@ const scoresReducer = (state = INITIAL_STATE, action) => {
     case DELETE_SCORE:
       return {
         ...state,
-        allScores: state.allScores.filter(score => score._id !== action.payload)
+        allScores: state.allScores.filter(score => score._id !== action.payload),
+        isLoading: false
       }
 
     case SCORES_LOADING:

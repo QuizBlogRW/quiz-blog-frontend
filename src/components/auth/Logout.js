@@ -21,7 +21,7 @@ const Logout = ({ logout }) => {
     <>
       <NavLink onClick={logingout} href="#" className="m-lg-0 px-sm-3">
         <Button color="warning" size="sm" className="p-1">
-          <img src={powerOff} alt="logout to quiz blog" width="16" height="16" />
+          <img src={powerOff} alt="logout to Quiz-Blog" width="16" height="16" />
           <span className='ml-1'>Sign Out</span>
         </Button>
       </NavLink>

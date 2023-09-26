@@ -66,7 +66,7 @@ const GetReady = ({ qZ, getOneQuiz }) => {
 
                                             <Button color="success" className="mt-3 share-btn mx-1 mx-md-3">
                                                 <i className="fa fa-whatsapp"></i>&nbsp;
-                                                <a className="text-white" href={`https://api.whatsapp.com/send?phone=whatsappphonenumber&text=Attempt this ${qZ.oneQuiz.title} quiz on Quiz Blog
+                                                <a className="text-white" href={`https://api.whatsapp.com/send?phone=whatsappphonenumber&text=Attempt this ${qZ.oneQuiz.title} quiz on Quiz-Blog
                         \nhttps://www.quizblog.rw/view-quiz/${qZ.oneQuiz.slug}`}>Share</a>
                                             </Button>
 

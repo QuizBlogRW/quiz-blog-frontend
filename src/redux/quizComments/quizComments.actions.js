@@ -24,7 +24,7 @@ export const getAllComments = () => async (dispatch, getState) => {
         }))
 
   } catch (err) {
-    dispatch(returnErrors(err && err && err.response && err.response.data, err && err.response.status, 'GET_COMMENTS_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response.status, 'GET_COMMENTS_FAIL'))
     dispatch({ type: GET_COMMENTS_FAIL })
   }
 }

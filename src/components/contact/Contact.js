@@ -111,7 +111,7 @@ const Contact = ({ errors, successful, clearErrors, clearSuccess, sendMsg }) => 
                     <Jumbotron className="p-2 m-2 m-sm-0 text-center border border-info">
 
                         <h1 className="display-4 font-weight-bold text-center text-success my-4 mb-lg-5">
-                            Contact Quiz Blog
+                            Contact Quiz-Blog
                         </h1>
 
                         <p className="lead mb-1">

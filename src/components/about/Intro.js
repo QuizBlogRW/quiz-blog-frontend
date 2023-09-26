@@ -7,7 +7,7 @@ const Intro = () => {
         <div className='introduct pt-lg-5'>
 
             <h1 className="display-4 font-weight-bold text-center text-success py-4 my-lg-5">
-                <span>Get To Know</span> Quiz Blog
+                <span>Get To Know</span> Quiz-Blog
             </h1>
 
             <Row className='pt-lg-5 px-1 px-lg-5'>

@@ -18,11 +18,11 @@ const BackLikeShare = ({ articleName, articleCreator }) => {
                                 <i className="fa fa-whatsapp"></i>
                             </a></li>
 
-                            <li><a href={`https://www.facebook.com/share.php?u=${window.location.href}`}target="_blank" rel="noreferrer" className="icoFacebook" title="Facebook">
+                            <li><a href={`https://www.facebook.com/share.php?u=${window.location.href}`} target="_blank" rel="noreferrer" className="icoFacebook" title="Facebook">
                                 <i className="fa fa-facebook"></i>
                             </a></li>
 
-                            <li><a href={`https://www.linkedin.com/shareArticle?mini=true&url=${window.location.href}&title=${articleName}&summary=${articleCreator}&source=Quiz Blog`} target="_blank" rel="noreferrer" className="icoLinkedin" title="Linkedin">
+                            <li><a href={`https://www.linkedin.com/shareArticle?mini=true&url=${window.location.href}&title=${articleName}&summary=${articleCreator}&source=Quiz-Blog`} target="_blank" rel="noreferrer" className="icoLinkedin" title="Linkedin">
                                 <i className="fa fa-linkedin"></i>
                             </a></li>
 
