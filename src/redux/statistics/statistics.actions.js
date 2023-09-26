@@ -7,7 +7,7 @@ import { qbURL, apiURL, devApiURL } from '../config'
 
 // Axios instance
 const axiosInstance = axios.create({
-  baseURL: process.env.NODE_ENV === 'development' ? (qbURL || devApiURL) : apiURL,
+  baseURL: process.env.NODE_ENV === 'development' ? devApiURL : (qbURL || apiURL),
 })
 
 // GETTERS

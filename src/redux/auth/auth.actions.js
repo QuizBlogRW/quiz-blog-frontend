@@ -6,10 +6,11 @@ import { qbURL, apiURL, devApiURL } from '../config'
 
 // Axios instance
 const axiosInstance = axios.create({
-  baseURL: process.env.NODE_ENV === 'development' ? (qbURL || devApiURL) : apiURL,
+  baseURL: process.env.NODE_ENV === 'development' ? devApiURL : (qbURL || apiURL),
 })
 
 console.log(`The qbURL is ${qbURL}`);
+console.log(`The prod is ${qbURL || apiURL}`);
 
 //HELPER FUNCTION TO GET THE TOKEN - SETUP CONFIG/headers and token
 export const tokenConfig = getState => {
