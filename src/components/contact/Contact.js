@@ -149,17 +149,16 @@ const Contact = ({ errors, successful, clearErrors, clearSuccess, sendMsg }) => 
                             }
 
                             {/* Error backend */}
-                            {errors.id ?
+                            {errors.id && errors.id === 'ADD_CONTACT_FAIL' ?
                                 <Alert isOpen={visible} toggle={onDismiss} color='danger'>
                                     <small>{errors.msg && errors.msg.msg}</small>
                                 </Alert> :
 
-                                successful.id ?
+                                successful.id && successful.id === 'ADD_CONTACT' ?
                                     <Alert color='success' isOpen={visible} toggle={onDismiss} className='border border-warning'>
                                         <small>{successful.msg && successful.msg}</small>
                                     </Alert> : null
                             }
-
                             <Form onSubmit={onContact}>
                                 <FormGroup>
                                     <Input type="text" name="contact_name" placeholder="Name" minLength="4" maxLength="30" onChange={onChangeHandler} value={state.contact_name} disabled={currentUser} />
