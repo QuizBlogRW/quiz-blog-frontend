@@ -104,8 +104,10 @@ const QuizQuestions = ({ createScore, uId }) => {
                 const chosenCorrectOptions = qn.answerOptions.filter(opt => opt.choosen === true && opt.isCorrect === true);
 
                 // Calculate marks for the question based on the ratio of correct chosen options to total correct options
-                if (correctOptions.length > 0)
-                    return chosenCorrectOptions.length / correctOptions.length;
+                if (correctOptions.length > 0) {
+                    const ratio = chosenCorrectOptions.length / correctOptions.length;
+                    return isNaN(ratio) ? 0 : ratio;
+                }
                 else
                     return 0; // Handle the case where there are no correct options (optional)
             })
@@ -113,7 +115,7 @@ const QuizQuestions = ({ createScore, uId }) => {
 
         return {
             id: newScoreId,
-            marks,
+            marks: Math.floor(marks),
             out_of: qnsLength,
             category: thisQuiz && thisQuiz.category && thisQuiz.category._id,
             quiz: thisQuiz && thisQuiz._id,
@@ -162,9 +164,11 @@ const QuizQuestions = ({ createScore, uId }) => {
                     const chosenCorrectOptions = qn.answerOptions.filter(opt => opt.choosen === true && opt.isCorrect === true);
 
                     // Calculate marks for the question based on the ratio of correct chosen options to total correct options
-                    if (correctOptions.length > 0)
-                        return chosenCorrectOptions.length / correctOptions.length;
-                    
+                    if (correctOptions.length > 0) {
+                        const ratio = chosenCorrectOptions.length / correctOptions.length;
+                        return isNaN(ratio) ? 0 : ratio;
+                    }
+
                     else
                         return 0; // Handle the case where there are no correct options (optional)
                 })

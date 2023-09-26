@@ -19,7 +19,7 @@ const QuizResults = ({ errors, scores }) => {
 
     const location = useLocation()
     const { newScoreId, score, qnsLength, thisQuiz, quizToReview, passMark } = location.state && location.state
-    console.log(errors)
+    const marks = isNaN(score) ? 0 : score
 
     // context
     const currentUser = useContext(currentUserContext)
@@ -51,15 +51,13 @@ const QuizResults = ({ errors, scores }) => {
 
     const scoreToSave = {
         id: newScoreId,
-        marks: score,
+        marks,
         out_of: qnsLength,
         category: thisQuiz && thisQuiz.category && thisQuiz.category._id,
         quiz: thisQuiz && thisQuiz._id,
         review: quizToReview && quizToReview,
         taken_by: uId
     }
-
-    console.log(scores)
 
     return (
 
@@ -88,10 +86,10 @@ const QuizResults = ({ errors, scores }) => {
                             </div>
                         </Suspense>
 
-                        <div className={`p-2 p-sm-5 mx-auto mx-sm-5 border border-3 rounded border-${score >= passMark ? 'success' : 'danger'} shadow p-3 mb-5 bg-body rounded`}>
-                            <h5 className='font-weight-bold'>You answered <b style={{ color: '#B4654A' }}>{score}</b> out of <b style={{ color: '#B4654A' }}>{qnsLength}</b> questions correctly.
+                        <div className={`p-2 p-sm-5 mx-auto mx-sm-5 border border-3 rounded border-info shadow p-3 mb-5 bg-body rounded`}>
+                            <h5 className='font-weight-bold'>You answered <b style={{ color: '#B4654A' }}>{marks}</b> out of <b style={{ color: '#B4654A' }}>{qnsLength}</b> questions correctly.
                                 <small className='text-info font-weight-bold'>
-                                    &nbsp;(~{Math.round(score * 100 / qnsLength)}%)
+                                    &nbsp;(~{Math.round(marks * 100 / qnsLength)}%)
                                 </small>
                             </h5>
 
@@ -133,7 +131,7 @@ const QuizResults = ({ errors, scores }) => {
                             </div>
 
                             <MarksStatus
-                                score={score}
+                                score={marks}
                                 qnLength={qnsLength}
                                 passMark={passMark} />
                         </div>
