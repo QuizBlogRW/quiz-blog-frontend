@@ -43,7 +43,7 @@ export const getOneBroadcast = (brcstId) => async (dispatch, getState) => {
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_ONE_BROADCAST_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_ONE_BROADCAST_FAIL'))
     dispatch({ type: GET_ONE_BROADCAST_FAIL })
   }
 }
@@ -67,7 +67,7 @@ export const sendBroadcast = (newMessage) => async (dispatch, getState) => {
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'CREATE_BROADCAST_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'CREATE_BROADCAST_FAIL'));
     dispatch({ type: CREATE_BROADCAST_FAIL })
   }
 };
@@ -92,7 +92,7 @@ export const deleteBroadcast = id => async (dispatch, getState) => {
           ))
     }
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'DELETE_BROADCAST_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'DELETE_BROADCAST_FAIL'))
     dispatch({ type: DELETE_BROADCAST_FAIL })
   }
 }

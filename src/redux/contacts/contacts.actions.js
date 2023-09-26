@@ -25,7 +25,7 @@ export const getContacts = (pageNo) => async (dispatch, getState) => {
         }))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_CONTACTS_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_CONTACTS_FAIL'));
     dispatch({ type: GET_CONTACTS_FAIL })
   }
 };
@@ -43,7 +43,7 @@ export const getOneContact = (contactId) => async (dispatch, getState) => {
           payload: res.data
         }))
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_ONE_CONTACT_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_ONE_CONTACT_FAIL'))
     dispatch({ type: GET_ONE_CONTACT_FAIL })
   }
 }
@@ -61,7 +61,7 @@ export const getUserContacts = (userEmail) => async (dispatch, getState) => {
           payload: res.data
         }))
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_USER_CONTACTS_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_USER_CONTACTS_FAIL'))
     dispatch({ type: GET_USER_CONTACTS_FAIL })
   }
 }
@@ -84,7 +84,7 @@ export const sendMsg = (contactMsg) => async (dispatch) => {
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'ADD_CONTACT_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'ADD_CONTACT_FAIL'));
     dispatch({ type: ADD_CONTACT_FAIL })
   }
 };
@@ -108,7 +108,7 @@ export const replyContact = (idToUpdate, reply) => async (dispatch, getState) =>
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'REPLY_CONTACT_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'REPLY_CONTACT_FAIL'));
     dispatch({ type: REPLY_CONTACT_FAIL });
   }
 }
@@ -134,7 +134,7 @@ export const deleteContact = id => async (dispatch, getState) => {
     }
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'DELETE_CONTACT_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'DELETE_CONTACT_FAIL'));
     dispatch({ type: DELETE_CONTACT_FAIL })
   }
 }
@@ -152,7 +152,7 @@ export const getCreateRoom = (room1ON1ToGet) => async (dispatch, getState) => {
           payload: res.data
         }))
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_CREATE_CHAT_ROOM_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_CREATE_CHAT_ROOM_FAIL'))
     dispatch({ type: GET_CREATE_CHAT_ROOM_FAIL })
   }
 }
@@ -170,7 +170,7 @@ export const getRoomMessages = (roomID) => async (dispatch, getState) => {
           payload: res.data
         }))
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_ROOM_MESSAGES_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_ROOM_MESSAGES_FAIL'))
     dispatch({ type: GET_ROOM_MESSAGES_FAIL })
   }
 }
@@ -194,7 +194,7 @@ export const sendRoomMessage = (roomMessage) => async (dispatch, getState) => {
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'ADD_ROOMS_MESSAGE_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'ADD_ROOMS_MESSAGE_FAIL'));
     dispatch({ type: ADD_ROOMS_MESSAGE_FAIL })
   }
 };

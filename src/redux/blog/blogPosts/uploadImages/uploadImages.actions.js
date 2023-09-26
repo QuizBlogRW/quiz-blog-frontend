@@ -24,7 +24,7 @@ export const getImageUploads = () => async (dispatch, getState) => {
         }))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_IMAGE_UPLOADS_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_IMAGE_UPLOADS_FAIL'))
     dispatch({ type: GET_IMAGE_UPLOADS_FAIL })
   }
 }
@@ -43,7 +43,7 @@ export const getOneImageUpload = (imageUploadID) => async (dispatch, getState) =
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_ONE_IMAGE_UPLOAD_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_ONE_IMAGE_UPLOAD_FAIL'))
     dispatch({ type: GET_ONE_IMAGE_UPLOAD_FAIL })
   }
 }
@@ -62,7 +62,7 @@ export const getImageUploadsByOwner = (ownerID) => async (dispatch, getState) =>
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_IMAGE_UPLOADS_BY_OWNER_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_IMAGE_UPLOADS_BY_OWNER_FAIL'))
     dispatch({ type: GET_IMAGE_UPLOADS_BY_OWNER_FAIL })
   }
 }
@@ -87,7 +87,7 @@ export const createImageUpload = (newImageUpload, onUploadProgress) => async (di
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'CREATE_IMAGE_UPLOAD_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'CREATE_IMAGE_UPLOAD_FAIL'))
     dispatch({ type: CREATE_IMAGE_UPLOAD_FAIL })
   }
 }
@@ -114,7 +114,7 @@ export const updateBlogPost = updatedImgUpload => async (dispatch, getState) => 
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'UPDATE_IMAGE_UPLOAD_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'UPDATE_IMAGE_UPLOAD_FAIL'))
     dispatch({ type: UPDATE_IMAGE_UPLOAD_FAIL })
   }
 }
@@ -138,7 +138,7 @@ export const deleteBlogPost = id => async (dispatch, getState) => {
           ))
     }
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'DELETE_IMAGE_UPLOAD_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'DELETE_IMAGE_UPLOAD_FAIL'))
     dispatch({ type: DELETE_IMAGE_UPLOAD_FAIL })
   }
 }

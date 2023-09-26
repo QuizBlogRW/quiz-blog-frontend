@@ -41,7 +41,7 @@ export const getOneLog = (logId) => async (dispatch) => {
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_LOG_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_LOG_FAIL'))
     dispatch({ type: GET_LOG_FAIL })
   }
 }

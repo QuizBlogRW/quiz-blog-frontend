@@ -25,7 +25,7 @@ export const setPaginatedQuizes = (pageNo) => async (dispatch, getState) => {
           payload: res.data,
         }))
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status))
   }
 }
 
@@ -42,7 +42,7 @@ export const setQuizes = (limit, skip) => async (dispatch) => {
           payload: res.data,
         }))
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status))
 
   }
 }
@@ -61,7 +61,7 @@ export const setAllNoLimitQuizes = () => async (dispatch) => {
           payload: res.data,
         }))
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status))
 
   }
 }
@@ -102,7 +102,7 @@ export const getQuizesByCategory = (categoryID) => async (dispatch, getState) =>
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_CATEGORY_QUIZES_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_CATEGORY_QUIZES_FAIL'))
 
     dispatch({ type: GET_CATEGORY_QUIZES_FAIL })
   }
@@ -123,7 +123,7 @@ export const getQuizesByNotes = (courseCategoryID) => async (dispatch, getState)
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_NOTES_QUIZES_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_NOTES_QUIZES_FAIL'))
 
     dispatch({ type: GET_NOTES_QUIZES_FAIL })
   }
@@ -150,7 +150,7 @@ export const createQuiz = (newQuiz) => async (dispatch, getState) => {
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'CREATE_QUIZ_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'CREATE_QUIZ_FAIL'))
 
     dispatch({ type: CREATE_QUIZ_FAIL })
   }
@@ -178,7 +178,7 @@ export const notifying = (newQuizInfo) => async (dispatch, getState) => {
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'NOTIFY_USERS_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'NOTIFY_USERS_FAIL'))
 
     dispatch({ type: NOTIFY_USERS_FAIL })
   }
@@ -206,7 +206,7 @@ export const updateQuiz = updatedQuiz => async (dispatch, getState) => {
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'UPDATE_QUIZ_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'UPDATE_QUIZ_FAIL'))
 
     dispatch({ type: UPDATE_QUIZ_FAIL })
   }
@@ -232,7 +232,7 @@ export const addVidLink = (newVidLink, quizID) => async (dispatch, getState) => 
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'ADD_VIDEO_LINK_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'ADD_VIDEO_LINK_FAIL'))
 
     dispatch({ type: ADD_VIDEO_LINK_FAIL })
   }
@@ -259,7 +259,7 @@ export const deleteVideo = (vidData, vId) => async (dispatch, getState) => {
     }
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'DELETE_VIDEO_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'DELETE_VIDEO_FAIL'))
 
     dispatch({ type: DELETE_VIDEO_FAIL })
   }
@@ -286,7 +286,7 @@ export const deleteQuiz = id => async (dispatch, getState) => {
     }
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'DELETE_QUIZ_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'DELETE_QUIZ_FAIL'))
 
     dispatch({ type: DELETE_QUIZ_FAIL })
   }

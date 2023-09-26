@@ -23,7 +23,7 @@ export const setChallenges = (pageNo) => async (dispatch, getState) => {
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status));
   }
 };
 
@@ -41,7 +41,7 @@ export const getChallengerChallenges = (challengerId) => async (dispatch, getSta
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_CHALLENGER_CHALLENGES_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_CHALLENGER_CHALLENGES_FAIL'));
     dispatch({ type: GET_CHALLENGER_CHALLENGES_FAIL })
   }
 };
@@ -60,7 +60,7 @@ export const getOneChallenge = (challengeId) => async (dispatch, getState) => {
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_ONE_CHALLENGE_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_ONE_CHALLENGE_FAIL'));
     dispatch({ type: GET_ONE_CHALLENGE_FAIL })
   }
 };
@@ -77,7 +77,7 @@ export const createChallenge = (newChallenge) => async (dispatch, getState) => {
           payload: res.data
         }))
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'CREATE_CHALLENGE_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'CREATE_CHALLENGE_FAIL'));
     dispatch({ type: CREATE_CHALLENGE_FAIL })
   }
 };
@@ -97,7 +97,7 @@ export const updateChallenge = updatedChallenge => async (dispatch, getState) =>
         alert('UPDATED!'))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'UPDATE_CHALLENGE_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'UPDATE_CHALLENGE_FAIL'));
     dispatch({ type: UPDATE_CHALLENGE_FAIL })
   }
 }
@@ -118,7 +118,7 @@ export const deleteChallenge = id => async (dispatch, getState) => {
     }
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'DELETE_CHALLENGE_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'DELETE_CHALLENGE_FAIL'));
     dispatch({ type: DELETE_CHALLENGE_FAIL })
   }
 }

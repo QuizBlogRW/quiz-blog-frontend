@@ -24,7 +24,7 @@ export const getBlogPosts = (limit, skip) => async (dispatch, getState) => {
         }))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_BLOG_POSTS_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_BLOG_POSTS_FAIL'))
     dispatch({ type: GET_BLOG_POSTS_FAIL })
   }
 }
@@ -43,7 +43,7 @@ export const getOneBlogPost = (bPSlug) => async (dispatch, getState) => {
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_ONE_BLOG_POST_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_ONE_BLOG_POST_FAIL'))
     dispatch({ type: GET_ONE_BLOG_POST_FAIL })
   }
 }
@@ -62,7 +62,7 @@ export const getBlogPostsByCategory = (bPCatID) => async (dispatch, getState) =>
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_BLOG_POSTS_BY_CATEGORY_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_BLOG_POSTS_BY_CATEGORY_FAIL'))
     dispatch({ type: GET_BLOG_POSTS_BY_CATEGORY_FAIL })
   }
 }
@@ -87,7 +87,7 @@ export const createBlogPost = (newBlogPost, onUploadProgress) => async (dispatch
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'CREATE_BLOG_POST_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'CREATE_BLOG_POST_FAIL'))
     dispatch({ type: CREATE_BLOG_POST_FAIL })
   }
 }
@@ -114,7 +114,7 @@ export const updateBlogPost = updatedBP => async (dispatch, getState) => {
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'UPDATE_BLOG_POST_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'UPDATE_BLOG_POST_FAIL'))
     dispatch({ type: UPDATE_BLOG_POST_FAIL })
   }
 }
@@ -138,7 +138,7 @@ export const deleteBlogPost = id => async (dispatch, getState) => {
           ))
     }
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'DELETE_BLOG_POST_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'DELETE_BLOG_POST_FAIL'))
     dispatch({ type: DELETE_BLOG_POST_FAIL })
   }
 }

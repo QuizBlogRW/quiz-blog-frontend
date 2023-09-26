@@ -43,7 +43,7 @@ export const fetchSchoolLevels = (schoolID) => async (dispatch, getState) => {
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'FETCH_SCHOOL_LEVELS_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'FETCH_SCHOOL_LEVELS_FAIL'));
     dispatch({ type: FETCH_SCHOOL_LEVELS_FAIL })
   }
 };
@@ -68,7 +68,7 @@ export const createLevel = (newLevel) => async (dispatch, getState) => {
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'CREATE_LEVEL_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'CREATE_LEVEL_FAIL'));
     dispatch({ type: CREATE_LEVEL_FAIL })
   }
 };
@@ -94,7 +94,7 @@ export const updateLevel = updatedLev => async (dispatch, getState) => {
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'UPDATE_LEVEL_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'UPDATE_LEVEL_FAIL'));
     dispatch({ type: UPDATE_LEVEL_FAIL });
   }
 }
@@ -118,7 +118,7 @@ export const deleteLevel = id => async (dispatch, getState) => {
           ))
     }
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'DELETE_LEVEL_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'DELETE_LEVEL_FAIL'));
     dispatch({ type: DELETE_LEVEL_FAIL });
   }
 }

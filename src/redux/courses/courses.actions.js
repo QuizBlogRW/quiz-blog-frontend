@@ -43,7 +43,7 @@ export const getOneCourse = (courseId) => async (dispatch, getState) => {
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_ONE_COURSE_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_ONE_COURSE_FAIL'));
     dispatch({ type: GET_ONE_COURSE_FAIL })
   }
 };
@@ -62,7 +62,7 @@ export const getCoursesByCategory = (cCId) => async (dispatch, getState) => {
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_COURSES_BY_CATEGORY_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_COURSES_BY_CATEGORY_FAIL'));
     dispatch({ type: GET_COURSES_BY_CATEGORY_FAIL })
   }
 };
@@ -87,7 +87,7 @@ export const createCourse = (newCourses) => async (dispatch, getState) => {
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'CREATE_COURSE_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'CREATE_COURSE_FAIL'));
     dispatch({ type: CREATE_COURSE_FAIL })
   }
 };
@@ -112,7 +112,7 @@ export const updateCourse = updatedCourse => async (dispatch, getState) => {
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'UPDATE_COURSE_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'UPDATE_COURSE_FAIL'));
     dispatch({ type: UPDATE_COURSE_FAIL });
   }
 }
@@ -136,7 +136,7 @@ export const deleteCourse = id => async (dispatch, getState) => {
           ))
     }
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'DELETE_COURSE_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'DELETE_COURSE_FAIL'));
     dispatch({ type: DELETE_COURSE_FAIL });
   }
 }

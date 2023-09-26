@@ -23,7 +23,7 @@ export const getChallengeQuestions = () => async (dispatch, getState) => {
                     payload: res.data
                 }))
     } catch (err) {
-        dispatch(returnErrors(err && err.response && err.response.data, err.response.status))
+        dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status))
     }
 }
 
@@ -40,7 +40,7 @@ export const getOneQuestion = (chQnId) => async (dispatch) => {
                     payload: res.data,
                 }))
     } catch (err) {
-        dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_ONE_CHALLENGE_QUESTION_FAIL'))
+        dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_ONE_CHALLENGE_QUESTION_FAIL'))
         dispatch({ type: GET_ONE_CHALLENGE_QUESTION_FAIL })
     }
 }
@@ -63,7 +63,7 @@ export const addChQuestion = (chQuestion, onUploadProgress) => async (dispatch, 
                     window.setTimeout(() => window.location.reload(), 3000)))
 
     } catch (err) {
-        dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'ADD_CHALLENGE_QUESTION_FAIL'))
+        dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'ADD_CHALLENGE_QUESTION_FAIL'))
         dispatch({ type: ADD_CHALLENGE_QUESTION_FAIL })
     }
 }
@@ -87,7 +87,7 @@ export const updateChQuestion = (qtId, updatedChQuestion, onUploadProgress) => a
                 ))
 
     } catch (err) {
-        dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'UPDATE_CHALLENGE_QUESTION_FAIL'))
+        dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'UPDATE_CHALLENGE_QUESTION_FAIL'))
         dispatch({ type: UPDATE_CHALLENGE_QUESTION_FAIL })
     }
 }
@@ -113,7 +113,7 @@ export const deleteChQuestion = id => async (dispatch, getState) => {
         }
 
     } catch (err) {
-        dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'DELETE_CHALLENGE_QUESTION_FAIL'))
+        dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'DELETE_CHALLENGE_QUESTION_FAIL'))
         dispatch({ type: DELETE_CHALLENGE_QUESTION_FAIL })
     }
 }

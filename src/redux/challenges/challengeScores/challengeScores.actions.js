@@ -24,7 +24,7 @@ export const getScores = (pageNo) => async (dispatch, getState) => {
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status));
   }
 };
 
@@ -42,7 +42,7 @@ export const getRankingScores = (chQuizID) => async (dispatch, getState) => {
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_RANKING_CHALLENGE_SCORES_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_RANKING_CHALLENGE_SCORES_FAIL'));
     dispatch({ type: GET_RANKING_CHALLENGE_SCORES_FAIL })
   }
 };
@@ -61,7 +61,7 @@ export const getTakerScores = (takerId) => async (dispatch, getState) => {
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_TAKER_CHALLENGE_SCORES_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_TAKER_CHALLENGE_SCORES_FAIL'));
     dispatch({ type: GET_TAKER_CHALLENGE_SCORES_FAIL })
   }
 };
@@ -80,7 +80,7 @@ export const getCreatorScores = (uId) => async (dispatch, getState) => {
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err.response && err && err.response && err.response.data, err.response.status, 'GET_CREATOR_CHALLENGE_SCORES_FAIL'));
+    dispatch(returnErrors(err.response && err && err.response && err.response.data, err && err.response && err.response.status, 'GET_CREATOR_CHALLENGE_SCORES_FAIL'));
     dispatch({ type: GET_CREATOR_CHALLENGE_SCORES_FAIL })
   }
 };
@@ -99,7 +99,7 @@ export const getOneScore = (scoreId) => async (dispatch, getState) => {
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_ONE_CHALLENGE_SCORE_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_ONE_CHALLENGE_SCORE_FAIL'));
     dispatch({ type: GET_ONE_CHALLENGE_SCORE_FAIL })
   }
 };
@@ -117,7 +117,7 @@ export const createChScore = (newChScore) => async (dispatch, getState) => {
         }))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'CREATE_CHALLENGE_SCORE_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'CREATE_CHALLENGE_SCORE_FAIL'));
     dispatch({ type: CREATE_CHALLENGE_SCORE_FAIL })
   }
 };
@@ -142,7 +142,7 @@ export const updateChScore = updatedChScore => async (dispatch, getState) => {
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'UPDATE_CHALLENGE_SCORE_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'UPDATE_CHALLENGE_SCORE_FAIL'));
     dispatch({ type: UPDATE_CHALLENGE_SCORE_FAIL })
   }
 }
@@ -168,7 +168,7 @@ export const deleteChScore = id => async (dispatch, getState) => {
     }
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'DELETE_CHALLENGE_SCORE_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'DELETE_CHALLENGE_SCORE_FAIL'));
     dispatch({ type: DELETE_CHALLENGE_SCORE_FAIL })
   }
 }

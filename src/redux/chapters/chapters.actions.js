@@ -44,7 +44,7 @@ export const getChaptersByCourse = (courseId) => async (dispatch, getState) => {
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_CHAPTERS_BY_COURSE_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_CHAPTERS_BY_COURSE_FAIL'));
     dispatch({ type: GET_CHAPTERS_BY_COURSE_FAIL })
   }
 };
@@ -69,7 +69,7 @@ export const createChapter = (newChapter) => async (dispatch, getState) => {
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'CREATE_CHAPTER_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'CREATE_CHAPTER_FAIL'));
     dispatch({ type: CREATE_CHAPTER_FAIL })
   }
 };
@@ -93,7 +93,7 @@ export const updateChapter = updatedChapter => async (dispatch, getState) => {
           window.setTimeout(() => window.location.reload(), 4000)
         ))
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'UPDATE_CHAPTER_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'UPDATE_CHAPTER_FAIL'));
     dispatch({ type: UPDATE_CHAPTER_FAIL });
   }
 }
@@ -117,7 +117,7 @@ export const deleteChapter = id => async (dispatch, getState) => {
           ))
     }
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'DELETE_CHAPTER_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'DELETE_CHAPTER_FAIL'));
     dispatch({ type: DELETE_CHAPTER_FAIL });
   }
 }

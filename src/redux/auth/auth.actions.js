@@ -62,7 +62,7 @@ export const loadUser = () => (dispatch, getState) => {
     }))
 
     .catch(err => {
-      dispatch(returnErrors(err && err.response && err.response.data, err.response.status))
+      dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status))
       dispatch({
         type: AUTH_ERROR
       })
@@ -84,7 +84,7 @@ export const loadUser = () => (dispatch, getState) => {
 //         }),
 //       )
 //   } catch (err) {
-//     dispatch(returnErrors(err && err.response && err.response.data, err.response.status))
+//     dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status))
 //   }
 // }
 
@@ -101,7 +101,7 @@ export const getUsers = () => async (dispatch, getState) => {
         }),
       )
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status))
   }
 }
 
@@ -132,7 +132,7 @@ export const register = ({ name, email, password }) => dispatch => {
 
 
     .catch(err => {
-      dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'REGISTER_FAIL'))
+      dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'REGISTER_FAIL'))
       dispatch({
         type: REGISTER_FAIL
       })
@@ -168,7 +168,7 @@ export const login = ({ email, password }, atHome) => async dispatch => {
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'LOGIN_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'LOGIN_FAIL'))
     dispatch({ type: LOGIN_FAIL })
   }
 }
@@ -199,7 +199,7 @@ export const updateUser = updatedUser => async (dispatch, getState) => {
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'UPDATE_USER_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'UPDATE_USER_FAIL'))
     dispatch({ type: UPDATE_USER_FAIL })
   }
 }
@@ -223,7 +223,7 @@ export const updateProfile = updatedProfile => async (dispatch, getState) => {
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'UPDATE_PROFILE_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'UPDATE_PROFILE_FAIL'))
     dispatch({ type: UPDATE_PROFILE_FAIL })
   }
 }
@@ -242,7 +242,7 @@ export const updateProfile = updatedProfile => async (dispatch, getState) => {
 //         dispatch(returnSuccess('Notes uploaded successfully!', 200, 'CREATE_NOTE')))
 
 //   } catch (err) {
-//     dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'CREATE_NOTE_FAIL'))
+//     dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'CREATE_NOTE_FAIL'))
 //     dispatch({ type: CREATE_NOTE_FAIL })
 //   }
 // }
@@ -268,7 +268,7 @@ export const updateProfileImage = (updatedProfileImage, uId) => async (dispatch,
 
   } catch (err) {
     dispatch(
-      returnErrors(err && err.response && err.response.data, err.response.status, 'UPDATE_PROFILE_IMAGE_FAIL')
+      returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'UPDATE_PROFILE_IMAGE_FAIL')
     )
     dispatch({ type: UPDATE_PROFILE_IMAGE_FAIL })
   }
@@ -288,7 +288,7 @@ export const sendResetLink = fEmail => async (dispatch) => {
         }))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'UNEXISTING_EMAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'UNEXISTING_EMAIL'))
     dispatch({ type: UNEXISTING_EMAIL })
   }
 }
@@ -307,7 +307,7 @@ export const sendNewPassword = updatePsw => async (dispatch) => {
         }))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status))
   }
 }
 
@@ -328,7 +328,7 @@ export const deleteUser = id => async (dispatch, getState) => {
     }
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'DELETE_USER_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'DELETE_USER_FAIL'))
     dispatch({ type: DELETE_USER_FAIL })
   }
 }

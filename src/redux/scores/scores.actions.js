@@ -24,7 +24,7 @@ export const setScores = (pageNo) => async (dispatch, getState) => {
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status));
   }
 };
 
@@ -42,7 +42,7 @@ export const setRankingScores = (quizID) => async (dispatch, getState) => {
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_RANKING_SCORES_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_RANKING_SCORES_FAIL'));
     dispatch({ type: GET_RANKING_SCORES_FAIL })
   }
 };
@@ -61,7 +61,7 @@ export const getTakerScores = (takerId) => async (dispatch, getState) => {
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_TAKER_SCORES_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_TAKER_SCORES_FAIL'));
     dispatch({ type: GET_TAKER_SCORES_FAIL })
   }
 };
@@ -80,7 +80,7 @@ export const getCreatorScores = (uId) => async (dispatch, getState) => {
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err.response && err && err.response && err.response.data, err.response.status, 'GET_CREATOR_SCORES_FAIL'));
+    dispatch(returnErrors(err.response && err && err.response && err.response.data, err && err.response && err.response.status, 'GET_CREATOR_SCORES_FAIL'));
     dispatch({ type: GET_CREATOR_SCORES_FAIL })
   }
 };
@@ -99,7 +99,7 @@ export const getOneScore = (scoreId) => async (dispatch, getState) => {
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_ONE_SCORE_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_ONE_SCORE_FAIL'));
     dispatch({ type: GET_ONE_SCORE_FAIL })
   }
 };
@@ -118,7 +118,7 @@ export const getPopularToday = () => async (dispatch, getState) => {
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_POPULAR_QUIZES_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_POPULAR_QUIZES_FAIL'));
     dispatch({ type: GET_POPULAR_QUIZES_FAIL })
   }
 };
@@ -137,7 +137,7 @@ export const getUserOfMonth = () => async (dispatch, getState) => {
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_MONTHLY_USER_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_MONTHLY_USER_FAIL'));
     dispatch({ type: GET_MONTHLY_USER_FAIL })
   }
 };
@@ -163,7 +163,7 @@ export const createScore = (newScore) => async (dispatch, getState) => {
     }
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'CREATE_SCORE_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'CREATE_SCORE_FAIL'));
     dispatch({ type: CREATE_SCORE_FAIL })
 
     // return false if score is not created
@@ -191,7 +191,7 @@ export const updateScore = updatedScore => async (dispatch, getState) => {
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'UPDATE_SCORE_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'UPDATE_SCORE_FAIL'));
     dispatch({ type: UPDATE_SCORE_FAIL })
   }
 }
@@ -217,7 +217,7 @@ export const deleteScore = id => async (dispatch, getState) => {
     }
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'DELETE_SCORE_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'DELETE_SCORE_FAIL'));
     dispatch({ type: DELETE_SCORE_FAIL })
   }
 }

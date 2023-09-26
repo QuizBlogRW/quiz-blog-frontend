@@ -62,7 +62,7 @@ export const getOneAdvert = (AdvertID) => async (dispatch, getState) => {
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_ONE_ADVERT_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_ONE_ADVERT_FAIL'))
     dispatch({ type: GET_ONE_ADVERT_FAIL })
   }
 }
@@ -86,7 +86,7 @@ export const createAdvert = (newAdvert, onUploadProgress) => async (dispatch, ge
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'CREATE_ADVERT_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'CREATE_ADVERT_FAIL'));
     dispatch({ type: CREATE_ADVERT_FAIL })
   }
 };
@@ -138,7 +138,7 @@ export const updateAdvert = updatedAdvert => async (dispatch, getState) => {
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'UPDATE_ADVERT_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'UPDATE_ADVERT_FAIL'));
     dispatch({ type: UPDATE_ADVERT_FAIL });
   }
 }
@@ -163,7 +163,7 @@ export const deleteAdvert = id => async (dispatch, getState) => {
           ))
     }
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'DELETE_ADVERT_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'DELETE_ADVERT_FAIL'))
     dispatch({ type: DELETE_ADVERT_FAIL })
   }
 }

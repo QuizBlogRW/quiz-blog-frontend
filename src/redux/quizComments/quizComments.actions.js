@@ -62,7 +62,7 @@ export const getOneComment = (commentId) => async (dispatch, getState) => {
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_ONE_COMMENT_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_ONE_COMMENT_FAIL'))
     dispatch({ type: GET_ONE_COMMENT_FAIL })
   }
 }
@@ -84,7 +84,7 @@ export const createComment = (newComment) => async (dispatch, getState) => {
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'CREATE_COMMENT_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'CREATE_COMMENT_FAIL'));
     dispatch({ type: CREATE_COMMENT_FAIL })
   }
 };
@@ -109,7 +109,7 @@ export const updateComment = updatedComment => async (dispatch, getState) => {
         ))
 
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'UPDATE_COMMENT_FAIL'));
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'UPDATE_COMMENT_FAIL'));
     dispatch({ type: UPDATE_COMMENT_FAIL });
   }
 }
@@ -134,7 +134,7 @@ export const deleteComment = id => async (dispatch, getState) => {
           ))
     }
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'DELETE_COMMENT_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'DELETE_COMMENT_FAIL'))
     dispatch({ type: DELETE_COMMENT_FAIL })
   }
 }
