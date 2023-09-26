@@ -3,12 +3,14 @@ import { returnErrors, clearErrors } from "../error/error.actions";
 import { returnSuccess } from '../success/success.actions'
 import { GET_SCORES, GET_ONE_SCORE, GET_ONE_SCORE_FAIL, GET_TAKER_SCORES, GET_TAKER_SCORES_FAIL, CREATE_SCORE, CREATE_SCORE_FAIL, DELETE_SCORE, DELETE_SCORE_FAIL, UPDATE_SCORE, UPDATE_SCORE_FAIL, SCORES_LOADING, GET_CREATOR_SCORES, GET_CREATOR_SCORES_FAIL, GET_POPULAR_QUIZES, GET_POPULAR_QUIZES_FAIL, GET_MONTHLY_USER, GET_MONTHLY_USER_FAIL, GET_RANKING_SCORES, GET_RANKING_SCORES_FAIL } from "./scores.types";
 import { tokenConfig } from '../auth/auth.actions'
-import { apiURL, devApiURL } from '../config'
+import { qbURL, apiURL, devApiURL } from '../config'
 
 // Axios instance
 const axiosInstance = axios.create({
-  baseURL: process.env.NODE_ENV === 'development' ? devApiURL : apiURL,
+  baseURL: process.env.NODE_ENV === 'development' ? (qbURL || devApiURL) : apiURL,
 })
+
+console.log(`The qbURL is ${qbURL}`);
 
 // View all scores
 export const setScores = (pageNo) => async (dispatch, getState) => {

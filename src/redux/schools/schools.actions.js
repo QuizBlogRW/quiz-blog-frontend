@@ -3,12 +3,14 @@ import { returnErrors } from '../error/error.actions'
 import { returnSuccess } from '../success/success.actions'
 import { GET_SCHOOLS, GET_SCHOOLS_FAIL, CREATE_SCHOOL, CREATE_SCHOOL_FAIL, DELETE_SCHOOL, DELETE_SCHOOL_FAIL, UPDATE_SCHOOL, UPDATE_SCHOOL_FAIL, SCHOOLS_LOADING, GET_ONE_SCHOOL, GET_ONE_SCHOOL_FAIL } from "./schools.types";
 import { tokenConfig } from '../auth/auth.actions'
-import { apiURL, devApiURL } from '../config'
+import { qbURL, apiURL, devApiURL } from '../config'
 
 // Axios instance
 const axiosInstance = axios.create({
-  baseURL: process.env.NODE_ENV === 'development' ? devApiURL : apiURL,
-});
+  baseURL: process.env.NODE_ENV === 'development' ? (qbURL || devApiURL) : apiURL,
+})
+
+console.log(`The qbURL is ${qbURL}`);
 
 // View all schools
 export const getSchools = () => async (dispatch, getState) => {

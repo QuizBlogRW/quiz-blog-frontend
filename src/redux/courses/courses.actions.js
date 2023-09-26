@@ -3,16 +3,18 @@ import { returnErrors } from "../error/error.actions";
 import { returnSuccess } from '../success/success.actions'
 import { GET_COURSES, GET_ONE_COURSE, ONE_COURSE_LOADING, GET_ONE_COURSE_FAIL, GET_COURSES_FAIL, CREATE_COURSE, CREATE_COURSE_FAIL, DELETE_COURSE, DELETE_COURSE_FAIL, UPDATE_COURSE, UPDATE_COURSE_FAIL, GET_COURSES_BY_CATEGORY, GET_COURSES_BY_CATEGORY_FAIL, COURSES_BYCAT_LOADING, COURSES_LOADING } from "./courses.types";
 import { tokenConfig } from '../auth/auth.actions'
-import { apiURL, devApiURL } from '../config'
+import { qbURL, apiURL, devApiURL } from '../config'
 
 // Axios instance
 const axiosInstance = axios.create({
-  baseURL: process.env.NODE_ENV === 'development' ? devApiURL : apiURL,
-});
+  baseURL: process.env.NODE_ENV === 'development' ? (qbURL || devApiURL) : apiURL,
+})
+
 
 // View all courses
 export const getCourses = () => async (dispatch, getState) => {
   await dispatch(getCoursesLoading());
+  console.log(`The qbURL is ${qbURL}`);
 
   try {
     await axiosInstance

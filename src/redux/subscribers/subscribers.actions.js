@@ -3,12 +3,14 @@ import axios from 'axios'
 import { tokenConfig } from '../auth/auth.actions'
 import { returnErrors } from "../error/error.actions";
 import { returnSuccess } from '../success/success.actions'
-import { apiURL, devApiURL } from '../config'
+import { qbURL, apiURL, devApiURL } from '../config'
 
 // Axios instance
 const axiosInstance = axios.create({
-  baseURL: process.env.NODE_ENV === 'development' ? devApiURL : apiURL,
+  baseURL: process.env.NODE_ENV === 'development' ? (qbURL || devApiURL) : apiURL,
 })
+
+console.log(`The qbURL is ${qbURL}`);
 
 // dispatch(action)
 // Dispatches an action. This is the only way to trigger a state change.

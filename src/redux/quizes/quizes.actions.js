@@ -5,12 +5,14 @@ import { returnSuccess } from '../success/success.actions'
 import { SET_QUIZES, GET_ONE_QUIZ, GET_ONE_QUIZ_LOADING, GET_ONE_QUIZ_FAIL, GET_CATEGORY_QUIZES, GET_CATEGORY_QUIZES_FAIL, CREATE_QUIZ, CREATE_QUIZ_FAIL, DELETE_QUIZ, DELETE_QUIZ_FAIL, UPDATE_QUIZ, UPDATE_QUIZ_FAIL, QUIZES_LOADING, NOTIFY_USERS, NOTIFY_USERS_FAIL, SET_ALL_QUIZES, ALL_QUIZES_LOADING, ADD_VIDEO_LINK, ADD_VIDEO_LINK_FAIL, DELETE_VIDEO, DELETE_VIDEO_FAIL, GET_NOTES_QUIZES, GET_NOTES_QUIZES_FAIL, GET_PAGINATED_QUIZES, PAGINATED_QUIZES_LOADING } from "./quizes.types"
 
 import { tokenConfig } from '../auth/auth.actions'
-import { apiURL, devApiURL } from '../config'
+import { qbURL, apiURL, devApiURL } from '../config'
 
 // Axios instance
 const axiosInstance = axios.create({
-  baseURL: process.env.NODE_ENV === 'development' ? devApiURL : apiURL,
+  baseURL: process.env.NODE_ENV === 'development' ? (qbURL || devApiURL) : apiURL,
 })
+
+console.log(`The qbURL is ${qbURL}`);
 
 
 export const setPaginatedQuizes = (pageNo) => async (dispatch, getState) => {

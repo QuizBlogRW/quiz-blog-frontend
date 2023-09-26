@@ -3,16 +3,17 @@ import { returnErrors } from "../error/error.actions";
 import { returnSuccess } from '../success/success.actions'
 import { GET_COMMENTS, GET_COMMENTS_FAIL, GET_ONE_COMMENT, GET_ONE_COMMENT_FAIL, GET_QUIZ_COMMENTS, GET_QUIZ_COMMENTS_FAIL, CREATE_COMMENT, CREATE_COMMENT_FAIL, DELETE_COMMENT, DELETE_COMMENT_FAIL, UPDATE_COMMENT, UPDATE_COMMENT_FAIL, COMMENTS_LOADING } from "./quizComments.types"
 import { tokenConfig } from '../auth/auth.actions'
-import { apiURL, devApiURL } from '../config'
+import { qbURL, apiURL, devApiURL } from '../config'
 
 // Axios instance
 const axiosInstance = axios.create({
-  baseURL: process.env.NODE_ENV === 'development' ? devApiURL : apiURL,
+  baseURL: process.env.NODE_ENV === 'development' ? (qbURL || devApiURL) : apiURL,
 })
 
 // View all comments
 export const getAllComments = () => async (dispatch, getState) => {
   await dispatch(getCommentsLoading())
+  console.log(`The qbURL is ${qbURL}`);
 
   try {
     await axiosInstance

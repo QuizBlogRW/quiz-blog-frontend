@@ -3,16 +3,18 @@ import { returnErrors } from '../error/error.actions'
 import { returnSuccess } from '../success/success.actions'
 import { SAVE_DOWNLOAD, SAVE_DOWNLOAD_FAIL, GET_DOWNLOADS, GET_DOWNLOADS_FAIL, DELETE_DOWNLOAD, DELETE_DOWNLOAD_FAIL, DOWNLOADS_LOADING, GET_CREATOR_DOWNLOADS, GET_CREATOR_DOWNLOADS_FAIL, GET_USER_DOWNLOADS, GET_USER_DOWNLOADS_FAIL } from "./downloads.types"
 import { tokenConfig } from '../auth/auth.actions'
-import { apiURL, devApiURL } from '../config'
+import { qbURL, apiURL, devApiURL } from '../config'
 
 // Axios instance
 const axiosInstance = axios.create({
-  baseURL: process.env.NODE_ENV === 'development' ? devApiURL : apiURL,
+  baseURL: process.env.NODE_ENV === 'development' ? (qbURL || devApiURL) : apiURL,
 })
+
 
 // View all downloads
 export const getDownloads = (pageNo) => async (dispatch, getState) => {
   await dispatch(getDownloadsLoading())
+  console.log(`The qbURL is ${qbURL}`);
 
   try {
     await axiosInstance

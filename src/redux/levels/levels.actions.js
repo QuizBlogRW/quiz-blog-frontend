@@ -3,12 +3,14 @@ import { returnErrors } from '../error/error.actions'
 import { returnSuccess } from '../success/success.actions'
 import { GET_LEVELS, GET_LEVELS_FAIL, CREATE_LEVEL, CREATE_LEVEL_FAIL, DELETE_LEVEL, DELETE_LEVEL_FAIL, UPDATE_LEVEL, UPDATE_LEVEL_FAIL, LEVELS_LOADING, FETCH_SCHOOL_LEVELS, FETCH_SCHOOL_LEVELS_FAIL } from "./levels.types";
 import { tokenConfig } from '../auth/auth.actions'
-import { apiURL, devApiURL } from '../config'
+import { qbURL, apiURL, devApiURL } from '../config'
 
 // Axios instance
 const axiosInstance = axios.create({
-  baseURL: process.env.NODE_ENV === 'development' ? devApiURL : apiURL,
-});
+  baseURL: process.env.NODE_ENV === 'development' ? (qbURL || devApiURL) : apiURL,
+})
+
+console.log(`The qbURL is ${qbURL}`);
 
 // View all levels
 export const getLevels = () => async (dispatch, getState) => {

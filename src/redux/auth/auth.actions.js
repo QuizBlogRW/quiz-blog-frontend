@@ -2,12 +2,14 @@ import axios from 'axios'
 import { returnErrors } from '../error/error.actions'
 import { returnSuccess } from '../success/success.actions'
 import { USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT_SUCCESS, REGISTER_SUCCESS, REGISTER_FAIL, GET_USERS, UPDATE_USER, DELETE_USER, UPDATE_USER_FAIL, DELETE_USER_FAIL, USERS_LOADING, RESET_PASSWORD, FORGOT_PASSWORD, UNEXISTING_EMAIL, UPDATE_PROFILE, UPDATE_PROFILE_FAIL, UPDATE_PROFILE_IMAGE, UPDATE_PROFILE_IMAGE_FAIL } from "./auth.types"
-import { apiURL, devApiURL } from '../config'
+import { qbURL, apiURL, devApiURL } from '../config'
 
 // Axios instance
 const axiosInstance = axios.create({
-  baseURL: process.env.NODE_ENV === 'development' ? devApiURL : apiURL,
+  baseURL: process.env.NODE_ENV === 'development' ? (qbURL || devApiURL) : apiURL,
 })
+
+console.log(`The qbURL is ${qbURL}`);
 
 //HELPER FUNCTION TO GET THE TOKEN - SETUP CONFIG/headers and token
 export const tokenConfig = getState => {

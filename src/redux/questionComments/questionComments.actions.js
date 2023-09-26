@@ -3,16 +3,17 @@ import { returnErrors } from "../error/error.actions";
 import { returnSuccess } from '../success/success.actions'
 import { GET_COMMENTS, GET_COMMENTS_FAIL, GET_ONE_COMMENT, GET_ONE_COMMENT_FAIL, GET_QUESTION_COMMENTS, GET_QUESTION_COMMENTS_FAIL, GET_COMMENTS_BY_QUIZ, GET_COMMENTS_BY_QUIZ_FAIL, COMMENTS_BY_QUIZ_LOADING, CREATE_COMMENT, CREATE_COMMENT_FAIL, DELETE_COMMENT, DELETE_COMMENT_FAIL, UPDATE_COMMENT, UPDATE_COMMENT_FAIL, COMMENTS_LOADING, GET_PAGINATED_COMMENTS, GET_PAGINATED_COMMENTS_FAIL, PAGINATED_COMMENTS_LOADING, GET_PENDING_COMMENTS, GET_PENDING_COMMENTS_FAIL, PENDING_COMMENTS_LOADING, APPROVE_COMMENT, REJECT_COMMENT, APPROVE_COMMENT_FAIL, REJECT_COMMENT_FAIL } from "./questionComments.types"
 import { tokenConfig } from '../auth/auth.actions'
-import { apiURL, devApiURL } from '../config'
+import { qbURL, apiURL, devApiURL } from '../config'
 
 // Axios instance
 const axiosInstance = axios.create({
-  baseURL: process.env.NODE_ENV === 'development' ? devApiURL : apiURL,
+  baseURL: process.env.NODE_ENV === 'development' ? (qbURL || devApiURL) : apiURL,
 })
 
 // View all comments
 export const getComments = () => async (dispatch, getState) => {
   await dispatch(getCommentsLoading())
+  console.log(`The qbURL is ${qbURL}`);
 
   try {
     await axiosInstance

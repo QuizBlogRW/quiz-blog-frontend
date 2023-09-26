@@ -3,12 +3,14 @@ import { returnErrors } from "../../error/error.actions"
 import { returnSuccess } from '../../success/success.actions'
 import { GET_POST_CATEGORIES, GET_POST_CATEGORIES_FAIL, CREATE_POST_CATEGORY, CREATE_POST_CATEGORY_FAIL, DELETE_POST_CATEGORY, DELETE_POST_CATEGORY_FAIL, UPDATE_POST_CATEGORY, UPDATE_POST_CATEGORY_FAIL, POST_CATEGORIES_LOADING } from "./postCategories.types"
 import { tokenConfig } from '../../auth/auth.actions'
-import { apiURL, devApiURL } from '../../config'
+import { qbURL, apiURL, devApiURL } from '../../config'
 
 // Axios instance
 const axiosInstance = axios.create({
-  baseURL: process.env.NODE_ENV === 'development' ? devApiURL : apiURL,
+  baseURL: process.env.NODE_ENV === 'development' ? (qbURL || devApiURL) : apiURL,
 })
+
+console.log(`The qbURL is ${qbURL}`);
 
 
 // View all post categories

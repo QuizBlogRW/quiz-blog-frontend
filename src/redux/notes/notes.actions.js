@@ -6,12 +6,14 @@ import {
   GET_NOTES_BY_COURSE_CATEGORY, NOTES_BY_COURSE_CATEGORY_LOADING, ADD_NOTES_QUIZZES, ADD_NOTES_QUIZZES_FAIL, REMOVE_QUIZ_NOTES, REMOVE_QUIZ_NOTES_FAIL
 } from "./notes.types"
 import { tokenConfig, uploadConfig } from '../auth/auth.actions'
-import { apiURL, devApiURL } from '../config'
+import { qbURL, apiURL, devApiURL } from '../config'
 
 // Axios instance
 const axiosInstance = axios.create({
-  baseURL: process.env.NODE_ENV === 'development' ? devApiURL : apiURL,
+  baseURL: process.env.NODE_ENV === 'development' ? (qbURL || devApiURL) : apiURL,
 })
+
+console.log(`The qbURL is ${qbURL}`);
 
 // View all notes
 export const getNotes = () => async (dispatch, getState) => {

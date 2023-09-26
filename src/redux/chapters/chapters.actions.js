@@ -3,16 +3,17 @@ import { returnErrors } from "../error/error.actions";
 import { returnSuccess } from '../success/success.actions'
 import { GET_CHAPTERS, GET_CHAPTERS_BY_COURSE_FAIL, GET_CHAPTERS_BY_COURSE, GET_CHAPTERS_FAIL, CREATE_CHAPTER, CREATE_CHAPTER_FAIL, DELETE_CHAPTER, DELETE_CHAPTER_FAIL, UPDATE_CHAPTER, UPDATE_CHAPTER_FAIL, CHAPTERS_LOADING, CHAPTERS_BY_COURSE_LOADING } from "./chapters.types";
 import { tokenConfig } from '../auth/auth.actions'
-import { apiURL, devApiURL } from '../config'
+import { qbURL, apiURL, devApiURL } from '../config'
 
 // Axios instance
 const axiosInstance = axios.create({
-  baseURL: process.env.NODE_ENV === 'development' ? devApiURL : apiURL,
-});
+  baseURL: process.env.NODE_ENV === 'development' ? (qbURL || devApiURL) : apiURL,
+})
 
 // View all chapters
 export const getChapters = () => async (dispatch, getState) => {
   await dispatch(getChaptersLoading());
+  console.log(`The qbURL is ${qbURL}`);
 
   try {
     await axiosInstance

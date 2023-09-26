@@ -3,16 +3,17 @@ import { returnErrors } from "../../../error/error.actions"
 import { returnSuccess } from '../../../success/success.actions'
 import { GET_BLOG_POSTS_VIEWS, GET_BLOG_POSTS_VIEWS_FAIL, GET_ONE_BLOG_POST_VIEW, GET_ONE_BLOG_POST_VIEW_FAIL, CREATE_BLOG_POST_VIEW, CREATE_BLOG_POST_VIEW_FAIL, DELETE_BLOG_POST_VIEW, DELETE_BLOG_POST_VIEW_FAIL, UPDATE_BLOG_POST_VIEW, UPDATE_BLOG_POST_VIEW_FAIL, BLOG_POSTS_VIEWS_LOADING, GET_RECENT_TEN_VIEWS, GET_RECENT_TEN_VIEWS_FAIL } from "./blogPostsViews.types"
 import { tokenConfig } from '../../../auth/auth.actions'
-import { apiURL, devApiURL } from '../../../config'
+import { qbURL, apiURL, devApiURL } from '../../../config'
 
 // Axios instance
 const axiosInstance = axios.create({
-  baseURL: process.env.NODE_ENV === 'development' ? devApiURL : apiURL,
+  baseURL: process.env.NODE_ENV === 'development' ? (qbURL || devApiURL) : apiURL,
 })
 
 // View all blog posts views
 export const getBlogPostsViews = (limit, skip) => async (dispatch, getState) => {
   await dispatch(getBlogPostsViewsLoading())
+  console.log(`The qbURL is ${qbURL}`);
 
   try {
     await axiosInstance

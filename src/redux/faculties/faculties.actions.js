@@ -3,12 +3,14 @@ import { returnErrors } from '../error/error.actions'
 import { returnSuccess } from '../success/success.actions'
 import { GET_FACULTIES, GET_FACULTIES_FAIL, CREATE_FACULTY, CREATE_FACULTY_FAIL, DELETE_FACULTY, DELETE_FACULTY_FAIL, UPDATE_FACULTY, UPDATE_FACULTY_FAIL, FACULTIES_LOADING, FETCH_LEVEL_FACULTIES, FETCH_LEVEL_FACULTIES_FAIL } from "./faculties.types";
 import { tokenConfig } from '../auth/auth.actions'
-import { apiURL, devApiURL } from '../config'
+import { qbURL, apiURL, devApiURL } from '../config'
 
 // Axios instance
 const axiosInstance = axios.create({
-  baseURL: process.env.NODE_ENV === 'development' ? devApiURL : apiURL,
-});
+  baseURL: process.env.NODE_ENV === 'development' ? (qbURL || devApiURL) : apiURL,
+})
+
+console.log(`The qbURL is ${qbURL}`);
 
 // View all faculties
 export const getFaculties = () => async (dispatch, getState) => {

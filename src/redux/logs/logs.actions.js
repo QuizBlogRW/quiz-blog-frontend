@@ -3,12 +3,14 @@ import { returnErrors } from "../error/error.actions"
 import { returnSuccess } from '../success/success.actions'
 import { GET_LOGS, GET_LOGS_FAIL, LOGS_LOADING, GET_LOG, GET_LOG_FAIL, LOG_LOADING, DELETE_LOG, DELETE_LOG_FAIL } from "./logs.types"
 import { tokenConfig } from '../auth/auth.actions'
-import { apiURL, devApiURL } from '../config'
+import { qbURL, apiURL, devApiURL } from '../config'
 
 // Axios instance
 const axiosInstance = axios.create({
-  baseURL: process.env.NODE_ENV === 'development' ? devApiURL : apiURL,
+  baseURL: process.env.NODE_ENV === 'development' ? (qbURL || devApiURL) : apiURL,
 })
+
+console.log(`The qbURL is ${qbURL}`);
 
 // View all logs
 export const getLogs = () => async (dispatch, getState) => {
