@@ -81,7 +81,7 @@ export const getOneQuiz = (quizSlug) => async (dispatch) => {
         })
       )
   } catch (err) {
-    dispatch(returnErrors(err && err.response && err.response.data, err.response.status, 'GET_ONE_QUIZ_FAIL'))
+    dispatch(returnErrors(err && err.response && err.response.data, err && err.response && err.response.status, 'GET_ONE_QUIZ_FAIL'))
 
     dispatch({ type: GET_ONE_QUIZ_FAIL })
   }

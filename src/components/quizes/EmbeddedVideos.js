@@ -40,7 +40,7 @@ const EmbeddedVideos = ({ quiz, faq, isFromFaqs, deleteVideo }) => {
                     <Card body className='question-section text-center my-2 mx-auto w-75 p-0 py-3 p-sm-2'>
                         <CardTitle tag="small" className='question-count text-uppercase text-center text-success font-weight-bold'>
                             {vid && vid.vtitle}
-                            <Button size="sm" color="white" className={`mr-2 ${(currentUser && currentUser.role) === 'Admin' || currentUser.role === 'SuperAdmin' ? '' : 'd-none'}`} onClick={() => delHandler(vid._id)}>
+                            <Button size="sm" color="white" className={`mr-2 ${(currentUser && currentUser.role) === 'Admin' || (currentUser && currentUser.role) === 'SuperAdmin' ? '' : 'd-none'}`} onClick={() => delHandler(vid._id)}>
                                 &nbsp;&nbsp;&nbsp;<img src={DeleteIcon} alt="" width="10" height="10" />
                             </Button>
                         </CardTitle>
