@@ -7,6 +7,10 @@ footer {
   color: white;
 }
 
+footer h4 {
+  color: #ffc107;
+}
+
 footer a {
   color: #fff;
   font-size: 14px;
@@ -14,7 +18,7 @@ footer a {
 }
 
 footer a:hover {
-  color: #FA944B !important;
+  color: #ffc107 !important;
   text-decoration: none;
 }
 
@@ -50,7 +54,6 @@ ul.social-network li {
 
 
 /* footer social icons */
-
 .social-network a.icoWhatsapp:hover {
   background-color: #088523 !important;
 }
@@ -67,9 +70,14 @@ ul.social-network li {
   background-color: #DD2A7B !important;
 }
 
+.social-network a.icoTwitter:hover {
+  background-color: #000000 !important;
+}
+
 .social-network a.icoWhatsapp:hover i,
 .social-network a.icoFacebook:hover i,
 .social-network a.icoLinkedin:hover i,
+.social-network a.icoTwitter:hover i,
 .social-network a.icoInstagram:hover i {
   color: #fff !important;
 }
@@ -82,9 +90,10 @@ ul.social-network li {
 .social-circle li a {
   display: inline-block;
   position: relative;
-  margin: 0 auto 0 auto;
+  margin: 0 auto;
   -moz-border-radius: 50%;
   -webkit-border-radius: 50%;
+  border: 3px solid #ffc107;
   border-radius: 50%;
   text-align: center;
   width: 30px;
@@ -92,10 +101,11 @@ ul.social-network li {
   font-size: 15px;
 }
 
-.social-circle li i {
-  margin: 0;
-  line-height: 30px;
+.social-circle li a i {
+  margin: 0 auto;
   text-align: center;
+  vertical-align: middle;
+  line-height: 26px;
 }
 
 .social-circle li a:hover i,

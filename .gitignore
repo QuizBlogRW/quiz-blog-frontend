@@ -1,16 +1,9 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # dependencies
 /node_modules
 /client/node_modules
-/.pnp
-.pnp.js
 src/images/~BROMIUM/
 
 /.vscode
-
-# testing
-/coverage
 
 # production
 /build
@@ -22,27 +15,22 @@ src/images/~BROMIUM/
 .env.test.local
 .env.production.local
 /config
-/config/default.json
-/config/default copy.json
+/config/default.js*on
+/config/default copy.js*on
 
 npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
 
 /deploy.txt
 /todo.txt
-* copy.js
-* copy.json
+* copy.js*
+* copy.js*on
 * copy.md
 /backup
+/backup/* copy.js*
 
-
-/client/src/components/questions/* copy.js
-/client/src/components/questions/* copy 1.js
-/client/src/components/questions/* cop 2.js
-/client/src/components/questions/* copy 3.js
-/client/src/components/questions/* copy 4.js
-
-.yarnrc
-.yarn
+/client/src/components/questions/* copy.js*
+/client/src/components/questions/* copy 1.js*
+/client/src/components/questions/* cop 2.js*
+/client/src/components/questions/* copy 3.js*
+/client/src/components/questions/* copy 4.js*
 .eslintcache

@@ -1,10 +1,11 @@
+@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+
 .Statistics {
   display: flex;
   width: 100%;
   align-items: stretch;
 }
 
-@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
 
 body {
   font-family: "Poppins", sans-serif;
@@ -61,7 +62,7 @@ a:focus {
 
 .items-menu {
   color: #fff;
-  background: #28a745;
+  background: #157A6E;
 }
 
 li a.dropdown-toggle::after {

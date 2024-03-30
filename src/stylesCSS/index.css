@@ -3,7 +3,7 @@ body {
     /* set the background color */
     background-attachment: fixed;
     /* set the background attachment to fixed */
-    background-position: center;
+    background-position: 50%;
     /* set the background position to center */
     background-repeat: no-repeat;
     /* set the background repeat to no-repeat */
@@ -11,6 +11,12 @@ body {
     /* set the background size to cover */
     font-family: "Montserrat", Tahoma, sans-serif !important;
     font-display: swap !important;
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 iframe {
@@ -23,17 +29,23 @@ iframe {
 }
 
 /* reset-css file or css global file */
-/* .row {
+.row {
     margin-right: 0 !important;
     margin-left: 0 !important;
-} */
+}
 
 *:focus,
 *:hover,
 *:active {
-    outline: none;
+    outline: #157A6E !important;
+    border-color: #ffc107;
+    box-shadow: 0 0 0 0.2rem rgba(38, 255, 88, 0.25);
     box-shadow: none !important;
     -webkit-appearance: none;
+}
+
+a {
+    text-decoration: none;
 }
 
 a:hover {
@@ -46,15 +58,25 @@ footer {
 }
 
 header .back-home {
-    border: 2px solid #ffffff;
+    border-width: 2px;
     border-radius: 1.5em;
     font-size: .9rem;
     padding: 1px 8px;
 }
 
+header .collapse:not(.show) {
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+}
+
 /* make profileDropDown start after 80px height from top */
 header .profileDropDown .dropdown-menu.show {
-    top: 54px !important;
+    top: 8vh !important;
+    left: -25% !important;
+    box-shadow: 1px 1px 1px 100000px rgba(0, 0, 0, 0.5);
+    height: 78vh !important;
+    overflow-y: scroll;
 }
 
 div.main {
@@ -62,18 +84,25 @@ div.main {
     margin: 0 auto;
 }
 
-.modal-content {
-    border: 1.5px solid #ffc107;
-    border-radius: 0.3rem;
-    box-shadow: 0 1.2px 1.3px -0.7px #ffc107,
-        1.2px 1.2px 1.2px 1.2px #ffee00;
+/* input:not(:placeholder-shown) {
+    background-color: #f8fffe;
+    color: #157A6E;
 }
 
+
+input:placeholder-shown {
+    background-color: #ffffff !important;
+} */
+
 /* primary: #157A6E */
-/* success: #499F68 */
-/* info: #77B28C */
+.text-primary {
+    color: #157A6E !important;
+}
+
+/* success: #157A6E */
+/* info: #157A6E */
 /* secondary: #C2C5BB */
-/* danger: #B4654A */
+/* danger: #ffc107 */
 
 .card .small-text {
     font-size: .7rem !important;
@@ -84,33 +113,40 @@ div.main {
     margin: 0 !important;
 }
 
-.popup-toast strong.mr-auto {
+.popup-toast strong.me-auto {
     width: 100%;
     font-weight: 100 !important;
 }
 
-nav.bg-primary,
+.bg-primary,
+.bg-primary:focus,
+.bg-primary:hover,
 .modal-header.bg-primary,
-button.btn-primary {
+.text-primary button.btn-primary {
     background-color: #157A6E !important;
 }
 
+.border-primary {
+    padding: .4rem !important;
+    border: 2px solid #ffc107 !important;
+    background-color: #157A6E !important;
+    /* box shadow */
+    -webkit-box-shadow: 0px 3px 3px -2px rgba(5, 128, 73, 0.57);
+    -moz-box-shadow: 0px 3px 3px -2px rgba(5, 128, 73, 0.57);
+    box-shadow: 0px 3px 3px -2px rgba(5, 128, 73, 0.57);
+}
+
 .modal-header .close {
-    color: red;
+    color: rgb(0, 0, 0);
+    font-size: 2.4rem !important;
 }
 
 header .close {
-    color: red;
+    color: rgb(176, 0, 0);
     font-size: 2.5rem
 }
 
-nav .collapse .navbar-text {
-    cursor: pointer;
-}
-
 nav .toDashboard {
-    background-color: #157A6E;
-    border: 2px solid rgb(255, 255, 255);
     border-radius: 1.5rem;
 }
 
@@ -134,7 +170,7 @@ nav .toDashboard .dropdown .dropdown-menu {
     width: 20rem;
     transform: translate3d(-248px, 50px, 0px) !important;
     background-color: #157A6E;
-    border: 2px solid #009b53;
+    border: 2px solid #ffc107;
     border-radius: 0.3rem;
     -webkit-box-shadow: 0 1.2px 3px -0.7px #1b4f72,
         1.2px 1.2px 1.2px 1.2px #dcf9ff;
@@ -146,7 +182,6 @@ nav .collapse .login-modal a,
 nav .collapse .register-modal a {
     border: 2px solid #ffc107;
     border-radius: 1.5em;
-    color: #fff !important;
     padding: 1px 8px;
     font-size: .9rem;
 }
@@ -187,14 +222,13 @@ nav .dropdown-header li a {
     font-weight: bold !important;
 }
 
-nav .dropdown-item-text,
 nav .dropdown-item-text a {
     overflow: hidden;
     text-overflow: ellipsis;
-    padding: 0.25rem 1rem;
-    color: #ffffff !important;
     font-weight: bolder;
-    text-decoration: underline;
+    text-decoration: underline !important;
+    font-size: .8rem;
+    line-height: .9;
 }
 
 nav .dropdown-item-text a button {
@@ -223,6 +257,17 @@ nav .dropdown-item-text a button {
 .fadeIn.is-visible {
     opacity: 1;
     transform: translateY(0);
+}
+
+.intro-landing h1 {
+    font-size: 3rem !important;
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+.intro-landing p,
+.intro-landing button {
+    font-size: 1.45vw !important;
+    line-height: 1.2;
 }
 
 .posts {
@@ -255,11 +300,11 @@ nav .dropdown-item-text a button {
 }
 
 .posts .text-success {
-    color: #499F68 !important;
+    color: #157A6E !important;
 }
 
 .posts .text-danger {
-    color: #B4654A !important;
+    color: #000000 !important;
 }
 
 .posts .text-yellow {
@@ -287,11 +332,11 @@ nav .dropdown-item-text a button {
     }
 
     25% {
-        border: 2px solid #499F68;
+        border: 2px solid #157A6E;
     }
 
     50% {
-        border: 2px solid #B4654A;
+        border: 2px solid #ffc107;
     }
 
     75% {
@@ -321,11 +366,11 @@ nav .dropdown-item-text a button {
 
 .fancy {
     font-weight: 400;
-    color: #B4654A;
+    color: #ffc107;
     text-align: center;
     text-transform: uppercase;
     margin-top: 5px;
-    background: linear-gradient(to right, #B4654A 0%, #157A6E 100%);
+    background: linear-gradient(to right, #ffc107 0%, #157A6E 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3);
@@ -333,10 +378,10 @@ nav .dropdown-item-text a button {
 
 
 .view-all-btn.btn {
-    background: linear-gradient(to bottom, #dfd000 5%, #408c99 100%);
+    background: linear-gradient(to bottom, #ffc107 5%, #157A6E 100%);
     border-radius: 60px !important;
     border: 2px solid #157A6E;
-    color: #008d07;
+    color: #157A6E;
     cursor: pointer;
     padding: 7px 20px;
     text-decoration: none;
@@ -351,17 +396,19 @@ nav .dropdown-item-text a button {
 }
 
 .inversed-title .part1 {
-    color: #157A6E;
+    color: #000000;
+    text-decoration-color: #157A6E;
     padding: 0 8px;
     text-decoration: underline;
-    text-decoration-color: #B4654A;
+    text-decoration-thickness: .16rem;
 }
 
 .inversed-title .part2 {
-    color: #B4654A;
+    text-decoration-color: #000000;
+    color: #157A6E;
     padding: 0 8px;
     text-decoration: underline;
-    text-decoration-color: #157A6E;
+    text-decoration-thickness: .16rem;
 }
 
 .inversed-title .part2::after {
@@ -388,9 +435,9 @@ nav .dropdown-item-text a button {
 
 @keyframes glowing {
     0% {
-        background-color: #17a2b8;
+        background-color: #157A6E;
         color: #fff;
-        box-shadow: 0 0 3px #17a2b8;
+        box-shadow: 0 0 3px #157A6E;
     }
 
     50% {
@@ -401,7 +448,7 @@ nav .dropdown-item-text a button {
 
     100% {
         background-color: #ffffff;
-        color: #17a2b8;
+        color: #157A6E;
         box-shadow: 0 0 3px #ffffff;
     }
 }
@@ -451,24 +498,12 @@ nav .dropdown-item-text a button {
     width: 100%;
 }
 
-
-.posts .challenges {
-    background-color: #dee7eb;
-    -webkit-box-shadow: 4px -4px 4px -1px rgba(5, 128, 73, 0.57);
-    -moz-box-shadow: 4px -4px 4px -1px rgba(5, 128, 73, 0.57);
-    box-shadow: 4px -4px 4px -1px rgba(5, 128, 73, 0.57);
-    margin: 1rem !important;
-    border: 1px solid #157A6E;
-    border-radius: 10px;
-}
-
 .popular {
     border: 1px solid #157A6E;
     border-radius: 10px;
 }
 
-.posts .card.card-body.bg-secondary,
-.challenges .card.card-body.bg-secondary {
+.posts .card.card-body.bg-secondary {
     background-color: #ffffe2 !important;
     border: 2px solid #157A6E !important;
     border-radius: 10px !important;
@@ -499,10 +534,8 @@ nav .dropdown-item-text a button {
     background-color: transparent;
 }
 
-div .jumbotron {
-    margin-left: 4rem !important;
-    margin-right: 4rem !important;
-    background-color: #f3f3f2 !important;
+div .jbtron {
+    background-color: #157A6E !important;
     border-radius: .3rem;
 }
 
@@ -510,7 +543,7 @@ div .jumbotron {
     color: #ffffff !important;
     background-color: rgb(148, 123, 97);
     padding: .08rem .5rem .2rem .5rem;
-    border: 1px solid #B4654A;
+    border: 1px solid #ffc107;
     border-radius: 5px !important;
     animation: blinker 1.8s linear infinite;
 }
@@ -534,7 +567,7 @@ a.blink_me:hover {
     text-decoration: none;
 }
 
-ul.webmaster-navbar {
+ul.dashboard-navbar {
     background-color: #e7f1ed !important;
 }
 
@@ -584,12 +617,12 @@ div.question-section {
     box-shadow: none !important;
 }
 
-.single-category .toast-header .mr-auto {
+.single-category .toast-header .me-auto {
     margin-right: auto !important;
     margin-left: auto !important;
 }
 
-.quiz-toast .toast-header .mr-auto {
+.quiz-toast .toast-header .me-auto {
     margin-right: 0 !important;
     margin-left: 0 !important;
 }
@@ -609,13 +642,13 @@ div.question-section {
     height: 100%;
 }
 
-.users-toast .toast-header .mr-auto {
+.users-toast .toast-header .me-auto {
     display: flex;
     justify-content: space-between;
 }
 
 .categories-toast .toast {
-    max-width: 100%;
+    width: 100%;
     /* height: 600px !important;
     overflow-y: scroll !important; */
 }
@@ -642,7 +675,7 @@ div.question-section {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #499F68;
+    background: #157A6E;
     border-radius: 2px;
 }
 
@@ -682,6 +715,7 @@ div.question-section {
 
 .modal-content {
     height: fit-content;
+    padding: 1.2rem;
 }
 
 .forgot-password .search input {
@@ -695,42 +729,13 @@ div.question-section {
 
 .btn-group-sm>.btn,
 .btn-sm {
-    padding: .25rem .4rem !important;
+    padding: .4rem .6rem !important;
     font-size: .7rem !important;
     line-height: 1 !important;
 }
 
 .all-scores {
     font-size: .9rem !important;
-}
-
-.quiz-carousel:hover {
-    transform: scale(1.03);
-    transition: 600ms;
-}
-
-.quiz-carousel .custom-tag {
-    width: 100%;
-    height: 470px;
-    background: rgb(60, 62, 90);
-}
-
-.quiz-carousel .carousel-caption {
-    background-color: rgb(60, 62, 90);
-    opacity: 0.8;
-    padding: .4rem;
-    margin: 0;
-    font-weight: 900 !important;
-    border-radius: 10px;
-}
-
-.quiz-carousel .carousel-item img,
-.subscribe-form img {
-    max-width: 100%;
-    width: 100%;
-    height: auto;
-    margin: 0 auto;
-    opacity: 0.9;
 }
 
 .posts .monthly-user.card {
@@ -764,22 +769,21 @@ div.question-section {
 .posts .monthly-user.card small {
     font-size: .7rem;
     font-weight: bolder;
-    color: #17a2b8;
+    color: #157A6E;
     text-align: center;
     text-transform: uppercase;
 }
 
 form.subscribe-form,
 .posts .search {
-    width: fit-content;
     padding: 1rem;
     border: 1px solid #157A6E;
-    background-color: #f1f0f0;
+    background-color: #ffffff;
     border-radius: 0.3rem;
     -webkit-box-shadow: 0 4px 5px -4px #1b4f72,
         1px 1px 1px 1px #dcf9ff;
     box-shadow: 0 4px 5px -4px #1b4f72,
-        1px 1px 1px 1px #499F68;
+        1px 1px 1px 1px #157A6E;
 }
 
 .posts .search {
@@ -790,28 +794,6 @@ form.subscribe-form:hover,
 .posts .search:hover {
     transform: translateY(5px);
     transition: 500ms;
-}
-
-.posts .soon h4 {
-    background-color: #157A6E;
-    color: #ffffff;
-}
-
-.quiz-carousel {
-    border: 2px solid #157A6E;
-}
-
-.quiz-carousel,
-.quiz-carousel .carousel-item img {
-    clip-path: polygon(10% 0, 100% 0%, 100% 100%, 10% 100%, 0% 50%);
-}
-
-.quiz-carousel .carousel-caption h3 {
-    font-size: 2.5rem;
-}
-
-.quiz-carousel .carousel-caption p {
-    font-size: 1.2rem;
 }
 
 .scores-pagination .btn {
@@ -872,20 +854,21 @@ form.subscribe-form:hover,
     background-color: #e5e6e7;
 }
 
-
 .course-notes .courses-content .courses-categories {
-    background-color: #e9ecef;
+    background-color: #ffffff;
     border: 2px solid #157A6E;
     border-radius: 10px;
     padding: .25rem 1.5rem;
+    /* height: fit-content; */
 }
 
 .course-notes .nav-pills .nav-link.header {
     font-size: 2rem;
     text-transform: uppercase;
     font-weight: 900;
-    background-color: #c9c9c9;
+    background-color: #157A6E;
     margin-bottom: 10px;
+    color: #ffffff;
 
 }
 
@@ -896,12 +879,8 @@ form.subscribe-form:hover,
     clip-path: polygon(0% 0%, 96% 0, 100% 50%, 96% 100%, 0% 100%);
 }
 
-/* .course-notes .selected-category {
-    border: .4px solid #aebdb1 !important;
-} */
-
 .course-notes .selected-category .categories-home-head {
-    color: #a57d04 !important;
+    color: #ffc107 !important;
     text-shadow: 1.5px 1.5px 1px #157A6E;
 }
 
@@ -913,18 +892,12 @@ form.subscribe-form:hover,
     display: block;
 }
 
-.course-notes .selected-category div .jumbotron {
-    margin-left: 0rem !important;
-    margin-right: 0rem !important;
-    background-color: #e5e6e7 !important;
-}
-
 .course-notes .card .btn.view-course {
     width: fit-content;
     border-radius: 6px;
     color: #fff;
-    background-color: #77B28C;
-    border-color: #77B28C;
+    background-color: #157A6E;
+    border-color: #157A6E;
 }
 
 .course-notes .card .btn.view-course:hover {
@@ -962,6 +935,13 @@ form.subscribe-form:hover,
     font-size: .7rem;
 }
 
+.course-notes nav div.breadcrumb {
+    margin-top: 20px;
+    background-color: #157A6E;
+    border: 2px solid #ffc107;
+    border-radius: 10px;
+    padding: 1.2rem 1.5rem .8rem 1.5rem;
+}
 
 @keyframes answer {
     from {
@@ -1013,24 +993,27 @@ form.subscribe-form:hover,
 
     /* make profileDropDown start after 80px height from top */
     header .profileDropDown .dropdown-menu.show {
-        top: 110px !important;
+        top: 4vh !important;
+        left: -1% !important;
+        box-shadow: 1px 1px 1px 100000px rgba(0, 0, 0, 0.5);
+        width: 98% !important;
     }
 
     header .navbar-brand {
         margin: 0 auto;
     }
 
-    div .jumbotron {
+    div .jbtron {
         margin-left: 0rem !important;
         margin-right: 0rem !important;
     }
 
-    div .jumbotron h1 {
+    div .jbtron h1 {
         margin-top: 1rem;
         font-size: 1.5rem;
     }
 
-    div .jumbotron p {
+    div .jbtron p {
         font-size: .8rem;
     }
 
@@ -1109,10 +1092,6 @@ form.subscribe-form:hover,
         height: 1.8rem;
     }
 
-    .quiz-carousel .custom-tag {
-        height: 400px;
-    }
-
     .tags p {
         padding-top: 0.08rem;
         padding-bottom: 0.08rem;
@@ -1140,18 +1119,23 @@ form.subscribe-form:hover,
         padding-right: 0.2rem;
     }
 
+    .question-view p,
+    .score-section p {
+        font-size: .9rem;
+    }
+
     .question-view h4,
     .score-section h4 {
         font-size: 1.1rem;
     }
 
-    .question-view h5, 
+    .question-view h5,
     .score-section h5 {
         font-size: .8rem !important;
     }
 
-    .question-view h6, .question-view small, 
-    .score-section h6, .score-section small {
+    .question-view small,
+    .score-section small {
         font-size: .5rem !important;
     }
 
@@ -1257,12 +1241,11 @@ form.subscribe-form:hover,
         display: flex;
         justify-content: space-around;
         align-items: center;
-        border: 1.5px solid #ffffff;
         border-radius: 10px;
     }
 
     header .navbar-collapse {
-        font-size: .7rem !important;
+        font-size: .6rem !important;
     }
 
     header .navbar-collapse.show {
@@ -1270,7 +1253,7 @@ form.subscribe-form:hover,
         justify-content: space-around;
     }
 
-    .ml-2.register-modal {
+    .ms-2.register-modal {
         margin-left: 0 !important;
     }
 
@@ -1278,7 +1261,6 @@ form.subscribe-form:hover,
     nav .collapse .register-modal a {
         border: 2px solid #ffc107;
         border-radius: 1.5em;
-        color: #fff !important;
         padding: 1px 7px;
         font-size: .7rem;
     }
@@ -1346,26 +1328,6 @@ form.subscribe-form:hover,
         margin-top: .4rem;
     }
 
-    .quiz-carousel .carousel-item img {
-        max-width: 100%;
-        height: 100%;
-    }
-
-    .quiz-carousel .carousel-caption {
-        width: 100% !important;
-        padding: 0;
-        display: block !important;
-        left: 0;
-    }
-
-    .quiz-carousel .carousel-caption h3 {
-        font-size: 1rem;
-    }
-
-    .quiz-carousel .carousel-caption p {
-        font-size: .66rem;
-    }
-
     .scores-pagination .btn {
         padding: .18rem .4rem;
         margin-left: .5rem;
@@ -1392,14 +1354,26 @@ form.subscribe-form:hover,
 }
 
 /* MOBILES*/
-@media(max-width: 414px) {
+@media(max-width: 460px) {
+    .intro-landing h1 {
+        font-size: 1.5rem !important;
+    }
+
+    .intro-landing p,
+    .intro-landing button {
+        font-size: .8rem !important;
+    }
+
+    nav .collapse {
+        border: 2px solid #157A6E;
+    }
 
     nav .collapse .login-modal a,
     nav .collapse .register-modal a {
-        border: 1px solid #ffc107;
+        border: 2px solid #ffc107;
         border-radius: 1.3em;
         padding: 1px 4px;
-        font-size: .7rem;
+        font-size: .6rem;
     }
 
     .mobile-categories {
@@ -1423,7 +1397,7 @@ form.subscribe-form:hover,
 
     .mobile-categories .mob-quiz {
         font-size: .8rem;
-        color: #4e91e9 !important;
+        color: #157A6E !important;
         font-weight: 900;
     }
 
@@ -1437,7 +1411,7 @@ form.subscribe-form:hover,
     }
 
     .posts h3 {
-        font-size: .8rem;
+        font-size: 1.2rem;
     }
 
     .posts h4 {
@@ -1501,11 +1475,6 @@ form.subscribe-form:hover,
         padding: .2rem
     }
 
-    .course-notes .selected-category .jumbotron {
-        padding: 1rem .6rem;
-        margin-bottom: .2rem;
-    }
-
     .course-notes .selected-category .nav-link {
         padding: .1rem .5rem;
         font-size: .65rem;
@@ -1527,19 +1496,19 @@ form.subscribe-form:hover,
         padding: 4px 8px;
     }
 
-    .course-notes div .jumbotron p {
+    .course-notes div .jbtron p {
         font-size: .6rem;
     }
 
-    .course-notes div .jumbotron p.lead {
+    .course-notes div .jbtron p.lead {
         font-size: .8rem;
     }
 
-    .course-notes div .jumbotron p.text-muted {
+    .course-notes div .jbtron p.text-muted {
         font-size: .7rem;
     }
 
-    .course-notes div .jumbotron p.text-muted {
+    .course-notes div .jbtron p.text-muted {
         font-size: .7rem;
     }
 
@@ -1645,21 +1614,6 @@ form.subscribe-form:hover,
         margin-bottom: .4rem;
     }
 
-    .view-course-container .chapter-card .c-notes.resouces-card .action-btns {
-        display: flex;
-        justify-content: center;
-        font-size: .6rem;
-    }
-
-    .view-course-container .chapter-card .c-notes.resouces-card .action-btns .btn {
-        font-size: .6rem;
-        padding: .1rem .5rem !important;
-    }
-
-    .view-course-container .chapter-card .c-notes.resouces-card .action-btns .btn a {
-        font-size: .4rem;
-    }
-
     header .collapse.show .btn a {
         font-size: .9rem;
     }
@@ -1675,12 +1629,6 @@ form.subscribe-form:hover,
         font-size: .5rem !important;
         vertical-align: inherit;
     }
-
-    .quiz-carousel,
-    .quiz-carousel .carousel-item img {
-        clip-path: polygon(0% 15%, 0 0, 15% 0%, 85% 0%, 100% 0, 100% 15%, 100% 85%, 100% 100%, 85% 100%, 15% 100%, 0 100%, 0% 85%);
-    }
-
 }
 
 /* Tabs */
@@ -1705,7 +1653,7 @@ form.subscribe-form:hover,
     text-decoration-line: underline;
     text-underline-offset: 0.4rem;
     text-decoration-thickness: 0.3rem;
-    text-decoration-color: rgb(3, 159, 190);
+    text-decoration-color: #157A6E;
 }
 
 .tabs ul:first-child {

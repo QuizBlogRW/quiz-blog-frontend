@@ -64,7 +64,7 @@
 }
 
 .container.blog-post-view .viewed-details .back-share .like-share p {
-    font-size: .8rem!important;
+    font-size: .8rem !important;
     line-height: .8;
     font-weight: 600 !important;
 }
@@ -83,7 +83,7 @@
 
 /* social icons */
 .container.blog-post-view .viewed-details .back-share .like-share .social-network a.icoWhatsapp {
-    background-color: #2BB741 !important;
+    background-color: #157A6E !important;
 }
 
 .container.blog-post-view .viewed-details .back-share .like-share .social-network a.icoFacebook {
@@ -99,7 +99,7 @@
 }
 
 .container.blog-post-view .viewed-details .back-share .like-share .social-network a.icoTwitter {
-    background-color: #00acee !important;
+    background-color: #000000 !important;
 }
 
 .container.blog-post-view .viewed-details .back-share .like-share .social-network a.icoWhatsapp i,
@@ -112,7 +112,7 @@
 
 /* Follow us */
 .container.blog-post-view .viewed-details .back-share .like-share .social-network li.follow-us {
-    background-color: khaki !important;
+    background-color: #ffc107 !important;
     padding: 9px 5px;
     border: .5px solid #fff;
     border-radius: 50%;
@@ -204,7 +204,7 @@
 }
 
 .container.blog-post-view .sidebar-content h5 a {
-    color: #178ab8 !important;
+    color: #157A6E !important;
     font-weight: 900;
 }
 
@@ -284,11 +284,11 @@
         margin-bottom: .2rem;
     }
 
-    .container.blog-post-view h4 .text-right {
+    .container.blog-post-view h4 .text-end {
         text-align: center !important;
     }
 
-    .container.blog-post-view h4 .text-right small {
+    .container.blog-post-view h4 .text-end small {
         font-size: .56rem;
     }
 

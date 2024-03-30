@@ -1,3 +1,7 @@
+.contact-section .jbtron {
+    background-color: #157A6E !important;
+}
+
 .contact-section .contact-img {
     padding: 8px 10px;
     max-width: 100%;
@@ -17,7 +21,7 @@
 
 /* MOBILES*/
 @media screen and (max-width: 768px) {
-.contact-section small {
-    font-size: .7rem!important;
-}
+    .contact-section small {
+        font-size: .7rem !important;
+    }
 }
