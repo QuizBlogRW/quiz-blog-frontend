@@ -52,7 +52,7 @@ const BlogPosts = () => {
                                     const { _id, slug, title, postCategory, creator, createdAt } = bp
 
                                     return (
-                                        <>
+                                        <React.Fragment key={_id}>
                                             <ListGroup flush color="warning" className="px-lg-3 my-1" style={{ background: "#e7e7e7" }}>
                                                 <ListGroupItem href="#" tag="span" color="alert-link" className='d-flex flex-column flex-lg-row justify-content-between align-items-center' style={{ background: "#e7e7e7" }}>
 
@@ -80,7 +80,7 @@ const BlogPosts = () => {
                                                     {process.env.NODE_ENV !== 'development' ? <SquareAd /> : null}
                                                 </div>
                                             }
-                                        </>)
+                                        </React.Fragment>)
                                 }
                                 )}
 

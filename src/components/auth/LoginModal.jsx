@@ -36,9 +36,6 @@ const LoginModal = ({ isOpenL, toggleL, toggleR }) => {
 
     // Lifecycle methods
     useEffect(() => {
-
-        console.log(errors)
-
         if ((errors && errors.id === 'login') && (errors && errors.msg && errors.msg.id === 'CONFIRM_ERR')) {
             setConfirmLogin(true)
         }
@@ -56,7 +53,7 @@ const LoginModal = ({ isOpenL, toggleL, toggleR }) => {
                 })
             }
         }
-    }, [isAuthenticated, isOpenL, toggleL])
+    }, [isAuthenticated, isOpenL, toggleL, errors])
 
     const onChangeHandler = e => {
         dispatch(clearErrors())
@@ -102,6 +99,8 @@ const LoginModal = ({ isOpenL, toggleL, toggleR }) => {
                 </div>
 
                 <ModalBody className='pb-0'>
+                    <Notification errorsState={errorsState} progress={null} initFn='login' />
+
                     {
                         confirmLogin ?
                             <Button
@@ -112,7 +111,6 @@ const LoginModal = ({ isOpenL, toggleL, toggleR }) => {
                             null
                     }
 
-                    <Notification errorsState={errorsState} progress={null} initFn='login' />
 
                     <Form onSubmit={(e) => onSubmitHandler(e, false)}>
                         <FormGroup>
