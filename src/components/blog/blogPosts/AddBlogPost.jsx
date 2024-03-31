@@ -1,21 +1,20 @@
 import React, { useState, useContext } from 'react'
-import { Button, Form, FormGroup, Label, Input, Row, Col, Alert, Breadcrumb, BreadcrumbItem, Progress } from 'reactstrap'
+import { Button, Form, FormGroup, Label, Input, Row, Col, Alert, Breadcrumb, BreadcrumbItem } from 'reactstrap'
 import { useParams } from 'react-router-dom'
 import { clearErrors } from '../../../redux/slices/errorSlice'
 import { clearSuccess } from '../../../redux/slices/successSlice'
 import { createBlogPost } from '../../../redux/slices/blogPostsSlice'
-import { useSelector, useDispatch } from "react-redux"
+import { useDispatch } from "react-redux"
 import QBLoadingSM from '../../rLoading/QBLoadingSM'
 import UploadPostPhotos from './UploadPostPhotos'
 import YourImages from './YourImages'
 import { authContext, currentUserContext, logRegContext } from '../../../appContexts'
+import Notification from '../../../utils/Notification'
 
 const AddBlogPost = () => {
 
     // redux
     const dispatch = useDispatch()
-    const errors = useSelector(state => state.error)
-    const successful = useSelector(state => state.success)
 
     const auth = useContext(authContext)
     const currentUser = useContext(currentUserContext)
@@ -35,11 +34,6 @@ const AddBlogPost = () => {
     })
 
     const [post_image, setPost_image] = useState('')
-    const [progress, setProgress] = useState()
-
-    // Alert
-    const [visible, setVisible] = useState(true)
-    const onDismiss = () => setVisible(false)
 
     // Errors state on form
     const [errorsState, setErrorsState] = useState([])
@@ -81,13 +75,8 @@ const AddBlogPost = () => {
         formData.append('bgColor', bgColor)
         formData.append('creator', auth.isLoading === false ? currentUser._id : null)
 
-        const onUploadProgress = (data) => {
-            //Set the progress value to show the progress bar
-            setProgress(Math.round((100 * data.loaded) / data.total))
-        }
-
         // Attempt to create
-        dispatch(createBlogPost({ formData, onUploadProgress }))
+        dispatch(createBlogPost(formData))
 
         // Reset form fields
         setBPState({
@@ -121,33 +110,8 @@ const AddBlogPost = () => {
 
 
                             <div className="px-2">
-                                {progress &&
-                                    <div className={`${errors.id || successful.msg ? 'd-none' : ''} text-center text-danger fw-bolder`}>
-                                        {progress - 1}%
-                                        <Progress animated color="info" value={progress - 1} className='mb-2' />
-                                    </div>}
 
-                                {/* Error frontend*/}
-                                {errorsState.length > 0 ?
-                                    errorsState.map(err =>
-                                        <Alert color="danger" isOpen={visible} toggle={onDismiss} key={Math.floor(Math.random() * 1000)} className='border border-warning'>
-                                            {err}
-                                        </Alert>) :
-                                    null
-                                }
-
-                                {/* Error backend */}
-                                {errors.id ?
-                                    <Alert isOpen={visible} toggle={onDismiss} color='danger'>
-                                        <small>{errors.msg && errors.msg.msg}</small>
-                                    </Alert> :
-
-                                    successful.id ?
-                                        <Alert color='success' isOpen={visible} toggle={onDismiss} className='border border-warning'>
-                                            <small>{successful.msg && successful.msg}</small>
-                                        </Alert> : null
-                                }
-
+                                <Notification errorsState={errorsState} progress={null} initFn="createBlogPost" />
                                 <Form onSubmit={onSubmitHandler}>
 
                                     <FormGroup>

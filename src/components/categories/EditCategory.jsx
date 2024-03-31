@@ -1,9 +1,10 @@
 import React, { useState, useContext } from 'react'
-import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink, Alert } from 'reactstrap'
+import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
 import { updateCategory } from '../../redux/slices/categoriesSlice'
 import EditIcon from '../../images/edit.svg'
 import { authContext } from '../../appContexts'
 import { useDispatch } from "react-redux"
+import Notification from '../../utils/Notification'
 
 const EditCategory = ({ categoryToEdit, courseCategories }) => {
 
@@ -20,10 +21,6 @@ const EditCategory = ({ categoryToEdit, courseCategories }) => {
         oldCourseCatID: categoryToEdit.courseCategory._id,
         courseCategory: categoryToEdit.courseCategory._id
     })
-
-    // Alert
-    const [visible, setVisible] = useState(true)
-    const onDismiss = () => setVisible(false)
 
     // Errors state on form
     const [errorsState, setErrorsState] = useState([])
@@ -86,15 +83,8 @@ const EditCategory = ({ categoryToEdit, courseCategories }) => {
                 </div>
 
                 <ModalBody>
-                    {/* Error frontend*/}
-                    {errorsState.length > 0 ?
-                        errorsState.map(err =>
-                            <Alert color="danger" isOpen={visible} toggle={onDismiss} key={Math.floor(Math.random() * 1000)} className='border border-warning'>
-                                {err}
-                            </Alert>) :
-                        null
-                    }
 
+                    <Notification errorsState={errorsState} progress={null} initFn="updateCategory" />
                     <Form onSubmit={onSubmitHandler}>
 
                         <FormGroup>

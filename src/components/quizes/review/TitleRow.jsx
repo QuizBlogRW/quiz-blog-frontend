@@ -3,7 +3,7 @@ import { Col, Row, Button } from 'reactstrap'
 
 import PdfDocument from '../../dashboard/pdfs/PdfDocument'
 import ReactDOMServer from 'react-dom/server';
-// import html2pdf from 'html2pdf.js'
+import html2pdf from 'html2pdf.js'
 
 const TitleRow = ({ thisReview, score, thisQuiz, qnsAll, curRevQn, currentQuestion, uRole }) => {
 
@@ -25,7 +25,7 @@ const TitleRow = ({ thisReview, score, thisQuiz, qnsAll, curRevQn, currentQuesti
         }
 
         // Generate the PDF file
-        // html2pdf().set(options).from(elementString).save()
+        html2pdf().set(options).from(elementString).save()
     }
 
     return (
@@ -46,7 +46,7 @@ const TitleRow = ({ thisReview, score, thisQuiz, qnsAll, curRevQn, currentQuesti
                     {(uRole === 'Admin' || uRole === 'SuperAdmin') &&
                         <Button color="success"
                             className="mt-sm-0 share-btn mx-1 mx-md-0"
-                        // onClick={createPDF}
+                        onClick={createPDF}
                         >
                             Download PDF
                         </Button>}

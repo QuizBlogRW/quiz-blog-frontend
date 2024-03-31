@@ -136,11 +136,6 @@ const CreateQuestions = () => {
         formData.append('created_by', auth.isLoading === false ? auth.user._id : null)
         formData.append('duration', durationState.duration)
 
-        // const onUploadProgress = (data) => {
-        //     //Set the progress value to show the progress bar
-        //     setProgress(Math.round((100 * data.loaded) / data.total))
-        // }
-
         // Attempt to create
         dispatch(addQuestion(formData))
 
@@ -196,15 +191,6 @@ const CreateQuestions = () => {
                             Finish & Notify
                         </Button>
                     </div>
-
-                    {/* Error frontend*/}
-                    {errorsState.length > 0 ?
-                        errorsState.map(err =>
-                            <Alert color="danger" isOpen={visible} toggle={onDismiss} key={Math.floor(Math.random() * 1000)} className='border border-warning'>
-                                {err}
-                            </Alert>) :
-                        null
-                    }
 
                     <Notification errorsState={errorsState} progress={progress} initFn="addQuestion" />
 

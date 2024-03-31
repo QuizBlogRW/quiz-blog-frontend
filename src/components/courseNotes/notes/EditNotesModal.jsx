@@ -66,13 +66,8 @@ const EditNotesModal = ({ idToUpdate, editTitle, editDesc }) => {
         formData.append('description', description)
         formData.append('notes_file', notes_file)
 
-        const onUploadProgress = (data) => {
-            //Set the progress value to show the progress bar
-            setProgress(Math.round((100 * data.loaded) / data.total))
-        }
-
         // Attempt to update
-        dispatch(updateNotes({ formData, idToUpdate, onUploadProgress }))
+        dispatch(updateNotes({ formData, idToUpdate }))
     }
 
     return (

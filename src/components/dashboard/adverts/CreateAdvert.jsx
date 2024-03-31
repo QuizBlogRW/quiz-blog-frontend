@@ -15,6 +15,7 @@ const CreateAdvert = () => {
         phone: '',
         owner: '',
         email: '',
+        link: '',
         advert_image: '',
     })
 
@@ -48,7 +49,7 @@ const CreateAdvert = () => {
     const onSubmitHandler = e => {
         e.preventDefault()
 
-        const { caption, phone, owner, email, advert_image } = advertState
+        const { caption, phone, owner, email, link, advert_image } = advertState
 
         const formData = new FormData()
 
@@ -63,15 +64,16 @@ const CreateAdvert = () => {
         formData.append('phone', phone)
         formData.append('owner', owner)
         formData.append('email', email)
+        formData.append('link', link)
         formData.append('advert_image', advert_image)
+        console.log(advert_image)
 
-        const onUploadProgress = (data) => {
-            //Set the progress value to show the progress bar
-            setProgress(Math.round((100 * data.loaded) / data.total))
-        }
+        // for (const value of formData.values()) {
+        //     console.log(value);
+        // }
 
         // Attempt to create
-        dispatch(createAdvert(formData, onUploadProgress))
+        dispatch(createAdvert(formData))
 
         // Reset the form
         setAdvertState({
@@ -79,11 +81,9 @@ const CreateAdvert = () => {
             phone: '',
             owner: '',
             email: '',
+            link: '',
             advert_image: '',
         })
-
-        // Display the progress bar
-        setProgress(true)
     }
 
     return (
@@ -124,6 +124,11 @@ const CreateAdvert = () => {
 
                             <Input type="text" name="email" placeholder="Email ..." className="mb-3" onChange={onChangeHandler} value={advertState.email} />
 
+                            <Label for="link">
+                                <strong>Link</strong>
+                            </Label>
+
+                            <Input type="text" name="link" placeholder="Link if any ..." className="mb-3" onChange={onChangeHandler} value={advertState.link} />
 
                             <Label for="phone">
                                 <strong>Phone</strong>
@@ -136,14 +141,13 @@ const CreateAdvert = () => {
                                 <small className="text-info"> (.jpg, .jpeg, .png, .svg)</small>
                             </Label>
 
-                            <Input bsSize="sm" type="file" accept=".jpg, .jpeg, .png, .svg" name="advert_image" onChange={onFileHandler} label="Choose an image to upload ..." id="advert_image_pick" />
+                            <Input bsSize="sm" type="file" accept=".jpg, .jpeg, .png, .svg" name="advert_image" onChange={onFileHandler} label="Choose an image to upload ..." id="advert_image" />
 
                             <Button color="success" style={{ marginTop: '2rem' }} block >
                                 Create
                             </Button>
 
                         </FormGroup>
-
                     </Form>
                 </ModalBody>
             </Modal>

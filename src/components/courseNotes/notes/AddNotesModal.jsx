@@ -21,7 +21,6 @@ const AddNotesModal = ({ chapter }) => {
         description: '',
         notes_file: ''
     })
-    const [progress, setProgress] = useState()
 
     // Errors state on form
     const [errorsState, setErrorsState] = useState([])
@@ -83,13 +82,8 @@ const AddNotesModal = ({ chapter }) => {
         formData.append('courseCategory', chapter.courseCategory)
         formData.append('uploaded_by', currentUser ? currentUser._id : null)
 
-        const onUploadProgress = (data) => {
-            //Set the progress value to show the progress bar
-            setProgress(Math.round((100 * data.loaded) / data.total))
-        }
-
         // Attempt to create
-        dispatch(createNotes(formData, onUploadProgress))
+        dispatch(createNotes(formData))
 
         setNotesState({
             title: '',
@@ -114,7 +108,7 @@ const AddNotesModal = ({ chapter }) => {
                 </div>
 
                 <ModalBody>
-                    <Notification errorsState={errorsState} progress={progress} initFn="createNotes" />
+                    <Notification errorsState={errorsState} progress={null} initFn="createNotes" />
                     <Form onSubmit={onSubmitHandler} encType='multipart/form-data'>
 
                         <FormGroup>

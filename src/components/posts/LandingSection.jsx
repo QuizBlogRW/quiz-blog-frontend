@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import { Row, Col, Button } from 'reactstrap'
+import { Link } from 'react-router-dom'
 import srcQuestion from '../../images/undraw_Question2.svg'
 import Adverts from './Adverts'
 import { logRegContext } from '../../appContexts'
@@ -31,15 +32,18 @@ const LandingSection = () => {
                     Explore and Test Yourself, Join the Fun of Quizzes and Get Ready to Succeed in your Exams with us, We're in this to Make it Happen! <span role="img" aria-label="home">📚🧠🔍🌟🎉</span>
                 </p>
 
-                <img src={srcQuestion} alt="question" style={{ maxHeight: "30vh" }} className="my-4 d-md-block mx-auto" />
+                <img src={srcQuestion} alt="question" style={{ maxHeight: "30vh", maxWidth: "100%" }} className="my-4 d-md-block mx-auto" />
 
                 <div className="d-flex align-items-center pl-lg-4 mt-2 mt-lg-4 justify-content-around">
                     <Button style={{ backgroundColor: "#157A6E", borderRadius: '50px', border: "3px solid #ffc107" }} onClick={toggleR}>
                         Get Started
                     </Button>
-                    <Button style={{ backgroundColor: "#ffc107", marginLeft: '3rem', borderRadius: '50px', border: "3px solid #157A6E" }}>
-                        Read Notes
-                    </Button>
+
+                    <Link to="/course-notes" className="text-decoration-none">
+                        <Button style={{ backgroundColor: "#ffc107", marginLeft: '3rem', borderRadius: '50px', border: "3px solid #157A6E" }}>
+                            Read Notes
+                        </Button>
+                    </Link>
                 </div>
             </Col>
 

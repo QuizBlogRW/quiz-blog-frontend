@@ -1,14 +1,11 @@
 import React, { useState } from 'react'
-import { Button, Form, FormGroup, Label, Input, Alert, Progress } from 'reactstrap'
+import { Button, Form, FormGroup, Label, Input } from 'reactstrap'
 import { clearErrors } from '../../../redux/slices/errorSlice'
 import { clearSuccess } from '../../../redux/slices/successSlice'
 import { createImageUpload } from '../../../redux/slices/imageUploadsSlice'
-import { useSelector, useDispatch } from "react-redux"
+import { useDispatch } from "react-redux"
 
 const UploadPostPhotos = ({ currentUser }) => {
-
-    const errors = useSelector(state => state.error)
-    const successful = useSelector(state => state.success)
 
     const dispatch = useDispatch()
 
@@ -18,11 +15,6 @@ const UploadPostPhotos = ({ currentUser }) => {
     })
 
     const [uploadImage, setUploadImage] = useState('')
-    const [progress, setProgress] = useState()
-
-    // Alert
-    const [visible, setVisible] = useState(true)
-    const onDismiss = () => setVisible(false)
 
     // Errors state on form
     const [errorsState, setErrorsState] = useState([])
@@ -61,13 +53,8 @@ const UploadPostPhotos = ({ currentUser }) => {
         formData.append('uploadImage', uploadImage)
         formData.append('owner', owner)
 
-        const onUploadProgress = (data) => {
-            //Set the progress value to show the progress bar
-            setProgress(Math.round((100 * data.loaded) / data.total))
-        }
-
         // Attempt to create
-        dispatch(createImageUpload(formData, onUploadProgress))
+        dispatch(createImageUpload(formData))
 
         // Reset form fields
         setImageDetailsState({
@@ -79,33 +66,7 @@ const UploadPostPhotos = ({ currentUser }) => {
     return (
         <div>
 
-            {progress &&
-                <div className={`${errors.id || successful.msg ? 'd-inline' : ''} text-center text-danger fw-bolder`}>
-                    {progress - 1}%
-                    <Progress animated color="info" value={progress - 1} className='mb-2' />
-                </div>}
-
-            {/* Error frontend*/}
-            {errorsState.length > 0 ?
-                errorsState.map(err =>
-                    <Alert color="danger" isOpen={visible} toggle={onDismiss} key={Math.floor(Math.random() * 1000)} className='border border-warning'>
-                        {err}
-                    </Alert>) :
-                null
-            }
-
-            {/* Error backend */}
-            {errors.id ?
-                <Alert isOpen={visible} toggle={onDismiss} color='danger'>
-                    <small>{errors.msg && errors.msg.msg}</small>
-                </Alert> :
-
-                successful.id ?
-                    <Alert color='success' isOpen={visible} toggle={onDismiss} className='border border-warning'>
-                        <small>{successful.msg && successful.msg}</small>
-                    </Alert> : null
-            }
-
+            <Notification errorsState={errorsState} progress={null} initFn="createImageUpload" />
             <Form onSubmit={onSubmitHandler}>
 
                 <Label for="imageTitle">
@@ -124,7 +85,7 @@ const UploadPostPhotos = ({ currentUser }) => {
 
                     <Button color="success" style={{ marginBottom: '3rem', marginTop: '.8rem' }} block >Upload</Button>
                 </FormGroup>
-            </Form >
+            </Form>
         </div>
     )
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from 'react'
-import { Form, FormGroup, Button, Input, Alert } from 'reactstrap'
+import { Form, FormGroup, Button, Input } from 'reactstrap'
 import { getOneContact, replyContact } from '../../../redux/slices/contactsSlice'
 import moment from 'moment'
 import QBLoadingSM from '../../rLoading/QBLoadingSM'
@@ -7,13 +7,12 @@ import { clearErrors } from '../../../redux/slices/errorSlice'
 import { clearSuccess } from '../../../redux/slices/successSlice'
 import { useSelector, useDispatch } from "react-redux"
 import { currentUserContext } from '../../../appContexts'
+import Notification from '../../../utils/Notification'
 
 const ChatComponent = ({ socket, onlineList, chatId }) => {
 
     // redux
     const cntct = useSelector(state => state.contacts)
-    const errors = useSelector(state => state.error)
-    const successful = useSelector(state => state.success)
     const dispatch = useDispatch()
 
     // context
@@ -50,10 +49,6 @@ const ChatComponent = ({ socket, onlineList, chatId }) => {
         }
 
     }, [currentUser, contactState.message])
-
-    // Alert
-    const [visible, setVisible] = useState(true)
-    const onDismiss = () => setVisible(false)
 
     // Errors state on form
     const [errorsState, setErrorsState] = useState([])
@@ -195,27 +190,7 @@ const ChatComponent = ({ socket, onlineList, chatId }) => {
                     </Button>
                 </Form>
 
-                {/* Error frontend*/}
-                {errorsState.length > 0 ?
-                    errorsState.map(err =>
-                        <Alert color="danger" isOpen={visible} toggle={onDismiss} key={Math.floor(Math.random() * 1000)} className='border border-warning'>
-                            {err}
-                        </Alert>) :
-                    null
-                }
-
-                {/* Error backend */}
-                {errors.id ?
-                    <Alert isOpen={visible} toggle={onDismiss} color='danger'>
-                        <small>{errors.msg && errors.msg.msg}</small>
-                    </Alert> :
-
-                    successful.id ?
-                        <Alert color='success' isOpen={visible} toggle={onDismiss} className='border border-warning'>
-                            <small>{successful.msg && successful.msg}</small>
-                        </Alert> : null
-                }
-
+                <Notification errorsState={errorsState} progress={null} initFn="replyContact" />
             </div>
     )
 }

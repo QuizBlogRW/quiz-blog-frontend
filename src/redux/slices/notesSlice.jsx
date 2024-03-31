@@ -17,11 +17,11 @@ export const getNotesByChapter = createAsyncThunk("notes/getNotesByChapter", asy
 export const getNotesByCCatg = createAsyncThunk("notes/getNotesByCCatg", async (ccatgID, { getState, dispatch }) =>
   apiCallHelper(`/api/notes/ccatg/${ccatgID}`, 'get', null, getState, dispatch, 'getNotesByCCatg'))
 
-export const createNotes = createAsyncThunk("notes/createNotes", async ({ newNotes, onUploadProgress }, { getState, dispatch }) =>
-  apiCallHelperUpload('/api/notes', 'post', newNotes, getState, dispatch, 'createNotes', onUploadProgress))
+export const createNotes = createAsyncThunk("notes/createNotes", async (newNotes, { getState, dispatch }) =>
+  apiCallHelperUpload('/api/notes', 'post', newNotes, getState, dispatch, 'createNotes'))
 
-export const updateNotes = createAsyncThunk("notes/updateNotes", async ({ updatedNotes, onUploadProgress }, { getState, dispatch }) =>
-  apiCallHelper(`/api/notes/${updatedNotes.idToUpdate}`, 'put', updatedNotes, getState, dispatch, 'updateNotes', onUploadProgress))
+export const updateNotes = createAsyncThunk("notes/updateNotes", async (updatedNotes, { getState, dispatch }) =>
+  apiCallHelper(`/api/notes/${updatedNotes.idToUpdate}`, 'put', updatedNotes, getState, dispatch, 'updateNotes'))
 
 export const addNotesQuizes = createAsyncThunk("notes/addNotesQuizes", async (notesQuizzes, { getState, dispatch }) =>
   apiCallHelper(`/api/notes/notes-quizzes/${notesQuizzes.noteID}`, 'put', notesQuizzes, getState, dispatch, 'addNotesQuizes'))

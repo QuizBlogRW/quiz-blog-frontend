@@ -2,7 +2,7 @@ import React, { lazy, Suspense, useContext, useState, useEffect } from 'react'
 import ReactDOMServer from 'react-dom/server'
 import { Button } from 'reactstrap'
 import { Link, useLocation } from 'react-router-dom'
-// import html2pdf from 'html2pdf.js'
+import html2pdf from 'html2pdf.js'
 import MarksStatus from './MarksStatus'
 import PdfDocument from '../../dashboard/pdfs/PdfDocument'
 import SimilarQuizes from './SimilarQuizes'
@@ -52,7 +52,7 @@ const QuizResults = () => {
         }
 
         // Generate the PDF file
-        // html2pdf().set(options).from(elementString).save()
+        html2pdf().set(options).from(elementString).save()
     }
 
     const scoreToSave = {
@@ -125,7 +125,7 @@ const QuizResults = () => {
                                 {(uRole === 'Admin' || uRole === 'SuperAdmin') &&
                                     <Button color='info'
                                         className='mt-3 mt-sm-0 share-btn mx-1 mx-md-0'
-                                    // onClick={createPDF}
+                                    onClick={createPDF}
                                     >
                                         Download PDF
                                     </Button>}

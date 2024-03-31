@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext, lazy, Suspense } from 'react'
-import { Button, Col, Row, Form, FormGroup, Input, Alert } from 'reactstrap'
+import React, { useState, useEffect, useContext, lazy } from 'react'
+import { Button, Col, Row, Form, FormGroup, Input } from 'reactstrap'
 import SquareAd from '../adsenses/SquareAd'
 import { sendMsg } from '../../redux/slices/contactsSlice'
 import { clearErrors } from '../../redux/slices/errorSlice'
@@ -16,12 +16,11 @@ const serverUrl = process.env.NODE_ENV === 'development' ? devApiURL : (qbURL ||
 
 // Socket Settings
 import io from 'socket.io-client'
+import Notification from '../../utils/Notification'
 
 const Contact = () => {
 
     // Redux
-    const errors = useSelector(state => state.error)
-    const successful = useSelector(state => state.success)
     const dispatch = useDispatch()
 
     const currentUser = useContext(currentUserContext)
@@ -41,10 +40,6 @@ const Contact = () => {
             });
         }
     }, [currentUser, socket])
-
-    // Alert
-    const [visible, setVisible] = useState(true)
-    const onDismiss = () => setVisible(false)
 
     // Errors state on form
     const [errorsState, setErrorsState] = useState([])
@@ -146,26 +141,8 @@ const Contact = () => {
                         </Col>
 
                         <Col sm="6" className="mb-5">
-                            {/* Error frontend*/}
-                            {errorsState.length > 0 ?
-                                errorsState.map(err =>
-                                    <Alert color="danger" isOpen={visible} toggle={onDismiss} key={Math.floor(Math.random() * 1000)} className='border border-warning'>
-                                        {err}
-                                    </Alert>) :
-                                null
-                            }
 
-                            {/* Error backend */}
-                            {errors.id && errors.id === 'ADD_CONTACT_FAIL' ?
-                                <Alert isOpen={visible} toggle={onDismiss} color='danger'>
-                                    <small>{errors.msg && errors.msg.msg}</small>
-                                </Alert> :
-
-                                successful.id && successful.id === 'ADD_CONTACT' ?
-                                    <Alert color='success' isOpen={visible} toggle={onDismiss} className='border border-warning'>
-                                        <small>{successful.msg && successful.msg}</small>
-                                    </Alert> : null
-                            }
+                            <Notification errorsState={errorsState} progress={null} initFn="sendMsg" />
                             <Form onSubmit={onContact}>
                                 <FormGroup>
                                     <Input type="text" name="contact_name" placeholder="Name" minLength="4" maxLength="30" onChange={onChangeHandler} value={state.contact_name} disabled={currentUser} />

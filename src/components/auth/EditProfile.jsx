@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Button, Row, Col, Form, FormGroup, Label, Input, Breadcrumb, BreadcrumbItem, Alert, Progress } from 'reactstrap'
+import { Button, Row, Col, Form, FormGroup, Label, Input, Breadcrumb, BreadcrumbItem } from 'reactstrap'
 import { useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from "react-redux"
 import { updateProfile } from '../../redux/slices/authSlice'
@@ -8,6 +8,7 @@ import { fetchSchoolLevels } from '../../redux/slices/levelsSlice'
 import { fetchLevelFaculties } from '../../redux/slices/facultiesSlice'
 import { authContext, currentUserContext, logRegContext } from '../../appContexts'
 import QBLoadingSM from '../rLoading/QBLoadingSM'
+import Notification from '../../utils/Notification'
 
 const EditProfile = () => {
 
@@ -20,16 +21,9 @@ const EditProfile = () => {
     const { toggleL } = useContext(logRegContext)
 
     // Redux - Selecting the state from the store
-    const errors = useSelector(state => state.error)
-    const successful = useSelector(state => state.success)
     const schools = useSelector(state => state.schools.allSchools)
     const schoolLevels = useSelector(state => state.levels.schoolLevels)
     const levelFaculties = useSelector(state => state.faculties.levelFaculties)
-    const isProfileUpdating = useSelector(state => state.auth.isLoading)
-
-    // States for the form fields
-    const [visible, setVisible] = useState(true)
-    const onDismiss = () => setVisible(false)
 
     const profile = currentUser && currentUser
     const [profileState, setProfileState] = useState(profile)
@@ -162,28 +156,7 @@ const EditProfile = () => {
                     </Breadcrumb>
                 </Row>
 
-                {/* Error frontend*/}
-                {errorsState.length > 0 ?
-                    errorsState.map(err =>
-                        <Alert color="danger" isOpen={visible} toggle={onDismiss} key={Math.floor(Math.random() * 1000)} className='border border-warning'>
-                            {err}
-                        </Alert>) :
-                    null
-                }
-
-                {/* Error backend */}
-                {/* {errors.id ?
-
-                    <Alert isOpen={visible} toggle={onDismiss} color='danger' className='border border-warning'>
-                        <small>{errors.msg && errors.msg}</small>
-                    </Alert> :
-
-                    successful.id ?
-                        <Alert color='success' isOpen={visible} toggle={onDismiss} className='border border-warning'>
-                            <small>{successful.msg && successful.msg}</small>
-                        </Alert> : null} */}
-
-                {/* {(isProfileUpdating && !successful.id && !errors.id) ? <Progress animated color="warning" value={100} className='mb-2' /> : null} */}
+                <Notification errorsState={errorsState} progress={null} initFn="updateProfile" />
                 <FormGroup row className="mx-0">
                     <Label sm={3}>Update Name</Label>
                     <Col sm={7}>

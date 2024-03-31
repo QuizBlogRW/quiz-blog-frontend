@@ -1,16 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, Alert } from 'reactstrap'
+import { Button, Modal, ModalBody, Form, FormGroup, Label, Input } from 'reactstrap'
 import { replyContact } from '../../redux/slices/contactsSlice'
 import { clearErrors } from '../../redux/slices/errorSlice'
 import { clearSuccess } from '../../redux/slices/successSlice'
-import { useSelector, useDispatch } from "react-redux"
+import { useDispatch } from "react-redux"
 import { currentUserContext } from '../../appContexts'
+import Notification from '../../utils/Notification'
 
 const ReplyContactModal = ({ thisContact }) => {
 
     // Redux
-    const errors = useSelector(state => state.error)
-    const successful = useSelector(state => state.success)
     const dispatch = useDispatch()
 
     // context
@@ -33,10 +32,6 @@ const ReplyContactModal = ({ thisContact }) => {
             setContactState(contactState => ({ ...contactState, email: currentUser.email }))
         }
     }, [currentUser])
-
-    // Alert
-    const [visible, setVisible] = useState(true)
-    const onDismiss = () => setVisible(false)
 
     // Errors state on form
     const [errorsState, setErrorsState] = useState([])
@@ -80,7 +75,7 @@ const ReplyContactModal = ({ thisContact }) => {
         }
 
         // Attempt to reply
-        dispatch(replyContact(thisContact._id, reply))
+        dispatch(replyContact({ idToUpdate: thisContact._id, reply }))
         setContactState({ message: '' })
     }
 
@@ -97,27 +92,7 @@ const ReplyContactModal = ({ thisContact }) => {
                 </div>
                 <ModalBody>
 
-                    {/* Error frontend*/}
-                    {errorsState.length > 0 ?
-                        errorsState.map(err =>
-                            <Alert color="danger" isOpen={visible} toggle={onDismiss} key={Math.floor(Math.random() * 1000)} className='border border-warning'>
-                                {err}
-                            </Alert>) :
-                        null
-                    }
-
-                    {/* Error backend */}
-                    {errors.id ?
-                        <Alert isOpen={visible} toggle={onDismiss} color='danger'>
-                            <small>{errors.msg && errors.msg.msg}</small>
-                        </Alert> :
-
-                        successful.id ?
-                            <Alert color='success' isOpen={visible} toggle={onDismiss} className='border border-warning'>
-                                <small>{successful.msg && successful.msg}</small>
-                            </Alert> : null
-                    }
-
+                    <Notification errorsState={errorsState} progress={null} initFn="replyContact" />
                     <Form onSubmit={onSubmitHandler}>
 
                         <FormGroup>
@@ -132,7 +107,6 @@ const ReplyContactModal = ({ thisContact }) => {
                             </FormGroup>
 
                             <Button color="warning" style={{ marginTop: '2rem' }} block>Reply</Button>
-
                         </FormGroup>
 
                     </Form>

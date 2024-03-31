@@ -1272,6 +1272,7 @@ form.subscribe-form:hover,
 
     nav .toDashboard .dropdown button {
         padding: 0 !important;
+        padding-left: 1rem !important;
     }
 
     nav .dropdown-header {
@@ -1354,7 +1355,7 @@ form.subscribe-form:hover,
 }
 
 /* MOBILES*/
-@media(max-width: 460px) {
+@media(max-width: 480px) {
     .intro-landing h1 {
         font-size: 1.5rem !important;
     }
@@ -1366,6 +1367,7 @@ form.subscribe-form:hover,
 
     nav .collapse {
         border: 2px solid #157A6E;
+        width: 100%!important;
     }
 
     nav .collapse .login-modal a,

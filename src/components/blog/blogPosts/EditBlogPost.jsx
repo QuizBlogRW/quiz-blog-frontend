@@ -10,6 +10,7 @@ import QBLoadingSM from '../../rLoading/QBLoadingSM'
 import UploadPostPhotos from './UploadPostPhotos'
 import YourImages from './YourImages'
 import { authContext, currentUserContext, logRegContext } from '../../../appContexts'
+import Notification from '../../../utils/Notification'
 
 const EditBlogPost = () => {
 
@@ -17,8 +18,6 @@ const EditBlogPost = () => {
   const dispatch = useDispatch()
   const bposts = useSelector(state => state.blogPosts)
   const bPcats = useSelector(state => state.postCategories)
-  const errors = useSelector(state => state.error)
-  const successful = useSelector(state => state.success)
 
   const auth = useContext(authContext)
   const currentUser = useContext(currentUserContext)
@@ -55,10 +54,6 @@ const EditBlogPost = () => {
   const creatorID = bPToUse.creator && bPToUse.creator._id
   const currentUserID = bPToUse.creator && bPToUse.creator._id
   const isAuthorized = (curUserRole === 'Admin' || curUserRole === 'SuperAdmin' || currentUserID === creatorID)
-
-  // Alert
-  const [visible, setVisible] = useState(true)
-  const onDismiss = () => setVisible(false)
 
   // Errors state on form
   const [errorsState, setErrorsState] = useState([])
@@ -118,26 +113,7 @@ const EditBlogPost = () => {
 
               <div className="mx-5">
 
-                {/* Error frontend*/}
-                {errorsState.length > 0 ?
-                  errorsState.map(err =>
-                    <Alert color="danger" isOpen={visible} toggle={onDismiss} key={Math.floor(Math.random() * 1000)} className='border border-warning'>
-                      {err}
-                    </Alert>) :
-                  null
-                }
-
-                {/* Error backend */}
-                {errors.id ?
-                  <Alert isOpen={visible} toggle={onDismiss} color='danger'>
-                    <small>{errors.msg && errors.msg.msg}</small>
-                  </Alert> :
-
-                  successful.id ?
-                    <Alert color='success' isOpen={visible} toggle={onDismiss} className='border border-warning'>
-                      <small>{successful.msg && successful.msg}</small>
-                    </Alert> : null
-                }
+                <Notification errorsState={errorsState} progress={null} initFn="updateBlogPost" />
 
                 <Form onSubmit={onSubmitHandler}>
 

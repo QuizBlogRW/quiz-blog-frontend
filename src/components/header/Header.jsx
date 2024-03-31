@@ -175,7 +175,7 @@ const Header = ({ textContent }) => {
                         <img src={logo} alt="Quiz-Blog Logo" style={{ border: `3px solid ${logoBorder}`, borderRadius: "10px", maxHeight: "3.2rem" }} />
                     </NavbarBrand>
 
-                    <div className="collapse mx-1 mx-sm-2 py-1 m-sm-0" style={{ borderColor: clr }}>
+                    <div className="collapse px-1 px-sm-2 py-1 m-sm-0" style={{ borderColor: clr }}>
                         {
                             location.pathname !== '/' ?
 

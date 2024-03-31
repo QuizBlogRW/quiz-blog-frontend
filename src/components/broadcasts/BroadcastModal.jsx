@@ -1,17 +1,15 @@
 import React, { useState, useContext } from 'react'
-import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink, Alert } from 'reactstrap'
+import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
 import { clearErrors } from '../../redux/slices/errorSlice'
 import { clearSuccess } from '../../redux/slices/successSlice'
 import { sendBroadcast } from '../../redux/slices/broadcastsSlice'
 import { useSelector, useDispatch } from "react-redux"
 import { authContext } from '../../appContexts'
+import Notification from '../../utils/Notification'
 
 const BroadcastModal = () => {
 
-    const errors = useSelector(state => state.error)
-    const successful = useSelector(state => state.success)
     const dispatch = useDispatch()
-
     const auth = useContext(authContext)
     const currentUser = auth && auth.user
     const userId = currentUser && currentUser._id
@@ -20,10 +18,6 @@ const BroadcastModal = () => {
         title: '',
         message: ''
     })
-
-    // Alert
-    const [visible, setVisible] = useState(true)
-    const onDismiss = () => setVisible(false)
 
     // Errors state on form
     const [errorsState, setErrorsState] = useState([])
@@ -89,27 +83,8 @@ const BroadcastModal = () => {
                 </div>
 
                 <ModalBody>
-                    {/* Error frontend*/}
-                    {errorsState.length > 0 ?
-                        errorsState.map(err =>
-                            <Alert color="danger" isOpen={visible} toggle={onDismiss} key={Math.floor(Math.random() * 1000)} className='border border-warning'>
-                                {err}
-                            </Alert>) :
-                        null
-                    }
 
-                    {/* Error backend */}
-                    {errors.id ?
-                        <Alert isOpen={visible} toggle={onDismiss} color='danger'>
-                            <small>{errors.msg && errors.msg.msg}</small>
-                        </Alert> :
-
-                        successful.id ?
-                            <Alert color='success' isOpen={visible} toggle={onDismiss} className='border border-warning'>
-                                <small>{successful.msg && successful.msg}</small>
-                            </Alert> : null
-                    }
-
+                    <Notification errorsState={errorsState} progress={null} initFn="sendBroadcast" />
                     <Form onSubmit={onSubmitHandler}>
 
                         <FormGroup>

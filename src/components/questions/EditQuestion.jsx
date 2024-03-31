@@ -113,13 +113,8 @@ const EditQuestion = () => {
         formData.append('last_updated_by', auth.isLoading === false ? auth.user._id : null)
         formData.append('duration', durationState.duration)
 
-        const onUploadProgress = (data) => {
-            //Set the progress value to show the progress bar
-            setProgress(Math.round((100 * data.loaded) / data.total))
-        }
-
         // Attempt to update
-        dispatch(updateQuestion({ questionId, formData, onUploadProgress }))
+        dispatch(updateQuestion({ questionId, formData }))
     }
 
     const handleAddFields = () => {
@@ -159,32 +154,7 @@ const EditQuestion = () => {
                         </Breadcrumb>
                     </Row>
 
-                    {progress &&
-                        <div className={`${errors.id || successful.msg ? 'd-none' : ''} text-center text-danger fw-bolder`}>
-                            {progress - 1}%
-                            <Progress animated color="info" value={progress - 1} className='mb-2' />
-                        </div>}
-
-                    {/* Error frontend*/}
-                    {errorsState.length > 0 ?
-                        errorsState.map(err =>
-                            <Alert color="danger" isOpen={visible} toggle={onDismiss} key={Math.floor(Math.random() * 1000)} className='border border-warning'>
-                                {err}
-                            </Alert>) :
-                        null
-                    }
-
-                    {/* Error backend */}
-                    {errors.id ?
-                        <Alert isOpen={visible} toggle={onDismiss} color='danger'>
-                            <small>{errors.msg && errors.msg.msg}</small>
-                        </Alert> :
-                        successful.id ?
-                            <Alert color='success' isOpen={visible} toggle={onDismiss} className='border border-warning'>
-                                <small>{successful.msg && successful.msg}</small>
-                            </Alert> : null
-                    }
-
+                    <Notification errorsState={errorsState} progress={null} initFn="updateQuestion" />
                     <FormGroup row className="mx-0">
                         <Label sm={2}>Question Edit</Label>
                         <Col sm={10}>

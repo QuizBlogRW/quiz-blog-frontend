@@ -8,8 +8,8 @@ export const devApiURL = 'http://localhost:4000/'
 
 // Axios instance
 const axiosInstance = axios.create({
-    // baseURL: process.env.NODE_ENV === 'development' ? devApiURL : (qbURL || apiURL),
-    baseURL: qbURL,
+    baseURL: process.env.NODE_ENV === 'development' ? devApiURL : (qbURL || apiURL),
+    // baseURL: qbURL,
 })
 
 // Function to format action type
@@ -36,7 +36,7 @@ export const apiCallHelper = async (url, method, body, getState, dispatch, actio
 
     try {
 
-        if (method === 'get' || method === 'delete') {            
+        if (method === 'get' || method === 'delete') {
             const response = await axiosInstance[method](url, { headers: { 'Content-Type': 'application/json', 'x-auth-token': getState().auth.token } })
             dispatch(returnSuccess({ msg: `${formattedActionType} success!`, status: response.status, id: actionType }))
 
@@ -78,7 +78,6 @@ export const apiCallHelperUpload = async (url, method, formData, getState, dispa
     try {
         const response = await axiosInstance[method](url, formData, {
             headers: {
-                'Content-Type': 'application/json',
                 'x-auth-token': getState().auth.token
             },
         })

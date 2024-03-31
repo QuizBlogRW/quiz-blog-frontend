@@ -11,8 +11,8 @@ export const getActiveAdverts = createAsyncThunk("adverts/getActiveAdverts", asy
 export const getOneAdvert = createAsyncThunk("adverts/getOneAdvert", async (AdvertID, { getState, dispatch }) =>
   apiCallHelper(`/api/adverts/${AdvertID}`, 'get', null, getState, dispatch, 'getOneAdvert'))
 
-export const createAdvert = createAsyncThunk("adverts/createAdvert", async ({ newAdvert, onUploadProgress }, { getState, dispatch }) =>
-  apiCallHelperUpload('/api/adverts', 'post', newAdvert, getState, dispatch, 'createAdvert', onUploadProgress))
+export const createAdvert = createAsyncThunk("adverts/createAdvert", async (formData, { getState, dispatch }) =>
+  apiCallHelperUpload('/api/adverts', 'post', formData, getState, dispatch, 'createAdvert'))
 
 export const changeStatus = createAsyncThunk("adverts/changeStatus", async (advert, { getState, dispatch }) =>
   apiCallHelper(`/api/adverts/status/${advert.advertID}`, 'put', advert, getState, dispatch, 'changeStatus'))

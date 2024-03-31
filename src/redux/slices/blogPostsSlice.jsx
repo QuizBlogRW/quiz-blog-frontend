@@ -11,8 +11,8 @@ export const getOneBlogPost = createAsyncThunk("blogPosts/getOneBlogPost", async
 export const getBlogPostsByCategory = createAsyncThunk("blogPosts/getBlogPostsByCategory", async (bPCatID, { getState, dispatch }) =>
   apiCallHelper(`/api/blogposts/postCategory/${bPCatID}`, 'get', null, getState, dispatch, 'getBlogPostsByCategory'))
 
-export const createBlogPost = createAsyncThunk("blogPosts/createBlogPost", async ({ newBlogPost, onUploadProgress }, { getState, dispatch }) =>
-  apiCallHelperUpload('/api/blogPosts', 'post', newBlogPost, getState, dispatch, 'createBlogPost', onUploadProgress))
+export const createBlogPost = createAsyncThunk("blogPosts/createBlogPost", async (newBlogPost, { getState, dispatch }) =>
+  apiCallHelperUpload('/api/blogPosts', 'post', newBlogPost, getState, dispatch, 'createBlogPost'))
 
 export const updateBlogPost = createAsyncThunk("blogPosts/updateBlogPost", async (updatedBP, { getState, dispatch }) =>
   apiCallHelper(`/api/blogPosts/${updatedBP.blogPostID}`, 'put', updatedBP, getState, dispatch, 'updateBlogPost'))

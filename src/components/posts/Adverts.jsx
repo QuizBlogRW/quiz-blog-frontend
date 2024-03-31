@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useCallback } from 'react'
-import adPlaceholder from '../../images/Einstein.jpg'
+import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from "react-redux"
 import { getActiveAdverts } from '../../redux/slices/advertsSlice'
 import { clearErrors } from '../../redux/slices/errorSlice'
+import adPlaceholder from '../../images/Einstein.jpg'
 
 const Adverts = () => {
 
@@ -25,8 +26,8 @@ const Adverts = () => {
 
     // Lifecycle method
     useEffect(() => {
-        dispatch(getActiveAdverts())
         dispatch(clearErrors())
+        dispatch(getActiveAdverts())
     }, [dispatch])
 
     // call showAdverts() every 10 seconds
@@ -44,9 +45,11 @@ const Adverts = () => {
         <div className='d-flex flex-column justify-content-center align-items-center mt-0'>
             {advertToDisplay ?
                 <>
+                    <Link to={advertToDisplay && advertToDisplay.link} target="_blank">
                     <img
                         src={advertToDisplay && advertToDisplay.advert_image} alt="Quiz-Blog Rwanda"
                         style={{ maxWidth: "92%", border: '2px solid #157A6E', borderRadius: '5px' }} />
+                </Link>
                     <p className="mt-2 mb-0 p-1 text-center" style={{ maxWidth: "92%", background: "rgb(255, 193, 7)", fontSize: "1vw", fontWeight: "bold", border: "2px solid #157A6E", borderRadius: '5px' }}>
                         {advertToDisplay && advertToDisplay.caption}
                     </p>
