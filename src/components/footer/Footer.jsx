@@ -48,8 +48,8 @@ const Footer = () => {
                                 <div className="footer-pad">
                                     <h4 className='mt-4 mt-lg-0'>About</h4>
                                     <ul className="list-unstyled ms-2">
-                                        <li><a href="/about">Ourselves</a></li>
-                                        <li><a href="/contact">Reach us</a></li>
+                                        <li><a href="/about">Our Team</a></li>
+                                        <li><a href="/contact">Reach Us</a></li>
                                         <li><a href="/faqs">FAQS</a></li>
                                     </ul>
                                 </div>
@@ -57,10 +57,10 @@ const Footer = () => {
 
                             <div className="col-md-3 col-sm-6">
                                 <div className="footer-pad">
-                                    <h4 className='mt-4 mt-lg-0'>Terms of use</h4>
+                                    <h4 className='mt-4 mt-lg-0'>Terms of Use</h4>
                                     <ul className="list-unstyled ms-2">
                                         <li><a href="/disclaimer">Disclaimer</a></li>
-                                        <li><a href="/privacy">Privacy policy</a></li>
+                                        <li><a href="/privacy">Privacy Policy</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -69,7 +69,7 @@ const Footer = () => {
                                 <div className="footer-pad">
                                     <h4 className='mt-4 mt-lg-0'>Services</h4>
                                     <ul className="list-unstyled ms-2">
-                                        <li><a href="/allposts">All quizzes</a></li>
+                                        <li><a href="/allposts">All Quizzes</a></li>
                                         <li><a href="/course-notes">Notes</a></li>
                                         <li><a href="/blog">Blog Posts</a></li>
                                     </ul>
@@ -80,7 +80,7 @@ const Footer = () => {
 
                         <div className="row">
                             <div className="col-md-12 copy">
-                                <p className="text-center">&copy; Copyright {new Date().getFullYear()} - Quiz-Blog.  All Rights Reserved.</p>
+                                <p className="text-center">&copy; Copyright {new Date().getFullYear()} ~ Quiz-Blog.  All Rights Reserved.</p>
                             </div>
                         </div>
 

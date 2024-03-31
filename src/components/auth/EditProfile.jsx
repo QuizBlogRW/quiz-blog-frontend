@@ -66,7 +66,7 @@ const EditProfile = () => {
         e.preventDefault()
         setProfileState(profileState => ({ ...profileState, faculty: e.target.value }))
         const selectedFaculty = facultiesState.filter(fac => fac._id === e.target.value)
-        setYearsState(selectedFaculty[0].years)
+        setYearsState(selectedFaculty && selectedFaculty[0].years)
     }
     useEffect(() => { setYearsState(yearsState) }, [yearsState])
 
@@ -171,7 +171,8 @@ const EditProfile = () => {
                     <Label sm={3}>Update School</Label>
                     <Col sm={7}>
                         <Input type="select" className="form-control" onChange={levelsHandler} value={(profileState && profileState.school) || ''} required>
-                            <option>-- Select your school--</option>
+                            {profileState && profileState.school ? <option>{profileState.school.title}</option> : <option>-- Select your school--</option>}
+
                             {schoolState && schoolState.map(school =>
                                 <option key={school._id} value={school._id}>
                                     {school.title}
@@ -192,7 +193,8 @@ const EditProfile = () => {
                     <Col sm={7}>
                         <Input type="select" className="form-control" onChange={facultiesHandler}
                             value={(profileState && profileState.level) || ''} required>
-                            <option>-- Select your level--</option>
+                            
+                            {profileState && profileState.level ? <option>{profileState.level.title}</option> : <option>-- Select your level--</option>}
                             {levelsState && levelsState.map(level =>
                                 <option key={level._id} value={level._id}>
                                     {level.title}
@@ -211,7 +213,8 @@ const EditProfile = () => {
                     <Col sm={7}>
                         <Input type="select" className="form-control" onChange={yearsHandler}
                             value={(profileState && profileState.faculty) || ''} required>
-                            <option>-- Select your faculty--</option>
+                            
+                            {profileState && profileState.faculty ? <option>{profileState.faculty.title}</option> : <option>-- Select your faculty--</option>}
                             {facultiesState.map(faculty =>
                                 <option key={faculty._id} value={faculty._id}>
                                     {faculty.title}
@@ -230,7 +233,8 @@ const EditProfile = () => {
                     <Col sm={7}>
                         <Input type="select" className="form-control" onChange={allSelectsHandler}
                             value={(profileState && profileState.year) || ''} required>
-                            <option>-- Select the year--</option>
+                            
+                            {profileState && profileState.year ? <option>{profileState.year}</option> : <option>-- Select your year--</option>}
                             {yearsState && yearsState.map(year =>
                                 <option key={year} value={year}>
                                     {year}
@@ -244,7 +248,6 @@ const EditProfile = () => {
                     </Col>
 
                 </FormGroup>
-
                 {
                     interestsState && interestsState.length < 1 ?
                         <FormGroup row className="mx-0">
@@ -279,9 +282,9 @@ const EditProfile = () => {
                     </Col>
                 </FormGroup>
 
-                <FormGroup check row className="mx-0">
+                <FormGroup check row className="mx-0 mt-md-4">
                     <Col sm={{ size: 10, offset: 2 }} className="pl-0">
-                        <Button className="btn btn-info btn-sm" type="submit" onClick={handleSubmit} style={{ backgroundColor: "#157A6E" }}>
+                        <Button className="btn btn-info text-white" type="submit" onClick={handleSubmit} style={{ backgroundColor: "#157A6E" }}>
                             Update
                         </Button>
                     </Col>

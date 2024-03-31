@@ -54,7 +54,7 @@ const Header = ({ textContent }) => {
 
                 <Link to="/#">
                     <small className="ms-2 d-none d-lg-flex fw-bolder" style={{ color: clr }}>
-                        {currentUser && currentUser.name && currentUser.name.split(" ")[0]}
+                        {currentUser && currentUser.name.toLowerCase().charAt(0).toUpperCase() + currentUser.name.slice(1).split(" ")[0]}
                     </small>
                 </Link>
 

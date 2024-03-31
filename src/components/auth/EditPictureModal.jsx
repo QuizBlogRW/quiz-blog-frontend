@@ -21,6 +21,7 @@ const EditPictureModal = ({ bgColor, clr }) => {
 
   const [profileImageState, setProfileImageState] = useState()
 
+
   // Errors state on form
   const [errorsState, setErrorsState] = useState([])
 
@@ -36,13 +37,6 @@ const EditPictureModal = ({ bgColor, clr }) => {
     clearSuccess()
     if (currentUser) { // Check if currentUser is not null
       setProfileImageState(e.target.files[0]);
-      // Reset image validity
-      setImageValid(true);
-      // Check if the file is an image
-      const fileType = e.target.files[0].type;
-      if (!fileType.startsWith('image/')) {
-        setImageValid(false);
-      }
     }
   }
 
@@ -99,7 +93,7 @@ const EditPictureModal = ({ bgColor, clr }) => {
                 <small className="text-info"> (.jpg, .jpeg, .png, .svg)</small>
               </Label>
 
-              <Input bsSize="sm" type="file" accept=".jpg, .jpeg, .png, .svg" name="profile_image" onChange={onFileHandler} label="Choose an image to upload ..." id="profile_image_pick" className='bg-secondary pb-2' />
+              <Input bsSize="sm" type="file" accept=".jpg, .jpeg, .png, .svg" name="profile_image" onChange={onFileHandler} label="Choose an image to upload ..." id="profile_image_pick" className='pb-2' />
 
               <Button style={{ marginTop: '2rem', backgroundColor: "#157A6E", color: "#fff" }} block >Upload</Button>
 

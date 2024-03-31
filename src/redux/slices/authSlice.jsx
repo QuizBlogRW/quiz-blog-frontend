@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { apiCallHelper } from '../configHelpers'
+import { apiCallHelper, apiCallHelperUpload } from '../configHelpers'
 
 // Async actions with createAsyncThunk
 export const loadUser = createAsyncThunk("auth/loadUser", async (_, { getState, dispatch }) =>
@@ -23,8 +23,8 @@ export const updateUser = createAsyncThunk("auth/updateUser", async (updatedUser
 export const updateProfile = createAsyncThunk("auth/updateProfile", async (updatedProfile, { getState, dispatch }) =>
   apiCallHelper(`/api/users/user-details/${updatedProfile.uId}`, 'put', updatedProfile, getState, dispatch, 'updateProfile'))
 
-export const updateProfileImage = createAsyncThunk("auth/updateProfileImage", async ({ updatedProfileImage, uId }, { getState, dispatch }) =>
-  apiCallHelper(`/api/users/user-image/${uId}`, 'put', updatedProfileImage, getState, dispatch, 'updateProfileImage'))
+export const updateProfileImage = createAsyncThunk("auth/updateProfileImage", async ({ formData, uId }, { getState, dispatch }) =>
+  apiCallHelperUpload(`/api/users/user-image/${uId}`, 'put', formData, getState, dispatch, 'updateProfileImage'))
 
 export const sendResetLink = createAsyncThunk("auth/sendResetLink", async (fEmail, { getState, dispatch }) =>
   apiCallHelper('/api/auth/forgot-password', 'post', fEmail, getState, dispatch, 'sendResetLink'))
