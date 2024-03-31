@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Button } from 'reactstrap'
 import bruce from '../../images/Bruce.jpg'
-import parmenide from '../../images/nide.jpg'
+import parmenide from '../../images/parmenide.jpg'
 import thierry from '../../images/thierry.jpg'
 import annick from '../../images/annick.jpg'
 import denyse from '../../images/denyse.jpg'
