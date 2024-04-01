@@ -2,9 +2,10 @@ import React, { useContext } from 'react'
 import { Card, Button, CardTitle, CardText, Alert } from 'reactstrap'
 import DeleteIcon from '../../../images/trash.svg'
 import moment from 'moment'
+import { deleteContact } from '../../../redux/slices/contactsSlice'
 import { currentUserContext } from '../../../appContexts'
 
-const ContactChatCard = ({ openChat, contactsToUse, deleteContact }) => {
+const ContactChatCard = ({ openChat, contactsToUse }) => {
 
     // Context
     const currentUser = useContext(currentUserContext)
@@ -13,7 +14,6 @@ const ContactChatCard = ({ openChat, contactsToUse, deleteContact }) => {
     return (
 
         contactsToUse && contactsToUse.length > 0 ?
-
             <>
                 {contactsToUse && contactsToUse.map(contact => (
 

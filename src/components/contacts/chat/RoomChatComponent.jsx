@@ -5,20 +5,20 @@ import moment from 'moment'
 import QBLoadingSM from '../../rLoading/QBLoadingSM'
 import { clearErrors } from '../../../redux/slices/errorSlice'
 import { clearSuccess } from '../../../redux/slices/successSlice'
-import { currentUserContext } from '../../../appContexts'
+import { currentUserContext, onlineListContext } from '../../../appContexts'
 import { useSelector, useDispatch } from "react-redux"
+import { socket } from '../../../utils/socket'
 
-const RoomChatComponent = ({ socket, onlineList }) => {
+const RoomChatComponent = () => {
 
     // Redux
     const chatRoom = useSelector(state => state.contacts)
     const roomMessages = useSelector(state => state.contacts)
-    const errors = useSelector(state => state.error)
-    const successful = useSelector(state => state.success)
     const dispatch = useDispatch()
 
     // Get current user from context
     const currentUser = useContext(currentUserContext)
+    const onlineList = useContext(onlineListContext)
 
     const roomID = chatRoom && chatRoom.oneChatRoom && chatRoom.oneChatRoom._id
     const roomMsgesss = roomMessages && roomMessages.oneRoomMessages
@@ -46,10 +46,6 @@ const RoomChatComponent = ({ socket, onlineList }) => {
     useEffect(() => { setRoomIDState(roomID && roomID) }, [roomID])
 
     const [typingStatus, setTypingStatus] = useState('');
-
-    // Alert
-    // const [visible, setVisible] = useState(true)
-    // const onDismiss = () => setVisible(false)
 
     // Errors state on form
     const [setErrorsState] = useState([])

@@ -4,19 +4,13 @@ import SquareAd from '../adsenses/SquareAd'
 import { sendMsg } from '../../redux/slices/contactsSlice'
 import { clearErrors } from '../../redux/slices/errorSlice'
 import { clearSuccess } from '../../redux/slices/successSlice'
-import { useSelector, useDispatch } from "react-redux"
+import { useDispatch } from "react-redux"
 import './contact.css'
 import mail from '../../../src/images/mail.svg'
 import { currentUserContext, socketContext, onlineListContext } from '../../appContexts'
-import { apiURL, devApiURL, qbURL } from '../../redux/configHelpers'
-
 const ResponsiveHorizontal = lazy(() => import('../adsenses/ResponsiveHorizontal'))
-
-const serverUrl = process.env.NODE_ENV === 'development' ? devApiURL : (qbURL || apiURL)
-
-// Socket Settings
-import io from 'socket.io-client'
 import Notification from '../../utils/Notification'
+import { socket } from '../../utils/socket'
 
 const Contact = () => {
 
@@ -24,22 +18,9 @@ const Contact = () => {
     const dispatch = useDispatch()
 
     const currentUser = useContext(currentUserContext)
-    const socket = React.useMemo(() => io.connect(serverUrl), [])
 
     // Socket join on user load
     const [onlineList, setOnlineList] = useState([])
-
-    useEffect(() => {
-        if (currentUser && currentUser.email) {
-
-            // Telling the server that a user has joined
-            socket.emit('frontJoinedUser', { user_id: currentUser._id, username: currentUser && currentUser.name, email: currentUser && currentUser.email, role: currentUser && currentUser.role });
-
-            socket.on('onlineUsersList', onlineUsers => {
-                setOnlineList(onlineUsers)
-            });
-        }
-    }, [currentUser, socket])
 
     // Errors state on form
     const [errorsState, setErrorsState] = useState([])

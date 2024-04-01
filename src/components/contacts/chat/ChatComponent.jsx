@@ -6,10 +6,11 @@ import QBLoadingSM from '../../rLoading/QBLoadingSM'
 import { clearErrors } from '../../../redux/slices/errorSlice'
 import { clearSuccess } from '../../../redux/slices/successSlice'
 import { useSelector, useDispatch } from "react-redux"
-import { currentUserContext } from '../../../appContexts'
+import { currentUserContext, onlineListContext } from '../../../appContexts'
 import Notification from '../../../utils/Notification'
+import { socket } from '../../../utils/socket'
 
-const ChatComponent = ({ socket, onlineList, chatId }) => {
+const ChatComponent = ({ chatId }) => {
 
     // redux
     const cntct = useSelector(state => state.contacts)
@@ -17,6 +18,7 @@ const ChatComponent = ({ socket, onlineList, chatId }) => {
 
     // context
     const currentUser = useContext(currentUserContext)
+    const onlineList = useContext(onlineListContext)
 
     const contact = cntct && cntct.oneContact
     const lastMessageRef = useRef(null);
@@ -47,7 +49,6 @@ const ChatComponent = ({ socket, onlineList, chatId }) => {
         if (currentUser.role === 'Visitor') {
             setContactState(contactState => ({ ...contactState, email: currentUser.email }))
         }
-
     }, [currentUser, contactState.message])
 
     // Errors state on form
