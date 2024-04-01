@@ -140,19 +140,19 @@ const ChatComponent = ({ chatId }) => {
                         color: 'white',
                         borderRadius: '10px', maxWidth: '80%', wordWrap: 'break-word', whiteSpace: 'pre-wrap', fontSize: '.8rem', fontWeight: '500', lineHeight: '1.2', verticalAlign: 'baseline', wordBreak: 'break-word'
                     }}>
-                    {contact.message}
+                    {contact && contact.message}
                 </div>
 
                 <small className="text-info">
                     <i className='text-start d-block mt-2' style={{ fontSize: ".7rem", color: "#6a89cc" }}>
-                        {moment(new Date(contact.contact_date))
+                        {moment(new Date(contact && contact.contact_date))
                             .format('YYYY-MM-DD, HH:mm')}
                     </i>
                 </small>
 
 
                 {/* REPLIES */}
-                {contact.replies.map((reply, index) => (
+                {contact && contact.replies.map((reply, index) => (
                     <div key={index}
                         className={`mt-2 mt-lg-3 ${reply.email === currentUser.email ? 'text-end' : 'text-start'}`}>
 
@@ -163,7 +163,7 @@ const ChatComponent = ({ chatId }) => {
                                 color: reply.email === currentUser.email ? '' : 'white',
                                 borderRadius: '10px', maxWidth: '80%', wordWrap: 'break-word', whiteSpace: 'pre-wrap', fontSize: '.8rem', fontWeight: '500', lineHeight: '1.2', verticalAlign: 'baseline', wordBreak: 'break-word'
                             }}>
-                            {reply.message}
+                            {reply && reply.message}
                         </div>
 
                         <small className="text-info">
