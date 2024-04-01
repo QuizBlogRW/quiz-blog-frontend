@@ -103,7 +103,7 @@ const GetReady = () => {
 
                                 </Col>
                             </Row>
-                            <EmbeddedVideos quiz={qZ} currentUser={currentUser} />
+                            <EmbeddedVideos quiz={qZ} />
                         </div>
 
                     </Container>

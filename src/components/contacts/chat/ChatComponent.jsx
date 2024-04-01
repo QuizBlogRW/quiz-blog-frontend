@@ -12,6 +12,8 @@ import { socket } from '../../../utils/socket'
 
 const ChatComponent = ({ chatId }) => {
 
+    console.log('chatId', chatId)
+
     // redux
     const cntct = useSelector(state => state.contacts)
     const dispatch = useDispatch()
@@ -28,10 +30,10 @@ const ChatComponent = ({ chatId }) => {
         lastMessageRef.current.scrollIntoView({ behavior: 'smooth' });
     }, [contact]);
 
-    // Get one contact from the chatId passed in from ContactChatCard component 
-    useEffect(() => {
-        dispatch(getOneContact(chatId))
-    }, [chatId, dispatch])
+    // // Get one contact from the chatId passed in from ContactChatCard component 
+    // useEffect(() => {
+    //     dispatch(getOneContact(chatId))
+    // }, [chatId, dispatch])
 
     const [contactState, setContactState] = useState({
         message: '',
@@ -55,8 +57,7 @@ const ChatComponent = ({ chatId }) => {
     const [errorsState, setErrorsState] = useState([])
 
     // Typing state on form
-    const handleTyping = () =>
-        socket.emit('typing', `${currentUser && currentUser.name} is typing`);
+    const handleTyping = () => socket.emit('typing', `${currentUser && currentUser.name} is typing`);
 
     useEffect(() => {
         socket.on('typingResponse', (data) => setTypingStatus(data));
@@ -120,7 +121,6 @@ const ChatComponent = ({ chatId }) => {
     const status = matchingUsr && matchingUsr.email === whoWith.email ? '🟢' : '🔴'
 
     // Avoiding the component from reloading on state change
-
     return (
         cntct.isOneLoading ? <QBLoadingSM title='chat messages' /> :
 

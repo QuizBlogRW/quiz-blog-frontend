@@ -167,8 +167,8 @@ const EditBlogPost = () => {
             </Col>
 
             <Col sm="4" className="mt-md-2">
-              <UploadPostPhotos currentUser={currentUser} />
-              <YourImages currentUser={currentUser} />
+              <UploadPostPhotos />
+              <YourImages />
             </Col>
 
           </Row>

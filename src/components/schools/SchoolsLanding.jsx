@@ -56,7 +56,7 @@ const SchoolsLanding = () => {
                     <div className="add-school mt-lg-5 mx-lg-5 px-lg-5 py-lg-3 d-flex justify-content-around align-items-center border rounded">
                         <h5 className='fw-bolder text-info d-none d-sm-block'>SCHOOLS | LEVELS | FACULTIES | YEARS</h5>
                         <Button size="lg" outline color="dark" style={{ display: "inline", marginLeft: "auto", border: "3px solid black" }}>
-                            <AddSchool auth={auth} currentUser={currentUser} />
+                            <AddSchool auth={auth} />
                         </Button>
                     </div>
 
@@ -87,12 +87,12 @@ const SchoolsLanding = () => {
                         <div className="d-flex align-items-center">
                             {schoolToEdit && <span>
                                 <Button size="sm" color="link" className="mx-1">
-                                    <EditSchoolModal idToUpdate={schoolToEdit} auth={auth} currentUser={currentUser} />
+                                    <EditSchoolModal idToUpdate={schoolToEdit} auth={auth} />
                                 </Button>
                                 <DeleteModal deleteFnName="deleteSchool" deleteFn={deleteSchool} delID={schoolToEdit} />
                             </span>}
                             <Button size="md" outline color="warning" className="ms-auto mb-3 mb-sm-0">
-                                <strong><AddLevel schools={schoolState} auth={auth} currentUser={currentUser} /></strong>
+                                <strong><AddLevel schools={schoolState} auth={auth} /></strong>
                             </Button>
                         </div>
 
@@ -114,7 +114,7 @@ const SchoolsLanding = () => {
                                                             </h6>
                                                             <span>
                                                                 <Button size="sm" color="link" className="mx-1">
-                                                                    <EditLevelModal idToUpdate={level._id} editTitle={level.title} auth={auth} currentUser={currentUser} />
+                                                                    <EditLevelModal idToUpdate={level._id} editTitle={level.title} auth={auth} />
                                                                 </Button>
                                                                 <DeleteModal deleteFnName="deleteLevel" deleteFn={deleteLevel} delID={level._id} delTitle={level.title} />
                                                             </span>
@@ -131,12 +131,12 @@ const SchoolsLanding = () => {
                                                     <div className="mt-lg-3 ms-lg-5 pl-lg-5 pt-lg-3 d-flex justify-content-around align-items-center">
                                                         <Button size="md" outline color="info" className="ms-auto">
                                                             <strong>
-                                                                <AddFaculty facultyLevel={level} auth={auth} currentUser={currentUser} />
+                                                                <AddFaculty facultyLevel={level} auth={auth} />
                                                             </strong>
                                                         </Button>
                                                     </div>
 
-                                                    <FacultiesCollapse levelID={level._id} auth={auth} currentUser={currentUser} />
+                                                    <FacultiesCollapse levelID={level._id} auth={auth} />
                                                 </TabPanel>
                                             )}
                                     </Tabs>

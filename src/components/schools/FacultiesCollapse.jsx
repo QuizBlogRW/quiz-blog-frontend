@@ -3,14 +3,13 @@ import { ListGroup, ListGroupItem, Button } from 'reactstrap'
 import { Collapse } from "react-collapse"
 import AddIcon from '../../images/plusIcon.svg'
 import SubtractIcon from '../../images/minusIcon.svg'
-import DeleteIcon from '../../images/trash.svg'
 import { getFaculties, deleteFaculty } from '../../redux/slices/facultiesSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import EditFacultyModal from './EditFacultyModal'
 import { authContext } from '../../appContexts'
 import DeleteModal from '../../utils/DeleteModal'
 
-const FacultiesCollapse = ({ currentUser, levelID }) => {
+const FacultiesCollapse = ({ levelID }) => {
 
     // Redux
     const faculties = useSelector(state => state.faculties)
@@ -42,7 +41,7 @@ const FacultiesCollapse = ({ currentUser, levelID }) => {
 
                         <span className='d-flex me-3'>
                             <Button size="sm" color="link" className="mx-2">
-                                <EditFacultyModal idToUpdate={faculty._id} editTitle={faculty.title} auth={auth} currentUser={currentUser} />
+                                <EditFacultyModal idToUpdate={faculty._id} editTitle={faculty.title} auth={auth} />
                             </Button>
                             <DeleteModal deleteFnName="deleteFaculty" deleteFn={deleteFaculty} delID={faculty._id} delTitle={faculty.title} />
 

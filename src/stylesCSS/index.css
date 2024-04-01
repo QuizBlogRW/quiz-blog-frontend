@@ -168,7 +168,7 @@ nav .toDashboard .dropdown .show>.btn-secondary.dropdown-toggle {
 
 nav .toDashboard .dropdown .dropdown-menu {
     width: 20rem;
-    transform: translate3d(-248px, 50px, 0px) !important;
+    transform: translate3d(0, 55px, 0px) !important;
     background-color: #157A6E;
     border: 2px solid #ffc107;
     border-radius: 0.3rem;
@@ -976,19 +976,13 @@ form.subscribe-form:hover,
 /* SMALL TABLET & MOBILES*/
 @media(max-width: 768px) {
 
-    .profileDropDown {
-        display: inline-block;
-        padding-top: 0.5rem;
-        padding-bottom: 0.5rem;
+    header span {
+        font-size: 3.2vw;
     }
 
-    .profileDropDown button {
-        display: flex;
-        align-items: center;
-    }
-
-    .profileDropDown-btn span {
-        font-size: .7rem;
+    header span.toDashboard,
+    header span.toDashboard span {
+        border-width: 2px !important;
     }
 
     /* make profileDropDown start after 80px height from top */
@@ -999,8 +993,33 @@ form.subscribe-form:hover,
         width: 98% !important;
     }
 
+    header .profileDropDown {
+        display: inline-block;
+    }
+
+    header .profileDropDown-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+        margin: 0;
+    }
+
+    header .profileDropDown-btn span {
+        font-size: 3.2vw;
+    }
+
     header .navbar-brand {
         margin: 0 auto;
+    }
+
+    nav span.upload-image {
+        border: 2px solid #fff;
+        padding: .01rem !important;
+        background-color: white;
+        width: 30px;
+        height: 30px;
+        clip-path: circle(50% at 50% 50%);
     }
 
     div .jbtron {
@@ -1267,12 +1286,14 @@ form.subscribe-form:hover,
 
     nav .toDashboard .dropdown .dropdown-menu {
         width: 15rem;
-        transform: translate3d(-187px, 45px, 0px) !important;
+        transform: translate3d(0, 55px, 0px) !important;
     }
 
     nav .toDashboard .dropdown button {
+        display: flex;
+        align-items: center;
         padding: 0 !important;
-        padding-left: 1rem !important;
+        padding-left: .5rem !important;
     }
 
     nav .dropdown-header {
@@ -1367,7 +1388,7 @@ form.subscribe-form:hover,
 
     nav .collapse {
         border: 2px solid #157A6E;
-        width: 100%!important;
+        width: 100% !important;
     }
 
     nav .collapse .login-modal a,

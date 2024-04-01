@@ -3,9 +3,11 @@ import moment from 'moment'
 import { Table, Alert } from 'reactstrap'
 import { deleteDownload } from '../../redux/slices/downloadsSlice'
 import DeleteModal from '../../utils/DeleteModal'
+import { currentUserContext } from '../../appContexts'
 
-const DownloadsTable = ({ downloadsToUse, currentUser, pageNo }) => {
+const DownloadsTable = ({ downloadsToUse, pageNo }) => {
 
+    const currentUser = currentUserContext
     const uRole = currentUser && currentUser.role
 
     return (

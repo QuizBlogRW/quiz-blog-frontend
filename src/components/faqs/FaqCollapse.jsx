@@ -139,7 +139,7 @@ const FaqCollapse = () => {
                                             </div>
                                         </div>
 
-                                        <EmbeddedVideos faq={faq} isFromFaqs={true} currentUser={currentUser} />
+                                        <EmbeddedVideos faq={faq} isFromFaqs={true} />
                                     </Collapse>
                                 </li>
                             )

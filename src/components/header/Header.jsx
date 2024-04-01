@@ -48,10 +48,8 @@ const Header = ({ textContent }) => {
 
     const authLinks = (
         <>
-            <span className="mx-0 p-0 me-1 text-warning d-flex justify-content-center align-items-center toDashboard" style={{ color: clr, border: `3px solid ${clr}`, borderRadius: "50px" }}>
-
+            <span className="mx-0 p-0 text-warning d-flex justify-content-center align-items-center toDashboard" style={{ color: clr, border: `3px solid ${clr}`, borderRadius: "50px" }}>
                 <EditPictureModal bgColor={bgColor} clr={clr} />
-
                 <Link to="/#">
                     <small className="ms-2 d-none d-lg-flex fw-bolder" style={{ color: clr }}>
                         {currentUser && currentUser.name.toLowerCase().charAt(0).toUpperCase() + currentUser.name.slice(1).split(" ")[0]}
@@ -175,7 +173,7 @@ const Header = ({ textContent }) => {
                         <img src={logo} alt="Quiz-Blog Logo" style={{ border: `3px solid ${logoBorder}`, borderRadius: "10px", maxHeight: "3.2rem" }} />
                     </NavbarBrand>
 
-                    <div className="collapse px-1 px-sm-2 py-1 m-sm-0" style={{ borderColor: clr }}>
+                    <div className="collapse px-1 px-sm-2 py-1 mx-1 m-sm-0" style={{ borderColor: clr }}>
                         {
                             location.pathname !== '/' ?
 

@@ -30,8 +30,7 @@ const Broadcasts = () => {
 
                         <Row>
                             <BroadcastsCard
-                                broadcastsToUse={broadcastsToUse}
-                                currentUser={currentUser} />
+                                broadcastsToUse={broadcastsToUse} />
                         </Row>
                     }
 

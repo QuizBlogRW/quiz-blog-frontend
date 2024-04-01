@@ -4,10 +4,12 @@ import { clearErrors } from '../../../redux/slices/errorSlice'
 import { clearSuccess } from '../../../redux/slices/successSlice'
 import { createImageUpload } from '../../../redux/slices/imageUploadsSlice'
 import { useDispatch } from "react-redux"
+import { currentUserContext } from '../../../appContexts'
 
-const UploadPostPhotos = ({ currentUser }) => {
+const UploadPostPhotos = () => {
 
     const dispatch = useDispatch()
+    const currentUser = useContext(currentUserContext)
 
     const [imageDetailsState, setImageDetailsState] = useState({
         imageTitle: '',

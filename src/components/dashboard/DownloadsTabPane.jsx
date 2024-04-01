@@ -52,7 +52,6 @@ const DownloadsTabPane = () => {
 
                     <DownloadsTable
                         downloadsToUse={downloadsToUse}
-                        currentUser={currentUser}
                         pageNo={pageNo} />
 
                     {uRole !== 'Visitor' ?

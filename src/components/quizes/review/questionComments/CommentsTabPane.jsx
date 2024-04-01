@@ -47,7 +47,7 @@ const CommentsTabPane = () => {
         <TabPane tabId="9">
 
             <Row>
-                <PendingComments currentUser={currentUser} />
+                <PendingComments />
             </Row>
 
             <Row>

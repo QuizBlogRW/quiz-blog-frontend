@@ -34,7 +34,7 @@ const QuestionComments = ({ questionID, quizID, fromSingleQuestion }) => {
         <Col sm={12} className="mt-2 comments-card">
           <Card body>
             <AddComment question={questionID}
-              quiz={quizID} currentUser={currentUser} fromSingleQuestion={fromSingleQuestion} />
+              quiz={quizID} fromSingleQuestion={fromSingleQuestion} />
           </Card>
         </Col>
 

@@ -6,11 +6,13 @@ import { useSelector, useDispatch } from "react-redux"
 import QBLoadingSM from '../../rLoading/QBLoadingSM'
 import './yourimages.css'
 import DeleteModal from '../../../utils/DeleteModal'
+import { currentUserContext } from '../../../appContexts'
 
-const YourImages = ({ currentUser }) => {
+const YourImages = () => {
 
     const dispatch = useDispatch()
     const yourImages = useSelector(state => state.imageUploads)
+    const currentUser = useSelector(state => state.auth.currentUser)
     const uID = currentUser && currentUser._id
 
     useEffect(() => {

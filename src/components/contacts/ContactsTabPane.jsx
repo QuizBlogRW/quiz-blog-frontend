@@ -48,8 +48,7 @@ const ContactsTabPane = () => {
                         <PageOf pageNo={pageNo} numberOfPages={numberOfPages} /> : null}
 
                     <ContactCard
-                        contactsToUse={contactsToUse}
-                        currentUser={currentUser} />
+                        contactsToUse={contactsToUse} />
 
                     {uRole !== 'Visitor' ?
                         <>

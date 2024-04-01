@@ -43,7 +43,7 @@ const Dashboard = () => {
     // render
     return (auth.isAuthenticated ?
         <>
-            <TopRow currentUser={currentUser} socket={socket} onlineList={onlineList} />
+            <TopRow socket={socket} onlineList={onlineList} />
             <Row className="m-lg-5 mx-2">
                 <Col sm="12" className="px-0 mb-4 mb-sm-0 d-flex justify-content-around">
 

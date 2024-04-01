@@ -54,7 +54,6 @@ const ScoresTabPane = () => {
                         <ScoresTable
                             scoresToUse={scoresToUse}
                             deleteScore={deleteScore}
-                            currentUser={currentUser}
                             pageNo={pageNo} />
 
                         {uRole !== 'Visitor' ?

@@ -11,7 +11,7 @@ const ContactCard = ({ contactsToUse }) => {
 
     // Context
     const currentUser = useContext(currentUserContext)
-    const uRole = currentUser && currentUser.role
+    // const uRole = currentUser && currentUser.role
 
     return (
 
@@ -31,9 +31,7 @@ const ContactCard = ({ contactsToUse }) => {
                                 <div className="d-flex">
                                     <Button color="success" size="sm" className="me-1 me-md-1">
 
-                                        <ReplyContactModal
-                                            currentUser={currentUser}
-                                            thisContact={contact} />
+                                        {/* <ReplyContactModal thisContact={contact} /> */}
 
                                     </Button>
                                     <DeleteModal deleteFnName="deleteContact" deleteFn={deleteContact} delID={contact._id} delTitle={contact.contact_name} />

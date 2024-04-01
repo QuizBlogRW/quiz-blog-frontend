@@ -4,8 +4,9 @@ import QBLoadingSM from '../../../rLoading/QBLoadingSM'
 import { getPendingComments } from '../../../../redux/slices/questionCommentsSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import Comment from './Comment'
+import { currentUserContext } from '../../../../appContexts'
 
-const PendingComments = ({ currentUser }) => {
+const PendingComments = () => {
 
     // Redux
     const dispatch = useDispatch()
@@ -15,7 +16,9 @@ const PendingComments = ({ currentUser }) => {
     useEffect(() => {
         dispatch(getPendingComments())
     }, [dispatch])
-
+    
+    // context
+    const currentUser = useContext(currentUserContext)
     const uRole = currentUser && currentUser.role
 
     return (

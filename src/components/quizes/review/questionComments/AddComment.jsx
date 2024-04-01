@@ -3,12 +3,14 @@ import { Button, Form, FormGroup, Input } from 'reactstrap'
 import { createComment } from '../../../../redux/slices/questionCommentsSlice'
 import { useDispatch } from 'react-redux'
 import Notification from '../../../../utils/Notification'
+import { currentUserContext } from '../../../../appContexts'
 
-const AddComment = ({ currentUser, question, quiz, fromSingleQuestion }) => {
+const AddComment = ({ question, quiz, fromSingleQuestion }) => {
 
     const dispatch = useDispatch()
 
     const [comment, setComment] = useState('')
+    const currentUser = useContext(currentUserContext)
     const userId = currentUser && currentUser._id
 
     // Errors state on form

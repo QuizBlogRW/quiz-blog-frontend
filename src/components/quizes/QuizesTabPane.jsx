@@ -115,8 +115,7 @@ const QuizesTabPane = () => {
                                     fromSearch={true}
                                     key={quiz._id}
                                     categories={categories}
-                                    quiz={quiz && quiz}
-                                    currentUser={currentUser} />)}
+                                    quiz={quiz && quiz} />)}
                         </Row>
 
                         {/* LIMITED QUIZZES */}
@@ -125,8 +124,7 @@ const QuizesTabPane = () => {
                                 .map(quiz => <QuizToast
                                     key={quiz._id}
                                     categories={categories}
-                                    quiz={quiz && quiz}
-                                    currentUser={currentUser} />)}
+                                    quiz={quiz && quiz} />)}
                         </Row>
 
                         {/* PAGINATION */}

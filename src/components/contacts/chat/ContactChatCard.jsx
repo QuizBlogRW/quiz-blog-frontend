@@ -46,8 +46,7 @@ const ContactChatCard = ({ openChat, contactsToUse }) => {
                         <div className="d-flex justify-content-between p-1" style={{ backgroundColor: "whitesmoke" }}>
                             <small className="d-flex align-items-center text-info" style={{ fontSize: ".65rem" }}>
                                 <i>
-                                    {moment(new Date(contact.contact_date))
-                                        .format('YYYY-MM-DD, HH:mm')}
+                                    {moment(new Date(contact.contact_date)).format('YYYY-MM-DD, HH:mm')}
                                 </i>
                             </small>
 
