@@ -7,20 +7,15 @@ import { clearSuccess } from '../../redux/slices/successSlice'
 import { useDispatch } from "react-redux"
 import './contact.css'
 import mail from '../../../src/images/mail.svg'
-import { currentUserContext, socketContext, onlineListContext } from '../../appContexts'
+import { currentUserContext } from '../../appContexts'
 const ResponsiveHorizontal = lazy(() => import('../adsenses/ResponsiveHorizontal'))
 import Notification from '../../utils/Notification'
-import { socket } from '../../utils/socket'
 
 const Contact = () => {
 
     // Redux
     const dispatch = useDispatch()
-
     const currentUser = useContext(currentUserContext)
-
-    // Socket join on user load
-    const [onlineList, setOnlineList] = useState([])
 
     // Errors state on form
     const [errorsState, setErrorsState] = useState([])
@@ -73,10 +68,6 @@ const Contact = () => {
 
         // Attempt to contact
         dispatch(sendMsg(contactMsg))
-
-        // Emit to the server that a new message has been sent
-        socket.emit('contactMsgClient', contactMsg)
-
         window.setTimeout(() => window.location.href = "/contact-chat", 4000)
 
         // Reset fields
@@ -88,69 +79,65 @@ const Contact = () => {
     }
 
     return (
-        <socketContext.Provider value={socket}>
-            <onlineListContext.Provider value={onlineList}>
-                <div className='contact-section py-0 px-3 py-5'>
-                    <div className="jbtron rounded px-3 px-sm-4 py-3 py-sm-5 p-2 m-2 m-sm-0 text-center border border-info">
+        <div className='contact-section py-0 px-3 py-5'>
+            <div className="jbtron rounded px-3 px-sm-4 py-3 py-sm-5 p-2 m-2 m-sm-0 text-center border border-info">
 
-                        <h1 className="display-4 fw-bolder text-center my-4 mb-lg-4" style={{ color: "#ffc107" }}>
-                            Reach Out Quiz-Blog
-                        </h1>
+                <h1 className="display-4 fw-bolder text-center my-4 mb-lg-4" style={{ color: "#ffc107" }}>
+                    Reach Out Quiz-Blog
+                </h1>
 
-                        <p className="lead mb-1 mb-lg-4 text-white">
-                            Quiz-Blog was created with the intention of offering a diverse range of quizzes and study materials aimed at enhancing students' critical thinking abilities and exam preparedness. Our blog articles span various subjects, serving to deepen students' understanding of their lessons.
-                        </p>
-                    </div>
+                <p className="lead mb-1 mb-lg-4 text-white">
+                    Quiz-Blog was created with the intention of offering a diverse range of quizzes and study materials aimed at enhancing students' critical thinking abilities and exam preparedness. Our blog articles span various subjects, serving to deepen students' understanding of their lessons.
+                </p>
+            </div>
 
-                    <Row className="mx-sm-2 px-sm-1 mx-md-5 px-md-5 py-lg-5 mt-5 contact d-md-flex justify-content-center">
+            <Row className="mx-sm-2 px-sm-1 mx-md-5 px-md-5 py-lg-5 mt-5 contact d-md-flex justify-content-center">
 
-                        <div className='w-100'>
-                            {/* Google responsive 1 ad */}
-                            {process.env.NODE_ENV !== 'development' ? <ResponsiveHorizontal /> : null}
-                        </div>
+                <div className='w-100'>
+                    {/* Google responsive 1 ad */}
+                    {process.env.NODE_ENV !== 'development' ? <ResponsiveHorizontal /> : null}
+                </div>
 
-                        <Col sm="6" className="mb-5 px-lg-5">
-                            <small className='fw-bolder' style={{ fontSize: '1.1rem', color: '#157A6E' }}>
-                                Require more clarification? Feel free to get in touch with us! <span role="img" aria-label="pointing">👉</span>
-                            </small>
+                <Col sm="6" className="mb-5 px-lg-5">
+                    <small className='fw-bolder' style={{ fontSize: '1.1rem', color: '#157A6E' }}>
+                        Require more clarification? Feel free to get in touch with us! <span role="img" aria-label="pointing">👉</span>
+                    </small>
 
-                            <hr className="my-2" />
+                    <hr className="my-2" />
 
-                            <Col sm='6' className='contact-img'>
-                                <img src={mail} alt="" />
-                            </Col>
-                        </Col>
+                    <Col sm='6' className='contact-img'>
+                        <img src={mail} alt="" />
+                    </Col>
+                </Col>
 
-                        <Col sm="6" className="mb-5">
+                <Col sm="6" className="mb-5">
 
-                            <Notification errorsState={errorsState} progress={null} initFn="sendMsg" />
-                            <Form onSubmit={onContact}>
-                                <FormGroup>
-                                    <Input type="text" name="contact_name" placeholder="Name" minLength="4" maxLength="30" onChange={onChangeHandler} value={state.contact_name} disabled={currentUser} />
-                                </FormGroup>
-                                <FormGroup>
-                                    <Input type="email" name="email" placeholder="Email" onChange={onChangeHandler} value={state.email} disabled={currentUser} />
-                                </FormGroup>
+                    <Notification errorsState={errorsState} progress={null} initFn="sendMsg" />
+                    <Form onSubmit={onContact}>
+                        <FormGroup>
+                            <Input type="text" name="contact_name" placeholder="Name" minLength="4" maxLength="30" onChange={onChangeHandler} value={state.contact_name} disabled={currentUser} />
+                        </FormGroup>
+                        <FormGroup>
+                            <Input type="email" name="email" placeholder="Email" onChange={onChangeHandler} value={state.email} disabled={currentUser} />
+                        </FormGroup>
 
-                                <FormGroup>
-                                    <Input type="textarea" name="message" placeholder="Message" rows="5" minLength="10" maxLength="1000" onChange={onChangeHandler} value={state.message} />
-                                </FormGroup>
-                                <Button style={{ backgroundColor: '#157A6E', color: '#ffc107' }} className='btn-block'>
-                                    Send Message
-                                </Button>
-                            </Form>
+                        <FormGroup>
+                            <Input type="textarea" name="message" placeholder="Message" rows="5" minLength="10" maxLength="1000" onChange={onChangeHandler} value={state.message} />
+                        </FormGroup>
+                        <Button style={{ backgroundColor: '#157A6E', color: '#ffc107' }} className='btn-block'>
+                            Send Message
+                        </Button>
+                    </Form>
 
-                            {/* Google square ad */}
-                            <Row className='w-100'>
-                                <Col sm="12">
-                                    {process.env.NODE_ENV !== 'development' ? <SquareAd /> : null}
-                                </Col>
-                            </Row>
+                    {/* Google square ad */}
+                    <Row className='w-100'>
+                        <Col sm="12">
+                            {process.env.NODE_ENV !== 'development' ? <SquareAd /> : null}
                         </Col>
                     </Row>
-                </div>
-            </onlineListContext.Provider>
-        </socketContext.Provider>
+                </Col>
+            </Row>
+        </div>
     )
 }
 

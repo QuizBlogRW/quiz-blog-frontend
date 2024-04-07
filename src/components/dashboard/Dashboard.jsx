@@ -8,14 +8,11 @@ import UsersTabPane from '../users/UsersTabPane'
 import PostCategoriesTabPane from '../blog/bPCategories/PostCategoriesTabPane'
 import BlogPostsTabPane from '../blog/blogPosts/BlogPostsTabPane'
 import DownloadsTabPane from './DownloadsTabPane'
-import ContactsTabPane from '../contacts/ContactsTabPane'
 import QBLoadingSM from '../rLoading/QBLoadingSM'
 import CommentsTabPane from '../quizes/review/questionComments/CommentsTabPane'
 import AdvertsTabPane from './adverts/AdvertsTabPane'
 import TopRow from './TopRow'
-import { socket } from '../../utils/socket'
-
-import { authContext, currentUserContext, logRegContext, onlineListContext } from '../../appContexts'
+import { authContext, currentUserContext, logRegContext } from '../../appContexts'
 
 const Dashboard = () => {
 
@@ -23,8 +20,6 @@ const Dashboard = () => {
     const auth = useContext(authContext)
     const currentUser = useContext(currentUserContext)
     const { toggleL } = useContext(logRegContext)
-    const onlineList = useContext(onlineListContext)
-    console.log('onlineList', onlineList)
 
     // State
     const [activeTab, setActiveTab] = useState('1')
@@ -43,7 +38,7 @@ const Dashboard = () => {
     // render
     return (auth.isAuthenticated ?
         <>
-            <TopRow socket={socket} onlineList={onlineList} />
+            <TopRow />
             <Row className="m-lg-5 mx-2">
                 <Col sm="12" className="px-0 mb-4 mb-sm-0 d-flex justify-content-around">
 
@@ -83,14 +78,6 @@ const Dashboard = () => {
                                 className={classnames({ active: activeTab === '4' })}
                                 onClick={() => { toggle('4') }}>
                                 <u>Downloads</u>
-                            </NavLink>
-                        </NavItem>
-
-                        <NavItem>
-                            <NavLink
-                                className={classnames({ active: activeTab === '5' })}
-                                onClick={() => { toggle('5') }}>
-                                <u>Contacts</u>
                             </NavLink>
                         </NavItem>
 
@@ -159,7 +146,6 @@ const Dashboard = () => {
                         {/* Any user authenticated */}
                         <ScoresTabPane />
                         <DownloadsTabPane />
-                        <ContactsTabPane />
 
                         { // CAUSING PROBLEMS WHEN VISITOR IS LOGGED IN
                             currentUser.role !== 'Visitor' ?

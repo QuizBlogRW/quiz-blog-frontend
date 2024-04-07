@@ -1,22 +1,24 @@
 import React, { useContext } from 'react'
 import { Card, Button, CardTitle, CardText, Alert } from 'reactstrap'
-import DeleteIcon from '../../../images/trash.svg'
+import DeleteIcon from '../../images/trash.svg'
 import moment from 'moment'
-import { deleteContact } from '../../../redux/slices/contactsSlice'
-import { currentUserContext } from '../../../appContexts'
+import { Link } from 'react-router-dom'
+import { deleteContact } from '../../redux/slices/contactsSlice'
+import { currentUserContext } from '../../appContexts'
+import { useSelector } from "react-redux"
 
-const ContactChatCard = ({ openChat, contactsToUse }) => {
+const ChatCard = ({ openChat }) => {
 
     // Context
     const currentUser = useContext(currentUserContext)
     const uRole = currentUser && currentUser.role
+    const contacts = useSelector(state => state.contacts)
+    const contactsToUse = contacts && ((uRole === 'Admin' || uRole === 'SuperAdmin') || uRole === 'Creator') ? contacts.allContacts : contacts.userContacts
 
     return (
-
         contactsToUse && contactsToUse.length > 0 ?
             <>
                 {contactsToUse && contactsToUse.map(contact => (
-
                     <Card body
                         onClick={() => openChat(contact._id)}
                         key={contact._id}
@@ -58,9 +60,9 @@ const ContactChatCard = ({ openChat, contactsToUse }) => {
                 ))}
             </> :
             <Alert color="danger" className="w-50 text-center mx-auto" style={{ border: '2px solid #157A6E' }}>
-                Seems like you have nothing here!
+                {uRole !== 'Visitor' ? 'No contacts yet!' : <Link to='/contact'>Start a new chat</Link>}
             </Alert>
     )
 }
 
-export default ContactChatCard
+export default ChatCard

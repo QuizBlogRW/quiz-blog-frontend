@@ -27,7 +27,7 @@ const formatActionType = (actionType) => {
 };
 
 // List of action types that doesn't require a reload
-const noReloadActionTypes = ['saveFeedback', 'createComment', 'updateComment', 'deleteComment', 'createReply', 'updateReply', 'deleteReply', 'createBlogPostView']
+const noReloadActionTypes = ['saveFeedback', 'createComment', 'updateComment', 'deleteComment', 'replyContact', 'createBlogPostView', 'getCreateRoom', 'sendRoomMessage']
 
 // API call helper function to make async actions with createAsyncThunk
 export const apiCallHelper = async (url, method, body, getState, dispatch, actionType) => {
@@ -42,10 +42,7 @@ export const apiCallHelper = async (url, method, body, getState, dispatch, actio
 
             // reload the page after deleting successfully
             if (method === 'delete' && response.status === 200) {
-                // reload the page after 3 seconds
-                setTimeout(() => {
-                    window.location.reload()
-                }, 3000)
+                setTimeout(() => { window.location.reload() }, 3000)
             }
 
             return response.data
@@ -56,10 +53,7 @@ export const apiCallHelper = async (url, method, body, getState, dispatch, actio
 
             // reload the page after creating or updating successfully
             if ((response.status === 200 || response.status === 201) && (!noReloadActionTypes.includes(actionType))) {
-                // reload the page after 3 seconds
-                setTimeout(() => {
-                    window.location.reload()
-                }, 3000)
+                setTimeout(() => { window.location.reload() }, 3000)
             }
             return response.data
         }
@@ -77,19 +71,14 @@ export const apiCallHelperUpload = async (url, method, formData, getState, dispa
     const formattedActionType = formatActionType(actionType);
     try {
         const response = await axiosInstance[method](url, formData, {
-            headers: {
-                'x-auth-token': getState().auth.token
-            },
+            headers: { 'x-auth-token': getState().auth.token },
         })
 
         dispatch(returnSuccess({ msg: `${formattedActionType} success!`, status: response.status, id: actionType }))
 
         // reload the page after creating or updating successfully
         if (response.status === 200 || response.status === 201) {
-            // reload the page after 3 seconds
-            setTimeout(() => {
-                window.location.reload()
-            }, 3000)
+            setTimeout(() => { window.location.reload() }, 3000)
         }
         return response.data
 

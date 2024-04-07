@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { apiCallHelper } from '../configHelpers'
+import { socket } from '../../utils/socket'
 
 // Async actions with createAsyncThunk
 export const getContacts = createAsyncThunk("contacts/getContacts", async (pageNo, { getState, dispatch }) =>
@@ -20,8 +21,8 @@ export const replyContact = createAsyncThunk("contacts/replyContact", async ({ i
 export const deleteContact = createAsyncThunk("contacts/deleteContact", async (contactID, { getState, dispatch }) =>
   apiCallHelper(`/api/contacts/${contactID}`, 'delete', null, getState, dispatch, 'deleteContact'))
 
-export const getCreateRoom = createAsyncThunk("contacts/getCreateRoom", async (room1ON1ToGet, { getState, dispatch }) =>
-  apiCallHelper(`/api/chatrooms/rooms/room/${room1ON1ToGet.roomName}`, 'post', room1ON1ToGet, getState, dispatch, 'getCreateRoom'))
+export const getCreateRoom = createAsyncThunk("contacts/getCreateRoom", async (oON1room, { getState, dispatch }) =>
+  apiCallHelper(`/api/chatrooms/rooms/room/${oON1room.roomName}`, 'post', oON1room, getState, dispatch, 'getCreateRoom'))
 
 export const getRoomMessages = createAsyncThunk("contacts/getRoomMessages", async (roomID, { getState, dispatch }) =>
   apiCallHelper(`/api/chatrooms/messages/room/${roomID}`, 'get', null, getState, dispatch, 'getRoomMessages'))
@@ -37,8 +38,8 @@ const initialState = {
   oneContact: null,
   totalPages: 0,
   oneChatRoom: null,
-  roomsMessages: [],
   oneRoomMessages: [],
+  reply: null,
   isLoading: false
 }
 
@@ -52,8 +53,8 @@ const contactsSlice = createSlice({
       state.oneContact = null
       state.totalPages = 0
       state.oneChatRoom = null
-      state.roomsMessages = []
       state.oneRoomMessages = []
+      state.reply = null
       state.isLoading = false
     }
   },
@@ -78,8 +79,10 @@ const contactsSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(replyContact.fulfilled, (state, action) => {
-      state.allContacts = state.allContacts.map(contact => contact._id === action.payload._id ? action.payload : contact)
+      state.reply = action.payload
       state.isLoading = false
+      socket.emit('newReply', action.payload)
+      console.log('Sent', action.payload)
     })
     builder.addCase(deleteContact.fulfilled, (state, action) => {
       state.allContacts = state.allContacts.filter(contact => contact._id !== action.payload)
@@ -90,12 +93,13 @@ const contactsSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(getRoomMessages.fulfilled, (state, action) => {
-      state.roomsMessages = action.payload
+      state.oneRoomMessages = action.payload
       state.isLoading = false
     })
     builder.addCase(sendRoomMessage.fulfilled, (state, action) => {
       state.oneRoomMessages.push(action.payload)
       state.isLoading = false
+      socket.emit('room_message', action.payload)
     })
 
     // Pending actions

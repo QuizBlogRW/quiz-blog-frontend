@@ -1,21 +1,12 @@
 import React, { useContext } from 'react'
-import { Row, Alert, Button } from 'reactstrap'
+import { Alert, Button } from 'reactstrap'
 import { Link } from 'react-router-dom'
 import dashimg from '../../images/dashboard.svg'
-import { currentUserContext, onlineListContext } from '../../appContexts'
+import { currentUserContext } from '../../appContexts'
 
 const TopRow = () => {
 
-  const onlineList = useContext(onlineListContext)
   const currentUser = useContext(currentUserContext)
-  let isAdminOnline = false
-
-  // Find through online list if there is atleast one user with SuperAdmin, Admin or Creator role
-  onlineList.forEach(user => {
-    if (user.role === 'SuperAdmin' || user.role === 'Admin' || user.role === 'Creator') {
-      isAdminOnline = true
-    }
-  })
 
   // animate the button on hover
   const animatedButton = 'btn btn-warning btn-lg btn-block text-center text-uppercase fw-bolder shadow-sm animated infinite pulse blink_me'
@@ -91,12 +82,9 @@ const TopRow = () => {
 
           <>
             {
-              // IF ADMIN IS ONLINE, SHOW THE CHAT BUTTON
-              isAdminOnline ?
-                <Button className={animatedButton}>
-                  <Link to="/contact-chat" className="text-success p-0">Chat with us now</Link>
-                </Button> :
-                null}
+              <Button className={animatedButton}>
+                <Link to="/contact-chat" className="text-success p-0">Chat with us now</Link>
+              </Button>}
 
           </>}
       </div>

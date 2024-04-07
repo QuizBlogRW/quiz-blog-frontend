@@ -6,4 +6,4 @@ export const devApiURL = 'http://localhost:4000/'
 
 const serverUrl = process.env.NODE_ENV === 'development' ? devApiURL : (qbURL || apiURL)
 
-export const socket = io(serverUrl, { autoConnect: false });
+export const socket = io(serverUrl);
