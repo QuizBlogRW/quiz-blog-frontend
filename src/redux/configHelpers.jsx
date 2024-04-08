@@ -41,7 +41,7 @@ export const apiCallHelper = async (url, method, body, getState, dispatch, actio
             dispatch(returnSuccess({ msg: `${formattedActionType} success!`, status: response.status, id: actionType }))
 
             // reload the page after deleting successfully
-            if (method === 'delete' && response.status === 200) {
+            if (method === 'delete' && response.status === 200 && (!noReloadActionTypes.includes(actionType))) {
                 setTimeout(() => { window.location.reload() }, 3000)
             }
 

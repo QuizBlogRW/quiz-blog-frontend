@@ -21,7 +21,7 @@ const PostCategoriesTabPane = () => {
   }, [dispatch])
 
   return (
-    <TabPane tabId="7">
+    <TabPane tabId="6">
 
       <Button size="sm" outline color="info" className="mx-3 mb-2 p-2 btn btn-warning">
         <CreateBPCategory />

@@ -3,6 +3,10 @@ import { Routes, Route, Link, useLocation } from "react-router-dom"
 import { Toast } from 'reactstrap'
 import ReactGA from "react-ga4"
 
+// TOASTIFY
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
 // CONTEXTS
 import { authContext, currentUserContext, categoriesContext, courseCategoriesContext, bPcatsContext, logRegContext } from './appContexts'
 
@@ -22,7 +26,7 @@ import EditProfile from './components/auth/EditProfile'
 import Subscribers from './components/users/Subscribers'
 
 // others components
-import Contact from './components/contact/Contact'
+import Contact from './components/contacts/Contact'
 import ChatWrapper from './components/contacts/ChatWrapper'
 import FaqCollapse from './components/faqs/FaqCollapse'
 import About from './components/about/About'
@@ -225,11 +229,7 @@ const App = () => {
 
                                         {/* STATISTICS DASHBOARD */}
                                         <Route exact path="/statistics" element={<Statistics />}>
-                                            <Route path="/statistics/about" element={<About />} />
                                             {/* <Route path="/statistics/blogposts" element={<NotFound404 />} /> */}
-                                            <Route path="/statistics/faqs" element={<FaqCollapse />} />
-                                            <Route path="/statistics/contacts" element={<ChatWrapper />} />
-
                                             {/* USERS */}
                                             <Route path="/statistics/new-50-users" element={<UsersStats />} />
                                             <Route path="/statistics/with-image" element={<UsersStats />} />
@@ -258,13 +258,11 @@ const App = () => {
 
                                             {/* BLOG POSTS STATS */}
                                             <Route path="/statistics/recent-ten-views" element={<BlogStats />} />
-                                            <Route path="/statistics/recent-ten-on-mobile" element={<BlogStats />} />
-                                            <Route path="/statistics/recent-ten-on-desktoprecent-ten-on-desktop" element={<BlogStats />} />
-                                            <Route path="/statistics/todays-posts-views" element={<BlogStats />} />
                                             <Route path="/statistics/all-posts-views" element={<BlogStats />} />
                                         </Route>
                                         <Route path="/*" element={<NotFound404 />} />
                                     </Routes>
+                                    <ToastContainer />
                                     <Footer />
                                 </Suspense>
                             </bPcatsContext.Provider>

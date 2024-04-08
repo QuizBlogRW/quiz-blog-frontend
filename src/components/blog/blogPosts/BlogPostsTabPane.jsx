@@ -11,8 +11,7 @@ const BlogPostsTabPane = () => {
     // Redux
     const dispatch = useDispatch()
     const bposts = useSelector(state => state.blogPosts)
-
-    const bpostsToUse = bposts && bposts.blogPosts
+    const { isLoading, blogPosts } = bposts
 
     // Lifecycle methods
     useEffect(() => {
@@ -20,12 +19,11 @@ const BlogPostsTabPane = () => {
     }, [dispatch])
 
     return (
-        <TabPane tabId="8" className='mx-4 my-5'>
-            {bposts.isLoading ?
+        <TabPane tabId="7" className='mx-4 my-5'>
+            {isLoading ?
                 <QBLoadingSM /> :
                 <Row>
-                    <BPTable
-                        bpostsToUse={bpostsToUse} />
+                    <BPTable bpostsToUse={blogPosts && blogPosts} />
                 </Row>
             }
         </TabPane>

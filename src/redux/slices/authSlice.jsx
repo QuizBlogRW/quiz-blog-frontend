@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { apiCallHelper, apiCallHelperUpload } from '../configHelpers'
+import { notify } from '../../utils/notifyToast'
 
 // Async actions with createAsyncThunk
 export const loadUser = createAsyncThunk("auth/loadUser", async (_, { getState, dispatch }) =>
@@ -77,8 +78,23 @@ const authSlice = createSlice({
     // Fulfilled actions
     builder.addCase(loadUser.fulfilled, (state, action) => {
       state.isLoading = false
-      state.user = action.payload
-      state.isAuthenticated = true
+
+      // check if current token is still valid. if not, logout user
+      if (!action.payload.current_token || !state.token || action.payload.current_token !== state.token) {
+        state.isAuthenticated = false
+        state.user = null
+        localStorage.removeItem('token')
+        localStorage.removeItem('user')
+
+        if (window.location.pathname !== '/forgot-password' && window.location.pathname !== '/reset-password' && window.location.pathname !== '/') {
+          notify('You are not authorized, Please login again!', 'error')
+        }
+      }
+
+      else {
+        state.isAuthenticated = true
+        state.user = action.payload
+      }
     })
     builder.addCase(login.fulfilled, (state, action) => {
       state.isLoading = false
@@ -86,6 +102,7 @@ const authSlice = createSlice({
       state.user = action.payload.user
       localStorage.setItem('token', action.payload.current_token)
       localStorage.setItem('user', JSON.stringify(action.payload.user))
+      notify('Login successful! Welcome back!')
     })
     builder.addCase(register.fulfilled, (state, action) => {
       state.isLoading = false
@@ -103,6 +120,7 @@ const authSlice = createSlice({
       localStorage.removeItem('token')
       localStorage.removeItem('user')
       localStorage.removeItem('confirmLogin')
+      notify('You are logged out!')
     })
     builder.addCase(getUsers.fulfilled, (state, action) => {
       state.isLoading = false
@@ -119,14 +137,17 @@ const authSlice = createSlice({
     builder.addCase(updateProfileImage.fulfilled, (state, action) => {
       state.isLoading = false
       state.user = action.payload
+      notify('Profile image updated!')
     })
     builder.addCase(sendResetLink.fulfilled, (state, action) => {
       state.isLoading = false
       state.email = action.payload
+      notify('Password reset link sent to your email! Can\'t find it? Check your spam folder.')
     })
     builder.addCase(sendNewPassword.fulfilled, (state, action) => {
       state.isLoading = false
       state.user = action.payload
+      notify('Password reset successful! Please login with your new password.')
     })
     builder.addCase(deleteUser.fulfilled, (state, action) => {
       state.isLoading = false

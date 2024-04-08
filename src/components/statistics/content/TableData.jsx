@@ -1,12 +1,12 @@
 import React from 'react'
 import { Table } from 'reactstrap'
-// import ExcelButton from './ExcelButton'
+import ExcelButton from './ExcelButton'
 
 const TableData = ({ data, filename }) => {
 
     return (
         <div>
-            {/* <ExcelButton data={data} filename={filename} /> */}
+            <ExcelButton data={data} filename={filename} />
 
             <Table bordered hover responsive size="sm" striped>
 
@@ -53,18 +53,12 @@ const TableData = ({ data, filename }) => {
 
                                                                 // IF IT IS TYPE OF MONGOOSE DATE - CONVERT TO MOMEMT DATE
                                                                 null :
-                                                    // // CHECK IF IT IS A DATE
-                                                    // Date.parse(item[key]) ? moment(item[key]).format('DD-MM-YYYY, HH:mm:ss') :
                                                     item[key]
                                             }
-                                            {/* {
-                                                console.log(item[key] && item[key].name)
-                                            } */}
                                         </td>
                                     ))}
                             </tr>
                         ))
-
                     }
                 </tbody>
             </Table>

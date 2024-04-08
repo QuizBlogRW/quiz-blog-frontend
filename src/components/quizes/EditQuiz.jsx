@@ -60,7 +60,7 @@ const EditQuiz = ({ quizToEdit }) => {
             quizID,
             title: name,
             description,
-            last_updated_by: auth.isLoading ? null : auth.user.id,
+            last_updated_by: auth.isLoading ? null : auth.user._id,
             category,
             oldCategoryID
         }

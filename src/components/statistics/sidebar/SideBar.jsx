@@ -29,26 +29,12 @@ const SideBar = ({ isOpen, toggle }) => (
         <SubMenu title="Categories" icon={'group'} items={submenus[4]} />
         <SubMenu title="Blog Posts" icon={'book'} items={submenus[5]} />
 
-        <NavItem>
+        {/* <NavItem>
           <NavLink tag={Link} to={"/statistics/about"} className="text-white">
             <i className="fa fa-address-book me-2"></i>
             About
           </NavLink>
-        </NavItem>
-
-        <NavItem>
-          <NavLink tag={Link} to={"/statistics/faqs"} className="text-white">
-            <i className="fa fa-question me-2"></i>
-            FAQs
-          </NavLink>
-        </NavItem>
-
-        <NavItem>
-          <NavLink tag={Link} to={"/statistics/contacts"} className="text-white">
-            <i className="fa fa-address-card-o me-2"></i>
-            Contacts
-          </NavLink>
-        </NavItem>
+        </NavItem> */}
 
       </Nav>
     </div>
@@ -134,18 +120,6 @@ const submenus = [
     {
       title: "Recent 10 Views",
       target: "recent-ten-views",
-    },
-    {
-      title: "Recent on Mobile",
-      target: "recent-ten-on-mobile",
-    },
-    {
-      title: "Recent on Desktop",
-      target: "recent-ten-on-desktop",
-    },
-    {
-      title: "Today's Views",
-      target: "todays-posts-views",
     },
     {
       title: "All Views",

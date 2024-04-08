@@ -65,7 +65,7 @@ const ForgotPassword = () => {
                                 onChange={onChangeHandler} />
                         </div>
 
-                        <Button color="info" size="md" className="mt-4 d-block mx-auto text-white" style={{ width: '16%' }}>
+                        <Button color="info" size="md" className="mt-4 w-25 d-block mx-auto text-white">
                             Search
                         </Button>
 

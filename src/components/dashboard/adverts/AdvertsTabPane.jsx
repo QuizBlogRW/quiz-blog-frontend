@@ -16,11 +16,10 @@ const AdvertsTabPane = () => {
     // Redux
     const dispatch = useDispatch()
     const adverts = useSelector(state => state.adverts)
+    const { isLoading, allAdverts } = adverts
 
     // context
     const currentUser = useContext(currentUserContext)
-
-    const allAdverts = adverts && adverts.allAdverts
     const uRole = currentUser && currentUser.role
 
     // Lifecycle method
@@ -35,7 +34,7 @@ const AdvertsTabPane = () => {
                 <CreateAdvert clearErrors={clearErrors} clearSuccess={clearSuccess} />
             </Button>
 
-            {adverts.isLoading ?
+            {isLoading ?
 
                 <QBLoadingSM title='adverts' /> :
 
@@ -48,7 +47,7 @@ const AdvertsTabPane = () => {
                         {allAdverts && allAdverts.map(advert => (
 
                             <Col sm="6" className="mt-2" key={advert._id}>
-                                <Card body>
+                                <Card body style={{ height: "100%" }}>
 
                                     <CardTitle className='mb-4 d-flex justify-content-between'>
                                         <Link to={`/advert/${advert._id}`} className="text-success text-uppercase">
@@ -58,7 +57,7 @@ const AdvertsTabPane = () => {
                                     </CardTitle>
 
                                     <Row style={{ fontSize: ".7rem" }}>
-                                        <Col sm="6">
+                                        <Col sm="4">
                                             <CardText className='my-4'>{advert.owner}</CardText>
                                             <CardText className='my-4'>{advert.email}</CardText>
                                             <CardText className='my-4'>{advert.phone}</CardText>
@@ -75,9 +74,9 @@ const AdvertsTabPane = () => {
                                                 </span>
                                                 : null}
                                         </Col>
-
-                                        <Col sm="6">
-                                            <CardImg top width="20px" src={advert.advert_image ? advert.advert_image : adImage} alt="Card image cap" />
+                                        <Col sm="8">
+                                            <CardImg top style={{ maxWidth: "100%", height: "auto" }}
+                                                src={advert.advert_image ? advert.advert_image : adImage} alt="Card image cap" />
                                         </Col>
                                     </Row>
                                 </Card>

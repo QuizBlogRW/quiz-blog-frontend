@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { Button, Row, Col, Form, FormGroup, Label, Input, Breadcrumb, BreadcrumbItem, Alert, Progress } from 'reactstrap'
+import { Button, Row, Col, Form, FormGroup, Label, Input, Breadcrumb, BreadcrumbItem } from 'reactstrap'
 import Dashboard from '../dashboard/Dashboard'
 import { getOneQuestion, updateQuestion } from '../../redux/slices/questionsSlice'
 import { clearErrors } from '../../redux/slices/errorSlice'
@@ -8,13 +8,12 @@ import { clearSuccess } from '../../redux/slices/successSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import QBLoadingSM from '../rLoading/QBLoadingSM'
 import { authContext, logRegContext } from '../../appContexts'
+import Notification from '../../utils/Notification'
 
 const EditQuestion = () => {
 
     // Redux
     const quest = useSelector(state => state.questions.oneQuestion)
-    const errors = useSelector(state => state.error)
-    const successful = useSelector(state => state.success)
     const dispatch = useDispatch()
 
     const auth = useContext(authContext)
@@ -22,12 +21,6 @@ const EditQuestion = () => {
 
     // Access route parameters & history
     const { questionId } = useParams()
-
-    const [progress, setProgress] = useState()
-
-    // Alert
-    const [visible, setVisible] = useState(true)
-    const onDismiss = () => setVisible(false)
 
     // Errors state on form
     const [errorsState, setErrorsState] = useState([])

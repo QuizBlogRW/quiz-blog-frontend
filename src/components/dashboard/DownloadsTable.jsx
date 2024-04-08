@@ -26,7 +26,7 @@ const DownloadsTable = ({ downloadsToUse, pageNo }) => {
                 </thead>
 
                 <tbody>
-                    {downloadsToUse && downloadsToUse.map((download, index) => {
+                    {downloadsToUse && [...downloadsToUse].sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)).map((download, index) => {
 
                         const user = download && (uRole === 'Creator') ? download.users_downloads_name : download && (uRole === 'Visitor') ? currentUser && currentUser.name : download.downloaded_by && download.downloaded_by.name
 

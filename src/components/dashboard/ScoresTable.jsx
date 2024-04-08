@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { Table, Button, Alert } from 'reactstrap'
+import { Table, Alert } from 'reactstrap'
 import moment from 'moment'
 import { Link } from "react-router-dom"
 import { currentUserContext } from '../../appContexts'
@@ -29,7 +29,7 @@ const ScoresTable = ({ scoresToUse, pageNo, deleteScore }) => {
 
                 <tbody>
 
-                    {scoresToUse && scoresToUse.map((score, index) => {
+                    {scoresToUse && [...scoresToUse].sort((a, b) => new Date(b.test_date) - new Date(a.test_date)).map((score, index) => {
                         const taker = score && (uRole === 'Creator') ? score.users_scores_name : score && (uRole === 'Visitor') ? currentUser && currentUser.name : score.taken_by && score.taken_by.name
 
                         const qui = score && (uRole === 'Creator') ? score.quiz_scores_title : score && (uRole === 'Visitor') ? score.review && score.review.title : score.quiz && score.quiz.title

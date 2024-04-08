@@ -16,8 +16,7 @@ const QuizesTabPane = () => {
     const dispatch = useDispatch()
     const quizes = useSelector(state => state.quizes)
     const questions = useSelector(state => state.questions)
-    const allNoLimit = useSelector(state => state.quizes.allQuizesNoLimit)
-    const allNoLimitLoading = useSelector(state => state.quizes.isNoLimitLoading)
+    const { allNoLimit, allNoLimitLoading } = quizes
 
     // context
     const currentUser = useContext(currentUserContext)
@@ -54,7 +53,7 @@ const QuizesTabPane = () => {
 
         <TabPane tabId="2">
 
-            {quizes.isPaginatedLoading ?
+            {quizes.isLoading ?
 
                 <QBLoadingSM title='paginated quizes' /> :
 

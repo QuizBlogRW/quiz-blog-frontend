@@ -74,7 +74,7 @@ const SingleQuestion = () => {
                                                 <DeleteModal deleteFnName="deleteQuestion" deleteFn={deleteQuestion} delID={thisQuestion && thisQuestion._id} delTitle={thisQuestion && thisQuestion.questionText} />
 
                                                 <Link to={`/edit-question/${thisQuestion && thisQuestion._id}`} className="text-secondary">
-                                                    <img src={EditIcon} onClick={toggle} alt="" width="16" height="16" className="mx-2" />
+                                                    <img src={EditIcon} alt="" width="16" height="16" className="mx-2" />
                                                 </Link>
                                             </div> : null}
                                 </div>

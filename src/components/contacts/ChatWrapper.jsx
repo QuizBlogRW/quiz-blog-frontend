@@ -10,17 +10,13 @@ import ChatCard from './ChatCard'
 import ChatMessages from './ChatMessages'
 import QBLoadingSM from '../rLoading/QBLoadingSM'
 import RoomMessages from './RoomMessages'
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+
+import { notify } from '../../utils/notifyToast'
 
 // Socket.io
 import { socket } from '../../utils/socket'
 
 const ChatWrapper = () => {
-    const notify = (message) => {
-        toast.success(message, { position: "bottom-right" });
-    };
-
 
     // Redux
     const dispatch = useDispatch()
@@ -45,7 +41,7 @@ const ChatWrapper = () => {
                 _id: JSON.parse(localStorage.getItem('user'))._id,
                 name: JSON.parse(localStorage.getItem('user')).name,
                 email: JSON.parse(localStorage.getItem('user')).email
-            });
+            })
         }
 
         // Get messages of the room
@@ -61,30 +57,30 @@ const ChatWrapper = () => {
             if (new_user.name !== currentUser.name) {
                 notify(`${new_user.name} is online`)
             }
-        });
+        })
     }, [pageNo, oneChatRoom])
 
-    const [isChatOpen, setIsChatOpen] = useState(false);
-    const [isChatRoomOpen, setIsChatRoomOpen] = useState(false);
-    const [oON1room, setOpenRoom] = useState();
+    const [isChatOpen, setIsChatOpen] = useState(false)
+    const [isChatRoomOpen, setIsChatRoomOpen] = useState(false)
+    const [oON1room, setOpenRoom] = useState()
 
     const openChat = (chat_id) => {
-        setIsChatRoomOpen(false);
-        setIsChatOpen(true);
+        setIsChatRoomOpen(false)
+        setIsChatOpen(true)
         dispatch(getOneContact(chat_id))
     }
 
     // When joining the room
     const openChat1on1Room = ({ roomName, senderID, receiverID, receiverName, username }) => {
-        setIsChatOpen(false);
-        setIsChatRoomOpen(true);
+        setIsChatOpen(false)
+        setIsChatRoomOpen(true)
         setOpenRoom({ roomName, senderID, receiverID, receiverName })
         dispatch(getCreateRoom({ roomName, users: [senderID, receiverID] }))
 
         // Join the room
         if (roomName !== '' && username !== '') {
-            console.log('Joining room: ', roomName);
-            socket.emit('join_room', { username, roomName });
+            console.log('Joining room: ', roomName)
+            socket.emit('join_room', { username, roomName })
         }
     }
 
@@ -99,18 +95,18 @@ const ChatWrapper = () => {
                             </div> :
 
                             <Row className='chat-view vh-100'>
-                                <Col sm="3" style={{ height: "95%" }} className="my-2 overflow-auto">
+                                <Col sm="3" style={{ height: "99%" }} className="my-2 overflow-auto">
                                     {(uRole === 'Admin' || uRole === 'SuperAdmin') ? <PageOf pageNo={pageNo} numberOfPages={totalPages} /> : null}
                                     <ChatCard openChat={openChat} />
                                     {uRole !== 'Visitor' ? <><Pagination pageNo={pageNo} setPageNo={setPageNo} numberOfPages={totalPages} /></> : null}
                                 </Col>
 
-                                <Col sm="6" style={{ height: "95%" }} className="my-2 bg-white overflow-auto">
+                                <Col sm="6" style={{ height: "99%" }} className="my-2 bg-white overflow-auto">
                                     {isChatOpen ? <ChatMessages onlineList={onlineList} /> :
                                         isChatRoomOpen ? <RoomMessages oON1room={oON1room} onlineList={onlineList} /> : null}
                                 </Col>
 
-                                <Col sm="3" style={{ height: "95%" }} className="overflow-auto">
+                                <Col sm="3" style={{ height: "99%" }} className="overflow-auto">
                                     <div>
                                         <h5 className='text-center my-4 fw-bolder'>
                                             CHAT WITH ({onlineList.length})
@@ -123,7 +119,7 @@ const ChatWrapper = () => {
                                                 </Link>
                                             </li>
                                             {onlineList.filter(onlineUser => onlineUser.email !== currentUser.email).map(onlineUser => {
-                                                const sortedRmArr = [currentUser.email, onlineUser.email].sort((a, b) => a.localeCompare(b));
+                                                const sortedRmArr = [currentUser.email, onlineUser.email].sort((a, b) => a.localeCompare(b))
                                                 return (<li key={onlineUser.socketID} style={{ fontSize: ".8rem", margin: "4px" }}>
                                                     <Link to={'#'}
                                                         onClick={() => currentUser.email !== onlineUser.email && openChat1on1Room({
@@ -133,17 +129,14 @@ const ChatWrapper = () => {
                                                             receiverName: onlineUser.name,
                                                             username: currentUser.name
                                                         })}>
-                                                        {onlineUser.name.charAt(0).toUpperCase() + onlineUser.name.slice(1)}&nbsp;
-                                                        <small style={{ fontSize: ".5rem", verticalAlign: "middle" }}>
-                                                            🟢
-                                                        </small>
+                                                        {onlineUser.name.charAt(0).toUpperCase() + onlineUser.name.slice(1)} 
+                                                        <small style={{ fontSize: ".5rem", verticalAlign: "middle" }}> 🟢</small>
                                                     </Link>
                                                 </li>)
                                             })}
                                         </ul>
                                     </div>
                                 </Col>
-                                <ToastContainer />
                             </Row>
                         }
                     </> :

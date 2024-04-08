@@ -28,6 +28,7 @@ import blogPostsReducer from './slices/blogPostsSlice'
 import imageUploadsReducer from './slices/imageUploadsSlice'
 import blogPostsViewsReducer from './slices/blogPostsViewsSlice'
 import statisticsReducer from './slices/statisticsSlice'
+import feedbacksReducer from './slices/feedbacksSlice'
 
 const store = configureStore({
     reducer: {
@@ -58,7 +59,8 @@ const store = configureStore({
         blogPosts: blogPostsReducer,
         imageUploads: imageUploadsReducer,
         blogPostsViews: blogPostsViewsReducer,
-        statistics: statisticsReducer
+        statistics: statisticsReducer,
+        feedbacks: feedbacksReducer
     },
     devTools: process.env.NODE_ENV === 'development',
 })

@@ -13,15 +13,15 @@ const DownloadsTabPane = () => {
     // Redux
     const dispatch = useDispatch()
     const downloads = useSelector(state => state.downloads)
+    const { isLoading, totalPages, allDownloads, userDownloads, creatorDownloads } = downloads
 
     // context
     const currentUser = useContext(currentUserContext)
 
     const uId = currentUser && currentUser._id
     const uRole = currentUser && currentUser.role
-    const totPages = downloads && downloads.totalPages
-    const downloadsToUse = downloads && (uRole === 'Admin' || uRole === 'SuperAdmin') ? downloads.allDownloads :
-        downloads && (uRole === 'Creator') ? downloads.creatorDownloads : downloads.userDownloads
+    const downloadsToUse = downloads && (uRole === 'Admin' || uRole === 'SuperAdmin') ? allDownloads :
+        downloads && (uRole === 'Creator') ? creatorDownloads : userDownloads
 
     const [pageNo, setPageNo] = useState(1);
     const [numberOfPages, setNumberOfPages] = useState(0)
@@ -30,7 +30,7 @@ const DownloadsTabPane = () => {
     useEffect(() => {
         if (uRole === 'Admin' || uRole === 'SuperAdmin') {
             dispatch(getDownloads(pageNo))
-            setNumberOfPages(totPages)
+            setNumberOfPages(totalPages && totalPages)
         }
         else if (uRole === 'Creator') {
             dispatch(getCreatorDownloads(uId, pageNo))
@@ -38,12 +38,12 @@ const DownloadsTabPane = () => {
         else {
             dispatch(getUserDownloads(uId, pageNo))
         }
-    }, [dispatch, uRole, uId, pageNo, totPages])
+    }, [dispatch, pageNo, uId, uRole, totalPages])
 
     return (
-        <TabPane tabId="4">
+        <TabPane tabId="5">
 
-            {downloads.isLoading ?
+            {isLoading ?
                 <QBLoadingSM title='downloads' /> :
 
                 <Row>

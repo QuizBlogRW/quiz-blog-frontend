@@ -1,27 +1,28 @@
 import React from 'react'
 import * as XLSX from 'xlsx';
 import { Button } from 'reactstrap'
-// import moment from 'moment'
+import moment from 'moment'
 
 const ExcelButton = ({ data, filename }) => {
 
     // CONVERT THE FIELDS WITH EMPTY STRINGS TO NULL - DONE INPLACE
-    data && data.map((obj, index) => {
-
-        Object.keys(obj).map(key => {
-            if (obj[key] === "") {
-                data[index][key] = null
+    // Create a new array with modified values
+    const modifiedData = data && data.map((obj, index) => {
+        // Create a new object with modified values
+        const modifiedObj = { ...obj };
+        Object.keys(modifiedObj).forEach(key => {
+            if (modifiedObj[key] === "") {
+                modifiedObj[key] = null;
             }
-            return null
-        })
-        return null
-    })
+        });
+        return modifiedObj;
+    });
 
     // CONVERT THE OBJECTS TO ARRAYS
-    const dataArr = data && data.map(obj => Object.values(obj))
+    const dataArr = modifiedData && modifiedData.map(obj => Object.values(obj))
 
     // GET THE HEADERS
-    const headers = data && Object.keys(data[0])
+    const headers = modifiedData && Object.keys(modifiedData[0])
 
     // CHANGE THE HEADERS TO UPPER CASE LETTERS - INPLACE
     headers && headers.map((header, index) => headers[index] = header.toUpperCase())
@@ -33,17 +34,16 @@ const ExcelButton = ({ data, filename }) => {
     dataArr && dataArr.map((arr) => {
         arr.map((item, index) => {
 
-            // // CHECK IF IT IS A DATE
-            // if (Date.parse(item)) {
-            //     arr[index] = moment(item).format('DD-MM-YYYY, HH:mm:ss')
-            // }
+            if (item instanceof Date && !isNaN(item)) {
+                arr[index] = moment(item, 'DD-MM-YYYY, HH:mm:ss').format('DD-MM-YYYY, HH:mm:ss')
+            }
 
             if (typeof item === 'object' && item !== null) {
 
-                if(item.hasOwnProperty('title')) {
+                if (item.hasOwnProperty('title')) {
                     arr[index] = item.title
                 }
-                else if(item.hasOwnProperty('name')) {
+                else if (item.hasOwnProperty('name')) {
                     arr[index] = item.name
                 }
 

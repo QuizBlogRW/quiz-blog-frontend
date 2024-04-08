@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { apiCallHelper, apiCallHelperUpload } from '../configHelpers'
+import { notify } from '../../utils/notifyToast'
 
 // Async actions with createAsyncThunk
 export const getAdverts = createAsyncThunk("adverts/getAdverts", async (_, { getState, dispatch }) =>
@@ -63,6 +64,7 @@ const advertsSlice = createSlice({
     builder.addCase(changeStatus.fulfilled, (state, action) => {
       state.activeAdverts = state.activeAdverts.map(advert => advert._id === action.payload._id ? action.payload : advert)
       state.isLoading = false
+      notify('Advert status changed successfully!')
     })
     builder.addCase(updateAdvert.fulfilled, (state, action) => {
       state.allAdverts = state.allAdverts.map(advert => advert._id === action.payload._id ? action.payload : advert)

@@ -6,7 +6,7 @@ import QBLoadingSM from '../rLoading/QBLoadingSM'
 import { currentUserContext } from '../../appContexts'
 import { useSelector, useDispatch } from "react-redux"
 import { socket } from '../../utils/socket'
-
+import { notify } from '../../utils/notifyToast'
 const RoomMessages = ({ oON1room, onlineList }) => {
 
     // Redux
@@ -54,7 +54,8 @@ const RoomMessages = ({ oON1room, onlineList }) => {
             senderID: message_sender,
             receiverID: message_receiver,
             content: message_content,
-            roomID: oneChatRoom && oneChatRoom._id
+            roomID: oneChatRoom && oneChatRoom._id,
+            senderName: currentUser.name,
         }
 
         // Attempt to save to database
@@ -66,8 +67,6 @@ const RoomMessages = ({ oON1room, onlineList }) => {
 
     // runs whenever a the backend returns back the bRoomMsg received
     useEffect(() => {
-        // Scroll to the bottom of the chat
-        lastMessageRef.current.scrollTo({ top: 10, behavior: "smooth" })
         socket.on('typingResponse', (data) => setTypingStatus(data));
         socket.on('welcome_room_message', (data) => {
             console.log('welcome_room_message', data)
@@ -75,9 +74,14 @@ const RoomMessages = ({ oON1room, onlineList }) => {
         })
 
         socket.on('backRoomMessage', bRoomMsg => {
+
             // Getting the updated messages with the new message
-            console.log('backRoomMessage', bRoomMsg)
             oneChatRoom && oneChatRoom._id && dispatch(getRoomMessages(oneChatRoom._id))
+
+            // Notify the user of the new message
+            if (bRoomMsg.senderName !== currentUser.name) {
+                notify(`New message from ${bRoomMsg.senderName}!`)
+            }
         })
 
         return () => {
@@ -86,6 +90,11 @@ const RoomMessages = ({ oON1room, onlineList }) => {
             socket.off('welcome_room_message')
         };
     }, [socket, oneChatRoom, dispatch])
+
+    useEffect(() => {
+        // scroll to bottom every time messages change
+        lastMessageRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [oneRoomMessages]);
 
     const matchingUsr = onlineList.find((user) => user.name === oON1room.receiverName);
     const onlineStatus = matchingUsr && matchingUsr.name === oON1room.receiverName ? '🟢' : '🔴'
@@ -100,7 +109,6 @@ const RoomMessages = ({ oON1room, onlineList }) => {
                     {oON1room.receiverName}&nbsp;
                     <small style={{ fontSize: ".5rem", verticalAlign: "middle" }}>{onlineStatus}</small>
                 </h4>
-                <div ref={lastMessageRef} />
                 {welcomeMessage !== '' &&
                     <div className='text-center mt-3 text-success'>
                         <small>{welcomeMessage}</small>
@@ -108,22 +116,11 @@ const RoomMessages = ({ oON1room, onlineList }) => {
                 <div>
                     <p style={{ fontSize: ".65rem", color: "magenta" }}>{typingStatus}</p>
                 </div>
-                {/* CHAT BOX */}
-                <Form className='w-100 m-1 mb-lg-5 d-flex flex-column align-center justify-center' onSubmit={sendMessage}>
-                    <FormGroup className='flex-grow-1 w-100'>
-                        <Input type='textarea' name='message_content' placeholder='Type your message here...' rows="5" onChange={e => setRoomMessageState({ ...roomMessageState, [e.target.name]: e.target.value })}
-                            onKeyDown={handleTyping} value={roomMessageState.message_content} required />
-                    </FormGroup>
-                    <Button className='mx-auto w-50' style={{ height: "max-content", backgroundColor: "#157A6E" }}>
-                        Send
-                    </Button>
-                </Form>
-
                 <hr />
                 {/* CHAT MESSAGES */}
                 {
                     oneRoomMessages.length > 0 ?
-                        oneRoomMessages && [...oneRoomMessages].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map((roomMsg, index) => (
+                        oneRoomMessages.map((roomMsg, index) => (
                             <div key={index} className={`mt-2 mt-lg-5 ${roomMsg.sender === currentUser._id ? 'text-end' : 'text-start'}`}>
                                 <div
                                     className={`bubble d-inline-block p-2 ${roomMsg.sender === currentUser._id ? 'ms-auto' : 'me-auto'}`}
@@ -145,6 +142,20 @@ const RoomMessages = ({ oON1room, onlineList }) => {
 
                         <div className='text-center mt-3 text-success'>Start a new chat!</div>
                 }
+
+                <hr />
+
+                {/* CHAT BOX */}
+                <Form className='w-100 m-1 pb-3 mb-lg-5 d-flex flex-column align-center justify-center' onSubmit={sendMessage}>
+                    <FormGroup className='flex-grow-1 w-100'>
+                        <Input type='textarea' name='message_content' placeholder='Type your message here...' rows="5" onChange={e => setRoomMessageState({ ...roomMessageState, [e.target.name]: e.target.value })}
+                            onKeyDown={handleTyping} value={roomMessageState.message_content} required />
+                    </FormGroup>
+                    <Button className='mx-auto w-50' style={{ height: "max-content", backgroundColor: "#157A6E" }}>
+                        Send
+                    </Button>
+                    <div ref={lastMessageRef} />
+                </Form>
             </div>
     )
 }

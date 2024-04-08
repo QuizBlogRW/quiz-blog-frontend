@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import { Row, Col, TabContent, Nav, NavItem, NavLink, Button } from 'reactstrap'
 import classnames from 'classnames'
 import ScoresTabPane from './ScoresTabPane'
+import FeedbacksTabPane from './FeedbacksTabPane'
 import CategoriesTabPane from '../categories/CategoriesTabPane'
 import QuizesTabPane from '../quizes/QuizesTabPane'
 import UsersTabPane from '../users/UsersTabPane'
@@ -27,7 +28,7 @@ const Dashboard = () => {
     // Lifecycle methods
     useEffect(() => {
         if (currentUser && currentUser.role === 'Visitor') {
-            setActiveTab('3')
+            setActiveTab('4')
         }
     }, [currentUser])
 
@@ -63,20 +64,27 @@ const Dashboard = () => {
                                             <u>Quizes</u>
                                         </NavLink>
                                     </NavItem>
+                                    <NavItem>
+                                        <NavLink
+                                            className={classnames({ active: activeTab === '3' })}
+                                            onClick={() => { toggle('3') }}>
+                                            <u>Feedbacks</u>
+                                        </NavLink>
+                                    </NavItem>
                                 </> : null}
 
                         <NavItem>
                             <NavLink
-                                className={classnames({ active: activeTab === '3' })}
-                                onClick={() => { toggle('3') }}>
+                                className={classnames({ active: activeTab === '4' })}
+                                onClick={() => { toggle('4') }}>
                                 <u>Scores</u>
                             </NavLink>
                         </NavItem>
 
                         <NavItem>
                             <NavLink
-                                className={classnames({ active: activeTab === '4' })}
-                                onClick={() => { toggle('4') }}>
+                                className={classnames({ active: activeTab === '5' })}
+                                onClick={() => { toggle('5') }}>
                                 <u>Downloads</u>
                             </NavLink>
                         </NavItem>
@@ -86,16 +94,16 @@ const Dashboard = () => {
                                 <>
                                     <NavItem>
                                         <NavLink
-                                            className={classnames({ active: activeTab === '7' })}
-                                            onClick={() => { toggle('7') }}>
+                                            className={classnames({ active: activeTab === '6' })}
+                                            onClick={() => { toggle('6') }}>
                                             <u>BP Categories</u>
                                         </NavLink>
                                     </NavItem>
 
                                     <NavItem>
                                         <NavLink
-                                            className={classnames({ active: activeTab === '8' })}
-                                            onClick={() => { toggle('8') }}>
+                                            className={classnames({ active: activeTab === '7' })}
+                                            onClick={() => { toggle('7') }}>
                                             <u>Blog Posts</u>
                                         </NavLink>
                                     </NavItem> </> : null}
@@ -106,8 +114,8 @@ const Dashboard = () => {
                                 <>
                                     <NavItem>
                                         <NavLink
-                                            className={classnames({ active: activeTab === '6' })}
-                                            onClick={() => { toggle('6') }}>
+                                            className={classnames({ active: activeTab === '8' })}
+                                            onClick={() => { toggle('8') }}>
                                             <u>Users</u>
                                         </NavLink>
                                     </NavItem>
@@ -144,6 +152,7 @@ const Dashboard = () => {
                             </> : null}
 
                         {/* Any user authenticated */}
+                        <FeedbacksTabPane />
                         <ScoresTabPane />
                         <DownloadsTabPane />
 

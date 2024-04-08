@@ -13,24 +13,22 @@ const ScoresTabPane = () => {
     // Redux
     const dispatch = useDispatch()
     const scores = useSelector(state => state.scores)
+    const { isLoading, totalPages, allScores, creatorScores, takerScores } = scores
 
     // context
     const currentUser = useContext(currentUserContext)
 
     const uId = currentUser && currentUser._id
     const uRole = currentUser && currentUser.role
-    const totPages = scores && scores.totalPages
-    const scoresToUse = scores && (uRole === 'Admin' || uRole === 'SuperAdmin') ? scores.allScores :
-        scores && (uRole === 'Creator') ? scores.creatorScores : scores.takerScores
+    const scoresToUse = scores && (uRole === 'Admin' || uRole === 'SuperAdmin') ? allScores :
+        scores && (uRole === 'Creator') ? creatorScores : takerScores
 
     const [pageNo, setPageNo] = useState(1)
-    const [numberOfPages, setNumberOfPages] = useState(0)
 
     // Lifecycle methods
     useEffect(() => {
         if (uRole === 'Admin' || uRole === 'SuperAdmin') {
             dispatch(setScores(pageNo))
-            setNumberOfPages(totPages)
         }
         else if (uRole === 'Creator') {
             dispatch(getCreatorScores(uId, pageNo))
@@ -38,18 +36,18 @@ const ScoresTabPane = () => {
         else {
             dispatch(getTakerScores(uId, pageNo))
         }
-    }, [pageNo, uRole, uId, dispatch, totPages])
+    }, [dispatch, pageNo, uId, uRole, totalPages])
 
     return (
 
-        <TabPane tabId="3">
+        <TabPane tabId="4">
             {
-                scores.isLoading ?
+                isLoading ?
                     <QBLoadingSM title='scores' /> :
 
                     <Row>
                         {(uRole === 'Admin' || uRole === 'SuperAdmin') ?
-                            <PageOf pageNo={pageNo} numberOfPages={numberOfPages} /> : null}
+                            <PageOf pageNo={pageNo} numberOfPages={totalPages} /> : null}
 
                         <ScoresTable
                             scoresToUse={scoresToUse}
@@ -58,7 +56,7 @@ const ScoresTabPane = () => {
 
                         {uRole !== 'Visitor' ?
                             <>
-                                <Pagination pageNo={pageNo} setPageNo={setPageNo} numberOfPages={numberOfPages} />
+                                <Pagination pageNo={pageNo} setPageNo={setPageNo} numberOfPages={totalPages} />
                             </> : null}
                     </Row>}
         </TabPane>

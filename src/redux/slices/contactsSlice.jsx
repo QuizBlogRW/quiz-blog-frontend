@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { apiCallHelper } from '../configHelpers'
 import { socket } from '../../utils/socket'
+import { notify } from '../../utils/notifyToast'
 
 // Async actions with createAsyncThunk
 export const getContacts = createAsyncThunk("contacts/getContacts", async (pageNo, { getState, dispatch }) =>
@@ -82,11 +83,11 @@ const contactsSlice = createSlice({
       state.reply = action.payload
       state.isLoading = false
       socket.emit('newReply', action.payload)
-      console.log('Sent', action.payload)
     })
     builder.addCase(deleteContact.fulfilled, (state, action) => {
       state.allContacts = state.allContacts.filter(contact => contact._id !== action.payload)
       state.isLoading = false
+      notify('Contact deleted', 'success')
     })
     builder.addCase(getCreateRoom.fulfilled, (state, action) => {
       state.oneChatRoom = action.payload

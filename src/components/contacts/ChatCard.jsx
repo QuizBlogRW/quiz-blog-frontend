@@ -5,9 +5,11 @@ import moment from 'moment'
 import { Link } from 'react-router-dom'
 import { deleteContact } from '../../redux/slices/contactsSlice'
 import { currentUserContext } from '../../appContexts'
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 
 const ChatCard = ({ openChat }) => {
+
+    const dispatch = useDispatch();
 
     // Context
     const currentUser = useContext(currentUserContext)
@@ -19,13 +21,13 @@ const ChatCard = ({ openChat }) => {
         contactsToUse && contactsToUse.length > 0 ?
             <>
                 {contactsToUse && contactsToUse.map(contact => (
-                    <Card body
-                        onClick={() => openChat(contact._id)}
-                        key={contact._id}
+                    <Card body key={contact._id}
                         className="m-1 p-1 mb-2"
                         style={{ height: "150px!important", overflowY: "unset!important" }}>
 
-                        <CardTitle className="p-1 d-flex justify-content-between" style={{ fontSize: ".65rem", backgroundColor: "honeydew" }}>
+                        <CardTitle onClick={() => openChat(contact._id)}
+                            className="p-1 d-flex justify-content-between"
+                            style={{ fontSize: ".65rem", backgroundColor: "honeydew" }}>
                             <small style={{ width: "80%" }}>
                                 <b style={{ whiteSpace: "nowrap", textOverflow: "ellipsis" }} className='d-block overflow-hidden'>
                                     {contact.contact_name}
@@ -42,7 +44,8 @@ const ChatCard = ({ openChat }) => {
                                 null}
                         </CardTitle>
 
-                        <CardText style={{ fontSize: ".7rem", marginLeft: "6px" }}>
+                        <CardText onClick={() => openChat(contact._id)}
+                            style={{ fontSize: ".7rem", marginLeft: "6px" }}>
                             {contact.message}
                         </CardText>
                         <div className="d-flex justify-content-between p-1" style={{ backgroundColor: "whitesmoke" }}>
@@ -52,15 +55,15 @@ const ChatCard = ({ openChat }) => {
                                 </i>
                             </small>
 
-                            <Button size="sm" color="link" className={`me-2 ${(uRole === 'Admin' || uRole === 'SuperAdmin') ? '' : 'd-none'}`} onClick={() => deleteContact(contact._id)}>
-                                <img src={DeleteIcon} alt="" width="8" height="8" />
+                            <Button size="sm" color="link" className={`me-2 ${(uRole === 'Admin' || uRole === 'SuperAdmin') ? '' : 'd-none'}`} onClick={() => dispatch(deleteContact(contact._id))}>
+                                <img src={DeleteIcon} alt="" width="16" height="16" />
                             </Button>
                         </div>
                     </Card>
                 ))}
             </> :
-            <Alert color="danger" className="w-50 text-center mx-auto" style={{ border: '2px solid #157A6E' }}>
-                {uRole !== 'Visitor' ? 'No contacts yet!' : <Link to='/contact'>Start a new chat</Link>}
+            <Alert color="danger" className="w-100 w-lg-50 mt-4 text-center mx-auto" style={{ border: '2px solid #157A6E' }}>
+                {uRole !== 'Visitor' ? 'No contacts yet!' : <Link to='/contact'>➕ Start new chat with us</Link>}
             </Alert>
     )
 }
