@@ -61,6 +61,7 @@ const AdvertsTabPane = () => {
                                             <CardText className='my-4'>{advert.owner}</CardText>
                                             <CardText className='my-4'>{advert.email}</CardText>
                                             <CardText className='my-4'>{advert.phone}</CardText>
+                                            <CardText className='my-4 text-info'><u>{advert.link ? advert.link : "No link"}</u></CardText>
 
                                             {uRole === "SuperAdmin" || uRole === "Admin" ?
                                                 <span>

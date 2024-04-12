@@ -8,8 +8,8 @@ export const devApiURL = 'http://localhost:4000/'
 
 // Axios instance
 const axiosInstance = axios.create({
-    // baseURL: process.env.NODE_ENV === 'development' ? devApiURL : (qbURL || apiURL),
-    baseURL: apiURL,
+    baseURL: process.env.NODE_ENV === 'development' ? devApiURL : (qbURL || apiURL),
+    // baseURL: apiURL,
 })
 
 // Function to format action type
