@@ -23,7 +23,7 @@ const Dashboard = () => {
     const { toggleL } = useContext(logRegContext)
 
     // State
-    const [activeTab, setActiveTab] = useState('1')
+    const [activeTab, setActiveTab] = useState(localStorage.getItem('activeTab') || '1')
 
     // Lifecycle methods
     useEffect(() => {
@@ -33,7 +33,10 @@ const Dashboard = () => {
     }, [currentUser])
 
     const toggle = tab => {
-        if (activeTab !== tab) setActiveTab(tab)
+        if (activeTab !== tab) {
+            setActiveTab(tab)
+            localStorage.setItem('activeTab', tab)
+        }
     }
 
     // render

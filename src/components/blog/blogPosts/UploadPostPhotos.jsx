@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap'
 import { clearErrors } from '../../../redux/slices/errorSlice'
 import { clearSuccess } from '../../../redux/slices/successSlice'
 import { createImageUpload } from '../../../redux/slices/imageUploadsSlice'
 import { useDispatch } from "react-redux"
 import { currentUserContext } from '../../../appContexts'
+import Notification from '../../../utils/Notification'
 
 const UploadPostPhotos = () => {
 
@@ -67,7 +68,6 @@ const UploadPostPhotos = () => {
 
     return (
         <div>
-
             <Notification errorsState={errorsState} progress={null} initFn="createImageUpload" />
             <Form onSubmit={onSubmitHandler}>
 

@@ -20,6 +20,9 @@ export const updateBlogPost = createAsyncThunk("blogPosts/updateBlogPost", async
 export const deleteBlogPost = createAsyncThunk("blogPosts/deleteBlogPost", async (id, { getState, dispatch }) =>
   apiCallHelper(`/api/blogPosts/${id}`, 'delete', null, getState, dispatch, 'deleteBlogPost'))
 
+export const deleteBlogPostImage = createAsyncThunk("blogPosts/deleteBlogPostImage", async (id, { getState, dispatch }) =>
+  apiCallHelper(`/api/imageUploads/${id}`, 'delete', null, getState, dispatch, 'deleteBlogPostImage'))
+
 // Blog posts slice
 const initialState = {
   isLoading: false,

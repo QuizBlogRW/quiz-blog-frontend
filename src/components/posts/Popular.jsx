@@ -41,7 +41,7 @@ const Popular = () => {
                             <ListGroup>
                                 {popularQuizes && popularQuizes.map((popQz, i) => (
                                     <ListGroupItem href={`/view-quiz/${popQz && popQz.slug}`} tag="a" color="success" className="d-flex justify-content-between" key={i}>
-                                        <span>{i + 1}. {popQz && popQz.qTitle}</span>
+                                        <span>{i + 1}. {popQz && popQz.qTitle.toUpperCase()}</span>
                                         <Badge color="info">{popQz.count}</Badge>
                                     </ListGroupItem>
                                 ))}

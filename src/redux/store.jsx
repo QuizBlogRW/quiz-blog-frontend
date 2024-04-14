@@ -63,6 +63,9 @@ const store = configureStore({
         feedbacks: feedbacksReducer
     },
     devTools: process.env.NODE_ENV === 'development',
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+        serializableCheck: false  // Disable the SerializableStateInvariantMiddleware
+    })
 })
 
 export default store

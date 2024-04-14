@@ -18,14 +18,16 @@ const ReviewQuiz = () => {
     // Redux
     const dispatch = useDispatch()
     const sC = useSelector(state => state.scores)
+    const { isLoading, oneScore } = sC
 
-    const auth = useContext(authContext)
     const currentUser = useContext(currentUserContext)
+    const auth = useContext(authContext)
+    const { isAuthenticated } = auth
 
     const [currentQuestion, setCurrentQuestion] = useState(0)
     const [lastAnswer, setLastAnswer] = useState(false)
 
-    const qnsAll = sC.oneScore && sC.oneScore.review && sC.oneScore.review.questions
+    const qnsAll = oneScore && oneScore.review && oneScore.review.questions
     const curRevQn = qnsAll && qnsAll[currentQuestion]
 
     // Access route parameters
@@ -47,9 +49,8 @@ const ReviewQuiz = () => {
 
         <Container className='px-lg-5'>
 
-            {auth.isAuthenticated ?
-
-                !sC.isLoading ?
+            {isAuthenticated ?
+                !isLoading ?
                     <>
                         <Row className='w-100'>
                             <Col sm="6" className='w-100'>
@@ -59,29 +60,25 @@ const ReviewQuiz = () => {
                             </Col>
                         </Row>
                         {
-                            sC.oneScore ?
-
+                            oneScore ?
                                 qnsAll.length > 0 ?
-
                                     <>
                                         <Row
-                                            className="main mx-auto px-lg-5 d-flex flex-column justify-content-center my-lg-5 py-lg-5 w-80"
+                                            className="main my-2 mx-auto px-lg-5 d-flex flex-column justify-content-center my-lg-5 py-lg-5 w-80"
                                             key={Math.floor(Math.random() * 1000)}
-                                            style={{ border: '3px solid #157A6E' }}
-                                        >
+                                            style={{ border: '3px solid #157A6E', borderRadius: '10px', backgroundColor: '#EAFAF1' }}>
 
                                             {lastAnswer ?
-
                                                 <OnLastAnswer
                                                     isAuthenticated={auth.isAuthenticated}
-                                                    thisQuiz={sC.oneScore.quiz} /> :
+                                                    thisQuiz={oneScore.quiz} /> :
 
                                                 imgLoaded ?
                                                     <div className="question-view p-2">
                                                         <TitleRow
-                                                            thisQuiz={sC.oneScore.quiz}
-                                                            thisReview={sC.oneScore.review}
-                                                            score={sC.oneScore.marks}
+                                                            thisQuiz={oneScore.quiz}
+                                                            thisReview={oneScore.review}
+                                                            score={oneScore.marks}
                                                             qnsAll={qnsAll}
                                                             curRevQn={curRevQn}
                                                             currentQuestion={currentQuestion}
@@ -92,7 +89,12 @@ const ReviewQuiz = () => {
                                                             <Row>
                                                                 <Col>
                                                                     <div className="my-3 mx-sm-5 px-sm-5 d-flex justify-content-center align-items-center">
-                                                                        <img className="mt-2 mt-lg-0 mx-sm-5 px-sm-5 w-100" src={curRevQn && curRevQn.question_image} onLoad={onLoad} alt="Question Illustration" />
+                                                                        <img 
+                                                                        className="mt-2 mt-lg-0 mx-sm-5 px-sm-5" 
+                                                                        src={curRevQn && curRevQn.question_image} 
+                                                                        onLoad={onLoad} 
+                                                                        style={{ width: "250px", height: "auto" }}
+                                                                        alt="Question Illustration" />
                                                                     </div>
                                                                 </Col>
                                                             </Row> : null}
@@ -105,7 +107,7 @@ const ReviewQuiz = () => {
                                                             setLastAnswer={setLastAnswer}
                                                             setCurrentQuestion={setCurrentQuestion} />
 
-                                                        <QuestionComments questionID={curRevQn && curRevQn._id} quizID={sC.oneScore.quiz && sC.oneScore.quiz._id} currentUser={auth && currentUser} />
+                                                        <QuestionComments questionID={curRevQn && curRevQn._id} quizID={oneScore.quiz && oneScore.quiz._id} currentUser={auth && currentUser} />
                                                     </div>
                                                     : <QBLoadingSM title='question' />}
 

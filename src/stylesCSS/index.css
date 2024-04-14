@@ -685,6 +685,7 @@ div.question-section {
 
 .badge {
     line-height: 1.8;
+    font-weight: 500 !important;
 }
 
 .question-view .card .btn-outline-primary {
@@ -1132,10 +1133,15 @@ form.subscribe-form:hover,
     }
 
     .question-view .btn,
+    .question-view p,
     .score-section .btn {
-        font-size: .4rem !important;
-        padding-left: 0.2rem;
-        padding-right: 0.2rem;
+        font-size: .65rem !important;
+        padding: 0.2rem;
+    }
+
+    .badge {
+        line-height: 1.5;
+        font-size: .65rem !important;
     }
 
     .question-view p,

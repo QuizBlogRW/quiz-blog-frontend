@@ -1,19 +1,9 @@
 import React from 'react'
 import { Col, Row, Button } from 'reactstrap'
-
 import PdfDocument from '../../dashboard/pdfs/PdfDocument'
-import ReactDOMServer from 'react-dom/server';
+import { PDFDownloadLink } from '@react-pdf/renderer';
 
-const TitleRow = ({ thisReview, score, thisQuiz, qnsAll, curRevQn, currentQuestion, uRole }) => {
-
-    const thisQuizTitle = thisQuiz && thisQuiz.title
-
-    const createPDF = () => {
-        // Select the web page element to convert to PDF
-        const element = <PdfDocument review={thisReview} />
-        const elementString = ReactDOMServer.renderToString(element);
-
-    }
+const TitleRow = ({ thisReview, score, qnsAll, curRevQn, currentQuestion, uRole }) => {
 
     return (
         <Row>
@@ -24,20 +14,21 @@ const TitleRow = ({ thisReview, score, thisQuiz, qnsAll, curRevQn, currentQuesti
                     </Button>
 
                     <span>
-                        <h6 className="text-warning d-inline">Reviewing ...</h6>
-                        <small className="text-info">
+                        <p className="text-primary d-inline">Reviewing ...</p>
+                        <small style={{ color: '#ffc107', fontWeight: 'bolder' }}>
                             &nbsp; Score: ~{Math.round(score * 100 / qnsAll.length)}%
                         </small>
                     </span>
 
                     {(uRole === 'Admin' || uRole === 'SuperAdmin') &&
-                        <Button color="success"
-                            className="mt-sm-0 share-btn mx-1 mx-md-0"
-                        onClick={createPDF}
-                        >
-                            Download PDF
-                        </Button>}
-
+                        <PDFDownloadLink document={<PdfDocument review={thisReview} />} className="mt-sm-0 share-btn mx-1 mx-md-0" fileName={`${thisReview && thisReview.title}-shared-by-Quiz-Blog.pdf`}>
+                            {({ blob, url, loading, error }) => loading ? <small className="text-warning">Loading document...</small> :
+                                <Button color="success"
+                                    className="mt-sm-0 share-btn mx-1 mx-md-0">
+                                    Download PDF
+                                </Button>
+                            }
+                        </PDFDownloadLink>}
                 </div>
 
                 <div className='question-section my-4 mt-sm-5 mx-auto w-75'>

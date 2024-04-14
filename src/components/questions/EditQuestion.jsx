@@ -14,9 +14,11 @@ const EditQuestion = () => {
 
     // Redux
     const quest = useSelector(state => state.questions.oneQuestion)
+    const isQnLoading = useSelector(state => state.questions.isLoading)
     const dispatch = useDispatch()
 
     const auth = useContext(authContext)
+    const { isAuthenticated, user, isLoading } = auth
     const { toggleL } = useContext(logRegContext)
 
     // Access route parameters & history
@@ -33,7 +35,7 @@ const EditQuestion = () => {
     const thisQnCat = quest && quest.category
     const thisQnQZ = quest && quest.quiz
 
-    const [questionTextState, setQuestionTextState] = useState()
+    const [questionTextState, setQuestionTextState] = useState({ questionText: '' })
     useEffect(() => { setQuestionTextState({ questionText: quest && quest.questionText }) }, [quest])
 
     const [question_image, setQuestion_image] = useState('')
@@ -63,18 +65,15 @@ const EditQuestion = () => {
     }
 
     const handleAnswerChangeInput = (id, event) => {
-        const updatedAnswerOptions = answerOptionsState && answerOptionsState.map(oneAnswer => {
-
+        const updatedAnswerOptions = answerOptionsState.map(oneAnswer => {
             if (id === oneAnswer._id) {
-
-                event.target.type === "checkbox" ?
-                    oneAnswer[event.target.name] = event.target.checked :
-                    oneAnswer[event.target.name] = event.target.value
+                return {
+                    ...oneAnswer, [event.target.name]: event.target.type === "checkbox" ? event.target.checked : event.target.value
+                }
             }
             return oneAnswer
         })
-
-        setAnswerOptionsState((updatedAnswerOptions))
+        setAnswerOptionsState(updatedAnswerOptions)
     }
 
     const handleSubmit = (e) => {
@@ -103,7 +102,7 @@ const EditQuestion = () => {
         answerOptionsState.forEach(aOptn => {
             formData.append('answerOptions', JSON.stringify(aOptn))
         })
-        formData.append('last_updated_by', auth.isLoading === false ? auth.user._id : null)
+        formData.append('last_updated_by', isLoading === false ? user._id : null)
         formData.append('duration', durationState.duration)
 
         // Attempt to update
@@ -123,9 +122,9 @@ const EditQuestion = () => {
     }
 
     return (
-        auth.isAuthenticated ?
+        isAuthenticated ?
 
-            auth.user.role !== 'Visitor' ?
+            user.role !== 'Visitor' ?
 
                 <Form className="my-3 mt-lg-5 mx-3 mx-lg-5 edit-question" onSubmit={handleSubmit}>
 
@@ -206,7 +205,6 @@ const EditQuestion = () => {
                             </FormGroup>
 
                         </div>
-
                     ))}
 
                     <FormGroup check row className="mx-0">
@@ -222,7 +220,7 @@ const EditQuestion = () => {
             // If not authenticated or loading
             <div className="vh-100 d-flex justify-content-center align-items-center text-danger">
                 {
-                    auth.isLoading ?
+                    isLoading || isQnLoading ?
                         <QBLoadingSM /> :
                         <Button color="link" className="fw-bolder my-5 border rounded" onClick={toggleL} style={{ backgroundColor: "#ffc107", color: "#157A6E", fontSize: "1.5vw", boxShadow: "-2px 2px 1px 2px #157A6E", border: "2px solid #157A6E" }}>
                             Login first

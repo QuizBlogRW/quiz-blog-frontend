@@ -1,10 +1,9 @@
 import React, { lazy, Suspense, useContext, useState, useEffect } from 'react'
-import ReactDOMServer from 'react-dom/server'
 import { Button } from 'reactstrap'
 import { Link, useLocation } from 'react-router-dom'
-import html2pdf from 'html2pdf.js'
 import MarksStatus from './MarksStatus'
 import PdfDocument from '../../dashboard/pdfs/PdfDocument'
+import { PDFDownloadLink } from '@react-pdf/renderer'
 import SimilarQuizes from './SimilarQuizes'
 import RelatedNotes from './RelatedNotes'
 import ReviewForm from './ReviewForm';
@@ -33,27 +32,6 @@ const QuizResults = () => {
 
     const uRole = currentUser && currentUser.role
     const uId = currentUser && currentUser._id
-    const thisQuizTitle = thisQuiz && thisQuiz.title
-
-    const createPDF = () => {
-
-        // Select the web page element to convert to PDF
-        const element = <PdfDocument review={quizToReview && quizToReview} />
-        const elementString = ReactDOMServer.renderToString(element)
-
-        // Set the PDF options
-        const options = {
-            margin: [0.1, 0.1, 0.1, 0.1],
-            filename: `${thisQuizTitle}-shared-by-Quiz-Blog.pdf`,
-            image: { type: 'jpeg', quality: 0.98, background: '#fff', border: '1px solid #fff' },
-            html2canvas: { scale: 2, useCORS: true, logging: true, letterRendering: true, allowTaint: true, scrollX: 0, scrollY: -window.scrollY },
-            pagebreak: { mode: ['avoid-all', 'css', 'legacy'] },
-            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait', compressPDF: true, precision: 16 }
-        }
-
-        // Generate the PDF file
-        html2pdf().set(options).from(elementString).save()
-    }
 
     const scoreToSave = {
         id: newScoreId,
@@ -123,12 +101,14 @@ const QuizResults = () => {
                                 </Link>
 
                                 {(uRole === 'Admin' || uRole === 'SuperAdmin') &&
-                                    <Button color='info'
-                                        className='mt-3 mt-sm-0 share-btn mx-1 mx-md-0'
-                                    onClick={createPDF}
-                                    >
-                                        Download PDF
-                                    </Button>}
+                                    <PDFDownloadLink document={<PdfDocument review={quizToReview} />} className="mt-sm-0 share-btn mx-1 mx-md-0" fileName={`${thisQuiz && thisQuiz.title}-shared-by-Quiz-Blog.pdf`}>
+                                        {({ blob, url, loading, error }) => loading ? <small className="text-warning">Loading document...</small> :
+                                            <Button color="success"
+                                                className="mt-sm-0 share-btn mx-1 mx-md-0">
+                                                Download PDF
+                                            </Button>
+                                        }
+                                    </PDFDownloadLink>}
 
                                 <ReviewForm isOpen={modalOpen} toggle={toggleModal} onSubmit={submitReview} quiz={thisQuiz && thisQuiz._id} score={mongoScoreId} />
                             </> :

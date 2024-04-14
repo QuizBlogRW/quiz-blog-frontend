@@ -60,11 +60,11 @@ const ReviewView = ({ qnsAll, curRevQn, lastAnswer, currentQuestion, setLastAnsw
                 </div>
 
                 <div className="prevNext d-flex justify-content-between align-items-center mt-5">
-                    <Button color="info" className="ms-0 ms-md-5 p-1 px-md-2" onClick={handlePrevAnswer}>Previous</Button>
+                    <Button style={{ color: '#157A6E', backgroundColor: '#ffc107' }} className="ms-0 ms-md-5 p-1 px-md-2" onClick={handlePrevAnswer}>Previous</Button>
                     <Badge href="#" color={trueAnsNbr === trueChoicesNbr ? 'success' : 'danger'}>
                         {`Your answer was ${trueAnsNbr === trueChoicesNbr ? 'correct' : 'incorrect'}`}
                     </Badge>
-                    <Button color="info" className="me-0 me-md-5 p-1 px-md-2" onClick={handleNextAnswer}>
+                    <Button style={{ color: '#157A6E', backgroundColor: '#ffc107' }} className="me-0 me-md-5 p-1 px-md-2" onClick={handleNextAnswer}>
                         {lastAnswer ? 'End' : 'Next'}</Button>
                 </div>
             </Col>

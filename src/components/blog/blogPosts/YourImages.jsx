@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Col, Row, Card, Alert, Button } from 'reactstrap'
 import { getImageUploadsByOwner } from '../../../redux/slices/imageUploadsSlice'
-import { deleteBlogPost } from '../../../redux/slices/blogPostsSlice'
+import { deleteBlogPostImage } from '../../../redux/slices/blogPostsSlice'
 import { useSelector, useDispatch } from "react-redux"
 import QBLoadingSM from '../../rLoading/QBLoadingSM'
 import './yourimages.css'
@@ -12,7 +12,7 @@ const YourImages = () => {
 
     const dispatch = useDispatch()
     const yourImages = useSelector(state => state.imageUploads)
-    const currentUser = useSelector(state => state.auth.currentUser)
+    const currentUser = useContext(currentUserContext)
     const uID = currentUser && currentUser._id
 
     useEffect(() => {
@@ -52,7 +52,7 @@ const YourImages = () => {
                             yourImages.imageUploadsByOwner && yourImages.imageUploadsByOwner.map(img => (
                                 <Col sm='6' className='yourOneImg' key={img && img._id}>
                                     <Card inverse>
-                                        <DeleteModal deleteFnName="deleteBlogPost" deleteFn={deleteBlogPost} delID={img._id} delTitle={img.imageTitle} />
+                                        <DeleteModal deleteFnName="deleteBlogPostImage" deleteFn={deleteBlogPostImage} delID={img._id} delTitle={img.imageTitle} />
                                         <img src={img && img.uploadImage} alt='' />
                                         <Button className='btn-info mt-1 py-0' onClick={(event) => copying(img, event)}
                                         >

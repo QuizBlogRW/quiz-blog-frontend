@@ -13,6 +13,7 @@ const PostCategoriesTabPane = () => {
 
   const dispatch = useDispatch()
   const bPcats = useSelector(state => state.postCategories)
+  const { isLoading, allPostCategories } = bPcats
 
   const currentUser = useContext(currentUserContext)
 
@@ -27,11 +28,11 @@ const PostCategoriesTabPane = () => {
         <CreateBPCategory />
       </Button>
 
-      {bPcats.isLoading ?
+      {isLoading ?
         <QBLoadingSM title='Blog post categories' /> :
 
         <Row>
-          {bPcats.allPostCategories && bPcats.allPostCategories.map(category => (
+          {allPostCategories && allPostCategories.map(category => (
 
             <Col sm="6" className="mt-2" key={category._id}>
               <Card body>
@@ -45,7 +46,7 @@ const PostCategoriesTabPane = () => {
                 <div className="actions d-flex ms-3">
 
                   <Button size="sm" outline color="info" className="mx-2">
-                    <Link to={`/create-bpost/${category._id}`}>Add Blog Post</Link>
+                    <Link to={`/create-bpost/${category && category._id}`}>Add Blog Post</Link>
                   </Button>
 
                   {

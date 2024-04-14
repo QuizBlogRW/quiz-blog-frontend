@@ -17,12 +17,14 @@ const InFeedAd = lazy(() => import('../adsenses/InFeedAd'))
 const Index = () => {
 
     const dispatch = useDispatch()
-    const courseCategories = useSelector(state => state.courseCategories)
+    const { allCourseCategories } = useSelector(state => state.courseCategories)
+    const catLoading = useSelector(state => state.courseCategories.isLoading)
     const courses = useSelector(state => state.courses)
 
-    const auth = useContext(authContext)
     const currentUser = useContext(currentUserContext)
     const { toggleL } = useContext(logRegContext)
+    const auth = useContext(authContext)
+    const { isAuthenticated, isLoading } = auth
 
     const [collapsed, setCollapsed] = useState(true)
     const toggleNavbar = () => setCollapsed(!collapsed)
@@ -37,12 +39,12 @@ const Index = () => {
 
     return (
 
-        !auth.isAuthenticated ?
+        !isAuthenticated ?
 
             // If not authenticated or loading
             <div className="vh-100 d-flex justify-content-center align-items-center text-danger">
                 {
-                    auth.isLoading ?
+                    isLoading ?
                         <QBLoadingSM title='course categories' /> :
 
                         <Button color="link" className="fw-bolder my-5 border rounded" onClick={toggleL} style={{ backgroundColor: "#ffc107", color: "#157A6E", fontSize: "1.5vw", boxShadow: "-2px 2px 1px 2px #157A6E", border: "2px solid #157A6E" }}>
@@ -68,8 +70,7 @@ const Index = () => {
                     </Col>
                 </Row>
 
-                {courseCategories.isLoading ?
-
+                {catLoading ?
                     <QBLoadingSM title='course categories' /> :
 
                     <Row className="pt-lg-5 courses-content">
@@ -93,13 +94,12 @@ const Index = () => {
                                 <Nav navbar>
 
                                     {
-                                        courseCategories && courseCategories.allCourseCategories.length < 1 ?
-
+                                        allCourseCategories && allCourseCategories.length < 1 ?
                                             <>
                                                 {/* When no categories reload */}
                                                 {window.location.reload()}
                                             </> :
-                                            courseCategories && courseCategories.allCourseCategories.map(cCategory => (
+                                            allCourseCategories && allCourseCategories.map(cCategory => (
 
                                                 <NavItem key={cCategory._id}>
                                                     <NavLink className={`nav-link item ${activeTab === cCategory.title ? 'active' : ''}`} id={`v-pills-${cCategory.title}-tab`} data-toggle="pill" href={`#v-pills-${cCategory.title}`} role="tab" aria-controls={`v-pills-${cCategory.title}`} aria-selected="true" onClick={() => {
@@ -126,7 +126,7 @@ const Index = () => {
                                     <i className="fa fa-home" aria-hidden="true"> </i>&nbsp;&nbsp;Categories
                                 </a>
 
-                                {courseCategories && courseCategories.allCourseCategories.map(cCategory => (
+                                {allCourseCategories && allCourseCategories.map(cCategory => (
 
                                     <a key={cCategory._id} className={`nav-link item ${activeTab === cCategory.title ? 'active' : ''}`} id={`v-pills-${cCategory.title}-tab`} data-toggle="pill" href={`#v-pills-${cCategory.title}`} role="tab" aria-controls={`v-pills-${cCategory.title}`} aria-selected="true" onClick={() => {
                                         toggle(cCategory.title)
@@ -154,7 +154,7 @@ const Index = () => {
 
                                         {/* DUPLICATED CATEGORIES NAVBAR FOR MOBILE USERS */}
                                         <div className="d-block d-sm-none">
-                                            {courseCategories && courseCategories.allCourseCategories.map(cCategory => (
+                                            {allCourseCategories && allCourseCategories.map(cCategory => (
 
                                                 <ListGroup key={cCategory._id} className="mb-1">
                                                     <ListGroupItem className="justify-content-between">
@@ -184,7 +184,7 @@ const Index = () => {
                                             </h4>
                                         </Row>
 
-                                        {courseCategories && courseCategories.allCourseCategories.map(cCategory => (
+                                        {allCourseCategories && allCourseCategories.map(cCategory => (
                                             <div key={cCategory._id} className={`tab-pane fade ${activeTab === cCategory.title ? 'show active' : ''}`} id={`v-pills-${cCategory.title}`} role="tabpanel" aria-labelledby={`v-pills-${cCategory.title}-tab`}>
 
                                                 {/* Edit category */}

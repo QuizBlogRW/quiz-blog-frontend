@@ -1,61 +1,64 @@
 import React from 'react'
+import { Text, View, Image, Link } from '@react-pdf/renderer'
 import logo from '../../../images/resourceImg.jpg'
+import instagram from '../../../images/instagram.jpg'
+import facebook from '../../../images/facebook.jpg'
+import linkedin from '../../../images/linkedin.jpg'
+import twitter from '../../../images/twitter.jpg'
+import whatsapp from '../../../images/whatsapp.jpg'
 
 const HeaderFooter = ({ styles, fromFooter }) => {
 
     return (
-        <div style={{ backgroundColor: "#157a6e", padding: "5px 10px" }}>
-            <div style={styles.reviewHeader}>
-
-                <img src={logo} style={styles.reviewHeaderImage} alt="Logo" />
-
-                <ul className="social-network social-circle d-flex align-items-center">
-
-                    <li><a href="https://api.whatsapp.com/send?phone=250780579067" className="icoWhatsapp" title="Whatsapp">
-                        <i className="fa-brands fa-whatsapp"></i>
-                    </a></li>
-
-                    <li><a href="https://www.facebook.com/QuizblogRw/" className="icoFacebook" title="Facebook">
-                        <i className="fa-brands fa-facebook"></i>
-                    </a></li>
-
-                    <li><a href="https://www.linkedin.com/company/quiz-blog/" className="icoLinkedin" title="Linkedin">
-                        <i className="fa-brands fa-linkedin"></i>
-                    </a></li>
-
-                    <li><a href="https://www.instagram.com/quizblogrw/" className="icoInstagram" title="Instagram">
-                        <i className="fa-brands fa-instagram"></i>
-                    </a></li>
-
-                    <li><a href="https://twitter.com/QuizblogRw" className="icoTwitter" title="Twitter">
-                        <i className="fa-brands fa-x-twitter"></i>
-                    </a></li>
-                </ul>
-
-                <div style={styles.reviewHeaderContact}>
-                    <p>
-                        <strong style={{ color: "#ffffff" }}>
-                            Website:</strong>
-                        <a href="https://www.quizblog.rw" style={{ color: "#ffc107", textDecoration: "none" }}> https://www.quizblog.rw</a>
-                    </p>
-                    <p>
-                        <strong style={{ color: "#ffffff" }}>
-                            Email:</strong>
-                        <a href="quizblog.rw@gmail.com" style={{ color: "#ffc107", textDecoration: "none" }}> quizblog.rw@gmail.com</a>
-                    </p>
-                    <p style={{ color: "#ffc107" }}>
-                        <strong style={{ color: "#ffffff" }}>Phone:</strong> 0780579067
-                    </p>
-                </div>
-            </div>
-            {fromFooter &&
-                <div className="d-block">
-                    <hr />
-                    <p className="text-center">
-                        &copy; Copyright {new Date().getFullYear()} - Quiz-Blog.  All Rights Reserved.
-                    </p>
-                </div>}
-        </div>
+        <View style={{ backgroundColor: "#157a6e", padding: "5px 10px" }}>
+            <View style={styles.reviewHeader}>
+                <Image src={logo} style={styles.reviewHeaderImage} />
+                <View className="social-network social-circle" style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                    <Link src="https://api.whatsapp.com/send?phone=250780579067" style={{ color: "#fff", textDecoration: "none" }}>
+                        <Image src={whatsapp} style={{ width: "24px", margin: "4px", borderRadius: '4px', border: '1px solid #157a6e' }} />
+                    </Link>
+                    <Link src="https://www.facebook.com/QuizblogRw/" style={{ color: "#fff", textDecoration: "none" }}>
+                        <Image src={facebook} style={{ width: "24px", margin: "4px", borderRadius: '4px', border: '1px solid #157a6e' }} />
+                    </Link>
+                    <Link src="https://www.linkedin.com/company/quiz-blog/" style={{ color: "#fff", textDecoration: "none" }}>
+                        <Image src={linkedin} style={{ width: "24px", margin: "4px", borderRadius: '4px', border: '1px solid #157a6e' }} />
+                    </Link>
+                    <Link src="https://www.instagram.com/quizblogrw/" style={{ color: "#fff", textDecoration: "none" }}>
+                        <Image src={instagram} style={{ width: "24px", margin: "4px", borderRadius: '4px', border: '1px solid #157a6e' }} />
+                    </Link>
+                    <Link src="https://twitter.com/QuizblogRw" style={{ color: "#fff", textDecoration: "none" }}>
+                        <Image src={twitter} style={{ width: "24px", margin: "4px", borderRadius: '4px', border: '1px solid #157a6e' }} />
+                    </Link>
+                </View>
+                <View style={{ fontSize: '12px', display: 'flex', justifyContent: "flex-start", alignItems: 'flex-start' }}>
+                    <Text style={{ textAlign: 'left', margin: '8px 0' }}>
+                        <Text style={{ color: "#ffffff" }}>Website: </Text>
+                        <Link src="https://www.quizblog.rw" style={{ color: "#ffc107", textDecoration: "none" }}>
+                            www.quizblog.rw
+                        </Link>
+                    </Text>
+                    <Text style={{ textAlign: 'left', margin: '8px 0' }}>
+                        <Text style={{ color: "#ffffff" }}>Email: </Text>
+                        <Link src="mailto:quizblog.rw@gmail.com" style={{ color: "#ffc107", textDecoration: "none" }}>
+                            quizblog.rw@gmail.com
+                        </Link>
+                    </Text>
+                    <Text style={{ textAlign: 'left', margin: '8px 0' }}>
+                        <Text style={{ color: "#ffffff" }}>Phone: </Text>
+                        <Link src="#" style={{ color: "#ffc107", textDecoration: "none" }}>
+                            0780579067
+                        </Link>
+                    </Text>
+                </View>
+            </View>
+            {fromFooter && (
+                <View style={{ marginTop: 10, display: "block" }}>
+                    <Text style={{ textAlign: "center", color: '#fff', fontSize: '.9rem', fontWeight: '500' }}>
+                        &copy; Copyright {new Date().getFullYear()} - Quiz-Blog. All Rights Reserved.
+                    </Text>
+                </View>
+            )}
+        </View>
     )
 }
 
