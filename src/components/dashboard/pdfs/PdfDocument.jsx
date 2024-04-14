@@ -77,7 +77,7 @@ const PdfDocument = ({ review }) => {
                                 {question && question.question_image ?
                                     <div style={{ display: 'block' }}>
                                         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '10px' }}>
-                                            <img src="https://quizblog.s3.us-east-2.amazonaws.com/questions/undefined-logo-1-.jpg" style={styles.reviewImage} alt="question" />
+                                            <img src={question.question_image} style={styles.reviewImage} alt="question" />
                                         </div>
                                     </div> : null}
 

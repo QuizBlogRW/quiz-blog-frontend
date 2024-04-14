@@ -3,7 +3,6 @@ import { Col, Row, Button } from 'reactstrap'
 
 import PdfDocument from '../../dashboard/pdfs/PdfDocument'
 import ReactDOMServer from 'react-dom/server';
-import html2pdf from 'html2pdf.js'
 
 const TitleRow = ({ thisReview, score, thisQuiz, qnsAll, curRevQn, currentQuestion, uRole }) => {
 
@@ -14,18 +13,6 @@ const TitleRow = ({ thisReview, score, thisQuiz, qnsAll, curRevQn, currentQuesti
         const element = <PdfDocument review={thisReview} />
         const elementString = ReactDOMServer.renderToString(element);
 
-        // Set the PDF options
-        const options = {
-            margin: [0.1, 0.1, 0.1, 0.1],
-            filename: `${thisQuizTitle}-shared-by-Quiz-Blog.pdf`,
-            image: { type: 'jpeg', quality: 0.98, background: '#fff', border: '1px solid #fff' },
-            html2canvas: { scale: 2, useCORS: true, logging: true, letterRendering: true, allowTaint: true, scrollX: 0, scrollY: -window.scrollY },
-            pagebreak: { mode: ['avoid-all', 'css', 'legacy'] },
-            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait', compressPDF: true, precision: 16 }
-        }
-
-        // Generate the PDF file
-        html2pdf().set(options).from(elementString).save()
     }
 
     return (

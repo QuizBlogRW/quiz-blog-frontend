@@ -60,7 +60,7 @@ const Comment = ({ comment, uRole, isFromPending }) => {
             </small>
 
             <div className='mt-3'>
-                <Toast style={{ maxWidth: '100%' }}>
+                <Toast className='w-100'>
                     <ToastHeader icon="warning" className="text-success">
                         {commentSender && commentSender}
                         <small className="ms-2 px-1 text-dark bg-danger">
