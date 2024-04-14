@@ -37,7 +37,7 @@ const FeedbacksTable = ({ feedbacksToUse, pageNo }) => {
                             <th scope="row" className="table-dark">{numero && numero}</th>
                             <td>{date && moment(date).format('YYYY-MM-DD, HH:mm')}</td>
                             <td className='text-uppercase'>
-                                {scoreF && scoreF.taken_by.name}
+                                {scoreF && scoreF.taken_by && scoreF.taken_by.name}
                             </td>
                             <td>{quiz && quiz.title}</td>
                             <td>{scoreF && scoreF.marks && scoreF.marks}</td>

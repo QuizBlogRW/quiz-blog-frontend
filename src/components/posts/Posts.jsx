@@ -21,8 +21,8 @@ const ViewCategory = lazy(() => import('../categories/ViewCategory'))
 const Posts = () => {
 
     // Selectors from redux store using hooks
-    const limitedQuizes = useSelector(state => state.quizes.limitedQuizes)
-    const isLoading = useSelector(state => state.quizes.isLoading)
+    const quizes = useSelector(state => state.quizes)
+    const { isLoading, limitedQuizes } = quizes
 
     // Dispatch
     const dispatch = useDispatch()
@@ -86,7 +86,6 @@ const Posts = () => {
                                 ))}
 
                             {limitedQuizes && limitedQuizes.length > 0 ?
-
                                 <div className="my-4 d-flex justify-content-center">
                                     <Link to="/allposts">
                                         <Button outline color="info" className='view-all-btn'>

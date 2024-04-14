@@ -11,9 +11,9 @@ const SquareAd = lazy(() => import('../adsenses/SquareAd'))
 const Popular = () => {
 
     // Redux
-    const popularQuizes = useSelector(state => state.scores)
-    const userOfTheMonth = popularQuizes && popularQuizes.monthlyUser && popularQuizes.monthlyUser._id
     const dispatch = useDispatch()
+    const scores = useSelector(state => state.scores)
+    const { popularQuizes, monthlyUser, isLoading } = scores
 
     useEffect(() => {
         dispatch(getPopularToday())
@@ -31,17 +31,17 @@ const Popular = () => {
                 </Col>
             </Row>
 
-            {popularQuizes && popularQuizes.popularQuizes && popularQuizes.popularQuizes.length > 0 && userOfTheMonth ?
+            {popularQuizes && popularQuizes.length > 0 && monthlyUser ?
                 <div className="popular my-2 mt-3 mt-lg-5 py-3 d-flex flex-column flex-lg-row justify-content-between bg-white shadow-sm">
 
-                    <div className={`w-75 mx-lg-2 ${popularQuizes && popularQuizes.popularQuizes && popularQuizes.popularQuizes.length > 0 ? '' : 'd-none'}`}>
+                    <div className={`w-75 mx-lg-2 ${popularQuizes && popularQuizes.length > 0 ? '' : 'd-none'}`}>
                         <h6 className="text-uppercase fancy fw-bolder mb-3 mb-lg-4 text-center"><u>Top 3 Popular Quizes Today</u></h6>
 
-                        {!popularQuizes.isLoading ?
+                        {!isLoading ?
                             <ListGroup>
-                                {popularQuizes && popularQuizes.popularQuizes.map((popQz, i) => (
-                                    <ListGroupItem href={`/view-quiz/${popQz._id && popQz._id.slug}`} tag="a" color="success" className="d-flex justify-content-between" key={i}>
-                                        <span>{i + 1}. {popQz._id && popQz._id.qTitle}</span>
+                                {popularQuizes && popularQuizes.map((popQz, i) => (
+                                    <ListGroupItem href={`/view-quiz/${popQz && popQz.slug}`} tag="a" color="success" className="d-flex justify-content-between" key={i}>
+                                        <span>{i + 1}. {popQz && popQz.qTitle}</span>
                                         <Badge color="info">{popQz.count}</Badge>
                                     </ListGroupItem>
                                 ))}
@@ -55,7 +55,7 @@ const Popular = () => {
                         <Card className="p-0 px-1 pt-1 monthly-user">
                             <span>
                                 <ImageWithFallback
-                                    src={userOfTheMonth && userOfTheMonth.uPhoto}
+                                    src={monthlyUser && monthlyUser.uPhoto}
                                     fallbackSrc={uploadimage}
                                     alt="user of the month"
                                 />
@@ -63,7 +63,7 @@ const Popular = () => {
                             <hr className="m-0 mt-1" />
                             <CardBody className="p-1">
                                 <CardText>
-                                    <small className="text-muted fw-bolder">{userOfTheMonth && userOfTheMonth.uName}</small>
+                                    <small className="text-muted fw-bolder">{monthlyUser && monthlyUser.uName}</small>
                                 </CardText>
                             </CardBody>
                         </Card>
