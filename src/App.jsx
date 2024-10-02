@@ -142,11 +142,12 @@ const App = () => {
             && ((auth.user[key] && auth.user[key]) !== null))
         .length
 
-    const percentage = (NonEmptyFields - 3) * 10
-    const initial = (auth.isAuthenticated && percentage < 100) ? true : false
+    const percentage = (NonEmptyFields - 4) * 10
+    const [modal, setModal] = useState(false)
+    console.log('Auth.user: ', auth.user)
+    console.log('Auth.user: ', NonEmptyFields)
 
-    useEffect(() => { setModal(initial) }, [initial])
-    const [modal, setModal] = useState(initial)
+    useEffect(() => { auth.isAuthenticated && percentage < 100 && setModal(true) }, [auth.isAuthenticated, percentage])
 
     // Current user
     const currentUser = auth && auth.user
@@ -159,8 +160,10 @@ const App = () => {
                     <categoriesContext.Provider value={categories}>
                         <courseCategoriesContext.Provider value={courseCategories}>
                             <bPcatsContext.Provider value={bPcats}>
+
                                 {/* router */}
                                 <Suspense fallback={<QBLoading />}>
+
                                     <Toast isOpen={modal} className={`w-100 popup-toast`}>
 
                                         <div className="bg-warning py-2 px-3 d-flex justify-content-between align-items-center">

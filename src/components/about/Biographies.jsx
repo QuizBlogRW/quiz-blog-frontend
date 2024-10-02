@@ -64,9 +64,9 @@ const Biographies = () => {
                     <h6 className="fw-bolder">Founder & Idea Innovator, Content Creator, and General Manager</h6>
                     <div className="mt-lg-2">
                         <p className='text-justify'>
-                            Bruce is an enthusiastic and caring student nurse who finds joy in assisting others. Known for his strong work ethic, he takes the initiative and remains self-motivated in all his endeavors. He is highly adaptable and persistent, demonstrating the ability to complete assigned tasks promptly, even in challenging situations. Apart from his passion for nursing, He is an avid ICT enthusiast. Currently pursuing his undergraduate degree at the University of Rwanda, College of Medicine and Health Sciences in Rwamagana campus, he is dedicated to achieving a Bachelor's with Honors in Nursing.
+                            Bruce is an enthusiastic and compassionate nurse who finds joy in helping others. Known for his strong work ethic, he consistently takes initiative and stays self-motivated in all his work. Highly adaptable and persistent, Bruce completes tasks efficiently, even in challenging situations. In addition to his passion for nursing, he is also an avid ICT enthusiast. He holds a bachelor's degree in Nursing from the University of Rwanda.
                             <br /><br />
-                            Bruce's diverse skill set and compassionate nature make him an asset in any professional setting. His commitment to helping others and enthusiasm for technology open up exciting opportunities for his future career.
+                            Bruce's diverse skills and compassionate nature make him a valuable asset in any professional environment. His dedication to helping others, combined with his enthusiasm for technology, creates promising opportunities for his future career.
                         </p>
                     </div>
 
@@ -100,7 +100,7 @@ const Biographies = () => {
                     <h6 className="fw-bolder"> Co-founder, Content Creator, and Social Media Manager</h6>
                     <div className="mt-lg-2">
                         <p className='text-justify'>
-                            Thierry is a dedicated student nurse currently pursuing a Bachelor of Sciences (Hons) in Nursing at the University of Rwanda, College of Medicine and Health Science (UR-CMHS). Alongside his passion for healthcare, he also possesses a keen interest in technology. He holds certifications as a Social Media Manager and Typographer, and his talent as an essay writer has earned him prestigious awards. With a love for creating meaningful content on the internet, he enjoys using technology to develop projects that benefit others. Since 2020, he has been actively involved with various organizations and groups, lending his skills as a typographer and graphic designer.
+                            Thierry is a dedicated nurse holding a Bachelor of Sciences (Hons) in Nursing at the University of Rwanda, College of Medicine and Health Science (UR-CMHS). Alongside his passion for healthcare, he also possesses a keen interest in technology. He holds certifications as a Social Media Manager and Typographer, and his talent as an essay writer has earned him prestigious awards. With a love for creating meaningful content on the internet, he enjoys using technology to develop projects that benefit others. Since 2020, he has been actively involved with various organizations and groups, lending his skills as a typographer and graphic designer.
                             <br /><br />
                             Additionally, Thierry has served as a proficient social media manager, contributing to the success of numerous ventures. his diverse talents and dedication to both nursing and technology make him a promising individual with a bright future ahead.
                         </p>
@@ -154,10 +154,10 @@ const Biographies = () => {
                     <h6 className="fw-bolder">Co-founder, Application Developer, and IT Manager</h6>
                     <div className="mt-lg-2">
                         <p className='text-justify'>
-                            Parmenide is a committed engineer deeply vested in the transformative power of advanced computing technologies. An avid champion of ICT, he channels his passion and expertise to tackle challenges. Continuously driven to expand his skill set and stay abreast of the latest tech trends, Parmenide thrives on learning and exploration. Whether navigating individual projects or contributing to collaborative team endeavors, he dedicates significant effort to ensure customer delight. His pursuit of excellence culminated in a BSc (Hons) in Computer Science from the University of Rwanda.
+                            Parmenide is an engineer who strongly believes in the power of advanced computing. He is passionate about ICT and uses his skills to solve problems. Always eager to learn, Parmenide keeps up with the latest trends in technology. Whether working alone or in a team, he works hard to make sure customers are happy. He holds a BSc in Computer Science from the University of Rwanda and a MSc in Information Technology from Carnegie Mellon University.
 
                             <br /><br />
-                            With his extensive experience as a full-stack software developer, he has successfully worked on a variety of design and development of software solutions, showcasing his versatility and proficiency in the field.
+                            With a lot of experience as a full-stack software developer, he has worked on many different software design and development projects, showing his wide range of skills and expertise.
                         </p>
                     </div>
                     <div className="social w-100 d-flex justify-content-around mx-0 px-md-1 py-md-1">
@@ -191,7 +191,7 @@ const Biographies = () => {
                     <h6 className="fw-bolder">Co-founder, Content Creator, and Public Relations Manager</h6>
                     <div className="mt-lg-2">
                         <p className='text-justify'>
-                            Denyse is pursuing Bachelors with honor in general nursing at the University of Rwanda while passionately exploring the intersection of healthcare and technology. She's an active Resolution Fellowship member, gaining expertise in project writing and fundraising. She also has background in computer science, having completed training in hardware and software maintenance. Her talents extend to public speaking and writing, recognized by Debate Mate from UK as one of its trainee. She is dedicated to problem-solving and is currently involved in ASRHA projects focusing on adolescent sexual and reproductive health awareness.
+                            Denyse holds a Bachelors with honor in General Nursing from the University of Rwanda while passionately exploring the intersection of healthcare and technology. She's an active Resolution Fellowship member, gaining expertise in project writing and fundraising. She also has background in computer science, having completed training in hardware and software maintenance. Her talents extend to public speaking and writing, recognized by Debate Mate from UK as one of its trainee. She is dedicated to problem-solving and is currently involved in ASRHA projects focusing on adolescent sexual and reproductive health awareness.
                             <br /><br />
                             Moreover, Denyse is good at team work, time management and project management. her journey showcases her unwavering dedication to creating positive change in healthcare, technology, and community engagement.
                         </p>
@@ -239,7 +239,7 @@ const Biographies = () => {
                     <h6 className="fw-bolder"> Co-founder, Content Creator, and Planning & Production Manager </h6>
                     <div className="mt-lg-2">
                         <p className='text-justify'>
-                            Annick is currently pursuing a nursing degree from the University of Rwanda, College of medicine and health sciences. She has a certificate in social psychology, which compliments her nursing studies, providing a unique perspective on human behavior and wellbeing. She has contributed to various health initiatives, offering her skills as a secretary. These experiences have improved her abilities by emphasizing the importance of meticulous organization, effective communication and attention to detail.
+                            Annick holds a Nursing degree from the University of Rwanda, College of medicine and health sciences. She has a certificate in social psychology, which compliments her nursing studies, providing a unique perspective on human behavior and wellbeing. She has contributed to various health initiatives, offering her skills as a secretary. These experiences have improved her abilities by emphasizing the importance of meticulous organization, effective communication and attention to detail.
                             <br /><br />
                             Looking ahead, Annick is excited to use her unique abilities to drive innovation into simplifying learning experience, and creating immersive and inclusive learning through online resources.
                         </p>
