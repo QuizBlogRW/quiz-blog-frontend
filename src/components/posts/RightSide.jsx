@@ -5,7 +5,7 @@ import QBLoadingSM from '../rLoading/QBLoadingSM'
 import ResponsiveAd from '../adsenses/ResponsiveAd'
 
 import { useSelector, useDispatch } from "react-redux"
-import { subscribeToNewsLetter } from '../../redux/slices/subscribersSlice'
+import { subscribeToPosts } from '../../redux/slices/subscribersSlice'
 import { clearErrors } from '../../redux/slices/errorSlice'
 
 const ViewCategory = lazy(() => import('../categories/ViewCategory'))
@@ -21,10 +21,7 @@ const RightSide = ({ categories }) => {
 
     // Context
     const currentUser = useContext(currentUserContext)
-    const [subscriberState, setSubscriberState] = useState({
-        name: '',
-        email: ''
-    })
+    const [subscriberState, setSubscriberState] = useState({ name: '', email: '' })
 
     // Lifecycle methods
     useEffect(() => {
@@ -41,23 +38,10 @@ const RightSide = ({ categories }) => {
 
     const onSubscribe = e => {
         e.preventDefault()
-
         const { name, email } = subscriberState
-
-        // Create user object
-        const subscribedUser = {
-            name,
-            email
-        }
-
-        // Attempt to subscribe
-        dispatch(subscribeToNewsLetter(subscribedUser))
-
-        // Reset fields
-        setSubscriberState({
-            name: '',
-            email: ''
-        })
+        const subscribedUser = { name, email }
+        dispatch(subscribeToPosts(subscribedUser))
+        setSubscriberState({ name: '', email: '' })
     }
 
     return (

@@ -12,22 +12,22 @@ import { categoriesContext, currentUserContext } from '../../appContexts'
 
 const QuizesTabPane = () => {
 
-    // Redux
-    const dispatch = useDispatch()
-    const quizes = useSelector(state => state.quizes)
-    const questions = useSelector(state => state.questions)
-    const { allNoLimit, allNoLimitLoading } = quizes
-
     // context
     const currentUser = useContext(currentUserContext)
     const categories = useContext(categoriesContext)
 
+    // Redux
+    const dispatch = useDispatch()
+    const quizes = useSelector(state => state.quizes)
+    const questions = useSelector(state => state.questions)
+
     const [pageNo, setPageNo] = useState(1)
     const [numberOfPages, setNumberOfPages] = useState(0)
-    const totPages = quizes && quizes.totalPages
     const [searchKey, setSearchKey] = useState('')
     const [searchKeyQ, setSearchKeyQ] = useState('')
+
     const uRole = currentUser && currentUser.role
+    const totPages = quizes && quizes.totalPages
 
     // Lifecycle methods
     useEffect(() => {
@@ -50,13 +50,9 @@ const QuizesTabPane = () => {
     const questionsToUse = currentUser.role === 'Admin' || currentUser.role === 'SuperAdmin' ? allQuestions : creatorQuestions
 
     return (
-
         <TabPane tabId="2">
-
             {quizes.isLoading ?
-
                 <QBLoadingSM title='paginated quizes' /> :
-
                 quizzesToUse && quizzesToUse.length > 0 ?
                     <>
                         {(uRole === 'Admin' || uRole === 'SuperAdmin') ?
@@ -64,7 +60,7 @@ const QuizesTabPane = () => {
 
                         {
                             // SEARCH BARS
-                            allNoLimitLoading || questions.isLoading ?
+                            quizes.isLoading || questions.isLoading ?
                                 <div className="p-1 m-1 d-flex justify-content-center align-items-center">
                                     <QBLoadingSM />  </div> :
                                 <Row className="mt-0">
@@ -100,7 +96,7 @@ const QuizesTabPane = () => {
 
                         {/* SEARCH QUIZES */}
                         <Row>
-                            {allNoLimit && allNoLimit
+                            {quizes.allQuizesNoLimit && quizes.allQuizesNoLimit
                                 .filter(quiz => {
 
                                     if (searchKey === "") {

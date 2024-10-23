@@ -17,7 +17,7 @@ const ChangeQuizModal = ({ questionID, quizID, questionCatID }) => {
 
     const oldQuizID = quizID
     const [newQuestionState, setNewQuestionState] = useState({
-        qtId: questionID,
+        questionId: questionID,
         quizID
     })
 
@@ -41,22 +41,15 @@ const ChangeQuizModal = ({ questionID, quizID, questionCatID }) => {
     const onSubmitHandler = e => {
         e.preventDefault()
 
-        const { qtId, quizID } = newQuestionState
-
-        // Create new User object
+        const { questionId, quizID } = newQuestionState
         const updatedQuestion = {
             quiz: quizID,
             oldQuizID,
             last_updated_by: auth.isLoading === false ? auth.user._id : null
         }
 
-        // Attempt to update
-        dispatch(updateQuestion(qtId, updatedQuestion))
-
-        // close the modal
-        if (modal) {
-            toggle()
-        }
+        dispatch(updateQuestion({ questionId, updatedQuestion }))
+        if (modal) toggle()
     }
 
     return (

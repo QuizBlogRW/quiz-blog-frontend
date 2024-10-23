@@ -99,13 +99,13 @@ const App = () => {
     const dispatch = useDispatch()
 
     // States
-    const [isOpenL, setIsOpenL] = useState(false);
-    const [isOpenR, setIsOpenR] = useState(false);
+    const [isOpenL, setIsOpenL] = useState(false)
+    const [isOpenR, setIsOpenR] = useState(false)
 
     // Toggles for login and register modals
     const toggleL = useCallback(() => {
-        setIsOpenR(false);
-        setIsOpenL(prevIsOpenL => !prevIsOpenL);
+        setIsOpenR(false)
+        setIsOpenL(prevIsOpenL => !prevIsOpenL)
     }, [])
 
     const toggleR = useCallback(() => {
@@ -136,7 +136,8 @@ const App = () => {
     const bPcats = useSelector(state => state.postCategories)
 
     // Profile non empty details - Those with not empty strings and not null values
-    const NonEmptyFields = auth.isAuthenticated && Object
+    let NonEmptyFields = 14;
+    NonEmptyFields = auth && auth.isAuthenticated && Object
         .keys(auth.user)
         .filter(key => ((auth.user[key] && auth.user[key]) !== '')
             && ((auth.user[key] && auth.user[key]) !== null))
@@ -144,12 +145,7 @@ const App = () => {
 
     const percentage = (NonEmptyFields - 4) * 10
     const [modal, setModal] = useState(false)
-    console.log('Auth.user: ', auth.user)
-    console.log('Auth.user: ', NonEmptyFields)
-
     useEffect(() => { auth.isAuthenticated && percentage < 100 && setModal(true) }, [auth.isAuthenticated, percentage])
-
-    // Current user
     const currentUser = auth && auth.user
 
     return (

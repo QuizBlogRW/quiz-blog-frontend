@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { returnErrors } from './slices/errorSlice'
 import { returnSuccess } from './slices/successSlice'
+import { notify } from '../utils/notifyToast'
 
 export const qbURL = 'https://myqb-245fdbd30c9b.herokuapp.com/'
 export const qbTestURL = 'https://qb-test-c6396eeaa356.herokuapp.com/'
@@ -28,7 +29,8 @@ const formatActionType = (actionType) => {
 };
 
 // List of action types that doesn't require a reload
-const noReloadActionTypes = ['saveFeedback', 'createComment', 'updateComment', 'deleteComment', 'replyContact', 'createBlogPostView', 'getCreateRoom', 'sendRoomMessage']
+const noReloadActionTypes = ['subscribeToPosts', 'saveFeedback', 'createComment', 'updateComment',
+    'deleteComment', 'replyContact', 'createBlogPostView', 'getCreateRoom', 'sendRoomMessage']
 
 // API call helper function to make async actions with createAsyncThunk
 export const apiCallHelper = async (url, method, body, getState, dispatch, actionType) => {
@@ -60,7 +62,11 @@ export const apiCallHelper = async (url, method, body, getState, dispatch, actio
         }
 
     } catch (err) {
-        console.log(err.response.data)
+
+        if (err.response.data && err.response.data.msg) {
+            notify(err.response.data.msg, 'error');
+        }
+
         dispatch(returnErrors({ msg: err.response.data, status: err.response.status, id: actionType }))
         return Promise.reject(err.response.data)
     }
@@ -84,7 +90,11 @@ export const apiCallHelperUpload = async (url, method, formData, getState, dispa
         return response.data
 
     } catch (err) {
-        console.log(err.response.data)
+
+        if (err.response.data && err.response.data.msg) {
+            notify(err.response.data.msg, 'error');
+        }
+
         dispatch(returnErrors({ msg: err.response.data, status: err.response.status, id: actionType }))
         return Promise.reject(err.response.data)
     }

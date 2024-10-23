@@ -12,12 +12,10 @@ const PostItem = lazy(() => import('./PostItem'))
 const Posts = () => {
 
     // Redux
-    const allNoLimit = useSelector(state => state.quizes.allQuizesNoLimit)
+    const allQuizesNoLimit = useSelector(state => state.quizes.allQuizesNoLimit)
     const quizesPage = useSelector(state => state.quizes.limitedQuizes)
     const isLoading = useSelector(state => state.quizes.isLoading)
     const dispatch = useDispatch()
-
-    console.log(allNoLimit)
 
     const [limit] = useState(20)
     const [skip, setSkip] = useState(0)
@@ -93,7 +91,7 @@ const Posts = () => {
 
                                 {searchKey === "" ? null :
 
-                                    allNoLimit && allNoLimit
+                                    allQuizesNoLimit && allQuizesNoLimit
                                         .map(quiz => (
 
                                             quiz.title.toLowerCase().includes(searchKey.toLowerCase()) ?
