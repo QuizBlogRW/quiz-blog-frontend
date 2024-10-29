@@ -70,7 +70,7 @@ const SingleQuestion = () => {
                                                 <ChangeQuizModal
                                                     questionID={thisQuestion && thisQuestion._id}
                                                     questionCatID={thisQnCat && thisQnCat._id}
-                                                    quizID={thisQnQZ && thisQnQZ._id} />
+                                                    oldQuizID={thisQnQZ && thisQnQZ._id} />
                                                 <DeleteModal deleteFnName="deleteQuestion" deleteFn={deleteQuestion} delID={thisQuestion && thisQuestion._id} delTitle={thisQuestion && thisQuestion.questionText} />
 
                                                 <Link to={`/edit-question/${thisQuestion && thisQuestion._id}`} className="text-secondary">

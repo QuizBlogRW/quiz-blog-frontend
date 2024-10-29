@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { authContext } from '../../appContexts'
 import Notification from '../../utils/Notification'
 
-const ChangeQuizModal = ({ questionID, quizID, questionCatID }) => {
+const ChangeQuizModal = ({ questionID, oldQuizID, questionCatID }) => {
 
     // Redux
     const categoryQuizes = useSelector(state => state.quizes.categoryQuizes)
@@ -14,12 +14,7 @@ const ChangeQuizModal = ({ questionID, quizID, questionCatID }) => {
 
     // context
     const auth = useContext(authContext)
-
-    const oldQuizID = quizID
-    const [newQuestionState, setNewQuestionState] = useState({
-        questionId: questionID,
-        quizID
-    })
+    const [newQuestionState, setNewQuestionState] = useState({ questionID, newQuizID: null })
 
     //properties of the modal
     const [modal, setModal] = useState(false)
@@ -29,26 +24,19 @@ const ChangeQuizModal = ({ questionID, quizID, questionCatID }) => {
 
     // Lifecycle methods
     useEffect(() => {
-        if (questionCatID) {
-            dispatch(getQuizesByCategory(questionCatID))
-        }
+        if (questionCatID) dispatch(getQuizesByCategory(questionCatID))
     }, [questionCatID, dispatch])
-
-    const onChangeHandler = e => {
-        setNewQuestionState({ ...newQuestionState, [e.target.name]: e.target.value })
-    }
+    const onChangeHandler = e => setNewQuestionState({ ...newQuestionState, [e.target.name]: e.target.value })
 
     const onSubmitHandler = e => {
         e.preventDefault()
 
-        const { questionId, quizID } = newQuestionState
-        const updatedQuestion = {
-            quiz: quizID,
-            oldQuizID,
-            last_updated_by: auth.isLoading === false ? auth.user._id : null
-        }
+        const formData = new FormData()
+        formData.append('newQuiz', newQuestionState.newQuizID)
+        formData.append('oldQuizID', oldQuizID)
+        formData.append('last_updated_by', auth.isLoading === false ? auth.user._id : null)
 
-        dispatch(updateQuestion({ questionId, updatedQuestion }))
+        dispatch(updateQuestion({ questionID: newQuestionState.questionID, formData }))
         if (modal) toggle()
     }
 
@@ -82,13 +70,13 @@ const ChangeQuizModal = ({ questionID, quizID, questionCatID }) => {
                                 <strong>Quiz Title</strong>
                             </Label>
 
-                            <Input type="select" name="quizID" placeholder="Quiz title..." className="mb-3" onChange={onChangeHandler} value={newQuestionState.quizID || ''}>
+                            <Input type="select" name="newQuizID" placeholder="Quiz title..." className="mb-3" onChange={onChangeHandler} value={newQuestionState.newQuizID || ''}>
 
-                                {!newQuestionState.quizID ?
+                                {!newQuestionState.newQuizID ?
                                     <option>-- Select a quiz--</option> :
                                     null}
 
-                                {categoryQuizes && categoryQuizes.map(quiz =>
+                                {categoryQuizes && categoryQuizes.map(quiz => quiz._id !== oldQuizID &&
                                     <option key={quiz._id} value={quiz._id}>
                                         {quiz.title}
                                     </option>)}
