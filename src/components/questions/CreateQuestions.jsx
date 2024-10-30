@@ -10,7 +10,6 @@ import { clearSuccess } from '../../redux/slices/successSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import QBLoadingSM from '../rLoading/QBLoadingSM'
 import { authContext, logRegContext } from '../../appContexts'
-import Notification from '../../utils/Notification'
 
 const CreateQuestions = () => {
 
@@ -192,7 +191,11 @@ const CreateQuestions = () => {
                         </Button>
                     </div>
 
-                    <Notification errorsState={errorsState} progress={progress} initFn="addQuestion" />
+                    <Alert color="danger" isOpen={visible} toggle={onDismiss}>
+                        {errorsState && errorsState.map((error, index) => (
+                            <p key={index}>{error}</p>
+                        ))}
+                    </Alert>
 
                     <FormGroup row className="mx-0">
                         <Label sm={2}>Question</Label>
@@ -218,46 +221,57 @@ const CreateQuestions = () => {
                         </Col>
                     </FormGroup>
 
-                    {answerOptions.map(answerOption => (
+                    {answerOptions.map(answerOption => {
 
-                        <div key={answerOption.id}>
+                        let explanation = answerOption.explanations ? answerOption.explanations : null
 
-                            <FormGroup row className="mx-0">
-                                <Label sm={2}>Answer</Label>
+                        {/* If there is a word in the explanation paragraph that starts with http, make it a link */ }
+                        if (explanation) {
+                            let words = explanation.split(" ")
+                            explanation = words.map(word => {
+                                if (word.startsWith("http")) {
+                                    return <a key={word} href={word} target="_blank" rel="noreferrer">{word} </a>
+                                }
+                                return word + " "
+                            })
+                        }
 
-                                <Col sm={10} xl={7}>
-                                    <Input type="text" name="answerText" value={answerOption.answerText}
-                                        onChange={event => handleAnswerChangeInput(answerOption.id, event)} id="exampleanswer" placeholder="Answer here ..." required />
-                                </Col>
+                        return (
+                            <div key={answerOption.id}>
+                                <FormGroup row className="mx-0">
+                                    <Label sm={2}>Answer</Label>
 
-                                <Col sm={6} xl={2} className="my-3 my-sm-2 d-sm-flex justify-content-around">
-                                    <Input type="checkbox" name="isCorrect" value={answerOption.isCorrect}
-                                        onChange={event => handleAnswerChangeInput(answerOption.id, event)} id={answerOption.id} label="Is Correct?" required />
-                                </Col>
+                                    <Col sm={10} xl={7}>
+                                        <Input type="text" name="answerText" value={answerOption.answerText}
+                                            onChange={event => handleAnswerChangeInput(answerOption.id, event)} id="exampleanswer" placeholder="Answer here ..." required />
+                                    </Col>
 
-                                <Col sm={6} xl={1} className="my-3 my-sm-2">
-                                    <Button className="px-2 py-1" disabled={answerOptions.length === 1} color="danger" onClick={() => handleRemoveFields(answerOption.id)}> - </Button>{' '}
-                                    <Button className="px-2 py-1" color="danger" onClick={handleAddFields}> + </Button>{' '}
-                                </Col>
+                                    <Col sm={6} xl={2} className="my-3 my-sm-2 d-sm-flex justify-content-around">
+                                        <Input type="checkbox" name="isCorrect" value={answerOption.isCorrect}
+                                            onChange={event => handleAnswerChangeInput(answerOption.id, event)} id={answerOption.id} label="Is Correct?" required />
+                                    </Col>
 
-                                <Label sm={2}>Rationale</Label>
+                                    <Col sm={6} xl={1} className="my-3 my-sm-2">
+                                        <Button className="px-2 py-1" disabled={answerOptions.length === 1} color="danger" onClick={() => handleRemoveFields(answerOption.id)}> - </Button>{' '}
+                                        <Button className="px-2 py-1" color="danger" onClick={handleAddFields}> + </Button>{' '}
+                                    </Col>
 
-                                <Col sm={10} xl={7}>
-                                    <Input type="textarea" name="explanations" placeholder="Rationales or explanations ..." minLength="5" maxLength="1000" onChange={event => handleAnswerChangeInput(answerOption.id, event)} value={answerOption.explanations} />
-                                </Col>
-
-                            </FormGroup>
-
-                        </div>
-
-                    ))}
+                                    {explanation && <>
+                                        <Label sm={2}>Rationale</Label>
+                                        <Col sm={10} xl={7}>
+                                            <Input type="textarea" name="explanations" placeholder="Rationales or explanations ..." minLength="5" maxLength="1000" onChange={event => handleAnswerChangeInput(answerOption.id, event)} value={explanation} />
+                                        </Col>
+                                    </>}
+                                </FormGroup>
+                            </div>
+                        )
+                    })}
 
                     <FormGroup check row className="mx-0 pl-3">
                         <Col sm={{ size: 10, offset: 2 }} className="pl-0">
                             <Button className="btn btn-info btn-sm" type="submit" onClick={handleSubmit}>Add New</Button>
                         </Col>
                     </FormGroup>
-
                 </Form> :
                 <Dashboard /> :
 

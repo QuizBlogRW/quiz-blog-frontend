@@ -26,36 +26,50 @@ const ReviewView = ({ qnsAll, curRevQn, lastAnswer, currentQuestion, setLastAnsw
             <Col>
                 <div className='answer d-flex flex-column mx-auto mt-2 w-100'>
                     <Form>
-                        {curRevQnOpts && curRevQnOpts.map((answerOption, index) => (
-                            <FormGroup key={index}>
-                                <Input
-                                    disabled
-                                    defaultValue={answerOption.answerText}
-                                    valid={answerOption.isCorrect}
-                                    invalid={!answerOption.isCorrect && answerOption.choosen}
-                                    className={`${!answerOption.isCorrect && !answerOption.choosen ?
-                                        'border border-secondary' :
-                                        null}`}
-                                    style={{ backgroundColor: "#F5F5F5", color: "#000" }}
-                                />
+                        {curRevQnOpts && curRevQnOpts.map((answerOption, index) => {
 
-                                <FormFeedback
-                                    style={{ fontSize: ".7rem" }}
-                                    valid={answerOption.isCorrect}
-                                    invalid={(!answerOption.isCorrect && answerOption.choosen).toString()}>
-                                    {answerOption.isCorrect && answerOption.choosen ? 'You got this right!' :
-                                        !answerOption.isCorrect && answerOption.choosen ? 'Your choice was incorrect!' :
-                                            answerOption.isCorrect ? 'Correct answer!' : null}
-                                </FormFeedback>
-                                {answerOption.explanations ?
-                                    <div className="border rounded p-1 p-lg-2 mt-2">
+                            let explanation = answerOption.explanations ? answerOption.explanations : null
+
+                            {/* If there is a word in the explanation paragraph that starts with http, make it a link */ }
+                            if (explanation) {
+                                let words = explanation.split(" ")
+                                explanation = words.map(word => {
+                                    if (word.startsWith("http")) {
+                                        return <a key={word} href={word} target="_blank" rel="noreferrer">{word} </a>
+                                    }
+                                    return word + " "
+                                })
+                            }
+
+                            return (
+                                <FormGroup key={index}>
+                                    <Input
+                                        disabled
+                                        defaultValue={answerOption.answerText}
+                                        valid={answerOption.isCorrect}
+                                        invalid={!answerOption.isCorrect && answerOption.choosen}
+                                        className={`${!answerOption.isCorrect && !answerOption.choosen ?
+                                            'border border-secondary' :
+                                            null}`}
+                                        style={{ backgroundColor: "#F5F5F5", color: "#000" }}
+                                    />
+
+                                    <FormFeedback
+                                        style={{ fontSize: ".7rem" }}
+                                        valid={answerOption.isCorrect}
+                                        invalid={(!answerOption.isCorrect && answerOption.choosen).toString()}>
+                                        {answerOption.isCorrect && answerOption.choosen ? 'You got this right!' :
+                                            !answerOption.isCorrect && answerOption.choosen ? 'Your choice was incorrect!' :
+                                                answerOption.isCorrect ? 'Correct answer!' : null}
+                                    </FormFeedback>
+                                    {explanation && <div className="border rounded p-1 p-lg-2 mt-2">
                                         <small className="text-dark mb-1 pl-1" style={{ fontSize: ".8rem" }}>
-                                            <span role="img" aria-label="pointing">👉</span> {answerOption.explanations}
+                                            <span role="img" aria-label="pointing">👉</span> {explanation}
                                         </small>
-                                    </div> :
-                                    null}
-                            </FormGroup>
-                        ))}
+                                    </div>}
+                                </FormGroup>
+                            )
+                        })}
                     </Form>
                 </div>
 

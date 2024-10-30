@@ -98,8 +98,6 @@ const Posts = () => {
                                                 <PostItem key={quiz._id} quiz={quiz} fromSearch={true} /> : null
                                         ))}
 
-                                {console.log(quizesPage)}
-
                                 {quizesPage && quizesPage.map(quiz => (
                                     quiz.questions.length > 5 ?
                                         <PostItem key={quiz._id} quiz={quiz} /> :

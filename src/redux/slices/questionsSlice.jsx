@@ -5,8 +5,8 @@ import { apiCallHelper, apiCallHelperUpload } from '../configHelpers'
 export const getQuestions = createAsyncThunk("questions/getQuestions", async (_, { getState, dispatch }) =>
     apiCallHelper('/api/questions', 'get', null, getState, dispatch, 'getQuestions'))
 
-export const getOneQuestion = createAsyncThunk("questions/getOneQuestion", async (questionId, { getState, dispatch }) =>
-    apiCallHelper(`/api/questions/${questionId}`, 'get', null, getState, dispatch, 'getOneQuestion'))
+export const getOneQuestion = createAsyncThunk("questions/getOneQuestion", async (questionID, { getState, dispatch }) =>
+    apiCallHelper(`/api/questions/${questionID}`, 'get', null, getState, dispatch, 'getOneQuestion'))
 
 export const addQuestion = createAsyncThunk("questions/addQuestion", async (formData, { getState, dispatch }) => 
     apiCallHelperUpload('/api/questions', 'post', formData, getState, dispatch, 'addQuestion'))
@@ -14,8 +14,8 @@ export const addQuestion = createAsyncThunk("questions/addQuestion", async (form
 export const updateQuestion = createAsyncThunk("questions/updateQuestion", async ({ questionID, formData }, { getState, dispatch }) =>
     apiCallHelperUpload(`/api/questions/${questionID}`, 'put', formData, getState, dispatch, 'updateQuestion'))
 
-export const deleteQuestion = createAsyncThunk("questions/deleteQuestion", async (questionId, { getState, dispatch }) =>
-    apiCallHelper(`/api/questions/${questionId}`, 'delete', null, getState, dispatch, 'deleteQuestion'))
+export const deleteQuestion = createAsyncThunk("questions/deleteQuestion", async (questionID, { getState, dispatch }) =>
+    apiCallHelper(`/api/questions/${questionID}`, 'delete', null, getState, dispatch, 'deleteQuestion'))
 
 // Questions slice
 const initialState = {

@@ -22,15 +22,15 @@ const EditQuestion = () => {
     const { toggleL } = useContext(logRegContext)
 
     // Access route parameters & history
-    const { questionId } = useParams()
+    const { questionID } = useParams()
 
     // Errors state on form
     const [errorsState, setErrorsState] = useState([])
 
     // Lifecycle methods
     useEffect(() => {
-        dispatch(getOneQuestion(questionId))
-    }, [dispatch, questionId])
+        dispatch(getOneQuestion(questionID))
+    }, [dispatch, questionID])
 
     const thisQnCat = quest && quest.category
     const thisQnQZ = quest && quest.quiz
@@ -96,9 +96,7 @@ const EditQuestion = () => {
             return
         }
 
-        formData.append('qtId', questionId)
         formData.append('questionText', questionTextState.questionText)
-        formData.append('question_image', question_image)
         answerOptionsState.forEach(aOptn => {
             formData.append('answerOptions', JSON.stringify(aOptn))
         })
@@ -106,7 +104,7 @@ const EditQuestion = () => {
         formData.append('duration', durationState.duration)
 
         // Attempt to update
-        dispatch(updateQuestion({ questionId, formData }))
+        dispatch(updateQuestion({ questionID, formData }))
     }
 
     const handleAddFields = () => {
@@ -174,38 +172,53 @@ const EditQuestion = () => {
                         </Col>
                     </FormGroup>
 
-                    {answerOptionsState && answerOptionsState.map(answerOption => (
+                    {answerOptionsState && answerOptionsState.map(answerOption => {
 
-                        <div key={answerOption._id}>
+                        let explanation = answerOption.explanations ? answerOption.explanations : null
 
-                            <FormGroup row className="mx-0">
-                                <Label sm={2}>Answer</Label>
+                        {/* If there is a word in the explanation paragraph that starts with http, make it a link */ }
+                        if (explanation) {
+                            let words = explanation.split(" ")
+                            explanation = words.map(word => {
+                                if (word.startsWith("http")) {
+                                    return <a key={word} href={word} target="_blank" rel="noreferrer">{word} </a>
+                                }
+                                return word + " "
+                            })
+                        }
+                        return (
 
-                                <Col sm={10} xl={7}>
-                                    <Input type="text" name="answerText" value={answerOption.answerText}
-                                        onChange={event => handleAnswerChangeInput(answerOption._id, event)} placeholder="Answer here ..." required />
-                                </Col>
+                            <div key={answerOption._id}>
 
-                                <Col sm={6} xl={2} className="my-3 my-sm-2 d-sm-flex justify-content-around">
-                                    <Input type="checkbox" name="isCorrect" value={answerOption.isCorrect}
-                                        onChange={event => handleAnswerChangeInput(answerOption._id, event)} id={answerOption._id} label="Is Correct?" required checked={answerOption.isCorrect} />
-                                </Col>
+                                <FormGroup row className="mx-0">
+                                    <Label sm={2}>Answer</Label>
 
-                                <Col sm={6} xl={1} className="my-3 my-sm-2">
-                                    <Button className="px-2 py-1" disabled={answerOptionsState.length === 1} color="danger" onClick={() => handleRemoveFields(answerOption._id)}> - </Button>{' '}
-                                    <Button className="px-2 py-1" color="danger" onClick={handleAddFields}> + </Button>{' '}
-                                </Col>
+                                    <Col sm={10} xl={7}>
+                                        <Input type="text" name="answerText" value={answerOption.answerText}
+                                            onChange={event => handleAnswerChangeInput(answerOption._id, event)} placeholder="Answer here ..." required />
+                                    </Col>
 
-                                <Label sm={2}>Rationale</Label>
+                                    <Col sm={6} xl={2} className="my-3 my-sm-2 d-sm-flex justify-content-around">
+                                        <Input type="checkbox" name="isCorrect" value={answerOption.isCorrect}
+                                            onChange={event => handleAnswerChangeInput(answerOption._id, event)} id={answerOption._id} label="Is Correct?" required checked={answerOption.isCorrect} />
+                                    </Col>
 
-                                <Col sm={10} xl={7}>
-                                    <Input type="textarea" name="explanations" placeholder="Rationales or explanations ..." minLength="5" maxLength="1000" onChange={event => handleAnswerChangeInput(answerOption._id, event)} value={answerOption.explanations} />
-                                </Col>
+                                    <Col sm={6} xl={1} className="my-3 my-sm-2">
+                                        <Button className="px-2 py-1" disabled={answerOptionsState.length === 1} color="danger" onClick={() => handleRemoveFields(answerOption._id)}> - </Button>{' '}
+                                        <Button className="px-2 py-1" color="danger" onClick={handleAddFields}> + </Button>{' '}
+                                    </Col>
 
-                            </FormGroup>
+                                    {explanation && <>
+                                        <Label sm={2}>Rationale</Label>
+                                        <Col sm={10} xl={7}>
+                                            <Input type="textarea" name="explanations" placeholder="Rationales or explanations ..." minLength="5" maxLength="1000" onChange={event => handleAnswerChangeInput(answerOption._id, event)} value={explanation} />
+                                        </Col>
+                                    </>}
 
-                        </div>
-                    ))}
+                                </FormGroup>
+                            </div>
+                        )
+                    })}
 
                     <FormGroup check row className="mx-0">
                         <Col sm={{ size: 10, offset: 2 }} className="pl-0">

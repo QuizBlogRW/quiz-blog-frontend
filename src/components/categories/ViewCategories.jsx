@@ -1,29 +1,27 @@
-import React from 'react';
-import { Link } from "react-router-dom";
-import { UncontrolledCollapse, Button, ListGroup, ListGroupItem, Badge } from 'reactstrap';
+import React from 'react'
+import { Link } from "react-router-dom"
+import { Collapse, Button, ListGroup, ListGroupItem, Badge } from 'reactstrap'
 
-const ViewCategory = ({ categories }) => {
+const ViewCategories = ({ categories }) => {
 
-    const [isOpen, setIsOpen] = React.useState(false);
-    const toggle = () => setIsOpen(!isOpen);
+    const [openCategoryId, setOpenCategoryId] = React.useState(null)
+    const toggle = (categoryId) => setOpenCategoryId(categoryId)
 
     return (
-        categories && categories.allcategories.slice(0, 20).map(category =>
-
-            category.quizes.length > 1 ?
-
+        categories && categories.allcategories && categories.allcategories.slice(0, 20).map(category =>
+            category.quizes && category.quizes.length > 1 ?
                 <React.Fragment key={category._id}>
                     <Button outline
                         id={category.title.split(' ').join('-').replace(/[^a-zA-Z0-9]/g, '-')} block
-                        className="mt-2 mob-cat-btn d-flex align-items-center" onClick={toggle}>
+                        className="mt-2 mob-cat-btn d-flex align-items-center" onClick={() => toggle(category._id)}>
 
                         <small className='text-truncate text-uppercase fw-bolder'>
                             {category.title}
                         </small>
-                        <i className={`fa-solid fa-chevron-${isOpen ? 'up' : 'down'} ms-auto`}></i>
+                        <i className={`fa-solid fa-chevron-${openCategoryId === category._id ? 'up' : 'down'} ms-auto`}></i>
                     </Button>
 
-                    <UncontrolledCollapse toggler={`#${category.title.split(' ').join('-').replace(/[^a-zA-Z0-9]/g, '-')}`} className="w-100 mt-2">
+                    <Collapse isOpen={openCategoryId === category._id} className="w-100 mt-2">
                         <ListGroup>
                             {category.quizes.map(quiz =>
                                 <ListGroupItem key={quiz._id} className="d-flex justify-content-between px-1">
@@ -35,10 +33,10 @@ const ViewCategory = ({ categories }) => {
                             )}
 
                         </ListGroup>
-                    </UncontrolledCollapse>
+                    </Collapse>
                 </React.Fragment> : null
         )
-    );
+    )
 }
 
-export default ViewCategory;
+export default ViewCategories

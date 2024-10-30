@@ -70,18 +70,32 @@ const PdfDocument = ({ review }) => {
                                 /> : null}
 
                             {/* Options */}
-                            {
-                                question.answerOptions && question.answerOptions.map((option, index) => (
+                            {question.answerOptions && question.answerOptions.map((option, index) => {
+
+                                let explanation = option.explanations ? option.explanations : null
+
+                                {/* If there is a word in the explanation paragraph that starts with http, make it a link */ }
+                                if (explanation) {
+                                    let words = explanation.split(" ")
+                                    explanation = words.map(word => {
+                                        if (word.startsWith("http")) {
+                                            return <a key={word} href={word} target="_blank" rel="noreferrer">{word} </a>
+                                        }
+                                        return word + " "
+                                    })
+                                }
+
+                                return (
                                     <View key={index} style={{
                                         fontSize: 12,
                                         marginBottom: 12,
                                         color: option.isCorrect ? "green" : !option.isCorrect && option.choosen ? "red" : "#6c757d"
                                     }}>
                                         <Text>{index + 1}. {option.answerText}</Text>
-                                        {option.explanations ?
-                                            <Text style={{ fontSize: "9px", marginTop: 6 }}>Explanation: {option.explanations}</Text> : null}
+                                        {explanation && <Text style={{ fontSize: "9px", marginTop: 6 }}>Explanation: {explanation}</Text>}
                                     </View>
-                                ))
+                                )
+                            })
                             }
                         </View>
                     ))

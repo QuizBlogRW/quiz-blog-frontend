@@ -9,6 +9,9 @@ export const loadUser = createAsyncThunk("auth/loadUser", async (_, { getState, 
 export const register = createAsyncThunk("auth/register", async ({ name, email, password }, { getState, dispatch }) =>
   apiCallHelper('/api/auth/register', 'post', { name, email, password }, getState, dispatch, 'register'))
 
+export const verify = createAsyncThunk("auth/verify-otp", async ({ email, otp }, { getState, dispatch }) =>
+  apiCallHelper('/api/auth/verify-otp', 'post', { email, otp }, getState, dispatch, 'verify'))
+
 export const login = createAsyncThunk("auth/login", async ({ email, password, confirmLogin }, { getState, dispatch }) =>
   apiCallHelper('/api/auth/login', 'post', { email, password, confirmLogin }, getState, dispatch, 'login'))
 
@@ -106,10 +109,14 @@ const authSlice = createSlice({
     })
     builder.addCase(register.fulfilled, (state, action) => {
       state.isLoading = false
+    })
+    builder.addCase(verify.fulfilled, (state, action) => {
+      state.isLoading = false
       state.isAuthenticated = true
       state.user = action.payload.user
       localStorage.setItem('token', action.payload.current_token)
       localStorage.setItem('user', JSON.stringify(action.payload.user))
+      notify('Account verified! Welcome to Quiz-Blog!')
     })
     builder.addCase(logout.fulfilled, (state, action) => {
       state.isLoading = false

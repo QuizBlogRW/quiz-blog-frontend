@@ -72,6 +72,7 @@ import ByCategory from './components/blog/public/ByCategory'
 // Statistics components
 import UsersStats from './components/statistics/content/users/UsersStats'
 import BlogStats from './components/statistics/content/blogposts/BlogStats'
+import Verify from './components/auth/Verify'
 
 // components lazy loading
 const Header = lazy(() => import('./components/header/Header'))
@@ -188,6 +189,7 @@ const App = () => {
                                         <Route exact path="/unsubscribe" element={<Unsubscribe />} />
                                         <Route exact path="/forgot-password" element={<ForgotPassword />} />
                                         <Route exact path="/reset-password" element={<ResetPassword />} />
+                                        <Route exact path="/verify" element={<Verify />} />
 
                                         <Route exact path="/category/:categoryId" element={<SingleCategory />} />
                                         <Route exact path="/edit-profile/:userId" element={<EditProfile />} />
@@ -195,8 +197,8 @@ const App = () => {
                                         <Route exact path="/attempt-quiz/:quizSlug" element={<QuizQuestions />} />
                                         <Route exact path="/quiz-results/:quizSlug" element={<QuizResults />} />
 
-                                        <Route exact path="/view-question/:questionId" element={<SingleQuestion />} />
-                                        <Route exact path="/edit-question/:questionId" element={<EditQuestion />} />
+                                        <Route exact path="/view-question/:questionID" element={<SingleQuestion />} />
+                                        <Route exact path="/edit-question/:questionID" element={<EditQuestion />} />
 
                                         <Route exact path="/review-quiz/:reviewId" element={<ReviewQuiz />} />
                                         <Route exact path="/quiz-ranking/:quizID" element={<QuizRanking />} />

@@ -66,11 +66,6 @@ const CreateAdvert = () => {
         formData.append('email', email)
         formData.append('link', link)
         formData.append('advert_image', advert_image)
-        console.log(advert_image)
-
-        // for (const value of formData.values()) {
-        //     console.log(value);
-        // }
 
         // Attempt to create
         dispatch(createAdvert(formData))

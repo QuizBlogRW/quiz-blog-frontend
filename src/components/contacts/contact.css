@@ -19,6 +19,23 @@
     margin: 20px auto !important;
 }
 
+/* RICH TEXT EDITOR */
+.wrapper-class {
+    padding: 0.4rem;
+    border: 1px solid #ccc;
+    padding-bottom: 3rem;
+}
+
+.editor-class {
+    background-color: white;
+    padding: 0.4rem;
+    border: 1px solid #ccc;
+}
+
+.toolbar-class {
+    border: 1px solid #ccc;
+}
+
 /* MOBILES*/
 @media screen and (max-width: 768px) {
     .contact-section small {

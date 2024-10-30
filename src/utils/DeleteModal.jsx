@@ -18,7 +18,6 @@ const DeleteModal = ({ delID, delTitle, deleteFn, deleteFnName }) => {
         e.preventDefault()
 
         // Attempt to delete
-        console.log(delID)
         dispatch(deleteFn(delID))
     }
 

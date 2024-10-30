@@ -26,7 +26,6 @@ const NotesPapers = () => {
     // Lifecycle methods
     useEffect(() => {
         dispatch(getLandingDisplayNotes(limit))
-        console.log("NotesPapers -> limit", limit)
     }, [dispatch, limit])
 
     return (

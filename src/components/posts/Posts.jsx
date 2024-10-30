@@ -16,7 +16,7 @@ const Popular = lazy(() => import('./Popular'))
 const InFeedAd = lazy(() => import('../adsenses/InFeedAd'))
 const NotesPapers = lazy(() => import('./notes/NotesPapers'))
 const BlogPosts = lazy(() => import('../blog/public/BlogPosts'))
-const ViewCategory = lazy(() => import('../categories/ViewCategory'))
+const ViewCategories = lazy(() => import('../categories/ViewCategories'))
 
 const Posts = () => {
 
@@ -29,7 +29,6 @@ const Posts = () => {
 
     // Context
     const categories = useContext(categoriesContext)
-
     const [limit] = useState(10)
 
     // Lifecycle methods
@@ -48,10 +47,10 @@ const Posts = () => {
             </Row>
 
             <hr />
-            <Row className="m-2 mt-lg-3 px-2 d-flex d-lg-none mobile-categories side-category">
+            <Row className="mt-lg-3 d-flex d-lg-none mobile-categories side-category">
                 <Suspense
                     fallback={<PostItemPlaceholder />}>
-                    <ViewCategory categories={categories} />
+                    <ViewCategories categories={categories} />
                 </Suspense>
             </Row>
 

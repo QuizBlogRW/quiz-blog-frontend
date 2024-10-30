@@ -1406,7 +1406,7 @@ form.subscribe-form:hover,
     }
 
     .mobile-categories {
-        margin: 0 10px;
+        margin: 0 2rem 2rem 2rem !important;
     }
 
     .mobile-categories .mob-cat-btn {

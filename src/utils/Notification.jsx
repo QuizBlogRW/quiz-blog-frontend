@@ -3,12 +3,9 @@ import { Alert, Progress } from 'reactstrap'
 import { useSelector } from "react-redux"
 
 const Notification = ({ errorsState, progress, initFn }) => {
-  // console.log(initFn)
 
   const errors = useSelector(state => state.error)
   const successful = useSelector(state => state.success)
-  // console.log(errors)
-  // console.log(successful)
 
   // Alert
   const [visible, setVisible] = useState(true)
@@ -27,7 +24,6 @@ const Notification = ({ errorsState, progress, initFn }) => {
       }
 
       {/* Error backend */}
-      {/* {console.log(errors)} */}
       {
         errors && errors.id === initFn && initFn !== 'replyContact' ? 
           <Alert isOpen={visible} toggle={onDismiss} color='danger' className='border border-warning'>

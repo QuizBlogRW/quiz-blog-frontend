@@ -8,5 +8,11 @@ export default defineConfig(() => {
             chunkSizeWarningLimit: 1600,
         },
         plugins: [react()],
+        resolve: {
+            alias: [{ find: "@", replacement: "/src" }],
+        },
+        define: {
+            global: {},
+        }
     };
 });

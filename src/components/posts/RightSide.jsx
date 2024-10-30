@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { subscribeToPosts } from '../../redux/slices/subscribersSlice'
 import { clearErrors } from '../../redux/slices/errorSlice'
 
-const ViewCategory = lazy(() => import('../categories/ViewCategory'))
+const ViewCategories = lazy(() => import('../categories/ViewCategories'))
 const SquareAd = lazy(() => import('../adsenses/SquareAd'))
 import { currentUserContext } from '../../appContexts'
 
@@ -46,6 +46,7 @@ const RightSide = ({ categories }) => {
 
     return (
         <Col sm="4" className='d-flex flex-column justify-content-around'>
+
             <Row className='w-100 d-flex justify-content-center align-items-center'>
                 <Col sm="12" className='d-flex justify-content-center align-items-center'>
                     <div className='w-100 d-flex justify-content-center align-items-center'>
@@ -53,12 +54,14 @@ const RightSide = ({ categories }) => {
                     </div>
                 </Col>
             </Row>
+
             <Row className="mb-4 my-1 d-none d-lg-flex side-category">
                 <Suspense
                     fallback={<QBLoadingSM />}>
-                    <ViewCategory categories={categories} />
+                    <ViewCategories categories={categories} />
                 </Suspense>
             </Row>
+
             <Row className='w-100 d-flex justify-content-center align-items-center'>
                 <Col sm="12" className='d-flex justify-content-center align-items-center'>
                     <div className='w-100 d-flex justify-content-center align-items-center'>
@@ -68,9 +71,7 @@ const RightSide = ({ categories }) => {
             </Row>
 
             <Row className="mb-5 mt-5 mt-lg-0">
-
                 <Form onSubmit={onSubscribe} className="subscribe-form shadow p-3 mb-5 bg-white rounded">
-
                     <FormGroup className="w-100 px-lg-4 d-flex flex-column justify-content-center align-items-center">
                         {subscribe_error ?
                             <Alert color='danger' className='border border-warning'>

@@ -8,12 +8,13 @@ const Footer = () => {
     let location = useLocation()
 
     // If the route starts with /questions, /dashboard or /statistics, then don't show the footer
-    if (location.pathname.startsWith('/questions') || location.pathname.startsWith('/dashboard') || location.pathname.startsWith('/statistics')) {
+    if (location.pathname.startsWith('/questions') || 
+        location.pathname.startsWith('/dashboard') || 
+        location.pathname.startsWith('/statistics') ||
+        location.pathname.startsWith('/contact-chat')) {
         return null
 
-    } else
-
-        return (
+    } else return (
             <footer className="mainfooter mt-1 px-3" role="contentinfo">
                 <div className="footer-middle">
                     <div className="container">

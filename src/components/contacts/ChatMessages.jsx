@@ -1,141 +1,106 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
-import { Form, FormGroup, Button, Input } from 'reactstrap';
-import { replyContact } from '../../redux/slices/contactsSlice';
-import moment from 'moment';
-import QBLoadingSM from '../rLoading/QBLoadingSM';
-import { useSelector, useDispatch } from "react-redux";
-import { currentUserContext } from '../../appContexts';
-import Notification from '../../utils/Notification';
-import { notify } from '../../utils/notifyToast';
-
-// Socket.io
-import { socket } from '../../utils/socket';
+import React, { useState, useEffect, useRef, useContext } from 'react'
+import { Form, Button } from 'reactstrap'
+import { useSelector, useDispatch } from "react-redux"
+import { EditorState, convertToRaw, convertFromRaw } from 'draft-js'
+import { Editor } from 'react-draft-wysiwyg'
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
+import moment from 'moment'
+import { replyContact } from '@/redux/slices/contactsSlice'
+import QBLoadingSM from '@/components/rLoading/QBLoadingSM'
+import { currentUserContext } from '@/appContexts'
+import { notify } from '@/utils/notifyToast'
+import { socket } from '@/utils/socket'
+import SingleReply from './SingleReply'
 
 const ChatMessages = ({ onlineList }) => {
+    const contacts = useSelector(state => state.contacts)
+    const { oneContact, isLoading } = contacts
+    const dispatch = useDispatch()
+    const currentUser = useContext(currentUserContext)
+    const lastMessageRef = useRef(null)
 
-    // redux
-    const contacts = useSelector(state => state.contacts);
-    const { oneContact, reply, isLoading } = contacts;
-    const dispatch = useDispatch();
+    const [replies, setReplies] = useState(oneContact ? oneContact.replies : [])
+    const [editorState, setEditorState] = useState(EditorState.createEmpty())
 
-    // context
-    const currentUser = useContext(currentUserContext);
-    const lastMessageRef = useRef(null);
-    const inputRef = useRef(null);
+    const toMail = currentUser.role === 'Visitor' ? 'quizblog.rw@gmail.com' : oneContact?.email
+    const whoWith = currentUser.role === 'Visitor' ? { username: 'Quiz-Blog Rwanda', email: 'quizblog.rw@gmail.com' } : { username: oneContact?.contact_name, email: oneContact?.email }
+    const matchingUsr = onlineList.find(user => user.email === toMail)
+    const onlineStatus = matchingUsr && matchingUsr.email === whoWith.email ? '🟢' : '🔴'
 
-    // State
-    const [replies, setReplies] = useState(oneContact ? oneContact.replies : []);
-    const [newMessage, setNewMessage] = useState('');
-    const [errorsState, setErrorsState] = useState([]);
+    useEffect(() => {
+        try {
+            if (oneContact?.message) {
+                const content = convertFromRaw(JSON.parse(oneContact.message))
+                setEditorState(EditorState.createWithContent(content))
+            }
+        } catch (error) { }
 
-    // Who to send mail to
-    const toMail = currentUser.role === 'Visitor' ? 'quizblog.rw@gmail.com' : oneContact && oneContact.email;
-    const whoWith = currentUser.role === 'Visitor' ? { username: 'Quiz-Blog Rwanda', email: 'quizblog.rw@gmail.com' } : { username: oneContact && oneContact.contact_name, email: oneContact && oneContact.email };
-    const matchingUsr = onlineList.find((user) => user.email === toMail);
-    const onlineStatus = matchingUsr && matchingUsr.email === whoWith.email ? '🟢' : '🔴';
+    }, [oneContact])
 
     const sendMessage = e => {
-        e.preventDefault();
+        e.preventDefault()
+        const raw = convertToRaw(editorState.getCurrentContent())
+        const string = JSON.stringify(raw)
 
-        // VALIDATE
-        if (currentUser.email.length < 4 || newMessage.length < 1) {
-            setErrorsState(['Insufficient info!']);
-            return;
-        }
-        else if (newMessage.length > 1000) {
-            setErrorsState(['message is too long!']);
-            return;
-        }
-
-        // Create reply object
-        const reply = {
+        const newReply = {
             reply_name: currentUser.name,
             email: currentUser.email,
             to_contact: toMail,
             to_contact_name: oneContact.contact_name,
             contact_question: oneContact.message,
-            message: newMessage
-        };
+            message: string
+        }
 
-        // Attempt to reply - save to database
-        dispatch(replyContact({ idToUpdate: oneContact._id, reply }));
-
-        // clear the contact state
-        setNewMessage('');
-    };
+        dispatch(replyContact({ idToUpdate: oneContact._id, reply: newReply }))
+    }
 
     useEffect(() => {
-
-        // Listen for incoming messages
-        socket.on('replyReceived', (replyReceived) => {
-            setReplies(prevReplies => [...prevReplies, replyReceived]);
-
-            // Notify the user
+        const handleReplyReceived = replyReceived => {
+            setReplies(prevReplies => [...prevReplies, replyReceived])
             if (replyReceived.email !== currentUser.email) {
-                notify(`${replyReceived.reply_name} replied to your message`);
+                notify(`${replyReceived.reply_name} replied to your message`)
             }
-        });
+        }
 
-        return () => {
-            socket.off('replyReceived');
-        };
-    }, [replies]);
+        socket.on('replyReceived', handleReplyReceived)
+        return () => socket.off('replyReceived', handleReplyReceived)
+    }, [currentUser.email])
 
     useEffect(() => {
-        // scroll to bottom every time messages change
-        lastMessageRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, [replies]);
+        lastMessageRef.current?.scrollIntoView({ behavior: 'smooth' })
+    }, [replies])
 
     return (
         isLoading ? <QBLoadingSM title='chat messages' /> :
-
             <div className='h-100'>
-                <h4
-                    className='text-center py-2 py-lg-4 mt-5 mt-lg-3 fw-bolder border rounded'
-                    style={{ backgroundColor: "burlywood" }}>
+                <h4 className='text-center py-2 py-lg-4 mt-5 mt-lg-3 fw-bolder border rounded' style={{ backgroundColor: "burlywood" }}>
                     {whoWith.username}&nbsp;
                     <small style={{ fontSize: ".5rem", verticalAlign: "middle" }}>{onlineStatus}</small>
                 </h4>
-
-                {/* ORIGINAL MESSAGE */}
-                <strong>{oneContact && oneContact.message}</strong>
-
+                <strong>{oneContact?.message}</strong>
                 <small className="text-info mb-2">
                     <i className='text-start d-block mt-2' style={{ fontSize: ".7rem", color: "#6a89cc" }}>
-                        {moment(new Date(oneContact && oneContact.contact_date)).format('YYYY-MM-DD, HH:mm')}
+                        {moment(new Date(oneContact?.contact_date)).format('YYYY-MM-DD, HH:mm')}
                     </i>
                 </small>
                 <hr />
-
-                {/* REPLIES */}
-                {replies.map((reply, index) => (
-                    <div key={index}
-                        className={`mt-2 mt-lg-3 ${reply.email === currentUser.email ? 'text-end' : 'text-start'}`}>
-                        <div
-                            className={`bubble d-inline-block p-2 ${reply.email === currentUser.email ? 'ms-auto' : 'me-auto'}`}
-                            style={{
-                                backgroundColor: reply.email === currentUser.email ? '#f1f0f0' : '#6a89cc',
-                                color: reply.email === currentUser.email ? '' : 'white',
-                                borderRadius: '10px', maxWidth: '80%', wordWrap: 'break-word', whiteSpace: 'pre-wrap', fontSize: '.8rem', fontWeight: '500', lineHeight: '1.2', verticalAlign: 'baseline', wordBreak: 'break-word'
-                            }}>
-                            {reply && reply.message}
-                        </div>
-
-                        <small className="text-info">
-                            <i className={`${reply.email === currentUser.email ? 'text-end' : 'text-start'} d-block mt-2`} style={{ fontSize: ".7rem", color: "#999" }}>
-                                {moment(new Date(reply.reply_date)).format('YYYY-MM-DD, HH:mm')}
-                            </i>
-                        </small>
-                    </div>
-                ))}
+                {replies.map((reply, index) => <SingleReply key={index} reply={reply} />)}
                 <hr />
-                <Notification errorsState={errorsState} progress={null} initFn="replyContact" />
-                {/* CHAT BOX */}
                 <Form className='w-100 m-1 pb-3 mb-lg-5 d-flex flex-column align-center justify-center' onSubmit={sendMessage}>
-                    <FormGroup className='flex-grow-1 w-100'>
-                        <Input type='textarea' name='message' placeholder='Type your message here...' rows="5" onChange={(e) => setNewMessage(e.target.value)} value={newMessage} ref={inputRef} required />
-                    </FormGroup>
-                    <Button className='mx-auto w-50' style={{ height: "max-content", backgroundColor: "#157A6E" }}>
+                    <Editor
+                        editorState={editorState}
+                        onEditorStateChange={setEditorState}
+                        wrapperClassName="wrapper-class"
+                        editorClassName="editor-class"
+                        toolbarClassName="toolbar-class"
+                        spellCheck={true}
+                        placeholder="Type your message here..."
+                        toolbar={{
+                            fontFamily: { options: ['Tw Cen MT', 'Amiri', 'Helvetica', "Trebuchet MS", 'sans-serif'] },
+                        }}
+                        editorStyle={{ height: '200px' }}
+                    />
+                    <Button className='mx-auto w-50 mt-4' style={{ height: "max-content", backgroundColor: "#157A6E" }}>
                         Send
                     </Button>
                     <div ref={lastMessageRef} />
@@ -144,4 +109,4 @@ const ChatMessages = ({ onlineList }) => {
     )
 }
 
-export default ChatMessages;
+export default ChatMessages

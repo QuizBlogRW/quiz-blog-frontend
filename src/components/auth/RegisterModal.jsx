@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, Alert, NavLink } from 'reactstrap'
+import { useNavigate } from "react-router-dom"
+import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
 import { register } from '../../redux/slices/authSlice'
 import { clearErrors } from '../../redux/slices/errorSlice'
 import { useSelector, useDispatch } from "react-redux"
@@ -15,6 +16,7 @@ const RegisterModal = ({ isOpenR, toggleR, toggleL }) => {
     const errors = useSelector(state => state.error)
     const isLoading = useSelector(state => state.auth.isLoading)
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     // Errors state on form
     const [errorsState, setErrorsState] = useState([])
@@ -28,8 +30,6 @@ const RegisterModal = ({ isOpenR, toggleR, toggleL }) => {
         email: '',
         password: ''
     })
-
-    let atHome = false
 
     // Lifecycle methods
     useEffect(() => {
@@ -49,7 +49,7 @@ const RegisterModal = ({ isOpenR, toggleR, toggleL }) => {
         setRegisterState({ ...registerState, [e.target.name]: e.target.value })
     }
 
-    const onSubmitHandler = e => {
+    const onSubmitHandler = (e) => {
         e.preventDefault()
 
         const { name, email, password } = registerState
@@ -71,11 +71,12 @@ const RegisterModal = ({ isOpenR, toggleR, toggleL }) => {
             password
         }
 
-        // if current page is /, set atHome to true
-        window.location.pathname === '/' ? atHome = true : atHome = false
-
         // Attempt to register
-        dispatch(register(newUser, atHome))
+        dispatch(register(newUser))
+            .then(() => {
+                localStorage.setItem('emailForOTP', email)
+                navigate('/verify', { state: { email } })
+            })
     }
 
     return (

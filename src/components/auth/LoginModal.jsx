@@ -32,8 +32,6 @@ const LoginModal = ({ isOpenL, toggleL, toggleR }) => {
 
     const [confirmLogin, setConfirmLogin] = useState(false)
 
-    let atHome = false
-
     // Lifecycle methods
     useEffect(() => {
         if ((errors && errors.id === 'login') && (errors && errors.msg && errors.msg.id === 'CONFIRM_ERR')) {
@@ -72,12 +70,9 @@ const LoginModal = ({ isOpenL, toggleL, toggleR }) => {
             return
         }
 
-        // if current page is /, set atHome to true
-        window.location.pathname === '/' ? atHome = true : atHome = false
-
         // Attempt to login
         dispatch(clearErrors())
-        dispatch(login(user, atHome))
+        dispatch(login(user))
     }
 
     return (

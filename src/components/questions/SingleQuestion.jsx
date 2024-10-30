@@ -21,12 +21,12 @@ const SingleQuestion = () => {
     const { toggleL } = useContext(logRegContext)
 
     // Access route parameters
-    const { questionId } = useParams()
+    const { questionID } = useParams()
 
     // Lifecycle methods
     useEffect(() => {
-        dispatch(getOneQuestion(questionId))
-    }, [dispatch, questionId])
+        dispatch(getOneQuestion(questionID))
+    }, [dispatch, questionID])
 
     const thisQuestion = quest && quest.oneQuestion
     const thisQnCat = thisQuestion && thisQuestion.category
@@ -85,20 +85,34 @@ const SingleQuestion = () => {
                                     </div>}
 
                                 <ListGroup>
-                                    {thisQuestion && thisQuestion.answerOptions.map((answerOpt, i) => (
+                                    {thisQuestion && thisQuestion.answerOptions.map((answerOpt, i) => {
 
-                                        <span key={answerOpt._id}>
-                                            <ListGroupItem color={answerOpt.isCorrect ? 'success' : ''} key={answerOpt._id} className="mt-4 fw-bolder">
-                                                {i + 1}. {answerOpt.answerText}
-                                            </ListGroupItem>
+                                        let explanation = answerOpt.explanations ? answerOpt.explanations : null
 
-                                            <div className='border rounded mt-1 p-2'>
-                                                <small className="text-dark">
-                                                    {answerOpt.explanations}
-                                                </small>
-                                            </div>
-                                        </span>)
-                                    )}
+                                        {/* If there is a word in the explanation paragraph that starts with http, make it a link */ }
+                                        if (explanation) {
+                                            let words = explanation.split(" ")
+                                            explanation = words.map(word => {
+                                                if (word.startsWith("http")) {
+                                                    return <a key={word} href={word} target="_blank" rel="noreferrer">{word} </a>
+                                                }
+                                                return word + " "
+                                            })
+                                        }
+                                        return (
+
+                                            <span key={answerOpt._id}>
+                                                <ListGroupItem color={answerOpt.isCorrect ? 'success' : ''} key={answerOpt._id} className="mt-4 fw-bolder">
+                                                    {i + 1}. {answerOpt.answerText}
+                                                </ListGroupItem>
+
+                                                {explanation && <div className='border rounded mt-1 p-2'>
+                                                    <small className="text-dark">
+                                                        {explanation}
+                                                    </small>
+                                                </div>}
+                                            </span>)
+                                    })}
                                 </ListGroup>
 
                             </Row>
