@@ -1,11 +1,8 @@
 import React, { useState } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
-import { clearErrors } from '../../redux/slices/errorSlice'
-import { clearSuccess } from '../../redux/slices/successSlice'
 import { updateFaq } from '../../redux/slices/faqsSlice'
 import { useDispatch } from 'react-redux'
 import EditIcon from '../../images/edit.svg'
-import Notification from '../../utils/Notification'
 
 const EditFaq = ({ faqToEdit }) => {
 
@@ -18,8 +15,6 @@ const EditFaq = ({ faqToEdit }) => {
         answer: faqToEdit.answer
     })
 
-    // Errors state on form
-    const [errorsState, setErrorsState] = useState([])
 
     //properties of the modal
     const [modal, setModal] = useState(false)
@@ -28,9 +23,6 @@ const EditFaq = ({ faqToEdit }) => {
     const toggle = () => setModal(!modal)
 
     const onChangeHandler = e => {
-        setErrorsState([])
-        dispatch(clearErrors())
-        dispatch(clearSuccess())
         setFaqState({ ...faqState, [e.target.name]: e.target.value })
     }
 
@@ -41,15 +33,15 @@ const EditFaq = ({ faqToEdit }) => {
 
         // VALIDATE
         if (title.length < 4 || answer.length < 4) {
-            setErrorsState(['Insufficient info!'])
+            notify('Insufficient info!')
             return
         }
         else if (title.length > 50) {
-            setErrorsState(['Title is too long!'])
+            notify('Title is too long!')
             return
         }
         else if (answer.length > 100) {
-            setErrorsState(['Answer is too long!'])
+            notify('Answer is too long!')
             return
         }
 
@@ -78,8 +70,6 @@ const EditFaq = ({ faqToEdit }) => {
                 </div>
 
                 <ModalBody>
-
-                    <Notification errorsState={errorsState} progress={null} initFn="updateFaq" />
                     <Form onSubmit={onSubmitHandler}>
 
                         <FormGroup>

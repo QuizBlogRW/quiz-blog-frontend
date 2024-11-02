@@ -1,12 +1,9 @@
 import React, { useState, useContext } from 'react'
 import { createNotes } from '../../../redux/slices/notesSlice'
 import AddIcon from '../../../images/plus.svg'
-import { clearErrors } from '../../../redux/slices/errorSlice'
-import { clearSuccess } from '../../../redux/slices/successSlice'
 import { useDispatch } from 'react-redux'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, NavLink, Input } from 'reactstrap'
 import { currentUserContext } from '../../../appContexts'
-import Notification from '../../../utils/Notification'
 
 const AddNotesModal = ({ chapter }) => {
 
@@ -22,8 +19,6 @@ const AddNotesModal = ({ chapter }) => {
         notes_file: ''
     })
 
-    // Errors state on form
-    const [errorsState, setErrorsState] = useState([])
 
     //properties of the modal
     const [modal, setModal] = useState(false)
@@ -32,16 +27,10 @@ const AddNotesModal = ({ chapter }) => {
     const toggle = () => setModal(!modal)
 
     const onChangeHandler = e => {
-        setErrorsState([])
-        dispatch(clearErrors())
-        dispatch(clearSuccess())
         setNotesState({ ...notesState, [e.target.name]: e.target.value })
     }
 
     const onFileHandler = (e) => {
-        setErrorsState([])
-        dispatch(clearErrors())
-        dispatch(clearSuccess())
         setNotesState({ ...notesState, notes_file: e.target.files[0] })
     }
 
@@ -53,23 +42,23 @@ const AddNotesModal = ({ chapter }) => {
 
         // VALIDATE
         if (title.length < 4 || description.length < 4) {
-            setErrorsState(['Insufficient info!'])
+            notify('Insufficient info!')
             return
         }
         else if (title.length > 80) {
-            setErrorsState(['Title is too long!'])
+            notify('Title is too long!')
             return
         }
         else if (!chapter) {
-            setErrorsState(['The chapter is required!'])
+            notify('The chapter is required!')
             return
         }
         else if (!notes_file) {
-            setErrorsState(['The file is required!'])
+            notify('The file is required!')
             return
         }
         else if (description.length > 200) {
-            setErrorsState(['Description is too long!'])
+            notify('Description is too long!')
             return
         }
 
@@ -108,7 +97,6 @@ const AddNotesModal = ({ chapter }) => {
                 </div>
 
                 <ModalBody>
-                    <Notification errorsState={errorsState} progress={null} initFn="createNotes" />
                     <Form onSubmit={onSubmitHandler} encType='multipart/form-data'>
 
                         <FormGroup>

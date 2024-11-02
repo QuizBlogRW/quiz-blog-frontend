@@ -3,8 +3,6 @@ import { Row, Col, Card, Button, CardTitle, CardText, TabPane, Alert, CardImg } 
 import { Link } from "react-router-dom"
 import CreateAdvert from './CreateAdvert'
 import QBLoadingSM from '../../rLoading/QBLoadingSM'
-import { clearErrors } from '../../../redux/slices/errorSlice'
-import { clearSuccess } from '../../../redux/slices/successSlice'
 import { getAdverts, changeStatus, deleteAdvert } from '../../../redux/slices/advertsSlice'
 import { useSelector, useDispatch } from "react-redux"
 import adImage from '../../../images/quizLogo.svg'
@@ -31,7 +29,7 @@ const AdvertsTabPane = () => {
         <TabPane tabId="10">
 
             <Button size="sm" outline color="info" className="m-3 mb-2 p-2 btn btn-warning">
-                <CreateAdvert clearErrors={clearErrors} clearSuccess={clearSuccess} />
+                <CreateAdvert />
             </Button>
 
             {isLoading ?

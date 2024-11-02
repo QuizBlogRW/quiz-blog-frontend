@@ -4,7 +4,6 @@ import { updateQuestion } from '../../redux/slices/questionsSlice'
 import { getQuizesByCategory } from '../../redux/slices/quizesSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import { authContext } from '../../appContexts'
-import Notification from '../../utils/Notification'
 
 const ChangeQuizModal = ({ questionID, oldQuizID, questionCatID }) => {
 
@@ -59,8 +58,6 @@ const ChangeQuizModal = ({ questionID, oldQuizID, questionCatID }) => {
                 </div>
 
                 <ModalBody>
-
-                    <Notification errorsState={null} progress={null} initFn="updateQuestion" />
 
                     <Form onSubmit={onSubmitHandler}>
 

@@ -1,15 +1,12 @@
 import React, { useState, useContext } from 'react'
 import { Button, Form, FormGroup, Label, Input, Row, Col, Alert, Breadcrumb, BreadcrumbItem } from 'reactstrap'
 import { useParams } from 'react-router-dom'
-import { clearErrors } from '../../../redux/slices/errorSlice'
-import { clearSuccess } from '../../../redux/slices/successSlice'
-import { createBlogPost } from '../../../redux/slices/blogPostsSlice'
+import { createBlogPost } from '../../../redux/slices'
 import { useDispatch } from "react-redux"
 import QBLoadingSM from '../../rLoading/QBLoadingSM'
 import UploadPostPhotos from './UploadPostPhotos'
 import YourImages from './YourImages'
 import { authContext, currentUserContext, logRegContext } from '../../../appContexts'
-import Notification from '../../../utils/Notification'
 
 const AddBlogPost = () => {
 
@@ -35,19 +32,12 @@ const AddBlogPost = () => {
 
     const [post_image, setPost_image] = useState('')
 
-    // Errors state on form
-    const [errorsState, setErrorsState] = useState([])
 
     const onChangeHandler = e => {
-        dispatch(clearErrors())
-        dispatch(clearSuccess())
         setBPState({ ...bPState, [e.target.name]: e.target.value })
     }
 
     const onFileHandler = (e) => {
-        setErrorsState([])
-        dispatch(clearErrors())
-        dispatch(clearSuccess())
         setPost_image(e.target.files[0])
     }
 
@@ -59,11 +49,11 @@ const AddBlogPost = () => {
 
         // VALIDATE
         if (title.length < 4 || markdown.length < 4) {
-            setErrorsState(['Insufficient info!'])
+            notify('Insufficient info!')
             return
         }
         else if (title.length > 70) {
-            setErrorsState(['Title is too long!'])
+            notify('Title is too long!')
             return
         }
 
@@ -110,8 +100,6 @@ const AddBlogPost = () => {
 
 
                             <div className="px-2">
-
-                                <Notification errorsState={errorsState} progress={null} initFn="createBlogPost" />
                                 <Form onSubmit={onSubmitHandler}>
 
                                     <FormGroup>

@@ -8,7 +8,6 @@ import { fetchSchoolLevels } from '../../redux/slices/levelsSlice'
 import { fetchLevelFaculties } from '../../redux/slices/facultiesSlice'
 import { authContext, currentUserContext, logRegContext } from '../../appContexts'
 import QBLoadingSM from '../rLoading/QBLoadingSM'
-import Notification from '../../utils/Notification'
 
 const EditProfile = () => {
 
@@ -34,7 +33,6 @@ const EditProfile = () => {
     useEffect(() => { setInterestsState(inters) }, [inters])
 
     // States 
-    const [errorsState, setErrorsState] = useState([])
     const [schoolState, setSchoolState] = useState([])
     const [levelsState, setLevelsState] = useState([])
     const [facultiesState, setFacultiesState] = useState([])
@@ -109,17 +107,17 @@ const EditProfile = () => {
 
         // VALIDATE
         if (profileState.name.about < 4 || profileState.name.length < 4 || profileState.school.length < 4 || profileState.year.length < 4 || profileState.faculty.length < 4 || profileState.level.length < 4) {
-            setErrorsState(['Insufficient info!'])
+            notify('Insufficient info!')
             return
         }
 
         else if (profileState.name.length > 100 || profileState.school.length > 100 || profileState.year.length > 100 || profileState.faculty.length > 100 || profileState.level.length > 100) {
-            setErrorsState(['Too long!'])
+            notify('Too long!')
             return
         }
 
         else if (profileState.about.length > 2000) {
-            setErrorsState(['Too long!'])
+            notify('Too long!')
             return
         }
 
@@ -156,7 +154,6 @@ const EditProfile = () => {
                     </Breadcrumb>
                 </Row>
 
-                <Notification errorsState={errorsState} progress={null} initFn="updateProfile" />
                 <FormGroup row className="mx-0">
                     <Label sm={3}>Update Name</Label>
                     <Col sm={7}>
@@ -193,7 +190,7 @@ const EditProfile = () => {
                     <Col sm={7}>
                         <Input type="select" className="form-control" onChange={facultiesHandler}
                             value={(profileState && profileState.level) || ''} required>
-                            
+
                             {profileState && profileState.level ? <option>{profileState.level.title}</option> : <option>-- Select your level--</option>}
                             {levelsState && levelsState.map(level =>
                                 <option key={level._id} value={level._id}>
@@ -213,7 +210,7 @@ const EditProfile = () => {
                     <Col sm={7}>
                         <Input type="select" className="form-control" onChange={yearsHandler}
                             value={(profileState && profileState.faculty) || ''} required>
-                            
+
                             {profileState && profileState.faculty ? <option>{profileState.faculty.title}</option> : <option>-- Select your faculty--</option>}
                             {facultiesState.map(faculty =>
                                 <option key={faculty._id} value={faculty._id}>
@@ -233,7 +230,7 @@ const EditProfile = () => {
                     <Col sm={7}>
                         <Input type="select" className="form-control" onChange={allSelectsHandler}
                             value={(profileState && profileState.year) || ''} required>
-                            
+
                             {profileState && profileState.year ? <option>{profileState.year}</option> : <option>-- Select your year--</option>}
                             {yearsState && yearsState.map(year =>
                                 <option key={year} value={year}>

@@ -1,12 +1,11 @@
 import React, { useEffect, useState, lazy, Suspense, useContext } from 'react'
-import { Col, Row, Form, FormGroup, Input, Button, Alert } from 'reactstrap'
+import { Col, Row, Form, FormGroup, Input, Button } from 'reactstrap'
 import subscribe from '../../images/undraw_subscribe.svg'
 import QBLoadingSM from '../rLoading/QBLoadingSM'
 import ResponsiveAd from '../adsenses/ResponsiveAd'
 
 import { useSelector, useDispatch } from "react-redux"
 import { subscribeToPosts } from '../../redux/slices/subscribersSlice'
-import { clearErrors } from '../../redux/slices/errorSlice'
 
 const ViewCategories = lazy(() => import('../categories/ViewCategories'))
 const SquareAd = lazy(() => import('../adsenses/SquareAd'))
@@ -16,8 +15,6 @@ const RightSide = ({ categories }) => {
 
     // Redux
     const dispatch = useDispatch()
-    const error = useSelector(state => state.error)
-    const subscribe_error = error.id === 'SUBSCRIBE_ERR' ? error.msg : null
 
     // Context
     const currentUser = useContext(currentUserContext)
@@ -31,7 +28,6 @@ const RightSide = ({ categories }) => {
     }, [currentUser])
 
     const onChangeHandler = e => {
-        dispatch(clearErrors())
         const { name, value } = e.target
         setSubscriberState(subscriberState => ({ ...subscriberState, [name]: value }))
     }
@@ -73,12 +69,6 @@ const RightSide = ({ categories }) => {
             <Row className="mb-5 mt-5 mt-lg-0">
                 <Form onSubmit={onSubscribe} className="subscribe-form shadow p-3 mb-5 bg-white rounded">
                     <FormGroup className="w-100 px-lg-4 d-flex flex-column justify-content-center align-items-center">
-                        {subscribe_error ?
-                            <Alert color='danger' className='border border-warning'>
-                                <small>{subscribe_error && subscribe_error}</small>
-                            </Alert> :
-                            null}
-
                         <img src={subscribe} alt={subscribe} className="img-fluid w-50 p-2 mt-4 border border-primary rounded shadow-lg p-3 mb-5 bg-white rounded" />
 
                         <h6 className="mt-2">

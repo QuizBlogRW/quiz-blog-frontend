@@ -2,41 +2,41 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { apiCallHelper } from '../configHelpers'
 
 // Async actions with createAsyncThunk
-export const getQuizes = createAsyncThunk("quizes/getQuizes", async ({ limit, skip }, { getState, dispatch }) =>
-  apiCallHelper(`/api/quizes?limit=${limit}&skip=${skip ? skip : 0}`, 'get', null, getState, dispatch, 'getQuizes'))
+export const getQuizes = createAsyncThunk("quizes/getQuizes", async ({ limit, skip }, { getState }) =>
+  apiCallHelper(`/api/quizes?limit=${limit}&skip=${skip ? skip : 0}`, 'get', null, getState, 'getQuizes'))
 
-export const getPaginatedQuizes = createAsyncThunk("quizes/getPaginatedQuizes", async (pageNo, { getState, dispatch }) =>
-  apiCallHelper(`/api/quizes/paginated/?pageNo=${pageNo}`, 'get', null, getState, dispatch, 'getPaginatedQuizes'))
+export const getPaginatedQuizes = createAsyncThunk("quizes/getPaginatedQuizes", async (pageNo, { getState }) =>
+  apiCallHelper(`/api/quizes/paginated/?pageNo=${pageNo}`, 'get', null, getState, 'getPaginatedQuizes'))
 
-export const getAllNoLimitQuizes = createAsyncThunk("quizes/getAllNoLimitQuizes", async (_, { getState, dispatch }) =>
-  apiCallHelper('/api/quizes', 'get', null, getState, dispatch, 'getAllNoLimitQuizes'))
+export const getAllNoLimitQuizes = createAsyncThunk("quizes/getAllNoLimitQuizes", async (_, { getState }) =>
+  apiCallHelper('/api/quizes', 'get', null, getState, 'getAllNoLimitQuizes'))
 
-export const getOneQuiz = createAsyncThunk("quizes/getOneQuiz", async (quizSlug, { getState, dispatch }) =>
-  apiCallHelper(`/api/quizes/${quizSlug}`, 'get', null, getState, dispatch, 'getOneQuiz'))
+export const getOneQuiz = createAsyncThunk("quizes/getOneQuiz", async (quizSlug, { getState }) =>
+  apiCallHelper(`/api/quizes/${quizSlug}`, 'get', null, getState, 'getOneQuiz'))
 
-export const getQuizesByCategory = createAsyncThunk("quizes/getQuizesByCategory", async (categoryID, { getState, dispatch }) =>
-  apiCallHelper(`/api/quizes/category/${categoryID}`, 'get', null, getState, dispatch, 'getQuizesByCategory'))
+export const getQuizesByCategory = createAsyncThunk("quizes/getQuizesByCategory", async (categoryID, { getState }) =>
+  apiCallHelper(`/api/quizes/category/${categoryID}`, 'get', null, getState, 'getQuizesByCategory'))
 
-export const getQuizesByNotes = createAsyncThunk("quizes/getQuizesByNotes", async (courseCategoryID, { getState, dispatch }) =>
-  apiCallHelper(`/api/quizes/course-notes/${courseCategoryID}`, 'get', null, getState, dispatch, 'getQuizesByNotes'))
+export const getQuizesByNotes = createAsyncThunk("quizes/getQuizesByNotes", async (courseCategoryID, { getState }) =>
+  apiCallHelper(`/api/quizes/course-notes/${courseCategoryID}`, 'get', null, getState, 'getQuizesByNotes'))
 
-export const createQuiz = createAsyncThunk("quizes/createQuiz", async (newQuiz, { getState, dispatch }) =>
-  apiCallHelper('/api/quizes', 'post', newQuiz, getState, dispatch, 'createQuiz'))
+export const createQuiz = createAsyncThunk("quizes/createQuiz", async (newQuiz, { getState }) =>
+  apiCallHelper('/api/quizes', 'post', newQuiz, getState, 'createQuiz'))
 
-export const updateQuiz = createAsyncThunk("quizes/updateQuiz", async (updatedQuiz, { getState, dispatch }) =>
-  apiCallHelper(`/api/quizes/${updatedQuiz.quizID}`, 'put', updatedQuiz, getState, dispatch, 'updateQuiz'))
+export const updateQuiz = createAsyncThunk("quizes/updateQuiz", async (updatedQuiz, { getState }) =>
+  apiCallHelper(`/api/quizes/${updatedQuiz.quizID}`, 'put', updatedQuiz, getState, 'updateQuiz'))
 
-export const addVidLink = createAsyncThunk("quizes/addVidLink", async ({ newVidLink, quizID }, { getState, dispatch }) =>
-  apiCallHelper(`/api/quizes/add-video/${quizID}`, 'put', newVidLink, getState, dispatch, 'addVidLink'))
+export const addVidLink = createAsyncThunk("quizes/addVidLink", async ({ newVidLink, quizID }, { getState }) =>
+  apiCallHelper(`/api/quizes/add-video/${quizID}`, 'put', newVidLink, getState, 'addVidLink'))
 
-export const deleteVideo = createAsyncThunk("quizes/deleteVideo", async ({ vidData, vId }, { getState, dispatch }) =>
-  apiCallHelper(`/api/quizes/delete-video/${vId}`, 'put', vidData, getState, dispatch, 'deleteVideo'))
+export const deleteVideo = createAsyncThunk("quizes/deleteVideo", async ({ vidData, vId }, { getState }) =>
+  apiCallHelper(`/api/quizes/delete-video/${vId}`, 'put', vidData, getState, 'deleteVideo'))
 
-export const deleteQuiz = createAsyncThunk("quizes/deleteQuiz", async (id, { getState, dispatch }) =>
-  apiCallHelper(`/api/quizes/${id}`, 'delete', null, getState, dispatch, 'deleteQuiz'))
+export const deleteQuiz = createAsyncThunk("quizes/deleteQuiz", async (id, { getState }) =>
+  apiCallHelper(`/api/quizes/${id}`, 'delete', null, getState, 'deleteQuiz'))
 
-export const notifying = createAsyncThunk("quizes/notifying", async (newQuizInfo, { getState, dispatch }) =>
-  apiCallHelper('/api/quizes/notifying', 'post', newQuizInfo, getState, dispatch, 'notifying'))
+export const notifying = createAsyncThunk("quizes/notifying", async (newQuizInfo, { getState }) =>
+  apiCallHelper('/api/quizes/notifying', 'post', newQuizInfo, getState, 'notifying'))
 
 // Quizes slice
 const initialState = {
@@ -119,68 +119,18 @@ const quizesSlice = createSlice({
     })
 
     // Pending actions
-    builder.addCase(getQuizes.pending, (state, action) => {
-      state.isLoading = true
-    })
-    builder.addCase(getOneQuiz.pending, (state, action) => {
-      state.isLoading = true
-    })
-    builder.addCase(getQuizesByCategory.pending, (state, action) => {
-      state.isLoading = true
-    })
-    builder.addCase(getQuizesByNotes.pending, (state, action) => {
-      state.isLoading = true
-    })
-    builder.addCase(createQuiz.pending, (state, action) => {
-      state.isLoading = true
-    })
-    builder.addCase(updateQuiz.pending, (state, action) => {
-      state.isLoading = true
-    })
-    builder.addCase(addVidLink.pending, (state, action) => {
-      state.isLoading = true
-    })
-    builder.addCase(deleteVideo.pending, (state, action) => {
-      state.isLoading = true
-    })
-    builder.addCase(deleteQuiz.pending, (state, action) => {
-      state.isLoading = true
-    })
-    builder.addCase(notifying.pending, (state, action) => {
-      state.isLoading = true
-    })
+    builder.addMatcher(
+      (action) => [getQuizes.pending, getPaginatedQuizes.pending, getAllNoLimitQuizes.pending, getOneQuiz.pending, getQuizesByCategory.pending, getQuizesByNotes.pending, createQuiz.pending, updateQuiz.pending, addVidLink.pending, deleteVideo.pending, deleteQuiz.pending, notifying.pending].includes(action.type),
+      (state) => {
+        state.isLoading = true
+      })
 
     // Rejected actions
-    builder.addCase(getQuizes.rejected, (state, action) => {
-      state.isLoading = false
-    })
-    builder.addCase(getOneQuiz.rejected, (state, action) => {
-      state.isLoading = false
-    })
-    builder.addCase(getQuizesByCategory.rejected, (state, action) => {
-      state.isLoading = false
-    })
-    builder.addCase(getQuizesByNotes.rejected, (state, action) => {
-      state.isLoading = false
-    })
-    builder.addCase(createQuiz.rejected, (state, action) => {
-      state.isLoading = false
-    })
-    builder.addCase(updateQuiz.rejected, (state, action) => {
-      state.isLoading = false
-    })
-    builder.addCase(addVidLink.rejected, (state, action) => {
-      state.isLoading = false
-    })
-    builder.addCase(deleteVideo.rejected, (state, action) => {
-      state.isLoading = false
-    })
-    builder.addCase(deleteQuiz.rejected, (state, action) => {
-      state.isLoading = false
-    })
-    builder.addCase(notifying.rejected, (state, action) => {
-      state.isLoading = false
-    })
+    builder.addMatcher(
+      (action) => [getQuizes.rejected, getPaginatedQuizes.rejected, getAllNoLimitQuizes.rejected, getOneQuiz.rejected, getQuizesByCategory.rejected, getQuizesByNotes.rejected, createQuiz.rejected, updateQuiz.rejected, addVidLink.rejected, deleteVideo.rejected, deleteQuiz.rejected, notifying.rejected].includes(action.type),
+      (state) => {
+        state.isLoading = false
+      })
   }
 })
 

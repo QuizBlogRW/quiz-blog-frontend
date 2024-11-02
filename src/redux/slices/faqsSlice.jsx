@@ -2,26 +2,26 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { apiCallHelper } from '../configHelpers'
 
 // Async actions with createAsyncThunk
-export const getFaqs = createAsyncThunk("faqs/getFaqs", async (_, { getState, dispatch }) =>
-  apiCallHelper('/api/faqs', 'get', null, getState, dispatch, 'getFaqs'))
+export const getFaqs = createAsyncThunk("faqs/getFaqs", async (_, { getState }) =>
+  apiCallHelper('/api/faqs', 'get', null, getState, 'getFaqs'))
 
-export const getOneFaq = createAsyncThunk("faqs/getOneFaq", async (faqId, { getState, dispatch }) =>
-  apiCallHelper(`/api/faqs/${faqId}`, 'get', null, getState, dispatch, 'getOneFaq'))
+export const getOneFaq = createAsyncThunk("faqs/getOneFaq", async (faqId, { getState }) =>
+  apiCallHelper(`/api/faqs/${faqId}`, 'get', null, getState, 'getOneFaq'))
 
-export const createFq = createAsyncThunk("faqs/createFq", async (newFaq, { getState, dispatch }) =>
-  apiCallHelper('/api/faqs', 'post', newFaq, getState, dispatch, 'createFq'))
+export const createFq = createAsyncThunk("faqs/createFq", async (newFaq, { getState }) =>
+  apiCallHelper('/api/faqs', 'post', newFaq, getState, 'createFq'))
 
-export const updateFaq = createAsyncThunk("faqs/updateFaq", async (updatedFaq, { getState, dispatch }) =>
-  apiCallHelper(`/api/faqs/${updatedFaq.faqID}`, 'put', updatedFaq, getState, dispatch, 'updateFaq'))
+export const updateFaq = createAsyncThunk("faqs/updateFaq", async (updatedFaq, { getState }) =>
+  apiCallHelper(`/api/faqs/${updatedFaq.faqID}`, 'put', updatedFaq, getState, 'updateFaq'))
 
-export const addFaqVidLink = createAsyncThunk("faqs/addFaqVidLink", async ({ newVidLink, faqID }, { getState, dispatch }) =>
-  apiCallHelper(`/api/faqs/add-video/${faqID}`, 'put', newVidLink, getState, dispatch, 'addFaqVidLink'))
+export const addFaqVidLink = createAsyncThunk("faqs/addFaqVidLink", async ({ newVidLink, faqID }, { getState }) =>
+  apiCallHelper(`/api/faqs/add-video/${faqID}`, 'put', newVidLink, getState, 'addFaqVidLink'))
 
-export const deleteFaqVideo = createAsyncThunk("faqs/deleteFaqVideo", async ({ vidData, vId }, { getState, dispatch }) =>
-  apiCallHelper(`/api/faqs/delete-video/${vId}`, 'put', vidData, getState, dispatch, 'deleteFaqVideo'))
+export const deleteFaqVideo = createAsyncThunk("faqs/deleteFaqVideo", async ({ vidData, vId }, { getState }) =>
+  apiCallHelper(`/api/faqs/delete-video/${vId}`, 'put', vidData, getState, 'deleteFaqVideo'))
 
-export const deleteFaq = createAsyncThunk("faqs/deleteFaq", async (id, { getState, dispatch }) =>
-  apiCallHelper(`/api/faqs/${id}`, 'delete', null, getState, dispatch, 'deleteFaq'))
+export const deleteFaq = createAsyncThunk("faqs/deleteFaq", async (id, { getState }) =>
+  apiCallHelper(`/api/faqs/${id}`, 'delete', null, getState, 'deleteFaq'))
 
 // Faqs slice
 const initialState = {
@@ -73,50 +73,18 @@ const faqsSlice = createSlice({
     })
 
     // Pending actions
-    builder.addCase(getFaqs.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(getOneFaq.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(createFq.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(updateFaq.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(addFaqVidLink.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(deleteFaqVideo.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(deleteFaq.pending, state => {
-      state.isLoading = true
-    })
+    builder.addMatcher(
+      (action) => [getFaqs.pending, getOneFaq.pending, createFq.pending, updateFaq.pending, addFaqVidLink.pending, deleteFaqVideo.pending, deleteFaq.pending].includes(action.type),
+      (state) => {
+        state.isLoading = true
+      })
 
     // Rejected actions
-    builder.addCase(getFaqs.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(getOneFaq.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(createFq.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(updateFaq.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(addFaqVidLink.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(deleteFaqVideo.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(deleteFaq.rejected, state => {
-      state.isLoading = false
-    })
+    builder.addMatcher(
+      (action) => [getFaqs.rejected, getOneFaq.rejected, createFq.rejected, updateFaq.rejected, addFaqVidLink.rejected, deleteFaqVideo.rejected, deleteFaq.rejected].includes(action.type),
+      (state) => {
+        state.isLoading = false
+      })
 
   }
 })

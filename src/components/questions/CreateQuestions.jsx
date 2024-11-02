@@ -5,8 +5,6 @@ import { Button, Col, Form, FormGroup, Label, Input, Breadcrumb, BreadcrumbItem,
 import Dashboard from '../dashboard/Dashboard'
 import { addQuestion, getQuestions } from '../../redux/slices/questionsSlice'
 import { getOneQuiz, notifying } from '../../redux/slices/quizesSlice'
-import { clearErrors } from '../../redux/slices/errorSlice'
-import { clearSuccess } from '../../redux/slices/successSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import QBLoadingSM from '../rLoading/QBLoadingSM'
 import { authContext, logRegContext } from '../../appContexts'
@@ -22,8 +20,6 @@ const CreateQuestions = () => {
 
     // Access route parameters
     const { quizSlug } = useParams()
-
-    const [progress, setProgress] = useState();
 
     // Alert
     const [visible, setVisible] = useState(true);
@@ -43,9 +39,6 @@ const CreateQuestions = () => {
         { id: uuidv4(), answerText: '', explanations: '', isCorrect: false },
     ])
 
-    // Errors state on form
-    const [errorsState, setErrorsState] = useState([])
-
     // Lifecycle methods
     useEffect(() => {
         dispatch(getOneQuiz(quizSlug))
@@ -53,34 +46,22 @@ const CreateQuestions = () => {
     }, [dispatch, quizSlug])
 
     const onQuestionChangeHandler = e => {
-        setErrorsState([])
-        dispatch(clearErrors())
-        dispatch(clearSuccess())
 
         const { name, value } = e.target
         setQuestionText(state => ({ ...state, [name]: value }))
     }
 
     const onFileHandler = (e) => {
-        setErrorsState([])
-        dispatch(clearErrors())
-        dispatch(clearSuccess())
         setQuestion_image(e.target.files[0])
     }
 
     const onDurationChangeHandler = e => {
-        setErrorsState([])
-        dispatch(clearErrors())
-        dispatch(clearSuccess())
 
         const { name, value } = e.target
         setDurationState(durationState => ({ ...durationState, [name]: value }))
     }
 
     const handleAnswerChangeInput = (id, event) => {
-        setErrorsState([])
-        dispatch(clearErrors())
-        dispatch(clearSuccess())
 
         const newAnswerOptions = answerOptions.map(i => {
             if (id === i.id) {
@@ -102,25 +83,25 @@ const CreateQuestions = () => {
 
         // VALIDATE
         if (!questionText.questionText && !question_image) {
-            setErrorsState(['Please give the title or upload question image!'])
+            notify('Please give the title or upload question image!')
             return
         }
         else if (questionText.questionText.length < 4) {
-            setErrorsState(['Insufficient info!'])
+            notify('Insufficient info!')
             return
         }
         else if (questionText.questionText.length > 700) {
-            setErrorsState(['Question is too long!'])
+            notify('Question is too long!')
             return
         }
 
         else if (answerOptions.length <= 1) {
-            setErrorsState(['Answers are not sufficient!'])
+            notify('Answers are not sufficient!')
             return
         }
 
         else if (!trueAnswer) {
-            setErrorsState(['Please provide a true answer!'])
+            notify('Please provide a true answer!')
             return
         }
 
@@ -190,12 +171,6 @@ const CreateQuestions = () => {
                             Finish & Notify
                         </Button>
                     </div>
-
-                    <Alert color="danger" isOpen={visible} toggle={onDismiss}>
-                        {errorsState && errorsState.map((error, index) => (
-                            <p key={index}>{error}</p>
-                        ))}
-                    </Alert>
 
                     <FormGroup row className="mx-0">
                         <Label sm={2}>Question</Label>

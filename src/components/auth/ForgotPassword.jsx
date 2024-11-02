@@ -4,17 +4,14 @@ import ResponsiveAd from '../adsenses/ResponsiveAd'
 import SquareAd from '../adsenses/SquareAd'
 import { sendResetLink } from '../../redux/slices/authSlice'
 import { useDispatch } from "react-redux"
-import Notification from '../../utils/Notification'
 
 const ForgotPassword = () => {
 
     const dispatch = useDispatch()
 
     const [fEmail, setFEmail] = useState('')
-    const [errorsState, setErrorsState] = useState([])
 
     const onChangeHandler = e => {
-        setErrorsState([])
         setFEmail({ [e.target.name]: e.target.value })
     }
 
@@ -25,11 +22,11 @@ const ForgotPassword = () => {
         const emailTest = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i
 
         if (!fEmail.email) {
-            setErrorsState(['Please provide your email!'])
+            notify('Please provide your email!')
             return
         }
         else if (!emailTest.test(fEmail.email)) {
-            setErrorsState(['Please provide a valid email!'])
+            notify('Please provide a valid email!')
             return
         }
 
@@ -51,8 +48,6 @@ const ForgotPassword = () => {
                     <h2 className="fw-bolder my-3" style={{ color: '#157A6E' }}>
                         Restore access to your account here
                     </h2>
-
-                    <Notification errorsState={errorsState} progress={null} initFn="sendResetLink" />
 
                     <p>Provide your email to recover your account</p>
                     <Form className="my-4" onSubmit={onSubmitHandler} style={{ width: '100%' }}>

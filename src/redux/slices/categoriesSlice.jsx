@@ -2,20 +2,20 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { apiCallHelper } from '../configHelpers'
 
 // Async actions with createAsyncThunk
-export const getCategories = createAsyncThunk("categories/getCategories", async (_, { getState, dispatch }) =>
-  apiCallHelper('/api/categories', 'get', null, getState, dispatch, 'getCategories'))
+export const getCategories = createAsyncThunk("categories/getCategories", async (_, { getState }) =>
+  apiCallHelper('/api/categories', 'get', null, getState, 'getCategories'))
 
-export const getOneCategory = createAsyncThunk("categories/getOneCategory", async (categoryID, { getState, dispatch }) =>
-  apiCallHelper(`/api/categories/${categoryID}`, 'get', null, getState, dispatch, 'getOneCategory'))
+export const getOneCategory = createAsyncThunk("categories/getOneCategory", async (categoryID, { getState }) =>
+  apiCallHelper(`/api/categories/${categoryID}`, 'get', null, getState, 'getOneCategory'))
 
-export const createCategory = createAsyncThunk("categories/createCategory", async (newCategory, { getState, dispatch }) =>
-  apiCallHelper('/api/categories', 'post', newCategory, getState, dispatch, 'createCategory'))
+export const createCategory = createAsyncThunk("categories/createCategory", async (newCategory, { getState }) =>
+  apiCallHelper('/api/categories', 'post', newCategory, getState, 'createCategory'))
 
-export const updateCategory = createAsyncThunk("categories/updateCategory", async (updatedCatg, { getState, dispatch }) =>
-  apiCallHelper(`/api/categories/${updatedCatg.catID}`, 'put', updatedCatg, getState, dispatch, 'updateCategory'))
+export const updateCategory = createAsyncThunk("categories/updateCategory", async (updatedCatg, { getState }) =>
+  apiCallHelper(`/api/categories/${updatedCatg.catID}`, 'put', updatedCatg, getState, 'updateCategory'))
 
-export const deleteCategory = createAsyncThunk("categories/deleteCategory", async (catID, { getState, dispatch }) =>
-  apiCallHelper(`/api/categories/${catID}`, 'delete', null, getState, dispatch, 'deleteCategory'))
+export const deleteCategory = createAsyncThunk("categories/deleteCategory", async (catID, { getState }) =>
+  apiCallHelper(`/api/categories/${catID}`, 'delete', null, getState, 'deleteCategory'))
 
 // Categories slice
 const initialState = {
@@ -59,39 +59,18 @@ const categoriesSlice = createSlice({
     })
 
     // Pending actions
-    builder.addCase(getCategories.pending, (state, action) => {
-      state.isLoading = true
-    })
-    builder.addCase(getOneCategory.pending, (state, action) => {
-      state.isLoading = true
-    })
-    builder.addCase(createCategory.pending, (state, action) => {
-      state.isLoading = true
-    })
-    builder.addCase(updateCategory.pending, (state, action) => {
-      state.isLoading = true
-    })
-    builder.addCase(deleteCategory.pending, (state, action) => {
-      state.isLoading = true
-    })
-
+    builder.addMatcher(
+      (action) => [getCategories.pending, getOneCategory.pending, createCategory.pending, updateCategory.pending, deleteCategory.pending].includes(action.type),
+      (state) => {
+        state.isLoading = true
+      })
 
     // Rejected actions
-    builder.addCase(getCategories.rejected, (state, action) => {
-      state.isLoading = false
-    })
-    builder.addCase(getOneCategory.rejected, (state, action) => {
-      state.isLoading = false
-    })
-    builder.addCase(createCategory.rejected, (state, action) => {
-      state.isLoading = false
-    })
-    builder.addCase(updateCategory.rejected, (state, action) => {
-      state.isLoading = false
-    })
-    builder.addCase(deleteCategory.rejected, (state, action) => {
-      state.isLoading = false
-    })
+    builder.addMatcher(
+      (action) => [getCategories.rejected, getOneCategory.rejected, createCategory.rejected, updateCategory.rejected, deleteCategory.rejected].includes(action.type),
+      (state) => {
+        state.isLoading = false
+      })
   }
 })
 

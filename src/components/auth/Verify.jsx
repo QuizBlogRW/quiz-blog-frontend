@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useLocation, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { Container, Row, Col, Input, Button } from 'reactstrap'
 import { notify } from '@/utils/notifyToast'
@@ -12,16 +12,15 @@ export function Verify() {
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    let { state } = useLocation()
     const { isLoading } = useSelector(state => state.auth)
-    useEffect(() => { document.title = "Verify OTP" }, [])
     const onChangeHandler = e => setOtp(e.target.value)
+    useEffect(() => { document.title = "Verify OTP" }, [])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        if ((!state || !state.email) && localStorage.getItem('emailForOTP') === null) {
-            notify('Invalid email request')
+        if (!localStorage.getItem('emailForOTP')) {
+            notify('Invalid email request, start again!')
             return
         }
 
@@ -31,21 +30,18 @@ export function Verify() {
         }
 
         try {
-            const result = await dispatch(verify({ email: state.email, otp }))
+            const result = await dispatch(verify({ email: localStorage.getItem('emailForOTP'), otp }))
 
             if (result.payload.user) {
-                // User verified, redirect to dashboard
                 setTimeout(() => {
                     navigate('/dashboard')
-                    notify('Account verified successfully. Welcome to QuickBlog!')
                 }, 2000)
             } else {
-                // Verification failed, handle accordingly
-                notify('OTP verification failed. Please try again.')
+                notify('OTP verification failed. Please try again.', 'error')
             }
         } catch (error) {
-            // Handle any errors that might occur during dispatch
-            notify('An error occurred during verification. Please try again.')
+            console.error(error)
+            notify('An error occurred during verification. Please try again.', 'error')
         }
 
         // Reset fields

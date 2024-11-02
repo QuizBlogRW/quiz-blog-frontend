@@ -1,11 +1,8 @@
 import React, { useState } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
-import { clearErrors } from '../../redux/slices/errorSlice'
-import { clearSuccess } from '../../redux/slices/successSlice'
 import { createFaculty } from '../../redux/slices/facultiesSlice'
 import { useDispatch } from 'react-redux'
 import AddIcon from '../../images/plus.svg'
-import Notification from '../../utils/Notification'
 
 const AddFaculty = ({ facultyLevel }) => {
 
@@ -19,8 +16,6 @@ const AddFaculty = ({ facultyLevel }) => {
         years: []
     })
 
-    // Errors state on form
-    const [errorsState, setErrorsState] = useState([])
 
     //properties of the modal
     const [modal, setModal] = useState(false)
@@ -29,9 +24,6 @@ const AddFaculty = ({ facultyLevel }) => {
     const toggle = () => setModal(!modal)
 
     const onChangeHandler = e => {
-        setErrorsState([])
-        dispatch(clearErrors())
-        dispatch(clearSuccess())
         setFacultyState({ ...facultyState, [e.target.name]: e.target.value })
     }
 
@@ -50,11 +42,11 @@ const AddFaculty = ({ facultyLevel }) => {
 
         // VALIDATE
         if (title.length < 3 || !years) {
-            setErrorsState(['Insufficient info!'])
+            notify('Insufficient info!')
             return
         }
         else if (title.length > 70) {
-            setErrorsState(['Title is too long!'])
+            notify('Title is too long!')
             return
         }
 
@@ -90,7 +82,6 @@ const AddFaculty = ({ facultyLevel }) => {
 
 
                 <ModalBody>
-                    <Notification errorsState={errorsState} progress={null} initFn="createFaculty" />
                     <Form onSubmit={onSubmitHandler}>
 
                         <FormGroup>

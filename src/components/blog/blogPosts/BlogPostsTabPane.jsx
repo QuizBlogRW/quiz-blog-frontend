@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Row, TabPane } from 'reactstrap'
 
-import { getBlogPosts } from '../../../redux/slices/blogPostsSlice'
+import { getBlogPosts } from '../../../redux/slices'
 import { useSelector, useDispatch } from "react-redux"
 import QBLoadingSM from '../../rLoading/QBLoadingSM'
 import BPTable from './BPTable'

@@ -4,7 +4,6 @@ import ResponsiveAd from '../adsenses/ResponsiveAd'
 import SquareAd from '../adsenses/SquareAd'
 import { sendNewPassword } from '../../redux/slices/authSlice'
 import { useDispatch } from "react-redux"
-import Notification from '../../utils/Notification'
 
 const ResetPassword = () => {
 
@@ -14,10 +13,8 @@ const ResetPassword = () => {
         password: '',
         password1: ''
     })
-    const [errorsState, setErrorsState] = useState([])
 
     const onChangeHandler = e => {
-        setErrorsState([])
         setNewPasswords({ ...newPasswords, [e.target.name]: e.target.value })
     }
 
@@ -27,12 +24,12 @@ const ResetPassword = () => {
         const { password, password1 } = newPasswords
 
         if (!password || !password1) {
-            setErrorsState(['Passwords can not be empty!'])
+            notify('Passwords can not be empty!')
             return
         }
 
         else if (password !== password1) {
-            setErrorsState(['Passwords must match!'])
+            notify('Passwords must match!')
             return
         }
 
@@ -73,7 +70,6 @@ const ResetPassword = () => {
                         </Col>
                     </Row>
                     <Form className="my-4" onSubmit={onSubmitHandler}>
-                        <Notification errorsState={errorsState} progress={null} initFn="sendNewPassword" />
                         <div className="input-group mx-auto my-5 search w-50">
                             <Input type="password"
                                 name="password"

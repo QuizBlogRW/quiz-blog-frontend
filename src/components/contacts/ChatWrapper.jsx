@@ -79,7 +79,6 @@ const ChatWrapper = () => {
 
         // Join the room
         if (roomName !== '' && username !== '') {
-            console.log('Joining room: ', roomName)
             socket.emit('join_room', { username, roomName })
         }
     }

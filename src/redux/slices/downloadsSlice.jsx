@@ -2,20 +2,20 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { apiCallHelper } from '../configHelpers'
 
 // Async actions with createAsyncThunk
-export const getDownloads = createAsyncThunk("downloads/getDownloads", async (pageNo, { getState, dispatch }) =>
-  apiCallHelper(`/api/downloads?pageNo=${pageNo}`, 'get', null, getState, dispatch, 'getDownloads'))
+export const getDownloads = createAsyncThunk("downloads/getDownloads", async (pageNo, { getState }) =>
+  apiCallHelper(`/api/downloads?pageNo=${pageNo}`, 'get', null, getState, 'getDownloads'))
 
-export const getCreatorDownloads = createAsyncThunk("downloads/getCreatorDownloads", async (uId, { getState, dispatch }) =>
-  apiCallHelper(`/api/downloads/notes-creator/${uId}`, 'get', null, getState, dispatch, 'getCreatorDownloads'))
+export const getCreatorDownloads = createAsyncThunk("downloads/getCreatorDownloads", async (uId, { getState }) =>
+  apiCallHelper(`/api/downloads/notes-creator/${uId}`, 'get', null, getState, 'getCreatorDownloads'))
 
-export const getUserDownloads = createAsyncThunk("downloads/getUserDownloads", async (userId, { getState, dispatch }) =>
-  apiCallHelper(`/api/downloads/downloaded-by/${userId}`, 'get', null, getState, dispatch, 'getUserDownloads'))
+export const getUserDownloads = createAsyncThunk("downloads/getUserDownloads", async (userId, { getState }) =>
+  apiCallHelper(`/api/downloads/downloaded-by/${userId}`, 'get', null, getState, 'getUserDownloads'))
 
-export const saveDownload = createAsyncThunk("downloads/saveDownload", async (newDownload, { getState, dispatch }) =>
-  apiCallHelper('/api/downloads', 'post', newDownload, getState, dispatch, 'saveDownload'))
+export const saveDownload = createAsyncThunk("downloads/saveDownload", async (newDownload, { getState }) =>
+  apiCallHelper('/api/downloads', 'post', newDownload, getState, 'saveDownload'))
 
-export const deleteDownload = createAsyncThunk("downloads/deleteDownload", async (downloadID, { getState, dispatch }) =>
-  apiCallHelper(`/api/downloads/${downloadID}`, 'delete', null, getState, dispatch, 'deleteDownload'))
+export const deleteDownload = createAsyncThunk("downloads/deleteDownload", async (downloadID, { getState }) =>
+  apiCallHelper(`/api/downloads/${downloadID}`, 'delete', null, getState, 'deleteDownload'))
 
 // Downloads slice
 const initialState = {
@@ -64,38 +64,18 @@ const downloadsSlice = createSlice({
     })
 
     // Pending actions
-    builder.addCase(getDownloads.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(getCreatorDownloads.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(getUserDownloads.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(saveDownload.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(deleteDownload.pending, state => {
-      state.isLoading = true
-    })
+    builder.addMatcher(
+      (action) => [getDownloads.pending, getCreatorDownloads.pending, getUserDownloads.pending, saveDownload.pending, deleteDownload.pending].includes(action.type),
+      (state) => {
+        state.isLoading = true
+      })
 
     // Rejected actions
-    builder.addCase(getDownloads.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(getCreatorDownloads.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(getUserDownloads.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(saveDownload.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(deleteDownload.rejected, state => {
-      state.isLoading = false
-    })
+    builder.addMatcher(
+      (action) => [getDownloads.rejected, getCreatorDownloads.rejected, getUserDownloads.rejected, saveDownload.rejected, deleteDownload.rejected].includes(action.type),
+      (state) => {
+        state.isLoading = false
+      })
   }
 })
 

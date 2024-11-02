@@ -1,25 +1,17 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { useNavigate } from "react-router-dom"
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
 import { register } from '../../redux/slices/authSlice'
-import { clearErrors } from '../../redux/slices/errorSlice'
 import { useSelector, useDispatch } from "react-redux"
 import { authContext } from '../../appContexts'
 
 import logocirclewhite from '../../../src/images/logocirclewhite.svg'
 import avatar from '../../../src/images/avatar1.svg'
 import QBLoadingSM from '../rLoading/QBLoadingSM'
-import Notification from '../../utils/Notification'
 
 const RegisterModal = ({ isOpenR, toggleR, toggleL }) => {
 
-    const errors = useSelector(state => state.error)
     const isLoading = useSelector(state => state.auth.isLoading)
     const dispatch = useDispatch()
-    const navigate = useNavigate()
-
-    // Errors state on form
-    const [errorsState, setErrorsState] = useState([])
 
     // context
     const auth = useContext(authContext)
@@ -33,19 +25,15 @@ const RegisterModal = ({ isOpenR, toggleR, toggleL }) => {
 
     // Lifecycle methods
     useEffect(() => {
-
-        // If Authenticated, Close isOpenR
         if (isOpenR) {
             if (isAuthenticated) {
                 toggleR()
             }
         }
 
-    }, [errors, isAuthenticated, isOpenR, toggleR])
+    }, [isAuthenticated, isOpenR, toggleR])
 
     const onChangeHandler = e => {
-        setErrorsState([])
-        dispatch(clearErrors())
         setRegisterState({ ...registerState, [e.target.name]: e.target.value })
     }
 
@@ -56,27 +44,19 @@ const RegisterModal = ({ isOpenR, toggleR, toggleL }) => {
 
         // VALIDATE
         if (name.length < 3) {
-            setErrorsState(['Name should be at least 3 characters!'])
+            notify('Name should be at least 3 characters!')
             return
         }
         else if (password.length < 4) {
-            setErrorsState(['Password should be at least 4 characters!'])
+            notify('Password should be at least 4 characters!')
             return
         }
 
         // Create user object
-        const newUser = {
-            name,
-            email,
-            password
-        }
+        const newUser = { name, email, password }
 
         // Attempt to register
         dispatch(register(newUser))
-            .then(() => {
-                localStorage.setItem('emailForOTP', email)
-                navigate('/verify', { state: { email } })
-            })
     }
 
     return (
@@ -98,8 +78,6 @@ const RegisterModal = ({ isOpenR, toggleR, toggleL }) => {
                 </div>
 
                 <ModalBody className='pb-0'>
-
-                    <Notification errorsState={errorsState} progress={null} initFn="register" />
                     <Form onSubmit={onSubmitHandler}>
 
                         <FormGroup>
@@ -124,7 +102,7 @@ const RegisterModal = ({ isOpenR, toggleR, toggleL }) => {
                         </FormGroup>
                     </Form>
 
-                    <div className="d-flex">
+                    <div className="d-flex align-items-center justify-content-around">
                         <p className="p-2 mb-0">Having an account?</p>
                         <NavLink onClick={toggleL} className="fw-bolder" style={{ color: "#157A6E" }}>
                             Login

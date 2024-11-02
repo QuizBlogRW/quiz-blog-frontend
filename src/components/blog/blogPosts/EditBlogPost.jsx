@@ -1,16 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { Button, Form, FormGroup, Label, Input, Row, Col, Alert, Breadcrumb, BreadcrumbItem } from 'reactstrap'
 import { useParams } from 'react-router-dom'
-import { clearErrors } from '../../../redux/slices/errorSlice'
-import { clearSuccess } from '../../../redux/slices/successSlice'
-import { updateBlogPost, getOneBlogPost } from '../../../redux/slices/blogPostsSlice'
+import { updateBlogPost, getOneBlogPost } from '../../../redux/slices'
 import { getPostCategories } from '../../../redux/slices/postCategoriesSlice'
 import { useSelector, useDispatch } from "react-redux"
 import QBLoadingSM from '../../rLoading/QBLoadingSM'
 import UploadPostPhotos from './UploadPostPhotos'
 import YourImages from './YourImages'
 import { authContext, currentUserContext, logRegContext } from '../../../appContexts'
-import Notification from '../../../utils/Notification'
 
 const EditBlogPost = () => {
 
@@ -55,12 +52,7 @@ const EditBlogPost = () => {
   const currentUserID = bPToUse.creator && bPToUse.creator._id
   const isAuthorized = (curUserRole === 'Admin' || curUserRole === 'SuperAdmin' || currentUserID === creatorID)
 
-  // Errors state on form
-  const [errorsState, setErrorsState] = useState([])
-
   const onChangeHandler = e => {
-    clearErrors()
-    clearSuccess()
     setBPState({ ...bPState, [e.target.name]: e.target.value })
   }
 
@@ -70,11 +62,11 @@ const EditBlogPost = () => {
 
     // VALIDATE
     if (title.length < 4 || markdown.length < 4) {
-      setErrorsState(['Insufficient info!'])
+      notify('Insufficient info!')
       return
     }
     else if (title.length > 70) {
-      setErrorsState(['Title is too long!'])
+      notify('Title is too long!')
       return
     }
 
@@ -112,8 +104,6 @@ const EditBlogPost = () => {
               </Breadcrumb>
 
               <div className="mx-5">
-
-                <Notification errorsState={errorsState} progress={null} initFn="updateBlogPost" />
 
                 <Form onSubmit={onSubmitHandler}>
 

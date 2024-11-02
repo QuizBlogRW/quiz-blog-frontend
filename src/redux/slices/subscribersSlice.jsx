@@ -3,14 +3,14 @@ import { apiCallHelper } from '../configHelpers'
 import { notify } from '../../utils/notifyToast'
 
 // Async actions with createAsyncThunk
-export const getSubscribers = createAsyncThunk("subscribers/getSubscribers", async (_, { getState, dispatch }) =>
-  apiCallHelper('/api/subscribers', 'get', null, getState, dispatch, 'getSubscribers'))
+export const getSubscribers = createAsyncThunk("subscribers/getSubscribers", async (_, { getState }) =>
+  apiCallHelper('/api/subscribers', 'get', null, getState, 'getSubscribers'))
 
-export const subscribeToPosts = createAsyncThunk("subscribers/subscribeToPosts", async (subscribedUser, { getState, dispatch }) =>
-  apiCallHelper('/api/subscribers', 'post', subscribedUser, getState, dispatch, 'subscribeToPosts'))
+export const subscribeToPosts = createAsyncThunk("subscribers/subscribeToPosts", async (subscribedUser, { getState }) =>
+  apiCallHelper('/api/subscribers', 'post', subscribedUser, getState, 'subscribeToPosts'))
 
-export const deleteSubscriber = createAsyncThunk("subscribers/deleteSubscriber", async (uemail, { getState, dispatch }) =>
-  apiCallHelper(`/api/subscribers/${uemail}`, 'delete', null, getState, dispatch, 'deleteSubscriber'))
+export const deleteSubscriber = createAsyncThunk("subscribers/deleteSubscriber", async (uemail, { getState }) =>
+  apiCallHelper(`/api/subscribers/${uemail}`, 'delete', null, getState, 'deleteSubscriber'))
 
 // Subscribers slice
 const initialState = {
@@ -45,26 +45,18 @@ const subscribersSlice = createSlice({
     })
 
     // Pending actions
-    builder.addCase(getSubscribers.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(subscribeToPosts.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(deleteSubscriber.pending, state => {
-      state.isLoading = true
-    })
+    builder.addMatcher(
+      (action) => [getSubscribers.pending, subscribeToPosts.pending, deleteSubscriber.pending].includes(action.type),
+      (state) => {
+        state.isLoading = true
+      })
 
     // Rejected actions
-    builder.addCase(getSubscribers.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(subscribeToPosts.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(deleteSubscriber.rejected, state => {
-      state.isLoading = false
-    })
+    builder.addMatcher(
+      (action) => [getSubscribers.rejected, subscribeToPosts.rejected, deleteSubscriber.rejected].includes(action.type),
+      (state) => {
+        state.isLoading = false
+      })
   }
 })
 

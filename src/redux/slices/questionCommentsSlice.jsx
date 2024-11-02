@@ -2,38 +2,38 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { apiCallHelper } from '../configHelpers'
 
 // Async actions with createAsyncThunk
-export const getComments = createAsyncThunk("questionComments/getComments", async (_, { getState, dispatch }) =>
-  apiCallHelper('/api/questionComments', 'get', null, getState, dispatch, 'getComments'))
+export const getComments = createAsyncThunk("questionComments/getComments", async (_, { getState }) =>
+  apiCallHelper('/api/questionComments', 'get', null, getState, 'getComments'))
 
-export const getPaginatedComments = createAsyncThunk("questionComments/getPaginatedComments", async (pageNo, { getState, dispatch }) =>
-  apiCallHelper(`/api/questionComments/paginated/?pageNo=${pageNo}`, 'get', null, getState, dispatch, 'getPaginatedComments'))
+export const getPaginatedComments = createAsyncThunk("questionComments/getPaginatedComments", async (pageNo, { getState }) =>
+  apiCallHelper(`/api/questionComments/paginated/?pageNo=${pageNo}`, 'get', null, getState, 'getPaginatedComments'))
 
-export const getPendingComments = createAsyncThunk("questionComments/getPendingComments", async (_, { getState, dispatch }) =>
-  apiCallHelper(`/api/questionComments/pending`, 'get', null, getState, dispatch, 'getPendingComments'))
+export const getPendingComments = createAsyncThunk("questionComments/getPendingComments", async (_, { getState }) =>
+  apiCallHelper(`/api/questionComments/pending`, 'get', null, getState, 'getPendingComments'))
 
-export const getCommentsByQuiz = createAsyncThunk("questionComments/getCommentsByQuiz", async (quizID, { getState, dispatch }) =>
-  apiCallHelper(`/api/questionComments/quiz/${quizID}`, 'get', null, getState, dispatch, 'getCommentsByQuiz'))
+export const getCommentsByQuiz = createAsyncThunk("questionComments/getCommentsByQuiz", async (quizID, { getState }) =>
+  apiCallHelper(`/api/questionComments/quiz/${quizID}`, 'get', null, getState, 'getCommentsByQuiz'))
 
-export const getQuestionComments = createAsyncThunk("questionComments/getQuestionComments", async (questionID, { getState, dispatch }) =>
-  apiCallHelper(`/api/questionComments/comments-on/${questionID}`, 'get', null, getState, dispatch, 'getQuestionComments'))
+export const getQuestionComments = createAsyncThunk("questionComments/getQuestionComments", async (questionID, { getState }) =>
+  apiCallHelper(`/api/questionComments/comments-on/${questionID}`, 'get', null, getState, 'getQuestionComments'))
 
-export const getOneComment = createAsyncThunk("questionComments/getOneComment", async (commentId, { getState, dispatch }) =>
-  apiCallHelper(`/api/questionComments/${commentId}`, 'get', null, getState, dispatch, 'getOneComment'))
+export const getOneComment = createAsyncThunk("questionComments/getOneComment", async (commentId, { getState }) =>
+  apiCallHelper(`/api/questionComments/${commentId}`, 'get', null, getState, 'getOneComment'))
 
-export const createComment = createAsyncThunk("questionComments/createComment", async (newComment, { getState, dispatch }) =>
-  apiCallHelper('/api/questionComments', 'post', newComment, getState, dispatch, 'createComment'))
+export const createComment = createAsyncThunk("questionComments/createComment", async (newComment, { getState }) =>
+  apiCallHelper('/api/questionComments', 'post', newComment, getState, 'createComment'))
 
-export const updateComment = createAsyncThunk("questionComments/updateComment", async (updatedComment, { getState, dispatch }) =>
-  apiCallHelper(`/api/questionComments/${updatedComment.commentID}`, 'put', updatedComment, getState, dispatch, 'updateComment'))
+export const updateComment = createAsyncThunk("questionComments/updateComment", async (updatedComment, { getState }) =>
+  apiCallHelper(`/api/questionComments/${updatedComment.commentID}`, 'put', updatedComment, getState, 'updateComment'))
 
-export const approveComment = createAsyncThunk("questionComments/approveComment", async (approvedComment, { getState, dispatch }) =>
-  apiCallHelper(`/api/questionComments/approve/${approvedComment.commentID}`, 'put', approvedComment, getState, dispatch, 'approveComment'))
+export const approveComment = createAsyncThunk("questionComments/approveComment", async (approvedComment, { getState }) =>
+  apiCallHelper(`/api/questionComments/approve/${approvedComment.commentID}`, 'put', approvedComment, getState, 'approveComment'))
 
-export const rejectComment = createAsyncThunk("questionComments/rejectComment", async (rejectedComment, { getState, dispatch }) =>
-  apiCallHelper(`/api/questionComments/reject/${rejectedComment.commentID}`, 'put', rejectedComment, getState, dispatch, 'rejectComment'))
+export const rejectComment = createAsyncThunk("questionComments/rejectComment", async (rejectedComment, { getState }) =>
+  apiCallHelper(`/api/questionComments/reject/${rejectedComment.commentID}`, 'put', rejectedComment, getState, 'rejectComment'))
 
-export const deleteComment = createAsyncThunk("questionComments/deleteComment", async (id, { getState, dispatch }) =>
-  apiCallHelper(`/api/comments/${id}`, 'delete', null, getState, dispatch, 'deleteComment'))
+export const deleteComment = createAsyncThunk("questionComments/deleteComment", async (id, { getState }) =>
+  apiCallHelper(`/api/comments/${id}`, 'delete', null, getState, 'deleteComment'))
 
 // QuestionComments slice
 const initialState = {
@@ -120,74 +120,18 @@ const questionCommentsSlice = createSlice({
     })
 
     // Pending actions
-    builder.addCase(getComments.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(getPaginatedComments.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(getPendingComments.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(getCommentsByQuiz.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(getQuestionComments.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(getOneComment.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(createComment.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(updateComment.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(approveComment.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(rejectComment.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(deleteComment.pending, state => {
-      state.isLoading = true
-    })
+    builder.addMatcher(
+      (action) => [getComments.pending, getPaginatedComments.pending, getPendingComments.pending, getCommentsByQuiz.pending, getQuestionComments.pending, getOneComment.pending, createComment.pending, updateComment.pending, approveComment.pending, rejectComment.pending, deleteComment.pending].includes(action.type),
+      (state) => {
+        state.isLoading = true
+      })
 
     // Rejected actions
-    builder.addCase(getComments.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(getPaginatedComments.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(getPendingComments.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(getCommentsByQuiz.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(getQuestionComments.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(getOneComment.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(createComment.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(updateComment.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(approveComment.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(rejectComment.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(deleteComment.rejected, state => {
-      state.isLoading = false
-    })
+    builder.addMatcher(
+      (action) => [getComments.rejected, getPaginatedComments.rejected, getPendingComments.rejected, getCommentsByQuiz.rejected, getQuestionComments.rejected, getOneComment.rejected, createComment.rejected, updateComment.rejected, approveComment.rejected, rejectComment.rejected, deleteComment.rejected].includes(action.type),
+      (state) => {
+        state.isLoading = false
+      })
   }
 })
 

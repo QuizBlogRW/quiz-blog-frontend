@@ -26,8 +26,10 @@ const FeedbacksTabPane = () => {
 
     // Lifecycle methods
     useEffect(() => {
+        if (uRole !== 'Visitor') {
             dispatch(getFeedbacks(pageNo))
             setNumberOfPages(totalPages && totalPages)
+        }
     }, [dispatch, uRole, uId, pageNo, totalPages])
 
     return (

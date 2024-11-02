@@ -2,23 +2,23 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { apiCallHelper, apiCallHelperUpload } from '../configHelpers'
 
 // Async actions with createAsyncThunk
-export const getImageUploads = createAsyncThunk("imageUploads/getImageUploads", async (_, { getState, dispatch }) =>
-  apiCallHelper('/api/imageUploads', 'get', null, getState, dispatch, 'getImageUploads'))
+export const getImageUploads = createAsyncThunk("imageUploads/getImageUploads", async (_, { getState }) =>
+  apiCallHelper('/api/imageUploads', 'get', null, getState, 'getImageUploads'))
 
-export const getOneImageUpload = createAsyncThunk("imageUploads/getOneImageUpload", async (imageUploadID, { getState, dispatch }) =>
-  apiCallHelper(`/api/imageUploads/${imageUploadID}`, 'get', null, getState, dispatch, 'getOneImageUpload'))
+export const getOneImageUpload = createAsyncThunk("imageUploads/getOneImageUpload", async (imageUploadID, { getState }) =>
+  apiCallHelper(`/api/imageUploads/${imageUploadID}`, 'get', null, getState, 'getOneImageUpload'))
 
-export const getImageUploadsByOwner = createAsyncThunk("imageUploads/getImageUploadsByOwner", async (ownerID, { getState, dispatch }) =>
-  apiCallHelper(`/api/imageUploads/imageOwner/${ownerID}`, 'get', null, getState, dispatch, 'getImageUploadsByOwner'))
+export const getImageUploadsByOwner = createAsyncThunk("imageUploads/getImageUploadsByOwner", async (ownerID, { getState }) =>
+  apiCallHelper(`/api/imageUploads/imageOwner/${ownerID}`, 'get', null, getState, 'getImageUploadsByOwner'))
 
-export const createImageUpload = createAsyncThunk("imageUploads/createImageUpload", async (newImageUpload, { getState, dispatch }) =>
-  apiCallHelperUpload('/api/imageUploads', 'post', newImageUpload, getState, dispatch, 'createImageUpload'))
+export const createImageUpload = createAsyncThunk("imageUploads/createImageUpload", async (newImageUpload, { getState }) =>
+  apiCallHelperUpload('/api/imageUploads', 'post', newImageUpload, getState, 'createImageUpload'))
 
-export const updateImageUpload = createAsyncThunk("imageUploads/updateImageUpload", async (updatedImgUpload, { getState, dispatch }) =>
-  apiCallHelper(`/api/imageUploads/${updatedImgUpload.imageUploadID}`, 'put', updatedImgUpload, getState, dispatch, 'updateImageUpload'))
+export const updateImageUpload = createAsyncThunk("imageUploads/updateImageUpload", async (updatedImgUpload, { getState }) =>
+  apiCallHelper(`/api/imageUploads/${updatedImgUpload.imageUploadID}`, 'put', updatedImgUpload, getState, 'updateImageUpload'))
 
-export const deleteImageUpload = createAsyncThunk("imageUploads/deleteImageUpload", async (id, { getState, dispatch }) =>
-  apiCallHelper(`/api/imageUploads/${id}`, 'delete', null, getState, dispatch, 'deleteImageUpload'))
+export const deleteImageUpload = createAsyncThunk("imageUploads/deleteImageUpload", async (id, { getState }) =>
+  apiCallHelper(`/api/imageUploads/${id}`, 'delete', null, getState, 'deleteImageUpload'))
 
 // Image uploads slice
 const initialState = {
@@ -68,44 +68,18 @@ const imageUploadsSlice = createSlice({
     })
 
     // Pending actions
-    builder.addCase(getImageUploads.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(getOneImageUpload.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(getImageUploadsByOwner.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(createImageUpload.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(updateImageUpload.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(deleteImageUpload.pending, state => {
-      state.isLoading = true
-    })
+    builder.addMatcher(
+      (action) => [getImageUploads.pending, getOneImageUpload.pending, getImageUploadsByOwner.pending, createImageUpload.pending, updateImageUpload.pending, deleteImageUpload.pending].includes(action.type),
+      (state) => {
+        state.isLoading = true
+      })
 
     // Rejected actions
-    builder.addCase(getImageUploads.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(getOneImageUpload.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(getImageUploadsByOwner.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(createImageUpload.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(updateImageUpload.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(deleteImageUpload.rejected, state => {
-      state.isLoading = false
-    })
+    builder.addMatcher(
+      (action) => [getImageUploads.rejected, getOneImageUpload.rejected, getImageUploadsByOwner.rejected, createImageUpload.rejected, updateImageUpload.rejected, deleteImageUpload.rejected].includes(action.type),
+      (state) => {
+        state.isLoading = false
+      })
   }
 })
 

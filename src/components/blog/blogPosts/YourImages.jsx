@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { Col, Row, Card, Alert, Button } from 'reactstrap'
 import { getImageUploadsByOwner } from '../../../redux/slices/imageUploadsSlice'
-import { deleteBlogPostImage } from '../../../redux/slices/blogPostsSlice'
+import { deleteBlogPostImage } from '../../../redux/slices'
 import { useSelector, useDispatch } from "react-redux"
 import QBLoadingSM from '../../rLoading/QBLoadingSM'
 import './yourimages.css'

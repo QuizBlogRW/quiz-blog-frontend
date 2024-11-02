@@ -1,11 +1,8 @@
 import React, { useState, useContext } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
-import { clearErrors } from '../../redux/slices/errorSlice'
-import { clearSuccess } from '../../redux/slices/successSlice'
 import { createFq } from '../../redux/slices/faqsSlice'
 import { useDispatch } from 'react-redux'
 import { authContext } from '../../appContexts'
-import Notification from '../../utils/Notification'
 
 const CreateFaq = () => {
 
@@ -21,8 +18,6 @@ const CreateFaq = () => {
         created_by: currentUser ? currentUser._id : null
     })
 
-    // Errors state on form
-    const [errorsState, setErrorsState] = useState([])
 
     //properties of the modal
     const [modal, setModal] = useState(false)
@@ -31,8 +26,6 @@ const CreateFaq = () => {
     const toggle = () => setModal(!modal)
 
     const onChangeHandler = e => {
-        dispatch(clearErrors())
-        dispatch(clearSuccess())
         setFaqsState({ ...faqsState, [e.target.name]: e.target.value })
     }
 
@@ -43,15 +36,15 @@ const CreateFaq = () => {
 
         // VALIDATE
         if (title.length < 4 || answer.length < 4) {
-            setErrorsState(['Insufficient info!'])
+            notify('Insufficient info!')
             return
         }
         else if (title.length > 200) {
-            setErrorsState(['Title is too long!'])
+            notify('Title is too long!')
             return
         }
         else if (answer.length > 1000) {
-            setErrorsState(['answer is too long!'])
+            notify('answer is too long!')
             return
         }
 
@@ -88,7 +81,6 @@ const CreateFaq = () => {
 
                 <ModalBody>
 
-                    <Notification errorsState={errorsState} progress={null} initFn="createFq" />
                     <Form onSubmit={onSubmitHandler}>
 
                         <FormGroup>

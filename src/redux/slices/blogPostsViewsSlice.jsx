@@ -2,23 +2,23 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { apiCallHelper } from '../configHelpers'
 
 // Async actions with createAsyncThunk
-export const getBlogPostsViews = createAsyncThunk("blogPostsViews/getBlogPostsViews", async ({ limit, skip }, { getState, dispatch }) =>
-  apiCallHelper(`/api/blogPostsViews?limit=${limit}&skip=${skip ? skip : 0}`, 'get', null, getState, dispatch, 'getBlogPostsViews'))
+export const getBlogPostsViews = createAsyncThunk("blogPostsViews/getBlogPostsViews", async ({ limit, skip }, { getState }) =>
+  apiCallHelper(`/api/blogPostsViews?limit=${limit}&skip=${skip ? skip : 0}`, 'get', null, getState, 'getBlogPostsViews'))
 
-export const getRecentTenViews = createAsyncThunk("blogPostsViews/getRecentTenViews", async (_, { getState, dispatch }) =>
-  apiCallHelper('/api/blogPostsViews/recentTen', 'get', null, getState, dispatch, 'getRecentTenViews'))
+export const getRecentTenViews = createAsyncThunk("blogPostsViews/getRecentTenViews", async (_, { getState }) =>
+  apiCallHelper('/api/blogPostsViews/recentTen', 'get', null, getState, 'getRecentTenViews'))
 
-export const getOneBlogPostView = createAsyncThunk("blogPostsViews/getOneBlogPostView", async (id, { getState, dispatch }) =>
-  apiCallHelper(`/api/blogPostsViews/${id}`, 'get', null, getState, dispatch, 'getOneBlogPostView'))
+export const getOneBlogPostView = createAsyncThunk("blogPostsViews/getOneBlogPostView", async (id, { getState }) =>
+  apiCallHelper(`/api/blogPostsViews/${id}`, 'get', null, getState, 'getOneBlogPostView'))
 
-export const createBlogPostView = createAsyncThunk("blogPostsViews/createBlogPostView", async (newBlogPostView, { getState, dispatch }) =>
-  apiCallHelper('/api/blogPostsViews', 'post', newBlogPostView, getState, dispatch, 'createBlogPostView'))
+export const createBlogPostView = createAsyncThunk("blogPostsViews/createBlogPostView", async (newBlogPostView, { getState }) =>
+  apiCallHelper('/api/blogPostsViews', 'post', newBlogPostView, getState, 'createBlogPostView'))
 
-export const updateBlogPostView = createAsyncThunk("blogPostsViews/updateBlogPostView", async (updatedBPV, { getState, dispatch }) =>
-  apiCallHelper(`/api/blogPostsViews/${updatedBPV.blogPostViewID}`, 'put', updatedBPV, getState, dispatch, 'updateBlogPostView'))
+export const updateBlogPostView = createAsyncThunk("blogPostsViews/updateBlogPostView", async (updatedBPV, { getState }) =>
+  apiCallHelper(`/api/blogPostsViews/${updatedBPV.blogPostViewID}`, 'put', updatedBPV, getState, 'updateBlogPostView'))
 
-export const deleteBlogPostView = createAsyncThunk("blogPostsViews/deleteBlogPostView", async (id, { getState, dispatch }) =>
-  apiCallHelper(`/api/blogPostsViews/${id}`, 'delete', null, getState, dispatch, 'deleteBlogPostView'))
+export const deleteBlogPostView = createAsyncThunk("blogPostsViews/deleteBlogPostView", async (id, { getState }) =>
+  apiCallHelper(`/api/blogPostsViews/${id}`, 'delete', null, getState, 'deleteBlogPostView'))
 
 // Blog posts views slice
 const initialState = {
@@ -70,48 +70,25 @@ const blogPostsViewsSlice = createSlice({
     })
 
     // Pending actions
-    builder.addCase(getBlogPostsViews.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(getRecentTenViews.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(getOneBlogPostView.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(createBlogPostView.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(updateBlogPostView.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(deleteBlogPostView.pending, state => {
-      state.isLoading = true
-    })
+    builder.addMatcher(
+      (action) => [getBlogPostsViews.pending, getRecentTenViews.pending, getOneBlogPostView.pending, createBlogPostView.pending, updateBlogPostView.pending, deleteBlogPostView.pending].includes(action.type),
+      (state) => {
+        state.isLoading = true
+      })
 
     // Rejected actions
-    builder.addCase(getBlogPostsViews.rejected, state => {
-      state.isLoading = false
-      state.allBlogPostsViews = []
-    })
-    builder.addCase(getRecentTenViews.rejected, state => {
-      state.isLoading = false
-      state.recentTenViews = []
-    })
-    builder.addCase(getOneBlogPostView.rejected, state => {
-      state.isLoading = false
-      state.oneBlogPostView = ''
-    })
-    builder.addCase(createBlogPostView.rejected, state => {
-      state.isLoading = false
-    })
-
-    builder.addCase(updateBlogPostView.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(deleteBlogPostView.rejected, state => {
-      state.isLoading = false
-    })
+    builder.addMatcher(
+      (action) => [getBlogPostsViews.rejected, getRecentTenViews.rejected, getOneBlogPostView.rejected, createBlogPostView.rejected, updateBlogPostView.rejected, deleteBlogPostView.rejected].includes(action.type),
+      (state) => {
+        state.isLoading = false
+        if (action.type.includes('getBlogPostsViews')) {
+          state.allBlogPostsViews = []
+        } else if (action.type.includes('getRecentTenViews')) {
+          state.recentTenViews = []
+        } else if (action.type.includes('getOneBlogPostView')) {
+          state.oneBlogPostView = ''
+        }
+      })
   }
 })
 

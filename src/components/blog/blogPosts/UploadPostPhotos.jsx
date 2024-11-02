@@ -1,11 +1,8 @@
 import React, { useState, useContext } from 'react'
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap'
-import { clearErrors } from '../../../redux/slices/errorSlice'
-import { clearSuccess } from '../../../redux/slices/successSlice'
 import { createImageUpload } from '../../../redux/slices/imageUploadsSlice'
 import { useDispatch } from "react-redux"
 import { currentUserContext } from '../../../appContexts'
-import Notification from '../../../utils/Notification'
 
 const UploadPostPhotos = () => {
 
@@ -19,19 +16,12 @@ const UploadPostPhotos = () => {
 
     const [uploadImage, setUploadImage] = useState('')
 
-    // Errors state on form
-    const [errorsState, setErrorsState] = useState([])
 
     const onChangeHandler = e => {
-        dispatch(clearErrors())
-        dispatch(clearSuccess())
         setImageDetailsState({ ...imageDetailsState, [e.target.name]: e.target.value })
     }
 
     const onFileHandler = (e) => {
-        setErrorsState([])
-        dispatch(clearErrors())
-        dispatch(clearSuccess())
         setUploadImage(e.target.files[0])
     }
 
@@ -43,11 +33,11 @@ const UploadPostPhotos = () => {
 
         // VALIDATE
         if (imageTitle.length < 4) {
-            setErrorsState(['Insufficient info!'])
+            notify('Insufficient info!')
             return
         }
         else if (imageTitle.length > 70) {
-            setErrorsState(['Image title is too long!'])
+            notify('Image title is too long!')
             return
         }
 
@@ -68,7 +58,7 @@ const UploadPostPhotos = () => {
 
     return (
         <div>
-            <Notification errorsState={errorsState} progress={null} initFn="createImageUpload" />
+
             <Form onSubmit={onSubmitHandler}>
 
                 <Label for="imageTitle">

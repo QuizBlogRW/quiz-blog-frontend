@@ -2,17 +2,17 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { apiCallHelper } from '../configHelpers'
 
 // Async actions with createAsyncThunk
-export const getBroadcasts = createAsyncThunk("broadcasts/getBroadcasts", async (_, { getState, dispatch }) =>
-  apiCallHelper('/api/broadcasts', 'get', null, getState, dispatch, 'getBroadcasts'))
+export const getBroadcasts = createAsyncThunk("broadcasts/getBroadcasts", async (_, { getState }) =>
+  apiCallHelper('/api/broadcasts', 'get', null, getState, 'getBroadcasts'))
 
-export const getOneBroadcast = createAsyncThunk("broadcasts/getOneBroadcast", async (brcstId, { getState, dispatch }) =>
-  apiCallHelper(`/api/broadcasts/${brcstId}`, 'get', null, getState, dispatch, 'getOneBroadcast'))
+export const getOneBroadcast = createAsyncThunk("broadcasts/getOneBroadcast", async (brcstId, { getState }) =>
+  apiCallHelper(`/api/broadcasts/${brcstId}`, 'get', null, getState, 'getOneBroadcast'))
 
-export const sendBroadcast = createAsyncThunk("broadcasts/sendBroadcast", async (newMessage, { getState, dispatch }) =>
-  apiCallHelper('/api/broadcasts', 'post', newMessage, getState, dispatch, 'sendBroadcast'))
+export const sendBroadcast = createAsyncThunk("broadcasts/sendBroadcast", async (newMessage, { getState }) =>
+  apiCallHelper('/api/broadcasts', 'post', newMessage, getState, 'sendBroadcast'))
 
-export const deleteBroadcast = createAsyncThunk("broadcasts/deleteBroadcast", async (brcstId, { getState, dispatch }) =>
-  apiCallHelper(`/api/broadcasts/${brcstId}`, 'delete', null, getState, dispatch, 'deleteBroadcast'))
+export const deleteBroadcast = createAsyncThunk("broadcasts/deleteBroadcast", async (brcstId, { getState }) =>
+  apiCallHelper(`/api/broadcasts/${brcstId}`, 'delete', null, getState, 'deleteBroadcast'))
 
 // Broadcasts slice
 const initialState = {
@@ -55,39 +55,18 @@ const broadcastsSlice = createSlice({
     })
 
     // Pending actions
-    builder.addCase(getBroadcasts.pending, state => {
-      state.isLoading = true
-    })
-
-    builder.addCase(getOneBroadcast.pending, state => {
-      state.isLoading = true
-    })
-
-    builder.addCase(sendBroadcast.pending, state => {
-      state.isLoading = true
-    })
-
-    builder.addCase(deleteBroadcast.pending, state => {
-      state.isLoading = true
-    })
+    builder.addMatcher(
+      (action) => [getBroadcasts.pending, getOneBroadcast.pending, sendBroadcast.pending, deleteBroadcast.pending].includes(action.type),
+      (state) => {
+        state.isLoading = true
+      })
 
     // Rejected actions
-    builder.addCase(getBroadcasts.rejected, state => {
-      state.isLoading = false
-    })
-
-    builder.addCase(getOneBroadcast.rejected, state => {
-      state.isLoading = false
-    })
-
-    builder.addCase(sendBroadcast.rejected, state => {
-      state.isLoading = false
-    })
-
-    builder.addCase(deleteBroadcast.rejected, state => {
-      state.isLoading = false
-    })
-
+    builder.addMatcher(
+      (action) => [getBroadcasts.rejected, getOneBroadcast.rejected, sendBroadcast.rejected, deleteBroadcast.rejected].includes(action.type),
+      (state) => {
+        state.isLoading = false
+      })
   }
 })
 

@@ -3,11 +3,11 @@ import { apiCallHelper } from '../configHelpers'
 import { notify } from '../../utils/notifyToast'
 
 // Async actions with createAsyncThunk
-export const getFeedbacks = createAsyncThunk("feedbacks/getFeedbacks", async (pageNo, { getState, dispatch }) =>
-  apiCallHelper(`/api/feedbacks?pageNo=${pageNo}`, 'get', null, getState, dispatch, 'getFeedbacks'))
+export const getFeedbacks = createAsyncThunk("feedbacks/getFeedbacks", async (pageNo, { getState }) =>
+  apiCallHelper(`/api/feedbacks?pageNo=${pageNo}`, 'get', null, getState, 'getFeedbacks'))
 
-export const saveFeedback = createAsyncThunk("feedbacks/saveFeedback", async (feedback, { getState, dispatch }) =>
-  apiCallHelper('/api/feedbacks', 'post', feedback, getState, dispatch, 'saveFeedback'))
+export const saveFeedback = createAsyncThunk("feedbacks/saveFeedback", async (feedback, { getState }) =>
+  apiCallHelper('/api/feedbacks', 'post', feedback, getState, 'saveFeedback'))
 
 // Feedback slice
 const initialState = {
@@ -41,22 +41,18 @@ const feedbackSlice = createSlice({
     })
 
     // Pending actions
-    builder.addCase(getFeedbacks.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(saveFeedback.pending, state => {
-      state.isLoading = true
-    })
+    builder.addMatcher(
+      (action) => [getFeedbacks.pending, saveFeedback.pending].includes(action.type),
+      (state) => {
+        state.isLoading = true
+      })
 
     // Rejected actions
-    builder.addCase(getFeedbacks.rejected, state => {
-      state.isLoading = false
-      state.allFeedbacks = []
-    })
-    builder.addCase(saveFeedback.rejected, state => {
-      state.isLoading = false
-    })
-
+    builder.addMatcher(
+      (action) => [getFeedbacks.rejected, saveFeedback.rejected].includes(action.type),
+      (state) => {
+        state.isLoading = false
+      })
   }
 })
 

@@ -3,7 +3,7 @@ import { Table, Alert } from 'reactstrap'
 import { Link } from "react-router-dom"
 import moment from 'moment'
 import { currentUserContext } from '../../../appContexts'
-import { deleteBlogPost } from '../../../redux/slices/blogPostsSlice'
+import { deleteBlogPost } from '../../../redux/slices'
 import DeleteModal from '../../../utils/DeleteModal'
 
 const BPTable = ({ bpostsToUse }) => {
