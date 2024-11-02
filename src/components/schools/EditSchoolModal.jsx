@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
-import { clearErrors } from '../../redux/slices/errorSlice'
-import { clearSuccess } from '../../redux/slices/successSlice'
 import { getOneSchool, updateSchool } from '../../redux/slices/schoolsSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import EditIcon from '../../images/edit.svg'
-import Notification from '../../utils/Notification'
 
 const EditSchoolModal = ({ idToUpdate }) => {
 
@@ -18,8 +15,6 @@ const EditSchoolModal = ({ idToUpdate }) => {
     const [schoolTitleState, setSchoolTitleState] = useState('')
     useEffect(() => { setSchoolTitleState(oneSchool && oneSchool.title) }, [oneSchool])
 
-    // Errors state on form
-    const [errorsState, setErrorsState] = useState([])
 
     //properties of the modal
     const [modal, setModal] = useState(false)
@@ -28,9 +23,6 @@ const EditSchoolModal = ({ idToUpdate }) => {
     const toggle = () => setModal(!modal)
 
     const onChangeHandler = e => {
-        setErrorsState([])
-        dispatch(clearErrors())
-        dispatch(clearSuccess())
         setSchoolTitleState({ [e.target.name]: e.target.value })
     }
 
@@ -41,11 +33,11 @@ const EditSchoolModal = ({ idToUpdate }) => {
 
         // VALIDATE
         if (title.length < 3) {
-            setErrorsState(['Insufficient info!'])
+            notify('Insufficient info!')
             return
         }
         else if (title.length > 70) {
-            setErrorsState(['Title is too long!'])
+            notify('Title is too long!')
             return
         }
 
@@ -77,7 +69,6 @@ const EditSchoolModal = ({ idToUpdate }) => {
                 </div>
 
                 <ModalBody>
-                    <Notification errorsState={errorsState} progress={null} initFn="updateSchool" />
 
                     <Form onSubmit={onSubmitHandler}>
 

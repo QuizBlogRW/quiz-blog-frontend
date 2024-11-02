@@ -26,9 +26,6 @@ const RoomMessages = ({ oON1room, onlineList }) => {
 
     const [typingStatus, setTypingStatus] = useState('');
 
-    // Errors state on form
-    const [setErrorsState] = useState([])
-
     // Typing state on form
     const handleTyping = () =>
         socket.emit('typing', `${currentUser && currentUser.name} is typing`);
@@ -40,12 +37,12 @@ const RoomMessages = ({ oON1room, onlineList }) => {
 
         // VALIDATE
         if (!message_sender || !message_receiver || !oneChatRoom || message_content.length < 1) {
-            setErrorsState(['Missing info!'])
+            notify('Missing info!')
             return
         }
 
         else if (message_content.length > 1000) {
-            setErrorsState(['message is too long!'])
+            notify('message is too long!')
             return
         }
 
@@ -69,7 +66,6 @@ const RoomMessages = ({ oON1room, onlineList }) => {
     useEffect(() => {
         socket.on('typingResponse', (data) => setTypingStatus(data));
         socket.on('welcome_room_message', (data) => {
-            console.log('welcome_room_message', data)
             setWelcomeMessage(data.message)
         })
 

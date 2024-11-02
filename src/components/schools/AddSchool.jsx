@@ -1,11 +1,8 @@
 import React, { useState } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
-import { clearErrors } from '../../redux/slices/errorSlice'
-import { clearSuccess } from '../../redux/slices/successSlice'
 import { createSchool } from '../../redux/slices/schoolsSlice'
 import { useDispatch } from 'react-redux'
 import AddIcon from '../../images/plus.svg'
-import Notification from '../../utils/Notification'
 
 const AddSchool = () => {
 
@@ -18,8 +15,6 @@ const AddSchool = () => {
         website: '',
     })
 
-    // Errors state on form
-    const [errorsState, setErrorsState] = useState([])
 
     //properties of the modal
     const [modal, setModal] = useState(false)
@@ -28,9 +23,6 @@ const AddSchool = () => {
     const toggle = () => setModal(!modal)
 
     const onChangeHandler = e => {
-        setErrorsState([])
-        dispatch(clearErrors())
-        dispatch(clearSuccess())
         setSchoolState({ ...schoolState, [e.target.name]: e.target.value })
     }
 
@@ -42,20 +34,20 @@ const AddSchool = () => {
 
         // VALIDATE
         if (title.length < 3 || location.length < 4 || website.length < 4) {
-            setErrorsState(['Insufficient info!'])
+            notify('Insufficient info!')
             return
         }
         else if (title.length > 70) {
-            setErrorsState(['Title is too long!'])
+            notify('Title is too long!')
             return
         }
         else if (location.length > 120) {
-            setErrorsState(['location is too long!'])
+            notify('location is too long!')
             return
         }
 
         else if (!websiteTest.test(website)) {
-            setErrorsState(['Invalid website!'])
+            notify('Invalid website!')
             return
         }
 
@@ -90,8 +82,6 @@ const AddSchool = () => {
                 </div>
 
                 <ModalBody>
-                    <Notification errorsState={errorsState} progress={null} initFn="createSchool" />
-
                     <Form onSubmit={onSubmitHandler}>
 
                         <FormGroup>

@@ -2,35 +2,35 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { apiCallHelper, apiCallHelperUpload } from '../configHelpers'
 
 // Async actions with createAsyncThunk
-export const getNotes = createAsyncThunk("notes/getNotes", async (_, { getState, dispatch }) =>
-  apiCallHelper('/api/notes', 'get', null, getState, dispatch, 'getNotes'))
+export const getNotes = createAsyncThunk("notes/getNotes", async (_, { getState }) =>
+  apiCallHelper('/api/notes', 'get', null, getState, 'getNotes'))
 
-export const getLandingDisplayNotes = createAsyncThunk("notes/getLandingDisplayNotes", async (limit, { getState, dispatch }) =>
-  apiCallHelper(`/api/notes/landingDisplay?limit=${limit ? limit : 10}`, 'get', null, getState, dispatch, 'getLandingDisplayNotes'))
+export const getLandingDisplayNotes = createAsyncThunk("notes/getLandingDisplayNotes", async (limit, { getState }) =>
+  apiCallHelper(`/api/notes/landingDisplay?limit=${limit ? limit : 10}`, 'get', null, getState, 'getLandingDisplayNotes'))
 
-export const getOneNotePaper = createAsyncThunk("notes/getOneNotePaper", async (noteSlug, { getState, dispatch }) =>
-  apiCallHelper(`/api/notes/${noteSlug}`, 'get', null, getState, dispatch, 'getOneNotePaper'))
+export const getOneNotePaper = createAsyncThunk("notes/getOneNotePaper", async (noteSlug, { getState }) =>
+  apiCallHelper(`/api/notes/${noteSlug}`, 'get', null, getState, 'getOneNotePaper'))
 
-export const getNotesByChapter = createAsyncThunk("notes/getNotesByChapter", async (chapterId, { getState, dispatch }) =>
-  apiCallHelper(`/api/notes/chapter/${chapterId}`, 'get', null, getState, dispatch, 'getNotesByChapter'))
+export const getNotesByChapter = createAsyncThunk("notes/getNotesByChapter", async (chapterId, { getState }) =>
+  apiCallHelper(`/api/notes/chapter/${chapterId}`, 'get', null, getState, 'getNotesByChapter'))
 
-export const getNotesByCCatg = createAsyncThunk("notes/getNotesByCCatg", async (ccatgID, { getState, dispatch }) =>
-  apiCallHelper(`/api/notes/ccatg/${ccatgID}`, 'get', null, getState, dispatch, 'getNotesByCCatg'))
+export const getNotesByCCatg = createAsyncThunk("notes/getNotesByCCatg", async (ccatgID, { getState }) =>
+  apiCallHelper(`/api/notes/ccatg/${ccatgID}`, 'get', null, getState, 'getNotesByCCatg'))
 
-export const createNotes = createAsyncThunk("notes/createNotes", async (newNotes, { getState, dispatch }) =>
-  apiCallHelperUpload('/api/notes', 'post', newNotes, getState, dispatch, 'createNotes'))
+export const createNotes = createAsyncThunk("notes/createNotes", async (newNotes, { getState }) =>
+  apiCallHelperUpload('/api/notes', 'post', newNotes, getState, 'createNotes'))
 
-export const updateNotes = createAsyncThunk("notes/updateNotes", async (updatedNotes, { getState, dispatch }) =>
-  apiCallHelper(`/api/notes/${updatedNotes.idToUpdate}`, 'put', updatedNotes, getState, dispatch, 'updateNotes'))
+export const updateNotes = createAsyncThunk("notes/updateNotes", async (updatedNotes, { getState }) =>
+  apiCallHelper(`/api/notes/${updatedNotes.idToUpdate}`, 'put', updatedNotes, getState, 'updateNotes'))
 
-export const addNotesQuizes = createAsyncThunk("notes/addNotesQuizes", async (notesQuizzes, { getState, dispatch }) =>
-  apiCallHelper(`/api/notes/notes-quizzes/${notesQuizzes.noteID}`, 'put', notesQuizzes, getState, dispatch, 'addNotesQuizes'))
+export const addNotesQuizes = createAsyncThunk("notes/addNotesQuizes", async (notesQuizzes, { getState }) =>
+  apiCallHelper(`/api/notes/notes-quizzes/${notesQuizzes.noteID}`, 'put', notesQuizzes, getState, 'addNotesQuizes'))
 
-export const deleteNotes = createAsyncThunk("notes/deleteNotes", async (noteID, { getState, dispatch }) =>
-  apiCallHelper(`/api/notes/${noteID}`, 'delete', null, getState, dispatch, 'deleteNotes'))
+export const deleteNotes = createAsyncThunk("notes/deleteNotes", async (noteID, { getState }) =>
+  apiCallHelper(`/api/notes/${noteID}`, 'delete', null, getState, 'deleteNotes'))
 
-export const removeQzNt = createAsyncThunk("notes/removeQzNt", async ({ noteID, quizID }, { getState, dispatch }) =>
-  apiCallHelper(`/api/notes/notes-quizzes/remove/${noteID}`, 'put', { noteID, quizID }, getState, dispatch, 'removeQzNt'))
+export const removeQzNt = createAsyncThunk("notes/removeQzNt", async ({ noteID, quizID }, { getState }) =>
+  apiCallHelper(`/api/notes/notes-quizzes/remove/${noteID}`, 'put', { noteID, quizID }, getState, 'removeQzNt'))
 
 // Notes slice
 const initialState = {
@@ -102,68 +102,18 @@ const notesSlice = createSlice({
     })
 
     // Pending actions
-    builder.addCase(getNotes.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(getLandingDisplayNotes.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(getOneNotePaper.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(getNotesByChapter.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(getNotesByCCatg.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(createNotes.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(updateNotes.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(addNotesQuizes.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(deleteNotes.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(removeQzNt.pending, state => {
-      state.isLoading = true
-    })
+    builder.addMatcher(
+      (action) => [getNotes.pending, getLandingDisplayNotes.pending, getOneNotePaper.pending, getNotesByChapter.pending, getNotesByCCatg.pending, createNotes.pending, updateNotes.pending, addNotesQuizes.pending, deleteNotes.pending, removeQzNt.pending].includes(action.type),
+      (state) => {
+        state.isLoading = true
+      })
 
     // Rejected actions
-    builder.addCase(getNotes.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(getLandingDisplayNotes.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(getOneNotePaper.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(getNotesByChapter.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(getNotesByCCatg.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(createNotes.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(updateNotes.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(addNotesQuizes.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(deleteNotes.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(removeQzNt.rejected, state => {
-      state.isLoading = false
-    })
+    builder.addMatcher(
+      (action) => [getNotes.rejected, getLandingDisplayNotes.rejected, getOneNotePaper.rejected, getNotesByChapter.rejected, getNotesByCCatg.rejected, createNotes.rejected, updateNotes.rejected, addNotesQuizes.rejected, deleteNotes.rejected, removeQzNt.rejected].includes(action.type),
+      (state) => {
+        state.isLoading = false
+      })
   }
 })
 

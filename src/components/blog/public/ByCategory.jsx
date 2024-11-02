@@ -1,14 +1,12 @@
-import React, { useEffect, lazy, Suspense, useContext } from 'react'
+import React, { useEffect, lazy, Suspense } from 'react'
 import { Container, Col, Row, ListGroup, ListGroupItem } from 'reactstrap'
 
-import { getBlogPostsByCategory } from '../../../redux/slices/blogPostsSlice'
 import { useSelector, useDispatch } from "react-redux"
-
+import { getBlogPostsByCategory, getPostCategories } from '@/redux/slices'
 import ResponsiveAd from '../../adsenses/ResponsiveAd'
 import SquareAd from '../../adsenses/SquareAd'
 import QBLoadingSM from '../../rLoading/QBLoadingSM'
 import { Link, useLocation, useParams } from 'react-router-dom'
-import { bPcatsContext } from '../../../appContexts'
 import './allBlogPosts.css'
 
 const BlogPostItem = lazy(() => import('./BlogPostItem'))
@@ -18,14 +16,13 @@ const ByCategory = () => {
     // Redux
     const dispatch = useDispatch()
     const bposts = useSelector(state => state.blogPosts)
-
-    // context
-    const bPcats = useContext(bPcatsContext)
+    const bPcats = useSelector(state => state.postCategories)
 
     let location = useLocation()
     const { bPCatID } = useParams()
 
     useEffect(() => {
+        dispatch(getPostCategories())
         dispatch(getBlogPostsByCategory(bPCatID))
     }, [dispatch, bPCatID])
 
@@ -83,7 +80,6 @@ const ByCategory = () => {
                                 bposts && bposts.blogPostsByCategory.map(blogPost => (
                                     <BlogPostItem key={blogPost._id} blogPost={blogPost} />
                                 ))}
-
                     </Suspense>
                 </Col>
 

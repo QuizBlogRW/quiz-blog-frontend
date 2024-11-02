@@ -1,7 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
 
-import errorReducer from './slices/errorSlice'
-import successReducer from './slices/successSlice'
 import authReducer from './slices/authSlice'
 import advertsReducer from './slices/advertsSlice'
 import subscribersReducer from './slices/subscribersSlice'
@@ -32,8 +30,6 @@ import feedbacksReducer from './slices/feedbacksSlice'
 
 const store = configureStore({
     reducer: {
-        error: errorReducer,
-        success: successReducer,
         auth: authReducer,
         adverts: advertsReducer,
         subscribers: subscribersReducer,

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Media, Alert } from 'reactstrap'
 import moment from 'moment'
 import QBLoadingSM from '../../rLoading/QBLoadingSM'
-import { getBlogPostsByCategory } from '../../../redux/slices/blogPostsSlice'
+import { getBlogPostsByCategory } from '../../../redux/slices'
 import { useSelector, useDispatch } from "react-redux"
 import altImage from '../../../images/dashboard.svg'
 import './relatedLatest.css'

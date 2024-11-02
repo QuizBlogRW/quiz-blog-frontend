@@ -1,11 +1,8 @@
 import React, { useState, useContext } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
-import { clearErrors } from '../../redux/slices/errorSlice'
-import { clearSuccess } from '../../redux/slices/successSlice'
 import { sendBroadcast } from '../../redux/slices/broadcastsSlice'
 import { useSelector, useDispatch } from "react-redux"
 import { authContext } from '../../appContexts'
-import Notification from '../../utils/Notification'
 
 const BroadcastModal = () => {
 
@@ -19,8 +16,6 @@ const BroadcastModal = () => {
         message: ''
     })
 
-    // Errors state on form
-    const [errorsState, setErrorsState] = useState([])
 
     //properties of the modal
     const [modal, setModal] = useState(false)
@@ -29,9 +24,6 @@ const BroadcastModal = () => {
     const toggle = () => setModal(!modal)
 
     const onChangeHandler = e => {
-        // Remove errors
-        dispatch(clearErrors())
-        dispatch(clearSuccess())
         setBroadcastState({ ...broadcastState, [e.target.name]: e.target.value })
     }
 
@@ -42,15 +34,15 @@ const BroadcastModal = () => {
 
         // VALIDATE
         if (title.length < 4 || message.length < 4) {
-            setErrorsState(['Insufficient info!'])
+            notify('Insufficient info!')
             return
         }
         else if (title.length > 200) {
-            setErrorsState(['Title is too long!'])
+            notify('Title is too long!')
             return
         }
         else if (message.length > 1000) {
-            setErrorsState(['message is too long!'])
+            notify('message is too long!')
             return
         }
 
@@ -83,8 +75,6 @@ const BroadcastModal = () => {
                 </div>
 
                 <ModalBody>
-
-                    <Notification errorsState={errorsState} progress={null} initFn="sendBroadcast" />
                     <Form onSubmit={onSubmitHandler}>
 
                         <FormGroup>

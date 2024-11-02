@@ -2,11 +2,8 @@ import React, { useState, useContext } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
 import AddIcon from '../../images/plus.svg'
 import { createChapter } from '../../redux/slices/chaptersSlice'
-import { clearErrors } from '../../redux/slices/errorSlice'
-import { clearSuccess } from '../../redux/slices/successSlice'
 import { useDispatch } from 'react-redux'
 import { authContext } from '../../appContexts'
-import Notification from '../../utils/Notification'
 
 const AddChapter = ({ course }) => {
 
@@ -21,8 +18,6 @@ const AddChapter = ({ course }) => {
         description: ''
     })
 
-    // Errors state on form
-    const [errorsState, setErrorsState] = useState([])
 
     //properties of the modal
     const [modal, setModal] = useState(false)
@@ -31,8 +26,6 @@ const AddChapter = ({ course }) => {
     const toggle = () => setModal(!modal)
 
     const onChangeHandler = e => {
-        dispatch(clearErrors())
-        dispatch(clearSuccess())
         setChapterState({ ...chapterState, [e.target.name]: e.target.value })
     }
 
@@ -43,15 +36,15 @@ const AddChapter = ({ course }) => {
 
         // VALIDATE
         if (title.length < 4 || description.length < 4) {
-            setErrorsState(['Insufficient info!'])
+            notify('Insufficient info!')
             return
         }
         else if (title.length > 80) {
-            setErrorsState(['Title is too long!'])
+            notify('Title is too long!')
             return
         }
         else if (description.length > 200) {
-            setErrorsState(['Description is too long!'])
+            notify('Description is too long!')
             return
         }
 
@@ -68,7 +61,6 @@ const AddChapter = ({ course }) => {
 
         // Attempt to create
         dispatch(createChapter(newChapter))
-
     }
 
     return (
@@ -90,7 +82,6 @@ const AddChapter = ({ course }) => {
                 </div>
 
                 <ModalBody>
-                    <Notification errorsState={errorsState} progress={null} initFn="createChapter" />
 
                     <Form onSubmit={onSubmitHandler}>
 

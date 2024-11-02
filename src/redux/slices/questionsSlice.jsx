@@ -2,20 +2,20 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { apiCallHelper, apiCallHelperUpload } from '../configHelpers'
 
 // Async actions with createAsyncThunk
-export const getQuestions = createAsyncThunk("questions/getQuestions", async (_, { getState, dispatch }) =>
-    apiCallHelper('/api/questions', 'get', null, getState, dispatch, 'getQuestions'))
+export const getQuestions = createAsyncThunk("questions/getQuestions", async (_, { getState }) =>
+    apiCallHelper('/api/questions', 'get', null, getState, 'getQuestions'))
 
-export const getOneQuestion = createAsyncThunk("questions/getOneQuestion", async (questionID, { getState, dispatch }) =>
-    apiCallHelper(`/api/questions/${questionID}`, 'get', null, getState, dispatch, 'getOneQuestion'))
+export const getOneQuestion = createAsyncThunk("questions/getOneQuestion", async (questionID, { getState }) =>
+    apiCallHelper(`/api/questions/${questionID}`, 'get', null, getState, 'getOneQuestion'))
 
-export const addQuestion = createAsyncThunk("questions/addQuestion", async (formData, { getState, dispatch }) => 
-    apiCallHelperUpload('/api/questions', 'post', formData, getState, dispatch, 'addQuestion'))
+export const addQuestion = createAsyncThunk("questions/addQuestion", async (formData, { getState }) =>
+    apiCallHelperUpload('/api/questions', 'post', formData, getState, 'addQuestion'))
 
-export const updateQuestion = createAsyncThunk("questions/updateQuestion", async ({ questionID, formData }, { getState, dispatch }) =>
-    apiCallHelperUpload(`/api/questions/${questionID}`, 'put', formData, getState, dispatch, 'updateQuestion'))
+export const updateQuestion = createAsyncThunk("questions/updateQuestion", async ({ questionID, formData }, { getState }) =>
+    apiCallHelperUpload(`/api/questions/${questionID}`, 'put', formData, getState, 'updateQuestion'))
 
-export const deleteQuestion = createAsyncThunk("questions/deleteQuestion", async (questionID, { getState, dispatch }) =>
-    apiCallHelper(`/api/questions/${questionID}`, 'delete', null, getState, dispatch, 'deleteQuestion'))
+export const deleteQuestion = createAsyncThunk("questions/deleteQuestion", async (questionID, { getState }) =>
+    apiCallHelper(`/api/questions/${questionID}`, 'delete', null, getState, 'deleteQuestion'))
 
 // Questions slice
 const initialState = {
@@ -59,38 +59,18 @@ const questionsSlice = createSlice({
         })
 
         // Pending actions
-        builder.addCase(getQuestions.pending, (state, action) => {
-            state.isLoading = true
-        })
-        builder.addCase(getOneQuestion.pending, (state, action) => {
-            state.isLoading = true
-        })
-        builder.addCase(addQuestion.pending, (state, action) => {
-            state.isLoading = true
-        })
-        builder.addCase(updateQuestion.pending, (state, action) => {
-            state.isLoading = true
-        })
-        builder.addCase(deleteQuestion.pending, (state, action) => {
-            state.isLoading = true
-        })
+        builder.addMatcher(
+            (action) => [getQuestions.pending, getOneQuestion.pending, addQuestion.pending, updateQuestion.pending, deleteQuestion.pending].includes(action.type),
+            (state) => {
+                state.isLoading = true
+            })
 
         // Rejected actions
-        builder.addCase(getQuestions.rejected, (state, action) => {
-            state.isLoading = false
-        })
-        builder.addCase(getOneQuestion.rejected, (state, action) => {
-            state.isLoading = false
-        })
-        builder.addCase(addQuestion.rejected, (state, action) => {
-            state.isLoading = false
-        })
-        builder.addCase(updateQuestion.rejected, (state, action) => {
-            state.isLoading = false
-        })
-        builder.addCase(deleteQuestion.rejected, (state, action) => {
-            state.isLoading = false
-        })
+        builder.addMatcher(
+            (action) => [getQuestions.rejected, getOneQuestion.rejected, addQuestion.rejected, updateQuestion.rejected, deleteQuestion.rejected].includes(action.type),
+            (state) => {
+                state.isLoading = false
+            })
 
     }
 })

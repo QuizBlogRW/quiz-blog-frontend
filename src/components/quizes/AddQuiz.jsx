@@ -1,12 +1,9 @@
 import React, { useState, useContext } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
 import AddIcon from '../../images/plus.svg'
-import { clearErrors } from '../../redux/slices/errorSlice'
-import { clearSuccess } from '../../redux/slices/successSlice'
 import { createQuiz } from '../../redux/slices/quizesSlice'
 import { useDispatch } from 'react-redux'
 import { authContext } from '../../appContexts'
-import Notification from '../../utils/Notification'
 
 const AddQuiz = ({ category }) => {
 
@@ -21,8 +18,6 @@ const AddQuiz = ({ category }) => {
         description: ''
     })
 
-    // Errors state on form
-    const [errorsState, setErrorsState] = useState([])
 
     //properties of the modal
     const [modal, setModal] = useState(false)
@@ -31,8 +26,6 @@ const AddQuiz = ({ category }) => {
     const toggle = () => setModal(!modal)
 
     const onChangeHandler = e => {
-        dispatch(clearErrors())
-        dispatch(clearSuccess())
         setQuizState({ ...quizState, [e.target.name]: e.target.value })
     }
 
@@ -43,15 +36,15 @@ const AddQuiz = ({ category }) => {
 
         // VALIDATE
         if (name.length < 4 || description.length < 4) {
-            setErrorsState(['Insufficient info!'])
+            notify('Insufficient info!')
             return
         }
         else if (name.length > 70) {
-            setErrorsState(['Title is too long!'])
+            notify('Title is too long!')
             return
         }
         else if (description.length > 120) {
-            setErrorsState(['Description is too long!'])
+            notify('Description is too long!')
             return
         }
 
@@ -86,8 +79,6 @@ const AddQuiz = ({ category }) => {
                 </div>
 
                 <ModalBody>
-                    <Notification errorsState={errorsState} progress={null} initFn="createQuiz" />
-
                     <Form onSubmit={onSubmitHandler}>
 
                         <FormGroup>

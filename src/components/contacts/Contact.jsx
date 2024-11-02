@@ -2,14 +2,11 @@ import React, { useState, useEffect, useContext, lazy } from 'react'
 import { Button, Col, Row, Form, FormGroup, Input } from 'reactstrap'
 import SquareAd from '../adsenses/SquareAd'
 import { sendMsg } from '../../redux/slices/contactsSlice'
-import { clearErrors } from '../../redux/slices/errorSlice'
-import { clearSuccess } from '../../redux/slices/successSlice'
 import { useDispatch } from "react-redux"
 import './contact.css'
 import mail from '../../../src/images/mail.svg'
 import { currentUserContext } from '../../appContexts'
 const ResponsiveHorizontal = lazy(() => import('../adsenses/ResponsiveHorizontal'))
-import Notification from '../../utils/Notification'
 
 const Contact = () => {
 
@@ -17,8 +14,6 @@ const Contact = () => {
     const dispatch = useDispatch()
     const currentUser = useContext(currentUserContext)
 
-    // Errors state on form
-    const [errorsState, setErrorsState] = useState([])
 
     const [state, setState] = useState({
         contact_name: '',
@@ -34,8 +29,6 @@ const Contact = () => {
     }, [currentUser])
 
     const onChangeHandler = e => {
-        dispatch(clearErrors())
-        dispatch(clearSuccess())
         const { name, value } = e.target
         setState(state => ({ ...state, [name]: value }))
     }
@@ -47,15 +40,15 @@ const Contact = () => {
 
         // VALIDATE
         if (contact_name.length < 3 || email.length < 4 || message.length < 4) {
-            setErrorsState(['Insufficient info!'])
+            notify('Insufficient info!')
             return
         }
         else if (contact_name.length > 100) {
-            setErrorsState(['Name is too long!'])
+            notify('Name is too long!')
             return
         }
         else if (message.length > 1000) {
-            setErrorsState(['Message is too long!'])
+            notify('Message is too long!')
             return
         }
 
@@ -111,8 +104,6 @@ const Contact = () => {
                 </Col>
 
                 <Col sm="6" className="mb-5">
-
-                    <Notification errorsState={errorsState} progress={null} initFn="sendMsg" />
                     <Form onSubmit={onContact}>
                         <FormGroup>
                             <Input type="text" name="contact_name" placeholder="Name" minLength="4" maxLength="30" onChange={onChangeHandler} value={state.contact_name} disabled={currentUser} />

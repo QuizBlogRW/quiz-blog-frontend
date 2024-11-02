@@ -1,11 +1,8 @@
 import React, { useState } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input } from 'reactstrap'
 import { updateUser } from '../../redux/slices/authSlice'
-import { clearErrors } from '../../redux/slices/errorSlice'
-import { clearSuccess } from '../../redux/slices/successSlice'
 import { useDispatch } from 'react-redux'
 import EditIcon from '../../images/edit.svg'
-import Notification from '../../utils/Notification' 
 
 const EditUser = ({ uId, uName, uRole, uEmail }) => {
 
@@ -24,8 +21,6 @@ const EditUser = ({ uId, uName, uRole, uEmail }) => {
     const [visible, setVisible] = useState(true)
     const onDismiss = () => setVisible(false)
 
-    // Errors state on form
-    const [errorsState, setErrorsState] = useState([])
 
     //properties of the modal
     const [modal, setModal] = useState(false)
@@ -34,9 +29,6 @@ const EditUser = ({ uId, uName, uRole, uEmail }) => {
     const toggle = () => setModal(!modal)
 
     const onChangeHandler = e => {
-        setErrorsState([])
-        dispatch(clearErrors())
-        dispatch(clearSuccess())
         setUserState({ ...userState, [e.target.name]: e.target.value })
     }
 
@@ -47,15 +39,15 @@ const EditUser = ({ uId, uName, uRole, uEmail }) => {
 
         // VALIDATE
         if (name.length < 4 || role.length < 4 || email.length < 4) {
-            setErrorsState(['Insufficient info!'])
+            notify('Insufficient info!')
             return
         }
         else if (name.length > 30) {
-            setErrorsState(['Name is too long!'])
+            notify('Name is too long!')
             return
         }
         else if (role === '') {
-            setErrorsState(['Role is required!'])
+            notify('Role is required!')
             return
         }
 
@@ -92,7 +84,6 @@ const EditUser = ({ uId, uName, uRole, uEmail }) => {
 
                 <ModalBody>
 
-                    <Notification errorsState={errorsState} progress={null} initFn="updateUser" />
                     <Form onSubmit={onSubmitHandler}>
 
                         <FormGroup>

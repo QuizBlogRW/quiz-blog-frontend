@@ -3,7 +3,6 @@ import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from
 import { createCategory } from '../../redux/slices/categoriesSlice'
 import { authContext } from '../../appContexts'
 import { useDispatch } from "react-redux"
-import Notification from '../../utils/Notification'
 
 const CreateCategory = ({ courseCategories }) => {
 
@@ -19,8 +18,6 @@ const CreateCategory = ({ courseCategories }) => {
         courseCategory: ''
     })
 
-    // Errors state on form
-    const [errorsState, setErrorsState] = useState([])
 
     //properties of the modal
     const [modal, setModal] = useState(false)
@@ -29,7 +26,6 @@ const CreateCategory = ({ courseCategories }) => {
     const toggle = () => setModal(!modal)
 
     const onChangeHandler = e => {
-        setErrorsState([])
         setCategoryState({ ...categoryState, [e.target.name]: e.target.value })
     }
 
@@ -40,15 +36,15 @@ const CreateCategory = ({ courseCategories }) => {
 
         // VALIDATE
         if (name.length < 4 || description.length < 4 || courseCategory.length < 4) {
-            setErrorsState(['Insufficient info!'])
+            notify('Insufficient info!')
             return
         }
         else if (name.length > 50) {
-            setErrorsState(['Title is too long!'])
+            notify('Title is too long!')
             return
         }
         else if (description.length > 100) {
-            setErrorsState(['Description is too long!'])
+            notify('Description is too long!')
             return
         }
 
@@ -85,7 +81,6 @@ const CreateCategory = ({ courseCategories }) => {
                 </div>
 
                 <ModalBody>
-                    <Notification errorsState={errorsState} progress={null} initFn="createCategory" />
                     <Form onSubmit={onSubmitHandler}>
 
                         <FormGroup>

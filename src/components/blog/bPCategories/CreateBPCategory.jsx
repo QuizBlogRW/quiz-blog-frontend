@@ -1,11 +1,8 @@
 import React, { useState, useContext } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
-import { clearErrors } from '../../../redux/slices/errorSlice'
-import { clearSuccess } from '../../../redux/slices/successSlice'
 import { createPostCategory } from '../../../redux/slices/postCategoriesSlice'
 import { useDispatch } from "react-redux"
 import { authContext } from '../../../appContexts'
-import Notification from '../../../utils/Notification'
 
 const CreateBPCategory = () => {
 
@@ -18,8 +15,6 @@ const CreateBPCategory = () => {
         description: ''
     })
 
-    // Errors state on form
-    const [errorsState, setErrorsState] = useState([])
 
     //properties of the modal
     const [modal, setModal] = useState(false)
@@ -28,10 +23,6 @@ const CreateBPCategory = () => {
     const toggle = () => setModal(!modal)
 
     const onChangeHandler = e => {
-        // Remove errors
-        setErrorsState([])
-        dispatch(clearErrors())
-        dispatch(clearSuccess())
         // Add data
         setBPCategoryState({ ...bPCategoryState, [e.target.name]: e.target.value })
     }
@@ -43,15 +34,15 @@ const CreateBPCategory = () => {
 
         // VALIDATE
         if (title.length < 4 || description.length < 4) {
-            setErrorsState(['Insufficient info!'])
+            notify('Insufficient info!')
             return
         }
         else if (title.length > 50) {
-            setErrorsState(['Title is too long!'])
+            notify('Title is too long!')
             return
         }
         else if (description.length > 100) {
-            setErrorsState(['Description is too long!'])
+            notify('Description is too long!')
             return
         }
 
@@ -84,8 +75,6 @@ const CreateBPCategory = () => {
                 </div>
 
                 <ModalBody>
-                    <Notification errorsState={errorsState} progress={null} initFn="createPostCategory" />
-
                     <Form onSubmit={onSubmitHandler}>
 
                         <FormGroup>

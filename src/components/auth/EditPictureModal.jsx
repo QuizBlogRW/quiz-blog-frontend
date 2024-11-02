@@ -2,12 +2,9 @@ import React, { useState, useContext } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, UncontrolledTooltip } from 'reactstrap'
 import uploadimage from '../../images/uploadimage.svg'
 import { updateProfileImage } from '../../redux/slices/authSlice'
-import { clearErrors } from '../../redux/slices/errorSlice'
-import { clearSuccess } from '../../redux/slices/successSlice'
 import { useDispatch } from "react-redux"
 import { currentUserContext } from '../../appContexts'
 import ImageWithFallback from '../../utils/ImageWithFallback'
-import Notification from '../../utils/Notification'
 
 const EditPictureModal = ({ bgColor, clr }) => {
 
@@ -22,9 +19,6 @@ const EditPictureModal = ({ bgColor, clr }) => {
   const [profileImageState, setProfileImageState] = useState()
 
 
-  // Errors state on form
-  const [errorsState, setErrorsState] = useState([])
-
   //properties of the modal
   const [modal, setModal] = useState(false)
 
@@ -32,9 +26,6 @@ const EditPictureModal = ({ bgColor, clr }) => {
   const toggle = () => setModal(!modal)
 
   const onFileHandler = (e) => {
-    setErrorsState([])
-    clearErrors()
-    clearSuccess()
     if (currentUser) { // Check if currentUser is not null
       setProfileImageState(e.target.files[0]);
     }
@@ -47,7 +38,7 @@ const EditPictureModal = ({ bgColor, clr }) => {
 
     // VALIDATE
     if (!profileImageState) {
-      setErrorsState(['The image is required!'])
+      notify('The image is required!')
       return
     }
 
@@ -83,8 +74,6 @@ const EditPictureModal = ({ bgColor, clr }) => {
         </div>
 
         <ModalBody>
-          <Notification errorsState={errorsState} progress={null} initFn="updateProfileImage" />
-
           <Form onSubmit={onSubmitHandler} encType='multipart/form-data'>
             <FormGroup>
 

@@ -6,7 +6,7 @@ import moment from 'moment'
 import ResponsiveAd from '../../adsenses/ResponsiveAd'
 import SquareAd from '../../adsenses/SquareAd'
 
-import { getBlogPosts } from '../../../redux/slices/blogPostsSlice'
+import { getBlogPosts } from '../../../redux/slices'
 import './homePosts.css'
 import QBLoading from '../../rLoading/QBLoading'
 

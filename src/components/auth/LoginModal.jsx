@@ -1,24 +1,18 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink, Alert } from 'reactstrap'
 import { login } from '../../redux/slices/authSlice'
-import { clearErrors } from '../../redux/slices/errorSlice'
 import { useSelector, useDispatch } from "react-redux"
 import { authContext } from '../../appContexts'
 import ReactGA from "react-ga4"
 import logocirclewhite from '../../../src/images/logocirclewhite.svg'
 import avatar from '../../../src/images/avatar1.svg'
 import QBLoadingSM from '../rLoading/QBLoadingSM'
-import Notification from '../../utils/Notification'
 
 const LoginModal = ({ isOpenL, toggleL, toggleR }) => {
 
     const isLoading = useSelector(state => state.auth.isLoading)
-    const errors = useSelector(state => state.error)
-
     const dispatch = useDispatch()
 
-    // Errors state on form
-    const [errorsState, setErrorsState] = useState([])
 
     // context 
     const auth = useContext(authContext)
@@ -34,9 +28,9 @@ const LoginModal = ({ isOpenL, toggleL, toggleR }) => {
 
     // Lifecycle methods
     useEffect(() => {
-        if ((errors && errors.id === 'login') && (errors && errors.msg && errors.msg.id === 'CONFIRM_ERR')) {
-            setConfirmLogin(true)
-        }
+        // if ((errors && errors.id === 'login') && (errors && errors.msg && errors.msg.id === 'CONFIRM_ERR')) {
+        //     setConfirmLogin(true)
+        // }
 
         // If Authenticated, close isOpenL
         if (isOpenL) {
@@ -51,10 +45,9 @@ const LoginModal = ({ isOpenL, toggleL, toggleR }) => {
                 })
             }
         }
-    }, [isAuthenticated, isOpenL, toggleL, errors])
+    }, [isAuthenticated, isOpenL, toggleL])
 
     const onChangeHandler = e => {
-        dispatch(clearErrors())
         setLoginState({ ...loginState, [e.target.name]: e.target.value })
     }
 
@@ -66,12 +59,11 @@ const LoginModal = ({ isOpenL, toggleL, toggleR }) => {
 
         // VALIDATE
         if (password.length < 4) {
-            setErrorsState(['Password should be at least 4 characters!'])
+            notify('Password should be at least 4 characters!')
             return
         }
 
         // Attempt to login
-        dispatch(clearErrors())
         dispatch(login(user))
     }
 
@@ -94,8 +86,6 @@ const LoginModal = ({ isOpenL, toggleL, toggleR }) => {
                 </div>
 
                 <ModalBody className='pb-0'>
-                    <Notification errorsState={errorsState} progress={null} initFn='login' />
-
                     {
                         confirmLogin ?
                             <Button
@@ -128,7 +118,7 @@ const LoginModal = ({ isOpenL, toggleL, toggleR }) => {
                                 </Button>}
                         </FormGroup>
                     </Form>
-                    <div className="d-flex justify-content-center align-items-center">
+                    <div className="d-flex align-items-center justify-content-around">
                         <p className="p-2 p-xl-2 m-0">No account yet?</p>
                         <NavLink onClick={toggleR} className="fw-bolder" style={{ color: "#157A6E" }}>
                             Register

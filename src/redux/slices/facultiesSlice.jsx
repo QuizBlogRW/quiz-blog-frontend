@@ -2,20 +2,20 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { apiCallHelper } from '../configHelpers'
 
 // Async actions with createAsyncThunk
-export const getFaculties = createAsyncThunk("faculties/getFaculties", async (_, { getState, dispatch }) =>
-  apiCallHelper('/api/faculties', 'get', null, getState, dispatch, 'getFaculties'))
+export const getFaculties = createAsyncThunk("faculties/getFaculties", async (_, { getState }) =>
+  apiCallHelper('/api/faculties', 'get', null, getState, 'getFaculties'))
 
-export const fetchLevelFaculties = createAsyncThunk("faculties/fetchLevelFaculties", async (levelID, { getState, dispatch }) =>
-  apiCallHelper(`/api/faculties/level/${levelID}`, 'get', null, getState, dispatch, 'fetchLevelFaculties'))
+export const fetchLevelFaculties = createAsyncThunk("faculties/fetchLevelFaculties", async (levelID, { getState }) =>
+  apiCallHelper(`/api/faculties/level/${levelID}`, 'get', null, getState, 'fetchLevelFaculties'))
 
-export const createFaculty = createAsyncThunk("faculties/createFaculty", async (newFaculty, { getState, dispatch }) =>
-  apiCallHelper('/api/faculties', 'post', newFaculty, getState, dispatch, 'createFaculty'))
+export const createFaculty = createAsyncThunk("faculties/createFaculty", async (newFaculty, { getState }) =>
+  apiCallHelper('/api/faculties', 'post', newFaculty, getState, 'createFaculty'))
 
-export const updateFaculty = createAsyncThunk("faculties/updateFaculty", async (updatedFac, { getState, dispatch }) =>
-  apiCallHelper(`/api/faculties/${updatedFac.idToUpdate}`, 'put', updatedFac, getState, dispatch, 'updateFaculty'))
+export const updateFaculty = createAsyncThunk("faculties/updateFaculty", async (updatedFac, { getState }) =>
+  apiCallHelper(`/api/faculties/${updatedFac.idToUpdate}`, 'put', updatedFac, getState, 'updateFaculty'))
 
-export const deleteFaculty = createAsyncThunk("faculties/deleteFaculty", async (facultyID, { getState, dispatch }) =>
-  apiCallHelper(`/api/faculties/${facultyID}`, 'delete', null, getState, dispatch, 'deleteFaculty'))
+export const deleteFaculty = createAsyncThunk("faculties/deleteFaculty", async (facultyID, { getState }) =>
+  apiCallHelper(`/api/faculties/${facultyID}`, 'delete', null, getState, 'deleteFaculty'))
 
 // Faculties slice
 const initialState = {
@@ -59,39 +59,19 @@ const facultiesSlice = createSlice({
     })
 
     // Pending actions
-    builder.addCase(getFaculties.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(fetchLevelFaculties.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(createFaculty.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(updateFaculty.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(deleteFaculty.pending, state => {
-      state.isLoading = true
-    })
+    builder.addMatcher(
+      (action) => [getFaculties.pending, fetchLevelFaculties.pending, createFaculty.pending, updateFaculty.pending, deleteFaculty.pending].includes(action.type),
+      (state) => {
+        state.isLoading = true
+      })
 
 
     // Rejected actions
-    builder.addCase(getFaculties.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(fetchLevelFaculties.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(createFaculty.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(updateFaculty.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(deleteFaculty.rejected, state => {
-      state.isLoading = false
-    })
+    builder.addMatcher(
+      (action) => [getFaculties.rejected, fetchLevelFaculties.rejected, createFaculty.rejected, updateFaculty.rejected, deleteFaculty.rejected].includes(action.type),
+      (state) => {
+        state.isLoading = false
+      })
   }
 })
 

@@ -1,10 +1,7 @@
 import React, { useState } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
-import { clearErrors } from '../../../redux/slices/errorSlice'
-import { clearSuccess } from '../../../redux/slices/successSlice'
 import { createAdvert } from '../../../redux/slices/advertsSlice'
 import { useDispatch } from 'react-redux'
-import Notification from '../../../utils/Notification'
 
 const CreateAdvert = () => {
 
@@ -19,8 +16,6 @@ const CreateAdvert = () => {
         advert_image: '',
     })
 
-    // Errors state on form
-    const [errorsState, setErrorsState] = useState([])
 
     //properties of the modal
     const [modal, setModal] = useState(false)
@@ -30,19 +25,11 @@ const CreateAdvert = () => {
 
     const onChangeHandler = e => {
 
-        // Remove errors
-        setErrorsState([])
-        dispatch(clearErrors())
-        dispatch(clearSuccess())
-
         // Add data
         setAdvertState({ ...advertState, [e.target.name]: e.target.value })
     }
 
     const onFileHandler = (e) => {
-        setErrorsState([])
-        dispatch(clearErrors())
-        dispatch(clearSuccess())
         setAdvertState({ ...advertState, advert_image: e.target.files[0] })
     }
 
@@ -55,7 +42,7 @@ const CreateAdvert = () => {
 
         // VALIDATE
         if (caption.length < 4 || phone.length < 4 || owner.length < 4 || email.length < 4) {
-            setErrorsState(['Insufficient info!'])
+            notify('Insufficient info!')
             return
         }
 
@@ -94,8 +81,6 @@ const CreateAdvert = () => {
                 </div>
 
                 <ModalBody>
-
-                    <Notification errorsState={errorsState} progress={null} initFn="createAdvert" />
 
                     <Form onSubmit={onSubmitHandler}>
 

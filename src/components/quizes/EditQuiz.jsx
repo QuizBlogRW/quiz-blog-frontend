@@ -4,7 +4,6 @@ import { updateQuiz } from '../../redux/slices/quizesSlice'
 import { useDispatch } from 'react-redux'
 import EditIcon from '../../images/edit.svg'
 import { authContext, categoriesContext } from '../../appContexts'
-import Notification from '../../utils/Notification'
 
 const EditQuiz = ({ quizToEdit }) => {
 
@@ -23,8 +22,6 @@ const EditQuiz = ({ quizToEdit }) => {
         category: quizToEdit.category && quizToEdit.category._id
     })
 
-    // Errors state on form
-    const [errorsState, setErrorsState] = useState([])
 
     //properties of the modal
     const [modal, setModal] = useState(false)
@@ -43,15 +40,15 @@ const EditQuiz = ({ quizToEdit }) => {
 
         // VALIDATE
         if (name.length < 4 || description.length < 4) {
-            setErrorsState(['Insufficient info!'])
+            notify('Insufficient info!')
             return
         }
         else if (name.length > 70) {
-            setErrorsState(['Title is too long!'])
+            notify('Title is too long!')
             return
         }
         else if (description.length > 120) {
-            setErrorsState(['Description is too long!'])
+            notify('Description is too long!')
             return
         }
 
@@ -86,8 +83,6 @@ const EditQuiz = ({ quizToEdit }) => {
                 </div>
 
                 <ModalBody>
-
-                    <Notification errorsState={errorsState} progress={null} initFn="updateQuiz" />
 
                     <Form onSubmit={onSubmitHandler}>
 

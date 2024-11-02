@@ -1,11 +1,8 @@
 import React, { useState } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
-import { clearErrors } from '../../redux/slices/errorSlice'
-import { clearSuccess } from '../../redux/slices/successSlice'
 import { addVidLink } from '../../redux/slices/quizesSlice'
 import { addFaqVidLink } from '../../redux/slices/faqsSlice'
 import { useDispatch } from 'react-redux'
-import Notification from '../../utils/Notification'
 
 const AddVideo = ({ isFromFaqs, faqID, quizID }) => {
 
@@ -17,8 +14,6 @@ const AddVideo = ({ isFromFaqs, faqID, quizID }) => {
         vlink: ''
     })
 
-    // Errors state on form
-    const [errorsState, setErrorsState] = useState([])
 
     //properties of the modal
     const [modal, setModal] = useState(false)
@@ -27,8 +22,6 @@ const AddVideo = ({ isFromFaqs, faqID, quizID }) => {
     const toggle = () => setModal(!modal)
 
     const onChangeHandler = e => {
-        dispatch(clearErrors())
-        dispatch(clearSuccess())
         setVidLinkState({ ...vidLinkState, [e.target.name]: e.target.value })
     }
 
@@ -39,15 +32,15 @@ const AddVideo = ({ isFromFaqs, faqID, quizID }) => {
 
         // VALIDATE
         if (vtitle.length < 4 || vlink.length < 4) {
-            setErrorsState(['Insufficient info!'])
+            notify('Insufficient info!')
             return
         }
         else if (vtitle.length > 200) {
-            setErrorsState(['Title is too long!'])
+            notify('Title is too long!')
             return
         }
         else if (vlink.length > 1000) {
-            setErrorsState(['Link is too long!'])
+            notify('Link is too long!')
             return
         }
 
@@ -84,7 +77,6 @@ const AddVideo = ({ isFromFaqs, faqID, quizID }) => {
                 </div>
 
                 <ModalBody>
-                    <Notification errorsState={errorsState} progress={null} initFn="addVidLink" />
 
                     <Form onSubmit={onSubmitHandler}>
 

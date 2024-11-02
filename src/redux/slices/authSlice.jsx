@@ -3,41 +3,41 @@ import { apiCallHelper, apiCallHelperUpload } from '../configHelpers'
 import { notify } from '../../utils/notifyToast'
 
 // Async actions with createAsyncThunk
-export const loadUser = createAsyncThunk("auth/loadUser", async (_, { getState, dispatch }) =>
-  apiCallHelper('/api/auth/user', 'get', null, getState, dispatch, 'loadUser'))
+export const loadUser = createAsyncThunk("auth/loadUser", async (_, { getState }) =>
+  apiCallHelper('/api/auth/user', 'get', null, getState, 'loadUser'))
 
-export const register = createAsyncThunk("auth/register", async ({ name, email, password }, { getState, dispatch }) =>
-  apiCallHelper('/api/auth/register', 'post', { name, email, password }, getState, dispatch, 'register'))
+export const register = createAsyncThunk("auth/register", async ({ name, email, password }, { getState }) =>
+  apiCallHelper('/api/auth/register', 'post', { name, email, password }, getState, 'register'))
 
-export const verify = createAsyncThunk("auth/verify-otp", async ({ email, otp }, { getState, dispatch }) =>
-  apiCallHelper('/api/auth/verify-otp', 'post', { email, otp }, getState, dispatch, 'verify'))
+export const verify = createAsyncThunk("auth/verify-otp", async ({ email, otp }, { getState }) =>
+  apiCallHelper('/api/auth/verify-otp', 'post', { email, otp }, getState, 'verify'))
 
-export const login = createAsyncThunk("auth/login", async ({ email, password, confirmLogin }, { getState, dispatch }) =>
-  apiCallHelper('/api/auth/login', 'post', { email, password, confirmLogin }, getState, dispatch, 'login'))
+export const login = createAsyncThunk("auth/login", async ({ email, password, confirmLogin }, { getState }) =>
+  apiCallHelper('/api/auth/login', 'post', { email, password, confirmLogin }, getState, 'login'))
 
-export const getUsers = createAsyncThunk("auth/getUsers", async (_, { getState, dispatch }) =>
-  apiCallHelper('/api/users', 'get', null, getState, dispatch, 'getUsers'))
+export const getUsers = createAsyncThunk("auth/getUsers", async (_, { getState }) =>
+  apiCallHelper('/api/users', 'get', null, getState, 'getUsers'))
 
-export const logout = createAsyncThunk("auth/logout", async (userId, { getState, dispatch }) =>
-  apiCallHelper('/api/auth/logout', 'put', { userId }, getState, dispatch, 'logout'))
+export const logout = createAsyncThunk("auth/logout", async (userId, { getState }) =>
+  apiCallHelper('/api/auth/logout', 'put', { userId }, getState, 'logout'))
 
-export const updateUser = createAsyncThunk("auth/updateUser", async (updatedUser, { getState, dispatch }) =>
-  apiCallHelper(`/api/users/${updatedUser.uId}`, 'put', updatedUser, getState, dispatch, 'updateUser'))
+export const updateUser = createAsyncThunk("auth/updateUser", async (updatedUser, { getState }) =>
+  apiCallHelper(`/api/users/${updatedUser.uId}`, 'put', updatedUser, getState, 'updateUser'))
 
-export const updateProfile = createAsyncThunk("auth/updateProfile", async (updatedProfile, { getState, dispatch }) =>
-  apiCallHelper(`/api/users/user-details/${updatedProfile.uId}`, 'put', updatedProfile, getState, dispatch, 'updateProfile'))
+export const updateProfile = createAsyncThunk("auth/updateProfile", async (updatedProfile, { getState }) =>
+  apiCallHelper(`/api/users/user-details/${updatedProfile.uId}`, 'put', updatedProfile, getState, 'updateProfile'))
 
-export const updateProfileImage = createAsyncThunk("auth/updateProfileImage", async ({ formData, uId }, { getState, dispatch }) =>
-  apiCallHelperUpload(`/api/users/user-image/${uId}`, 'put', formData, getState, dispatch, 'updateProfileImage'))
+export const updateProfileImage = createAsyncThunk("auth/updateProfileImage", async ({ formData, uId }, { getState }) =>
+  apiCallHelperUpload(`/api/users/user-image/${uId}`, 'put', formData, getState, 'updateProfileImage'))
 
-export const sendResetLink = createAsyncThunk("auth/sendResetLink", async (fEmail, { getState, dispatch }) =>
-  apiCallHelper('/api/auth/forgot-password', 'post', fEmail, getState, dispatch, 'sendResetLink'))
+export const sendResetLink = createAsyncThunk("auth/sendResetLink", async (fEmail, { getState }) =>
+  apiCallHelper('/api/auth/forgot-password', 'post', fEmail, getState, 'sendResetLink'))
 
-export const sendNewPassword = createAsyncThunk("auth/sendNewPassword", async (updatePsw, { getState, dispatch }) =>
-  apiCallHelper('/api/auth/reset-password', 'post', updatePsw, getState, dispatch, 'sendNewPassword'))
+export const sendNewPassword = createAsyncThunk("auth/sendNewPassword", async (updatePsw, { getState }) =>
+  apiCallHelper('/api/auth/reset-password', 'post', updatePsw, getState, 'sendNewPassword'))
 
-export const deleteUser = createAsyncThunk("auth/deleteUser", async (id, { getState, dispatch }) =>
-  apiCallHelper(`/api/users/${id}`, 'delete', null, getState, dispatch, 'deleteUser'))
+export const deleteUser = createAsyncThunk("auth/deleteUser", async (id, { getState }) =>
+  apiCallHelper(`/api/users/${id}`, 'delete', null, getState, 'deleteUser'))
 
 // AUTH SLICE
 const authSlice = createSlice({
@@ -109,6 +109,10 @@ const authSlice = createSlice({
     })
     builder.addCase(register.fulfilled, (state, action) => {
       state.isLoading = false
+      const { email, msg } = action.payload
+      localStorage.setItem('emailForOTP', email)
+      notify(msg)
+      setTimeout(() => window.location.href = '/verify', 5000)
     })
     builder.addCase(verify.fulfilled, (state, action) => {
       state.isLoading = false
@@ -127,7 +131,7 @@ const authSlice = createSlice({
       localStorage.removeItem('token')
       localStorage.removeItem('user')
       localStorage.removeItem('confirmLogin')
-      notify('You are logged out!')
+      notify('Good Bye!')
     })
     builder.addCase(getUsers.fulfilled, (state, action) => {
       state.isLoading = false
@@ -162,81 +166,26 @@ const authSlice = createSlice({
     })
 
     // Pending actions
-    builder.addCase(loadUser.pending, (state, action) => {
-      state.isLoading = true
-    })
-    builder.addCase(login.pending, (state, action) => {
-      state.isLoading = true
-    })
-    builder.addCase(register.pending, (state, action) => {
-      state.isLoading = true
-    })
-    builder.addCase(logout.pending, (state, action) => {
-      state.isLoading = true
-    })
-    builder.addCase(getUsers.pending, (state, action) => {
-      state.isLoading = true
-    })
-    builder.addCase(updateUser.pending, (state, action) => {
-      state.isLoading = true
-    })
-    builder.addCase(updateProfile.pending, (state, action) => {
-      state.isLoading = true
-    })
-    builder.addCase(updateProfileImage.pending, (state, action) => {
-      state.isLoading = true
-    })
-    builder.addCase(sendResetLink.pending, (state, action) => {
-      state.isLoading = true
-    })
-    builder.addCase(sendNewPassword.pending, (state, action) => {
-      state.isLoading = true
-    })
-    builder.addCase(deleteUser.pending, (state, action) => {
-      state.isLoading = true
-    })
+    builder.addMatcher(
+      (action) => [loadUser.pending, login.pending, register.pending, verify.pending, getUsers.pending, logout.pending, updateUser.pending, updateProfile.pending, updateProfileImage.pending, sendResetLink.pending, sendNewPassword.pending, deleteUser.pending].includes(action.type),
+      (state) => {
+        state.isLoading = true
+      })
 
     // Rejected actions
-    builder.addCase(loadUser.rejected, (state, action) => {
-      state.isAuthenticated = false
-      state.isLoading = false
-      state.user = null
-      localStorage.removeItem('token')
-      localStorage.removeItem('user')
-    })
-    builder.addCase(login.rejected, (state, action) => {
-      state.isAuthenticated = false
-      state.isLoading = false
-    })
-    builder.addCase(register.rejected, (state, action) => {
-      state.isAuthenticated = false
-      state.isLoading = false
-    })
-    builder.addCase(logout.rejected, (state, action) => {
-      state.isLoading = false
-    })
-    builder.addCase(getUsers.rejected, (state, action) => {
-      state.isLoading = false
-      state.users = []
-    })
-    builder.addCase(updateUser.rejected, (state, action) => {
-      state.isLoading = false
-    })
-    builder.addCase(updateProfile.rejected, (state, action) => {
-      state.isLoading = false
-    })
-    builder.addCase(updateProfileImage.rejected, (state, action) => {
-      state.isLoading = false
-    })
-    builder.addCase(sendResetLink.rejected, (state, action) => {
-      state.isLoading = false
-    })
-    builder.addCase(sendNewPassword.rejected, (state, action) => {
-      state.isLoading = false
-    })
-    builder.addCase(deleteUser.rejected, (state, action) => {
-      state.isLoading = false
-    })
+    builder.addMatcher(
+      (action) => [loadUser.rejected, login.rejected, register.rejected, verify.rejected, getUsers.rejected, logout.rejected, updateUser.rejected, updateProfile.rejected, updateProfileImage.rejected, sendResetLink.rejected, sendNewPassword.rejected, deleteUser.rejected].includes(action.type),
+      (state) => {
+        state.isLoading = false
+
+        if (action.type.includes('loadUser') || action.type.includes('login') || action.type.includes('register') || action.type.includes('verify')) {
+          state.isAuthenticated = false
+          state.user = null
+          state.users = []
+          localStorage.getItem('token') && localStorage.removeItem('token')
+          localStorage.getItem('user') && localStorage.removeItem('user')
+        }
+      })
   }
 })
 

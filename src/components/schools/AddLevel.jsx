@@ -1,11 +1,8 @@
 import React, { useState } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
-import { clearErrors } from '../../redux/slices/errorSlice'
-import { clearSuccess } from '../../redux/slices/successSlice'
 import { createLevel } from '../../redux/slices/levelsSlice'
 import { useDispatch } from 'react-redux'
 import AddIcon from '../../images/plus.svg'
-import Notification from '../../utils/Notification'
 
 const AddLevel = ({ schools }) => {
 
@@ -17,8 +14,6 @@ const AddLevel = ({ schools }) => {
         school: ''
     })
 
-    // Errors state on form
-    const [errorsState, setErrorsState] = useState([])
 
     //properties of the modal
     const [modal, setModal] = useState(false)
@@ -27,9 +22,6 @@ const AddLevel = ({ schools }) => {
     const toggle = () => setModal(!modal)
 
     const onChangeHandler = e => {
-        setErrorsState([])
-        dispatch(clearErrors())
-        dispatch(clearSuccess())
         setLevelState({ ...levelState, [e.target.name]: e.target.value })
     }
 
@@ -40,11 +32,11 @@ const AddLevel = ({ schools }) => {
 
         // VALIDATE
         if (title.length < 3 || !school) {
-            setErrorsState(['Insufficient info!'])
+            notify('Insufficient info!')
             return
         }
         else if (title.length > 70) {
-            setErrorsState(['Title is too long!'])
+            notify('Title is too long!')
             return
         }
 
@@ -77,7 +69,6 @@ const AddLevel = ({ schools }) => {
                 </div>
 
                 <ModalBody>
-                    <Notification errorsState={errorsState} progress={null} initFn="createLevel" />
 
                     <Form onSubmit={onSubmitHandler}>
 

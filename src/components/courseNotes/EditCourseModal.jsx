@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
-import { clearErrors } from '../../redux/slices/errorSlice'
-import { clearSuccess } from '../../redux/slices/successSlice'
 import { updateCourse } from '../../redux/slices/coursesSlice'
 import { useDispatch } from 'react-redux'
 import EditIcon from '../../images/edit.svg'
@@ -17,8 +15,6 @@ const EditCourseModal = ({ idToUpdate, editTitle, editDesc }) => {
         description: editDesc,
     })
 
-    // Errors state on form
-    const [errorsState, setErrorsState] = useState([])
 
     //properties of the modal
     const [modal, setModal] = useState(false)
@@ -27,8 +23,6 @@ const EditCourseModal = ({ idToUpdate, editTitle, editDesc }) => {
     const toggle = () => setModal(!modal)
 
     const onChangeHandler = e => {
-        dispatch(clearErrors())
-        dispatch(clearSuccess())
         setCourseState({ ...courseState, [e.target.name]: e.target.value })
     }
 
@@ -39,15 +33,15 @@ const EditCourseModal = ({ idToUpdate, editTitle, editDesc }) => {
 
         // VALIDATE
         if (name.length < 4 || description.length < 4) {
-            setErrorsState(['Insufficient info!'])
+            notify('Insufficient info!')
             return
         }
         else if (name.length > 80) {
-            setErrorsState(['Title is too long!'])
+            notify('Title is too long!')
             return
         }
         else if (description.length > 200) {
-            setErrorsState(['Description is too long!'])
+            notify('Description is too long!')
             return
         }
 
@@ -80,8 +74,6 @@ const EditCourseModal = ({ idToUpdate, editTitle, editDesc }) => {
                 </div>
 
                 <ModalBody>
-                    <Notification errorsState={errorsState} progress={null} initFn="updateCourse" />
-
                     <Form onSubmit={onSubmitHandler}>
                         <FormGroup>
                             <Label for="name">

@@ -2,26 +2,26 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { apiCallHelper, apiCallHelperUpload } from '../configHelpers'
 
 // Async actions with createAsyncThunk
-export const getBlogPosts = createAsyncThunk("blogPosts/getBlogPosts", async ({ limit, skip }, { getState, dispatch }) =>
-  apiCallHelper(`/api/blogPosts?limit=${limit}&skip=${skip ? skip : 0}`, 'get', null, getState, dispatch, 'getBlogPosts'))
+export const getBlogPosts = createAsyncThunk("blogPosts/getBlogPosts", async ({ limit, skip }, { getState }) =>
+  apiCallHelper(`/api/blogPosts?limit=${limit}&skip=${skip ? skip : 0}`, 'get', null, getState, 'getBlogPosts'))
 
-export const getOneBlogPost = createAsyncThunk("blogPosts/getOneBlogPost", async (bPSlug, { getState, dispatch }) =>
-  apiCallHelper(`/api/blogPosts/${bPSlug}`, 'get', null, getState, dispatch, 'getOneBlogPost'))
+export const getOneBlogPost = createAsyncThunk("blogPosts/getOneBlogPost", async (bPSlug, { getState }) =>
+  apiCallHelper(`/api/blogPosts/${bPSlug}`, 'get', null, getState, 'getOneBlogPost'))
 
-export const getBlogPostsByCategory = createAsyncThunk("blogPosts/getBlogPostsByCategory", async (bPCatID, { getState, dispatch }) =>
-  apiCallHelper(`/api/blogposts/postCategory/${bPCatID}`, 'get', null, getState, dispatch, 'getBlogPostsByCategory'))
+export const getBlogPostsByCategory = createAsyncThunk("blogPosts/getBlogPostsByCategory", async (bPCatID, { getState }) =>
+  apiCallHelper(`/api/blogposts/postCategory/${bPCatID}`, 'get', null, getState, 'getBlogPostsByCategory'))
 
-export const createBlogPost = createAsyncThunk("blogPosts/createBlogPost", async (newBlogPost, { getState, dispatch }) =>
-  apiCallHelperUpload('/api/blogPosts', 'post', newBlogPost, getState, dispatch, 'createBlogPost'))
+export const createBlogPost = createAsyncThunk("blogPosts/createBlogPost", async (newBlogPost, { getState }) =>
+  apiCallHelperUpload('/api/blogPosts', 'post', newBlogPost, getState, 'createBlogPost'))
 
-export const updateBlogPost = createAsyncThunk("blogPosts/updateBlogPost", async (updatedBP, { getState, dispatch }) =>
-  apiCallHelper(`/api/blogPosts/${updatedBP.blogPostID}`, 'put', updatedBP, getState, dispatch, 'updateBlogPost'))
+export const updateBlogPost = createAsyncThunk("blogPosts/updateBlogPost", async (updatedBP, { getState }) =>
+  apiCallHelper(`/api/blogPosts/${updatedBP.blogPostID}`, 'put', updatedBP, getState, 'updateBlogPost'))
 
-export const deleteBlogPost = createAsyncThunk("blogPosts/deleteBlogPost", async (id, { getState, dispatch }) =>
-  apiCallHelper(`/api/blogPosts/${id}`, 'delete', null, getState, dispatch, 'deleteBlogPost'))
+export const deleteBlogPost = createAsyncThunk("blogPosts/deleteBlogPost", async (id, { getState }) =>
+  apiCallHelper(`/api/blogPosts/${id}`, 'delete', null, getState, 'deleteBlogPost'))
 
-export const deleteBlogPostImage = createAsyncThunk("blogPosts/deleteBlogPostImage", async (id, { getState, dispatch }) =>
-  apiCallHelper(`/api/imageUploads/${id}`, 'delete', null, getState, dispatch, 'deleteBlogPostImage'))
+export const deleteBlogPostImage = createAsyncThunk("blogPosts/deleteBlogPostImage", async (id, { getState }) =>
+  apiCallHelper(`/api/imageUploads/${id}`, 'delete', null, getState, 'deleteBlogPostImage'))
 
 // Blog posts slice
 const initialState = {
@@ -71,45 +71,18 @@ const blogPostsSlice = createSlice({
     })
 
     // Pending actions
-    builder.addCase(getBlogPosts.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(getOneBlogPost.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(getBlogPostsByCategory.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(createBlogPost.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(updateBlogPost.pending, state => {
-      state.isLoading = true
-    })
-    builder.addCase(deleteBlogPost.pending, state => {
-      state.isLoading = true
-    })
+    builder.addMatcher(
+      (action) => [getBlogPosts.pending, getOneBlogPost.pending, getBlogPostsByCategory.pending, createBlogPost.pending, updateBlogPost.pending, deleteBlogPost.pending].includes(action.type),
+      (state) => {
+        state.isLoading = true
+      })
 
     // Rejected actions
-    builder.addCase(getBlogPosts.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(getOneBlogPost.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(getBlogPostsByCategory.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(createBlogPost.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(updateBlogPost.rejected, state => {
-      state.isLoading = false
-    })
-    builder.addCase(deleteBlogPost.rejected, state => {
-      state.isLoading = false
-    })
-
+    builder.addMatcher(
+      (action) => [getBlogPosts.rejected, getOneBlogPost.rejected, getBlogPostsByCategory.rejected, createBlogPost.rejected, updateBlogPost.rejected, deleteBlogPost.rejected].includes(action.type),
+      (state) => {
+        state.isLoading = false
+      })
   }
 })
 

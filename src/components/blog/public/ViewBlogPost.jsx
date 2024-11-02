@@ -4,7 +4,7 @@ import rehypeHighlight from 'rehype-highlight'
 import { useParams } from 'react-router-dom'
 import { Container, Row, Col } from 'reactstrap'
 import moment from 'moment'
-import { getOneBlogPost } from '../../../redux/slices/blogPostsSlice'
+import { getOneBlogPost } from '../../../redux/slices'
 import { createBlogPostView } from '../../../redux/slices/blogPostsViewsSlice'
 import { useSelector, useDispatch } from "react-redux"
 import { currentUserContext } from '../../../appContexts'
@@ -19,9 +19,8 @@ import './viewPost.css'
 const ViewBlogPost = () => {
 
     const dispatch = useDispatch()
-    const bposts = useSelector(state => state.blogPosts)
-
     const { bPSlug } = useParams()
+    const bposts = useSelector(state => state.blogPosts)
 
     useEffect(() => {
         dispatch(getOneBlogPost(bPSlug))
@@ -46,8 +45,6 @@ const ViewBlogPost = () => {
             })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
-
                 setNewBlogPostView(prevView => {
                     return {
                         ...prevView,

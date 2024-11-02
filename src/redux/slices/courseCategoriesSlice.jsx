@@ -2,17 +2,17 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { apiCallHelper } from '../configHelpers'
 
 // Async actions with createAsyncThunk
-export const getCourseCategories = createAsyncThunk("courseCategories/getCourseCategories", async (_, { getState, dispatch }) =>
-  apiCallHelper('/api/courseCategories', 'get', null, getState, dispatch, 'getCourseCategories'))
+export const getCourseCategories = createAsyncThunk("courseCategories/getCourseCategories", async (_, { getState }) =>
+  apiCallHelper('/api/courseCategories', 'get', null, getState, 'getCourseCategories'))
 
-export const createCourseCategory = createAsyncThunk("courseCategories/createCourseCategory", async (newCourseCategory, { getState, dispatch }) =>
-  apiCallHelper('/api/courseCategories', 'post', newCourseCategory, getState, dispatch, 'createCourseCategory'))
+export const createCourseCategory = createAsyncThunk("courseCategories/createCourseCategory", async (newCourseCategory, { getState }) =>
+  apiCallHelper('/api/courseCategories', 'post', newCourseCategory, getState, 'createCourseCategory'))
 
-export const updateCourseCategory = createAsyncThunk("courseCategories/updateCourseCategory", async (updatedCourseCatg, { getState, dispatch }) =>
-  apiCallHelper(`/api/courseCategories/${updatedCourseCatg.idToUpdate}`, 'put', updatedCourseCatg, getState, dispatch, 'updateCourseCategory'))
+export const updateCourseCategory = createAsyncThunk("courseCategories/updateCourseCategory", async (updatedCourseCatg, { getState }) =>
+  apiCallHelper(`/api/courseCategories/${updatedCourseCatg.idToUpdate}`, 'put', updatedCourseCatg, getState, 'updateCourseCategory'))
 
-export const deleteCourseCategory = createAsyncThunk("courseCategories/deleteCourseCategory", async (courseCatgID, { getState, dispatch }) =>
-  apiCallHelper(`/api/courseCategories/${courseCatgID}`, 'delete', null, getState, dispatch, 'deleteCourseCategory'))
+export const deleteCourseCategory = createAsyncThunk("courseCategories/deleteCourseCategory", async (courseCatgID, { getState }) =>
+  apiCallHelper(`/api/courseCategories/${courseCatgID}`, 'delete', null, getState, 'deleteCourseCategory'))
 
 // Course categories slice
 const initialState = {
@@ -50,32 +50,18 @@ const courseCategoriesSlice = createSlice({
     })
 
     // Pending actions
-    builder.addCase(getCourseCategories.pending, (state, action) => {
-      state.isLoading = true
-    })
-    builder.addCase(createCourseCategory.pending, (state, action) => {
-      state.isLoading = true
-    })
-    builder.addCase(updateCourseCategory.pending, (state, action) => {
-      state.isLoading = true
-    })
-    builder.addCase(deleteCourseCategory.pending, (state, action) => {
-      state.isLoading = true
-    })
+    builder.addMatcher(
+      (action) => [getCourseCategories.pending, createCourseCategory.pending, updateCourseCategory.pending, deleteCourseCategory.pending].includes(action.type),
+      (state) => {
+        state.isLoading = true
+      })
 
     // Rejected actions
-    builder.addCase(getCourseCategories.rejected, (state, action) => {
-      state.isLoading = false
-    })
-    builder.addCase(createCourseCategory.rejected, (state, action) => {
-      state.isLoading = false
-    })
-    builder.addCase(updateCourseCategory.rejected, (state, action) => {
-      state.isLoading = false
-    })
-    builder.addCase(deleteCourseCategory.rejected, (state, action) => {
-      state.isLoading = false
-    })
+    builder.addMatcher(
+      (action) => [getCourseCategories.rejected, createCourseCategory.rejected, updateCourseCategory.rejected, deleteCourseCategory.rejected].includes(action.type),
+      (state) => {
+        state.isLoading = false
+      })
   }
 })
 

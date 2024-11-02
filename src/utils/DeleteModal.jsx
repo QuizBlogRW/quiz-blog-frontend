@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Button, Modal, ModalBody, ModalFooter, NavLink } from 'reactstrap'
 import trash from '../images/trash.svg'
 import { useDispatch } from "react-redux"
-import Notification from './Notification'
 
 const DeleteModal = ({ delID, delTitle, deleteFn, deleteFnName }) => {
 
@@ -34,8 +33,6 @@ const DeleteModal = ({ delID, delTitle, deleteFn, deleteFnName }) => {
                         X
                     </Button>
                 </div>
-
-                <Notification errorsState={null} progress={null} initFn={deleteFnName} />
 
                 <ModalBody className="text-center my-4" style={{ backgroundColor: "#f8d7da", fontSize: ".8rem" }}>
                     Delete "<u>{delTitle}</u>" permanently?

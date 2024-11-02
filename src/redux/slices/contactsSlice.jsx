@@ -4,32 +4,32 @@ import { socket } from '../../utils/socket'
 import { notify } from '../../utils/notifyToast'
 
 // Async actions with createAsyncThunk
-export const getContacts = createAsyncThunk("contacts/getContacts", async (pageNo, { getState, dispatch }) =>
-  apiCallHelper(`/api/contacts?pageNo=${pageNo}`, 'get', null, getState, dispatch, 'getContacts'))
+export const getContacts = createAsyncThunk("contacts/getContacts", async (pageNo, { getState }) =>
+  apiCallHelper(`/api/contacts?pageNo=${pageNo}`, 'get', null, getState, 'getContacts'))
 
-export const getOneContact = createAsyncThunk("contacts/getOneContact", async (contactId, { getState, dispatch }) =>
-  apiCallHelper(`/api/contacts/${contactId}`, 'get', null, getState, dispatch, 'getOneContact'))
+export const getOneContact = createAsyncThunk("contacts/getOneContact", async (contactId, { getState }) =>
+  apiCallHelper(`/api/contacts/${contactId}`, 'get', null, getState, 'getOneContact'))
 
-export const getUserContacts = createAsyncThunk("contacts/getUserContacts", async (userEmail, { getState, dispatch }) =>
-  apiCallHelper(`/api/contacts/sent-by/${userEmail}`, 'get', null, getState, dispatch, 'getUserContacts'))
+export const getUserContacts = createAsyncThunk("contacts/getUserContacts", async (userEmail, { getState }) =>
+  apiCallHelper(`/api/contacts/sent-by/${userEmail}`, 'get', null, getState, 'getUserContacts'))
 
-export const sendMsg = createAsyncThunk("contacts/sendMsg", async (contactMsg, { getState, dispatch }) =>
-  apiCallHelper('/api/contacts', 'post', contactMsg, getState, dispatch, 'sendMsg'))
+export const sendMsg = createAsyncThunk("contacts/sendMsg", async (contactMsg, { getState }) =>
+  apiCallHelper('/api/contacts', 'post', contactMsg, getState, 'sendMsg'))
 
-export const replyContact = createAsyncThunk("contacts/replyContact", async ({ idToUpdate, reply }, { getState, dispatch }) =>
-  apiCallHelper(`/api/contacts/${idToUpdate}`, 'put', reply, getState, dispatch, 'replyContact'))
+export const replyContact = createAsyncThunk("contacts/replyContact", async ({ idToUpdate, reply }, { getState }) =>
+  apiCallHelper(`/api/contacts/${idToUpdate}`, 'put', reply, getState, 'replyContact'))
 
-export const deleteContact = createAsyncThunk("contacts/deleteContact", async (contactID, { getState, dispatch }) =>
-  apiCallHelper(`/api/contacts/${contactID}`, 'delete', null, getState, dispatch, 'deleteContact'))
+export const deleteContact = createAsyncThunk("contacts/deleteContact", async (contactID, { getState }) =>
+  apiCallHelper(`/api/contacts/${contactID}`, 'delete', null, getState, 'deleteContact'))
 
-export const getCreateRoom = createAsyncThunk("contacts/getCreateRoom", async (oON1room, { getState, dispatch }) =>
-  apiCallHelper(`/api/chatrooms/rooms/room/${oON1room.roomName}`, 'post', oON1room, getState, dispatch, 'getCreateRoom'))
+export const getCreateRoom = createAsyncThunk("contacts/getCreateRoom", async (oON1room, { getState }) =>
+  apiCallHelper(`/api/chatrooms/rooms/room/${oON1room.roomName}`, 'post', oON1room, getState, 'getCreateRoom'))
 
-export const getRoomMessages = createAsyncThunk("contacts/getRoomMessages", async (roomID, { getState, dispatch }) =>
-  apiCallHelper(`/api/chatrooms/messages/room/${roomID}`, 'get', null, getState, dispatch, 'getRoomMessages'))
+export const getRoomMessages = createAsyncThunk("contacts/getRoomMessages", async (roomID, { getState }) =>
+  apiCallHelper(`/api/chatrooms/messages/room/${roomID}`, 'get', null, getState, 'getRoomMessages'))
 
-export const sendRoomMessage = createAsyncThunk("contacts/sendRoomMessage", async (roomMessage, { getState, dispatch }) =>
-  apiCallHelper('/api/chatrooms/messages', 'post', roomMessage, getState, dispatch, 'sendRoomMessage'))
+export const sendRoomMessage = createAsyncThunk("contacts/sendRoomMessage", async (roomMessage, { getState }) =>
+  apiCallHelper('/api/chatrooms/messages', 'post', roomMessage, getState, 'sendRoomMessage'))
 
 
 // Contacts slice
@@ -104,62 +104,18 @@ const contactsSlice = createSlice({
     })
 
     // Pending actions
-    builder.addCase(getContacts.pending, (state, action) => {
-      state.isLoading = true
-    })
-    builder.addCase(getOneContact.pending, (state, action) => {
-      state.isLoading = true
-    })
-    builder.addCase(getUserContacts.pending, (state, action) => {
-      state.isLoading = true
-    })
-    builder.addCase(sendMsg.pending, (state, action) => {
-      state.isLoading = true
-    })
-    builder.addCase(replyContact.pending, (state, action) => {
-      state.isLoading = true
-    })
-    builder.addCase(deleteContact.pending, (state, action) => {
-      state.isLoading = true
-    })
-    builder.addCase(getCreateRoom.pending, (state, action) => {
-      state.isLoading = true
-    })
-    builder.addCase(getRoomMessages.pending, (state, action) => {
-      state.isLoading = true
-    })
-    builder.addCase(sendRoomMessage.pending, (state, action) => {
-      state.isLoading = true
-    })
+    builder.addMatcher(
+      (action) => [getContacts.pending, getOneContact.pending, getUserContacts.pending, sendMsg.pending, replyContact.pending, deleteContact.pending, getCreateRoom.pending, getRoomMessages.pending, sendRoomMessage.pending].includes(action.type),
+      (state) => {
+        state.isLoading = true
+      })
 
     // Rejected actions
-    builder.addCase(getContacts.rejected, (state, action) => {
-      state.isLoading = false
-    })
-    builder.addCase(getOneContact.rejected, (state, action) => {
-      state.isLoading = false
-    })
-    builder.addCase(getUserContacts.rejected, (state, action) => {
-      state.isLoading = false
-    })
-    builder.addCase(sendMsg.rejected, (state, action) => {
-      state.isLoading = false
-    })
-    builder.addCase(replyContact.rejected, (state, action) => {
-      state.isLoading = false
-    })
-    builder.addCase(deleteContact.rejected, (state, action) => {
-      state.isLoading = false
-    })
-    builder.addCase(getCreateRoom.rejected, (state, action) => {
-      state.isLoading = false
-    })
-    builder.addCase(getRoomMessages.rejected, (state, action) => {
-      state.isLoading = false
-    })
-    builder.addCase(sendRoomMessage.rejected, (state, action) => {
-      state.isLoading = false
-    })
+    builder.addMatcher(
+      (action) => [getContacts.rejected, getOneContact.rejected, getUserContacts.rejected, sendMsg.rejected, replyContact.rejected, deleteContact.rejected, getCreateRoom.rejected, getRoomMessages.rejected, sendRoomMessage.rejected].includes(action.type),
+      (state) => {
+        state.isLoading = false
+      })
 
   }
 })

@@ -2,17 +2,17 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { apiCallHelper } from '../configHelpers'
 
 // Async actions with createAsyncThunk
-export const getPostCategories = createAsyncThunk("postCategories/getPostCategories", async (_, { getState, dispatch }) =>
-  apiCallHelper('/api/postCategories', 'get', null, getState, dispatch, 'getPostCategories'))
+export const getPostCategories = createAsyncThunk("postCategories/getPostCategories", async (_, { getState }) =>
+  apiCallHelper('/api/postCategories', 'get', null, getState, 'getPostCategories'))
 
-export const createPostCategory = createAsyncThunk("postCategories/createPostCategory", async (newPostCategory, { getState, dispatch }) =>
-  apiCallHelper('/api/postCategories', 'post', newPostCategory, getState, dispatch, 'createPostCategory'))
+export const createPostCategory = createAsyncThunk("postCategories/createPostCategory", async (newPostCategory, { getState }) =>
+  apiCallHelper('/api/postCategories', 'post', newPostCategory, getState, 'createPostCategory'))
 
-export const updatePostCategory = createAsyncThunk("postCategories/updatePostCategory", async (updatedPostCatg, { getState, dispatch }) =>
-  apiCallHelper(`/api/postCategories/${updatedPostCatg.idToUpdate}`, 'put', updatedPostCatg, getState, dispatch, 'updatePostCategory'))
+export const updatePostCategory = createAsyncThunk("postCategories/updatePostCategory", async (updatedPostCatg, { getState }) =>
+  apiCallHelper(`/api/postCategories/${updatedPostCatg.idToUpdate}`, 'put', updatedPostCatg, getState, 'updatePostCategory'))
 
-export const deletePostCategory = createAsyncThunk("postCategories/deletePostCategory", async (postCatgID, { getState, dispatch }) =>
-  apiCallHelper(`/api/postCategories/${postCatgID}`, 'delete', null, getState, dispatch, 'deletePostCategory'))
+export const deletePostCategory = createAsyncThunk("postCategories/deletePostCategory", async (postCatgID, { getState }) =>
+  apiCallHelper(`/api/postCategories/${postCatgID}`, 'delete', null, getState, 'deletePostCategory'))
 
 // Post categories slice
 const initialState = {
@@ -50,33 +50,18 @@ const postCategoriesSlice = createSlice({
     })
 
     // Pending actions
-    builder.addCase(getPostCategories.pending, (state, action) => {
-      state.isLoading = true
-    })
-    builder.addCase(createPostCategory.pending, (state, action) => {
-      state.isLoading = true
-    })
-    builder.addCase(updatePostCategory.pending, (state, action) => {
-      state.isLoading = true
-    })
-    builder.addCase(deletePostCategory.pending, (state, action) => {
-      state.isLoading = true
-    })
+    builder.addMatcher(
+      (action) => [getPostCategories.pending, createPostCategory.pending, updatePostCategory.pending, deletePostCategory.pending].includes(action.type),
+      (state) => {
+        state.isLoading = true
+      })
 
     // Rejected actions
-    builder.addCase(getPostCategories.rejected, (state, action) => {
-      state.isLoading = false
-    })
-    builder.addCase(createPostCategory.rejected, (state, action) => {
-      state.isLoading = false
-    })
-    builder.addCase(updatePostCategory.rejected, (state, action) => {
-      state.isLoading = false
-    })
-    builder.addCase(deletePostCategory.rejected, (state, action) => {
-      state.isLoading = false
-    })
-
+    builder.addMatcher(
+      (action) => [getPostCategories.rejected, createPostCategory.rejected, updatePostCategory.rejected, deletePostCategory.rejected].includes(action.type),
+      (state) => {
+        state.isLoading = false
+      })
   }
 })
 

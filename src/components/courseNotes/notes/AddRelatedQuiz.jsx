@@ -4,7 +4,6 @@ import { getQuizesByNotes } from '../../../redux/slices/quizesSlice'
 import { addNotesQuizes } from '../../../redux/slices/notesSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import AddIcon from '../../../images/plus.svg'
-import Notification from '../../../utils/Notification'
 
 
 const AddRelatedQuiz = ({ noteID, courseCategoryID }) => {
@@ -58,8 +57,6 @@ const AddRelatedQuiz = ({ noteID, courseCategoryID }) => {
                         X
                     </Button>
                 </div>
-
-                <Notification errorsState={null} progress={null} initFn="addNotesQuizes" />
 
                 <ModalBody>
                     <Form onSubmit={onSubmitHandler}>

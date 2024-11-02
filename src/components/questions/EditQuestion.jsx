@@ -3,12 +3,9 @@ import { useParams, Link } from 'react-router-dom'
 import { Button, Row, Col, Form, FormGroup, Label, Input, Breadcrumb, BreadcrumbItem } from 'reactstrap'
 import Dashboard from '../dashboard/Dashboard'
 import { getOneQuestion, updateQuestion } from '../../redux/slices/questionsSlice'
-import { clearErrors } from '../../redux/slices/errorSlice'
-import { clearSuccess } from '../../redux/slices/successSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import QBLoadingSM from '../rLoading/QBLoadingSM'
 import { authContext, logRegContext } from '../../appContexts'
-import Notification from '../../utils/Notification'
 
 const EditQuestion = () => {
 
@@ -24,8 +21,6 @@ const EditQuestion = () => {
     // Access route parameters & history
     const { questionID } = useParams()
 
-    // Errors state on form
-    const [errorsState, setErrorsState] = useState([])
 
     // Lifecycle methods
     useEffect(() => {
@@ -53,9 +48,6 @@ const EditQuestion = () => {
     }
 
     const onFileHandler = (e) => {
-        setErrorsState([])
-        dispatch(clearErrors())
-        dispatch(clearSuccess())
         setQuestion_image(e.target.files[0])
     }
 
@@ -83,11 +75,11 @@ const EditQuestion = () => {
 
         // VALIDATE
         if (questionTextState.questionText.length < 4) {
-            setErrorsState(['Insufficient info!'])
+            notify('Insufficient info!')
             return
         }
         else if (questionTextState.questionText.length > 700) {
-            setErrorsState(['Question is too long!'])
+            notify('Question is too long!')
             return
         }
 
@@ -144,7 +136,6 @@ const EditQuestion = () => {
                         </Breadcrumb>
                     </Row>
 
-                    <Notification errorsState={errorsState} progress={null} initFn="updateQuestion" />
                     <FormGroup row className="mx-0">
                         <Label sm={2}>Question Edit</Label>
                         <Col sm={10}>

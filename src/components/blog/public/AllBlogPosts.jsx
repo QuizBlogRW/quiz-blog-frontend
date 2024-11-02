@@ -1,30 +1,28 @@
-import React, { useEffect, lazy, Suspense, useContext } from 'react'
+import React, { useEffect, lazy, Suspense } from 'react'
+import { Link, useLocation } from 'react-router-dom'
+import { useSelector, useDispatch } from "react-redux"
 import { Container, Col, Row, ListGroup, ListGroupItem } from 'reactstrap'
 
-import { getBlogPosts } from '../../../redux/slices/blogPostsSlice'
-import { useSelector, useDispatch } from "react-redux"
+import { getBlogPosts, getPostCategories } from '@/redux/slices'
 import ResponsiveAd from '../../adsenses/ResponsiveAd'
 import SquareAd from '../../adsenses/SquareAd'
 import QBLoadingSM from '../../rLoading/QBLoadingSM'
 import './allBlogPosts.css'
-import { Link, useLocation } from 'react-router-dom'
-import { bPcatsContext } from '../../../appContexts'
 
 const BlogPostItem = lazy(() => import('./BlogPostItem'))
 
 const AllBlogPosts = () => {
 
+  let location = useLocation()
+
   // Redux
   const dispatch = useDispatch()
   const bposts = useSelector(state => state.blogPosts)
-
-  // context
-  const bPcats = useContext(bPcatsContext)
-
-  let location = useLocation()
+  const bPcats = useSelector(state => state.postCategories)
 
   // Lifecycle methods
   useEffect(() => {
+    dispatch(getPostCategories())
     dispatch(getBlogPosts({}))
   }, [dispatch])
 
@@ -69,6 +67,7 @@ const AllBlogPosts = () => {
 
         <Col sm="6" className="mt-md-2">
           <Suspense fallback={<QBLoadingSM />}>
+
             {bposts.isLoading ?
               <QBLoadingSM /> :
 
