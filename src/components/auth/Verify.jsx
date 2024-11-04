@@ -6,6 +6,7 @@ import { notify } from '@/utils/notifyToast'
 import { verify } from '@/redux/slices/authSlice'
 import QBLoading from '@/components/rLoading/QBLoading'
 import SquareAd from '@/components/adsenses/SquareAd'
+import ResponsiveAd from '@/components/adsenses/ResponsiveAd'
 
 export function Verify() {
 
