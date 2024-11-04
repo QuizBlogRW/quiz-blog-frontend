@@ -138,10 +138,10 @@ const App = () => {
                                     <Route path="/about" element={<About />} />
                                     <Route path="/privacy" element={<Privacy />} />
                                     <Route path="/disclaimer" element={<Disclaimer />} />
-                                    <Route exact path="/unsubscribe" element={<Unsubscribe />} />
-                                    <Route exact path="/forgot-password" element={<ForgotPassword />} />
-                                    <Route exact path="/reset-password" element={<ResetPassword />} />
-                                    <Route exact path="/verify" element={<Verify />} />
+                                    <Route path="/unsubscribe" element={<Unsubscribe />} />
+                                    <Route path="/forgot-password" element={<ForgotPassword />} />
+                                    <Route path="/reset-password" element={<ResetPassword />} />
+                                    <Route path="/verify" element={<Verify />} />
                                     <Route exact path="/category/:categoryId" element={<SingleCategory />} />
                                     <Route exact path="/edit-profile/:userId" element={<EditProfile />} />
                                     <Route exact path="/view-quiz/:quizSlug" element={<GetReady />} />
