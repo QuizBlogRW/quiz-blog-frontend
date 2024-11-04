@@ -5,6 +5,7 @@ import { Container, Row, Col, Input, Button } from 'reactstrap'
 import { notify } from '@/utils/notifyToast'
 import { verify } from '@/redux/slices/authSlice'
 import QBLoading from '@/components/rLoading/QBLoading'
+import SquareAd from '@/components/adsenses/SquareAd'
 
 export function Verify() {
 
