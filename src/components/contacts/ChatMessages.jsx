@@ -13,8 +13,7 @@ import { socket } from '@/utils/socket'
 import SingleReply from './SingleReply'
 
 const ChatMessages = ({ onlineList }) => {
-    const contacts = useSelector(state => state.contacts)
-    const { oneContact, isLoading } = contacts
+    const { oneContact, isLoading } = useSelector(state => state.contacts)
     const dispatch = useDispatch()
     const currentUser = useContext(currentUserContext)
     const lastMessageRef = useRef(null)
@@ -24,17 +23,21 @@ const ChatMessages = ({ onlineList }) => {
 
     const toMail = currentUser.role === 'Visitor' ? 'quizblog.rw@gmail.com' : oneContact?.email
     const whoWith = currentUser.role === 'Visitor' ? { username: 'Quiz-Blog Rwanda', email: 'quizblog.rw@gmail.com' } : { username: oneContact?.contact_name, email: oneContact?.email }
-    const matchingUsr = onlineList.find(user => user.email === toMail)
-    const onlineStatus = matchingUsr && matchingUsr.email === whoWith.email ? '🟢' : '🔴'
+    const onlineStatus = onlineList.some(user => user.email === toMail) ? '🟢' : '🔴'
 
     useEffect(() => {
-        try {
-            if (oneContact?.message) {
+        if (oneContact?.message) {
+            try {
                 const content = convertFromRaw(JSON.parse(oneContact.message))
                 setEditorState(EditorState.createWithContent(content))
-            }
-        } catch (error) { }
+            } catch (error) { }
+        }
+    }, [oneContact])
 
+    useEffect(() => {
+        if (oneContact) {
+            setReplies(oneContact.replies || [])
+        }
     }, [oneContact])
 
     const sendMessage = e => {
@@ -52,6 +55,7 @@ const ChatMessages = ({ onlineList }) => {
         }
 
         dispatch(replyContact({ idToUpdate: oneContact._id, reply: newReply }))
+        setEditorState(EditorState.createEmpty())
     }
 
     useEffect(() => {

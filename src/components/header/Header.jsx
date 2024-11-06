@@ -146,15 +146,15 @@ const Header = ({ textContent }) => {
         <>
             <span className="me-1 me-md-4 login-modal">
                 <NavLink onClick={toggleL} style={{
-                    border: `3px solid ${scrollPosition <= 70 ? '#ffc107' : clr}`, color: clr, fontWeight: "bold"
+                    border: `2px solid ${scrollPosition <= 70 ? '#ffc107' : clr}`, color: clr, fontWeight: "bold"
                 }}>
                     {textContent || 'Login'}
                 </NavLink>
                 <LoginModal isOpenL={isOpenL} toggleL={toggleL} toggleR={toggleR} />
             </span>
 
-            <span className="me-1 register-modal">
-                <NavLink onClick={toggleR} style={{ border: `3px solid ${scrollPosition <= 70 ? '#ffc107' : clr}`, color: clr, fontWeight: "bold" }}>
+            <span className="me-0 register-modal">
+                <NavLink onClick={toggleR} style={{ border: `2px solid ${scrollPosition <= 70 ? '#ffc107' : clr}`, color: clr, fontWeight: "bold" }}>
                     Register
                 </NavLink>
                 <RegisterModal isOpenR={isOpenR} toggleR={toggleR} toggleL={toggleL} />
@@ -169,6 +169,7 @@ const Header = ({ textContent }) => {
             <header style={{ boxShadow: "0 1px 2px -1px rgba(0,0,0,0.5)" }} className="sticky-top">
 
                 <Navbar light expand="lg" className="px-0 px-lg-5 pb-2 pt-1 py-md-3" style={{ backgroundColor: bgColor, color: clr }}>
+                    
                     <NavbarBrand href="/" style={{ fontWeight: "900" }} className='mb-1'>
                         <img src={logo} alt="Quiz-Blog Logo" style={{ border: `3px solid ${logoBorder}`, borderRadius: "10px", maxHeight: "3.2rem" }} />
                     </NavbarBrand>

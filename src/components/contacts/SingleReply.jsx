@@ -8,12 +8,11 @@ const SingleReply = ({ reply }) => {
     const [editorState, setEditorState] = useState(() => EditorState.createEmpty())
 
     useEffect(() => {
-        if (reply && reply.message) {
+        if (reply?.message) {
             try {
                 const content = convertFromRaw(JSON.parse(reply.message))
                 setEditorState(EditorState.createWithContent(content))
-            } catch (error) {
-                // Fallback to plain text if the message is not in JSON format
+            } catch {
                 const content = convertFromRaw({
                     entityMap: {},
                     blocks: [{ text: reply.message, type: 'unstyled' }]
@@ -23,8 +22,7 @@ const SingleReply = ({ reply }) => {
         }
     }, [reply])
 
-    const { email, reply_date } = reply
-    const isCurrentUser = email === currentUser.email
+    const isCurrentUser = reply.email === currentUser.email
 
     const bubbleStyle = useMemo(() => ({
         backgroundColor: isCurrentUser ? '#f1f0f0' : '#6a89cc',
@@ -42,16 +40,12 @@ const SingleReply = ({ reply }) => {
 
     return (
         <div className={`mt-2 mt-lg-3 ${isCurrentUser ? 'text-end' : 'text-start'}`}>
-            <div
-                className={`bubble d-inline-block p-2 ${isCurrentUser ? 'ms-auto' : 'me-auto'}`}
-                style={bubbleStyle}>
+            <div className={`bubble d-inline-block p-2 ${isCurrentUser ? 'ms-auto' : 'me-auto'}`} style={bubbleStyle}>
                 <Editor editorState={editorState} readOnly={true} />
             </div>
-
             <small className="text-info">
-                <i className={`${isCurrentUser ? 'text-end' : 'text-start'} d-block mt-2`}
-                    style={{ fontSize: ".7rem", color: "#999" }}>
-                    {moment(new Date(reply_date)).format('YYYY-MM-DD, HH:mm')}
+                <i className={`d-block mt-2 ${isCurrentUser ? 'text-end' : 'text-start'}`} style={{ fontSize: ".7rem", color: "#999" }}>
+                    {moment(reply.reply_date).format('YYYY-MM-DD, HH:mm')}
                 </i>
             </small>
         </div>

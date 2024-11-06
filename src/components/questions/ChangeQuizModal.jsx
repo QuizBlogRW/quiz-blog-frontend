@@ -27,7 +27,7 @@ const ChangeQuizModal = ({ questionID, oldQuizID, questionCatID }) => {
     }, [questionCatID, dispatch])
     const onChangeHandler = e => setNewQuestionState({ ...newQuestionState, [e.target.name]: e.target.value })
 
-    const onSubmitHandler = e => {
+    const onSubmitHandler = async (e) => {
         e.preventDefault()
 
         const formData = new FormData()
@@ -35,8 +35,12 @@ const ChangeQuizModal = ({ questionID, oldQuizID, questionCatID }) => {
         formData.append('oldQuizID', oldQuizID)
         formData.append('last_updated_by', auth.isLoading === false ? auth.user._id : null)
 
-        dispatch(updateQuestion({ questionID: newQuestionState.questionID, formData }))
-        if (modal) toggle()
+        const res = await dispatch(updateQuestion({ questionID: newQuestionState.questionID, formData }))
+        if (res.payload) {
+            modal && toggle()
+            window.location.reload()
+            
+        }
     }
 
     return (
