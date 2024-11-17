@@ -25,8 +25,14 @@ export const apiCallHelper = async (url, method, body, getState, actionType) => 
         const headers = { 'Content-Type': 'application/json', 'x-auth-token': getState().auth.token }
         const response = await axiosInstance[method](url, method === 'get' || method === 'delete' ? { headers } : body, { headers })
 
-        if ((response.status === 200 || response.status === 201) && reloadActionTypes.includes(actionType)) {
-            setTimeout(() => { window.location.reload() }, RELOAD_TIMEOUT)
+        if ((response.status === 200 || response.status === 201) && method !== 'get') {
+
+            if (reloadActionTypes.includes(actionType)) {
+                setTimeout(() => { window.location.reload() }, RELOAD_TIMEOUT)
+            }
+            else {
+                notify(response.data.msg ? response.data.msg : '✅ Success', 'success')
+            }
         }
 
         return response.data

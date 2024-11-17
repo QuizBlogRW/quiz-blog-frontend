@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
 import { sendBroadcast } from '../../redux/slices/broadcastsSlice'
-import { useSelector, useDispatch } from "react-redux"
+import { useDispatch } from "react-redux"
 import { authContext } from '../../appContexts'
 
 const BroadcastModal = () => {

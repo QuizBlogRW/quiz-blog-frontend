@@ -104,11 +104,12 @@ const App = () => {
 
             if (percent > 0 && percent < 100) {
 
-                setModal(true)
                 setPercentage(percent)
+                setModal(true)
             }
+            console.log(currentUser, percent)
         }
-    }, [auth])
+    }, [currentUser])
 
     return (
         <authContext.Provider value={auth}>

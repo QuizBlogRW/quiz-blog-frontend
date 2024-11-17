@@ -52,7 +52,7 @@ const Header = ({ textContent }) => {
                 <EditPictureModal bgColor={bgColor} clr={clr} />
                 <Link to="/#">
                     <small className="ms-2 d-none d-lg-flex fw-bolder" style={{ color: clr }}>
-                        {currentUser && currentUser.name.toLowerCase().charAt(0).toUpperCase() + currentUser.name.slice(1).split(" ")[0]}
+                        {currentUser && currentUser.name && currentUser.name.toLowerCase().charAt(0).toUpperCase() + currentUser.name.slice(1).split(" ")[0]}
                     </small>
                 </Link>
 

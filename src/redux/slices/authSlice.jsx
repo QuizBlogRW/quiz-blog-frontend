@@ -105,7 +105,7 @@ const authSlice = createSlice({
       state.user = action.payload.user
       localStorage.setItem('token', action.payload.current_token)
       localStorage.setItem('user', JSON.stringify(action.payload.user))
-      notify('Login successful! Welcome back!')
+      notify(`Welcome back ${action.payload.user.name}!`)
     })
     builder.addCase(register.fulfilled, (state, action) => {
       state.isLoading = false
@@ -143,7 +143,7 @@ const authSlice = createSlice({
     })
     builder.addCase(updateProfile.fulfilled, (state, action) => {
       state.isLoading = false
-      state.user = action.payload
+      state.user = action.payload.user
     })
     builder.addCase(updateProfileImage.fulfilled, (state, action) => {
       state.isLoading = false

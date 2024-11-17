@@ -11,145 +11,110 @@ import QBLoadingSM from '../rLoading/QBLoadingSM'
 
 const EditProfile = () => {
 
-    // Access route parameters & history
     const { userId } = useParams()
-
-    // Context API data
     const auth = useContext(authContext)
     const currentUser = useContext(currentUserContext)
     const { toggleL } = useContext(logRegContext)
 
-    // Redux - Selecting the state from the store
     const schools = useSelector(state => state.schools.allSchools)
     const schoolLevels = useSelector(state => state.levels.schoolLevels)
     const levelFaculties = useSelector(state => state.faculties.levelFaculties)
 
-    const profile = currentUser && currentUser
-    const [profileState, setProfileState] = useState(profile)
-    useEffect(() => { setProfileState(profile) }, [profile])
+    const dispatch = useDispatch()
 
-    const inters = profile && profile.interests
-    const [interestsState, setInterestsState] = useState(inters && inters)
-    useEffect(() => { setInterestsState(inters) }, [inters])
-
-    // States 
-    const [schoolState, setSchoolState] = useState([])
-    const [levelsState, setLevelsState] = useState([])
-    const [facultiesState, setFacultiesState] = useState([])
+    const [profileState, setProfileState] = useState(currentUser || {})
+    const [interestsState, setInterestsState] = useState(currentUser?.interests || [])
     const [yearsState, setYearsState] = useState([])
 
-    // Get schools and update school state
-    const dispatch = useDispatch()
-    useEffect(() => { dispatch(getSchools()) }, [dispatch])
-    useEffect(() => { setSchoolState(schools && schools) }, [schools])
+    useEffect(() => {
 
-    // Get levels from selected school and update levels state
-    const levelsHandler = (e) => {
-        e.preventDefault()
-        setProfileState(profileState => ({ ...profileState, school: e.target.value }))
-        dispatch(fetchSchoolLevels(e.target.value))
-    }
-    useEffect(() => { setLevelsState(schoolLevels && schoolLevels) }, [schoolLevels])
+        setProfileState(currentUser || {})
+        setInterestsState(currentUser?.interests || [])
+    }, [currentUser])
 
-    // Get faculties from selected level and update faculties state
-    const facultiesHandler = (e) => {
-        e.preventDefault()
-        setProfileState(profileState => ({ ...profileState, level: e.target.value }))
-        dispatch(fetchLevelFaculties(e.target.value))
-    }
-    useEffect(() => { setFacultiesState(levelFaculties && levelFaculties) }, [levelFaculties])
+    useEffect(() => {
+        dispatch(getSchools())
+    }, [dispatch])
 
-    // Get years from selected faculty and update years state
-    const yearsHandler = (e) => {
-        e.preventDefault()
-        setProfileState(profileState => ({ ...profileState, faculty: e.target.value }))
-        const selectedFaculty = facultiesState.filter(fac => fac._id === e.target.value)
-        setYearsState(selectedFaculty && selectedFaculty[0].years)
-    }
-    useEffect(() => { setYearsState(yearsState) }, [yearsState])
+    useEffect(() => {
+        if (profileState.school) {
+            dispatch(fetchSchoolLevels(profileState.school._id))
+        }
+    }, [dispatch, profileState.school])
 
-    // Handle select fields for all selects
-    const allSelectsHandler = (e) => {
-        e.preventDefault()
-        setProfileState(profileState => ({ ...profileState, year: e.target.value }))
-    }
+    useEffect(() => {
+        if (profileState.level) {
+            dispatch(fetchLevelFaculties(profileState.level._id))
+        }
+    }, [dispatch, profileState.level])
 
-    // Handle non select fields
-    const onChangeHandler = e => {
-        const { name, value } = e.target
-        setProfileState(profileState => ({ ...profileState, [name]: value }))
-    }
+    useEffect(() => {
+        if (profileState.faculty) {
+            const faculty = levelFaculties.find(fac => fac._id === profileState.faculty._id)
+            setYearsState(faculty?.years || [])
+        }
+    }, [profileState.faculty, levelFaculties])
 
-    const handleInterestsChangeInput = (id, e) => {
-        const { name, value } = e.target
-        const updatedInterests = interestsState && interestsState.map((oneInterest, index) => {
+    const handleSelectChange = (e, field, fetchAction, list) => {
+        const value = e.target.value || null;
 
-            if (id === index) {
-                oneInterest[name] = value
-            }
-            return oneInterest
+        const selectedObject = list ? list.find(item => item._id === value) : value;
+
+        setProfileState(prevState => {
+            const newState = { ...prevState, [field]: selectedObject }
+            return newState
         })
-        setInterestsState((updatedInterests))
+
+        if (fetchAction && value) dispatch(fetchAction(value))
     }
 
-    const handleAddFields = () => {
-        setInterestsState([...interestsState, { favorite: '' }])
+    const handleInputChange = e => {
+        const { name, value } = e.target
+        setProfileState(prevState => ({ ...prevState, [name]: value }))
     }
 
-    const handleRemoveFields = _id => {
-        const values = [...interestsState]
-        values.splice(values.findIndex((value, index) => index === _id), 1)
-        setInterestsState(values)
+    const handleInterestsChange = (index, e) => {
+        const { name, value } = e.target
+        setInterestsState(prevState => prevState.map((interest, i) => i === index ? { ...interest, [name]: value } : interest))
     }
 
-    const handleSubmit = (e) => {
+    const handleAddInterest = () => {
+        setInterestsState(prevState => [...prevState, { favorite: '' }])
+    }
+
+    const handleRemoveInterest = index => {
+        setInterestsState(prevState => prevState.filter((_, i) => i !== index))
+    }
+
+    const handleSubmit = e => {
         e.preventDefault()
+        const { name, school, level, faculty, year, about } = profileState
 
-        // VALIDATE
-        if (profileState.name.about < 4 || profileState.name.length < 4 || profileState.school.length < 4 || profileState.year.length < 4 || profileState.faculty.length < 4 || profileState.level.length < 4) {
-            notify('Insufficient info!')
-            return
-        }
-
-        else if (profileState.name.length > 100 || profileState.school.length > 100 || profileState.year.length > 100 || profileState.faculty.length > 100 || profileState.level.length > 100) {
-            notify('Too long!')
-            return
-        }
-
-        else if (profileState.about.length > 2000) {
-            notify('Too long!')
-            return
-        }
-
-        else if (interestsState && interestsState.length > 20) {
-            alert('Limit reached!')
-            return
-        }
+        if (name.length < 4) return notify('Insufficient info!')
+        if (school && (!year || !faculty || !level)) return notify('Year, Faculty & Level required!')
+        if (about.length > 2000) return notify('Too long!')
+        if (interestsState.length > 20) return alert('Limit reached!')
 
         const updatedProfile = {
             uId: userId,
-            name: profileState.name,
-            school: profileState.school,
-            level: profileState.level,
-            faculty: profileState.faculty,
-            year: profileState.year,
+            name,
+            school: school || null,
+            level: level || null,
+            faculty: faculty || null,
+            year: year || null,
             interests: interestsState,
-            about: profileState.about
+            about
         }
-
-        // Attempt to update
         dispatch(updateProfile(updatedProfile))
     }
 
     return (
         auth.isAuthenticated ?
-
             <Form className="my-3 mt-lg-5 mx-3 mx-lg-5 edit-question" onSubmit={handleSubmit}>
-
                 <Row className="mb-0 mb-lg-3 mx-0">
                     <Breadcrumb>
-                        <BreadcrumbItem>{currentUser && currentUser.name}</BreadcrumbItem>
-                        <BreadcrumbItem>{currentUser && currentUser.email}</BreadcrumbItem>
+                        <BreadcrumbItem>{currentUser?.name}</BreadcrumbItem>
+                        <BreadcrumbItem>{currentUser?.email}</BreadcrumbItem>
                         <BreadcrumbItem active>Edit Profile</BreadcrumbItem>
                     </Breadcrumb>
                 </Row>
@@ -157,7 +122,7 @@ const EditProfile = () => {
                 <FormGroup row className="mx-0">
                     <Label sm={3}>Update Name</Label>
                     <Col sm={7}>
-                        <Input type="text" name="name" value={(profileState && profileState.name) || ''} placeholder="Name here ..." onChange={onChangeHandler} />
+                        <Input type="text" name="name" value={profileState.name || ''} placeholder="Name here ..." onChange={handleInputChange} />
                     </Col>
                     <Col sm={2}>
                         <Input disabled type="text" value='Current Record' className='text-success' />
@@ -167,136 +132,99 @@ const EditProfile = () => {
                 <FormGroup row className="mx-0">
                     <Label sm={3}>Update School</Label>
                     <Col sm={7}>
-                        <Input type="select" className="form-control" onChange={levelsHandler} value={(profileState && profileState.school) || ''} required>
-                            {profileState && profileState.school ? <option>{profileState.school.title}</option> : <option>-- Select your school--</option>}
-
-                            {schoolState && schoolState.map(school =>
-                                <option key={school._id} value={school._id}>
-                                    {school.title}
-                                </option>
-                            )}
+                        <Input type="select" className="form-control" onChange={e => handleSelectChange(e, 'school', fetchSchoolLevels, schools)} value={profileState.school?._id || ''} required>
+                            {profileState.school ? <option>{profileState.school.title}</option> : <option>-- Select your school--</option>}
+                            {schools.map(school => <option key={school._id} value={school._id}>{school.title}</option>)}
                         </Input>
                     </Col>
                     <Col sm={2}>
-                        <Input disabled type="text"
-                            value={(profileState && profileState.school && profileState.school.title) || ''}
-                            style={{ color: "#157A6E" }}
-                        />
+                        <Input disabled type="text" value={profileState.school?.title || ''} style={{ color: "#157A6E" }} />
                     </Col>
                 </FormGroup>
-
-                <FormGroup row className={`mx-0 ${levelsState && levelsState.length > 0 ? '' : 'd-none'}`}>
+                {
+                    console.log('profileState.level', profileState.level)
+                }
+                <FormGroup row className={`mx-0`}>
                     <Label sm={3}>Update Level</Label>
                     <Col sm={7}>
-                        <Input type="select" className="form-control" onChange={facultiesHandler}
-                            value={(profileState && profileState.level) || ''} required>
-
-                            {profileState && profileState.level ? <option>{profileState.level.title}</option> : <option>-- Select your level--</option>}
-                            {levelsState && levelsState.map(level =>
-                                <option key={level._id} value={level._id}>
-                                    {level.title}
-                                </option>
-                            )}
+                        <Input type="select" className="form-control" onChange={e => handleSelectChange(e, 'level', fetchLevelFaculties, schoolLevels)} value={profileState.level?._id || ''} required>
+                            {profileState.level ? <option>{profileState.level.title}</option> : <option>-- Select your level--</option>}
+                            {schoolLevels.map(level => <option key={level._id} value={level._id}>{level.title}</option>)}
                         </Input>
                     </Col>
                     <Col sm={2}>
-                        <Input disabled type="text"
-                            value={(profileState && profileState.level && profileState.level.title) || ''} />
+                        <Input disabled type="text" value={profileState.level?.title || ''} />
                     </Col>
                 </FormGroup>
 
-                <FormGroup row className={`mx-0 ${facultiesState.length > 0 ? '' : 'd-none'}`}>
+                <FormGroup row className={`mx-0`}>
                     <Label sm={3}>Update Faculty</Label>
                     <Col sm={7}>
-                        <Input type="select" className="form-control" onChange={yearsHandler}
-                            value={(profileState && profileState.faculty) || ''} required>
-
-                            {profileState && profileState.faculty ? <option>{profileState.faculty.title}</option> : <option>-- Select your faculty--</option>}
-                            {facultiesState.map(faculty =>
-                                <option key={faculty._id} value={faculty._id}>
-                                    {faculty.title}
-                                </option>
-                            )}
+                        <Input type="select" className="form-control" onChange={e => handleSelectChange(e, 'faculty', null, levelFaculties)} value={profileState.faculty?._id || ''} required>
+                            {profileState.faculty ? <option>{profileState.faculty.title}</option> : <option>-- Select your faculty--</option>}
+                            {levelFaculties.map(faculty => <option key={faculty._id} value={faculty._id}>{faculty.title}</option>)}
                         </Input>
                     </Col>
                     <Col sm={2}>
-                        <Input disabled type="text"
-                            value={(profileState && profileState.faculty && profileState.faculty.title) || ''} />
+                        <Input disabled type="text" value={profileState.faculty?.title || ''} />
                     </Col>
                 </FormGroup>
 
-                <FormGroup row className={`mx-0 ${yearsState && yearsState.length > 0 ? '' : 'd-none'}`}>
+                <FormGroup row className={`mx-0`}>
                     <Label sm={3}>Update Year</Label>
                     <Col sm={7}>
-                        <Input type="select" className="form-control" onChange={allSelectsHandler}
-                            value={(profileState && profileState.year) || ''} required>
-
-                            {profileState && profileState.year ? <option>{profileState.year}</option> : <option>-- Select your year--</option>}
-                            {yearsState && yearsState.map(year =>
-                                <option key={year} value={year}>
-                                    {year}
-                                </option>
-                            )}
+                        <Input type="select" className="form-control" onChange={e => handleSelectChange(e, 'year')} value={profileState.year || ''} required>
+                            {profileState.year ? <option>{profileState.year}</option> : <option>-- Select your year--</option>}
+                            {yearsState.map(year => <option key={year} value={year}>{year}</option>)}
                         </Input>
                     </Col>
-
                     <Col sm={2}>
                         <Input disabled type="text" value={''} />
                     </Col>
-
                 </FormGroup>
-                {
-                    interestsState && interestsState.length < 1 ?
-                        <FormGroup row className="mx-0">
+
+                {interestsState.length < 1 ?
+                    <FormGroup row className="mx-0">
+                        <Label sm={3}>Update Interest</Label>
+                        <Col sm={9} className="my-3 my-sm-2">
+                            <strong className='text-info'>Add Favorite Subject &nbsp;</strong>
+                            <Button className="px-2 py-1" color="success" onClick={handleAddInterest}> + </Button>{' '}
+                        </Col>
+                    </FormGroup> :
+                    interestsState.map((interest, index) => (
+                        <FormGroup row className="mx-0" key={index}>
                             <Label sm={3}>Update Interest</Label>
-
-                            <Col sm={9} className="my-3 my-sm-2">
-                                <strong className='text-info'>Add Favorite Subject &nbsp;</strong>
-                                <Button className="px-2 py-1" color="success" onClick={handleAddFields}> + </Button>{' '}
+                            <Col sm={7}>
+                                <Input type="text" name="favorite" value={interest.favorite || ''} placeholder="New interest here ..." onChange={e => handleInterestsChange(index, e)} />
                             </Col>
-                        </FormGroup> :
-
-                        interestsState && interestsState.map((interest, index) => (
-                            <FormGroup row className="mx-0" key={index}>
-                                <Label sm={3}>Update Interest</Label>
-
-                                <Col sm={7}>
-                                    <Input type="text" name="favorite" value={interest.favorite || ''} placeholder="New interest here ..." onChange={event => handleInterestsChangeInput(index, event)} />
-                                </Col>
-
-                                <Col sm={2} className="my-3 my-sm-2">
-                                    <Button className="px-2 py-1" disabled={interestsState && interestsState.length <= 1} color="danger" onClick={() => handleRemoveFields(index)}> - </Button>{' '}
-
-                                    <Button className="px-2 py-1" color="success" onClick={handleAddFields}> + </Button>{' '}
-                                </Col>
-                            </FormGroup>
-                        ))}
+                            <Col sm={2} className="my-3 my-sm-2">
+                                <Button className="px-2 py-1" disabled={interestsState.length <= 1} color="danger" onClick={() => handleRemoveInterest(index)}> - </Button>{' '}
+                                <Button className="px-2 py-1" color="success" onClick={handleAddInterest}> + </Button>{' '}
+                            </Col>
+                        </FormGroup>
+                    ))
+                }
 
                 <FormGroup row className="mx-0">
                     <Label sm={3}>Update About You</Label>
                     <Col sm={9}>
-                        <Input type="textarea" name="about" placeholder="about you ..." minLength="5" maxLength="2000" onChange={onChangeHandler} value={(profileState && profileState.about) || ''} />
+                        <Input type="textarea" name="about" placeholder="about you ..." minLength="5" maxLength="2000" onChange={handleInputChange} value={profileState.about || ''} />
                     </Col>
                 </FormGroup>
 
                 <FormGroup check row className="mx-0 mt-md-4">
                     <Col sm={{ size: 10, offset: 2 }} className="pl-0">
-                        <Button className="btn btn-info text-white" type="submit" onClick={handleSubmit} style={{ backgroundColor: "#157A6E" }}>
+                        <Button className="btn btn-info text-white" type="submit" style={{ backgroundColor: "#157A6E" }}>
                             Update
                         </Button>
                     </Col>
                 </FormGroup>
-
             </Form> :
-
-            // If not authenticated or loading
             <div className="vh-100 d-flex justify-content-center align-items-center text-danger">
-                {
-                    auth.isLoading ?
-                        <QBLoadingSM /> :
-                        <Button color="link" className="fw-bolder my-5 border rounded" onClick={toggleL} style={{ backgroundColor: "#ffc107", color: "#157A6E", fontSize: "1.5vw", boxShadow: "-2px 2px 1px 2px #157A6E", border: "2px solid #157A6E" }}>
-                            Login first
-                        </Button>
+                {auth.isLoading ? <QBLoadingSM /> :
+                    <Button color="link" className="fw-bolder my-5 border rounded" onClick={toggleL} style={{ backgroundColor: "#ffc107", color: "#157A6E", fontSize: "1.5vw", boxShadow: "-2px 2px 1px 2px #157A6E", border: "2px solid #157A6E" }}>
+                        Login first
+                    </Button>
                 }
             </div>
     )
