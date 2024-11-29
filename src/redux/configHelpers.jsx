@@ -8,8 +8,8 @@ export const devApiURL = 'http://localhost:4000/'
 
 // Axios instance
 const axiosInstance = axios.create({
-    baseURL: process.env.NODE_ENV === 'development' ? devApiURL : qbURL,
-    // baseURL : qbTestURL,
+    baseURL: process.env.NODE_ENV === 'development' ? devApiURL : (qbURL || apiURL),
+    // baseURL: qbTestURL,
 })
 
 // List of action types that doesn't require a reload
