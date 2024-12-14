@@ -41,7 +41,8 @@ const initialState = {
   oneChatRoom: null,
   oneRoomMessages: [],
   reply: null,
-  isLoading: false
+  isLoading: false,
+  error: null
 }
 
 const contactsSlice = createSlice({

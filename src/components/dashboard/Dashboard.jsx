@@ -141,7 +141,6 @@ const Dashboard = () => {
 
                                 </> : null
                         }
-
                     </Nav>
                 </Col>
 
@@ -150,7 +149,7 @@ const Dashboard = () => {
 
                         {currentUser.role !== 'Visitor' ?
                             <>
-                                <CategoriesTabPane />
+                                {/* <CategoriesTabPane /> */}
                                 <QuizesTabPane />
                             </> : null}
 
@@ -174,7 +173,6 @@ const Dashboard = () => {
                             </> : null}
                     </TabContent>
                 </Col>
-
             </Row>
         </> :
 

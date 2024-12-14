@@ -43,7 +43,8 @@ const initialState = {
   creatorScores: [],
   popularQuizes: [],
   feedbacks: [],
-  isLoading: false
+  isLoading: false,
+  error: null
 }
 
 const scoresSlice = createSlice({

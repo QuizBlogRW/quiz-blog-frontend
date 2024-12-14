@@ -3,21 +3,22 @@ import { apiCallHelper } from '../configHelpers'
 
 // Async actions with createAsyncThunk
 export const getPostCategories = createAsyncThunk("postCategories/getPostCategories", async (_, { getState }) =>
-  apiCallHelper('/api/postCategories', 'get', null, getState, 'getPostCategories'))
+  apiCallHelper('/api/post-categories', 'get', null, getState, 'getPostCategories'))
 
 export const createPostCategory = createAsyncThunk("postCategories/createPostCategory", async (newPostCategory, { getState }) =>
-  apiCallHelper('/api/postCategories', 'post', newPostCategory, getState, 'createPostCategory'))
+  apiCallHelper('/api/post-categories', 'post', newPostCategory, getState, 'createPostCategory'))
 
 export const updatePostCategory = createAsyncThunk("postCategories/updatePostCategory", async (updatedPostCatg, { getState }) =>
-  apiCallHelper(`/api/postCategories/${updatedPostCatg.idToUpdate}`, 'put', updatedPostCatg, getState, 'updatePostCategory'))
+  apiCallHelper(`/api/post-categories/${updatedPostCatg.idToUpdate}`, 'put', updatedPostCatg, getState, 'updatePostCategory'))
 
 export const deletePostCategory = createAsyncThunk("postCategories/deletePostCategory", async (postCatgID, { getState }) =>
-  apiCallHelper(`/api/postCategories/${postCatgID}`, 'delete', null, getState, 'deletePostCategory'))
+  apiCallHelper(`/api/post-categories/${postCatgID}`, 'delete', null, getState, 'deletePostCategory'))
 
 // Post categories slice
 const initialState = {
   allPostCategories: [],
-  isLoading: false
+  isLoading: false,
+  error: null
 }
 
 const postCategoriesSlice = createSlice({

@@ -15,7 +15,8 @@ export const deleteSubscriber = createAsyncThunk("subscribers/deleteSubscriber",
 // Subscribers slice
 const initialState = {
   subscribedUsers: [],
-  isLoading: false
+  isLoading: false,
+  error: null
 }
 
 const subscribersSlice = createSlice({

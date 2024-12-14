@@ -14,7 +14,8 @@ const initialState = {
   allFeedbacks: [],
   totalPages: 0,
   oneFeedback: '',
-  isLoading: false
+  isLoading: false,
+  error: null
 }
 
 const feedbackSlice = createSlice({

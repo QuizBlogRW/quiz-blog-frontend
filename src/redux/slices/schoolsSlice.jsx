@@ -22,7 +22,8 @@ export const deleteSchool = createAsyncThunk("schools/deleteSchool", async (scho
 const initialState = {
   allSchools: [],
   isLoading: false,
-  oneSchool: {}
+  oneSchool: {},
+  error: null
 }
 
 const schoolsSlice = createSlice({

@@ -26,7 +26,8 @@ const initialState = {
   recentTenViews: [],
   oneBlogPostView: '',
   blogPostsByCategory: [],
-  isLoading: false
+  isLoading: false,
+  error: null
 }
 
 const blogPostsViewsSlice = createSlice({

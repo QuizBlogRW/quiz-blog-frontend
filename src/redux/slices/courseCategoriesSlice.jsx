@@ -3,21 +3,22 @@ import { apiCallHelper } from '../configHelpers'
 
 // Async actions with createAsyncThunk
 export const getCourseCategories = createAsyncThunk("courseCategories/getCourseCategories", async (_, { getState }) =>
-  apiCallHelper('/api/courseCategories', 'get', null, getState, 'getCourseCategories'))
+  apiCallHelper('/api/course-categories', 'get', null, getState, 'getCourseCategories'))
 
 export const createCourseCategory = createAsyncThunk("courseCategories/createCourseCategory", async (newCourseCategory, { getState }) =>
-  apiCallHelper('/api/courseCategories', 'post', newCourseCategory, getState, 'createCourseCategory'))
+  apiCallHelper('/api/course-categories', 'post', newCourseCategory, getState, 'createCourseCategory'))
 
 export const updateCourseCategory = createAsyncThunk("courseCategories/updateCourseCategory", async (updatedCourseCatg, { getState }) =>
-  apiCallHelper(`/api/courseCategories/${updatedCourseCatg.idToUpdate}`, 'put', updatedCourseCatg, getState, 'updateCourseCategory'))
+  apiCallHelper(`/api/course-categories/${updatedCourseCatg.idToUpdate}`, 'put', updatedCourseCatg, getState, 'updateCourseCategory'))
 
 export const deleteCourseCategory = createAsyncThunk("courseCategories/deleteCourseCategory", async (courseCatgID, { getState }) =>
-  apiCallHelper(`/api/courseCategories/${courseCatgID}`, 'delete', null, getState, 'deleteCourseCategory'))
+  apiCallHelper(`/api/course-categories/${courseCatgID}`, 'delete', null, getState, 'deleteCourseCategory'))
 
 // Course categories slice
 const initialState = {
   allCourseCategories: [],
-  isLoading: false
+  isLoading: false,
+  error: null
 }
 
 const courseCategoriesSlice = createSlice({

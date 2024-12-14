@@ -3,34 +3,34 @@ import { apiCallHelper } from '../configHelpers'
 
 // Async actions with createAsyncThunk
 export const getComments = createAsyncThunk("questionComments/getComments", async (_, { getState }) =>
-  apiCallHelper('/api/questionComments', 'get', null, getState, 'getComments'))
+  apiCallHelper('/api/questions-comments', 'get', null, getState, 'getComments'))
 
 export const getPaginatedComments = createAsyncThunk("questionComments/getPaginatedComments", async (pageNo, { getState }) =>
-  apiCallHelper(`/api/questionComments/paginated/?pageNo=${pageNo}`, 'get', null, getState, 'getPaginatedComments'))
+  apiCallHelper(`/api/questions-comments/paginated/?pageNo=${pageNo}`, 'get', null, getState, 'getPaginatedComments'))
 
 export const getPendingComments = createAsyncThunk("questionComments/getPendingComments", async (_, { getState }) =>
-  apiCallHelper(`/api/questionComments/pending`, 'get', null, getState, 'getPendingComments'))
+  apiCallHelper(`/api/questions-comments/pending`, 'get', null, getState, 'getPendingComments'))
 
 export const getCommentsByQuiz = createAsyncThunk("questionComments/getCommentsByQuiz", async (quizID, { getState }) =>
-  apiCallHelper(`/api/questionComments/quiz/${quizID}`, 'get', null, getState, 'getCommentsByQuiz'))
+  apiCallHelper(`/api/questions-comments/quiz/${quizID}`, 'get', null, getState, 'getCommentsByQuiz'))
 
 export const getQuestionComments = createAsyncThunk("questionComments/getQuestionComments", async (questionID, { getState }) =>
-  apiCallHelper(`/api/questionComments/comments-on/${questionID}`, 'get', null, getState, 'getQuestionComments'))
+  apiCallHelper(`/api/questions-comments/comments-on/${questionID}`, 'get', null, getState, 'getQuestionComments'))
 
 export const getOneComment = createAsyncThunk("questionComments/getOneComment", async (commentId, { getState }) =>
-  apiCallHelper(`/api/questionComments/${commentId}`, 'get', null, getState, 'getOneComment'))
+  apiCallHelper(`/api/questions-comments/${commentId}`, 'get', null, getState, 'getOneComment'))
 
 export const createComment = createAsyncThunk("questionComments/createComment", async (newComment, { getState }) =>
-  apiCallHelper('/api/questionComments', 'post', newComment, getState, 'createComment'))
+  apiCallHelper('/api/questions-comments', 'post', newComment, getState, 'createComment'))
 
 export const updateComment = createAsyncThunk("questionComments/updateComment", async (updatedComment, { getState }) =>
-  apiCallHelper(`/api/questionComments/${updatedComment.commentID}`, 'put', updatedComment, getState, 'updateComment'))
+  apiCallHelper(`/api/questions-comments/${updatedComment.commentID}`, 'put', updatedComment, getState, 'updateComment'))
 
 export const approveComment = createAsyncThunk("questionComments/approveComment", async (approvedComment, { getState }) =>
-  apiCallHelper(`/api/questionComments/approve/${approvedComment.commentID}`, 'put', approvedComment, getState, 'approveComment'))
+  apiCallHelper(`/api/questions-comments/approve/${approvedComment.commentID}`, 'put', approvedComment, getState, 'approveComment'))
 
 export const rejectComment = createAsyncThunk("questionComments/rejectComment", async (rejectedComment, { getState }) =>
-  apiCallHelper(`/api/questionComments/reject/${rejectedComment.commentID}`, 'put', rejectedComment, getState, 'rejectComment'))
+  apiCallHelper(`/api/questions-comments/reject/${rejectedComment.commentID}`, 'put', rejectedComment, getState, 'rejectComment'))
 
 export const deleteComment = createAsyncThunk("questionComments/deleteComment", async (id, { getState }) =>
   apiCallHelper(`/api/comments/${id}`, 'delete', null, getState, 'deleteComment'))
@@ -43,7 +43,8 @@ const initialState = {
   oneComment: '',
   questionComments: [],
   paginatedComments: [],
-  pendingComments: []
+  pendingComments: [],
+  error: null
 }
 
 const questionCommentsSlice = createSlice({

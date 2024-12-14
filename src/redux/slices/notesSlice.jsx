@@ -6,7 +6,7 @@ export const getNotes = createAsyncThunk("notes/getNotes", async (_, { getState 
   apiCallHelper('/api/notes', 'get', null, getState, 'getNotes'))
 
 export const getLandingDisplayNotes = createAsyncThunk("notes/getLandingDisplayNotes", async (limit, { getState }) =>
-  apiCallHelper(`/api/notes/landingDisplay?limit=${limit ? limit : 10}`, 'get', null, getState, 'getLandingDisplayNotes'))
+  apiCallHelper(`/api/notes/limited?limit=${limit ? limit : 10}`, 'get', null, getState, 'getLandingDisplayNotes'))
 
 export const getOneNotePaper = createAsyncThunk("notes/getOneNotePaper", async (noteSlug, { getState }) =>
   apiCallHelper(`/api/notes/${noteSlug}`, 'get', null, getState, 'getOneNotePaper'))
@@ -40,7 +40,8 @@ const initialState = {
   oneNotePaper: {},
   notesByChapter: [],
   notesByCCatg: [],
-  allDownloads: []
+  allDownloads: [],
+  error: null
 }
 
 const notesSlice = createSlice({

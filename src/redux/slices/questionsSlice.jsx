@@ -21,7 +21,8 @@ export const deleteQuestion = createAsyncThunk("questions/deleteQuestion", async
 const initialState = {
     questionsData: [],
     oneQuestion: '',
-    isLoading: false
+    isLoading: false,
+    error: null
 }
 
 const questionsSlice = createSlice({

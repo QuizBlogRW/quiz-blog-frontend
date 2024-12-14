@@ -25,7 +25,8 @@ const initialState = {
   allCourses: [],
   coursesByCategory: [],
   oneCourse: {},
-  isLoading: false
+  isLoading: false,
+  error: null
 }
 
 const coursesSlice = createSlice({

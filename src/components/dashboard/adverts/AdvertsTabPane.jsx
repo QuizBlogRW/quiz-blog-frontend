@@ -24,7 +24,8 @@ const AdvertsTabPane = () => {
     useEffect(() => {
         dispatch(getAdverts())
     }, [dispatch])
-
+ 
+    
     return (
         <TabPane tabId="10">
 

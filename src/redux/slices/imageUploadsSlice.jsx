@@ -25,7 +25,8 @@ const initialState = {
   allImageUploads: [],
   oneImageUpload: '',
   imageUploadsByOwner: [],
-  isLoading: false
+  isLoading: false,
+  error: null
 }
 
 const imageUploadsSlice = createSlice({

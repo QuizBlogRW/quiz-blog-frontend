@@ -3,40 +3,40 @@ import { apiCallHelper } from '../configHelpers'
 
 // Async actions with createAsyncThunk
 export const getQuizes = createAsyncThunk("quizes/getQuizes", async ({ limit, skip }, { getState }) =>
-  apiCallHelper(`/api/quizes?limit=${limit}&skip=${skip ? skip : 0}`, 'get', null, getState, 'getQuizes'))
+  apiCallHelper(`/api/quizzes?limit=${limit}&skip=${skip ? skip : 0}`, 'get', null, getState, 'getQuizes'))
 
 export const getPaginatedQuizes = createAsyncThunk("quizes/getPaginatedQuizes", async (pageNo, { getState }) =>
-  apiCallHelper(`/api/quizes/paginated/?pageNo=${pageNo}`, 'get', null, getState, 'getPaginatedQuizes'))
+  apiCallHelper(`/api/quizzes/paginated/?pageNo=${pageNo}`, 'get', null, getState, 'getPaginatedQuizes'))
 
 export const getAllNoLimitQuizes = createAsyncThunk("quizes/getAllNoLimitQuizes", async (_, { getState }) =>
-  apiCallHelper('/api/quizes', 'get', null, getState, 'getAllNoLimitQuizes'))
+  apiCallHelper('/api/quizzes', 'get', null, getState, 'getAllNoLimitQuizes'))
 
 export const getOneQuiz = createAsyncThunk("quizes/getOneQuiz", async (quizSlug, { getState }) =>
-  apiCallHelper(`/api/quizes/${quizSlug}`, 'get', null, getState, 'getOneQuiz'))
+  apiCallHelper(`/api/quizzes/${quizSlug}`, 'get', null, getState, 'getOneQuiz'))
 
 export const getQuizesByCategory = createAsyncThunk("quizes/getQuizesByCategory", async (categoryID, { getState }) =>
-  apiCallHelper(`/api/quizes/category/${categoryID}`, 'get', null, getState, 'getQuizesByCategory'))
+  apiCallHelper(`/api/quizzes/category/${categoryID}`, 'get', null, getState, 'getQuizesByCategory'))
 
 export const getQuizesByNotes = createAsyncThunk("quizes/getQuizesByNotes", async (courseCategoryID, { getState }) =>
-  apiCallHelper(`/api/quizes/course-notes/${courseCategoryID}`, 'get', null, getState, 'getQuizesByNotes'))
+  apiCallHelper(`/api/quizzes/course-notes/${courseCategoryID}`, 'get', null, getState, 'getQuizesByNotes'))
 
 export const createQuiz = createAsyncThunk("quizes/createQuiz", async (newQuiz, { getState }) =>
-  apiCallHelper('/api/quizes', 'post', newQuiz, getState, 'createQuiz'))
+  apiCallHelper('/api/quizzes', 'post', newQuiz, getState, 'createQuiz'))
 
 export const updateQuiz = createAsyncThunk("quizes/updateQuiz", async (updatedQuiz, { getState }) =>
-  apiCallHelper(`/api/quizes/${updatedQuiz.quizID}`, 'put', updatedQuiz, getState, 'updateQuiz'))
+  apiCallHelper(`/api/quizzes/${updatedQuiz.quizID}`, 'put', updatedQuiz, getState, 'updateQuiz'))
 
 export const addVidLink = createAsyncThunk("quizes/addVidLink", async ({ newVidLink, quizID }, { getState }) =>
-  apiCallHelper(`/api/quizes/add-video/${quizID}`, 'put', newVidLink, getState, 'addVidLink'))
+  apiCallHelper(`/api/quizzes/add-video/${quizID}`, 'put', newVidLink, getState, 'addVidLink'))
 
 export const deleteVideo = createAsyncThunk("quizes/deleteVideo", async ({ vidData, vId }, { getState }) =>
-  apiCallHelper(`/api/quizes/delete-video/${vId}`, 'put', vidData, getState, 'deleteVideo'))
+  apiCallHelper(`/api/quizzes/delete-video/${vId}`, 'put', vidData, getState, 'deleteVideo'))
 
 export const deleteQuiz = createAsyncThunk("quizes/deleteQuiz", async (id, { getState }) =>
-  apiCallHelper(`/api/quizes/${id}`, 'delete', null, getState, 'deleteQuiz'))
+  apiCallHelper(`/api/quizzes/${id}`, 'delete', null, getState, 'deleteQuiz'))
 
 export const notifying = createAsyncThunk("quizes/notifying", async (newQuizInfo, { getState }) =>
-  apiCallHelper('/api/quizes/notifying', 'post', newQuizInfo, getState, 'notifying'))
+  apiCallHelper('/api/quizzes/notifying', 'post', newQuizInfo, getState, 'notifying'))
 
 // Quizes slice
 const initialState = {
@@ -47,7 +47,8 @@ const initialState = {
   oneQuiz: '',
   allQuizesNoLimit: [],
   paginatedQuizes: [],
-  totalPages: 0
+  totalPages: 0,
+  error: null
 }
 
 const quizesSlice = createSlice({

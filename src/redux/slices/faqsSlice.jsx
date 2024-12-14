@@ -27,7 +27,8 @@ export const deleteFaq = createAsyncThunk("faqs/deleteFaq", async (id, { getStat
 const initialState = {
   allFaqs: [],
   isLoading: false,
-  oneFaq: ''
+  oneFaq: '',
+  error: null
 }
 
 const faqsSlice = createSlice({

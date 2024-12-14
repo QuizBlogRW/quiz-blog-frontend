@@ -18,7 +18,8 @@ export const deleteBroadcast = createAsyncThunk("broadcasts/deleteBroadcast", as
 const initialState = {
   allBroadcasts: [],
   isLoading: false,
-  oneBroadcast: ''
+  oneBroadcast: '',
+  error: null
 }
 
 const broadcastsSlice = createSlice({

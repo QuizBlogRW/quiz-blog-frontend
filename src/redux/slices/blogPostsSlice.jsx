@@ -3,22 +3,22 @@ import { apiCallHelper, apiCallHelperUpload } from '../configHelpers'
 
 // Async actions with createAsyncThunk
 export const getBlogPosts = createAsyncThunk("blogPosts/getBlogPosts", async ({ limit, skip }, { getState }) =>
-  apiCallHelper(`/api/blogPosts?limit=${limit}&skip=${skip ? skip : 0}`, 'get', null, getState, 'getBlogPosts'))
+  apiCallHelper(`/api/blog-posts?limit=${limit}&skip=${skip ? skip : 0}`, 'get', null, getState, 'getBlogPosts'))
 
 export const getOneBlogPost = createAsyncThunk("blogPosts/getOneBlogPost", async (bPSlug, { getState }) =>
-  apiCallHelper(`/api/blogPosts/${bPSlug}`, 'get', null, getState, 'getOneBlogPost'))
+  apiCallHelper(`/api/blog-posts/${bPSlug}`, 'get', null, getState, 'getOneBlogPost'))
 
 export const getBlogPostsByCategory = createAsyncThunk("blogPosts/getBlogPostsByCategory", async (bPCatID, { getState }) =>
-  apiCallHelper(`/api/blogposts/postCategory/${bPCatID}`, 'get', null, getState, 'getBlogPostsByCategory'))
+  apiCallHelper(`/api/blog-posts/postCategory/${bPCatID}`, 'get', null, getState, 'getBlogPostsByCategory'))
 
 export const createBlogPost = createAsyncThunk("blogPosts/createBlogPost", async (newBlogPost, { getState }) =>
-  apiCallHelperUpload('/api/blogPosts', 'post', newBlogPost, getState, 'createBlogPost'))
+  apiCallHelperUpload('/api/blog-posts', 'post', newBlogPost, getState, 'createBlogPost'))
 
 export const updateBlogPost = createAsyncThunk("blogPosts/updateBlogPost", async (updatedBP, { getState }) =>
-  apiCallHelper(`/api/blogPosts/${updatedBP.blogPostID}`, 'put', updatedBP, getState, 'updateBlogPost'))
+  apiCallHelper(`/api/blog-posts/${updatedBP.blogPostID}`, 'put', updatedBP, getState, 'updateBlogPost'))
 
 export const deleteBlogPost = createAsyncThunk("blogPosts/deleteBlogPost", async (id, { getState }) =>
-  apiCallHelper(`/api/blogPosts/${id}`, 'delete', null, getState, 'deleteBlogPost'))
+  apiCallHelper(`/api/blog-posts/${id}`, 'delete', null, getState, 'deleteBlogPost'))
 
 export const deleteBlogPostImage = createAsyncThunk("blogPosts/deleteBlogPostImage", async (id, { getState }) =>
   apiCallHelper(`/api/imageUploads/${id}`, 'delete', null, getState, 'deleteBlogPostImage'))
@@ -29,6 +29,7 @@ const initialState = {
   blogPosts: [],
   oneBlogPost: '',
   blogPostsByCategory: [],
+  error: null
 }
 
 const blogPostsSlice = createSlice({

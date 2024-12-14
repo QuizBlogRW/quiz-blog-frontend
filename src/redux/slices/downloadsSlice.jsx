@@ -23,7 +23,8 @@ const initialState = {
   totalPages: 0,
   allDownloads: [],
   creatorDownloads: [],
-  userDownloads: []
+  userDownloads: [],
+  error: null
 }
 
 const downloadsSlice = createSlice({

@@ -21,7 +21,8 @@ export const deleteCategory = createAsyncThunk("categories/deleteCategory", asyn
 const initialState = {
   allcategories: [],
   isLoading: false,
-  oneCategory: ''
+  oneCategory: '',
+  error: null
 }
 
 const categoriesSlice = createSlice({

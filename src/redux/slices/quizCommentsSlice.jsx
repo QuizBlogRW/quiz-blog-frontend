@@ -3,22 +3,22 @@ import { apiCallHelper } from '../configHelpers'
 
 // Async actions with createAsyncThunk
 export const getAllComments = createAsyncThunk("quizComments/getAllComments", async (_, { getState }) =>
-  apiCallHelper('/api/quizComments', 'get', null, getState, 'getAllComments'))
+  apiCallHelper('/api/quizzes-comments', 'get', null, getState, 'getAllComments'))
 
 export const getQuizComments = createAsyncThunk("quizComments/getQuizComments", async (quizID, { getState }) =>
-  apiCallHelper(`/api/quizComments/comments-on/${quizID}`, 'get', null, getState, 'getQuizComments'))
+  apiCallHelper(`/api/quizzes-comments/comments-on/${quizID}`, 'get', null, getState, 'getQuizComments'))
 
 export const getOneComment = createAsyncThunk("quizComments/getOneComment", async (commentId, { getState }) =>
-  apiCallHelper(`/api/quizComments/${commentId}`, 'get', null, getState, 'getOneComment'))
+  apiCallHelper(`/api/quizzes-comments/${commentId}`, 'get', null, getState, 'getOneComment'))
 
 export const createComment = createAsyncThunk("quizComments/createComment", async (newComment, { getState }) =>
-  apiCallHelper('/api/quizComments', 'post', newComment, getState, 'createComment'))
+  apiCallHelper('/api/quizzes-comments', 'post', newComment, getState, 'createComment'))
 
 export const updateComment = createAsyncThunk("quizComments/updateComment", async (updatedComment, { getState }) =>
-  apiCallHelper(`/api/quizComments/${updatedComment.commentID}`, 'put', updatedComment, getState, 'updateComment'))
+  apiCallHelper(`/api/quizzes-comments/${updatedComment.commentID}`, 'put', updatedComment, getState, 'updateComment'))
 
 export const deleteComment = createAsyncThunk("quizComments/deleteComment", async (commentId, { getState }) =>
-  apiCallHelper(`/api/quizComments/${commentId}`, 'delete', null, getState, 'deleteComment'))
+  apiCallHelper(`/api/quizzes-comments/${commentId}`, 'delete', null, getState, 'deleteComment'))
 
 
 // Quiz Comments slice
@@ -26,7 +26,8 @@ const initialState = {
   allComments: [],
   isLoading: false,
   oneComment: '',
-  quizCmnts: []
+  quizCmnts: [],
+  error: null
 }
 
 const quizCommentsSlice = createSlice({

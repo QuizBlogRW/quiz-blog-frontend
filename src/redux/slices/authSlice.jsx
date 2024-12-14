@@ -4,22 +4,22 @@ import { notify } from '../../utils/notifyToast'
 
 // Async actions with createAsyncThunk
 export const loadUser = createAsyncThunk("auth/loadUser", async (_, { getState }) =>
-  apiCallHelper('/api/auth/user', 'get', null, getState, 'loadUser'))
+  apiCallHelper('/api/users/loadUser', 'get', null, getState, 'loadUser'))
 
 export const register = createAsyncThunk("auth/register", async ({ name, email, password }, { getState }) =>
-  apiCallHelper('/api/auth/register', 'post', { name, email, password }, getState, 'register'))
+  apiCallHelper('/api/users/register', 'post', { name, email, password }, getState, 'register'))
 
 export const verify = createAsyncThunk("auth/verify-otp", async ({ email, otp }, { getState }) =>
-  apiCallHelper('/api/auth/verify-otp', 'post', { email, otp }, getState, 'verify'))
+  apiCallHelper('/api/users/verify-otp', 'post', { email, otp }, getState, 'verify'))
 
 export const login = createAsyncThunk("auth/login", async ({ email, password, confirmLogin }, { getState }) =>
-  apiCallHelper('/api/auth/login', 'post', { email, password, confirmLogin }, getState, 'login'))
+  apiCallHelper('/api/users/login', 'post', { email, password, confirmLogin }, getState, 'login'))
 
 export const getUsers = createAsyncThunk("auth/getUsers", async (_, { getState }) =>
   apiCallHelper('/api/users', 'get', null, getState, 'getUsers'))
 
 export const logout = createAsyncThunk("auth/logout", async (userId, { getState }) =>
-  apiCallHelper('/api/auth/logout', 'put', { userId }, getState, 'logout'))
+  apiCallHelper('/api/users/logout', 'put', { userId }, getState, 'logout'))
 
 export const updateUser = createAsyncThunk("auth/updateUser", async (updatedUser, { getState }) =>
   apiCallHelper(`/api/users/${updatedUser.uId}`, 'put', updatedUser, getState, 'updateUser'))
@@ -50,6 +50,7 @@ const authSlice = createSlice({
     user: null,
     token: localStorage.getItem('token'),
     confirmLogin: localStorage.getItem('confirmLogin'),
+    error: null
   },
 
   // We use the "reducers" property to add the createSlice actions or sync actions
@@ -184,6 +185,8 @@ const authSlice = createSlice({
           state.users = []
           localStorage.getItem('token') && localStorage.removeItem('token')
           localStorage.getItem('user') && localStorage.removeItem('user')
+          state.error = action.payload
+          console.log(state.error )
         }
       })
   }

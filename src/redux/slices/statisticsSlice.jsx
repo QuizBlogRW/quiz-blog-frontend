@@ -73,7 +73,8 @@ const initialState = {
   quizCategoriesStats: [],
   notesCategoriesStats: [],
   dailyUserRegistration: [],
-  msg: null
+  msg: null,
+  error: null
 }
 
 const statisticsSlice = createSlice({

@@ -4,7 +4,7 @@ import { notify } from '../utils/notifyToast'
 export const qbURL = 'https://myqb-245fdbd30c9b.herokuapp.com/'
 export const qbTestURL = 'https://qb-test-c6396eeaa356.herokuapp.com/'
 export const apiURL = 'https://quiz-blog-rw-server.onrender.com/'
-export const devApiURL = 'http://localhost:4000/'
+export const devApiURL = 'http://localhost:5000/'
 
 // Axios instance
 const axiosInstance = axios.create({
@@ -31,16 +31,17 @@ export const apiCallHelper = async (url, method, body, getState, actionType) => 
                 setTimeout(() => { window.location.reload() }, RELOAD_TIMEOUT)
             }
             else {
-                notify(response.data.msg ? response.data.msg : '✅ Success', 'success')
+                notify(response.data.error ? response.data.error : '✅ Success', 'success')
             }
         }
 
         return response.data
     } catch (err) {
-        if (err.response && err.response.data && err.response.data.msg && err.response.data.id !== 'NO_TOKEN' && !noToastActionTypes.includes(actionType)) {
-            notify(err.response.data.msg, 'error')
+        if (err.response && err.response.data && err.response.data.error && !noToastActionTypes.includes(actionType)) {
+            notify(err.response.data.error, 'error')
         }
-        return Promise.reject(err.response)
+        console.log(err.response)
+        return Promise.reject(err.response.data.error)
     }
 }
 
@@ -57,9 +58,9 @@ export const apiCallHelperUpload = async (url, method, formData, getState, actio
 
         return response.data
     } catch (err) {
-        if (err.response && err.response.data && err.response.data.msg && err.response.data.id !== 'NO_TOKEN' && !noToastActionTypes.includes(actionType)) {
-            notify(err.response.data.msg, 'error')
+        if (err.response && err.response.data && err.response.data.error && !noToastActionTypes.includes(actionType)) {
+            notify(err.response.data.error, 'error')
         }
-        return Promise.reject(err.response)
+        return Promise.reject(err.response.data.error)
     }
 }

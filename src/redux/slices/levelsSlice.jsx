@@ -21,7 +21,8 @@ export const deleteLevel = createAsyncThunk("levels/deleteLevel", async (levelID
 const initialState = {
   allLevels: [],
   isLoading: false,
-  schoolLevels: []
+  schoolLevels: [],
+  error: null
 }
 
 const levelsSlice = createSlice({

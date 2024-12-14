@@ -21,7 +21,8 @@ export const deleteChapter = createAsyncThunk("chapters/deleteChapter", async (c
 const initialState = {
   allChapters: [],
   isLoading: false,
-  chaptersByCourse: []
+  chaptersByCourse: [],
+  error: null
 }
 
 const chaptersSlice = createSlice({

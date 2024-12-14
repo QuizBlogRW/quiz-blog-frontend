@@ -21,7 +21,8 @@ export const deleteFaculty = createAsyncThunk("faculties/deleteFaculty", async (
 const initialState = {
   allFaculties: [],
   levelFaculties: [],
-  isLoading: false
+  isLoading: false,
+  error: null
 }
 
 const facultiesSlice = createSlice({

@@ -15,7 +15,8 @@ export const deleteLog = createAsyncThunk("logs/deleteLog", async (id, { getStat
 const initialState = {
   isLoading: false,
   log: null,
-  logs: []
+  logs: [],
+  error: null
 }
 
 const logsSlice = createSlice({
