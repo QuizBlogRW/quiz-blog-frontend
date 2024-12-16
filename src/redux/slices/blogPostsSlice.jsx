@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { apiCallHelper, apiCallHelperUpload } from '../configHelpers'
+import { apiCallHelper, apiCallHelperUpload, handlePending, handleRejected } from '../configHelpers'
 
 // Async actions with createAsyncThunk
 export const getBlogPosts = createAsyncThunk("blogPosts/getBlogPosts", async ({ limit, skip }, { getState }) =>
@@ -9,7 +9,7 @@ export const getOneBlogPost = createAsyncThunk("blogPosts/getOneBlogPost", async
   apiCallHelper(`/api/blog-posts/${bPSlug}`, 'get', null, getState, 'getOneBlogPost'))
 
 export const getBlogPostsByCategory = createAsyncThunk("blogPosts/getBlogPostsByCategory", async (bPCatID, { getState }) =>
-  apiCallHelper(`/api/blog-posts/postCategory/${bPCatID}`, 'get', null, getState, 'getBlogPostsByCategory'))
+  apiCallHelper(`/api/blog-posts/post-category/${bPCatID}`, 'get', null, getState, 'getBlogPostsByCategory'))
 
 export const createBlogPost = createAsyncThunk("blogPosts/createBlogPost", async (newBlogPost, { getState }) =>
   apiCallHelperUpload('/api/blog-posts', 'post', newBlogPost, getState, 'createBlogPost'))
@@ -72,18 +72,21 @@ const blogPostsSlice = createSlice({
     })
 
     // Pending actions
-    builder.addMatcher(
-      (action) => [getBlogPosts.pending, getOneBlogPost.pending, getBlogPostsByCategory.pending, createBlogPost.pending, updateBlogPost.pending, deleteBlogPost.pending].includes(action.type),
-      (state) => {
-        state.isLoading = true
-      })
+    builder.addCase(getBlogPosts.pending, handlePending)
+    builder.addCase(getOneBlogPost.pending, handlePending)
+    builder.addCase(getBlogPostsByCategory.pending, handlePending)
+    builder.addCase(createBlogPost.pending, handlePending)
+    builder.addCase(updateBlogPost.pending, handlePending)
+    builder.addCase(deleteBlogPost.pending, handlePending)
+
 
     // Rejected actions
-    builder.addMatcher(
-      (action) => [getBlogPosts.rejected, getOneBlogPost.rejected, getBlogPostsByCategory.rejected, createBlogPost.rejected, updateBlogPost.rejected, deleteBlogPost.rejected].includes(action.type),
-      (state) => {
-        state.isLoading = false
-      })
+    builder.addCase(getBlogPosts.rejected, handleRejected)
+    builder.addCase(getOneBlogPost.rejected, handleRejected)
+    builder.addCase(getBlogPostsByCategory.rejected, handleRejected)
+    builder.addCase(createBlogPost.rejected, handleRejected)
+    builder.addCase(updateBlogPost.rejected, handleRejected)
+    builder.addCase(deleteBlogPost.rejected, handleRejected)
   }
 })
 

@@ -5,7 +5,7 @@ import moment from 'moment'
 
 const PostItem = ({ quiz, fromSearch }) => {
 
-    const { slug, title, description, creation_date, category, created_by, questions } = quiz
+    const { slug, title, description, creation_date, category, questions } = quiz
 
     return (
         <Card body className={fromSearch ? 'bg-info text-white py-3 px-1 px-sm-3 my-2 my-sm-3 border' : 'bg-secondary py-3 px-1 px-sm-3 my-2 my-sm-3 border'}>
@@ -20,9 +20,7 @@ const PostItem = ({ quiz, fromSearch }) => {
                 <p className="me-2 me-md-5 my-1 text-dark">
                     {moment(new Date(creation_date)).format('DD MMM YYYY, HH:mm')}
                 </p>
-                <p className="me-0 me-md-5 my-1 text-dark">-{category && category.title}
-                    <small>&nbsp;({created_by && created_by.name})</small>
-                </p>
+                <p className="me-0 me-md-5 my-1 text-dark">-{category && category.title}</p>
             </div>
 
             <CardText className="mt-1 details text-secondary text-capitalize">{description && description}</CardText>

@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { Row, Col, Card, Button, CardTitle, CardText, TabPane } from 'reactstrap'
-import { currentUserContext, categoriesContext, courseCategoriesContext } from '../../appContexts'
+import { currentUserContext } from '../../appContexts'
+import { useSelector } from 'react-redux'
 import { deleteCategory } from '../../redux/slices/categoriesSlice'
 import { Link } from "react-router-dom"
 import AddQuiz from '../quizes/AddQuiz'
@@ -10,16 +11,16 @@ import QBLoadingSM from '../rLoading/QBLoadingSM'
 import DeleteModal from '../../utils/DeleteModal'
 
 const CategoriesTabPane = () => {
+    const categories = useSelector(state => state.categories)
+    const courseCategories = useSelector(state => state.courseCategories)
 
     // Context
     const currentUser = useContext(currentUserContext)
-    const categories = useContext(categoriesContext)
-    const courseCategories = useContext(courseCategoriesContext)
 
     return (
         <TabPane tabId="1">
             <Button size="sm" outline color="info" className="mx-3 mb-2 p-2 btn btn-warning">
-                <CreateCategory courseCategories={courseCategories.allCourseCategories} />
+                <CreateCategory courseCategories={courseCategories && courseCategories.allCourseCategories} />
             </Button>
 
             {categories.isLoading ?
@@ -50,7 +51,7 @@ const CategoriesTabPane = () => {
                                                 <Button size="sm" color="link" className="mx-2">
                                                     <EditCategory
                                                         categoryToEdit={category}
-                                                        courseCategories={courseCategories.allCourseCategories} />
+                                                        courseCategories={courseCategories && courseCategories.allCourseCategories} />
                                                 </Button>
 
                                                 <Button size="sm" color="link" className="mx-2" >
@@ -59,11 +60,11 @@ const CategoriesTabPane = () => {
                                                         deleteFn={deleteCategory}
                                                         delTitle={category.title}
                                                         delID={category._id} />
-                                                        
+
                                                 </Button>
 
                                                 <small style={{ color: '#157A6E' }} className="ms-sm-5 text-center text-uppercase">
-                                                    <u>{category.courseCategory.title}</u>
+                                                    <u>{category.courseCategory && category.courseCategory.title}</u>
                                                 </small>
                                             </>
                                             : null

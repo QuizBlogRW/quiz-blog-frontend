@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { apiCallHelper } from '../configHelpers'
+import { apiCallHelper, handlePending, handleRejected } from '../configHelpers'
 import { notify } from '../../utils/notifyToast'
 
 // Async actions with createAsyncThunk
@@ -42,18 +42,12 @@ const feedbackSlice = createSlice({
     })
 
     // Pending actions
-    builder.addMatcher(
-      (action) => [getFeedbacks.pending, saveFeedback.pending].includes(action.type),
-      (state) => {
-        state.isLoading = true
-      })
+    builder.addCase(getFeedbacks.pending, handlePending)
+    builder.addCase(saveFeedback.pending, handlePending)
 
     // Rejected actions
-    builder.addMatcher(
-      (action) => [getFeedbacks.rejected, saveFeedback.rejected].includes(action.type),
-      (state) => {
-        state.isLoading = false
-      })
+    builder.addCase(getFeedbacks.rejected, handleRejected)
+    builder.addCase(saveFeedback.rejected, handleRejected)
   }
 })
 

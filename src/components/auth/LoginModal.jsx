@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink, Alert } from 'reactstrap'
+import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
 import { login } from '../../redux/slices/authSlice'
 import { useSelector, useDispatch } from "react-redux"
 import { authContext } from '../../appContexts'
@@ -7,30 +7,29 @@ import ReactGA from "react-ga4"
 import logocirclewhite from '../../../src/images/logocirclewhite.svg'
 import avatar from '../../../src/images/avatar1.svg'
 import QBLoadingSM from '../rLoading/QBLoadingSM'
+import { notify } from '../../utils/notifyToast'
 
 const LoginModal = ({ isOpenL, toggleL, toggleR }) => {
 
-    const isLoading = useSelector(state => state.auth.isLoading)
+    const { isLoading } = useSelector(state => state.auth)
     const dispatch = useDispatch()
-
 
     // context 
     const auth = useContext(authContext)
     const isAuthenticated = auth && auth.isAuthenticated
 
     //properties of the modal
-    const [loginState, setLoginState] = useState({
-        email: '',
-        password: ''
-    })
-
+    const [loginState, setLoginState] = useState({ email: '', password: '' })
+    const [loginResponse, setLoginResponse] = useState(null) // Corrected typo
     const [confirmLogin, setConfirmLogin] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('') // Add state for error message
 
     // Lifecycle methods
     useEffect(() => {
-        // if ((errors && errors.id === 'login') && (errors && errors.msg && errors.msg.id === 'CONFIRM_ERR')) {
-        //     setConfirmLogin(true)
-        // }
+
+        if (loginResponse && loginResponse.type === 'auth/login/rejected' && loginResponse.error && loginResponse.error.message === 'CONFIRM_ERR') {
+            setConfirmLogin(true)
+        }
 
         // If Authenticated, close isOpenL
         if (isOpenL) {
@@ -45,17 +44,23 @@ const LoginModal = ({ isOpenL, toggleL, toggleR }) => {
                 })
             }
         }
-    }, [isAuthenticated, isOpenL, toggleL])
+        if (loginResponse && loginResponse.type === 'auth/login/rejected') {
+            setErrorMessage(loginResponse.error.message == 'CONFIRM_ERR' ?
+                'Already logged in on another device/browser, log them out to use here?' :
+                loginResponse.error.message)
+        }
+    }, [isAuthenticated, isOpenL, toggleL, loginResponse])
 
     const onChangeHandler = e => {
         setLoginState({ ...loginState, [e.target.name]: e.target.value })
     }
 
-    const onSubmitHandler = (e, confirmLogin) => {
+    const onSubmitHandler = async (e, conf) => {
         e.preventDefault()
+        setErrorMessage('')
 
         const { email, password } = loginState
-        const user = { email, password, confirmLogin }
+        const user = { email, password, confirmLogin: conf }
 
         // VALIDATE
         if (password.length < 4) {
@@ -64,15 +69,19 @@ const LoginModal = ({ isOpenL, toggleL, toggleR }) => {
         }
 
         // Attempt to login
-        dispatch(login(user))
+        const res = await dispatch(login(user))
+        setLoginResponse(res)
     }
-
     return (
         <>
             <Modal isOpen={isOpenL} toggle={toggleL} centered={true}>
-                <div className="d-flex justify-content-between align-items-center p-2" style={{ backgroundColor: "#157A6E", color: "#fff" }}>
-                    <img src={logocirclewhite} alt="logo" style={{ maxHeight: "3.2rem", color: "#157A6E" }} />
-                    <Button className="btn-danger text-uppercase text-red ms-auto me-0" style={{ padding: "0.1rem 0.3rem", fontSize: ".6rem", fontWeight: "bold" }} onClick={toggleL}>
+                <div
+                    className="d-flex justify-content-between align-items-center p-2"
+                    style={{ backgroundColor: "#157A6E", color: "#fff" }}>
+                    <img src={logocirclewhite} alt="logo"
+                        style={{ maxHeight: "3.2rem", color: "#157A6E" }} />
+                    <Button className="btn-danger text-uppercase text-red ms-auto me-0"
+                        style={{ padding: "0.1rem 0.3rem", fontSize: ".6rem", fontWeight: "bold" }} onClick={toggleL}>
                         X
                     </Button>
                 </div>
@@ -82,10 +91,15 @@ const LoginModal = ({ isOpenL, toggleL, toggleR }) => {
                 {/* icon + title */}
                 <div className='d-flex justify-content-center align-items-center pt-3'>
                     <img src={avatar} alt="avatar" style={{ maxHeight: "1.22rem" }} />
-                    <h5 className='text-center text-dark fw-bolder align-baseline mb-0 ms-2'>Login</h5>
+                    <h5 className='text-center text-dark fw-bolder align-baseline mb-0 ms-2'>
+                        Login
+                    </h5>
                 </div>
 
                 <ModalBody className='pb-0'>
+                    {errorMessage && <div className="alert alert-danger"
+                        style={{ fontSize: ".65rem", fontWeight: 900 }}>
+                        {errorMessage}</div>}
                     {
                         confirmLogin ?
                             <Button
@@ -95,7 +109,6 @@ const LoginModal = ({ isOpenL, toggleL, toggleR }) => {
                             </Button> :
                             null
                     }
-
 
                     <Form onSubmit={(e) => onSubmitHandler(e, false)}>
                         <FormGroup>

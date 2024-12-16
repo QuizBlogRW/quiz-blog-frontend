@@ -14,10 +14,9 @@ const BlogPosts = () => {
 
     // Redux
     const dispatch = useDispatch()
-    const bgPosts = useSelector(state => state.blogPosts)
+    const { blogPosts: AllBPs, isLoading } = useSelector(state => state.blogPosts)
 
     const [limit] = useState(10)
-    const AllBPs = bgPosts && bgPosts.blogPosts
 
     // Lifecycle methods
     useEffect(() => {
@@ -41,7 +40,7 @@ const BlogPosts = () => {
                         <span className="part2">Latest Blog Posts</span>
                     </h3>
 
-                    {bgPosts.isLoading ?
+                    {isLoading ?
                         <>
                             <QBLoading />
                         </> :
@@ -54,7 +53,7 @@ const BlogPosts = () => {
                                     return (
                                         <React.Fragment key={_id}>
                                             <ListGroup flush color="warning" className="px-lg-3 my-1" style={{ background: "#e7e7e7" }}>
-                                                <ListGroupItem href="#" tag="span" color="alert-link" className='d-flex flex-column flex-lg-row justify-content-between align-items-center' style={{ background: "#e7e7e7" }}>
+                                                <ListGroupItem key={_id} href="#" tag="span" color="alert-link" className='d-flex flex-column flex-lg-row justify-content-between align-items-center' style={{ background: "#e7e7e7" }}>
 
                                                     <Link to={`/view-blog-post/${slug}`} className="w-100">
                                                         <b className='text-uppercase text-primary post-title'>{title}</b>
@@ -62,11 +61,12 @@ const BlogPosts = () => {
 
                                                     <span className="w-100 text-dark view-blog-post">
                                                         <small className='px-1'>
-                                                            {postCategory && postCategory.title}
-                                                        </small>|
-                                                        <small className='px-1'>
-                                                            {creator && creator.name}
-                                                        </small>|
+                                                            {postCategory && postCategory.title} |
+                                                        </small>
+                                                        {creator && creator.name &&
+                                                            <small className='px-1'>
+                                                                {creator.name} |
+                                                            </small>}
                                                         <small className='px-1'>
                                                             {moment(new Date(createdAt)).format('DD MMM YYYY, HH:mm')}
                                                         </small>

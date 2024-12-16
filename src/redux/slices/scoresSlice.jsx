@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { apiCallHelper } from '../configHelpers'
+import { apiCallHelper, handlePending, handleRejected } from '../configHelpers'
 
 // Async actions with createAsyncThunk
 export const setScores = createAsyncThunk("scores/setScores", async (pageNo, { getState }) =>
@@ -15,7 +15,7 @@ export const getCreatorScores = createAsyncThunk("scores/getCreatorScores", asyn
   apiCallHelper(`/api/scores/quiz-creator/${uId}`, 'get', null, getState, 'getCreatorScores'))
 
 export const getOneScore = createAsyncThunk("scores/getOneScore", async (scoreId, { getState }) =>
-  apiCallHelper(`/api/scores/one-score/${scoreId}`, 'get', null, getState, 'getOneScore'))
+  apiCallHelper(`/api/scores/${scoreId}`, 'get', null, getState, 'getOneScore'))
 
 export const getPopularToday = createAsyncThunk("scores/getPopularToday", async (_, { getState }) =>
   apiCallHelper('/api/scores/popular-quizes', 'get', null, getState, 'getPopularToday'))
@@ -110,19 +110,28 @@ const scoresSlice = createSlice({
     })
 
     // Pending actions
-    builder.addMatcher(
-      (action) => [setScores.pending, setRankingScores.pending, getTakerScores.pending, getCreatorScores.pending, getOneScore.pending, getPopularToday.pending, getUserOfMonth.pending, createScore.pending, updateScore.pending, deleteScore.pending].includes(action.type),
-      (state) => {
-        state.isLoading = true
-      })
+    builder.addCase(setScores.pending, handlePending)
+    builder.addCase(setRankingScores.pending, handlePending)
+    builder.addCase(getTakerScores.pending, handlePending)
+    builder.addCase(getCreatorScores.pending, handlePending)
+    builder.addCase(getOneScore.pending, handlePending)
+    builder.addCase(getPopularToday.pending, handlePending)
+    builder.addCase(getUserOfMonth.pending, handlePending)
+    builder.addCase(createScore.pending, handlePending)
+    builder.addCase(updateScore.pending, handlePending)
+    builder.addCase(deleteScore.pending, handlePending)
 
     // Rejected actions
-    builder.addMatcher(
-      (action) => [setScores.rejected, setRankingScores.rejected, getTakerScores.rejected, getCreatorScores.rejected, getOneScore.rejected, getPopularToday.rejected, getUserOfMonth.rejected, createScore.rejected, updateScore.rejected, deleteScore.rejected].includes(action.type),
-      (state) => {
-        state.isLoading = false
-      })
-
+    builder.addCase(setScores.rejected, handleRejected)
+    builder.addCase(setRankingScores.rejected, handleRejected)
+    builder.addCase(getTakerScores.rejected, handleRejected)
+    builder.addCase(getCreatorScores.rejected, handleRejected)
+    builder.addCase(getOneScore.rejected, handleRejected)
+    builder.addCase(getPopularToday.rejected, handleRejected)
+    builder.addCase(getUserOfMonth.rejected, handleRejected)
+    builder.addCase(createScore.rejected, handleRejected)
+    builder.addCase(updateScore.rejected, handleRejected)
+    builder.addCase(deleteScore.rejected, handleRejected)
   }
 })
 

@@ -3,21 +3,22 @@ import { notify } from '../utils/notifyToast'
 
 export const qbURL = 'https://myqb-245fdbd30c9b.herokuapp.com/'
 export const qbTestURL = 'https://qb-test-c6396eeaa356.herokuapp.com/'
+export const qbApiGateway = 'https://qb-api-gateway-faaa805537e5.herokuapp.com/'
 export const apiURL = 'https://quiz-blog-rw-server.onrender.com/'
 export const devApiURL = 'http://localhost:5000/'
 
 // Axios instance
 const axiosInstance = axios.create({
-    baseURL: process.env.NODE_ENV === 'development' ? devApiURL : qbURL,
+    baseURL: process.env.NODE_ENV === 'development' ? devApiURL : (qbApiGateway || qbURL),
     // baseURL : qbTestURL,
 })
 
 // List of action types that doesn't require a reload
-const reloadActionTypes = ['verify', 'login']
-const noToastActionTypes = ['loadUser']
+const reloadActionTypes = ['verify', 'login', 'changeStatus']
+const noToastActionTypes = ['loadUser', 'createBlogPostView']
 
 // Default reload timeout
-const RELOAD_TIMEOUT = 3000
+const RELOAD_TIMEOUT = 4000
 
 // API call helper function to make async actions with createAsyncThunk
 export const apiCallHelper = async (url, method, body, getState, actionType) => {
@@ -31,16 +32,21 @@ export const apiCallHelper = async (url, method, body, getState, actionType) => 
                 setTimeout(() => { window.location.reload() }, RELOAD_TIMEOUT)
             }
             else {
-                notify(response.data.error ? response.data.error : '✅ Success', 'success')
+                if (!noToastActionTypes.includes(actionType)) {
+                    notify(response.data.error ? response.data.error : response.data.msg ? response.data.msg : '✅ Success', 'success')
+                }
             }
         }
 
         return response.data
     } catch (err) {
         if (err.response && err.response.data && err.response.data.error && !noToastActionTypes.includes(actionType)) {
+            console.log(err.response.data)
             notify(err.response.data.error, 'error')
+            if (err.response.data.id == 'CONFIRM_ERR') {
+                return Promise.reject(err.response.data.id)
+            }
         }
-        console.log(err.response)
         return Promise.reject(err.response.data.error)
     }
 }
@@ -64,3 +70,12 @@ export const apiCallHelperUpload = async (url, method, formData, getState, actio
         return Promise.reject(err.response.data.error)
     }
 }
+
+
+export const handlePending = (state) => {
+    state.isLoading = true;
+};
+
+export const handleRejected = (state) => {
+    state.isLoading = false;
+};

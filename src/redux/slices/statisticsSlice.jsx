@@ -1,57 +1,57 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { apiCallHelper } from '../configHelpers'
+import { apiCallHelper, handlePending, handleRejected } from '../configHelpers'
 
 // Async actions with createAsyncThunk
 export const get50NewUsers = createAsyncThunk("statistics/get50NewUsers", async (_, { getState }) =>
-  apiCallHelper('/api/statistics/users50', 'get', null, getState, 'get50NewUsers'))
+  apiCallHelper('/api/statistics/50-new-users', 'get', null, getState, 'get50NewUsers'))
 
 export const getAllUsers = createAsyncThunk("statistics/getAllUsers", async (_, { getState }) =>
-  apiCallHelper('/api/statistics/usersAll', 'get', null, getState, 'getAllUsers'))
+  apiCallHelper('/api/statistics/all-users', 'get', null, getState, 'getAllUsers'))
 
 export const getUsersWithImage = createAsyncThunk("statistics/getUsersWithImage", async (_, { getState }) =>
-  apiCallHelper('/api/statistics/usersWithImage', 'get', null, getState, 'getUsersWithImage'))
+  apiCallHelper('/api/statistics/users-with-image', 'get', null, getState, 'getUsersWithImage'))
 
 export const getUsersWithSchool = createAsyncThunk("statistics/getUsersWithSchool", async (_, { getState }) =>
-  apiCallHelper('/api/statistics/usersWithSchool', 'get', null, getState, 'getUsersWithSchool'))
+  apiCallHelper('/api/statistics/users-with-school', 'get', null, getState, 'getUsersWithSchool'))
 
 export const getUsersWithLevel = createAsyncThunk("statistics/getUsersWithLevel", async (_, { getState }) =>
-  apiCallHelper('/api/statistics/usersWithLevel', 'get', null, getState, 'getUsersWithLevel'))
+  apiCallHelper('/api/statistics/users-with-level', 'get', null, getState, 'getUsersWithLevel'))
 
 export const getUsersWithFaculty = createAsyncThunk("statistics/getUsersWithFaculty", async (_, { getState }) =>
-  apiCallHelper('/api/statistics/usersWithFaculty', 'get', null, getState, 'getUsersWithFaculty'))
+  apiCallHelper('/api/statistics/users-with-faculty', 'get', null, getState, 'getUsersWithFaculty'))
 
 export const getUsersWithInterests = createAsyncThunk("statistics/getUsersWithInterests", async (_, { getState }) =>
-  apiCallHelper('/api/statistics/usersWithInterests', 'get', null, getState, 'getUsersWithInterests'))
+  apiCallHelper('/api/statistics/users-with-interests', 'get', null, getState, 'getUsersWithInterests'))
 
 export const getUsersWithAbout = createAsyncThunk("statistics/getUsersWithAbout", async (_, { getState }) =>
-  apiCallHelper('/api/statistics/usersWithAbout', 'get', null, getState, 'getUsersWithAbout'))
+  apiCallHelper('/api/statistics/users-with-about', 'get', null, getState, 'getUsersWithAbout'))
 
 export const getTop100Quizzing = createAsyncThunk("statistics/getTop100Quizzing", async (_, { getState }) =>
-  apiCallHelper('/api/statistics/top100Quizzing', 'get', null, getState, 'getTop100Quizzing'))
+  apiCallHelper('/api/statistics/top-100-quizzing', 'get', null, getState, 'getTop100Quizzing'))
 
 export const getTop100Downloaders = createAsyncThunk("statistics/getTop100Downloaders", async (_, { getState }) =>
-  apiCallHelper('/api/statistics/top100Downloaders', 'get', null, getState, 'getTop100Downloaders'))
+  apiCallHelper('/api/statistics/top-100-downloaders', 'get', null, getState, 'getTop100Downloaders'))
 
 export const getTop20Quizzes = createAsyncThunk("statistics/getTop20Quizzes", async (_, { getState }) =>
-  apiCallHelper('/api/statistics/top20Quizzes', 'get', null, getState, 'getTop20Quizzes'))
+  apiCallHelper('/api/statistics/top-20-quizzes', 'get', null, getState, 'getTop20Quizzes'))
 
 export const getQuizzesStats = createAsyncThunk("statistics/getQuizzesStats", async (_, { getState }) =>
-  apiCallHelper('/api/statistics/allQuizzesAttempts', 'get', null, getState, 'getQuizzesStats'))
+  apiCallHelper('/api/statistics/quizzes-stats', 'get', null, getState, 'getQuizzesStats'))
 
 export const getTop20Notes = createAsyncThunk("statistics/getTop20Notes", async (_, { getState }) =>
-  apiCallHelper('/api/statistics/top20Downloads', 'get', null, getState, 'getTop20Notes'))
+  apiCallHelper('/api/statistics/top-20-notes', 'get', null, getState, 'getTop20Notes'))
 
 export const getNotesStats = createAsyncThunk("statistics/getNotesStats", async (_, { getState }) =>
-  apiCallHelper('/api/statistics/allDownloads', 'get', null, getState, 'getNotesStats'))
+  apiCallHelper('/api/statistics/notes-stats', 'get', null, getState, 'getNotesStats'))
 
 export const getQuizCategoriesStats = createAsyncThunk("statistics/getQuizCategoriesStats", async (_, { getState }) =>
-  apiCallHelper('/api/statistics/quizCategoriesAttempts', 'get', null, getState, 'getQuizCategoriesStats'))
+  apiCallHelper('/api/statistics/quiz-categories-stats', 'get', null, getState, 'getQuizCategoriesStats'))
 
 export const getNotesCategoriesStats = createAsyncThunk("statistics/getNotesCategoriesStats", async (_, { getState }) =>
-  apiCallHelper('/api/statistics/notesCategoriesDownloads', 'get', null, getState, 'getNotesCategoriesStats'))
+  apiCallHelper('/api/statistics/notes-categories-stats', 'get', null, getState, 'getNotesCategoriesStats'))
 
 export const getDailyUserRegistration = createAsyncThunk("statistics/getDailyUserRegistration", async (_, { getState }) =>
-  apiCallHelper('/api/statistics/dailyUserRegistration', 'get', null, getState, 'getDailyUserRegistration'))
+  apiCallHelper('/api/statistics/daily-user-registration', 'get', null, getState, 'getDailyUserRegistration'))
 
 // Statistics slice
 const initialState = {
@@ -176,18 +176,42 @@ const statisticsSlice = createSlice({
     })
 
     // Pending actions
-    builder.addMatcher(
-      (action) => [get50NewUsers.pending, getAllUsers.pending, getUsersWithImage.pending, getUsersWithSchool.pending, getUsersWithLevel.pending, getUsersWithFaculty.pending, getUsersWithInterests.pending, getUsersWithAbout.pending, getTop100Quizzing.pending, getTop100Downloaders.pending, getTop20Quizzes.pending, getQuizzesStats.pending, getTop20Notes.pending, getNotesStats.pending, getQuizCategoriesStats.pending, getNotesCategoriesStats.pending, getDailyUserRegistration.pending].includes(action.type),
-      (state) => {
-        state.isLoading = true
-      })
+    builder.addCase(get50NewUsers.pending, handlePending)
+    builder.addCase(getAllUsers.pending, handlePending)
+    builder.addCase(getUsersWithImage.pending, handlePending)
+    builder.addCase(getUsersWithSchool.pending, handlePending)
+    builder.addCase(getUsersWithLevel.pending, handlePending)
+    builder.addCase(getUsersWithFaculty.pending, handlePending)
+    builder.addCase(getUsersWithInterests.pending, handlePending)
+    builder.addCase(getUsersWithAbout.pending, handlePending)
+    builder.addCase(getTop100Quizzing.pending, handlePending)
+    builder.addCase(getTop100Downloaders.pending, handlePending)
+    builder.addCase(getTop20Quizzes.pending, handlePending)
+    builder.addCase(getQuizzesStats.pending, handlePending)
+    builder.addCase(getTop20Notes.pending, handlePending)
+    builder.addCase(getNotesStats.pending, handlePending)
+    builder.addCase(getQuizCategoriesStats.pending, handlePending)
+    builder.addCase(getNotesCategoriesStats.pending, handlePending)
+    builder.addCase(getDailyUserRegistration.pending, handlePending)
 
     // Rejected actions
-    builder.addMatcher(
-      (action) => [get50NewUsers.rejected, getAllUsers.rejected, getUsersWithImage.rejected, getUsersWithSchool.rejected, getUsersWithLevel.rejected, getUsersWithFaculty.rejected, getUsersWithInterests.rejected, getUsersWithAbout.rejected, getTop100Quizzing.rejected, getTop100Downloaders.rejected, getTop20Quizzes.rejected, getQuizzesStats.rejected, getTop20Notes.rejected, getNotesStats.rejected, getQuizCategoriesStats.rejected, getNotesCategoriesStats.rejected, getDailyUserRegistration.rejected].includes(action.type),
-      (state) => {
-        state.isLoading = false
-      })
+    builder.addCase(get50NewUsers.rejected, handleRejected)
+    builder.addCase(getAllUsers.rejected, handleRejected)
+    builder.addCase(getUsersWithImage.rejected, handleRejected)
+    builder.addCase(getUsersWithSchool.rejected, handleRejected)
+    builder.addCase(getUsersWithLevel.rejected, handleRejected)
+    builder.addCase(getUsersWithFaculty.rejected, handleRejected)
+    builder.addCase(getUsersWithInterests.rejected, handleRejected)
+    builder.addCase(getUsersWithAbout.rejected, handleRejected)
+    builder.addCase(getTop100Quizzing.rejected, handleRejected)
+    builder.addCase(getTop100Downloaders.rejected, handleRejected)
+    builder.addCase(getTop20Quizzes.rejected, handleRejected)
+    builder.addCase(getQuizzesStats.rejected, handleRejected)
+    builder.addCase(getTop20Notes.rejected, handleRejected)
+    builder.addCase(getNotesStats.rejected, handleRejected)
+    builder.addCase(getQuizCategoriesStats.rejected, handleRejected)
+    builder.addCase(getNotesCategoriesStats.rejected, handleRejected)
+    builder.addCase(getDailyUserRegistration.rejected, handleRejected)
   }
 })
 

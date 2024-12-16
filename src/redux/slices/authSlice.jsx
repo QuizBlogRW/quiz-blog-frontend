@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { apiCallHelper, apiCallHelperUpload } from '../configHelpers'
+import { apiCallHelper, apiCallHelperUpload, handlePending, handleRejected } from '../configHelpers'
 import { notify } from '../../utils/notifyToast'
 
 // Async actions with createAsyncThunk
@@ -167,28 +167,32 @@ const authSlice = createSlice({
     })
 
     // Pending actions
-    builder.addMatcher(
-      (action) => [loadUser.pending, login.pending, register.pending, verify.pending, getUsers.pending, logout.pending, updateUser.pending, updateProfile.pending, updateProfileImage.pending, sendResetLink.pending, sendNewPassword.pending, deleteUser.pending].includes(action.type),
-      (state) => {
-        state.isLoading = true
-      })
+    builder.addCase(loadUser.pending, handlePending)
+    builder.addCase(login.pending, handlePending)
+    builder.addCase(register.pending, handlePending)
+    builder.addCase(verify.pending, handlePending)
+    builder.addCase(getUsers.pending, handlePending)
+    builder.addCase(logout.pending, handlePending)
+    builder.addCase(updateUser.pending, handlePending)
+    builder.addCase(updateProfile.pending, handlePending)
+    builder.addCase(updateProfileImage.pending, handlePending)
+    builder.addCase(sendResetLink.pending, handlePending)
+    builder.addCase(sendNewPassword.pending, handlePending)
+    builder.addCase(deleteUser.pending, handlePending)
 
     // Rejected actions
-    builder.addMatcher(
-      (action) => [loadUser.rejected, login.rejected, register.rejected, verify.rejected, getUsers.rejected, logout.rejected, updateUser.rejected, updateProfile.rejected, updateProfileImage.rejected, sendResetLink.rejected, sendNewPassword.rejected, deleteUser.rejected].includes(action.type),
-      (state) => {
-        state.isLoading = false
-
-        if (action.type.includes('loadUser') || action.type.includes('login') || action.type.includes('register') || action.type.includes('verify')) {
-          state.isAuthenticated = false
-          state.user = null
-          state.users = []
-          localStorage.getItem('token') && localStorage.removeItem('token')
-          localStorage.getItem('user') && localStorage.removeItem('user')
-          state.error = action.payload
-          console.log(state.error )
-        }
-      })
+    builder.addCase(loadUser.rejected, handleRejected)
+    builder.addCase(login.rejected, handleRejected)
+    builder.addCase(register.rejected, handleRejected)
+    builder.addCase(verify.rejected, handleRejected)
+    builder.addCase(getUsers.rejected, handleRejected)
+    builder.addCase(logout.rejected, handleRejected)
+    builder.addCase(updateUser.rejected, handleRejected)
+    builder.addCase(updateProfile.rejected, handleRejected)
+    builder.addCase(updateProfileImage.rejected, handleRejected)
+    builder.addCase(sendResetLink.rejected, handleRejected)
+    builder.addCase(sendNewPassword.rejected, handleRejected)
+    builder.addCase(deleteUser.rejected, handleRejected)
   }
 })
 

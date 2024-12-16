@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { apiCallHelper } from '../configHelpers'
+import { apiCallHelper, handlePending, handleRejected } from '../configHelpers'
 
 // Async actions with createAsyncThunk
 export const getLogs = createAsyncThunk("logs/getLogs", async (_, { getState }) =>
@@ -46,18 +46,14 @@ const logsSlice = createSlice({
     })
 
     // Pending actions
-    builder.addMatcher(
-      (action) => [getLogs.pending, getOneLog.pending, deleteLog.pending].includes(action.type),
-      (state) => {
-        state.isLoading = true
-      })
+    builder.addCase(getLogs.pending, handlePending)
+    builder.addCase(getOneLog.pending, handlePending)
+    builder.addCase(deleteLog.pending, handlePending)
 
     // Rejected actions
-    builder.addMatcher(
-      (action) => [getLogs.rejected, getOneLog.rejected, deleteLog.rejected].includes(action.type),
-      (state) => {
-        state.isLoading = false
-      })
+    builder.addCase(getLogs.rejected, handleRejected)
+    builder.addCase(getOneLog.rejected, handleRejected)
+    builder.addCase(deleteLog.rejected, handleRejected)
   }
 })
 

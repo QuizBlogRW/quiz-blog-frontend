@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { apiCallHelper, apiCallHelperUpload } from '../configHelpers'
+import { apiCallHelper, apiCallHelperUpload, handlePending, handleRejected } from '../configHelpers'
 
 // Async actions with createAsyncThunk
 export const getNotes = createAsyncThunk("notes/getNotes", async (_, { getState }) =>
@@ -15,7 +15,7 @@ export const getNotesByChapter = createAsyncThunk("notes/getNotesByChapter", asy
   apiCallHelper(`/api/notes/chapter/${chapterId}`, 'get', null, getState, 'getNotesByChapter'))
 
 export const getNotesByCCatg = createAsyncThunk("notes/getNotesByCCatg", async (ccatgID, { getState }) =>
-  apiCallHelper(`/api/notes/ccatg/${ccatgID}`, 'get', null, getState, 'getNotesByCCatg'))
+  apiCallHelper(`/api/notes/category/${ccatgID}`, 'get', null, getState, 'getNotesByCCatg'))
 
 export const createNotes = createAsyncThunk("notes/createNotes", async (newNotes, { getState }) =>
   apiCallHelperUpload('/api/notes', 'post', newNotes, getState, 'createNotes'))
@@ -103,18 +103,28 @@ const notesSlice = createSlice({
     })
 
     // Pending actions
-    builder.addMatcher(
-      (action) => [getNotes.pending, getLandingDisplayNotes.pending, getOneNotePaper.pending, getNotesByChapter.pending, getNotesByCCatg.pending, createNotes.pending, updateNotes.pending, addNotesQuizes.pending, deleteNotes.pending, removeQzNt.pending].includes(action.type),
-      (state) => {
-        state.isLoading = true
-      })
+    builder.addCase(getNotes.pending, handlePending)
+    builder.addCase(getLandingDisplayNotes.pending, handlePending)
+    builder.addCase(getOneNotePaper.pending, handlePending)
+    builder.addCase(getNotesByChapter.pending, handlePending)
+    builder.addCase(getNotesByCCatg.pending, handlePending)
+    builder.addCase(createNotes.pending, handlePending)
+    builder.addCase(updateNotes.pending, handlePending)
+    builder.addCase(addNotesQuizes.pending, handlePending)
+    builder.addCase(deleteNotes.pending, handlePending)
+    builder.addCase(removeQzNt.pending, handlePending)
 
     // Rejected actions
-    builder.addMatcher(
-      (action) => [getNotes.rejected, getLandingDisplayNotes.rejected, getOneNotePaper.rejected, getNotesByChapter.rejected, getNotesByCCatg.rejected, createNotes.rejected, updateNotes.rejected, addNotesQuizes.rejected, deleteNotes.rejected, removeQzNt.rejected].includes(action.type),
-      (state) => {
-        state.isLoading = false
-      })
+    builder.addCase(getNotes.rejected, handleRejected)
+    builder.addCase(getLandingDisplayNotes.rejected, handleRejected)
+    builder.addCase(getOneNotePaper.rejected, handleRejected)
+    builder.addCase(getNotesByChapter.rejected, handleRejected)
+    builder.addCase(getNotesByCCatg.rejected, handleRejected)
+    builder.addCase(createNotes.rejected, handleRejected)
+    builder.addCase(updateNotes.rejected, handleRejected)
+    builder.addCase(addNotesQuizes.rejected, handleRejected)
+    builder.addCase(deleteNotes.rejected, handleRejected)
+    builder.addCase(removeQzNt.rejected, handleRejected)
   }
 })
 

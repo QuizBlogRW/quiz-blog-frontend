@@ -16,36 +16,41 @@ const PendingComments = () => {
     useEffect(() => {
         dispatch(getPendingComments())
     }, [dispatch])
-    
+
     // context
     const currentUser = useContext(currentUserContext)
     const uRole = currentUser && currentUser.role
 
+    const renderLoading = () => (
+        <div className="p-1 m-1 d-flex justify-content-center align-items-center">
+            <QBLoadingSM />
+        </div>
+    )
+
+    const renderComments = () => (
+        <>
+            <h5 className='text-center w-100 my-4 fw-bolder'>
+                PENDING COMMENTS ({questionComments.pendingComments.length})
+            </h5>
+            <Col sm={12} className="mt-2 comments-card">
+                <Card body>
+                    {questionComments.pendingComments.map((comment, i) => (
+                        <Comment comment={comment} isFromPending={true} uRole={uRole} key={i} />
+                    ))}
+                </Card>
+            </Col>
+        </>
+    )
+
+    const renderNoComments = () => (
+        <Alert color="success" className="w-100 text-center">
+            Hooray! ...
+        </Alert>
+    )
+
     return (
-        questionComments.pendingCommentsLoading ?
-            <div className="p-1 m-1 d-flex justify-content-center align-items-center">
-                <QBLoadingSM /> Pending comments ...</div> :
-
-            questionComments && questionComments.pendingComments.length > 0 ?
-                <>
-                    <h5 className='text-center w-100 my-4 fw-bolder'>
-                        PENDING COMMENTS ({questionComments && questionComments.pendingComments.length})
-                    </h5>
-
-                    <Col sm={12} className="mt-2 comments-card">
-                        <Card body>
-                            {
-                                // PENDING QUESTION COMMENTS
-                                questionComments.pendingComments.map((comment, i) => (
-                                    <Comment comment={comment} isFromPending={true} uRole={uRole} key={i} />
-                                ))}
-                        </Card>
-                    </Col>
-                </> :
-
-                <Alert color="success" className="w-100 text-center">
-                    Hooray! there are no pending comments today!
-                </Alert>
+        questionComments.isLoading ? renderLoading() :
+            questionComments.pendingComments.length > 0 ? renderComments() : renderNoComments()
     )
 }
 

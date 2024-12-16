@@ -34,8 +34,11 @@ const QuizesTabPane = () => {
         dispatch(getPaginatedQuizes(pageNo))
         dispatch(getQuestions())
         dispatch(getAllNoLimitQuizes())
+    }, [dispatch, pageNo])
+
+    useEffect(() => {
         setNumberOfPages(totPages)
-    }, [dispatch, pageNo, totPages])
+    }, [totPages])
 
     // Quizzes to use - CREATED BY ROUTE
     const allQuizzes = quizes && quizes.paginatedQuizes

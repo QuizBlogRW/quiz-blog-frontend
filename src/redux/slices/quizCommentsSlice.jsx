@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { apiCallHelper } from '../configHelpers'
+import { apiCallHelper, handlePending, handleRejected } from '../configHelpers'
 
 // Async actions with createAsyncThunk
 export const getAllComments = createAsyncThunk("quizComments/getAllComments", async (_, { getState }) =>
   apiCallHelper('/api/quizzes-comments', 'get', null, getState, 'getAllComments'))
 
 export const getQuizComments = createAsyncThunk("quizComments/getQuizComments", async (quizID, { getState }) =>
-  apiCallHelper(`/api/quizzes-comments/comments-on/${quizID}`, 'get', null, getState, 'getQuizComments'))
+  apiCallHelper(`/api/quizzes-comments/quiz/${quizID}`, 'get', null, getState, 'getQuizComments'))
 
 export const getOneComment = createAsyncThunk("quizComments/getOneComment", async (commentId, { getState }) =>
   apiCallHelper(`/api/quizzes-comments/${commentId}`, 'get', null, getState, 'getOneComment'))
@@ -33,11 +33,8 @@ const initialState = {
 const quizCommentsSlice = createSlice({
   name: 'quizComments',
   initialState,
-  reducers: {
-    commentsLoading: state => {
-      state.isLoading = false
-    }
-  },
+  reducers: {},
+
   extraReducers: (builder) => {
 
     // Fulfilled actions
@@ -67,21 +64,21 @@ const quizCommentsSlice = createSlice({
     })
 
     // Pending actions
-    builder.addMatcher(
-      (action) => [getAllComments.pending, getQuizComments.pending, getOneComment.pending, createComment.pending, updateComment.pending, deleteComment.pending].includes(action.type),
-      (state) => {
-        state.isLoading = true
-      })
+    builder.addCase(getAllComments.pending, handlePending)
+    builder.addCase(getQuizComments.pending, handlePending)
+    builder.addCase(getOneComment.pending, handlePending)
+    builder.addCase(createComment.pending, handlePending)
+    builder.addCase(updateComment.pending, handlePending)
+    builder.addCase(deleteComment.pending, handlePending)
 
     // Rejected actions
-    builder.addMatcher(
-      (action) => [getAllComments.rejected, getQuizComments.rejected, getOneComment.rejected, createComment.rejected, updateComment.rejected, deleteComment.rejected].includes(action.type),
-      (state) => {
-        state.isLoading = false
-      })
-
+    builder.addCase(getAllComments.rejected, handleRejected)
+    builder.addCase(getQuizComments.rejected, handleRejected)
+    builder.addCase(getOneComment.rejected, handleRejected)
+    builder.addCase(createComment.rejected, handleRejected)
+    builder.addCase(updateComment.rejected, handleRejected)
+    builder.addCase(deleteComment.rejected, handleRejected)
   }
 })
 
-export const { commentsLoading } = quizCommentsSlice.actions
 export default quizCommentsSlice.reducer

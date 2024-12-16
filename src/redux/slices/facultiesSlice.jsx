@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { apiCallHelper } from '../configHelpers'
+import { apiCallHelper, handlePending, handleRejected } from '../configHelpers'
 
 // Async actions with createAsyncThunk
 export const getFaculties = createAsyncThunk("faculties/getFaculties", async (_, { getState }) =>
@@ -60,19 +60,18 @@ const facultiesSlice = createSlice({
     })
 
     // Pending actions
-    builder.addMatcher(
-      (action) => [getFaculties.pending, fetchLevelFaculties.pending, createFaculty.pending, updateFaculty.pending, deleteFaculty.pending].includes(action.type),
-      (state) => {
-        state.isLoading = true
-      })
-
+    builder.addCase(getFaculties.pending, handlePending)
+    builder.addCase(fetchLevelFaculties.pending, handlePending)
+    builder.addCase(createFaculty.pending, handlePending)
+    builder.addCase(updateFaculty.pending, handlePending)
+    builder.addCase(deleteFaculty.pending, handlePending)
 
     // Rejected actions
-    builder.addMatcher(
-      (action) => [getFaculties.rejected, fetchLevelFaculties.rejected, createFaculty.rejected, updateFaculty.rejected, deleteFaculty.rejected].includes(action.type),
-      (state) => {
-        state.isLoading = false
-      })
+    builder.addCase(getFaculties.rejected, handleRejected)
+    builder.addCase(fetchLevelFaculties.rejected, handleRejected)
+    builder.addCase(createFaculty.rejected, handleRejected)
+    builder.addCase(updateFaculty.rejected, handleRejected)
+    builder.addCase(deleteFaculty.rejected, handleRejected)
   }
 })
 

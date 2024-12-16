@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { apiCallHelper } from '../configHelpers'
+import { apiCallHelper, handlePending, handleRejected } from '../configHelpers'
 
 // Async actions with createAsyncThunk
 export const getLevels = createAsyncThunk("levels/getLevels", async (_, { getState }) =>
@@ -60,18 +60,18 @@ const levelsSlice = createSlice({
     })
 
     // Pending actions
-    builder.addMatcher(
-      (action) => [getLevels.pending, fetchSchoolLevels.pending, createLevel.pending, updateLevel.pending, deleteLevel.pending].includes(action.type),
-      (state) => {
-        state.isLoading = true
-      })
+    builder.addCase(getLevels.pending, handlePending)
+    builder.addCase(fetchSchoolLevels.pending, handlePending)
+    builder.addCase(createLevel.pending, handlePending)
+    builder.addCase(updateLevel.pending, handlePending)
+    builder.addCase(deleteLevel.pending, handlePending)
 
     // Rejected actions
-    builder.addMatcher(
-      (action) => [getLevels.rejected, fetchSchoolLevels.rejected, createLevel.rejected, updateLevel.rejected, deleteLevel.rejected].includes(action.type),
-      (state) => {
-        state.isLoading = false
-      })
+    builder.addCase(getLevels.rejected, handleRejected)
+    builder.addCase(fetchSchoolLevels.rejected, handleRejected)
+    builder.addCase(createLevel.rejected, handleRejected)
+    builder.addCase(updateLevel.rejected, handleRejected)
+    builder.addCase(deleteLevel.rejected, handleRejected)
   }
 })
 

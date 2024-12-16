@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { apiCallHelper, apiCallHelperUpload } from '../configHelpers'
-import { notify } from '../../utils/notifyToast'
+import { apiCallHelper, apiCallHelperUpload, handlePending, handleRejected } from '../configHelpers'
 
 // Async actions with createAsyncThunk
 export const getAdverts = createAsyncThunk("adverts/getAdverts", async (_, { getState }) =>
@@ -42,7 +41,7 @@ const advertsSlice = createSlice({
       state.activeAdverts = []
       state.isLoading = false
       state.oneAdvert = '',
-      state.error = null
+        state.error = null
     }
   },
   extraReducers: (builder) => {
@@ -63,9 +62,10 @@ const advertsSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(changeStatus.fulfilled, (state, action) => {
-      state.activeAdverts = state.activeAdverts.map(advert => advert._id === action.payload._id ? action.payload : advert)
-      state.isLoading = false
-      notify('Advert status changed successfully!')
+      state.activeAdverts = state.activeAdverts.map(advert => 
+        advert._id === action.payload._id ? action.payload : advert
+      );
+      state.isLoading = false;
     })
     builder.addCase(updateAdvert.fulfilled, (state, action) => {
       state.allAdverts = state.allAdverts.map(advert => advert._id === action.payload._id ? action.payload : advert)
@@ -78,19 +78,23 @@ const advertsSlice = createSlice({
     })
 
     // Pending actions
-    builder.addMatcher(
-      (action) => [getAdverts.pending, getActiveAdverts.pending, getOneAdvert.pending, createAdvert.pending, changeStatus.pending, updateAdvert.pending, deleteAdvert.pending].includes(action.type),
-      (state) => {
-        state.isLoading = true
-      })
-
+    builder.addCase(getAdverts.pending, handlePending)
+    builder.addCase(getActiveAdverts.pending, handlePending)
+    builder.addCase(getOneAdvert.pending, handlePending)
+    builder.addCase(createAdvert.pending, handlePending)
+    builder.addCase(changeStatus.pending, handlePending)
+    builder.addCase(updateAdvert.pending, handlePending)
+    builder.addCase(deleteAdvert.pending, handlePending)
+    
     // Rejected actions
-    builder.addMatcher(
-      (action) => [getAdverts.rejected, getActiveAdverts.rejected, getOneAdvert.rejected, createAdvert.rejected, changeStatus.rejected, updateAdvert.rejected, deleteAdvert.rejected].includes(action.type),
-      (state) => {
-        state.isLoading = false
-        state.error = action.payload
-      })
+    builder.addCase(getAdverts.rejected, handleRejected)
+    builder.addCase(getActiveAdverts.rejected, handleRejected)
+    builder.addCase(getOneAdvert.rejected, handleRejected)
+    builder.addCase(createAdvert.rejected, handleRejected)
+    builder.addCase(changeStatus.rejected, handleRejected)
+    builder.addCase(updateAdvert.rejected, handleRejected)
+    builder.addCase(deleteAdvert.rejected, handleRejected)
+
   }
 })
 

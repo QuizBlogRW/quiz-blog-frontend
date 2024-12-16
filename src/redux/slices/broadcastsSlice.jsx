@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { apiCallHelper } from '../configHelpers'
+import { apiCallHelper, handlePending, handleRejected } from '../configHelpers'
 
 // Async actions with createAsyncThunk
 export const getBroadcasts = createAsyncThunk("broadcasts/getBroadcasts", async (_, { getState }) =>
@@ -56,18 +56,16 @@ const broadcastsSlice = createSlice({
     })
 
     // Pending actions
-    builder.addMatcher(
-      (action) => [getBroadcasts.pending, getOneBroadcast.pending, sendBroadcast.pending, deleteBroadcast.pending].includes(action.type),
-      (state) => {
-        state.isLoading = true
-      })
+    builder.addCase(getBroadcasts.pending, handlePending)
+    builder.addCase(getOneBroadcast.pending, handlePending)
+    builder.addCase(sendBroadcast.pending, handlePending)
+    builder.addCase(deleteBroadcast.pending, handlePending)
 
     // Rejected actions
-    builder.addMatcher(
-      (action) => [getBroadcasts.rejected, getOneBroadcast.rejected, sendBroadcast.rejected, deleteBroadcast.rejected].includes(action.type),
-      (state) => {
-        state.isLoading = false
-      })
+    builder.addCase(getBroadcasts.rejected, handleRejected)
+    builder.addCase(getOneBroadcast.rejected, handleRejected)
+    builder.addCase(sendBroadcast.rejected, handleRejected)
+    builder.addCase(deleteBroadcast.rejected, handleRejected)
   }
 })
 

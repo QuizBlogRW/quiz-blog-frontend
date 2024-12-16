@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { apiCallHelper } from '../configHelpers'
+import { apiCallHelper, handlePending, handleRejected } from '../configHelpers'
 
 // Async actions with createAsyncThunk
 export const getChapters = createAsyncThunk("chapters/getChapters", async (_, { getState }) =>
@@ -60,18 +60,18 @@ const chaptersSlice = createSlice({
     })
 
     // Pending actions
-    builder.addMatcher(
-      (action) => [getChapters.pending, getChaptersByCourse.pending, createChapter.pending, updateChapter.pending, deleteChapter.pending].includes(action.type),
-      (state) => {
-        state.isLoading = true
-      })
+    builder.addCase(getChapters.pending, handlePending)
+    builder.addCase(getChaptersByCourse.pending, handlePending)
+    builder.addCase(createChapter.pending, handlePending)
+    builder.addCase(updateChapter.pending, handlePending)
+    builder.addCase(deleteChapter.pending, handlePending)
 
     // Rejected actions
-    builder.addMatcher(
-      (action) => [getChapters.rejected, getChaptersByCourse.rejected, createChapter.rejected, updateChapter.rejected, deleteChapter.rejected].includes(action.type),
-      (state) => {
-        state.isLoading = false
-      })
+    builder.addCase(getChapters.rejected, handleRejected)
+    builder.addCase(getChaptersByCourse.rejected, handleRejected)
+    builder.addCase(createChapter.rejected, handleRejected)
+    builder.addCase(updateChapter.rejected, handleRejected)
+    builder.addCase(deleteChapter.rejected, handleRejected)
   }
 })
 

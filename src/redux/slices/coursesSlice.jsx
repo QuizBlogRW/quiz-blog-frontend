@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { apiCallHelper } from '../configHelpers'
+import { apiCallHelper, handlePending, handleRejected } from '../configHelpers'
 
 // Async actions with createAsyncThunk
 export const getCourses = createAsyncThunk("courses/getCourses", async (_, { getState }) =>
@@ -9,7 +9,7 @@ export const getOneCourse = createAsyncThunk("courses/getOneCourse", async (cour
   apiCallHelper(`/api/courses/${courseId}`, 'get', null, getState, 'getOneCourse'))
 
 export const getCoursesByCategory = createAsyncThunk("courses/getCoursesByCategory", async (cCId, { getState }) =>
-  apiCallHelper(`/api/courses/courseCategory/${cCId}`, 'get', null, getState, 'getCoursesByCategory'))
+  apiCallHelper(`/api/courses/category/${cCId}`, 'get', null, getState, 'getCoursesByCategory'))
 
 export const createCourse = createAsyncThunk("courses/createCourse", async (newCourses, { getState }) =>
   apiCallHelper('/api/courses', 'post', newCourses, getState, 'createCourse'))
@@ -69,18 +69,20 @@ const coursesSlice = createSlice({
     })
 
     // Pending actions
-    builder.addMatcher(
-      (action) => [getCourses.pending, getOneCourse.pending, getCoursesByCategory.pending, createCourse.pending, updateCourse.pending, deleteCourse.pending].includes(action.type),
-      (state) => {
-        state.isLoading = true
-      })
+    builder.addCase(getCourses.pending, handlePending)
+    builder.addCase(getOneCourse.pending, handlePending)
+    builder.addCase(getCoursesByCategory.pending, handlePending)
+    builder.addCase(createCourse.pending, handlePending)
+    builder.addCase(updateCourse.pending, handlePending)
+    builder.addCase(deleteCourse.pending, handlePending)
 
     // Rejected actions
-    builder.addMatcher(
-      (action) => [getCourses.rejected, getOneCourse.rejected, getCoursesByCategory.rejected, createCourse.rejected, updateCourse.rejected, deleteCourse.rejected].includes(action.type),
-      (state) => {
-        state.isLoading = false
-      })
+    builder.addCase(getCourses.rejected, handleRejected)
+    builder.addCase(getOneCourse.rejected, handleRejected)
+    builder.addCase(getCoursesByCategory.rejected, handleRejected)
+    builder.addCase(createCourse.rejected, handleRejected)
+    builder.addCase(updateCourse.rejected, handleRejected)
+    builder.addCase(deleteCourse.rejected, handleRejected)
   }
 })
 

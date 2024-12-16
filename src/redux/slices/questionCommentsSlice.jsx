@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { apiCallHelper } from '../configHelpers'
+import { apiCallHelper, handlePending, handleRejected } from '../configHelpers'
 
 // Async actions with createAsyncThunk
 export const getComments = createAsyncThunk("questionComments/getComments", async (_, { getState }) =>
@@ -76,7 +76,7 @@ const questionCommentsSlice = createSlice({
   },
   extraReducers: (builder) => {
 
-    // Fullfilled actions
+    // Fulfilled actions
     builder.addCase(getComments.fulfilled, (state, action) => {
       state.allComments = action.payload
       state.isLoading = false
@@ -121,18 +121,30 @@ const questionCommentsSlice = createSlice({
     })
 
     // Pending actions
-    builder.addMatcher(
-      (action) => [getComments.pending, getPaginatedComments.pending, getPendingComments.pending, getCommentsByQuiz.pending, getQuestionComments.pending, getOneComment.pending, createComment.pending, updateComment.pending, approveComment.pending, rejectComment.pending, deleteComment.pending].includes(action.type),
-      (state) => {
-        state.isLoading = true
-      })
+    builder.addCase(getComments.pending, handlePending)
+    builder.addCase(getPaginatedComments.pending, handlePending)
+    builder.addCase(getPendingComments.pending, handlePending)
+    builder.addCase(getCommentsByQuiz.pending, handlePending)
+    builder.addCase(getQuestionComments.pending, handlePending)
+    builder.addCase(getOneComment.pending, handlePending)
+    builder.addCase(createComment.pending, handlePending)
+    builder.addCase(updateComment.pending, handlePending)
+    builder.addCase(approveComment.pending, handlePending)
+    builder.addCase(rejectComment.pending, handlePending)
+    builder.addCase(deleteComment.pending, handlePending)
 
     // Rejected actions
-    builder.addMatcher(
-      (action) => [getComments.rejected, getPaginatedComments.rejected, getPendingComments.rejected, getCommentsByQuiz.rejected, getQuestionComments.rejected, getOneComment.rejected, createComment.rejected, updateComment.rejected, approveComment.rejected, rejectComment.rejected, deleteComment.rejected].includes(action.type),
-      (state) => {
-        state.isLoading = false
-      })
+    builder.addCase(getComments.rejected, handleRejected)
+    builder.addCase(getPaginatedComments.rejected, handleRejected)
+    builder.addCase(getPendingComments.rejected, handleRejected)
+    builder.addCase(getCommentsByQuiz.rejected, handleRejected)
+    builder.addCase(getQuestionComments.rejected, handleRejected)
+    builder.addCase(getOneComment.rejected, handleRejected)
+    builder.addCase(createComment.rejected, handleRejected)
+    builder.addCase(updateComment.rejected, handleRejected)
+    builder.addCase(approveComment.rejected, handleRejected)
+    builder.addCase(rejectComment.rejected, handleRejected)
+    builder.addCase(deleteComment.rejected, handleRejected)
   }
 })
 

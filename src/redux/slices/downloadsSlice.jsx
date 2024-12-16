@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { apiCallHelper } from '../configHelpers'
+import { apiCallHelper, handlePending, handleRejected } from '../configHelpers'
 
 // Async actions with createAsyncThunk
 export const getDownloads = createAsyncThunk("downloads/getDownloads", async (pageNo, { getState }) =>
@@ -65,18 +65,18 @@ const downloadsSlice = createSlice({
     })
 
     // Pending actions
-    builder.addMatcher(
-      (action) => [getDownloads.pending, getCreatorDownloads.pending, getUserDownloads.pending, saveDownload.pending, deleteDownload.pending].includes(action.type),
-      (state) => {
-        state.isLoading = true
-      })
+    builder.addCase(getDownloads.pending, handlePending)
+    builder.addCase(getCreatorDownloads.pending, handlePending)
+    builder.addCase(getUserDownloads.pending, handlePending)
+    builder.addCase(saveDownload.pending, handlePending)
+    builder.addCase(deleteDownload.pending, handlePending)
 
     // Rejected actions
-    builder.addMatcher(
-      (action) => [getDownloads.rejected, getCreatorDownloads.rejected, getUserDownloads.rejected, saveDownload.rejected, deleteDownload.rejected].includes(action.type),
-      (state) => {
-        state.isLoading = false
-      })
+    builder.addCase(getDownloads.rejected, handleRejected)
+    builder.addCase(getCreatorDownloads.rejected, handleRejected)
+    builder.addCase(getUserDownloads.rejected, handleRejected)
+    builder.addCase(saveDownload.rejected, handleRejected)
+    builder.addCase(deleteDownload.rejected, handleRejected)
   }
 })
 

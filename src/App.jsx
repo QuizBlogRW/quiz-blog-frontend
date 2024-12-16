@@ -107,7 +107,6 @@ const App = () => {
                 setPercentage(percent)
                 setModal(true)
             }
-            console.log(currentUser, percent)
         }
     }, [currentUser])
 
@@ -194,7 +193,7 @@ const App = () => {
                                     </Route>
                                     <Route path="/*" element={<NotFound404 />} />
                                 </Routes>
-                                <ToastContainer />
+                                <ToastContainer limit={2} style={{ fontSize: '0.8rem', textAlign: 'left' }} />
                                 <Footer />
                             </Suspense>
                         </courseCategoriesContext.Provider>

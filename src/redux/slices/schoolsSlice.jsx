@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { apiCallHelper } from '../configHelpers'
+import { apiCallHelper, handlePending, handleRejected } from '../configHelpers'
 
 // Async actions with createAsyncThunk
 export const getSchools = createAsyncThunk("schools/getSchools", async (_, { getState }) =>
@@ -61,18 +61,18 @@ const schoolsSlice = createSlice({
     })
 
     // Pending actions
-    builder.addMatcher(
-      (action) => [getSchools.pending, getOneSchool.pending, createSchool.pending, updateSchool.pending, deleteSchool.pending].includes(action.type),
-      (state) => {
-        state.isLoading = true
-      })
+    builder.addCase(getSchools.pending, handlePending)
+    builder.addCase(getOneSchool.pending, handlePending)
+    builder.addCase(createSchool.pending, handlePending)
+    builder.addCase(updateSchool.pending, handlePending)
+    builder.addCase(deleteSchool.pending, handlePending)
 
     // Rejected actions
-    builder.addMatcher(
-      (action) => [getSchools.rejected, getOneSchool.rejected, createSchool.rejected, updateSchool.rejected, deleteSchool.rejected].includes(action.type),
-      (state) => {
-        state.isLoading = false
-      })
+    builder.addCase(getSchools.rejected, handleRejected)
+    builder.addCase(getOneSchool.rejected, handleRejected)
+    builder.addCase(createSchool.rejected, handleRejected)
+    builder.addCase(updateSchool.rejected, handleRejected)
+    builder.addCase(deleteSchool.rejected, handleRejected)
   }
 })
 

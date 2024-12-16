@@ -33,6 +33,18 @@ const ChatWrapper = () => {
     const [pageNo, setPageNo] = useState(1)
     const [onlineList, setOnlineList] = useState([])
 
+    const setupSocketListeners = () => {
+        // Listen for 'newUserOnline' event
+        socket.on('newUserOnline', ({ onlineUsers, new_user }) => {
+            setOnlineList(onlineUsers)
+
+            // Notify the user of the new user online
+            if (new_user && new_user.name && currentUser && new_user.name !== currentUser.name) {
+                notify(`${new_user.name} is online`)
+            }
+        })
+    }
+
     // Lifecycle methods
     useEffect(() => {
         uRole !== 'Visitor' ? dispatch(getContacts(pageNo)) : dispatch(getUserContacts(userEmail))
@@ -48,17 +60,16 @@ const ChatWrapper = () => {
         if (oneChatRoom) {
             dispatch(getRoomMessages(oneChatRoom._id))
         }
-
-        // Listen for 'newUserOnline' event
-        socket.on('newUserOnline', ({ onlineUsers, new_user }) => {
-            setOnlineList(onlineUsers)
-
-            // Notify the user of the new user online
-            if (new_user.name !== currentUser.name) {
-                notify(`${new_user.name} is online`)
-            }
-        })
     }, [pageNo, oneChatRoom])
+
+    useEffect(() => {
+        setupSocketListeners()
+
+        // Cleanup socket listeners on component unmount
+        return () => {
+            socket.off('newUserOnline')
+        }
+    }, [])
 
     const [isChatOpen, setIsChatOpen] = useState(false)
     const [isChatRoomOpen, setIsChatRoomOpen] = useState(false)

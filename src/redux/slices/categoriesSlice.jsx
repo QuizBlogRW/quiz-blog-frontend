@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { apiCallHelper } from '../configHelpers'
+import { apiCallHelper, handlePending, handleRejected } from '../configHelpers'
 
 // Async actions with createAsyncThunk
 export const getCategories = createAsyncThunk("categories/getCategories", async (_, { getState }) =>
@@ -60,18 +60,18 @@ const categoriesSlice = createSlice({
     })
 
     // Pending actions
-    builder.addMatcher(
-      (action) => [getCategories.pending, getOneCategory.pending, createCategory.pending, updateCategory.pending, deleteCategory.pending].includes(action.type),
-      (state) => {
-        state.isLoading = true
-      })
+    builder.addCase(getCategories.pending, handlePending)
+    builder.addCase(getOneCategory.pending, handlePending)
+    builder.addCase(createCategory.pending, handlePending)
+    builder.addCase(updateCategory.pending, handlePending)
+    builder.addCase(deleteCategory.pending, handlePending)
 
     // Rejected actions
-    builder.addMatcher(
-      (action) => [getCategories.rejected, getOneCategory.rejected, createCategory.rejected, updateCategory.rejected, deleteCategory.rejected].includes(action.type),
-      (state) => {
-        state.isLoading = false
-      })
+    builder.addCase(getCategories.rejected, handleRejected)
+    builder.addCase(getOneCategory.rejected, handleRejected)
+    builder.addCase(createCategory.rejected, handleRejected)
+    builder.addCase(updateCategory.rejected, handleRejected)
+    builder.addCase(deleteCategory.rejected, handleRejected)
   }
 })
 

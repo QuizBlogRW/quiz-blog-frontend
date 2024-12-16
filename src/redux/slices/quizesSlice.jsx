@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { apiCallHelper } from '../configHelpers'
+import { apiCallHelper, handlePending, handleRejected } from '../configHelpers'
 
 // Async actions with createAsyncThunk
 export const getQuizes = createAsyncThunk("quizes/getQuizes", async ({ limit, skip }, { getState }) =>
@@ -74,7 +74,7 @@ const quizesSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(getPaginatedQuizes.fulfilled, (state, action) => {
-      state.paginatedQuizes = action.payload.quizes
+      state.paginatedQuizes = action.payload.quizzes
       state.totalPages = action.payload.totalPages
       state.isLoading = false
     })
@@ -120,18 +120,32 @@ const quizesSlice = createSlice({
     })
 
     // Pending actions
-    builder.addMatcher(
-      (action) => [getQuizes.pending, getPaginatedQuizes.pending, getAllNoLimitQuizes.pending, getOneQuiz.pending, getQuizesByCategory.pending, getQuizesByNotes.pending, createQuiz.pending, updateQuiz.pending, addVidLink.pending, deleteVideo.pending, deleteQuiz.pending, notifying.pending].includes(action.type),
-      (state) => {
-        state.isLoading = true
-      })
+    builder.addCase(getQuizes.pending, handlePending)
+    builder.addCase(getPaginatedQuizes.pending, handlePending)
+    builder.addCase(getAllNoLimitQuizes.pending, handlePending)
+    builder.addCase(getOneQuiz.pending, handlePending)
+    builder.addCase(getQuizesByCategory.pending, handlePending)
+    builder.addCase(getQuizesByNotes.pending, handlePending)
+    builder.addCase(createQuiz.pending, handlePending)
+    builder.addCase(updateQuiz.pending, handlePending)
+    builder.addCase(addVidLink.pending, handlePending)
+    builder.addCase(deleteVideo.pending, handlePending)
+    builder.addCase(deleteQuiz.pending, handlePending)
+    builder.addCase(notifying.pending, handlePending)
 
     // Rejected actions
-    builder.addMatcher(
-      (action) => [getQuizes.rejected, getPaginatedQuizes.rejected, getAllNoLimitQuizes.rejected, getOneQuiz.rejected, getQuizesByCategory.rejected, getQuizesByNotes.rejected, createQuiz.rejected, updateQuiz.rejected, addVidLink.rejected, deleteVideo.rejected, deleteQuiz.rejected, notifying.rejected].includes(action.type),
-      (state) => {
-        state.isLoading = false
-      })
+    builder.addCase(getQuizes.rejected, handleRejected)
+    builder.addCase(getPaginatedQuizes.rejected, handleRejected)
+    builder.addCase(getAllNoLimitQuizes.rejected, handleRejected)
+    builder.addCase(getOneQuiz.rejected, handleRejected)
+    builder.addCase(getQuizesByCategory.rejected, handleRejected)
+    builder.addCase(getQuizesByNotes.rejected, handleRejected)
+    builder.addCase(createQuiz.rejected, handleRejected)
+    builder.addCase(updateQuiz.rejected, handleRejected)
+    builder.addCase(addVidLink.rejected, handleRejected)
+    builder.addCase(deleteVideo.rejected, handleRejected)
+    builder.addCase(deleteQuiz.rejected, handleRejected)
+    builder.addCase(notifying.rejected, handleRejected)
   }
 })
 

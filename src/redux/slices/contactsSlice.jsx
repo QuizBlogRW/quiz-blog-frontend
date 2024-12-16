@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { apiCallHelper } from '../configHelpers'
+import { apiCallHelper, handlePending, handleRejected } from '../configHelpers'
 import { socket } from '../../utils/socket'
 import { notify } from '../../utils/notifyToast'
 
@@ -11,7 +11,7 @@ export const getOneContact = createAsyncThunk("contacts/getOneContact", async (c
   apiCallHelper(`/api/contacts/${contactId}`, 'get', null, getState, 'getOneContact'))
 
 export const getUserContacts = createAsyncThunk("contacts/getUserContacts", async (userEmail, { getState }) =>
-  apiCallHelper(`/api/contacts/sent-by/${userEmail}`, 'get', null, getState, 'getUserContacts'))
+  apiCallHelper(`/api/contacts/sender/${userEmail}`, 'get', null, getState, 'getUserContacts'))
 
 export const sendMsg = createAsyncThunk("contacts/sendMsg", async (contactMsg, { getState }) =>
   apiCallHelper('/api/contacts', 'post', contactMsg, getState, 'sendMsg'))
@@ -105,19 +105,26 @@ const contactsSlice = createSlice({
     })
 
     // Pending actions
-    builder.addMatcher(
-      (action) => [getContacts.pending, getOneContact.pending, getUserContacts.pending, sendMsg.pending, replyContact.pending, deleteContact.pending, getCreateRoom.pending, getRoomMessages.pending, sendRoomMessage.pending].includes(action.type),
-      (state) => {
-        state.isLoading = true
-      })
+    builder.addCase(getContacts.pending, handlePending)
+    builder.addCase(getOneContact.pending, handlePending)
+    builder.addCase(getUserContacts.pending, handlePending)
+    builder.addCase(sendMsg.pending, handlePending)
+    builder.addCase(replyContact.pending, handlePending)
+    builder.addCase(deleteContact.pending, handlePending)
+    builder.addCase(getCreateRoom.pending, handlePending)
+    builder.addCase(getRoomMessages.pending, handlePending)
+    builder.addCase(sendRoomMessage.pending, handlePending)
 
     // Rejected actions
-    builder.addMatcher(
-      (action) => [getContacts.rejected, getOneContact.rejected, getUserContacts.rejected, sendMsg.rejected, replyContact.rejected, deleteContact.rejected, getCreateRoom.rejected, getRoomMessages.rejected, sendRoomMessage.rejected].includes(action.type),
-      (state) => {
-        state.isLoading = false
-      })
-
+    builder.addCase(getContacts.rejected, handleRejected)
+    builder.addCase(getOneContact.rejected, handleRejected)
+    builder.addCase(getUserContacts.rejected, handleRejected)
+    builder.addCase(sendMsg.rejected, handleRejected)
+    builder.addCase(replyContact.rejected, handleRejected)
+    builder.addCase(deleteContact.rejected, handleRejected)
+    builder.addCase(getCreateRoom.rejected, handleRejected)
+    builder.addCase(getRoomMessages.rejected, handleRejected)
+    builder.addCase(sendRoomMessage.rejected, handleRejected)
   }
 })
 

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { apiCallHelper } from '../configHelpers'
+import { apiCallHelper, handlePending, handleRejected } from '../configHelpers'
 
 // Async actions with createAsyncThunk
 export const getFaqs = createAsyncThunk("faqs/getFaqs", async (_, { getState }) =>
@@ -74,19 +74,22 @@ const faqsSlice = createSlice({
     })
 
     // Pending actions
-    builder.addMatcher(
-      (action) => [getFaqs.pending, getOneFaq.pending, createFq.pending, updateFaq.pending, addFaqVidLink.pending, deleteFaqVideo.pending, deleteFaq.pending].includes(action.type),
-      (state) => {
-        state.isLoading = true
-      })
+    builder.addCase(getFaqs.pending, handlePending)
+    builder.addCase(getOneFaq.pending, handlePending)
+    builder.addCase(createFq.pending, handlePending)
+    builder.addCase(updateFaq.pending, handlePending)
+    builder.addCase(addFaqVidLink.pending, handlePending)
+    builder.addCase(deleteFaqVideo.pending, handlePending)
+    builder.addCase(deleteFaq.pending, handlePending)
 
     // Rejected actions
-    builder.addMatcher(
-      (action) => [getFaqs.rejected, getOneFaq.rejected, createFq.rejected, updateFaq.rejected, addFaqVidLink.rejected, deleteFaqVideo.rejected, deleteFaq.rejected].includes(action.type),
-      (state) => {
-        state.isLoading = false
-      })
-
+    builder.addCase(getFaqs.rejected, handleRejected)
+    builder.addCase(getOneFaq.rejected, handleRejected)
+    builder.addCase(createFq.rejected, handleRejected)
+    builder.addCase(updateFaq.rejected, handleRejected)
+    builder.addCase(addFaqVidLink.rejected, handleRejected)
+    builder.addCase(deleteFaqVideo.rejected, handleRejected)
+    builder.addCase(deleteFaq.rejected, handleRejected)
   }
 })
 

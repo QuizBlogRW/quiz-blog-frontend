@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { apiCallHelper } from '../configHelpers'
+import { apiCallHelper, handlePending, handleRejected } from '../configHelpers'
 import { notify } from '../../utils/notifyToast'
 
 // Async actions with createAsyncThunk
@@ -46,18 +46,14 @@ const subscribersSlice = createSlice({
     })
 
     // Pending actions
-    builder.addMatcher(
-      (action) => [getSubscribers.pending, subscribeToPosts.pending, deleteSubscriber.pending].includes(action.type),
-      (state) => {
-        state.isLoading = true
-      })
+    builder.addCase(getSubscribers.pending, handlePending)
+    builder.addCase(subscribeToPosts.pending, handlePending)
+    builder.addCase(deleteSubscriber.pending, handlePending)
 
     // Rejected actions
-    builder.addMatcher(
-      (action) => [getSubscribers.rejected, subscribeToPosts.rejected, deleteSubscriber.rejected].includes(action.type),
-      (state) => {
-        state.isLoading = false
-      })
+    builder.addCase(getSubscribers.rejected, handleRejected)
+    builder.addCase(subscribeToPosts.rejected, handleRejected)
+    builder.addCase(deleteSubscriber.rejected, handleRejected)
   }
 })
 

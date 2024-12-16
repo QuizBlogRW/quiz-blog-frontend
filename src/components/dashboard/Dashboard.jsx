@@ -149,7 +149,7 @@ const Dashboard = () => {
 
                         {currentUser.role !== 'Visitor' ?
                             <>
-                                {/* <CategoriesTabPane /> */}
+                                <CategoriesTabPane />
                                 <QuizesTabPane />
                             </> : null}
 

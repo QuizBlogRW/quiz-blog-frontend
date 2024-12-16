@@ -34,13 +34,27 @@ const CommentsTabPane = () => {
     useEffect(() => {
         dispatch(getComments())
         dispatch(getAllComments())
+    }, [dispatch])
+
+    useEffect(() => {
         dispatch(getPaginatedComments(pageNo))
+    }, [dispatch, pageNo])
+
+    useEffect(() => {
         setNumberOfPages(totPages)
-    }, [dispatch, pageNo, totPages])
+    }, [totPages])
 
     const pagComments = questionComments && questionComments.paginatedComments
     const allQnCmts = questionComments.allComments
     const allQuizCmts = allQuizComments.allComments
+
+    const filteredQuestionComments = allQnCmts && allQnCmts.filter(cmnt => 
+        searchKeyQ === "" ? false : cmnt.comment.toLowerCase().includes(searchKeyQ.toLowerCase())
+    )
+
+    const filteredQuizComments = allQuizCmts && allQuizCmts.filter(cmnt => 
+        searchKey === "" ? false : cmnt.comment.toLowerCase().includes(searchKey.toLowerCase())
+    )
 
     return (
 
@@ -51,7 +65,7 @@ const CommentsTabPane = () => {
             </Row>
 
             <Row>
-                {questionComments.getPaginatedCommentsLoading ?
+                {questionComments.isLoading ?
                     <QBLoadingSM title='paginated comments' /> :
 
                     pagComments && pagComments.length > 0 ?
@@ -79,18 +93,9 @@ const CommentsTabPane = () => {
                             {/* SEARCH QUESTION COMMENTS */}
                             <Row>
                                 <ListGroup>
-                                    {allQnCmts && allQnCmts
-                                        .filter(cmnt => {
-                                            if (searchKeyQ === "") {
-                                                return null
-                                            } else if (cmnt.comment.toLowerCase().includes(searchKeyQ.toLowerCase())) {
-                                                return cmnt
-                                            }
-                                            return null
-                                        })
-                                        .map(cmnt => (
-                                            <Comment comment={cmnt} key={cmnt._id} />
-                                        ))}
+                                    {filteredQuestionComments.map(cmnt => (
+                                        <Comment comment={cmnt} key={cmnt._id} />
+                                    ))}
                                 </ListGroup>
                             </Row>
 
@@ -98,18 +103,9 @@ const CommentsTabPane = () => {
                             {/* SEARCH QUIZ COMMENTS */}
                             <Row>
                                 <ListGroup>
-                                    {allQuizCmts && allQuizCmts
-                                        .filter(cmnt => {
-                                            if (searchKey === "") {
-                                                return null
-                                            } else if (cmnt.comment.toLowerCase().includes(searchKey.toLowerCase())) {
-                                                return cmnt
-                                            }
-                                            return null
-                                        })
-                                        .map(cmnt => (
-                                            <Comment comment={cmnt} key={cmnt._id} uRole={uRole} />
-                                        ))}
+                                    {filteredQuizComments.map(cmnt => (
+                                        <Comment comment={cmnt} key={cmnt._id} uRole={uRole} />
+                                    ))}
                                 </ListGroup>
                             </Row>
 
@@ -151,7 +147,7 @@ const CommentsTabPane = () => {
                                 </> : null}
                         </> :
                         <Alert color="danger" className="w-100 text-center my-3">
-                            There are no comments yet!
+                            ...
                         </Alert>
                 }
             </Row>
