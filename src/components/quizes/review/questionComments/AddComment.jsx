@@ -1,15 +1,14 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import { Button, Form, FormGroup, Input } from 'reactstrap'
 import { createComment } from '../../../../redux/slices/questionCommentsSlice'
 import { useDispatch } from 'react-redux'
-import { currentUserContext } from '../../../../appContexts'
 
 const AddComment = ({ question, quiz, fromSingleQuestion }) => {
 
     const dispatch = useDispatch()
 
     const [comment, setComment] = useState('')
-    const currentUser = useContext(currentUserContext)
+    const currentUser = useSelector(state => state.auth && state.auth.user)
     const userId = currentUser && currentUser._id
 
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Col, Row, Card, Alert, Button } from 'reactstrap'
 import { getImageUploadsByOwner } from '../../../redux/slices/imageUploadsSlice'
 import { deleteBlogPostImage } from '../../../redux/slices'
@@ -6,13 +6,12 @@ import { useSelector, useDispatch } from "react-redux"
 import QBLoadingSM from '../../rLoading/QBLoadingSM'
 import './yourimages.css'
 import DeleteModal from '../../../utils/DeleteModal'
-import { currentUserContext } from '../../../appContexts'
 
 const YourImages = () => {
 
     const dispatch = useDispatch()
     const yourImages = useSelector(state => state.imageUploads)
-    const currentUser = useContext(currentUserContext)
+    const currentUser = useSelector(state => state.auth && state.auth.user)
     const uID = currentUser && currentUser._id
 
     useEffect(() => {

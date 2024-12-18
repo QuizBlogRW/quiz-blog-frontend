@@ -1,23 +1,18 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
 import AddIcon from '../../images/plus.svg'
 import { createChapter } from '../../redux/slices/chaptersSlice'
 import { useDispatch } from 'react-redux'
-import { authContext } from '../../appContexts'
 
 const AddChapter = ({ course }) => {
 
     // Redux
     const dispatch = useDispatch()
 
-    // context
-    const auth = useContext(authContext)
-
     const [chapterState, setChapterState] = useState({
         title: '',
         description: ''
     })
-
 
     //properties of the modal
     const [modal, setModal] = useState(false)

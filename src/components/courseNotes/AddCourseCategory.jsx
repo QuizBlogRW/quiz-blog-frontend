@@ -1,17 +1,13 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
 import AddIcon from '../../images/plus.svg'
 import { createCourseCategory } from '../../redux/slices/courseCategoriesSlice'
 import { useDispatch } from 'react-redux'
-import { authContext } from '../../appContexts'
 
 const AddCourseCategory = () => {
 
     // Redux
     const dispatch = useDispatch()
-
-    // context
-    const auth = useContext(authContext)
 
     const [cCatState, setCCatState] = useState({
         title: '',

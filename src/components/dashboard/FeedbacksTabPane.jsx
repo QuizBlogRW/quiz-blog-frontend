@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Row, TabPane } from 'reactstrap'
 import Pagination from './Pagination'
 import PageOf from './PageOf'
@@ -6,7 +6,6 @@ import FeedbacksTable from './FeedbacksTable'
 import QBLoadingSM from '../rLoading/QBLoadingSM'
 import { getFeedbacks } from '../../redux/slices/feedbacksSlice'
 import { useSelector, useDispatch } from 'react-redux'
-import { currentUserContext } from '../../appContexts'
 
 const FeedbacksTabPane = () => {
 
@@ -14,9 +13,7 @@ const FeedbacksTabPane = () => {
     const dispatch = useDispatch()
     const feedbacks = useSelector(state => state.feedbacks)
     const { allFeedbacks, isLoading, totalPages } = feedbacks
-
-    // context
-    const currentUser = useContext(currentUserContext)
+    const currentUser = useSelector(state => state.auth && state.auth.user)
 
     const uId = currentUser && currentUser._id
     const uRole = currentUser && currentUser.role

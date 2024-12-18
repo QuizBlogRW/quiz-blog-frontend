@@ -44,7 +44,7 @@ const Subscribers = () => {
                                         <td className='text-lowercase'>{subscribedUser.email}</td>
                                         <td>
                                             <i>
-                                                {moment(new Date(subscribedUser.subscription_date))
+                                                {moment(new Date(subscribedUser.createdAt))
                                                     .format('YYYY-MM-DD, HH:mm')}
                                             </i>
                                         </td>

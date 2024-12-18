@@ -1,17 +1,15 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Col, Row, Card, CardTitle, Button } from 'reactstrap'
 import DeleteIcon from '../../images/trash.svg'
 import { deleteVideo } from '../../redux/slices/quizesSlice'
 import { deleteFaqVideo } from '../../redux/slices/faqsSlice'
 import { useDispatch } from 'react-redux'
-import { currentUserContext } from '../../appContexts'
+import { useSelector } from "react-redux"
 
 const EmbeddedVideos = ({ quiz, faq, isFromFaqs }) => {
 
     const dispatch = useDispatch()
-
-    // Get current user from context
-    const currentUser = useContext(currentUserContext)
+    const currentUser = useSelector(state => state.auth && state.auth.user)
 
     const videos = isFromFaqs ? faq && faq.video_links : quiz && quiz.oneQuiz && quiz.oneQuiz.video_links
     const iD = isFromFaqs ? faq && faq._id : quiz && quiz.oneQuiz && quiz.oneQuiz._id

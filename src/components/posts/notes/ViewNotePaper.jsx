@@ -6,7 +6,7 @@ import { getOneNotePaper } from '../../../redux/slices/notesSlice'
 import { saveDownload } from '../../../redux/slices/downloadsSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import QBLoadingSM from '../../rLoading/QBLoadingSM'
-import { authContext, currentUserContext, logRegContext } from '../../../appContexts'
+import { logRegContext } from '../../../appContexts'
 
 const GridMultiplex = lazy(() => import('../../adsenses/GridMultiplex'))
 
@@ -16,8 +16,8 @@ const ViewNotePaper = () => {
     const dispatch = useDispatch()
     const nPaper = useSelector(state => state.notes)
 
-    const currentUser = useContext(currentUserContext)
-    const auth = useContext(authContext)
+    const currentUser = useSelector(state => state.auth && state.auth.user)
+
     const { toggleL } = useContext(logRegContext)
 
     // Access route parameters

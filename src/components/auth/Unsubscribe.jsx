@@ -3,18 +3,15 @@ import { Container, Row, Button } from 'reactstrap'
 import { Link } from 'react-router-dom'
 import { deleteSubscriber } from '../../redux/slices/subscribersSlice'
 import { useDispatch } from "react-redux"
-import { authContext, currentUserContext, logRegContext } from '../../appContexts'
+import { logRegContext } from '../../appContexts'
 import QBLoadingSM from '../rLoading/QBLoadingSM'
 
 const Unsubscribe = () => {
 
     const dispatch = useDispatch()
-
-    // context
-    const auth = useContext(authContext)
-    const currentUser = useContext(currentUserContext)
+    const currentUser = useSelector(state => state.auth && state.auth.user)
+    const isAuthenticated = useSelector(state => state.auth && state.auth.isAuthenticated)
     const { toggleL } = useContext(logRegContext)
-
     const [unsubscribed, setUnsubscribed] = useState(false)
 
     const onUnsubscribe = e => {
@@ -27,7 +24,7 @@ const Unsubscribe = () => {
 
     return (
 
-        auth.isAuthenticated ?
+        isAuthenticated ?
 
             <Container className="forgot-password mt-4">
                 <Row className="mt-5 d-block text-center">

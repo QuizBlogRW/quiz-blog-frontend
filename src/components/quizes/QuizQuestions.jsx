@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback, useContext } from 'react'
+import React, { useState, useEffect, useMemo, useCallback } from 'react'
 import { Container } from 'reactstrap'
 import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import { createScore } from '../../redux/slices/scoresSlice'
@@ -8,15 +8,13 @@ import QBLoadingSM from '../rLoading/QBLoadingSM'
 import QuestionsView from './QuestionsView'
 import NoQuestions from './questionsScore/NoQuestions'
 import Unavailable from './questionsScore/Unavailable'
-import { currentUserContext } from '../../appContexts'
+import { useSelector } from "react-redux"
 
 const QuizQuestions = () => {
 
     // Redux
     const dispatch = useDispatch()
-
-    // Context
-    const currentUser = useContext(currentUserContext)
+    const currentUser = useSelector(state => state.auth && state.auth.user)
 
     // Access route parameters & get the quiz
     const { quizSlug } = useParams()

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Row, Col, TabPane, ListGroup, ListGroupItem, Alert } from 'reactstrap'
 import QBLoadingSM from '../rLoading/QBLoadingSM'
 import { getQuestions } from '../../redux/slices/questionsSlice'
@@ -8,13 +8,12 @@ import QuizToast from './QuizToast'
 import SearchInput from '../../utils/SearchInput'
 import Pagination from '../dashboard/Pagination'
 import PageOf from '../dashboard/PageOf'
-import { categoriesContext, currentUserContext } from '../../appContexts'
+
 
 const QuizesTabPane = () => {
 
-    // context
-    const currentUser = useContext(currentUserContext)
-    const categories = useContext(categoriesContext)
+    const currentUser = useSelector(state => state.auth && state.auth.user)
+    const categories = useSelector(state => state.categories)
 
     // Redux
     const dispatch = useDispatch()

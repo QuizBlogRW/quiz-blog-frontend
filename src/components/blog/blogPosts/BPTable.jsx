@@ -1,19 +1,17 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Table, Alert } from 'reactstrap'
 import { Link } from "react-router-dom"
 import moment from 'moment'
-import { currentUserContext } from '../../../appContexts'
 import { deleteBlogPost } from '../../../redux/slices'
 import DeleteModal from '../../../utils/DeleteModal'
+import { useSelector } from "react-redux"
 
 const BPTable = ({ bpostsToUse }) => {
-    // context
-    const currentUser = useContext(currentUserContext)
+
+    const currentUser = useSelector(state => state.auth && state.auth.user)
     const uRole = currentUser && currentUser.role
-    const usr = currentUser && currentUser
 
     return (
-
         <>
             {bpostsToUse && bpostsToUse.length > 0 ?
 
@@ -47,10 +45,10 @@ const BPTable = ({ bpostsToUse }) => {
                                 <td>{catg && catg}</td>
                                 <td>{creator && creator}</td>
                                 <td>{date && moment(date).format('YYYY-MM-DD, HH:mm')}</td>
-                                <td className={`${((uRole === 'Admin' || uRole === 'SuperAdmin') || creat._id === usr._id) ? '' : 'd-none'}`}>
+                                <td className={`${((uRole === 'Admin' || uRole === 'SuperAdmin') || creat._id === currentUser._id) ? '' : 'd-none'}`}>
                                     <Link to={`/edit-bpost/${bPost.slug}`}>Edit</Link>
                                 </td>
-                                <td className={`${((uRole === 'Admin' || uRole === 'SuperAdmin') || creat._id === usr._id) ? '' : 'd-none'}`}>
+                                <td className={`${((uRole === 'Admin' || uRole === 'SuperAdmin') || creat._id === currentUser._id) ? '' : 'd-none'}`}>
                                     <DeleteModal deleteFnName="deleteBlogPost" deleteFn={deleteBlogPost} delID={bPost._id} delTitle={bPost.title} />
                                 </td>
                             </tr>)

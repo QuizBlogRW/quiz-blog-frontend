@@ -1,24 +1,19 @@
-import React, { useState, useContext } from 'react'
-import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink, Alert, Progress } from 'reactstrap'
+import React, { useState } from 'react'
+import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
 import { createCourse } from '../../redux/slices/coursesSlice'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import AddIcon from '../../images/plus.svg'
-import { authContext } from '../../appContexts'
+
 
 const AddCourse = ({ categoryId }) => {
 
     // Redux
     const dispatch = useDispatch()
 
-    // context
-    const auth = useContext(authContext)
-
     const [courseState, setCourseState] = useState({
         title: '',
         description: ''
     })
-
-
 
     //properties of the modal
     const [modal, setModal] = useState(false)

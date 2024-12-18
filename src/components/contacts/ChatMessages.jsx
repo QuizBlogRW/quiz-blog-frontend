@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useContext } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Form, Button } from 'reactstrap'
 import { useSelector, useDispatch } from "react-redux"
 import { EditorState, convertToRaw, convertFromRaw } from 'draft-js'
@@ -7,7 +7,6 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import moment from 'moment'
 import { replyContact } from '@/redux/slices/contactsSlice'
 import QBLoadingSM from '@/components/rLoading/QBLoadingSM'
-import { currentUserContext } from '@/appContexts'
 import { notify } from '@/utils/notifyToast'
 import { socket } from '@/utils/socket'
 import SingleReply from './SingleReply'
@@ -15,9 +14,8 @@ import SingleReply from './SingleReply'
 const ChatMessages = ({ onlineList }) => {
     const { oneContact, isLoading } = useSelector(state => state.contacts)
     const dispatch = useDispatch()
-    const currentUser = useContext(currentUserContext)
+    const currentUser = useSelector(state => state.auth && state.auth.user)
     const lastMessageRef = useRef(null)
-
     const [replies, setReplies] = useState(oneContact ? oneContact.replies : [])
     const [editorState, setEditorState] = useState(EditorState.createEmpty())
 

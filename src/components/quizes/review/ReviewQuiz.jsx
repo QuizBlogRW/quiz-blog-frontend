@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useCallback } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Container, Col, Row, Button } from 'reactstrap'
 import { useParams, useLocation } from 'react-router-dom'
 import QBLoadingSM from '../../rLoading/QBLoadingSM'
@@ -11,7 +11,6 @@ import ResponsiveAd from '../../adsenses/ResponsiveAd'
 import SquareAd from '../../adsenses/SquareAd'
 import { getOneScore, createScore } from '../../../redux/slices/scoresSlice'
 import { useDispatch, useSelector } from 'react-redux'
-import { authContext, currentUserContext } from '../../../appContexts'
 
 const ReviewQuiz = () => {
 
@@ -20,8 +19,8 @@ const ReviewQuiz = () => {
     const sC = useSelector(state => state.scores)
     const { isLoading, oneScore } = sC
 
-    const currentUser = useContext(currentUserContext)
-    const auth = useContext(authContext)
+    const currentUser = useSelector(state => state.auth && state.auth.user)
+
     const { isAuthenticated } = auth
 
     const [currentQuestion, setCurrentQuestion] = useState(0)
@@ -89,12 +88,12 @@ const ReviewQuiz = () => {
                                                             <Row>
                                                                 <Col>
                                                                     <div className="my-3 mx-sm-5 px-sm-5 d-flex justify-content-center align-items-center">
-                                                                        <img 
-                                                                        className="mt-2 mt-lg-0 mx-sm-5 px-sm-5" 
-                                                                        src={curRevQn && curRevQn.question_image} 
-                                                                        onLoad={onLoad} 
-                                                                        style={{ width: "250px", height: "auto" }}
-                                                                        alt="Question Illustration" />
+                                                                        <img
+                                                                            className="mt-2 mt-lg-0 mx-sm-5 px-sm-5"
+                                                                            src={curRevQn && curRevQn.question_image}
+                                                                            onLoad={onLoad}
+                                                                            style={{ width: "250px", height: "auto" }}
+                                                                            alt="Question Illustration" />
                                                                     </div>
                                                                 </Col>
                                                             </Row> : null}

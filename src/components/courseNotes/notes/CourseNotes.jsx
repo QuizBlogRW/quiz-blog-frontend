@@ -10,7 +10,7 @@ import EditNotesModal from './EditNotesModal'
 import AddRelatedQuiz from './AddRelatedQuiz'
 import { Row, Col, Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button } from 'reactstrap'
 import QBLoadingSM from '../../rLoading/QBLoadingSM'
-import { authContext, currentUserContext, logRegContext } from '../../../appContexts'
+import { logRegContext } from '../../../appContexts'
 import DeleteModal from '../../../utils/DeleteModal'
 
 const CourseNotes = ({ chapter }) => {
@@ -19,10 +19,8 @@ const CourseNotes = ({ chapter }) => {
     const notes = useSelector(state => state.notes)
     const dispatch = useDispatch()
 
-    // context
-    const auth = useContext(authContext)
-    const isAuth = auth && auth.isAuthenticated
-    const currentUser = useContext(currentUserContext)
+    const isAuth = auth && isAuthenticated
+    const currentUser = useSelector(state => state.auth && state.auth.user)
     const { toggleL } = useContext(logRegContext)
 
     useEffect(() => { dispatch(getNotes()) }, [dispatch])

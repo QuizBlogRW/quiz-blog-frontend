@@ -1,22 +1,18 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap'
 import { createImageUpload } from '../../../redux/slices/imageUploadsSlice'
-import { useDispatch } from "react-redux"
-import { currentUserContext } from '../../../appContexts'
+import { useDispatch, useSelector } from "react-redux"
 
 const UploadPostPhotos = () => {
 
     const dispatch = useDispatch()
-    const currentUser = useContext(currentUserContext)
-
+    const currentUser = useSelector(state => state.auth && state.auth.user)
     const [imageDetailsState, setImageDetailsState] = useState({
         imageTitle: '',
         owner: currentUser._id
     })
 
     const [uploadImage, setUploadImage] = useState('')
-
-
     const onChangeHandler = e => {
         setImageDetailsState({ ...imageDetailsState, [e.target.name]: e.target.value })
     }

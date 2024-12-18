@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Row, TabPane } from 'reactstrap';
 import { getDownloads, getCreatorDownloads, getUserDownloads } from '../../redux/slices/downloadsSlice'
 import { useSelector, useDispatch } from 'react-redux'
@@ -6,7 +6,6 @@ import Pagination from './Pagination';
 import PageOf from './PageOf';
 import DownloadsTable from './DownloadsTable';
 import QBLoadingSM from '../rLoading/QBLoadingSM';
-import { currentUserContext } from '../../appContexts'
 
 const DownloadsTabPane = () => {
 
@@ -14,9 +13,7 @@ const DownloadsTabPane = () => {
     const dispatch = useDispatch()
     const downloads = useSelector(state => state.downloads)
     const { isLoading, totalPages, allDownloads, userDownloads, creatorDownloads } = downloads
-
-    // context
-    const currentUser = useContext(currentUserContext)
+    const currentUser = useSelector(state => state.auth && state.auth.user)
 
     const uId = currentUser && currentUser._id
     const uRole = currentUser && currentUser.role

@@ -1,10 +1,9 @@
-import React, { useEffect, useContext } from 'react'
+import React, { useEffect } from 'react'
 import { Row, Col, Button, TabPane, Alert } from 'reactstrap'
 import CreateAdvert from './CreateAdvert'
 import QBLoadingSM from '../../rLoading/QBLoadingSM'
 import { getAdverts } from '../../../redux/slices/advertsSlice'
 import { useSelector, useDispatch } from "react-redux"
-import { currentUserContext } from '../../../appContexts'
 import AdvertCard from './AdvertCard'
 
 const AdvertsTabPane = () => {
@@ -13,8 +12,7 @@ const AdvertsTabPane = () => {
     const dispatch = useDispatch()
     const adverts = useSelector(state => state.adverts)
     const { isLoading, allAdverts } = adverts
-    // context
-    const currentUser = useContext(currentUserContext)
+    const currentUser = useSelector(state => state.auth && state.auth.user)
     const uRole = currentUser && currentUser.role
 
     // Lifecycle method

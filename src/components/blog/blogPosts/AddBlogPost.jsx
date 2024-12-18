@@ -2,22 +2,21 @@ import React, { useState, useContext } from 'react'
 import { Button, Form, FormGroup, Label, Input, Row, Col, Alert, Breadcrumb, BreadcrumbItem } from 'reactstrap'
 import { useParams } from 'react-router-dom'
 import { createBlogPost } from '../../../redux/slices'
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import QBLoadingSM from '../../rLoading/QBLoadingSM'
 import UploadPostPhotos from './UploadPostPhotos'
 import YourImages from './YourImages'
-import { authContext, currentUserContext, logRegContext } from '../../../appContexts'
+import { logRegContext } from '../../../appContexts'
 
 const AddBlogPost = () => {
 
     // redux
     const dispatch = useDispatch()
-
-    const auth = useContext(authContext)
-    const currentUser = useContext(currentUserContext)
     const { toggleL } = useContext(logRegContext)
 
+    const auth = useSelector(state => state.auth)
     const isAuthenticated = auth && auth.isAuthenticated
+    const currentUser = auth && auth.user
     const userLoading = auth && auth.isLoading
 
     const curUserRole = currentUser && currentUser.role

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import { ListGroup, ListGroupItem, Button } from 'reactstrap'
 import { Collapse } from "react-collapse"
 import AddIcon from '../../images/plusIcon.svg'
@@ -6,7 +6,7 @@ import SubtractIcon from '../../images/minusIcon.svg'
 import { getFaculties, deleteFaculty } from '../../redux/slices/facultiesSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import EditFacultyModal from './EditFacultyModal'
-import { authContext } from '../../appContexts'
+
 import DeleteModal from '../../utils/DeleteModal'
 
 const FacultiesCollapse = ({ levelID }) => {
@@ -14,8 +14,7 @@ const FacultiesCollapse = ({ levelID }) => {
     // Redux
     const faculties = useSelector(state => state.faculties)
     const dispatch = useDispatch()
-
-    const auth = useContext(authContext)
+    const auth = useSelector(state => state.auth)
 
     // Lifecycle methods
     useEffect(() => { dispatch(getFaculties()) }, [dispatch])

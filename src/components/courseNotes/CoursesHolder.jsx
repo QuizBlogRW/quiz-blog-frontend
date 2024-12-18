@@ -4,18 +4,18 @@ import { deleteCourse } from '../../redux/slices/coursesSlice'
 import AddChapter from './AddChapter'
 import EditCourseModal from './EditCourseModal'
 import QBLoadingSM from '../rLoading/QBLoadingSM'
-import { authContext, currentUserContext, logRegContext } from '../../appContexts'
+import { logRegContext } from '../../appContexts'
 import DeleteModal from '../../utils/DeleteModal'
 
 const CoursesHolder = ({ courses }) => {
 
-    // context
-    const auth = useContext(authContext)
-    const currentUser = useContext(currentUserContext)
+
+    const currentUser = useSelector(state => state.auth && state.auth.user)
+    const isAuthenticated = useSelector(state => state.auth && state.auth.isAuthenticated)
     const { toggleL } = useContext(logRegContext)
 
     return (
-        auth.isAuthenticated ?
+        isAuthenticated ?
             courses.isByCatLoading ?
 
                 <QBLoadingSM title='courses' /> :

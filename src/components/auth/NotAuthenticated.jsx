@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import QBLoadingSM from '../rLoading/QBLoadingSM'
 import { Button } from 'reactstrap'
 import { logRegContext } from '../../appContexts'
+import './NotAuthenticated.css'
 
 const NotAuthenticated = ({ auth }) => {
 
@@ -13,7 +14,7 @@ const NotAuthenticated = ({ auth }) => {
             {
                 auth.isLoading ?
                     <QBLoadingSM /> :
-                    <Button color="link" className="fw-bolder my-5 border rounded" onClick={toggleL} style={{ backgroundColor: "#ffc107", color: "#157A6E", fontSize: "1.5vw", boxShadow: "-2px 2px 1px 2px #157A6E", border: "2px solid #157A6E" }}>
+                    <Button color="link" className="login-button" onClick={toggleL}>
                         Login first
                     </Button>
             }

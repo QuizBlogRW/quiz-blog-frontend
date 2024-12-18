@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Row, TabPane } from 'reactstrap'
 import Pagination from './Pagination'
 import PageOf from './PageOf'
@@ -6,7 +6,6 @@ import ScoresTable from './ScoresTable'
 import QBLoadingSM from '../rLoading/QBLoadingSM'
 import { setScores, getCreatorScores, getTakerScores, deleteScore } from '../../redux/slices/scoresSlice'
 import { useSelector, useDispatch } from 'react-redux'
-import { currentUserContext } from '../../appContexts'
 
 const ScoresTabPane = () => {
 
@@ -14,9 +13,7 @@ const ScoresTabPane = () => {
     const dispatch = useDispatch()
     const scores = useSelector(state => state.scores)
     const { isLoading, totalPages, allScores, creatorScores, takerScores } = scores
-
-    // context
-    const currentUser = useContext(currentUserContext)
+    const currentUser = useSelector(state => state.auth && state.auth.user)
 
     const uId = currentUser && currentUser._id
     const uRole = currentUser && currentUser.role

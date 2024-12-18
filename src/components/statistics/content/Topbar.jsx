@@ -1,14 +1,12 @@
-import React, { useState, useContext } from "react"
+import React, { useState } from "react"
 import { Navbar, Button, NavbarToggler, Collapse, Nav, NavItem, NavLink } from "reactstrap"
 import { Link } from "react-router-dom"
 import Logout from '../../auth/Logout'
-import { currentUserContext } from '../../../appContexts'
+import { useSelector } from "react-redux"
 
 const Topbar = ({ toggleSidebar }) => {
 
-  // context 
-  const currentUser = useContext(currentUserContext)
-
+  const currentUser = useSelector(state => state.auth && state.auth.user)
   const [topbarIsOpen, setTopbarOpen] = useState(true)
   const toggleTopbar = () => setTopbarOpen(!topbarIsOpen)
 

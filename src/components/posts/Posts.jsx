@@ -1,9 +1,7 @@
-import React, { useEffect, useState, lazy, Suspense, useContext } from 'react'
+import React, { useEffect, useState, lazy, Suspense } from 'react'
 import { Link } from 'react-router-dom'
 import { Container, Col, Row, Button } from 'reactstrap'
 import PostItemPlaceholder from '../rLoading/PostItemPlaceholder'
-import { categoriesContext } from '../../appContexts'
-
 import { useSelector, useDispatch } from "react-redux"
 import { getQuizes } from '../../redux/slices/quizesSlice'
 import ResponsiveAd from '../adsenses/ResponsiveAd'
@@ -26,9 +24,7 @@ const Posts = () => {
 
     // Dispatch
     const dispatch = useDispatch()
-
-    // Context
-    const categories = useContext(categoriesContext)
+    const categories = useSelector(state => state.categories)
     const [limit] = useState(10)
 
     // Lifecycle methods

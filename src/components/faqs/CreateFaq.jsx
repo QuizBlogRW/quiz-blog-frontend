@@ -1,16 +1,13 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
 import { createFq } from '../../redux/slices/faqsSlice'
 import { useDispatch } from 'react-redux'
-import { authContext } from '../../appContexts'
 
 const CreateFaq = () => {
 
     // Redux
     const dispatch = useDispatch()
-
-    // context
-    const currentUser = useContext(authContext)
+    const currentUser = useSelector(state => state.auth && state.auth.user)
 
     const [faqsState, setFaqsState] = useState({
         title: '',

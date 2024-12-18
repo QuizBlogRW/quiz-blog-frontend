@@ -1,18 +1,16 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input } from 'reactstrap'
 import { updateQuiz } from '../../redux/slices/quizesSlice'
 import { useDispatch } from 'react-redux'
 import EditIcon from '../../images/edit.svg'
-import { authContext, categoriesContext } from '../../appContexts'
+import { notify } from '@/utils/notifyToast'
+import { useSelector } from 'react-redux'
 
 const EditQuiz = ({ quizToEdit }) => {
 
     // Redux
     const dispatch = useDispatch()
-
-    // context
-    const auth = useContext(authContext)
-    const categories = useContext(categoriesContext)
+    const categories = useSelector(state => state.categories)
 
     const [quizState, setQuizState] = useState({
         quizID: quizToEdit._id,
@@ -21,7 +19,6 @@ const EditQuiz = ({ quizToEdit }) => {
         oldCategoryID: quizToEdit.category && quizToEdit.category._id,
         category: quizToEdit.category && quizToEdit.category._id
     })
-
 
     //properties of the modal
     const [modal, setModal] = useState(false)

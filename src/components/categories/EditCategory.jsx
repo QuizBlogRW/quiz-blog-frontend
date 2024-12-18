@@ -1,17 +1,14 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
 import { updateCategory } from '../../redux/slices/categoriesSlice'
 import EditIcon from '../../images/edit.svg'
-import { authContext } from '../../appContexts'
+
 import { useDispatch } from "react-redux"
 
 const EditCategory = ({ categoryToEdit, courseCategories }) => {
 
     // redux
     const dispatch = useDispatch()
-
-    // context
-    const auth = useContext(authContext)
 
     const [categoryState, setCategoryState] = useState({
         catID: categoryToEdit._id,
@@ -20,7 +17,6 @@ const EditCategory = ({ categoryToEdit, courseCategories }) => {
         oldCourseCatID: categoryToEdit.courseCategory._id,
         courseCategory: categoryToEdit.courseCategory._id
     })
-
 
     //properties of the modal
     const [modal, setModal] = useState(false)

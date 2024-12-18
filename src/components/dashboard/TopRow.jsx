@@ -1,12 +1,12 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Alert, Button } from 'reactstrap'
 import { Link } from 'react-router-dom'
 import dashimg from '../../images/dashboard.svg'
-import { currentUserContext } from '../../appContexts'
+import { useSelector } from "react-redux"
 
 const TopRow = () => {
 
-  const currentUser = useContext(currentUserContext)
+  const currentUser = useSelector(state => state.auth && state.auth.user)
 
   // animate the button on hover
   const animatedButton = 'btn btn-warning btn-lg btn-block text-center text-uppercase fw-bolder shadow-sm animated infinite pulse blink_me'

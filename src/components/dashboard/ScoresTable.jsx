@@ -1,13 +1,13 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Table, Alert } from 'reactstrap'
 import moment from 'moment'
 import { Link } from "react-router-dom"
-import { currentUserContext } from '../../appContexts'
+import { useSelector } from "react-redux"
 import DeleteModal from '../../utils/DeleteModal'
 
 const ScoresTable = ({ scoresToUse, pageNo, deleteScore }) => {
 
-    const currentUser = useContext(currentUserContext)
+    const currentUser = useSelector(state => state.auth && state.auth.user)
     const uRole = currentUser && currentUser.role
 
     return (

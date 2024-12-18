@@ -9,7 +9,7 @@ import { getOneCourse } from '../../redux/slices/coursesSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import { Container, Card, Button, CardTitle, CardText, Alert, Breadcrumb, BreadcrumbItem } from 'reactstrap'
 import QBLoadingSM from '../rLoading/QBLoadingSM'
-import { authContext, currentUserContext, logRegContext } from '../../appContexts'
+import { logRegContext } from '../../appContexts'
 import DeleteModal from '../../utils/DeleteModal'
 
 const ViewCourse = () => {
@@ -18,8 +18,8 @@ const ViewCourse = () => {
     const chaptersBy = useSelector(state => state.chapters)
     const oneCourse = useSelector(state => state.courses)
 
-    const auth = useContext(authContext)
-    const currentUser = useContext(currentUserContext)
+
+    const currentUser = useSelector(state => state.auth && state.auth.user)
     const { toggleL } = useContext(logRegContext)
 
     const [activeIndex, setActiveIndex] = useState(null)

@@ -1,17 +1,16 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, UncontrolledTooltip } from 'reactstrap'
 import uploadimage from '../../images/uploadimage.svg'
 import { updateProfileImage } from '../../redux/slices/authSlice'
-import { useDispatch } from "react-redux"
-import { currentUserContext } from '../../appContexts'
+import { useSelector, useDispatch } from "react-redux"
 import ImageWithFallback from '../../utils/ImageWithFallback'
 
 const EditPictureModal = ({ bgColor, clr }) => {
 
   const dispatch = useDispatch()
 
-  // Get the user id and image from the auth context
-  const currentUser = useContext(currentUserContext)
+  // Get the user id and image from the auth
+  const currentUser = useSelector(state => state.auth && state.auth.user)
 
   const uId = currentUser && currentUser._id
   const userImage = currentUser && currentUser.image

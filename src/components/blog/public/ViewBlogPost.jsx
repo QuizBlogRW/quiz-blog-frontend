@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Markdown from 'react-markdown'
 import rehypeHighlight from 'rehype-highlight'
 import { useParams } from 'react-router-dom'
@@ -7,7 +7,6 @@ import moment from 'moment'
 import { getOneBlogPost } from '../../../redux/slices'
 import { createBlogPostView } from '../../../redux/slices/blogPostsViewsSlice'
 import { useSelector, useDispatch } from "react-redux"
-import { currentUserContext } from '../../../appContexts'
 import RelatedPosts from './RelatedPosts'
 import LatestPosts from './LatestPosts'
 import altImage from '../../../images/dashboard.svg'
@@ -42,7 +41,7 @@ const ViewBlogPost = () => {
     const bpToUse = bposts && bposts.oneBlogPost
     const bPCatID = bpToUse && bpToUse.postCategory && bpToUse.postCategory._id
 
-    const viewer = useContext(currentUserContext)
+    const viewer = useSelector(state => state.auth && state.auth.user)
     const [newBlogPostView, setNewBlogPostView] = useState()
 
     useEffect(() => {

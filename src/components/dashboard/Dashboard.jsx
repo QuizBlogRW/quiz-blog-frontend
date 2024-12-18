@@ -13,13 +13,14 @@ import QBLoadingSM from '../rLoading/QBLoadingSM'
 import CommentsTabPane from '../quizes/review/questionComments/CommentsTabPane'
 import AdvertsTabPane from './adverts/AdvertsTabPane'
 import TopRow from './TopRow'
-import { authContext, currentUserContext, logRegContext } from '../../appContexts'
+import { logRegContext } from '../../appContexts'
+import { useSelector } from 'react-redux'
 
 const Dashboard = () => {
 
-    // Context
-    const auth = useContext(authContext)
-    const currentUser = useContext(currentUserContext)
+    const auth = useSelector(state => state.auth)
+    const currentUser = useSelector(state => state.auth && state.auth.user)
+    const isAuthenticated = useSelector(state => state.auth && state.auth.isAuthenticated)
     const { toggleL } = useContext(logRegContext)
 
     // State
@@ -40,7 +41,7 @@ const Dashboard = () => {
     }
 
     // render
-    return (auth.isAuthenticated ?
+    return (isAuthenticated ?
         <>
             <TopRow />
             <Row className="m-lg-5 mx-2">

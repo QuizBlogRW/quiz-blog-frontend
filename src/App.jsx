@@ -4,7 +4,7 @@ import { Toast } from 'reactstrap'
 import ReactGA from "react-ga4"
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { authContext, currentUserContext, categoriesContext, courseCategoriesContext, logRegContext } from './appContexts'
+import { logRegContext } from './appContexts'
 import { getCategories, getCourseCategories, getLandingDisplayNotes, loadUser } from './redux/slices'
 import { useSelector, useDispatch } from "react-redux"
 import ForgotPassword from './components/auth/ForgotPassword'
@@ -53,9 +53,7 @@ const ViewNotePaper = lazy(() => import('./components/posts/notes/ViewNotePaper'
 
 ReactGA.initialize('G-GXLLDMB41B', {
     debug: true,
-    gaOptions: {
-        siteSpeedSampleRate: 100
-    }
+    gaOptions: { siteSpeedSampleRate: 100 }
 })
 
 const App = () => {
@@ -111,96 +109,88 @@ const App = () => {
     }, [currentUser])
 
     return (
-        <authContext.Provider value={auth}>
-            <logRegContext.Provider value={{ isOpenL, toggleL, isOpenR, toggleR }}>
-                <currentUserContext.Provider value={currentUser}>
-                    <categoriesContext.Provider value={categories}>
-                        <courseCategoriesContext.Provider value={courseCategories}>
-                            <Suspense fallback={<QBLoading />}>
-                                <Toast isOpen={modal} className={`w-100 popup-toast`}>
-                                    <div className="bg-warning py-2 px-3 d-flex justify-content-between align-items-center">
-                                        <p className='text-danger text-center fw-bolder d-block mb-0'>
-                                            &nbsp;&nbsp;Your profile is {`${percentage}`} % up to date!
-                                            &nbsp;&nbsp;
-                                            <Link to={`/edit-profile/${auth.user && auth.user._id}`}>
-                                                <strong className='px-1' style={{ color: '#157A6E', textDecoration: 'underline' }}>
-                                                    Consider updating ...
-                                                </strong>
-                                            </Link>
-                                        </p>
-                                        <button onClick={toggle} className="btn btn-sm btn-danger ms-2">
-                                            <i className="fa fa-times"></i>
-                                        </button>
-                                    </div>
-                                </Toast>
-                                <Header />
-                                <Routes fallback={<QBLoading />}>
-                                    <Route path="/about" element={<About />} />
-                                    <Route path="/privacy" element={<Privacy />} />
-                                    <Route path="/disclaimer" element={<Disclaimer />} />
-                                    <Route path="/unsubscribe" element={<Unsubscribe />} />
-                                    <Route path="/forgot-password" element={<ForgotPassword />} />
-                                    <Route path="/reset-password" element={<ResetPassword />} />
-                                    <Route path="/verify" element={<Verify />} />
-                                    <Route exact path="/category/:categoryId" element={<SingleCategory />} />
-                                    <Route exact path="/edit-profile/:userId" element={<EditProfile />} />
-                                    <Route exact path="/view-quiz/:quizSlug" element={<GetReady />} />
-                                    <Route exact path="/attempt-quiz/:quizSlug" element={<QuizQuestions />} />
-                                    <Route exact path="/quiz-results/:quizSlug" element={<QuizResults />} />
-                                    <Route exact path="/view-question/:questionID" element={<SingleQuestion />} />
-                                    <Route exact path="/edit-question/:questionID" element={<EditQuestion />} />
-                                    <Route exact path="/review-quiz/:reviewId" element={<ReviewQuiz />} />
-                                    <Route exact path="/quiz-ranking/:quizID" element={<QuizRanking />} />
-                                    <Route exact path="/questions-create/:quizSlug" element={<CreateQuestions />} />
-                                    <Route exact path="/contact" element={<Contact />} />
-                                    <Route exact path="/contact-chat" element={<ChatWrapper />} />
-                                    <Route exact path="/faqs" element={<FaqCollapse />} />
-                                    <Route path="/all-categories" element={<AllCategories />} />
-                                    <Route path="/course-notes" element={<Index />} />
-                                    <Route exact path="/view-course/:courseId" element={<ViewCourse />} />
-                                    <Route exact path="/schools" element={<SchoolsLanding />} />
-                                    <Route exact path="/subscribers" element={<Subscribers />} />
-                                    <Route exact path="/broadcasts" element={<Broadcasts />} />
-                                    <Route exact path="/blog" element={<AllBlogPosts />} />
-                                    <Route exact path="/blog/:bPCatID" element={<ByCategory />} />
-                                    <Route exact path="/create-bpost/:bPCatID" element={<AddBlogPost />} />
-                                    <Route exact path="/edit-bpost/:bPSlug" element={<EditBlogPost />} />
-                                    <Route exact path="/view-blog-post/:bPSlug" element={<ViewBlogPost />} />
-                                    <Route path="/ads.txt" element={<div>google.com, pub-8918850949540829, DIRECT, f08c47fec0942fa0</div>} />
-                                    <Route exact path="/" element={<Posts toggleR={toggleR} />} />
-                                    <Route exact path="/allposts" element={<AllPosts />} />
-                                    <Route exact path="/view-note-paper/:noteSlug" element={<ViewNotePaper />} />
-                                    <Route exact path="/dashboard" element={<Dashboard />} />
-                                    <Route exact path="/statistics" element={<Statistics />}>
-                                        <Route path="/statistics/new-50-users" element={<UsersStats />} />
-                                        <Route path="/statistics/with-image" element={<UsersStats />} />
-                                        <Route path="/statistics/with-school" element={<UsersStats />} />
-                                        <Route path="/statistics/with-level" element={<UsersStats />} />
-                                        <Route path="/statistics/with-faculty" element={<UsersStats />} />
-                                        <Route path="/statistics/with-interests" element={<UsersStats />} />
-                                        <Route path="/statistics/with-about" element={<UsersStats />} />
-                                        <Route path="/statistics/all-users" element={<UsersStats />} />
-                                        <Route path="/statistics/top-100-quizzing" element={<UsersStats />} />
-                                        <Route path="/statistics/top-100-downloaders" element={<UsersStats />} />
-                                        <Route path="/statistics/top-20-quizzes" element={<UsersStats />} />
-                                        <Route path="/statistics/quizzes-stats" element={<UsersStats />} />
-                                        <Route path="/statistics/top-20-notes" element={<UsersStats />} />
-                                        <Route path="/statistics/notes-stats" element={<UsersStats />} />
-                                        <Route path="/statistics/quiz-categories-stats" element={<UsersStats />} />
-                                        <Route path="/statistics/notes-categories-stats" element={<UsersStats />} />
-                                        <Route path="/statistics/recent-ten-views" element={<BlogStats />} />
-                                        <Route path="/statistics/all-posts-views" element={<BlogStats />} />
-                                    </Route>
-                                    <Route path="/*" element={<NotFound404 />} />
-                                </Routes>
-                                <ToastContainer limit={2} style={{ fontSize: '0.8rem', textAlign: 'left' }} />
-                                <Footer />
-                            </Suspense>
-                        </courseCategoriesContext.Provider>
-                    </categoriesContext.Provider>
-                </currentUserContext.Provider>
-            </logRegContext.Provider>
-        </authContext.Provider>
+        <logRegContext.Provider value={{ isOpenL, toggleL, isOpenR, toggleR }}>
+            <Suspense fallback={<QBLoading />}>
+                <Toast isOpen={modal} className={`w-100 popup-toast`}>
+                    <div className="bg-warning py-2 px-3 d-flex justify-content-between align-items-center">
+                        <p className='text-danger text-center fw-bolder d-block mb-0'>
+                            &nbsp;&nbsp;Your profile is {`${percentage}`} % up to date!
+                            &nbsp;&nbsp;
+                            <Link to={`/edit-profile/${auth.user && auth.user._id}`}>
+                                <strong className='px-1' style={{ color: '#157A6E', textDecoration: 'underline' }}>
+                                    Consider updating ...
+                                </strong>
+                            </Link>
+                        </p>
+                        <button onClick={toggle} className="btn btn-sm btn-danger ms-2">
+                            <i className="fa fa-times"></i>
+                        </button>
+                    </div>
+                </Toast>
+                <Header />
+                <Routes fallback={<QBLoading />}>
+                    <Route path="/about" element={<About />} />
+                    <Route path="/privacy" element={<Privacy />} />
+                    <Route path="/disclaimer" element={<Disclaimer />} />
+                    <Route path="/unsubscribe" element={<Unsubscribe />} />
+                    <Route path="/forgot-password" element={<ForgotPassword />} />
+                    <Route path="/reset-password" element={<ResetPassword />} />
+                    <Route path="/verify" element={<Verify />} />
+                    <Route exact path="/category/:categoryId" element={<SingleCategory />} />
+                    <Route exact path="/edit-profile/:userId" element={<EditProfile />} />
+                    <Route exact path="/view-quiz/:quizSlug" element={<GetReady />} />
+                    <Route exact path="/attempt-quiz/:quizSlug" element={<QuizQuestions />} />
+                    <Route exact path="/quiz-results/:quizSlug" element={<QuizResults />} />
+                    <Route exact path="/view-question/:questionID" element={<SingleQuestion />} />
+                    <Route exact path="/edit-question/:questionID" element={<EditQuestion />} />
+                    <Route exact path="/review-quiz/:reviewId" element={<ReviewQuiz />} />
+                    <Route exact path="/quiz-ranking/:quizID" element={<QuizRanking />} />
+                    <Route exact path="/questions-create/:quizSlug" element={<CreateQuestions />} />
+                    <Route exact path="/contact" element={<Contact />} />
+                    <Route exact path="/contact-chat" element={<ChatWrapper />} />
+                    <Route exact path="/faqs" element={<FaqCollapse />} />
+                    <Route path="/all-categories" element={<AllCategories />} />
+                    <Route path="/course-notes" element={<Index />} />
+                    <Route exact path="/view-course/:courseId" element={<ViewCourse />} />
+                    <Route exact path="/schools" element={<SchoolsLanding />} />
+                    <Route exact path="/subscribers" element={<Subscribers />} />
+                    <Route exact path="/broadcasts" element={<Broadcasts />} />
+                    <Route exact path="/blog" element={<AllBlogPosts />} />
+                    <Route exact path="/blog/:bPCatID" element={<ByCategory />} />
+                    <Route exact path="/create-bpost/:bPCatID" element={<AddBlogPost />} />
+                    <Route exact path="/edit-bpost/:bPSlug" element={<EditBlogPost />} />
+                    <Route exact path="/view-blog-post/:bPSlug" element={<ViewBlogPost />} />
+                    <Route path="/ads.txt" element={<div>google.com, pub-8918850949540829, DIRECT, f08c47fec0942fa0</div>} />
+                    <Route exact path="/" element={<Posts toggleR={toggleR} />} />
+                    <Route exact path="/allposts" element={<AllPosts />} />
+                    <Route exact path="/view-note-paper/:noteSlug" element={<ViewNotePaper />} />
+                    <Route exact path="/dashboard" element={<Dashboard />} />
+                    <Route exact path="/statistics" element={<Statistics />}>
+                        <Route path="/statistics/new-50-users" element={<UsersStats />} />
+                        <Route path="/statistics/with-image" element={<UsersStats />} />
+                        <Route path="/statistics/with-school" element={<UsersStats />} />
+                        <Route path="/statistics/with-level" element={<UsersStats />} />
+                        <Route path="/statistics/with-faculty" element={<UsersStats />} />
+                        <Route path="/statistics/with-interests" element={<UsersStats />} />
+                        <Route path="/statistics/with-about" element={<UsersStats />} />
+                        <Route path="/statistics/all-users" element={<UsersStats />} />
+                        <Route path="/statistics/top-100-quizzing" element={<UsersStats />} />
+                        <Route path="/statistics/top-100-downloaders" element={<UsersStats />} />
+                        <Route path="/statistics/top-20-quizzes" element={<UsersStats />} />
+                        <Route path="/statistics/quizzes-stats" element={<UsersStats />} />
+                        <Route path="/statistics/top-20-notes" element={<UsersStats />} />
+                        <Route path="/statistics/notes-stats" element={<UsersStats />} />
+                        <Route path="/statistics/quiz-categories-stats" element={<UsersStats />} />
+                        <Route path="/statistics/notes-categories-stats" element={<UsersStats />} />
+                        <Route path="/statistics/recent-ten-views" element={<BlogStats />} />
+                        <Route path="/statistics/all-posts-views" element={<BlogStats />} />
+                    </Route>
+                    <Route path="/*" element={<NotFound404 />} />
+                </Routes>
+                <ToastContainer limit={2} style={{ fontSize: '0.8rem', textAlign: 'left' }} />
+                <Footer />
+            </Suspense>
+        </logRegContext.Provider>
     )
 }
 

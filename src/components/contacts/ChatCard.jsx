@@ -1,18 +1,16 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Card, Button, CardTitle, CardText, Alert } from 'reactstrap'
 import DeleteIcon from '../../images/trash.svg'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
 import { deleteContact } from '../../redux/slices/contactsSlice'
-import { currentUserContext } from '../../appContexts'
 import { useSelector, useDispatch } from "react-redux"
 
 const ChatCard = ({ openChat }) => {
 
     const dispatch = useDispatch();
-
-    // Context
-    const currentUser = useContext(currentUserContext)
+    
+    const currentUser = useSelector(state => state.auth && state.auth.user)
     const uRole = currentUser && currentUser.role
     const contacts = useSelector(state => state.contacts)
     const contactsToUse = contacts && ((uRole === 'Admin' || uRole === 'SuperAdmin') || uRole === 'Creator') ? contacts.allContacts : contacts.userContacts

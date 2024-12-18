@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Col, Row, CardTitle, Card, Button } from 'reactstrap'
 import QBLoadingSM from '../../../rLoading/QBLoadingSM'
 import { getCommentsByQuiz, getQuestionComments } from '../../../../redux/slices/questionCommentsSlice'
@@ -6,7 +6,6 @@ import { getQuizComments } from '../../../../redux/slices/quizCommentsSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import Comment from './Comment'
 import AddComment from './AddComment'
-import { currentUserContext } from '../../../../appContexts'
 
 const QuestionComments = ({ questionID, quizID, fromSingleQuestion }) => {
 
@@ -16,7 +15,7 @@ const QuestionComments = ({ questionID, quizID, fromSingleQuestion }) => {
   const qComments = useSelector(state => state.questionComments.questionComments)
   const quizComments = useSelector(state => state.quizComments.quizCmnts)
 
-  const currentUser = useContext(currentUserContext)
+  const currentUser = useSelector(state => state.auth && state.auth.user)
 
   // Lifecycle methods
   useEffect(() => {

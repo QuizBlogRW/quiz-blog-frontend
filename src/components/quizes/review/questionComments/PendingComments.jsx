@@ -1,10 +1,9 @@
-import React, { useEffect, useContext } from 'react'
+import React, { useEffect } from 'react'
 import { Col, Card, Alert } from 'reactstrap'
 import QBLoadingSM from '../../../rLoading/QBLoadingSM'
 import { getPendingComments } from '../../../../redux/slices/questionCommentsSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import Comment from './Comment'
-import { currentUserContext } from '../../../../appContexts'
 
 const PendingComments = () => {
 
@@ -17,8 +16,7 @@ const PendingComments = () => {
         dispatch(getPendingComments())
     }, [dispatch])
 
-    // context
-    const currentUser = useContext(currentUserContext)
+    const currentUser = useSelector(state => state.auth && state.auth.user)
     const uRole = currentUser && currentUser.role
 
     const renderLoading = () => (
@@ -44,7 +42,7 @@ const PendingComments = () => {
 
     const renderNoComments = () => (
         <Alert color="success" className="w-100 text-center">
-            Hooray! ...
+            Hooray, wait! ...
         </Alert>
     )
 

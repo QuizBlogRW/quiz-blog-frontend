@@ -1,4 +1,4 @@
-import React, { useEffect, useState, lazy, Suspense, useContext } from 'react'
+import React, { useEffect, useState, lazy, Suspense } from 'react'
 import { Row, Col, Button } from 'reactstrap'
 import { Collapse } from "react-collapse"
 import classNames from "classnames"
@@ -12,7 +12,6 @@ import CreateFaq from './CreateFaq'
 import EditFaq from './EditFaq'
 import AddVideo from '../quizes/AddVideo'
 import EmbeddedVideos from '../quizes/EmbeddedVideos'
-import { currentUserContext } from '../../appContexts'
 import DeleteModal from '../../utils/DeleteModal'
 
 const GridMultiplex = lazy(() => import('../adsenses/GridMultiplex'))
@@ -24,7 +23,7 @@ const FaqCollapse = () => {
     const dispatch = useDispatch()
     const faqs = useSelector(state => state.faqs)
 
-    const currentUser = useContext(currentUserContext)
+    const currentUser = useSelector(state => state.auth && state.auth.user)
     const faqsToUse = faqs && faqs.allFaqs
 
     // Lifecycle methods

@@ -1,8 +1,11 @@
 import React from 'react'
 import { Button } from 'reactstrap'
 import { useNavigate, Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
-const OnLastAnswer = ({ isAuthenticated, thisQuiz }) => {
+const OnLastAnswer = ({ thisQuiz }) => {
+
+    const isAuthenticated = useSelector(state => state.auth && state.auth.isAuthenticated)
 
     const navigate = useNavigate();
     const goBack = () => {
@@ -16,9 +19,9 @@ const OnLastAnswer = ({ isAuthenticated, thisQuiz }) => {
                 <h5 className="text-center fw-bolder">Reviewing finished!</h5>
 
                 <Link to={`/view-quiz/${thisQuiz.slug}`}>
-                    <button type="button" className="mt-3 btn btn-outline-success">
+                    <Button color="outline-success" className="mt-3">
                         Retake
-                    </button>
+                    </Button>
                 </Link>
 
                 <Button color="success" className="mt-3 share-btn mx-1 mx-md-3">
@@ -27,9 +30,9 @@ const OnLastAnswer = ({ isAuthenticated, thisQuiz }) => {
                         \nhttp://www.quizblog.rw/view-quiz/${thisQuiz.slug}`}>Share</a>
                 </Button>
 
-                <button type="button" className="btn btn-outline-info mt-3" onClick={goBack}>
+                <Button color="outline-info" className="mt-3" onClick={goBack}>
                     Back
-                </button>
+                </Button>
 
             </div> :
 

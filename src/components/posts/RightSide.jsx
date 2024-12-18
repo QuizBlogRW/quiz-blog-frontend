@@ -1,23 +1,18 @@
-import React, { useEffect, useState, lazy, Suspense, useContext } from 'react'
+import React, { useEffect, useState, lazy, Suspense } from 'react'
 import { Col, Row, Form, FormGroup, Input, Button } from 'reactstrap'
 import subscribe from '../../images/undraw_subscribe.svg'
 import QBLoadingSM from '../rLoading/QBLoadingSM'
 import ResponsiveAd from '../adsenses/ResponsiveAd'
-
 import { useSelector, useDispatch } from "react-redux"
 import { subscribeToPosts } from '../../redux/slices/subscribersSlice'
-
 const ViewCategories = lazy(() => import('../categories/ViewCategories'))
 const SquareAd = lazy(() => import('../adsenses/SquareAd'))
-import { currentUserContext } from '../../appContexts'
 
 const RightSide = ({ categories }) => {
 
     // Redux
     const dispatch = useDispatch()
-
-    // Context
-    const currentUser = useContext(currentUserContext)
+    const currentUser = useSelector(state => state.auth && state.auth.user)
     const [subscriberState, setSubscriberState] = useState({ name: '', email: '' })
 
     // Lifecycle methods

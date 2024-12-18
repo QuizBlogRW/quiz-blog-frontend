@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux"
 import QBLoadingSM from '../../rLoading/QBLoadingSM'
 import UploadPostPhotos from './UploadPostPhotos'
 import YourImages from './YourImages'
-import { authContext, currentUserContext, logRegContext } from '../../../appContexts'
+import { logRegContext } from '../../../appContexts'
 
 const EditBlogPost = () => {
 
@@ -16,8 +16,8 @@ const EditBlogPost = () => {
   const bposts = useSelector(state => state.blogPosts)
   const bPcats = useSelector(state => state.postCategories)
 
-  const auth = useContext(authContext)
-  const currentUser = useContext(currentUserContext)
+
+  const currentUser = useSelector(state => state.auth && state.auth.user)
   const { toggleL } = useContext(logRegContext)
 
   const { bPSlug } = useParams()
@@ -43,7 +43,7 @@ const EditBlogPost = () => {
   }, [bPToUse])
 
   const bPCategories = bPcats && bPcats.allPostCategories
-  const isAuthenticated = auth && auth.isAuthenticated
+  const isAuthenticated = useSelector(state => state.auth && state.auth.isAuthenticated)
   const userLoading = auth && auth.isLoading
 
   const curUserRole = currentUser && currentUser.role

@@ -1,17 +1,16 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Col, Toast, ToastBody, ToastHeader } from 'reactstrap'
 import EditUser from './EditUser'
 import uploadimage from '../../images/uploadimage.svg'
 import moment from 'moment'
-import { authContext } from '../../appContexts'
 import ImageWithFallback from '../../utils/ImageWithFallback'
 import DeleteModal from '../../utils/DeleteModal'
 import { deleteUser } from '../../redux/slices/authSlice'
+import { useSelector } from 'react-redux'
 
 const UserToast = ({ user, fromSearch }) => {
 
-    // context
-    const auth = useContext(authContext)
+    const auth = useSelector(state => state.auth)
 
     return (
         <Col sm="3" key={user._id} className={`mt-3 users-toast`}>

@@ -4,13 +4,13 @@ import { notify } from '../../utils/notifyToast'
 
 // Async actions with createAsyncThunk
 export const getSubscribers = createAsyncThunk("subscribers/getSubscribers", async (_, { getState }) =>
-  apiCallHelper('/api/subscribers', 'get', null, getState, 'getSubscribers'))
+  apiCallHelper('/api/subscribed-users', 'get', null, getState, 'getSubscribers'))
 
 export const subscribeToPosts = createAsyncThunk("subscribers/subscribeToPosts", async (subscribedUser, { getState }) =>
-  apiCallHelper('/api/subscribers', 'post', subscribedUser, getState, 'subscribeToPosts'))
+  apiCallHelper('/api/subscribed-users', 'post', subscribedUser, getState, 'subscribeToPosts'))
 
 export const deleteSubscriber = createAsyncThunk("subscribers/deleteSubscriber", async (uemail, { getState }) =>
-  apiCallHelper(`/api/subscribers/${uemail}`, 'delete', null, getState, 'deleteSubscriber'))
+  apiCallHelper(`/api/subscribed-users/${uemail}`, 'delete', null, getState, 'deleteSubscriber'))
 
 // Subscribers slice
 const initialState = {

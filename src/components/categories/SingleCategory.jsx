@@ -1,13 +1,12 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Row, Col, Toast, ToastBody, ToastHeader, Breadcrumb, BreadcrumbItem } from 'reactstrap'
 import { Link, useParams } from 'react-router-dom'
 import QBLoadingSM from '../rLoading/QBLoadingSM'
-import { categoriesContext } from '../../appContexts'
+import { useSelector } from 'react-redux'
 
 const SingleCategory = () => {
 
-    // context
-    const categories = useContext(categoriesContext)
+    const categories = useSelector(state => state.categories)
 
     // Access route parameters
     const { categoryId } = useParams()

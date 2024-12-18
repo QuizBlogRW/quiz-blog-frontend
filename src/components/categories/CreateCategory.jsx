@@ -1,23 +1,18 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
 import { createCategory } from '../../redux/slices/categoriesSlice'
-import { authContext } from '../../appContexts'
+
 import { useDispatch } from "react-redux"
 
 const CreateCategory = ({ courseCategories }) => {
 
     // redux
     const dispatch = useDispatch()
-
-    // context
-    const auth = useContext(authContext)
-
     const [categoryState, setCategoryState] = useState({
         name: '',
         description: '',
         courseCategory: ''
     })
-
 
     //properties of the modal
     const [modal, setModal] = useState(false)

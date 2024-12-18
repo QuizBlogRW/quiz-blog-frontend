@@ -1,23 +1,18 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
 import AddIcon from '../../images/plus.svg'
 import { createQuiz } from '../../redux/slices/quizesSlice'
 import { useDispatch } from 'react-redux'
-import { authContext } from '../../appContexts'
+
 
 const AddQuiz = ({ category }) => {
 
     // Redux
     const dispatch = useDispatch()
-
-    // context
-    const auth = useContext(authContext)
-
     const [quizState, setQuizState] = useState({
         name: '',
         description: ''
     })
-
 
     //properties of the modal
     const [modal, setModal] = useState(false)

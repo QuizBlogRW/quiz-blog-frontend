@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input } from 'reactstrap'
 import { updateQuestion } from '../../redux/slices/questionsSlice'
 import { getQuizesByCategory } from '../../redux/slices/quizesSlice'
 import { useSelector, useDispatch } from 'react-redux'
-import { authContext } from '../../appContexts'
+
 
 const ChangeQuizModal = ({ questionID, oldQuizID, questionCatID }) => {
 
@@ -11,8 +11,6 @@ const ChangeQuizModal = ({ questionID, oldQuizID, questionCatID }) => {
     const categoryQuizes = useSelector(state => state.quizes.categoryQuizes)
     const dispatch = useDispatch()
 
-    // context
-    const auth = useContext(authContext)
     const [newQuestionState, setNewQuestionState] = useState({ questionID, newQuizID: null })
 
     //properties of the modal
@@ -39,7 +37,7 @@ const ChangeQuizModal = ({ questionID, oldQuizID, questionCatID }) => {
         if (res.payload) {
             modal && toggle()
             window.location.reload()
-            
+
         }
     }
 

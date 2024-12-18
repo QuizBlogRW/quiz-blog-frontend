@@ -1,20 +1,15 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
 import { createPostCategory } from '../../../redux/slices/postCategoriesSlice'
 import { useDispatch } from "react-redux"
-import { authContext } from '../../../appContexts'
 
 const CreateBPCategory = () => {
 
     const dispatch = useDispatch()
-
-    const auth = useContext(authContext)
-
     const [bPCategoryState, setBPCategoryState] = useState({
         title: '',
         description: ''
     })
-
 
     //properties of the modal
     const [modal, setModal] = useState(false)

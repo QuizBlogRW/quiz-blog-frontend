@@ -9,7 +9,7 @@ import RelatedNotes from './RelatedNotes'
 import ReviewForm from './ReviewForm';
 import { saveFeedback } from '../../../redux/slices/feedbacksSlice'
 import { useDispatch } from 'react-redux'
-import { currentUserContext, categoriesContext, logRegContext } from '../../../appContexts'
+import { logRegContext } from '../../../appContexts'
 import QBLoadingSM from '../../rLoading/QBLoadingSM'
 import ResponsiveAd from '../../adsenses/ResponsiveAd'
 
@@ -24,10 +24,8 @@ const QuizResults = () => {
     const location = useLocation()
     const { newScoreId, score, qnsLength, thisQuiz, quizToReview, passMark, mongoScoreId } = location.state && location.state
     const marks = isNaN(score) ? 0 : score
-
-    // context
-    const currentUser = useContext(currentUserContext)
-    const categories = useContext(categoriesContext)
+    const currentUser = useSelector(state => state.auth && state.auth.user)
+    const categories = useSelector(state => state.categories)
     const { toggleL } = useContext(logRegContext)
 
     const uRole = currentUser && currentUser.role

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Col, Row, TabPane, Card, Alert, ListGroup, Button } from 'reactstrap'
 import QBLoadingSM from '../../../rLoading/QBLoadingSM'
 
@@ -10,7 +10,6 @@ import PendingComments from './PendingComments'
 import SearchInput from '../../../../utils/SearchInput'
 import Pagination from '../../../dashboard/Pagination'
 import PageOf from '../../../dashboard/PageOf'
-import { currentUserContext } from '../../../../appContexts'
 
 const CommentsTabPane = () => {
 
@@ -18,9 +17,7 @@ const CommentsTabPane = () => {
     const dispatch = useDispatch()
     const questionComments = useSelector(state => state.questionComments)
     const allQuizComments = useSelector(state => state.quizComments)
-
-    // context
-    const currentUser = useContext(currentUserContext)
+    const currentUser = useSelector(state => state.auth && state.auth.user)
 
     const totPages = questionComments && questionComments.totalPages
     const uRole = currentUser && currentUser.role
@@ -48,11 +45,11 @@ const CommentsTabPane = () => {
     const allQnCmts = questionComments.allComments
     const allQuizCmts = allQuizComments.allComments
 
-    const filteredQuestionComments = allQnCmts && allQnCmts.filter(cmnt => 
+    const filteredQuestionComments = allQnCmts && allQnCmts.filter(cmnt =>
         searchKeyQ === "" ? false : cmnt.comment.toLowerCase().includes(searchKeyQ.toLowerCase())
     )
 
-    const filteredQuizComments = allQuizCmts && allQuizCmts.filter(cmnt => 
+    const filteredQuizComments = allQuizCmts && allQuizCmts.filter(cmnt =>
         searchKey === "" ? false : cmnt.comment.toLowerCase().includes(searchKey.toLowerCase())
     )
 

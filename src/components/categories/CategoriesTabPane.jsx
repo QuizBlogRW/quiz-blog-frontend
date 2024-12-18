@@ -1,7 +1,6 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Row, Col, Card, Button, CardTitle, CardText, TabPane } from 'reactstrap'
-import { currentUserContext } from '../../appContexts'
-import { useSelector } from 'react-redux'
+import { useSelector } from "react-redux"
 import { deleteCategory } from '../../redux/slices/categoriesSlice'
 import { Link } from "react-router-dom"
 import AddQuiz from '../quizes/AddQuiz'
@@ -11,11 +10,10 @@ import QBLoadingSM from '../rLoading/QBLoadingSM'
 import DeleteModal from '../../utils/DeleteModal'
 
 const CategoriesTabPane = () => {
+    
     const categories = useSelector(state => state.categories)
     const courseCategories = useSelector(state => state.courseCategories)
-
-    // Context
-    const currentUser = useContext(currentUserContext)
+    const currentUser = useSelector(state => state.auth && state.auth.user)
 
     return (
         <TabPane tabId="1">

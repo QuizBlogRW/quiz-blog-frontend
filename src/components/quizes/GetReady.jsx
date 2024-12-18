@@ -1,10 +1,9 @@
-import React, { useEffect, lazy, Suspense, useContext } from 'react'
+import React, { useEffect, lazy, Suspense } from 'react'
 import { Container, Col, Row, Card, Button, CardTitle, CardText } from 'reactstrap'
 import { Link, useParams } from 'react-router-dom'
 import { getOneQuiz } from '../../redux/slices/quizesSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import EmbeddedVideos from './EmbeddedVideos'
-import { currentUserContext } from '../../appContexts'
 import QBLoadingSM from '../rLoading/QBLoadingSM'
 
 const ResponsiveHorizontal = lazy(() => import('../adsenses/ResponsiveHorizontal'))
@@ -26,8 +25,7 @@ const GetReady = () => {
         }
     }
 
-    // context
-    const currentUser = useContext(currentUserContext)
+    const currentUser = useSelector(state => state.auth && state.auth.user)
 
     // Access route parameters
     const { quizSlug } = useParams()

@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react'
+import React, { useEffect } from 'react'
 import { Row, Col, Card, Button, CardTitle, CardText, TabPane } from 'reactstrap'
 import { getPostCategories, deletePostCategory } from '../../../redux/slices/postCategoriesSlice'
 import { useSelector, useDispatch } from "react-redux"
@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom'
 import EditBPCategory from './EditBPCategory'
 import CreateBPCategory from './CreateBPCategory'
 import QBLoadingSM from '../../rLoading/QBLoadingSM'
-import { currentUserContext } from '../../../appContexts'
 import DeleteModal from '../../../utils/DeleteModal'
 
 const PostCategoriesTabPane = () => {
@@ -15,7 +14,7 @@ const PostCategoriesTabPane = () => {
   const bPcats = useSelector(state => state.postCategories)
   const { isLoading, allPostCategories } = bPcats
 
-  const currentUser = useContext(currentUserContext)
+  const currentUser = useSelector(state => state.auth && state.auth.user)
 
   useEffect(() => {
     dispatch(getPostCategories())

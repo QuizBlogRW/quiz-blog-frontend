@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useContext, useMemo } from 'react'
-import { currentUserContext } from '@/appContexts'
+import React, { useState, useEffect, useMemo } from 'react'
 import { Editor, EditorState, convertFromRaw } from 'draft-js'
 import moment from 'moment'
 
 const SingleReply = ({ reply }) => {
-    const currentUser = useContext(currentUserContext)
+    const currentUser = useSelector(state => state.auth && state.auth.user)
     const [editorState, setEditorState] = useState(() => EditorState.createEmpty())
 
     useEffect(() => {

@@ -1,17 +1,14 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import { createNotes } from '../../../redux/slices/notesSlice'
 import AddIcon from '../../../images/plus.svg'
 import { useDispatch } from 'react-redux'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, NavLink, Input } from 'reactstrap'
-import { currentUserContext } from '../../../appContexts'
 
 const AddNotesModal = ({ chapter }) => {
 
     // Redux
     const dispatch = useDispatch()
-
-    // context
-    const currentUser = useContext(currentUserContext)
+    const currentUser = useSelector(state => state.auth && state.auth.user)
 
     const [notesState, setNotesState] = useState({
         title: '',

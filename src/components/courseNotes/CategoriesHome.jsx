@@ -1,18 +1,19 @@
 import React, { lazy, Suspense, useContext } from 'react'
 import { Button } from 'reactstrap'
 import QBLoadingSM from '../rLoading/QBLoadingSM'
-import { authContext, currentUserContext, logRegContext } from '../../appContexts'
+import { logRegContext } from '../../appContexts'
+import { useSelector } from 'react-redux'
 
 const GridMultiplex = lazy(() => import('../adsenses/GridMultiplex'))
 
 const CategoriesHome = () => {
 
-    const auth = useContext(authContext)
-    const currentUser = useContext(currentUserContext)
+    const currentUser = useSelector(state => state.auth && state.auth.user)
+    const isAuthenticated = useSelector(state => state.auth && state.auth.isAuthenticated)
     const { toggleL } = useContext(logRegContext)
 
     return (
-        auth.isAuthenticated ?
+        isAuthenticated ?
             <>
                 <div className="text-center rounded px-3 px-sm-4 py-3 py-sm-5 mx-3 d-flex justify-content-center align-items-center flex-column">
                     <h3 className="fw-bolder my-lg-4" style={{ color: "#157A6E" }}>

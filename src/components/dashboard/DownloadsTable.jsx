@@ -3,11 +3,11 @@ import moment from 'moment'
 import { Table, Alert } from 'reactstrap'
 import { deleteDownload } from '../../redux/slices/downloadsSlice'
 import DeleteModal from '../../utils/DeleteModal'
-import { currentUserContext } from '../../appContexts'
+import { useSelector } from "react-redux"
 
 const DownloadsTable = ({ downloadsToUse, pageNo }) => {
 
-    const currentUser = currentUserContext
+    const currentUser = useSelector(state => state.auth && state.auth.user)
     const uRole = currentUser && currentUser.role
 
     return (

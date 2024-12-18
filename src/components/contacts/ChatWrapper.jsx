@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import { Row, Col, Button } from 'reactstrap'
 import { Link } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
-import { authContext, currentUserContext, logRegContext } from '../../appContexts'
+import { logRegContext } from '../../appContexts'
 import { getContacts, getOneContact, getCreateRoom, getRoomMessages, getUserContacts } from '../../redux/slices/contactsSlice'
 import Pagination from '../dashboard/Pagination'
 import PageOf from '../dashboard/PageOf'
@@ -22,17 +22,14 @@ const ChatWrapper = () => {
     const dispatch = useDispatch()
     const contacts = useSelector(state => state.contacts)
     const { totalPages, isLoading, oneChatRoom } = contacts
-
-    // Contexts
-    const auth = useContext(authContext)
-    const currentUser = useContext(currentUserContext)
-    const { toggleL } = useContext(logRegContext)
-
+    const currentUser = useSelector(state => state.auth && state.auth.user)
+    const isAuthenticated = useSelector(state => state.auth && state.auth.isAuthenticated)
     const uRole = currentUser && currentUser.role
     const userEmail = currentUser && currentUser.email
     const [pageNo, setPageNo] = useState(1)
     const [onlineList, setOnlineList] = useState([])
-
+    const { toggleL } = useContext(logRegContext)
+    
     const setupSocketListeners = () => {
         // Listen for 'newUserOnline' event
         socket.on('newUserOnline', ({ onlineUsers, new_user }) => {
@@ -97,7 +94,7 @@ const ChatWrapper = () => {
     return (
         <>
             {
-                auth.isAuthenticated ?
+                isAuthenticated ?
                     <>
                         {isLoading ?
                             <div className="vh-100 d-flex justify-content-center align-items-center text-danger">
@@ -139,7 +136,7 @@ const ChatWrapper = () => {
                                                             receiverName: onlineUser.name,
                                                             username: currentUser.name
                                                         })}>
-                                                        {onlineUser.name.charAt(0).toUpperCase() + onlineUser.name.slice(1)} 
+                                                        {onlineUser.name.charAt(0).toUpperCase() + onlineUser.name.slice(1)}
                                                         <small style={{ fontSize: ".5rem", verticalAlign: "middle" }}> 🟢</small>
                                                     </Link>
                                                 </li>)

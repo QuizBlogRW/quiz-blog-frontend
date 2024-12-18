@@ -8,17 +8,16 @@ import EditIcon from '../../images/edit.svg'
 import ChangeQuizModal from './ChangeQuizModal'
 import QBLoadingSM from '../rLoading/QBLoadingSM'
 import QuestionComments from '../quizes/review/questionComments/QuestionComments'
-import { authContext, logRegContext } from '../../appContexts'
+import { logRegContext } from '../../appContexts'
 import DeleteModal from '../../utils/DeleteModal'
 
 const SingleQuestion = () => {
 
-    const quest = useSelector(state => state.questions)
     const dispatch = useDispatch()
-
-    // Context
-    const auth = useContext(authContext)
     const { toggleL } = useContext(logRegContext)
+    const quest = useSelector(state => state.questions)
+    const auth = useSelector(state => state.auth)
+    const isAuthenticated = auth && auth.isAuthenticated
 
     // Access route parameters
     const { questionID } = useParams()
@@ -33,8 +32,36 @@ const SingleQuestion = () => {
     const thisQnQZ = thisQuestion && thisQuestion.quiz
     const thisQnCrt = thisQuestion && thisQuestion.created_by
 
+    const renderExplanation = (explanation) => {
+        if (!explanation) return null;
+        return explanation.split(" ").map(word => {
+            if (word.startsWith("http")) {
+                return <a key={word} href={word} target="_blank" rel="noreferrer">{word} </a>
+            }
+            return word + " "
+        });
+    };
+
+    const renderAnswerOptions = (answerOptions) => {
+        return answerOptions.map((answerOpt, i) => {
+            const explanation = renderExplanation(answerOpt.explanations);
+            return (
+                <span key={answerOpt._id}>
+                    <ListGroupItem color={answerOpt.isCorrect ? 'success' : ''} key={answerOpt._id} className="mt-4 fw-bolder">
+                        {i + 1}. {answerOpt.answerText}
+                    </ListGroupItem>
+                    {explanation && <div className='border rounded mt-1 p-2'>
+                        <small className="text-dark">
+                            {explanation}
+                        </small>
+                    </div>}
+                </span>
+            );
+        });
+    };
+
     return (
-        auth.isAuthenticated ?
+        isAuthenticated ?
 
             auth.user.role !== 'Visitor' ?
 
@@ -85,34 +112,7 @@ const SingleQuestion = () => {
                                     </div>}
 
                                 <ListGroup>
-                                    {thisQuestion && thisQuestion.answerOptions.map((answerOpt, i) => {
-
-                                        let explanation = answerOpt.explanations ? answerOpt.explanations : null
-
-                                        {/* If there is a word in the explanation paragraph that starts with http, make it a link */ }
-                                        if (explanation) {
-                                            let words = explanation.split(" ")
-                                            explanation = words.map(word => {
-                                                if (word.startsWith("http")) {
-                                                    return <a key={word} href={word} target="_blank" rel="noreferrer">{word} </a>
-                                                }
-                                                return word + " "
-                                            })
-                                        }
-                                        return (
-
-                                            <span key={answerOpt._id}>
-                                                <ListGroupItem color={answerOpt.isCorrect ? 'success' : ''} key={answerOpt._id} className="mt-4 fw-bolder">
-                                                    {i + 1}. {answerOpt.answerText}
-                                                </ListGroupItem>
-
-                                                {explanation && <div className='border rounded mt-1 p-2'>
-                                                    <small className="text-dark">
-                                                        {explanation}
-                                                    </small>
-                                                </div>}
-                                            </span>)
-                                    })}
+                                    {thisQuestion && renderAnswerOptions(thisQuestion.answerOptions)}
                                 </ListGroup>
 
                             </Row>

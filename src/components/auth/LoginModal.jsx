@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
 import { login } from '../../redux/slices/authSlice'
 import { useSelector, useDispatch } from "react-redux"
-import { authContext } from '../../appContexts'
 import ReactGA from "react-ga4"
 import logocirclewhite from '../../../src/images/logocirclewhite.svg'
 import avatar from '../../../src/images/avatar1.svg'
@@ -13,10 +12,7 @@ const LoginModal = ({ isOpenL, toggleL, toggleR }) => {
 
     const { isLoading } = useSelector(state => state.auth)
     const dispatch = useDispatch()
-
-    // context 
-    const auth = useContext(authContext)
-    const isAuthenticated = auth && auth.isAuthenticated
+    const isAuthenticated = useSelector(state => state.auth && state.auth.isAuthenticated)
 
     //properties of the modal
     const [loginState, setLoginState] = useState({ email: '', password: '' })

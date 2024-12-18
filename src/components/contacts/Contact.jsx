@@ -1,19 +1,18 @@
-import React, { useState, useEffect, useContext, lazy } from 'react'
+import React, { useState, useEffect, lazy } from 'react'
 import { Button, Col, Row, Form, FormGroup, Input } from 'reactstrap'
 import SquareAd from '../adsenses/SquareAd'
 import { sendMsg } from '../../redux/slices/contactsSlice'
 import { useDispatch } from "react-redux"
 import './contact.css'
 import mail from '../../../src/images/mail.svg'
-import { currentUserContext } from '../../appContexts'
+import { useSelector } from "react-redux"
 const ResponsiveHorizontal = lazy(() => import('../adsenses/ResponsiveHorizontal'))
 
 const Contact = () => {
 
     // Redux
     const dispatch = useDispatch()
-    const currentUser = useContext(currentUserContext)
-
+    const currentUser = useSelector(state => state.auth && state.auth.user)
 
     const [state, setState] = useState({
         contact_name: '',

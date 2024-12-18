@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useRef, useContext } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Form, FormGroup, Button, Input } from 'reactstrap'
 import { getRoomMessages, sendRoomMessage } from '../../redux/slices/contactsSlice'
 import moment from 'moment'
 import QBLoadingSM from '../rLoading/QBLoadingSM'
-import { currentUserContext } from '../../appContexts'
 import { useSelector, useDispatch } from "react-redux"
 import { socket } from '../../utils/socket'
 import { notify } from '../../utils/notifyToast'
@@ -13,9 +12,7 @@ const RoomMessages = ({ oON1room, onlineList }) => {
     const contacts = useSelector(state => state.contacts)
     const { oneChatRoom, oneRoomMessages, isLoading } = contacts
     const dispatch = useDispatch()
-
-    // Get current user from context
-    const currentUser = useContext(currentUserContext)
+    const currentUser = useSelector(state => state.auth && state.auth.user)
     const lastMessageRef = useRef(null);
     const [welcomeMessage, setWelcomeMessage] = useState()
     const [roomMessageState, setRoomMessageState] = useState({

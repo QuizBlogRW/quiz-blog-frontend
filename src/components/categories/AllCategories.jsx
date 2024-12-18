@@ -1,28 +1,23 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Row, Col, Toast, ToastBody, ToastHeader, TabPane, ListGroup, ListGroupItem } from 'reactstrap'
 import SearchInput from '../../utils/SearchInput'
 import { Link } from "react-router-dom"
 import { getQuizes } from '../../redux/slices/quizesSlice'
 import { useDispatch, useSelector } from "react-redux"
 import QBLoadingSM from '../rLoading/QBLoadingSM'
-import { categoriesContext } from '../../appContexts'
 
 const AllCategories = () => {
 
     // Redux
     const dispatch = useDispatch()
     const quizes = useSelector(state => state.quizes)
-
-    // context
-    const categories = useContext(categoriesContext)
+    const categories = useSelector(state => state.categories)
 
     const [searchKeyC, setSearchKeyC] = useState('')
     const [searchKeyQ, setSearchKeyQ] = useState('')
 
     // Lifecycle methods
-    useEffect(() => {
-        dispatch(getQuizes())
-    }, [dispatch])
+    useEffect(() => { dispatch(getQuizes()) }, [dispatch])
 
     return (
         <TabPane tabId="100">

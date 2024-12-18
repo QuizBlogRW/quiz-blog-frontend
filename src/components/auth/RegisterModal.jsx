@@ -1,9 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
 import { register } from '../../redux/slices/authSlice'
 import { useSelector, useDispatch } from "react-redux"
-import { authContext } from '../../appContexts'
-
 import logocirclewhite from '../../../src/images/logocirclewhite.svg'
 import avatar from '../../../src/images/avatar1.svg'
 import QBLoadingSM from '../rLoading/QBLoadingSM'
@@ -11,11 +9,8 @@ import QBLoadingSM from '../rLoading/QBLoadingSM'
 const RegisterModal = ({ isOpenR, toggleR, toggleL }) => {
 
     const isLoading = useSelector(state => state.auth.isLoading)
+    const isAuthenticated = useSelector(state => state.auth && state.auth.isAuthenticated)
     const dispatch = useDispatch()
-
-    // context
-    const auth = useContext(authContext)
-    const isAuthenticated = auth && auth.isAuthenticated
 
     const [registerState, setRegisterState] = useState({
         name: '',

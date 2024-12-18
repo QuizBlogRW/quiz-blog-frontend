@@ -6,21 +6,19 @@ import { updateProfile } from '../../redux/slices/authSlice'
 import { getSchools } from '../../redux/slices/schoolsSlice'
 import { fetchSchoolLevels } from '../../redux/slices/levelsSlice'
 import { fetchLevelFaculties } from '../../redux/slices/facultiesSlice'
-import { authContext, currentUserContext, logRegContext } from '../../appContexts'
+import { logRegContext } from '../../appContexts'
 import QBLoadingSM from '../rLoading/QBLoadingSM'
 
 const EditProfile = () => {
 
     const { userId } = useParams()
-    const auth = useContext(authContext)
-    const currentUser = useContext(currentUserContext)
-    const { toggleL } = useContext(logRegContext)
-
-    const schools = useSelector(state => state.schools.allSchools)
-    const schoolLevels = useSelector(state => state.levels.schoolLevels)
-    const levelFaculties = useSelector(state => state.faculties.levelFaculties)
-
     const dispatch = useDispatch()
+
+    const { currentUser, isAuthenticated, isLoading } = useSelector(state => state.auth)
+    const { toggleL } = useContext(logRegContext)
+    const schools = useSelector(state => state.schools && state.schools.allSchools)
+    const schoolLevels = useSelector(state => state.levels && state.levels.schoolLevels)
+    const levelFaculties = useSelector(state => state.faculties && state.faculties.levelFaculties)
 
     const [profileState, setProfileState] = useState(currentUser || {})
     const [interestsState, setInterestsState] = useState(currentUser?.interests || [])
@@ -56,14 +54,13 @@ const EditProfile = () => {
     }, [profileState.faculty, levelFaculties])
 
     const handleSelectChange = (e, field, fetchAction, list) => {
-        const value = e.target.value || null;
+        const value = e.target.value || null
+        const selectedObject = list ? list.find(item => item._id === value) : value
 
-        const selectedObject = list ? list.find(item => item._id === value) : value;
-
-        setProfileState(prevState => {
-            const newState = { ...prevState, [field]: selectedObject }
-            return newState
-        })
+        setProfileState(prevState => ({
+            ...prevState,
+            [field]: selectedObject
+        }))
 
         if (fetchAction && value) dispatch(fetchAction(value))
     }
@@ -109,7 +106,7 @@ const EditProfile = () => {
     }
 
     return (
-        auth.isAuthenticated ?
+        isAuthenticated ?
             <Form className="my-3 mt-lg-5 mx-3 mx-lg-5 edit-question" onSubmit={handleSubmit}>
                 <Row className="mb-0 mb-lg-3 mx-0">
                     <Breadcrumb>
@@ -141,9 +138,7 @@ const EditProfile = () => {
                         <Input disabled type="text" value={profileState.school?.title || ''} style={{ color: "#157A6E" }} />
                     </Col>
                 </FormGroup>
-                {
-                    console.log('profileState.level', profileState.level)
-                }
+
                 <FormGroup row className={`mx-0`}>
                     <Label sm={3}>Update Level</Label>
                     <Col sm={7}>
@@ -221,7 +216,7 @@ const EditProfile = () => {
                 </FormGroup>
             </Form> :
             <div className="vh-100 d-flex justify-content-center align-items-center text-danger">
-                {auth.isLoading ? <QBLoadingSM /> :
+                {isLoading ? <QBLoadingSM /> :
                     <Button color="link" className="fw-bolder my-5 border rounded" onClick={toggleL} style={{ backgroundColor: "#ffc107", color: "#157A6E", fontSize: "1.5vw", boxShadow: "-2px 2px 1px 2px #157A6E", border: "2px solid #157A6E" }}>
                         Login first
                     </Button>

@@ -1,36 +1,31 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
-import { Button, Col, Form, FormGroup, Label, Input, Breadcrumb, BreadcrumbItem, Alert } from 'reactstrap'
+import { Button, Col, Form, FormGroup, Label, Input, Breadcrumb, BreadcrumbItem } from 'reactstrap'
 import Dashboard from '../dashboard/Dashboard'
 import { addQuestion, getQuestions } from '../../redux/slices/questionsSlice'
 import { getOneQuiz, notifying } from '../../redux/slices/quizesSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import QBLoadingSM from '../rLoading/QBLoadingSM'
-import { authContext, logRegContext } from '../../appContexts'
+import { logRegContext } from '../../appContexts'
 
 const CreateQuestions = () => {
 
     // Redux
     const oneQuiz = useSelector(state => state.quizes.oneQuiz)
-    const dispatch = useDispatch()
+    const currentUser = useSelector(state => state.auth && state.auth.user)
+    const isAuthenticated = useSelector(state => state.auth && state.auth.isAuthenticated)
 
-    const auth = useContext(authContext)
+    const dispatch = useDispatch()
     const { toggleL } = useContext(logRegContext)
 
     // Access route parameters
     const { quizSlug } = useParams()
-
-    // Alert
-    const [visible, setVisible] = useState(true);
-    const onDismiss = () => setVisible(false);
-
     const [questionText, setQuestionText] = useState({
         questionText: '',
     })
 
     const [question_image, setQuestion_image] = useState('')
-
     const [durationState, setDurationState] = useState({
         duration: 24
     })
@@ -75,37 +70,32 @@ const CreateQuestions = () => {
         setAnswerOptions(newAnswerOptions)
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-
-        const formData = new FormData()
-        const trueAnswer = answerOptions.find(ansop => ansop.isCorrect === true ? ansop : null)
-
-        // VALIDATE
+    const validateForm = () => {
+        const trueAnswer = answerOptions.find(ansop => ansop.isCorrect === true)
         if (!questionText.questionText && !question_image) {
             notify('Please give the title or upload question image!')
-            return
-        }
-        else if (questionText.questionText.length < 4) {
+            return false
+        } else if (questionText.questionText.length < 4) {
             notify('Insufficient info!')
-            return
-        }
-        else if (questionText.questionText.length > 700) {
+            return false
+        } else if (questionText.questionText.length > 700) {
             notify('Question is too long!')
-            return
-        }
-
-        else if (answerOptions.length <= 1) {
+            return false
+        } else if (answerOptions.length <= 1) {
             notify('Answers are not sufficient!')
-            return
-        }
-
-        else if (!trueAnswer) {
+            return false
+        } else if (!trueAnswer) {
             notify('Please provide a true answer!')
-            return
+            return false
         }
+        return true
+    }
 
-        // Create new qn object
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        if (!validateForm()) return
+
+        const formData = new FormData()
         formData.append('question_image', question_image)
         formData.append('questionText', questionText.questionText)
         answerOptions.forEach(aOptn => {
@@ -113,7 +103,7 @@ const CreateQuestions = () => {
         })
         formData.append('category', oneQuiz.category && oneQuiz.category._id)
         formData.append('quiz', oneQuiz && oneQuiz._id)
-        formData.append('created_by', auth.isLoading === false ? auth.user._id : null)
+        formData.append('created_by', auth.isLoading === false ? currentUser._id : null)
         formData.append('duration', durationState.duration)
 
         // Attempt to create
@@ -150,9 +140,9 @@ const CreateQuestions = () => {
     }
 
     return (
-        auth.isAuthenticated ?
+        isAuthenticated ?
 
-            auth.user.role !== 'Visitor' ?
+            currentUser.role !== 'Visitor' ?
 
                 <Form className="my-3 mt-lg-5 mx-3 mx-lg-5 create-question" onSubmit={handleSubmit}>
 

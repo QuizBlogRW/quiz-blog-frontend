@@ -1,11 +1,11 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Table, Alert } from 'reactstrap'
 import moment from 'moment'
-import { currentUserContext } from '../../appContexts'
+import { useSelector } from "react-redux"
 
 const FeedbacksTable = ({ feedbacksToUse, pageNo }) => {
 
-    const currentUser = useContext(currentUserContext)
+    const currentUser = useSelector(state => state.auth && state.auth.user)
     const uRole = currentUser && currentUser.role
 
     return (

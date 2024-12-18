@@ -13,9 +13,7 @@ const SubscribersTabPane = () => {
     const subscribedUsers = useSelector(state => state.subscribers)
 
     // Lifecycle methods
-    useEffect(() => {
-        dispatch(getSubscribers())
-    }, [dispatch])
+    useEffect(() => { dispatch(getSubscribers()) }, [dispatch])
 
     return (
         <TabPane tabId="6" className='mx-4'>
@@ -42,7 +40,7 @@ const SubscribersTabPane = () => {
                                         </td>
                                         <td className='text-lowercase'>{subscribedUser.email}</td>
                                         <td>
-                                            {moment(new Date(subscribedUser.subscription_date))
+                                            {moment(new Date(subscribedUser.createdAt))
                                                 .format('YYYY-MM-DD, HH:mm')}
                                         </td>
                                         <td className="table-dark">

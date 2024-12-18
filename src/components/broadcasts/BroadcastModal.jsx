@@ -1,13 +1,13 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
 import { sendBroadcast } from '../../redux/slices/broadcastsSlice'
-import { useDispatch } from "react-redux"
-import { authContext } from '../../appContexts'
+import { useDispatch, useSelector } from "react-redux"
+import { notify } from '@/utils/notifyToast'
 
 const BroadcastModal = () => {
 
     const dispatch = useDispatch()
-    const auth = useContext(authContext)
+    const auth = useSelector(state => state.auth)
     const currentUser = auth && auth.user
     const userId = currentUser && currentUser._id
 
@@ -15,7 +15,6 @@ const BroadcastModal = () => {
         title: '',
         message: ''
     })
-
 
     //properties of the modal
     const [modal, setModal] = useState(false)

@@ -5,17 +5,16 @@ import Dashboard from '../dashboard/Dashboard'
 import { getOneQuestion, updateQuestion } from '../../redux/slices/questionsSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import QBLoadingSM from '../rLoading/QBLoadingSM'
-import { authContext, logRegContext } from '../../appContexts'
+import { logRegContext } from '../../appContexts'
+import { notify } from '@/utils/notifyToast'
 
 const EditQuestion = () => {
 
     // Redux
+    const dispatch = useDispatch()
     const quest = useSelector(state => state.questions.oneQuestion)
     const isQnLoading = useSelector(state => state.questions.isLoading)
-    const dispatch = useDispatch()
-
-    const auth = useContext(authContext)
-    const { isAuthenticated, user, isLoading } = auth
+    const { isAuthenticated, user, isLoading } = useSelector(state => state.auth)
     const { toggleL } = useContext(logRegContext)
 
     // Access route parameters & history
@@ -27,20 +26,22 @@ const EditQuestion = () => {
         dispatch(getOneQuestion(questionID))
     }, [dispatch, questionID])
 
+    useEffect(() => {
+        if (quest) {
+            setQuestionTextState({ questionText: quest.questionText })
+            setQuestion_image(quest.question_image)
+            setDurationState({ duration: quest.duration })
+            setAnswerOptionsState(quest.answerOptions)
+        }
+    }, [quest])
+
     const thisQnCat = quest && quest.category
     const thisQnQZ = quest && quest.quiz
 
     const [questionTextState, setQuestionTextState] = useState({ questionText: '' })
-    useEffect(() => { setQuestionTextState({ questionText: quest && quest.questionText }) }, [quest])
-
     const [question_image, setQuestion_image] = useState('')
-    useEffect(() => { setQuestion_image(quest && quest.question_image) }, [quest])
-
     const [durationState, setDurationState] = useState()
-    useEffect(() => { setDurationState({ duration: quest && quest.duration }) }, [quest])
-
     const [answerOptionsState, setAnswerOptionsState] = useState(quest && quest.answerOptions)
-    useEffect(() => { setAnswerOptionsState(quest && quest.answerOptions) }, [quest])
 
     const onQuestionChangeHandler = e => {
         const { name, value } = e.target
@@ -190,8 +191,8 @@ const EditQuestion = () => {
                                     </Col>
 
                                     <Col sm={6} xl={2} className="my-3 my-sm-2 d-sm-flex justify-content-around">
-                                        <Input type="checkbox" name="isCorrect" value={answerOption.isCorrect}
-                                            onChange={event => handleAnswerChangeInput(answerOption._id, event)} id={answerOption._id} label="Is Correct?" required checked={answerOption.isCorrect} />
+                                        <Input type="checkbox" name="isCorrect" checked={answerOption.isCorrect}
+                                            onChange={event => handleAnswerChangeInput(answerOption._id, event)} id={answerOption._id} label="Is Correct?" required />
                                     </Col>
 
                                     <Col sm={6} xl={1} className="my-3 my-sm-2">
@@ -213,7 +214,7 @@ const EditQuestion = () => {
 
                     <FormGroup check row className="mx-0">
                         <Col sm={{ size: 10, offset: 2 }} className="pl-0">
-                            <Button className="btn btn-info btn-sm" type="submit" onClick={handleSubmit}>Update</Button>
+                            <Button className="btn btn-info btn-sm" type="submit">Update</Button>
                         </Col>
                     </FormGroup>
 
