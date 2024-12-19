@@ -19,6 +19,14 @@ const UsersTabPane = () => {
     const adminsCreators = users && users.filter(user => user.role === "SuperAdmin" || user.role === "Admin" || user.role === "Creator")
     const [searchKey, setSearchKey] = useState('')
 
+    const renderUsers = (usersList, fromSearch = false) => (
+        <Row>
+            {usersList.map(user => (
+                <UserToast key={user._id} user={user} fromSearch={fromSearch} />
+            ))}
+        </Row>
+    );
+
     return (
 
         <TabPane tabId="8">
@@ -29,33 +37,17 @@ const UsersTabPane = () => {
                     <>
                         <SearchInput setSearchKey={setSearchKey} placeholder={` Search here any user from ${users.length} available users...  `} />
 
-                        {searchKey === "" ? null :
-                            <Row>
-                                {users && users
-                                    .map(user => (
-                                        user.name.toLowerCase().includes(searchKey.toLowerCase()) ?
-                                            <UserToast key={user._id} user={user} fromSearch={true} />
-                                            : null
-                                    ))}
-                            </Row>}
+                        {searchKey === "" ? null : renderUsers(users.filter(user => user.name.toLowerCase().includes(searchKey.toLowerCase())), true)}
 
                         <p className="text-center my-3 fw-bolder text-underline">
                             <u>Admin and Creators</u>
                         </p>
-                        <Row>
-                            {adminsCreators && adminsCreators.map(aCreator => (
-                                <UserToast key={aCreator._id} user={aCreator} />
-                            ))}
-                        </Row>
+                        {renderUsers(adminsCreators)}
 
                         <p className="text-center my-3 fw-bolder text-underline">
                             <u>8 Newest Users</u>
                         </p>
-                        <Row>
-                            {users && users.map(newUser => (
-                                <UserToast key={newUser._id} user={newUser} />
-                            )).slice(0, 8)}
-                        </Row>
+                        {renderUsers(users.slice(0, 8))}
                     </>
             }
 
