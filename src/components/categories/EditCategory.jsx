@@ -2,20 +2,20 @@ import React, { useState } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
 import { updateCategory } from '../../redux/slices/categoriesSlice'
 import EditIcon from '../../images/edit.svg'
-
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import { notify } from '../../utils/notifyToast'
 
 const EditCategory = ({ categoryToEdit, courseCategories }) => {
 
-    // redux
     const dispatch = useDispatch()
-
+    const auth = useSelector(state => state.auth)
+    
     const [categoryState, setCategoryState] = useState({
-        catID: categoryToEdit._id,
-        name: categoryToEdit.title,
-        description: categoryToEdit.description,
-        oldCourseCatID: categoryToEdit.courseCategory._id,
-        courseCategory: categoryToEdit.courseCategory._id
+        catID: categoryToEdit && categoryToEdit._id,
+        name: categoryToEdit && categoryToEdit.title,
+        description: categoryToEdit && categoryToEdit.description,
+        oldCourseCatID: categoryToEdit && categoryToEdit.courseCategory && categoryToEdit.courseCategory._id,
+        courseCategory: categoryToEdit && categoryToEdit.courseCategory && categoryToEdit.courseCategory._id
     })
 
     //properties of the modal
@@ -63,7 +63,7 @@ const EditCategory = ({ categoryToEdit, courseCategories }) => {
     return (
         <div>
             <NavLink onClick={toggle} className="text-dark p-0">
-                <img src={EditIcon} onClick={toggle} alt="" width="16" height="16" className="mx-2" />
+                <img src={EditIcon} alt="" width="16" height="16" className="mx-2" />
             </NavLink>
 
             <Modal isOpen={modal} toggle={toggle}>

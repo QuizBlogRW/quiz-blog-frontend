@@ -16,6 +16,8 @@ const Header = ({ textContent }) => {
     const currentUser = auth && auth.user
     const { isOpenL, isOpenR, toggleL, toggleR } = useContext(logRegContext)
     const userId = currentUser && currentUser._id
+    console.log(currentUser)
+
     const [dropdownOpen, setDropdownOpen] = useState(false)
     const [logoutModal, setLogoutModal] = useState(false)
 
@@ -70,10 +72,10 @@ const Header = ({ textContent }) => {
                         </ListGroup>
                     </DropdownItem>
                     <DropdownItem text>
-                        <a href="/dashboard" className="text-white" onClick={toggleDropdown}>Dashboard</a>
+                        <Link to="/dashboard" className="text-white" onClick={toggleDropdown}>Dashboard</Link>
                     </DropdownItem>
                     <DropdownItem text>
-                        <a href={`/edit-profile/${currentUser && currentUser._id}`} className="text-white" onClick={toggleDropdown}>Edit Profile</a>
+                        <Link to={`/edit-profile/${currentUser && currentUser._id}`} className="text-white" onClick={toggleDropdown}>Edit Profile</Link>
                     </DropdownItem>
                     <Logout userId={userId} logoutModal={logoutModal} toggleLogoutModal={toggleLogoutModal} />
                 </DropdownMenu>
@@ -85,46 +87,46 @@ const Header = ({ textContent }) => {
         <>
             <ListGroupItem>
                 {currentUser && currentUser.school ? (
-                    <a href={`/edit-profile/${currentUser && currentUser._id}`}>
+                    <Link to={`/edit-profile/${currentUser && currentUser._id}`}>
                         <span className={`${currentUser && !currentUser.school ? 'text-danger' : ''}`}>
                             {(currentUser && currentUser.school.title)}
                         </span>
-                    </a>
+                    </Link>
                 ) : (
-                    <a href={`/edit-profile/${currentUser && currentUser._id}`}>Please add a school</a>
+                    <Link to={`/edit-profile/${currentUser && currentUser._id}`}>Please add a school</Link>
                 )}
             </ListGroupItem>
             <ListGroupItem>
                 {currentUser && currentUser.level ? (
-                    <a href={`/edit-profile/${currentUser && currentUser._id}`}>
+                    <Link to={`/edit-profile/${currentUser && currentUser._id}`}>
                         <span className={`${currentUser && !currentUser.level ? 'text-danger' : ''}`}>
                             {(currentUser && currentUser.level.title)}
                         </span>
-                    </a>
+                    </Link>
                 ) : (
-                    <a href={`/edit-profile/${currentUser && currentUser._id}`}>Please add a level</a>
+                    <Link to={`/edit-profile/${currentUser && currentUser._id}`}>Please add a level</Link>
                 )}
             </ListGroupItem>
             <ListGroupItem>
                 {currentUser && currentUser.faculty ? (
-                    <a href={`/edit-profile/${currentUser && currentUser._id}`}>
+                    <Link to={`/edit-profile/${currentUser && currentUser._id}`}>
                         <span className={`${currentUser && !currentUser.faculty ? 'text-danger' : ''}`}>
                             {(currentUser && currentUser.faculty.title)}
                         </span>
-                    </a>
+                    </Link>
                 ) : (
-                    <a href={`/edit-profile/${currentUser && currentUser._id}`}>Please add a faculty</a>
+                    <Link to={`/edit-profile/${currentUser && currentUser._id}`}>Please add a faculty</Link>
                 )}
             </ListGroupItem>
             <ListGroupItem>
                 {currentUser && currentUser.year ? (
-                    <a href={`/edit-profile/${currentUser && currentUser._id}`}>
+                    <Link to={`/edit-profile/${currentUser && currentUser._id}`}>
                         <span className={`${currentUser && !currentUser.year ? 'text-danger' : ''}`}>
                             {(currentUser && currentUser.year)}
                         </span>
-                    </a>
+                    </Link>
                 ) : (
-                    <a href={`/edit-profile/${currentUser && currentUser._id}`}>Please add a year</a>
+                    <Link to={`/edit-profile/${currentUser && currentUser._id}`}>Please add a year</Link>
                 )}
             </ListGroupItem>
         </>

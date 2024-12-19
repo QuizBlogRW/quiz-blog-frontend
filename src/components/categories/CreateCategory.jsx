@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
 import { createCategory } from '../../redux/slices/categoriesSlice'
-
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import { notify } from '../../utils/notifyToast'
 
 const CreateCategory = ({ courseCategories }) => {
 
-    // redux
     const dispatch = useDispatch()
+    const auth = useSelector(state => state.auth)
     const [categoryState, setCategoryState] = useState({
         name: '',
         description: '',
@@ -47,7 +47,7 @@ const CreateCategory = ({ courseCategories }) => {
         const newCategory = {
             title: name,
             description,
-            creation_date: Date.now,
+            creation_date: Date.now(),
             created_by: auth.isLoading === false ? auth.user._id : null,
             courseCategory: courseCategory
         }
