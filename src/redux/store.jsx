@@ -19,8 +19,8 @@ import levelsReducer from './slices/levelsSlice'
 import facultiesReducer from './slices/facultiesSlice'
 import logsReducer from './slices/logsSlice'
 import faqsReducer from './slices/faqsSlice'
-import quizCommentsReducer from './slices/quizCommentsSlice'
-import questionCommentsReducer from './slices/questionCommentsSlice'
+import quizzesCommentsReducer from './slices/quizzesCommentsSlice'
+import questionsCommentsReducer from './slices/questionsCommentsSlice'
 import postCategoriesReducer from './slices/postCategoriesSlice'
 import blogPostsReducer from './slices/blogPostsSlice'
 import imageUploadsReducer from './slices/imageUploadsSlice'
@@ -49,8 +49,8 @@ const store = configureStore({
         faculties: facultiesReducer,
         logs: logsReducer,
         faqs: faqsReducer,
-        quizComments: quizCommentsReducer,
-        questionComments: questionCommentsReducer,
+        quizzesComments: quizzesCommentsReducer,
+        questionsComments: questionsCommentsReducer,
         postCategories: postCategoriesReducer,
         blogPosts: blogPostsReducer,
         imageUploads: imageUploadsReducer,

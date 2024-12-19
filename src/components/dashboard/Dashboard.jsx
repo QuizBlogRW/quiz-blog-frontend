@@ -10,7 +10,7 @@ import PostCategoriesTabPane from '../blog/bPCategories/PostCategoriesTabPane'
 import BlogPostsTabPane from '../blog/blogPosts/BlogPostsTabPane'
 import DownloadsTabPane from './DownloadsTabPane'
 import QBLoadingSM from '../rLoading/QBLoadingSM'
-// import CommentsTabPane from '../quizes/review/questionComments/CommentsTabPane'
+import CommentsTabPane from '../quizes/review/questionComments/CommentsTabPane'
 import AdvertsTabPane from './adverts/AdvertsTabPane'
 import TopRow from './TopRow'
 import { logRegContext } from '../../appContexts'
@@ -124,13 +124,13 @@ const Dashboard = () => {
                                         </NavLink>
                                     </NavItem>
 
-                                    {/* <NavItem>
+                                    <NavItem>
                                         <NavLink
                                             className={classnames({ active: activeTab === '9' })}
                                             onClick={() => { toggle('9') }}>
                                             <u>Comments</u>
                                         </NavLink>
-                                    </NavItem> */}
+                                    </NavItem>
 
                                     <NavItem>
                                         <NavLink
@@ -169,7 +169,7 @@ const Dashboard = () => {
                         {currentUser.role === 'Admin' || currentUser.role === 'SuperAdmin' ?
                             <>
                                 <UsersTabPane />
-                                {/* <CommentsTabPane /> */}
+                                <CommentsTabPane />
                                 <AdvertsTabPane />
                             </> : null}
                     </TabContent>

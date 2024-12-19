@@ -16,7 +16,6 @@ const Header = ({ textContent }) => {
     const currentUser = auth && auth.user
     const { isOpenL, isOpenR, toggleL, toggleR } = useContext(logRegContext)
     const userId = currentUser && currentUser._id
-    console.log(currentUser)
 
     const [dropdownOpen, setDropdownOpen] = useState(false)
     const [logoutModal, setLogoutModal] = useState(false)
