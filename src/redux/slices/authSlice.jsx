@@ -18,6 +18,12 @@ export const login = createAsyncThunk("auth/login", async ({ email, password, co
 export const getUsers = createAsyncThunk("auth/getUsers", async (_, { getState }) =>
   apiCallHelper('/api/users', 'get', null, getState, 'getUsers'))
 
+export const getLatestUsers = createAsyncThunk("auth/getLatestUsers", async (_, { getState }) =>
+  apiCallHelper('/api/users/latest', 'get', null, getState, 'getLatestUsers'))
+
+export const getAdminsCreators = createAsyncThunk("auth/getAdminsCreators", async (_, { getState }) =>
+  apiCallHelper('/api/users/admins-creators', 'get', null, getState, 'getAdminsCreators'))
+
 export const logout = createAsyncThunk("auth/logout", async (userId, { getState }) =>
   apiCallHelper('/api/users/logout', 'put', { userId }, getState, 'logout'))
 
@@ -44,8 +50,13 @@ const authSlice = createSlice({
   name: 'auth',
   initialState: {
     isLoading: false,
+    isLoadingUsers: false,
+    isLoadingLatestUsers: false,
+    isLoadingAdminsCreators: false,
     isAuthenticated: null,
     users: [],
+    latestUsers: [],
+    adminsCreators: [],
     pswdResetToken: null,
     user: null,
     token: localStorage.getItem('token'),
@@ -131,8 +142,16 @@ const authSlice = createSlice({
       notify('Good Bye!')
     })
     builder.addCase(getUsers.fulfilled, (state, action) => {
-      state.isLoading = false
+      state.isLoadingUsers = false
       state.users = action.payload
+    })
+    builder.addCase(getLatestUsers.fulfilled, (state, action) => {
+      state.isLoadingLatestUsers = false
+      state.latestUsers = action.payload
+    })
+    builder.addCase(getAdminsCreators.fulfilled, (state, action) => {
+      state.isLoadingAdminsCreators = false
+      state.adminsCreators = action.payload
     })
     builder.addCase(updateUser.fulfilled, (state, action) => {
       state.isLoading = false
@@ -167,7 +186,15 @@ const authSlice = createSlice({
     builder.addCase(login.pending, handlePending)
     builder.addCase(register.pending, handlePending)
     builder.addCase(verify.pending, handlePending)
-    builder.addCase(getUsers.pending, handlePending)
+    builder.addCase(getUsers.pending, (state) => {
+      state.isLoadingUsers = true
+    })
+    builder.addCase(getLatestUsers.pending, (state) => {
+      state.isLoadingLatestUsers = true
+    })
+    builder.addCase(getAdminsCreators.pending, (state) => {
+      state.isLoadingAdminsCreators = true
+    })
     builder.addCase(logout.pending, handlePending)
     builder.addCase(updateUser.pending, handlePending)
     builder.addCase(updateProfile.pending, handlePending)
@@ -181,7 +208,15 @@ const authSlice = createSlice({
     builder.addCase(login.rejected, handleRejected)
     builder.addCase(register.rejected, handleRejected)
     builder.addCase(verify.rejected, handleRejected)
-    builder.addCase(getUsers.rejected, handleRejected)
+    builder.addCase(getUsers.rejected, (state) => {
+      state.isLoadingUsers = false
+    })
+    builder.addCase(getLatestUsers.rejected, (state) => {
+      state.isLoadingLatestUsers = false
+    })
+    builder.addCase(getAdminsCreators.rejected, (state) => {
+      state.isLoadingAdminsCreators = false
+    })
     builder.addCase(logout.rejected, handleRejected)
     builder.addCase(updateUser.rejected, handleRejected)
     builder.addCase(updateProfile.rejected, handleRejected)
