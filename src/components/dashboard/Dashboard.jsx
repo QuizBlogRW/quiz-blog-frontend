@@ -5,12 +5,12 @@ import ScoresTabPane from './ScoresTabPane'
 import FeedbacksTabPane from './FeedbacksTabPane'
 import CategoriesTabPane from '../categories/CategoriesTabPane'
 import QuizesTabPane from '../quizes/QuizesTabPane'
-import UsersTabPane from '../users/UsersTabPane'
+// import UsersTabPane from '../users/UsersTabPane'
 import PostCategoriesTabPane from '../blog/bPCategories/PostCategoriesTabPane'
 import BlogPostsTabPane from '../blog/blogPosts/BlogPostsTabPane'
 import DownloadsTabPane from './DownloadsTabPane'
 import QBLoadingSM from '../rLoading/QBLoadingSM'
-import CommentsTabPane from '../quizes/review/questionComments/CommentsTabPane'
+// import CommentsTabPane from '../quizes/review/questionComments/CommentsTabPane'
 import AdvertsTabPane from './adverts/AdvertsTabPane'
 import TopRow from './TopRow'
 import { logRegContext } from '../../appContexts'
@@ -116,21 +116,21 @@ const Dashboard = () => {
                             // Admin only
                             currentUser.role === 'Admin' || currentUser.role === 'SuperAdmin' ?
                                 <>
-                                    <NavItem>
+                                    {/* <NavItem>
                                         <NavLink
                                             className={classnames({ active: activeTab === '8' })}
                                             onClick={() => { toggle('8') }}>
                                             <u>Users</u>
                                         </NavLink>
-                                    </NavItem>
+                                    </NavItem> */}
 
-                                    <NavItem>
+                                    {/* <NavItem>
                                         <NavLink
                                             className={classnames({ active: activeTab === '9' })}
                                             onClick={() => { toggle('9') }}>
                                             <u>Comments</u>
                                         </NavLink>
-                                    </NavItem>
+                                    </NavItem> */}
 
                                     <NavItem>
                                         <NavLink
@@ -168,8 +168,8 @@ const Dashboard = () => {
 
                         {currentUser.role === 'Admin' || currentUser.role === 'SuperAdmin' ?
                             <>
-                                <UsersTabPane />
-                                <CommentsTabPane />
+                                {/* <UsersTabPane /> */}
+                                {/* <CommentsTabPane /> */}
                                 <AdvertsTabPane />
                             </> : null}
                     </TabContent>
