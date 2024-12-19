@@ -33,9 +33,9 @@ const UserToast = ({ user, fromSearch }) => {
                     <div className="userDetails d-flex align-items-center justify-content-around">
                         <div className="details d-flex flex-column w-50 p-1">
                             <p className="fw-bolder text-truncate text-info">{user.name}</p>
-                            <small className='fw-bolder text-primary text-truncate text-capitalize'>{(user.school && user.school.title) || 'No School'}</small>
-                            <small className='fw-bolder text-truncate text-capitalize text-dark'>{(user.faculty && user.faculty.title) || 'No Faculty'}</small>
-                            <small className='fw-bolder text-secondary text-truncate text-capitalize'>{(user.level && user.level.title) || 'No Level'}</small>
+                            <small className='fw-bolder text-primary text-truncate text-capitalize'>{(user.school && user.school.title)}</small>
+                            <small className='fw-bolder text-truncate text-capitalize text-dark'>{(user.faculty && user.faculty.title)}</small>
+                            <small className='fw-bolder text-secondary text-truncate text-capitalize'>{(user.level && user.level.title)}</small>
 
                             <small className='fw-bolder text-secondary text-truncate text-capitalize pt-3'><i>Registered on {moment(new Date(user && user.register_date))
                                 .format('YYYY-MM-DD, HH:mm')}</i></small>
