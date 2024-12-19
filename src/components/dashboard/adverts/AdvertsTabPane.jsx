@@ -12,7 +12,8 @@ const AdvertsTabPane = () => {
     const dispatch = useDispatch()
     const adverts = useSelector(state => state.adverts)
     const { isLoading, allAdverts } = adverts
-    const currentUser = useSelector(state => state.auth && state.auth.user)
+    const auth = useSelector(state => state.auth)
+    const currentUser = auth && auth.user
     const uRole = currentUser && currentUser.role
 
     // Lifecycle method

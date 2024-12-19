@@ -19,8 +19,9 @@ const CourseNotes = ({ chapter }) => {
     const notes = useSelector(state => state.notes)
     const dispatch = useDispatch()
 
+    const auth = useSelector(state => state.auth)
     const isAuth = auth && isAuthenticated
-    const currentUser = useSelector(state => state.auth && state.auth.user)
+    const currentUser = auth && auth.user
     const { toggleL } = useContext(logRegContext)
 
     useEffect(() => { dispatch(getNotes()) }, [dispatch])

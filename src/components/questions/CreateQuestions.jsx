@@ -13,7 +13,8 @@ const CreateQuestions = () => {
 
     // Redux
     const oneQuiz = useSelector(state => state.quizes.oneQuiz)
-    const currentUser = useSelector(state => state.auth && state.auth.user)
+    const auth = useSelector(state => state.auth)
+    const currentUser = auth && auth.user
     const isAuthenticated = useSelector(state => state.auth && state.auth.isAuthenticated)
 
     const dispatch = useDispatch()

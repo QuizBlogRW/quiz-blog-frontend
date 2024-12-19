@@ -17,9 +17,8 @@ const ViewCourse = () => {
     const dispatch = useDispatch()
     const chaptersBy = useSelector(state => state.chapters)
     const oneCourse = useSelector(state => state.courses)
-
-
-    const currentUser = useSelector(state => state.auth && state.auth.user)
+    const auth = useSelector(state => state.auth)
+    const currentUser = auth && auth.user
     const { toggleL } = useContext(logRegContext)
 
     const [activeIndex, setActiveIndex] = useState(null)

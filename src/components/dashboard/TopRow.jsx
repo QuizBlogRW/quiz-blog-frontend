@@ -1,14 +1,12 @@
 import React from 'react'
 import { Alert, Button } from 'reactstrap'
-import { Link } from 'react-router-dom'
 import dashimg from '../../images/dashboard.svg'
 import { useSelector } from "react-redux"
 
 const TopRow = () => {
 
-  const currentUser = useSelector(state => state.auth && state.auth.user)
-
-  // animate the button on hover
+  const auth = useSelector(state => state.auth)
+  const currentUser = auth && auth.user
   const animatedButton = 'btn btn-warning btn-lg btn-block text-center text-uppercase fw-bolder shadow-sm animated infinite pulse blink_me'
 
   return (
@@ -49,32 +47,32 @@ const TopRow = () => {
               <>
                 <li>
                   <small><strong><u>
-                    <Link to="/statistics" style={{ color: '#157A6E', fontWeight: 'bolder' }} className="p-0">Statistics</Link>
+                    <a href="/statistics" style={{ color: '#157A6E', fontWeight: 'bolder' }} className="p-0">Statistics</a>
                   </u></strong></small>
                 </li>
 
                 <li>
                   <small><strong><u>
-                    <Link to="/broadcasts" style={{ color: '#157A6E', fontWeight: 'bolder' }} className="p-0">Broadcasts</Link>
+                    <a href="/broadcasts" style={{ color: '#157A6E', fontWeight: 'bolder' }} className="p-0">Broadcasts</a>
                   </u></strong></small>
                 </li>
 
                 <li>
                   <small><strong><u>
-                    <Link to="/subscribers" style={{ color: '#157A6E', fontWeight: 'bolder' }} className="p-0">Subscribers</Link>
+                    <a href="/subscribers" style={{ color: '#157A6E', fontWeight: 'bolder' }} className="p-0">Subscribers</a>
                   </u></strong></small>
                 </li>
               </> : null}
 
             <li>
               <small><strong><u>
-                <Link to="/schools" style={{ color: '#157A6E', fontWeight: 'bolder' }} className="p-0">Schools</Link>
+                <a href="/schools" style={{ color: '#157A6E', fontWeight: 'bolder' }} className="p-0">Schools</a>
               </u></strong></small>
             </li>
 
             <li>
               <small><strong><u>
-                <Link to="/contact-chat" style={{ color: '#157A6E', fontWeight: 'bolder' }} className="p-0">Chat</Link>
+                <a href="/contact-chat" style={{ color: '#157A6E', fontWeight: 'bolder' }} className="p-0">Chat</a>
               </u></strong></small>
             </li>
 
@@ -83,7 +81,7 @@ const TopRow = () => {
           <>
             {
               <Button className={animatedButton}>
-                <Link to="/contact-chat" className="text-success p-0">Chat with us now</Link>
+                <a href="/contact-chat" className="text-success p-0">Chat with us now</a>
               </Button>}
 
           </>}

@@ -22,13 +22,14 @@ const ChatWrapper = () => {
     const dispatch = useDispatch()
     const contacts = useSelector(state => state.contacts)
     const { totalPages, isLoading, oneChatRoom } = contacts
-    const currentUser = useSelector(state => state.auth && state.auth.user)
-    const isAuthenticated = useSelector(state => state.auth && state.auth.isAuthenticated)
-    const uRole = currentUser && currentUser.role
-    const userEmail = currentUser && currentUser.email
     const [pageNo, setPageNo] = useState(1)
     const [onlineList, setOnlineList] = useState([])
     const { toggleL } = useContext(logRegContext)
+    const auth = useSelector(state => state.auth)
+    const currentUser = auth && auth.user
+    const isAuthenticated = auth && auth.isAuthenticated
+    const uRole = currentUser && currentUser.role
+    const userEmail = currentUser && currentUser.email
     
     const setupSocketListeners = () => {
         // Listen for 'newUserOnline' event
@@ -44,12 +45,18 @@ const ChatWrapper = () => {
 
     // Lifecycle methods
     useEffect(() => {
-        uRole !== 'Visitor' ? dispatch(getContacts(pageNo)) : dispatch(getUserContacts(userEmail))
+        if (uRole !== 'Visitor') {
+            dispatch(getContacts(pageNo))
+        } else {
+            dispatch(getUserContacts(userEmail))
+        }
+
         if (localStorage.getItem('user')) {
+            const user = JSON.parse(localStorage.getItem('user'))
             socket.emit('newUserConnected', {
-                _id: JSON.parse(localStorage.getItem('user'))._id,
-                name: JSON.parse(localStorage.getItem('user')).name,
-                email: JSON.parse(localStorage.getItem('user')).email
+                _id: user._id,
+                name: user.name,
+                email: user.email
             })
         }
 
@@ -57,7 +64,7 @@ const ChatWrapper = () => {
         if (oneChatRoom) {
             dispatch(getRoomMessages(oneChatRoom._id))
         }
-    }, [pageNo, oneChatRoom])
+    }, [pageNo, oneChatRoom, uRole, userEmail, dispatch])
 
     useEffect(() => {
         setupSocketListeners()

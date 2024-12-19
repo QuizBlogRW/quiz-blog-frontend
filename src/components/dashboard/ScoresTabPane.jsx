@@ -13,8 +13,9 @@ const ScoresTabPane = () => {
     const dispatch = useDispatch()
     const scores = useSelector(state => state.scores)
     const { isLoading, totalPages, allScores, creatorScores, takerScores } = scores
-    const currentUser = useSelector(state => state.auth && state.auth.user)
 
+    const auth = useSelector(state => state.auth)
+    const currentUser = auth && auth.user
     const uId = currentUser && currentUser._id
     const uRole = currentUser && currentUser.role
     const scoresToUse = scores && (uRole === 'Admin' || uRole === 'SuperAdmin') ? allScores :

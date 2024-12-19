@@ -8,7 +8,8 @@ const GridMultiplex = lazy(() => import('../adsenses/GridMultiplex'))
 
 const CategoriesHome = () => {
 
-    const currentUser = useSelector(state => state.auth && state.auth.user)
+    const auth = useSelector(state => state.auth)
+    const currentUser = auth && auth.user
     const isAuthenticated = useSelector(state => state.auth && state.auth.isAuthenticated)
     const { toggleL } = useContext(logRegContext)
 

@@ -9,14 +9,12 @@ import QBLoadingSM from '../rLoading/QBLoadingSM'
 const UsersTabPane = () => {
 
     // Redux
-    const authState = useSelector(state => state.auth)
-    const { users, isLoading } = authState
+    const auth = useSelector(state => state.auth)
+    const { users, isLoading } = auth
     const dispatch = useDispatch()
 
     // Lifecycle methods
-    useEffect(() => {
-        dispatch(getUsers())
-    }, [dispatch])
+    useEffect(() => { dispatch(getUsers()) }, [dispatch])
 
     const adminsCreators = users && users.filter(user => user.role === "SuperAdmin" || user.role === "Admin" || user.role === "Creator")
     const [searchKey, setSearchKey] = useState('')

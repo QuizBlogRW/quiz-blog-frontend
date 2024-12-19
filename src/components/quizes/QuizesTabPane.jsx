@@ -12,7 +12,8 @@ import PageOf from '../dashboard/PageOf'
 
 const QuizesTabPane = () => {
 
-    const currentUser = useSelector(state => state.auth && state.auth.user)
+    const auth = useSelector(state => state.auth)
+    const currentUser = auth && auth.user
     const categories = useSelector(state => state.categories)
 
     // Redux

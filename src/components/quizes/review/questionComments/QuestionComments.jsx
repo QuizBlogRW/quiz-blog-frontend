@@ -15,7 +15,8 @@ const QuestionComments = ({ questionID, quizID, fromSingleQuestion }) => {
   const qComments = useSelector(state => state.questionComments.questionComments)
   const quizComments = useSelector(state => state.quizComments.quizCmnts)
 
-  const currentUser = useSelector(state => state.auth && state.auth.user)
+  const auth = useSelector(state => state.auth)
+  const currentUser = auth && auth.user
 
   // Lifecycle methods
   useEffect(() => {

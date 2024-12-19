@@ -12,11 +12,10 @@ const PendingComments = () => {
     const questionComments = useSelector(state => state.questionComments)
 
     // Lifecycle methods
-    useEffect(() => {
-        dispatch(getPendingComments())
-    }, [dispatch])
+    useEffect(() => { dispatch(getPendingComments()) }, [dispatch])
 
-    const currentUser = useSelector(state => state.auth && state.auth.user)
+    const auth = useSelector(state => state.auth)
+    const currentUser = auth && auth.user
     const uRole = currentUser && currentUser.role
 
     const renderLoading = () => (

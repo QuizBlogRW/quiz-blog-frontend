@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { Editor, EditorState, convertFromRaw } from 'draft-js'
 import moment from 'moment'
+import { useSelector } from 'react-redux'
 
 const SingleReply = ({ reply }) => {
-    const currentUser = useSelector(state => state.auth && state.auth.user)
+
+    const auth = useSelector(state => state.auth)
+    const currentUser = auth && auth.user
     const [editorState, setEditorState] = useState(() => EditorState.createEmpty())
 
     useEffect(() => {

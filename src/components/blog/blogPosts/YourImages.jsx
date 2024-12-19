@@ -11,7 +11,8 @@ const YourImages = () => {
 
     const dispatch = useDispatch()
     const yourImages = useSelector(state => state.imageUploads)
-    const currentUser = useSelector(state => state.auth && state.auth.user)
+    const auth = useSelector(state => state.auth)
+    const currentUser = auth && auth.user
     const uID = currentUser && currentUser._id
 
     useEffect(() => {

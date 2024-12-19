@@ -89,10 +89,6 @@ const authSlice = createSlice({
         state.user = null
         localStorage.removeItem('token')
         localStorage.removeItem('user')
-
-        if (window.location.pathname !== '/forgot-password' && window.location.pathname !== '/reset-password' && window.location.pathname !== '/') {
-          notify('You are not authorized, Please login again!', 'error')
-        }
       }
 
       else {

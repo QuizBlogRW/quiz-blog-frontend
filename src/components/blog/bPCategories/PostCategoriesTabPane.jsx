@@ -14,11 +14,10 @@ const PostCategoriesTabPane = () => {
   const bPcats = useSelector(state => state.postCategories)
   const { isLoading, allPostCategories } = bPcats
 
-  const currentUser = useSelector(state => state.auth && state.auth.user)
+  const auth = useSelector(state => state.auth)
+  const currentUser = auth && auth.user
 
-  useEffect(() => {
-    dispatch(getPostCategories())
-  }, [dispatch])
+  useEffect(() => { dispatch(getPostCategories()) }, [dispatch])
 
   return (
     <TabPane tabId="6">

@@ -10,10 +10,12 @@ import QBLoadingSM from '../rLoading/QBLoadingSM'
 import DeleteModal from '../../utils/DeleteModal'
 
 const CategoriesTabPane = () => {
-    
+
     const categories = useSelector(state => state.categories)
     const courseCategories = useSelector(state => state.courseCategories)
-    const currentUser = useSelector(state => state.auth && state.auth.user)
+
+    const auth = useSelector(state => state.auth)
+    const currentUser = auth && auth.user
 
     return (
         <TabPane tabId="1">

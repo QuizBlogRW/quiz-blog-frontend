@@ -7,7 +7,8 @@ import DeleteModal from '../../utils/DeleteModal'
 
 const ScoresTable = ({ scoresToUse, pageNo, deleteScore }) => {
 
-    const currentUser = useSelector(state => state.auth && state.auth.user)
+    const auth = useSelector(state => state.auth)
+    const currentUser = auth && auth.user
     const uRole = currentUser && currentUser.role
 
     return (

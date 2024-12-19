@@ -25,7 +25,8 @@ const GetReady = () => {
         }
     }
 
-    const currentUser = useSelector(state => state.auth && state.auth.user)
+    const auth = useSelector(state => state.auth)
+    const currentUser = auth && auth.user
 
     // Access route parameters
     const { quizSlug } = useParams()

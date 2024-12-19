@@ -22,8 +22,8 @@ const FaqCollapse = () => {
     // Redux
     const dispatch = useDispatch()
     const faqs = useSelector(state => state.faqs)
-
-    const currentUser = useSelector(state => state.auth && state.auth.user)
+    const auth = useSelector(state => state.auth)
+    const currentUser = auth && auth.user
     const faqsToUse = faqs && faqs.allFaqs
 
     // Lifecycle methods

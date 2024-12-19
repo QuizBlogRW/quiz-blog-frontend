@@ -14,7 +14,8 @@ const QuizQuestions = () => {
 
     // Redux
     const dispatch = useDispatch()
-    const currentUser = useSelector(state => state.auth && state.auth.user)
+    const auth = useSelector(state => state.auth)
+    const currentUser = auth && auth.user
 
     // Access route parameters & get the quiz
     const { quizSlug } = useParams()

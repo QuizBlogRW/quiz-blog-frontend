@@ -10,14 +10,12 @@ const EditPictureModal = ({ bgColor, clr }) => {
   const dispatch = useDispatch()
 
   // Get the user id and image from the auth
-  const currentUser = useSelector(state => state.auth && state.auth.user)
-
+  const auth = useSelector(state => state.auth)
+  const currentUser = auth && auth.user
   const uId = currentUser && currentUser._id
   const userImage = currentUser && currentUser.image
-
   const [profileImageState, setProfileImageState] = useState()
-
-
+  
   //properties of the modal
   const [modal, setModal] = useState(false)
 

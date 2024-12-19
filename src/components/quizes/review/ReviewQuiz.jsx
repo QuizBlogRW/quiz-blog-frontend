@@ -18,11 +18,9 @@ const ReviewQuiz = () => {
     const dispatch = useDispatch()
     const sC = useSelector(state => state.scores)
     const { isLoading, oneScore } = sC
-
-    const currentUser = useSelector(state => state.auth && state.auth.user)
-
+    const auth = useSelector(state => state.auth)
+    const currentUser = auth && auth.user
     const { isAuthenticated } = auth
-
     const [currentQuestion, setCurrentQuestion] = useState(0)
     const [lastAnswer, setLastAnswer] = useState(false)
 

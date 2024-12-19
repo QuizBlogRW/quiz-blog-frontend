@@ -1,14 +1,15 @@
 import React, { useState } from 'react'
 import { Button, Form, FormGroup, Input } from 'reactstrap'
 import { createComment } from '../../../../redux/slices/questionCommentsSlice'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 const AddComment = ({ question, quiz, fromSingleQuestion }) => {
 
     const dispatch = useDispatch()
 
     const [comment, setComment] = useState('')
-    const currentUser = useSelector(state => state.auth && state.auth.user)
+    const auth = useSelector(state => state.auth)
+    const currentUser = auth && auth.user
     const userId = currentUser && currentUser._id
 
 

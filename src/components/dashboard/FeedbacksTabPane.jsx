@@ -13,8 +13,9 @@ const FeedbacksTabPane = () => {
     const dispatch = useDispatch()
     const feedbacks = useSelector(state => state.feedbacks)
     const { allFeedbacks, isLoading, totalPages } = feedbacks
-    const currentUser = useSelector(state => state.auth && state.auth.user)
 
+    const auth = useSelector(state => state.auth)
+    const currentUser = auth && auth.user
     const uId = currentUser && currentUser._id
     const uRole = currentUser && currentUser.role
 

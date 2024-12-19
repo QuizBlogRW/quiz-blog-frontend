@@ -9,8 +9,9 @@ import { useSelector, useDispatch } from "react-redux"
 const ChatCard = ({ openChat }) => {
 
     const dispatch = useDispatch();
-    
-    const currentUser = useSelector(state => state.auth && state.auth.user)
+
+    const auth = useSelector(state => state.auth)
+    const currentUser = auth && auth.user
     const uRole = currentUser && currentUser.role
     const contacts = useSelector(state => state.contacts)
     const contactsToUse = contacts && ((uRole === 'Admin' || uRole === 'SuperAdmin') || uRole === 'Creator') ? contacts.allContacts : contacts.userContacts

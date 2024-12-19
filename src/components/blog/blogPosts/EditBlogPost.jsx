@@ -15,9 +15,8 @@ const EditBlogPost = () => {
   const dispatch = useDispatch()
   const bposts = useSelector(state => state.blogPosts)
   const bPcats = useSelector(state => state.postCategories)
-
-
-  const currentUser = useSelector(state => state.auth && state.auth.user)
+  const auth = useSelector(state => state.auth)
+  const currentUser = auth && auth.user
   const { toggleL } = useContext(logRegContext)
 
   const { bPSlug } = useParams()

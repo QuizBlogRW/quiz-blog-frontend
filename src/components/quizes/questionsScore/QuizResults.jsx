@@ -24,7 +24,8 @@ const QuizResults = () => {
     const location = useLocation()
     const { newScoreId, score, qnsLength, thisQuiz, quizToReview, passMark, mongoScoreId } = location.state && location.state
     const marks = isNaN(score) ? 0 : score
-    const currentUser = useSelector(state => state.auth && state.auth.user)
+    const auth = useSelector(state => state.auth)
+    const currentUser = auth && auth.user
     const categories = useSelector(state => state.categories)
     const { toggleL } = useContext(logRegContext)
 

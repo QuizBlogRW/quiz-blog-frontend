@@ -7,7 +7,8 @@ import { useSelector } from "react-redux"
 
 const DownloadsTable = ({ downloadsToUse, pageNo }) => {
 
-    const currentUser = useSelector(state => state.auth && state.auth.user)
+    const auth = useSelector(state => state.auth)
+    const currentUser = auth && auth.user
     const uRole = currentUser && currentUser.role
 
     return (

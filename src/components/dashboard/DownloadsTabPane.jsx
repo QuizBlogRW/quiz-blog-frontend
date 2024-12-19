@@ -13,8 +13,9 @@ const DownloadsTabPane = () => {
     const dispatch = useDispatch()
     const downloads = useSelector(state => state.downloads)
     const { isLoading, totalPages, allDownloads, userDownloads, creatorDownloads } = downloads
-    const currentUser = useSelector(state => state.auth && state.auth.user)
 
+    const auth = useSelector(state => state.auth)
+    const currentUser = auth && auth.user
     const uId = currentUser && currentUser._id
     const uRole = currentUser && currentUser.role
     const downloadsToUse = downloads && (uRole === 'Admin' || uRole === 'SuperAdmin') ? allDownloads :

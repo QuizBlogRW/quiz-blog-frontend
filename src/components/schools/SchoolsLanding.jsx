@@ -22,9 +22,9 @@ const SchoolsLanding = () => {
     const schools = useSelector(state => state.schools)
     const schoolLevels = useSelector(state => state.levels.schoolLevels)
     const dispatch = useDispatch()
-    const currentUser = useSelector(state => state.auth && state.auth.user)
-    const isAuthenticated = useSelector(state => state.auth && state.auth.isAuthenticated)
     const auth = useSelector(state => state.auth)
+    const currentUser = auth && auth.user
+    const isAuthenticated = useSelector(state => state.auth && state.auth.isAuthenticated)
     const { toggleL } = useContext(logRegContext)
 
     // State

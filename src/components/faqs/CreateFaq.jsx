@@ -7,7 +7,8 @@ const CreateFaq = () => {
 
     // Redux
     const dispatch = useDispatch()
-    const currentUser = useSelector(state => state.auth && state.auth.user)
+    const auth = useSelector(state => state.auth)
+    const currentUser = auth && auth.user
 
     const [faqsState, setFaqsState] = useState({
         title: '',

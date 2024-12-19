@@ -17,8 +17,9 @@ const CommentsTabPane = () => {
     const dispatch = useDispatch()
     const questionComments = useSelector(state => state.questionComments)
     const allQuizComments = useSelector(state => state.quizComments)
-    const currentUser = useSelector(state => state.auth && state.auth.user)
 
+    const auth = useSelector(state => state.auth)
+    const currentUser = auth && auth.user
     const totPages = questionComments && questionComments.totalPages
     const uRole = currentUser && currentUser.role
     const [pageNo, setPageNo] = useState(1)
