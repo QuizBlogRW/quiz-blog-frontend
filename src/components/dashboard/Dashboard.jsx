@@ -5,7 +5,7 @@ import ScoresTabPane from './ScoresTabPane'
 import FeedbacksTabPane from './FeedbacksTabPane'
 import CategoriesTabPane from '../categories/CategoriesTabPane'
 import QuizesTabPane from '../quizes/QuizesTabPane'
-// import UsersTabPane from '../users/UsersTabPane'
+import UsersTabPane from '../users/UsersTabPane'
 import PostCategoriesTabPane from '../blog/bPCategories/PostCategoriesTabPane'
 import BlogPostsTabPane from '../blog/blogPosts/BlogPostsTabPane'
 import DownloadsTabPane from './DownloadsTabPane'
@@ -116,13 +116,13 @@ const Dashboard = () => {
                             // Admin only
                             currentUser.role === 'Admin' || currentUser.role === 'SuperAdmin' ?
                                 <>
-                                    {/* <NavItem>
+                                    <NavItem>
                                         <NavLink
                                             className={classnames({ active: activeTab === '8' })}
                                             onClick={() => { toggle('8') }}>
                                             <u>Users</u>
                                         </NavLink>
-                                    </NavItem> */}
+                                    </NavItem>
 
                                     {/* <NavItem>
                                         <NavLink
@@ -168,7 +168,7 @@ const Dashboard = () => {
 
                         {currentUser.role === 'Admin' || currentUser.role === 'SuperAdmin' ?
                             <>
-                                {/* <UsersTabPane /> */}
+                                <UsersTabPane />
                                 {/* <CommentsTabPane /> */}
                                 <AdvertsTabPane />
                             </> : null}
