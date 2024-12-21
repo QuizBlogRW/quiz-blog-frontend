@@ -17,6 +17,7 @@ import ChatWrapper from './components/contacts/ChatWrapper'
 import FaqCollapse from './components/faqs/FaqCollapse'
 import About from './components/about/About'
 import Privacy from './components/others/Privacy'
+import ItsindirePrivacy from './components/others/ItsindirePrivacy'
 import Disclaimer from './components/others/Disclaimer'
 import NotFound404 from './components/others/NotFound404'
 import QBLoading from './components/rLoading/QBLoading'
@@ -138,6 +139,7 @@ const App = () => {
                                 <Routes fallback={<QBLoading />}>
                                     <Route path="/about" element={<About />} />
                                     <Route path="/privacy" element={<Privacy />} />
+                                    <Route path="/itsindire-privacy" element={<ItsindirePrivacy />} />
                                     <Route path="/disclaimer" element={<Disclaimer />} />
                                     <Route path="/unsubscribe" element={<Unsubscribe />} />
                                     <Route path="/forgot-password" element={<ForgotPassword />} />

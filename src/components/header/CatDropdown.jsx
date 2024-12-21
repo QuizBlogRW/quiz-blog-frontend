@@ -12,9 +12,9 @@ const CatDropdown = ({ clr }) => {
     const toggle = () => setIsOpen(!isOpen)
 
     return (
-        categories.isLoading ? null :
+        !categories || typeof categories.allcategories === 'string' || categories.allcategories.length === 0 || categories.isLoading ? null :
             <Dropdown isOpen={isOpen} toggle={toggle} className="profileDropDown position-static">
-                
+
                 <DropdownToggle className="bg-transparent border-0 profileDropDown-btn" style={{ padding: "0", color: clr, fontWeight: "bolder" }}>
                     <span className='me-1'>
                         Quizes <i className={`fa-solid fa-chevron-${isOpen ? 'up' : 'down'} ms-lg-1`}></i>
