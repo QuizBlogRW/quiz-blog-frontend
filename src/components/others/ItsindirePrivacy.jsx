@@ -3,10 +3,10 @@ import React from 'react';
 const ItsindirePrivacy = () => {
     return (
         <div className="container mt-5">
-            <h1 className="mb-4">Itsindire App Privacy Policy</h1>
+            <h1 className="mb-4">Itsindire RW Privacy Policy</h1>
             <section className="mb-5">
                 <h2>Introduction</h2>
-                <p>Welcome to Itsindire Android app. We are committed to protecting your personal information and your right to privacy. If you have any questions or concerns about our policy, or our practices with regards to your personal information, please contact us at <a href="mailto:itsindire.rw@gmail.com">itsindire.rw@gmail.com</a>.</p>
+                <p>Welcome to Itsindire RW app. We are committed to protecting your personal information and your right to privacy. If you have any questions or concerns about our policy, or our practices with regards to your personal information, please contact us at <a href="mailto:itsindire.rw@gmail.com">itsindire.rw@gmail.com</a>.</p>
             </section>
             <section className="mb-5">
                 <h2>Information We Collect</h2>
@@ -54,7 +54,7 @@ const ItsindirePrivacy = () => {
             </section>
             <section className="mb-5">
                 <h2>Contact Us</h2>
-                <p>If you have questions or comments about this policy, you may contact us at: Itsindire <a href="mailto:itsindire.rw@gmail.com">itsindire.rw@gmail.com</a></p>
+                <p>If you have questions or comments about this policy, you may contact us at: Itsindire RW <a href="mailto:itsindire.rw@gmail.com">itsindire.rw@gmail.com</a></p>
             </section>
         </div>
     );
