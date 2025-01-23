@@ -4,9 +4,10 @@ const ItsindirePrivacy = () => {
     return (
         <div className="container mt-5">
             <h1 className="mb-4">Itsindire RW Privacy Policy</h1>
+            <p>Last updated: 2025-01-23</p>
             <section className="mb-5">
                 <h2>Introduction</h2>
-                <p>Welcome to Itsindire RW app. We are committed to protecting your personal information and your right to privacy. If you have any questions or concerns about our policy, or our practices with regards to your personal information, please contact us at <a href="mailto:itsindire.rw@gmail.com">itsindire.rw@gmail.com</a>.</p>
+                <p>Welcome to Itsindire RW app. We are committed to protecting your personal information and your right to privacy. This app provides information about Rwanda's traffic laws, but it is not officially affiliated with or authorized by the Rwandan government. This policy explains how we collect, use, share, and protect your personal information when you use our mobile application. If you have any questions or concerns about our policy, or our practices with regards to your personal information, please contact us at <a href="mailto:itsindire.rw@gmail.com">itsindire.rw@gmail.com</a>.</p>
             </section>
             <section className="mb-5">
                 <h2>Information We Collect</h2>
@@ -25,36 +26,56 @@ const ItsindirePrivacy = () => {
                     <li>To facilitate account creation and logon process.</li>
                     <li>To send administrative information to you.</li>
                     <li>To fulfill and manage your orders.</li>
-                    <li>To post testimonials.</li>
-                    <li>To request feedback.</li>
-                    <li>To protect our services.</li>
-                    <li>To enforce our terms, conditions, and policies for business purposes, to comply with legal and regulatory requirements or in connection with our contract.</li>
+                    <li>TTo protect our services and enforce our terms, conditions, and policies</li>
                     <li>To respond to legal requests and prevent harm.</li>
-                    <li>To manage user accounts.</li>
-                    <li>To deliver and facilitate delivery of services to the user.</li>
-                    <li>To respond to user inquiries/offer support to users.</li>
                 </ul>
             </section>
             <section className="mb-5">
                 <h2>Sharing Your Information</h2>
                 <p>We only share and disclose your information in the following situations:</p>
                 <ul>
-                    <li><strong>Compliance with Laws:</strong> We may disclose your information where we are legally required to do so in order to comply with applicable law, governmental requests, a judicial proceeding, court order, or legal process, such as in response to a court order or a subpoena (including in response to public authorities to meet national security or law enforcement requirements).</li>
-                    <li><strong>Vital Interests and Legal Rights:</strong> We may disclose your information where we believe it is necessary to investigate, prevent, or take action regarding potential violations of our policies, suspected fraud, situations involving potential threats to the safety of any person and illegal activities, or as evidence in litigation in which we are involved.</li>
-                    <li><strong>Vendors, Consultants, and Other Third-Party Service Providers:</strong> We may share your data with third-party vendors, service providers, contractors, or agents who perform services for us or on our behalf and require access to such information to do that work. Examples include: payment processing, data analysis, email delivery, hosting services, customer service, and marketing efforts. We may allow selected third parties to use tracking technology on the app, which will enable them to collect data about how you interact with the app over time. This information may be used to, among other things, analyze and track data, determine the popularity of certain content, pages, or features, and better understand online activity.</li>
+                    <li><strong>Compliance with Laws:</strong> We may disclose your information where legally required to comply with applicable law, governmental requests, judicial proceedings, or court orders.</li>
+                    <li><strong>Vital Interests and Legal Rights:</strong> We may disclose your information to investigate potential violations of our policies, suspected fraud, or illegal activities.</li>
+                    <li><strong>Vendors, Consultants, and Other Third-Party Service Providers:</strong>  We may share your data with third-party vendors who perform services for us or on our behalf.</li>
                 </ul>
             </section>
             <section className="mb-5">
                 <h2>Security of Your Information</h2>
-                <p>We use administrative, technical, and physical security measures to help protect your personal information. While we have taken reasonable steps to secure the personal information you provide to us, please be aware that despite our efforts, no security measures are perfect or impenetrable, and no method of data transmission can be guaranteed against any interception or other type of misuse.</p>
+                <p>We implement administrative, technical, and physical security measures to help protect your personal information. While no method of data transmission can be guaranteed against interception or misuse, we maintain appropriate security measures to protect your personal information.</p>
             </section>
             <section className="mb-5">
                 <h2>Your Privacy Rights</h2>
-                <p>You have rights under applicable data protection laws. These may include the right (i) to request access and obtain a copy of your personal information, (ii) to request rectification or erasure; (iii) to restrict the processing of your personal information; and (iv) if applicable, to data portability. In certain circumstances, you may also have the right to object to the processing of your personal information. To make such a request, please use the contact details provided below. We will consider and act upon any request in accordance with applicable data protection laws.</p>
+                <li>Right to request access to your personal information</li>
+                <li>Right to request correction of your personal information</li>
+                <li>Right to request deletion of your personal information</li>
+                <li>Right to object to processing of your personal information</li>
+                <li>Right to request restriction of processing your personal information</li>
+                <li>Right to request transfer of your personal information</li>
+                To exercise these rights, please contact us at <a href="mailto:itsindire.rw@gmail.com">itsindire.rw@gmail.com</a>
+            </section>
+            <section className="mb-5">
+                <h2>Children's Privacy</h2>
+                <p>This app is intended for users aged 13 and above. We do not knowingly collect any personal information from children under 13 years old without parental consent. If we learn that we have collected personal information from a child under 13 without parental consent, we will delete that information promptly.</p>
+            </section>
+            <section className="mb-5">
+                <h2>Data Retention and Deletion</h2>
+                <p>We retain personal information for as long as necessary to provide our services, and we will securely delete such information when it is no longer needed for those purposes. However, we may retain certain information for legitimate business purposes or to comply with legal obligations.</p>
+            </section>
+            <section className="mb-5">
+                <h2>Changes to This Policy</h2>
+                <p>We may update this policy periodically. When we do, we will revise the "Last Updated" date at the top of this page. We encourage you to review this policy regularly to stay informed about how we are protecting your information.</p>
+            </section>
+            <section className="mb-5">
+                <h2>Account Deletion</h2>
+                <p>At Itsindire RW, we value your control over your data. Users have the right to delete their accounts at any time. Simply navigate to the account settings within the app and follow the provided steps to permanently delete your account and associated data.</p>
             </section>
             <section className="mb-5">
                 <h2>Contact Us</h2>
-                <p>If you have questions or comments about this policy, you may contact us at: Itsindire RW <a href="mailto:itsindire.rw@gmail.com">itsindire.rw@gmail.com</a></p>
+                <p>If you have questions or comments about this policy, you may contact us at: Itsindire RW <a href="mailto:itsindire.rw@gmail.com">itsindire.rw@gmail.com</a>
+                </p>
+                <strong>
+                    By using our app, you acknowledge that you have read, understood, and agree to be bound by this privacy policy.
+                </strong>
             </section>
         </div>
     );
