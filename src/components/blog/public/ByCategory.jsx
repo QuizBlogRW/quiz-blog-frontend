@@ -1,4 +1,4 @@
-import React, { useEffect, lazy, Suspense } from 'react'
+import { useEffect, lazy, Suspense } from 'react'
 import { Container, Col, Row, ListGroup, ListGroupItem } from 'reactstrap'
 import { useSelector, useDispatch } from "react-redux"
 import { getBlogPostsByCategory, getPostCategories } from '@/redux/slices'

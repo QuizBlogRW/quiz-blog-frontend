@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy, Suspense, useContext } from 'react'
+import { useState, useEffect, lazy, Suspense, useContext } from 'react'
 import { Row, Col, Breadcrumb, BreadcrumbItem, Button, Collapse, Navbar, NavbarBrand, Nav, NavItem, NavLink, ListGroup, ListGroupItem } from 'reactstrap'
 import { getCourseCategories, deleteCourseCategory } from '../../redux/slices/courseCategoriesSlice'
 import { getCoursesByCategory } from '../../redux/slices/coursesSlice'
@@ -114,7 +114,7 @@ const Index = () => {
                         <div className="col-12 col-sm-7 px-1 mb-3 selected-category d-flex flex-column justify-content-center align-items-center">
                             <div className="tab-content" id="v-pills-tabContent">
                                 {!activeTab || activeTab === 'header' ?
-                                    <div className={`tab-pane fade show active`} id={`v-pills-header`} role="tabpanel" aria-labelledby={`v-pills-header-tab`}>
+                                    <div className={`tab-pane show active`} id={`v-pills-header`} role="tabpanel" aria-labelledby={`v-pills-header-tab`}>
                                         <CategoriesHome />
                                         <div className="d-block d-sm-none">
                                             {allCourseCategories && allCourseCategories.map(cCategory => (
@@ -141,7 +141,7 @@ const Index = () => {
                                             </h4>
                                         </Row>
                                         {allCourseCategories && allCourseCategories.map(cCategory => (
-                                            <div key={cCategory._id} className={`tab-pane fade ${activeTab === cCategory.title ? 'show active' : ''}`} id={`v-pills-${cCategory.title}`} role="tabpanel" aria-labelledby={`v-pills-${cCategory.title}-tab`}>
+                                            <div key={cCategory._id} className={`tab-pane ${activeTab === cCategory.title ? 'show active' : ''}`} id={`v-pills-${cCategory.title}`} role="tabpanel" aria-labelledby={`v-pills-${cCategory.title}-tab`}>
                                                 {currentUser.role === 'Admin' || (cCategory.created_by && currentUser._id === cCategory.created_by) ?
                                                     <span className='d-flex'>
                                                         <Button size="sm" outline color="info" className="d-block ms-auto me-lg-3 my-2">

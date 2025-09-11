@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import { useState, useContext } from 'react'
 import { Container, Row, Button } from 'reactstrap'
 import { Link } from 'react-router-dom'
 import { deleteSubscriber } from '../../redux/slices/subscribersSlice'

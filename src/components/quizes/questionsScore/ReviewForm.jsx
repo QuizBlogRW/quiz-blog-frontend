@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Button, Modal, ModalBody, ModalFooter, Form, FormGroup, Input, ButtonGroup, Alert } from 'reactstrap'
 
 const ReviewForm = ({ isOpen, toggle, onSubmit, quiz, score }) => {

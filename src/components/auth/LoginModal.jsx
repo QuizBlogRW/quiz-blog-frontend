@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
 import { login } from '../../redux/slices/authSlice'
 import { useSelector, useDispatch } from "react-redux"
@@ -23,8 +23,20 @@ const LoginModal = ({ isOpenL, toggleL, toggleR }) => {
     // Lifecycle methods
     useEffect(() => {
 
-        if (loginResponse && loginResponse.type === 'auth/login/rejected' && loginResponse.error && loginResponse.error.message === 'CONFIRM_ERR') {
-            setConfirmLogin(true)
+        if (loginResponse && loginResponse.type === 'auth/login/rejected') {
+            // Extract error message from different possible locations
+            const errorMsg = loginResponse.error?.message || 
+                           loginResponse.payload || 
+                           loginResponse.error || 
+                           'Login failed'
+            
+            if (errorMsg === 'CONFIRM_ERR') {
+                setConfirmLogin(true)
+            }
+            
+            setErrorMessage(errorMsg === 'CONFIRM_ERR' ?
+                'Already logged in on another device/browser, log them out to use here?' :
+                errorMsg)
         }
 
         // If Authenticated, close isOpenL
@@ -39,11 +51,6 @@ const LoginModal = ({ isOpenL, toggleL, toggleR }) => {
                     label: 'login_label'
                 })
             }
-        }
-        if (loginResponse && loginResponse.type === 'auth/login/rejected') {
-            setErrorMessage(loginResponse.error.message == 'CONFIRM_ERR' ?
-                'Already logged in on another device/browser, log them out to use here?' :
-                loginResponse.error.message)
         }
     }, [isAuthenticated, isOpenL, toggleL, loginResponse])
 

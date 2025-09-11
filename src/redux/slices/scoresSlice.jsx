@@ -6,7 +6,7 @@ export const setScores = createAsyncThunk("scores/setScores", async (pageNo, { g
   apiCallHelper(`/api/scores?pageNo=${pageNo}`, 'get', null, getState, 'setScores'))
 
 export const setRankingScores = createAsyncThunk("scores/setRankingScores", async (quizID, { getState }) =>
-  apiCallHelper(`/api/scores/ranking/${quizID}`, 'get', null, getState, 'setRankingScores'))
+  apiCallHelper(`/api/scores/quiz-ranking/${quizID}`, 'get', null, getState, 'setRankingScores'))
 
 export const getTakerScores = createAsyncThunk("scores/getTakerScores", async (takerId, { getState }) =>
   apiCallHelper(`/api/scores/taken-by/${takerId}`, 'get', null, getState, 'getTakerScores'))

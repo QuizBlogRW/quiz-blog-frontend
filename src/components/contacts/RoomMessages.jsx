@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Form, FormGroup, Button, Input } from 'reactstrap'
 import { getRoomMessages, sendRoomMessage } from '../../redux/slices/contactsSlice'
 import moment from 'moment'

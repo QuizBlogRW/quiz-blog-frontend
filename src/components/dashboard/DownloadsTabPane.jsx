@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Row, TabPane } from 'reactstrap';
 import { getDownloads, getCreatorDownloads, getUserDownloads } from '../../redux/slices/downloadsSlice'
 import { useSelector, useDispatch } from 'react-redux'

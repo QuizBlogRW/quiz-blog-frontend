@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy, Suspense } from 'react'
+import { useState, useEffect, lazy, Suspense } from 'react'
 import { Container, Col, Row, Button } from 'reactstrap'
 import { getQuizes, getAllNoLimitQuizes } from '../../redux/slices/quizesSlice'
 import { useSelector, useDispatch } from "react-redux"

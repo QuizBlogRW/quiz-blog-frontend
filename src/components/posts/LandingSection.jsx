@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Row, Col, Button } from 'reactstrap'
 import { Link } from 'react-router-dom'
 import srcQuestion from '../../images/undraw_Question2.svg'

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { Row, Col, Card, Button, CardTitle, CardText, TabPane } from 'reactstrap'
 import { getPostCategories, deletePostCategory } from '../../../redux/slices/postCategoriesSlice'
 import { useSelector, useDispatch } from "react-redux"

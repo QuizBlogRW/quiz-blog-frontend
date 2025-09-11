@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { Card, Button, CardTitle, CardText, Row, Col } from 'reactstrap'
 import { Link } from "react-router-dom"
 import { getNotesByCCatg } from '../../../redux/slices/notesSlice'

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy } from 'react'
+import { useState, useEffect, lazy } from 'react'
 import { Col, Row, ListGroup, ListGroupItem, Badge, Card, CardBody, CardText } from 'reactstrap'
 import uploadimage from '../../images/avatar.svg'
 import { getPopularToday, getUserOfMonth } from '../../redux/slices/scoresSlice'

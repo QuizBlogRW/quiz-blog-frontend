@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { createNotes } from '../../../redux/slices/notesSlice'
 import AddIcon from '../../../images/plus.svg'
 import { useDispatch } from 'react-redux'

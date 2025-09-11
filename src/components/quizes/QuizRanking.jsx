@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react'
+import { useEffect, useContext } from 'react'
 
 import Dashboard from '../dashboard/Dashboard'
 import { Link, useParams } from 'react-router-dom'

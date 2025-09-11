@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { Row, Col, Button, TabPane, Alert } from 'reactstrap'
 import CreateAdvert from './CreateAdvert'
 import QBLoadingSM from '../../rLoading/QBLoadingSM'

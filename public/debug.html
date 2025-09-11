@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Frontend Debug Test</title>
+</head>
+<body>
+    <h1>Debug Test</h1>
+    <button onclick="testLogin()">Test Login</button>
+    <div id="results"></div>
+
+    <script>
+        // Check environment variables
+        console.log('Environment variables:');
+        console.log('VITE_API_URL:', 'http://localhost:5000');
+        
+        async function testLogin() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = 'Testing login...';
+            
+            try {
+                const response = await fetch('http://localhost:5000/api/users/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: 'test@example.com',
+                        password: 'test123'
+                    })
+                });
+                
+                const data = await response.json();
+                resultsDiv.innerHTML = `
+                    <h3>Response:</h3>
+                    <p>Status: ${response.status}</p>
+                    <p>Data: ${JSON.stringify(data, null, 2)}</p>
+                `;
+                console.log('Response:', response.status, data);
+            } catch (error) {
+                resultsDiv.innerHTML = `<h3>Error:</h3><p>${error.message}</p>`;
+                console.error('Error:', error);
+            }
+        }
+    </script>
+</body>
+</html>

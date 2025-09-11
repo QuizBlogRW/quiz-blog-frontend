@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy } from 'react'
+import { useState, useEffect, lazy } from 'react'
 import { Button, Col, Row, Form, FormGroup, Input } from 'reactstrap'
 import SquareAd from '../adsenses/SquareAd'
 import { sendMsg } from '../../redux/slices/contactsSlice'

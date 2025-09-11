@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input } from 'reactstrap'
 import { updateUser } from '../../redux/slices/authSlice'
 import { useDispatch } from 'react-redux'

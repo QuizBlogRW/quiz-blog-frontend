@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input } from 'reactstrap'
 import { updateQuestion } from '../../redux/slices/questionsSlice'
 import { getQuizesByCategory } from '../../redux/slices/quizesSlice'

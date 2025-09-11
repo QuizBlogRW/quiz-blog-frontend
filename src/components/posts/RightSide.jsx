@@ -1,4 +1,4 @@
-import React, { useEffect, useState, lazy, Suspense } from 'react'
+import { useEffect, useState, lazy, Suspense } from 'react'
 import { Col, Row, Form, FormGroup, Input, Button } from 'reactstrap'
 import subscribe from '../../images/undraw_subscribe.svg'
 import QBLoadingSM from '../rLoading/QBLoadingSM'

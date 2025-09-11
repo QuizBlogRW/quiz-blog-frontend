@@ -46,7 +46,7 @@ const Comment = ({ comment, uRole, isFromPending }) => {
             </small>
 
             <div className='mt-3'>
-                <Toast className='w-100'>
+                <Toast className='w-100' timeout={500}>
                     <ToastHeader icon="warning" className="text-success">
                         {commentSender}
                         <small className="ms-2 px-1 text-dark bg-danger">

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
 import { createAdvert } from '../../../redux/slices/advertsSlice'
 import { useDispatch } from 'react-redux'

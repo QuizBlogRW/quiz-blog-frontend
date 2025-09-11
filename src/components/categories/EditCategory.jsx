@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
 import { updateCategory } from '../../redux/slices/categoriesSlice'
 import EditIcon from '../../images/edit.svg'

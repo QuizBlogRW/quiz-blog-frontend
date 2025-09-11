@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { Row, Col, TabContent, Nav, NavItem, NavLink, Button } from 'reactstrap'
 import classnames from 'classnames'
 import ScoresTabPane from './ScoresTabPane'
@@ -12,6 +12,7 @@ import DownloadsTabPane from './DownloadsTabPane'
 import QBLoadingSM from '../rLoading/QBLoadingSM'
 import CommentsTabPane from '../quizes/review/questionComments/CommentsTabPane'
 import AdvertsTabPane from './adverts/AdvertsTabPane'
+import SystemDashboard from './SystemDashboard'
 import TopRow from './TopRow'
 import { logRegContext } from '../../appContexts'
 import { useSelector } from 'react-redux'
@@ -140,6 +141,14 @@ const Dashboard = () => {
                                         </NavLink>
                                     </NavItem>
 
+                                    <NavItem>
+                                        <NavLink
+                                            className={classnames({ active: activeTab === '11' })}
+                                            onClick={() => { toggle('11') }}>
+                                            <u>System</u>
+                                        </NavLink>
+                                    </NavItem>
+
                                 </> : null
                         }
                     </Nav>
@@ -171,6 +180,9 @@ const Dashboard = () => {
                                 <UsersTabPane />
                                 <CommentsTabPane />
                                 <AdvertsTabPane />
+                                <div className={activeTab === '11' ? 'd-block' : 'd-none'}>
+                                    <SystemDashboard />
+                                </div>
                             </> : null}
                     </TabContent>
                 </Col>

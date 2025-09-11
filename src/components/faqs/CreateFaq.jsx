@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
 import { createFq } from '../../redux/slices/faqsSlice'
 import { useDispatch } from 'react-redux'

@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react'
+import { useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { getNotes, deleteNotes, removeQzNt } from '../../../redux/slices/notesSlice'
 import { saveDownload } from '../../../redux/slices/downloadsSlice'

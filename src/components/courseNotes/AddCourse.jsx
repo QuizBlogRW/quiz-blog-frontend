@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
 import { createCourse } from '../../redux/slices/coursesSlice'
 import { useDispatch } from 'react-redux'

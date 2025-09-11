@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Col, Row, TabPane, Card, Alert, ListGroup, Button } from 'reactstrap'
-import QBLoadingSM from '../../../rLoading/QBLoadingSM'
 import { getAllQuestionsComments, getPaginatedQuestionsComments } from '../../../../redux/slices/questionsCommentsSlice'
 import { getAllQuizzesComments } from '../../../../redux/slices/quizzesCommentsSlice'
 import { useSelector, useDispatch } from 'react-redux'
@@ -23,7 +22,6 @@ const CommentsTabPane = () => {
     const dispatch = useDispatch()
     const { allQuizzesComments } = useSelector(state => state.quizzesComments)
     const { allQuestionsComments, paginatedComments, isLoading } = useSelector(state => state.questionsComments)
-    console.log(isLoading)
     const auth = useSelector(state => state.auth)
 
     const currentUser = auth && auth.user

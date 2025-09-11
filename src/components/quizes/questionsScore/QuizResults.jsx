@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useContext, useState, useEffect } from 'react'
+import { lazy, Suspense, useContext, useState, useEffect } from 'react'
 import { Button } from 'reactstrap'
 import { Link, useLocation } from 'react-router-dom'
 import MarksStatus from './MarksStatus'
@@ -8,7 +8,7 @@ import SimilarQuizes from './SimilarQuizes'
 import RelatedNotes from './RelatedNotes'
 import ReviewForm from './ReviewForm';
 import { saveFeedback } from '../../../redux/slices/feedbacksSlice'
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from "react-redux"
 import { logRegContext } from '../../../appContexts'
 import QBLoadingSM from '../../rLoading/QBLoadingSM'
 import ResponsiveAd from '../../adsenses/ResponsiveAd'

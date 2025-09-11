@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useContext } from 'react'
+import { lazy, Suspense, useContext } from 'react'
 import { Button } from 'reactstrap'
 import QBLoadingSM from '../rLoading/QBLoadingSM'
 import { logRegContext } from '../../appContexts'

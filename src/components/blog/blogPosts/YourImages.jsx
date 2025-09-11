@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Col, Row, Card, Alert, Button } from 'reactstrap'
 import { getImageUploadsByOwner } from '../../../redux/slices/imageUploadsSlice'
 import { deleteBlogPostImage } from '../../../redux/slices'

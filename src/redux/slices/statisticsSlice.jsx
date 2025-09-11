@@ -26,11 +26,11 @@ export const getUsersWithInterests = createAsyncThunk("statistics/getUsersWithIn
 export const getUsersWithAbout = createAsyncThunk("statistics/getUsersWithAbout", async (_, { getState }) =>
   apiCallHelper('/api/statistics/users-with-about', 'get', null, getState, 'getUsersWithAbout'))
 
-export const getTop100Quizzing = createAsyncThunk("statistics/getTop100Quizzing", async (_, { getState }) =>
-  apiCallHelper('/api/statistics/top-100-quizzing', 'get', null, getState, 'getTop100Quizzing'))
+export const getTop10Quizzing = createAsyncThunk("statistics/getTop10Quizzing", async (_, { getState }) =>
+  apiCallHelper('/api/statistics/top-10-quizzing', 'get', null, getState, 'getTop10Quizzing'))
 
-export const getTop100Downloaders = createAsyncThunk("statistics/getTop100Downloaders", async (_, { getState }) =>
-  apiCallHelper('/api/statistics/top-100-downloaders', 'get', null, getState, 'getTop100Downloaders'))
+export const getTop10Downloaders = createAsyncThunk("statistics/getTop10Downloaders", async (_, { getState }) =>
+  apiCallHelper('/api/statistics/top-10-downloaders', 'get', null, getState, 'getTop10Downloaders'))
 
 export const getTop20Quizzes = createAsyncThunk("statistics/getTop20Quizzes", async (_, { getState }) =>
   apiCallHelper('/api/statistics/top-20-quizzes', 'get', null, getState, 'getTop20Quizzes'))
@@ -64,8 +64,8 @@ const initialState = {
   usersWithFaculty: [],
   usersWithInterests: [],
   usersWithAbout: [],
-  top100Quizzing: [],
-  top100Downloaders: [],
+  top10Quizzing: [],
+  top10Downloaders: [],
   top20Quizzes: [],
   quizzesStats: [],
   top20Notes: [],
@@ -73,7 +73,7 @@ const initialState = {
   quizCategoriesStats: [],
   notesCategoriesStats: [],
   dailyUserRegistration: [],
-  msg: null,
+  message: null,
   error: null
 }
 
@@ -91,8 +91,8 @@ const statisticsSlice = createSlice({
       state.usersWithFaculty = []
       state.usersWithInterests = []
       state.usersWithAbout = []
-      state.top100Quizzing = []
-      state.top100Downloaders = []
+      state.top10Quizzing = []
+      state.top10Downloaders = []
       state.top20Quizzes = []
       state.quizzesStats = []
       state.top20Notes = []
@@ -138,12 +138,12 @@ const statisticsSlice = createSlice({
       state.usersWithAbout = action.payload
       state.isLoading = false
     })
-    builder.addCase(getTop100Quizzing.fulfilled, (state, action) => {
-      state.top100Quizzing = action.payload
+    builder.addCase(getTop10Quizzing.fulfilled, (state, action) => {
+      state.top10Quizzing = action.payload
       state.isLoading = false
     })
-    builder.addCase(getTop100Downloaders.fulfilled, (state, action) => {
-      state.top100Downloaders = action.payload
+    builder.addCase(getTop10Downloaders.fulfilled, (state, action) => {
+      state.top10Downloaders = action.payload
       state.isLoading = false
     })
     builder.addCase(getTop20Quizzes.fulfilled, (state, action) => {
@@ -184,8 +184,8 @@ const statisticsSlice = createSlice({
     builder.addCase(getUsersWithFaculty.pending, handlePending)
     builder.addCase(getUsersWithInterests.pending, handlePending)
     builder.addCase(getUsersWithAbout.pending, handlePending)
-    builder.addCase(getTop100Quizzing.pending, handlePending)
-    builder.addCase(getTop100Downloaders.pending, handlePending)
+    builder.addCase(getTop10Quizzing.pending, handlePending)
+    builder.addCase(getTop10Downloaders.pending, handlePending)
     builder.addCase(getTop20Quizzes.pending, handlePending)
     builder.addCase(getQuizzesStats.pending, handlePending)
     builder.addCase(getTop20Notes.pending, handlePending)
@@ -203,8 +203,8 @@ const statisticsSlice = createSlice({
     builder.addCase(getUsersWithFaculty.rejected, handleRejected)
     builder.addCase(getUsersWithInterests.rejected, handleRejected)
     builder.addCase(getUsersWithAbout.rejected, handleRejected)
-    builder.addCase(getTop100Quizzing.rejected, handleRejected)
-    builder.addCase(getTop100Downloaders.rejected, handleRejected)
+    builder.addCase(getTop10Quizzing.rejected, handleRejected)
+    builder.addCase(getTop10Downloaders.rejected, handleRejected)
     builder.addCase(getTop20Quizzes.rejected, handleRejected)
     builder.addCase(getQuizzesStats.rejected, handleRejected)
     builder.addCase(getTop20Notes.rejected, handleRejected)

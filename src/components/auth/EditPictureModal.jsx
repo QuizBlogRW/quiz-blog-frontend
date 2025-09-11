@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, UncontrolledTooltip } from 'reactstrap'
 import uploadimage from '../../images/uploadimage.svg'
 import { updateProfileImage } from '../../redux/slices/authSlice'
@@ -56,7 +56,7 @@ const EditPictureModal = ({ bgColor, clr }) => {
           id="UncontrolledTooltipExample"
         />
 
-        <UncontrolledTooltip placement="bottom" target="UncontrolledTooltipExample" >
+        <UncontrolledTooltip placement="bottom" target="UncontrolledTooltipExample" transition={{ timeout: 150 }}>
           Click to update profile image
         </UncontrolledTooltip>
       </span>

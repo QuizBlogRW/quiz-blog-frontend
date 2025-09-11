@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Row, TabPane } from 'reactstrap'
 import SearchInput from '../../utils/SearchInput'
 import { getUsers, getLatestUsers, getAdminsCreators } from '../../redux/slices/authSlice'

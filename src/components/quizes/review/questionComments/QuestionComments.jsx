@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Col, Row, CardTitle, Card, Button } from 'reactstrap'
 import QBLoadingSM from '../../../rLoading/QBLoadingSM'
 import { getCommentsByQuiz, getOneQuestionComments } from '../../../../redux/slices/questionsCommentsSlice'

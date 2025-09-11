@@ -113,7 +113,7 @@ const authSlice = createSlice({
       state.user = action.payload.user
       localStorage.setItem('token', action.payload.current_token)
       localStorage.setItem('user', JSON.stringify(action.payload.user))
-      notify(`Welcome back ${action.payload.user.name}!`)
+      notify(`Welcome ${action.payload.user.name}!`)
     })
     builder.addCase(register.fulfilled, (state, action) => {
       state.isLoading = false

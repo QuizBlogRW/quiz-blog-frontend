@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Col, Row } from 'reactstrap';
 
 const CountDown = ({ timeInSecs, qnsLength, curQnIndex, goToNextQuestion }) => {

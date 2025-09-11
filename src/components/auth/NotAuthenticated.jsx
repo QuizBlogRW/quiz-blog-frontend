@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import QBLoadingSM from '../rLoading/QBLoadingSM'
 import { Button } from 'reactstrap'
 import { logRegContext } from '../../appContexts'

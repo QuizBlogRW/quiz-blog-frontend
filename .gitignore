@@ -13,13 +13,14 @@ src/images/~BROMIUM/
 .DS_Store
 .env.local
 .env.development.local
-.env.test.local
+.env.docker
 .env.production.local
 /config
 /config/default.js*on
 /config/default copy.js*on
 
 npm-debug.log*
+.env.docker
 
 /deploy.txt
 /todo.txt
@@ -35,3 +36,6 @@ npm-debug.log*
 /client/src/components/questions/* copy 3.js*
 /client/src/components/questions/* copy 4.js*
 .eslintcache
+.env*
+docker-compose.dev.yml
+docker-compose.yml

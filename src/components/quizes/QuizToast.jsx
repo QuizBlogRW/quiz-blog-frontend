@@ -10,7 +10,7 @@ const QuizToast = ({ fromSearch, quiz }) => {
 
     return (
         <Col sm="3" key={quiz._id} className="mt-3 quiz-toast">
-            <Toast className={fromSearch ? 'bg-info text-white py-3 px-1 px-sm-3 my-2 my-sm-3 border' : 'py-3 px-1 px-sm-3 my-2 my-sm-3 border'}>
+            <Toast className={fromSearch ? 'bg-info text-white py-3 px-1 px-sm-3 my-2 my-sm-3 border' : 'py-3 px-1 px-sm-3 my-2 my-sm-3 border'} timeout={500}>
                 <ToastHeader className="d-flex justify-content-between">
                         <Link to={`/quiz-ranking/${quiz._id}`} className={`mb-0 ${fromSearch ? 'text-white' : 'text-success'} text-uppercase`}>
                             {quiz.title}

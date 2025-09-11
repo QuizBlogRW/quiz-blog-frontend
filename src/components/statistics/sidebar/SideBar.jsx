@@ -79,11 +79,11 @@ const submenus = [
   [
     {
       title: "Top 100 Quizzing",
-      target: "top-100-quizzing",
+      target: "top-10-quizzing",
     },
     {
       title: "Top 100 Downloaders",
-      target: "top-100-downloaders",
+      target: "top-10-downloaders",
     },
   ],
   [

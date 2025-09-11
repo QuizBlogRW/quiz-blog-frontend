@@ -1,0 +1,191 @@
+/* System Dashboard Styles */
+.system-dashboard {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+.system-dashboard .card {
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+    border: 1px solid #e3e6f0;
+    border-radius: 0.35rem;
+    transition: all 0.3s ease;
+}
+
+.system-dashboard .card:hover {
+    box-shadow: 0 0.25rem 2rem 0 rgba(58, 59, 69, 0.2);
+    transform: translateY(-2px);
+}
+
+.system-dashboard .card-title {
+    color: #5a5c69;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* Overview Cards */
+.border-left-primary {
+    border-left: 0.25rem solid #4e73df !important;
+}
+
+.border-left-success {
+    border-left: 0.25rem solid #1cc88a !important;
+}
+
+.border-left-info {
+    border-left: 0.25rem solid #36b9cc !important;
+}
+
+.border-left-warning {
+    border-left: 0.25rem solid #f6c23e !important;
+}
+
+.text-xs {
+    font-size: 0.7rem;
+}
+
+.text-gray-300 {
+    color: #dddfeb !important;
+}
+
+.text-gray-800 {
+    color: #5a5c69 !important;
+}
+
+/* Progress bars */
+.progress {
+    height: 0.5rem;
+    border-radius: 0.35rem;
+}
+
+/* Tables */
+.system-dashboard .table {
+    color: #858796;
+}
+
+.system-dashboard .table thead th {
+    vertical-align: bottom;
+    border-bottom: 1px solid #e3e6f0;
+    color: #5a5c69;
+    font-weight: 600;
+}
+
+.system-dashboard .table td, 
+.system-dashboard .table th {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #e3e6f0;
+}
+
+/* Badges */
+.badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.35rem;
+}
+
+/* Nav tabs */
+.system-dashboard .nav-tabs {
+    border-bottom: 1px solid #e3e6f0;
+}
+
+.system-dashboard .nav-tabs .nav-link {
+    color: #5a5c69;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.system-dashboard .nav-tabs .nav-link:hover {
+    border-bottom-color: #4e73df;
+    background-color: transparent;
+}
+
+.system-dashboard .nav-tabs .nav-link.active {
+    color: #4e73df;
+    background-color: transparent;
+    border-bottom-color: #4e73df;
+    font-weight: 600;
+}
+
+/* Charts */
+.system-dashboard .chart-container {
+    position: relative;
+    height: 300px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .system-dashboard .nav-tabs {
+        flex-direction: column;
+    }
+    
+    .system-dashboard .nav-tabs .nav-link {
+        text-align: center;
+        margin-bottom: 0.25rem;
+    }
+    
+    .system-dashboard .card {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Loading spinner */
+.system-dashboard .spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
+/* Alert styles */
+.system-dashboard .alert {
+    border: 1px solid transparent;
+    border-radius: 0.35rem;
+}
+
+/* Button styles */
+.system-dashboard .btn {
+    border-radius: 0.35rem;
+    transition: all 0.15s ease-in-out;
+}
+
+.system-dashboard .btn:hover {
+    transform: translateY(-1px);
+}
+
+/* Health status indicators */
+.status-healthy {
+    color: #1cc88a;
+}
+
+.status-unhealthy {
+    color: #e74a3b;
+}
+
+.status-warning {
+    color: #f6c23e;
+}
+
+/* Metric cards hover effects */
+.system-dashboard .card-body:hover .fa-2x {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+}
+
+/* Custom scrollbar for tables */
+.system-dashboard .table-responsive::-webkit-scrollbar {
+    height: 8px;
+}
+
+.system-dashboard .table-responsive::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.system-dashboard .table-responsive::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+.system-dashboard .table-responsive::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}

@@ -25,7 +25,7 @@ const SingleCategory = () => {
             </small>
             <Row className="mx-0 mx-lg-5 mt-2 m-lg-4 d-flex justify-content-between align-items-center text-primary">
                 <Col sm="12" key={category._id} className="mt-3 categories-toast" id={category.title.split(' ').join('-').replace(/[^a-zA-Z0-9]/g, '-') + category._id}>
-                    <Toast className="px-lg-5">
+                    <Toast className="px-lg-5" timeout={500}>
                         <ToastHeader className="text-success overflow-auto">
                             <strong>
                                 <a href={`/all-categories/#${category.title.split(' ').join('-').replace(/[^a-zA-Z0-9]/g, '-') + category._id}`} className="text-success text-uppercase">

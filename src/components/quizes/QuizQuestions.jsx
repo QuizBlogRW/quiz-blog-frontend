@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import { Container } from 'reactstrap'
 import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import { createScore } from '../../redux/slices/scoresSlice'

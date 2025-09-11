@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Container, Row, Col, Button, Form, Input } from 'reactstrap'
 import ResponsiveAd from '../adsenses/ResponsiveAd'
 import SquareAd from '../adsenses/SquareAd'

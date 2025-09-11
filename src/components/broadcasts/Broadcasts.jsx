@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { Row, Alert } from 'reactstrap'
 import { getBroadcasts } from '../../redux/slices/broadcastsSlice'
 import { useSelector, useDispatch } from "react-redux"

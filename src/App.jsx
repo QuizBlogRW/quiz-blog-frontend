@@ -1,4 +1,4 @@
-import React, { useEffect, lazy, Suspense, useState, useCallback } from 'react'
+import { useEffect, lazy, Suspense, useState, useCallback } from 'react'
 import { Routes, Route, Link, useLocation } from "react-router-dom"
 import { Toast } from 'reactstrap'
 import ReactGA from "react-ga4"
@@ -111,7 +111,7 @@ const App = () => {
     return (
         <logRegContext.Provider value={{ isOpenL, toggleL, isOpenR, toggleR }}>
             <Suspense fallback={<QBLoading />}>
-                <Toast isOpen={modal} className={`w-100 popup-toast`}>
+                <Toast isOpen={modal} className={`w-100 popup-toast`} timeout={500}>
                     <div className="bg-warning py-2 px-3 d-flex justify-content-between align-items-center">
                         <p className='text-danger text-center fw-bolder d-block mb-0'>
                             &nbsp;&nbsp;Your profile is {`${percentage}`} % up to date!

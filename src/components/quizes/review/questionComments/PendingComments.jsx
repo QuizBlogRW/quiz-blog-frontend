@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { Col, Card, Alert } from 'reactstrap'
 import QBLoadingSM from '../../../rLoading/QBLoadingSM'
 import { getPendingQnsComments } from '../../../../redux/slices/questionsCommentsSlice'

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { ListGroup, ListGroupItem, Button } from 'reactstrap'
 import { Collapse } from "react-collapse"
 import AddIcon from '../../images/plusIcon.svg'

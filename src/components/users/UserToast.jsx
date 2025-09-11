@@ -1,4 +1,3 @@
-import React from 'react'
 import { Col, Toast, ToastBody, ToastHeader } from 'reactstrap'
 import EditUser from './EditUser'
 import uploadimage from '../../images/uploadimage.svg'
@@ -15,7 +14,7 @@ const UserToast = ({ user, fromSearch }) => {
     return (
         <Col sm="3" key={user._id} className={`mt-3 users-toast`}>
 
-            <Toast>
+            <Toast timeout={500}>
                 <ToastHeader className="text-dark overflow-auto">
                     <strong>{user.email}</strong>
 

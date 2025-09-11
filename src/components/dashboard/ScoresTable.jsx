@@ -1,4 +1,3 @@
-import React from 'react'
 import { Table, Alert } from 'reactstrap'
 import moment from 'moment'
 import { Link } from "react-router-dom"
@@ -10,7 +9,7 @@ const ScoresTable = ({ scoresToUse, pageNo, deleteScore }) => {
     const auth = useSelector(state => state.auth)
     const currentUser = auth && auth.user
     const uRole = currentUser && currentUser.role
-
+    
     return (
         scoresToUse && scoresToUse.length > 0 ?
             <Table bordered className='all-scores table-success' hover responsive striped size="sm">

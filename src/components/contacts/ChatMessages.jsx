@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Form, Button } from 'reactstrap'
 import { useSelector, useDispatch } from "react-redux"
-import { EditorState, convertToRaw, convertFromRaw } from 'draft-js'
-import { Editor } from 'react-draft-wysiwyg'
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
+// import { EditorState, convertToRaw, convertFromRaw } from 'draft-js'
+// import { Editor } from 'react-draft-wysiwyg'
+// import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import moment from 'moment'
 import { replyContact } from '@/redux/slices/contactsSlice'
 import QBLoadingSM from '@/components/rLoading/QBLoadingSM'
@@ -18,7 +18,7 @@ const ChatMessages = ({ onlineList }) => {
     const currentUser = auth && auth.user
     const lastMessageRef = useRef(null)
     const [replies, setReplies] = useState(oneContact ? oneContact.replies : [])
-    const [editorState, setEditorState] = useState(EditorState.createEmpty())
+    // const [editorState, setEditorState] = useState(EditorState.createEmpty())
 
     const toMail = currentUser.role === 'Visitor' ? 'quizblog.rw@gmail.com' : oneContact?.email
     const whoWith = currentUser.role === 'Visitor' ? { username: 'Quiz-Blog Rwanda', email: 'quizblog.rw@gmail.com' } : { username: oneContact?.contact_name, email: oneContact?.email }
@@ -27,8 +27,8 @@ const ChatMessages = ({ onlineList }) => {
     useEffect(() => {
         if (oneContact?.message) {
             try {
-                const content = convertFromRaw(JSON.parse(oneContact.message))
-                setEditorState(EditorState.createWithContent(content))
+                // const content = convertFromRaw(JSON.parse(oneContact.message))
+                // setEditorState(EditorState.createWithContent(content))
             } catch (error) { }
         }
     }, [oneContact])
@@ -41,7 +41,7 @@ const ChatMessages = ({ onlineList }) => {
 
     const sendMessage = e => {
         e.preventDefault()
-        const raw = convertToRaw(editorState.getCurrentContent())
+        // const raw = convertToRaw(editorState.getCurrentContent())
         const string = JSON.stringify(raw)
 
         const newReply = {
@@ -54,7 +54,7 @@ const ChatMessages = ({ onlineList }) => {
         }
 
         dispatch(replyContact({ idToUpdate: oneContact._id, reply: newReply }))
-        setEditorState(EditorState.createEmpty())
+        // setEditorState(EditorState.createEmpty())
     }
 
     useEffect(() => {
@@ -90,7 +90,7 @@ const ChatMessages = ({ onlineList }) => {
                 {replies.map((reply, index) => <SingleReply key={index} reply={reply} />)}
                 <hr />
                 <Form className='w-100 m-1 pb-3 mb-lg-5 d-flex flex-column align-center justify-center' onSubmit={sendMessage}>
-                    <Editor
+                    {/* <Editor
                         editorState={editorState}
                         onEditorStateChange={setEditorState}
                         wrapperClassName="wrapper-class"
@@ -102,7 +102,7 @@ const ChatMessages = ({ onlineList }) => {
                             fontFamily: { options: ['Tw Cen MT', 'Amiri', 'Helvetica', "Trebuchet MS", 'sans-serif'] },
                         }}
                         editorStyle={{ height: '200px' }}
-                    />
+                    /> */}
                     <Button className='mx-auto w-50 mt-4' style={{ height: "max-content", backgroundColor: "#157A6E" }}>
                         Send
                     </Button>

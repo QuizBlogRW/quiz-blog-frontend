@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { get50NewUsers, getAllUsers, getUsersWithImage, getUsersWithSchool, getUsersWithLevel, getUsersWithFaculty, getUsersWithInterests, getUsersWithAbout, getTop100Quizzing, getTop100Downloaders, getTop20Quizzes, getQuizzesStats, getTop20Notes, getNotesStats, getQuizCategoriesStats, getNotesCategoriesStats } from '../../../../redux/slices/statisticsSlice'
+import { useEffect, useState } from 'react'
+import { get50NewUsers, getAllUsers, getUsersWithImage, getUsersWithSchool, getUsersWithLevel, getUsersWithFaculty, getUsersWithInterests, getUsersWithAbout, getTop10Quizzing, getTop10Downloaders, getTop20Quizzes, getQuizzesStats, getTop20Notes, getNotesStats, getQuizCategoriesStats, getNotesCategoriesStats } from '../../../../redux/slices/statisticsSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import TableData from '../TableData'
 import QBLoadingSM from '../../../rLoading/QBLoadingSM'
@@ -53,12 +53,12 @@ const UsersStats = () => {
                 dispatch(getUsersWithAbout())
                 break
 
-            case "/statistics/top-100-quizzing":
-                dispatch(getTop100Quizzing())
+            case "/statistics/top-10-quizzing":
+                dispatch(getTop10Quizzing())
                 break
 
-            case "/statistics/top-100-downloaders":
-                dispatch(getTop100Downloaders())
+            case "/statistics/top-10-downloaders":
+                dispatch(getTop10Downloaders())
                 break
 
             case "/statistics/top-20-quizzes":
@@ -134,13 +134,13 @@ const UsersStats = () => {
                 setUsersStatsLoading(stats.isLoading)
                 break
 
-            case "/statistics/top-100-quizzing":
-                setUsersStats(stats.top100Quizzing)
+            case "/statistics/top-10-quizzing":
+                setUsersStats(stats.top10Quizzing)
                 setUsersStatsLoading(stats.isLoading)
                 break
 
-            case "/statistics/top-100-downloaders":
-                setUsersStats(stats.top100Downloaders)
+            case "/statistics/top-10-downloaders":
+                setUsersStats(stats.top10Downloaders)
                 setUsersStatsLoading(stats.isLoading)
                 break
 

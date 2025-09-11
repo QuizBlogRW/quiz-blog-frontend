@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import moment from 'moment'
 import { Media, Alert } from 'reactstrap'
 import QBLoadingSM from '../../rLoading/QBLoadingSM'

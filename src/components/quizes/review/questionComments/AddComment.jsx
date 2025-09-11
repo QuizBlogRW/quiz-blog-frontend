@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Button, Form, FormGroup, Input } from 'reactstrap'
 import { createComment } from '../../../../redux/slices/questionsCommentsSlice'
 import { useDispatch, useSelector } from 'react-redux'

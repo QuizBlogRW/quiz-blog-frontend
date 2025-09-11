@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Col, Row, Input, Label, FormGroup } from 'reactstrap'
 import CountDown from './questionsScore/CountDown'
 import QBLoadingSM from '../rLoading/QBLoadingSM'

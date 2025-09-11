@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { Button } from 'reactstrap'
 import bruce from '../../images/Bruce.jpg'
 import parmenide from '../../images/parmenide.jpg'

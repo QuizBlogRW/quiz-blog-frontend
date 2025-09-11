@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { Editor, EditorState, convertFromRaw } from 'draft-js'
 import moment from 'moment'
 import { useSelector } from 'react-redux'

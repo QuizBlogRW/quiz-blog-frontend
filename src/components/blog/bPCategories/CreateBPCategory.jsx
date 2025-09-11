@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
 import { createPostCategory } from '../../../redux/slices/postCategoriesSlice'
 import { useDispatch } from "react-redux"

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Row, Col, Toast, ToastBody, ToastHeader, TabPane, ListGroup, ListGroupItem } from 'reactstrap'
 import SearchInput from '../../utils/SearchInput'
 import { Link } from "react-router-dom"
@@ -70,7 +70,7 @@ const AllCategories = () => {
                         {categories && filterCategories(categories.allcategories, searchKeyC).map(category => (
                             category.quizes && category.quizes.length > 0 ?
                                 <Col sm="6" key={category._id} className="mt-3 categories-toast" id={category.title.split(' ').join('-').replace(/[^a-zA-Z0-9]/g, '-') + category._id}>
-                                    <Toast>
+                                    <Toast timeout={500}>
                                         <ToastHeader className="text-success overflow-auto">
                                             <strong>
                                                 <a href={`/all-categories/#${category.title.split(' ').join('-').replace(/[^a-zA-Z0-9]/g, '-') + category._id}`} className="text-success text-uppercase">

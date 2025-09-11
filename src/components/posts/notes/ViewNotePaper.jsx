@@ -1,4 +1,4 @@
-import React, { useEffect, lazy, Suspense, useContext } from 'react'
+import { useEffect, lazy, Suspense, useContext } from 'react'
 import { Container, Col, Row, Card, Button, CardTitle, CardText } from 'reactstrap'
 import { Link, useParams } from 'react-router-dom'
 import moment from 'moment'

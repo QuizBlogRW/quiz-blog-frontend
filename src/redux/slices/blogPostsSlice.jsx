@@ -47,15 +47,18 @@ const blogPostsSlice = createSlice({
 
     // Fullfilled actions
     builder.addCase(getBlogPosts.fulfilled, (state, action) => {
-      state.blogPosts = action.payload
+      // Handle new API response structure
+      state.blogPosts = action.payload?.data || action.payload || []
       state.isLoading = false
     })
     builder.addCase(getOneBlogPost.fulfilled, (state, action) => {
-      state.oneBlogPost = action.payload
+      // Handle new API response structure
+      state.oneBlogPost = action.payload?.data || action.payload || ''
       state.isLoading = false
     })
     builder.addCase(getBlogPostsByCategory.fulfilled, (state, action) => {
-      state.blogPostsByCategory = action.payload
+      // Handle new API response structure
+      state.blogPostsByCategory = action.payload?.data || action.payload || []
       state.isLoading = false
     })
     builder.addCase(createBlogPost.fulfilled, (state, action) => {

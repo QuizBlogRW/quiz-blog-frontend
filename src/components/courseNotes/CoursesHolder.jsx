@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Card, Button, CardTitle, CardText } from 'reactstrap'
 import { deleteCourse } from '../../redux/slices/coursesSlice'
 import AddChapter from './AddChapter'

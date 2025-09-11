@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react"
+import { useState, useContext } from "react"
 import { useSelector } from "react-redux"
 import { Button } from "reactstrap"
 import SideBar from "./sidebar/SideBar"

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { Col, Row, CardTitle, Card, Alert } from 'reactstrap'
 import { Link } from 'react-router-dom'
 import QBLoadingSM from '../rLoading/QBLoadingSM'

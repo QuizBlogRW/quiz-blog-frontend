@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Chart } from "react-google-charts"
 import { getDailyUserRegistration } from '../../../redux/slices/statisticsSlice'
 import { useDispatch, useSelector } from "react-redux"

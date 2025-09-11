@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { Row, TabPane, Table } from 'reactstrap';
 import { getSubscribers, deleteSubscriber } from '../../redux/slices/subscribersSlice'
 import { useSelector, useDispatch } from 'react-redux';
