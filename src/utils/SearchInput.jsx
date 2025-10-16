@@ -1,5 +1,4 @@
-import React from 'react'
-import searchImg from '../images/loupe.svg'
+import searchImg from '@/images/loupe.svg'
 
 const SearchInput = ({ setSearchKey, placeholder }) => {
 

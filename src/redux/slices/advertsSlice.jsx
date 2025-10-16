@@ -58,22 +58,21 @@ const advertsSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(createAdvert.fulfilled, (state, action) => {
-      state.allAdverts.push(action.payload)
+      state.allAdverts.unshift(action.payload)
       state.isLoading = false
     })
     builder.addCase(changeStatus.fulfilled, (state, action) => {
-      state.activeAdverts = state.activeAdverts.map(advert => 
-        advert._id === action.payload._id ? action.payload : advert
-      );
-      state.isLoading = false;
+      state.activeAdverts = state.activeAdverts.map(advert => advert._id === action.payload._id ? action.payload : advert)  // change status of advert
+      state.allAdverts = state.allAdverts.map(advert => advert._id === action.payload._id ? action.payload : advert)
+      state.isLoading = false
     })
     builder.addCase(updateAdvert.fulfilled, (state, action) => {
       state.allAdverts = state.allAdverts.map(advert => advert._id === action.payload._id ? action.payload : advert)
       state.isLoading = false
     })
     builder.addCase(deleteAdvert.fulfilled, (state, action) => {
-      state.allAdverts = state.allAdverts.filter(advert => advert._id !== action.payload)
-      state.activeAdverts = state.activeAdverts.filter(advert => advert._id !== action.payload)
+      state.allAdverts = state.allAdverts.filter(advert => advert._id !== action.payload._id)
+      state.activeAdverts = state.activeAdverts.filter(advert => advert._id !== action.payload._id)
       state.isLoading = false
     })
 
@@ -85,7 +84,7 @@ const advertsSlice = createSlice({
     builder.addCase(changeStatus.pending, handlePending)
     builder.addCase(updateAdvert.pending, handlePending)
     builder.addCase(deleteAdvert.pending, handlePending)
-    
+
     // Rejected actions
     builder.addCase(getAdverts.rejected, handleRejected)
     builder.addCase(getActiveAdverts.rejected, handleRejected)

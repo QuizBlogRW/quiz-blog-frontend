@@ -8,11 +8,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Redux
 import { Provider } from 'react-redux'
-import store from './redux/store'
+import store from '@/redux/store'
 
 // import { stopReportingRuntimeErrors } from "react-error-overlay";
 import App from './App'
-import './stylesCSS/index.css'
+import './index.css'
 
 // if (process.env.NODE_ENV === "development") {
 //   stopReportingRuntimeErrors();

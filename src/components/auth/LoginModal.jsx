@@ -1,18 +1,22 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
-import { login } from '../../redux/slices/authSlice'
+import { login } from '@/redux/slices/authSlice'
 import { useSelector, useDispatch } from "react-redux"
 import ReactGA from "react-ga4"
-import logocirclewhite from '../../../src/images/logocirclewhite.svg'
-import avatar from '../../../src/images/avatar1.svg'
-import QBLoadingSM from '../rLoading/QBLoadingSM'
-import { notify } from '../../utils/notifyToast'
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM'
+import { notify } from '@/utils/notifyToast'
+import logocirclewhite from '@/images/logocirclewhite.svg'
+import avatar from '@/images/avatar1.svg'
+import { logRegContext } from '@/contexts/appContexts'
 
-const LoginModal = ({ isOpenL, toggleL, toggleR }) => {
+const LoginModal = () => {
 
-    const { isLoading } = useSelector(state => state.auth)
+    // Context
+    const { isOpenL, toggleL, toggleR } = useContext(logRegContext)
+
+    // Redux
+    const { isLoading, isAuthenticated } = useSelector(state => state.auth)
     const dispatch = useDispatch()
-    const isAuthenticated = useSelector(state => state.auth && state.auth.isAuthenticated)
 
     //properties of the modal
     const [loginState, setLoginState] = useState({ email: '', password: '' })
@@ -24,16 +28,17 @@ const LoginModal = ({ isOpenL, toggleL, toggleR }) => {
     useEffect(() => {
 
         if (loginResponse && loginResponse.type === 'auth/login/rejected') {
+
             // Extract error message from different possible locations
-            const errorMsg = loginResponse.error?.message || 
-                           loginResponse.payload || 
-                           loginResponse.error || 
-                           'Login failed'
-            
+            const errorMsg = loginResponse.error?.message ||
+                loginResponse.payload ||
+                loginResponse.error ||
+                'Login failed'
+
             if (errorMsg === 'CONFIRM_ERR') {
                 setConfirmLogin(true)
             }
-            
+
             setErrorMessage(errorMsg === 'CONFIRM_ERR' ?
                 'Already logged in on another device/browser, log them out to use here?' :
                 errorMsg)
@@ -67,7 +72,7 @@ const LoginModal = ({ isOpenL, toggleL, toggleR }) => {
 
         // VALIDATE
         if (password.length < 4) {
-            notify('Password should be at least 4 characters!')
+            notify('Password should be at least 4 characters!', 'error')
             return
         }
 

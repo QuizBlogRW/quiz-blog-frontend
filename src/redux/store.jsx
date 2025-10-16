@@ -5,7 +5,7 @@ import advertsReducer from './slices/advertsSlice'
 import subscribersReducer from './slices/subscribersSlice'
 import questionsReducer from './slices/questionsSlice'
 import categoriesReducer from './slices/categoriesSlice'
-import quizesReducer from './slices/quizesSlice'
+import quizzesReducer from './slices/quizzesSlice'
 import scoresReducer from './slices/scoresSlice'
 import contactsReducer from './slices/contactsSlice'
 import broadcastsReducer from './slices/broadcastsSlice'
@@ -35,7 +35,7 @@ const store = configureStore({
         subscribers: subscribersReducer,
         questions: questionsReducer,
         categories: categoriesReducer,
-        quizes: quizesReducer,
+        quizzes: quizzesReducer,
         scores: scoresReducer,
         contacts: contactsReducer,
         broadcasts: broadcastsReducer,

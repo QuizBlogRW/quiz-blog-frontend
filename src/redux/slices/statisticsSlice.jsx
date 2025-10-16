@@ -26,29 +26,17 @@ export const getUsersWithInterests = createAsyncThunk("statistics/getUsersWithIn
 export const getUsersWithAbout = createAsyncThunk("statistics/getUsersWithAbout", async (_, { getState }) =>
   apiCallHelper('/api/statistics/users-with-about', 'get', null, getState, 'getUsersWithAbout'))
 
-export const getTop10Quizzing = createAsyncThunk("statistics/getTop10Quizzing", async (_, { getState }) =>
-  apiCallHelper('/api/statistics/top-10-quizzing', 'get', null, getState, 'getTop10Quizzing'))
+export const getTop10QuizzingUsers = createAsyncThunk("statistics/getTop10QuizzingUsers", async (_, { getState }) =>
+  apiCallHelper('/api/statistics/top-10-quizzing-users', 'get', null, getState, 'getTop10QuizzingUsers'))
 
 export const getTop10Downloaders = createAsyncThunk("statistics/getTop10Downloaders", async (_, { getState }) =>
   apiCallHelper('/api/statistics/top-10-downloaders', 'get', null, getState, 'getTop10Downloaders'))
 
-export const getTop20Quizzes = createAsyncThunk("statistics/getTop20Quizzes", async (_, { getState }) =>
-  apiCallHelper('/api/statistics/top-20-quizzes', 'get', null, getState, 'getTop20Quizzes'))
+export const getTop10Quizzes = createAsyncThunk("statistics/getTop10Quizzes", async (_, { getState }) =>
+  apiCallHelper('/api/statistics/top-10-quizzes', 'get', null, getState, 'getTop10Quizzes'))
 
-export const getQuizzesStats = createAsyncThunk("statistics/getQuizzesStats", async (_, { getState }) =>
-  apiCallHelper('/api/statistics/quizzes-stats', 'get', null, getState, 'getQuizzesStats'))
-
-export const getTop20Notes = createAsyncThunk("statistics/getTop20Notes", async (_, { getState }) =>
-  apiCallHelper('/api/statistics/top-20-notes', 'get', null, getState, 'getTop20Notes'))
-
-export const getNotesStats = createAsyncThunk("statistics/getNotesStats", async (_, { getState }) =>
-  apiCallHelper('/api/statistics/notes-stats', 'get', null, getState, 'getNotesStats'))
-
-export const getQuizCategoriesStats = createAsyncThunk("statistics/getQuizCategoriesStats", async (_, { getState }) =>
-  apiCallHelper('/api/statistics/quiz-categories-stats', 'get', null, getState, 'getQuizCategoriesStats'))
-
-export const getNotesCategoriesStats = createAsyncThunk("statistics/getNotesCategoriesStats", async (_, { getState }) =>
-  apiCallHelper('/api/statistics/notes-categories-stats', 'get', null, getState, 'getNotesCategoriesStats'))
+export const getTop10Notes = createAsyncThunk("statistics/getTop10Notes", async (_, { getState }) =>
+  apiCallHelper('/api/statistics/top-10-notes', 'get', null, getState, 'getTop10Notes'))
 
 export const getDailyUserRegistration = createAsyncThunk("statistics/getDailyUserRegistration", async (_, { getState }) =>
   apiCallHelper('/api/statistics/daily-user-registration', 'get', null, getState, 'getDailyUserRegistration'))
@@ -66,12 +54,8 @@ const initialState = {
   usersWithAbout: [],
   top10Quizzing: [],
   top10Downloaders: [],
-  top20Quizzes: [],
-  quizzesStats: [],
-  top20Notes: [],
-  notesStats: [],
-  quizCategoriesStats: [],
-  notesCategoriesStats: [],
+  top10Quizzes: [],
+  top10Notes: [],
   dailyUserRegistration: [],
   message: null,
   error: null
@@ -93,12 +77,8 @@ const statisticsSlice = createSlice({
       state.usersWithAbout = []
       state.top10Quizzing = []
       state.top10Downloaders = []
-      state.top20Quizzes = []
-      state.quizzesStats = []
-      state.top20Notes = []
-      state.notesStats = []
-      state.quizCategoriesStats = []
-      state.notesCategoriesStats = []
+      state.top10Quizzes = []
+      state.top10Notes = []
       state.dailyUserRegistration = []
       state.msg = null
     }
@@ -138,7 +118,7 @@ const statisticsSlice = createSlice({
       state.usersWithAbout = action.payload
       state.isLoading = false
     })
-    builder.addCase(getTop10Quizzing.fulfilled, (state, action) => {
+    builder.addCase(getTop10QuizzingUsers.fulfilled, (state, action) => {
       state.top10Quizzing = action.payload
       state.isLoading = false
     })
@@ -146,28 +126,12 @@ const statisticsSlice = createSlice({
       state.top10Downloaders = action.payload
       state.isLoading = false
     })
-    builder.addCase(getTop20Quizzes.fulfilled, (state, action) => {
-      state.top20Quizzes = action.payload
+    builder.addCase(getTop10Quizzes.fulfilled, (state, action) => {
+      state.top10Quizzes = action.payload
       state.isLoading = false
     })
-    builder.addCase(getQuizzesStats.fulfilled, (state, action) => {
-      state.quizzesStats = action.payload
-      state.isLoading = false
-    })
-    builder.addCase(getTop20Notes.fulfilled, (state, action) => {
-      state.top20Notes = action.payload
-      state.isLoading = false
-    })
-    builder.addCase(getNotesStats.fulfilled, (state, action) => {
-      state.notesStats = action.payload
-      state.isLoading = false
-    })
-    builder.addCase(getQuizCategoriesStats.fulfilled, (state, action) => {
-      state.quizCategoriesStats = action.payload
-      state.isLoading = false
-    })
-    builder.addCase(getNotesCategoriesStats.fulfilled, (state, action) => {
-      state.notesCategoriesStats = action.payload
+    builder.addCase(getTop10Notes.fulfilled, (state, action) => {
+      state.top10Notes = action.payload
       state.isLoading = false
     })
     builder.addCase(getDailyUserRegistration.fulfilled, (state, action) => {
@@ -184,14 +148,10 @@ const statisticsSlice = createSlice({
     builder.addCase(getUsersWithFaculty.pending, handlePending)
     builder.addCase(getUsersWithInterests.pending, handlePending)
     builder.addCase(getUsersWithAbout.pending, handlePending)
-    builder.addCase(getTop10Quizzing.pending, handlePending)
+    builder.addCase(getTop10QuizzingUsers.pending, handlePending)
     builder.addCase(getTop10Downloaders.pending, handlePending)
-    builder.addCase(getTop20Quizzes.pending, handlePending)
-    builder.addCase(getQuizzesStats.pending, handlePending)
-    builder.addCase(getTop20Notes.pending, handlePending)
-    builder.addCase(getNotesStats.pending, handlePending)
-    builder.addCase(getQuizCategoriesStats.pending, handlePending)
-    builder.addCase(getNotesCategoriesStats.pending, handlePending)
+    builder.addCase(getTop10Quizzes.pending, handlePending)
+    builder.addCase(getTop10Notes.pending, handlePending)
     builder.addCase(getDailyUserRegistration.pending, handlePending)
 
     // Rejected actions
@@ -203,14 +163,10 @@ const statisticsSlice = createSlice({
     builder.addCase(getUsersWithFaculty.rejected, handleRejected)
     builder.addCase(getUsersWithInterests.rejected, handleRejected)
     builder.addCase(getUsersWithAbout.rejected, handleRejected)
-    builder.addCase(getTop10Quizzing.rejected, handleRejected)
+    builder.addCase(getTop10QuizzingUsers.rejected, handleRejected)
     builder.addCase(getTop10Downloaders.rejected, handleRejected)
-    builder.addCase(getTop20Quizzes.rejected, handleRejected)
-    builder.addCase(getQuizzesStats.rejected, handleRejected)
-    builder.addCase(getTop20Notes.rejected, handleRejected)
-    builder.addCase(getNotesStats.rejected, handleRejected)
-    builder.addCase(getQuizCategoriesStats.rejected, handleRejected)
-    builder.addCase(getNotesCategoriesStats.rejected, handleRejected)
+    builder.addCase(getTop10Quizzes.rejected, handleRejected)
+    builder.addCase(getTop10Notes.rejected, handleRejected)
     builder.addCase(getDailyUserRegistration.rejected, handleRejected)
   }
 })

@@ -2,20 +2,17 @@ import { useState, useContext, useEffect } from 'react'
 import { Navbar, NavbarBrand, NavLink, Button, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, ListGroup, ListGroupItem } from 'reactstrap'
 import { Link, useLocation } from "react-router-dom"
 import { useSelector } from 'react-redux'
-import RegisterModal from '../auth/RegisterModal'
-import LoginModal from '../auth/LoginModal'
-import Logout from '../auth/Logout'
+import Logout from '@/components/auth/Logout'
 import CatDropdown from './CatDropdown'
-import logo from '../../images/quizLogo.svg'
-import { logRegContext } from '../../appContexts'
-import EditPictureModal from '../auth/EditPictureModal'
+import logo from '@/images/quizLogo.svg'
+import { logRegContext } from '@/contexts/appContexts'
+import EditPictureModal from '@/components/auth/EditPictureModal'
 
 const Header = ({ textContent }) => {
 
-    const auth = useSelector(state => state.auth)
-    const currentUser = auth && auth.user
-    const { isOpenL, isOpenR, toggleL, toggleR } = useContext(logRegContext)
-    const userId = currentUser && currentUser._id
+    const { user } = useSelector(state => state.auth)
+    const { toggleL, toggleR } = useContext(logRegContext)
+    const userId = user && user._id
 
     const [dropdownOpen, setDropdownOpen] = useState(false)
     const [logoutModal, setLogoutModal] = useState(false)
@@ -50,7 +47,7 @@ const Header = ({ textContent }) => {
             <EditPictureModal bgColor={bgColor} clr={clr} />
             <Link to="/#">
                 <small className="ms-2 d-none d-lg-flex fw-bolder" style={{ color: clr }}>
-                    {currentUser && currentUser.name && currentUser.name.toLowerCase().charAt(0).toUpperCase() + currentUser.name.slice(1).split(" ")[0]}
+                    {user && user.name && user?.name?.toLowerCase().charAt(0).toUpperCase() + user?.name?.slice(1).split(" ")[0]}
                 </small>
             </Link>
 
@@ -65,7 +62,7 @@ const Header = ({ textContent }) => {
                     <DropdownItem header>
                         <ListGroup>
                             <ListGroupItem className='bg-warning'>
-                                <h6 className='mb-0 fw-bolder text-white text-uppercase'>{currentUser && currentUser.name ? currentUser.name.split(" ")[0] : ''}</h6>
+                                <h6 className='mb-0 fw-bolder text-white text-uppercase'>{user && user.name ? user?.name?.split(" ")[0] : ''}</h6>
                             </ListGroupItem>
                             {renderProfileLinks()}
                         </ListGroup>
@@ -74,7 +71,7 @@ const Header = ({ textContent }) => {
                         <Link to="/dashboard" className="text-white" onClick={toggleDropdown}>Dashboard</Link>
                     </DropdownItem>
                     <DropdownItem text>
-                        <Link to={`/edit-profile/${currentUser && currentUser._id}`} className="text-white" onClick={toggleDropdown}>Edit Profile</Link>
+                        <Link to={`/edit-profile/${user && user._id}`} className="text-white" onClick={toggleDropdown}>Edit Profile</Link>
                     </DropdownItem>
                     <Logout userId={userId} logoutModal={logoutModal} toggleLogoutModal={toggleLogoutModal} />
                 </DropdownMenu>
@@ -85,47 +82,47 @@ const Header = ({ textContent }) => {
     const renderProfileLinks = () => (
         <>
             <ListGroupItem>
-                {currentUser && currentUser.school ? (
-                    <Link to={`/edit-profile/${currentUser && currentUser._id}`}>
-                        <span className={`${currentUser && !currentUser.school ? 'text-danger' : ''}`}>
-                            {(currentUser && currentUser.school.title)}
+                {user && user.school ? (
+                    <Link to={`/edit-profile/${user && user._id}`}>
+                        <span className={`${user && !user.school ? 'text-danger' : ''}`}>
+                            {(user && user.school.title)}
                         </span>
                     </Link>
                 ) : (
-                    <Link to={`/edit-profile/${currentUser && currentUser._id}`}>Please add a school</Link>
+                    <Link to={`/edit-profile/${user && user._id}`}>Please add a school</Link>
                 )}
             </ListGroupItem>
             <ListGroupItem>
-                {currentUser && currentUser.level ? (
-                    <Link to={`/edit-profile/${currentUser && currentUser._id}`}>
-                        <span className={`${currentUser && !currentUser.level ? 'text-danger' : ''}`}>
-                            {(currentUser && currentUser.level.title)}
+                {user && user.level ? (
+                    <Link to={`/edit-profile/${user && user._id}`}>
+                        <span className={`${user && !user.level ? 'text-danger' : ''}`}>
+                            {(user && user.level.title)}
                         </span>
                     </Link>
                 ) : (
-                    <Link to={`/edit-profile/${currentUser && currentUser._id}`}>Please add a level</Link>
+                    <Link to={`/edit-profile/${user && user._id}`}>Please add a level</Link>
                 )}
             </ListGroupItem>
             <ListGroupItem>
-                {currentUser && currentUser.faculty ? (
-                    <Link to={`/edit-profile/${currentUser && currentUser._id}`}>
-                        <span className={`${currentUser && !currentUser.faculty ? 'text-danger' : ''}`}>
-                            {(currentUser && currentUser.faculty.title)}
+                {user && user.faculty ? (
+                    <Link to={`/edit-profile/${user && user._id}`}>
+                        <span className={`${user && !user.faculty ? 'text-danger' : ''}`}>
+                            {(user && user.faculty.title)}
                         </span>
                     </Link>
                 ) : (
-                    <Link to={`/edit-profile/${currentUser && currentUser._id}`}>Please add a faculty</Link>
+                    <Link to={`/edit-profile/${user && user._id}`}>Please add a faculty</Link>
                 )}
             </ListGroupItem>
             <ListGroupItem>
-                {currentUser && currentUser.year ? (
-                    <Link to={`/edit-profile/${currentUser && currentUser._id}`}>
-                        <span className={`${currentUser && !currentUser.year ? 'text-danger' : ''}`}>
-                            {(currentUser && currentUser.year)}
+                {user && user.year ? (
+                    <Link to={`/edit-profile/${user && user._id}`}>
+                        <span className={`${user && !user.year ? 'text-danger' : ''}`}>
+                            {(user && user.year)}
                         </span>
                     </Link>
                 ) : (
-                    <Link to={`/edit-profile/${currentUser && currentUser._id}`}>Please add a year</Link>
+                    <Link to={`/edit-profile/${user && user._id}`}>Please add a year</Link>
                 )}
             </ListGroupItem>
         </>
@@ -137,13 +134,11 @@ const Header = ({ textContent }) => {
                 <NavLink onClick={toggleL} style={{ border: `2px solid ${scrollPosition <= 70 ? '#ffc107' : clr}`, color: clr, fontWeight: "bold" }}>
                     {textContent || 'Login'}
                 </NavLink>
-                <LoginModal isOpenL={isOpenL} toggleL={toggleL} toggleR={toggleR} />
             </span>
             <span className="me-0 register-modal">
                 <NavLink onClick={toggleR} style={{ border: `2px solid ${scrollPosition <= 70 ? '#ffc107' : clr}`, color: clr, fontWeight: "bold" }}>
                     Register
                 </NavLink>
-                <RegisterModal isOpenR={isOpenR} toggleR={toggleR} toggleL={toggleL} />
             </span>
         </>
     )
@@ -179,7 +174,7 @@ const Header = ({ textContent }) => {
                     <span className="me-1 me-md-4">
                         <Link to="/contact" style={{ color: clr, fontWeight: "bold" }}>Contact</Link>
                     </span>
-                    {currentUser ? renderAuthLinks() : renderGuestLinks()}
+                    {user ? renderAuthLinks() : renderGuestLinks()}
                 </div>
             </Navbar>
         </header>

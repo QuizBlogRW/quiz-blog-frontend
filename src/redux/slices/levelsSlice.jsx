@@ -47,7 +47,7 @@ const levelsSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(createLevel.fulfilled, (state, action) => {
-      state.allLevels.push(action.payload)
+      state.allLevels.unshift(action.payload)
       state.isLoading = false
     })
     builder.addCase(updateLevel.fulfilled, (state, action) => {
@@ -55,7 +55,7 @@ const levelsSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(deleteLevel.fulfilled, (state, action) => {
-      state.allLevels = state.allLevels.filter(level => level._id !== action.payload)
+      state.allLevels = state.allLevels.filter(level => level._id !== action.payload._id)
       state.isLoading = false
     })
 

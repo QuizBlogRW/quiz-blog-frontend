@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { Container, Row, Col, Input, Button } from 'reactstrap'
 import { notify } from '@/utils/notifyToast'
 import { verify } from '@/redux/slices/authSlice'
-import QBLoading from '@/components/rLoading/QBLoading'
+import QBLoading from '@/utils/rLoading/QBLoading'
 import SquareAd from '@/components/adsenses/SquareAd'
 import ResponsiveAd from '@/components/adsenses/ResponsiveAd'
 
@@ -22,12 +22,12 @@ export function Verify() {
         e.preventDefault()
 
         if (!localStorage.getItem('emailForOTP')) {
-            notify('Invalid email request, start again!')
+            notify('Invalid email request, start again!', 'error')
             return
         }
 
         if (otp.length !== 6 || isNaN(otp)) {
-            notify('Invalid code!')
+            notify('Invalid code!', 'error')
             return
         }
 

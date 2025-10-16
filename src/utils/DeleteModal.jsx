@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Button, Modal, ModalBody, ModalFooter, NavLink } from 'reactstrap'
-import trash from '../images/trash.svg'
+import trash from '@/images/trash.svg'
 import { useDispatch } from "react-redux"
 
 const DeleteModal = ({ delID, delTitle, deleteFn, deleteFnName }) => {

@@ -38,7 +38,7 @@ const postCategoriesSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(createPostCategory.fulfilled, (state, action) => {
-      state.allPostCategories.push(action.payload)
+      state.allPostCategories.unshift(action.payload)
       state.isLoading = false
     })
     builder.addCase(updatePostCategory.fulfilled, (state, action) => {
@@ -46,7 +46,7 @@ const postCategoriesSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(deletePostCategory.fulfilled, (state, action) => {
-      state.allPostCategories = state.allPostCategories.filter(postCategory => postCategory._id !== action.payload)
+      state.allPostCategories = state.allPostCategories.filter(postCategory => postCategory._id !== action.payload._id)
       state.isLoading = false
     })
 

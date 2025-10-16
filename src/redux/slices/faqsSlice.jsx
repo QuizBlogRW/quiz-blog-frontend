@@ -53,7 +53,7 @@ const faqsSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(createFq.fulfilled, (state, action) => {
-      state.allFaqs.push(action.payload)
+      state.allFaqs.unshift(action.payload)
       state.isLoading = false
     })
     builder.addCase(updateFaq.fulfilled, (state, action) => {
@@ -69,7 +69,7 @@ const faqsSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(deleteFaq.fulfilled, (state, action) => {
-      state.allFaqs = state.allFaqs.filter(faq => faq._id !== action.payload)
+      state.allFaqs = state.allFaqs.filter(faq => faq._id !== action.payload._id)
       state.isLoading = false
     })
 

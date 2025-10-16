@@ -9,7 +9,7 @@ export const getOneImageUpload = createAsyncThunk("imageUploads/getOneImageUploa
   apiCallHelper(`/api/image-uploads/${imageUploadID}`, 'get', null, getState, 'getOneImageUpload'))
 
 export const getImageUploadsByOwner = createAsyncThunk("imageUploads/getImageUploadsByOwner", async (ownerID, { getState }) =>
-  apiCallHelper(`/api/image-uploads/imageOwner/${ownerID}`, 'get', null, getState, 'getImageUploadsByOwner'))
+  apiCallHelper(`/api/image-uploads/image-owner/${ownerID}`, 'get', null, getState, 'getImageUploadsByOwner'))
 
 export const createImageUpload = createAsyncThunk("imageUploads/createImageUpload", async (newImageUpload, { getState }) =>
   apiCallHelperUpload('/api/image-uploads', 'post', newImageUpload, getState, 'createImageUpload'))
@@ -56,7 +56,7 @@ const imageUploadsSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(createImageUpload.fulfilled, (state, action) => {
-      state.allImageUploads.push(action.payload)
+      state.allImageUploads.unshift(action.payload)
       state.isLoading = false
     })
     builder.addCase(updateImageUpload.fulfilled, (state, action) => {
@@ -64,7 +64,7 @@ const imageUploadsSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(deleteImageUpload.fulfilled, (state, action) => {
-      state.allImageUploads = state.allImageUploads.filter(imageUpload => imageUpload._id !== action.payload)
+      state.allImageUploads = state.allImageUploads.filter(imageUpload => imageUpload._id !== action.payload._id)
       state.isLoading = false
     })
 

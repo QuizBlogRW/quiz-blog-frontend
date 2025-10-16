@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { apiCallHelper, handlePending, handleRejected } from '../configHelpers'
-import { socket } from '../../utils/socket'
-import { notify } from '../../utils/notifyToast'
+import { socket } from '@/utils/socket'
+import { notify } from '@/utils/notifyToast'
 
 // Async actions with createAsyncThunk
 export const getContacts = createAsyncThunk("contacts/getContacts", async (pageNo, { getState }) =>
@@ -77,7 +77,7 @@ const contactsSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(sendMsg.fulfilled, (state, action) => {
-      state.allContacts.push(action.payload)
+      state.allContacts.unshift(action.payload)
       state.isLoading = false
     })
     builder.addCase(replyContact.fulfilled, (state, action) => {
@@ -86,7 +86,7 @@ const contactsSlice = createSlice({
       socket.emit('newReply', action.payload)
     })
     builder.addCase(deleteContact.fulfilled, (state, action) => {
-      state.allContacts = state.allContacts.filter(contact => contact._id !== action.payload)
+      state.allContacts = state.allContacts.filter(contact => contact._id !== action.payload._id)
       state.isLoading = false
       notify('Contact deleted', 'success')
     })
@@ -99,7 +99,7 @@ const contactsSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(sendRoomMessage.fulfilled, (state, action) => {
-      state.oneRoomMessages.push(action.payload)
+      state.oneRoomMessages.unshift(action.payload)
       state.isLoading = false
       socket.emit('room_message', action.payload)
     })

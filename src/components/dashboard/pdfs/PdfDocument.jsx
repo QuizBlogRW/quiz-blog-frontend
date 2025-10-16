@@ -1,6 +1,5 @@
-import React from 'react'
 import { Image, Text, View, Page, Document, StyleSheet } from '@react-pdf/renderer';
-import '../../footer/footer.css'
+import '@/components/footer/footer.css'
 import HeaderFooter from './HeaderFooter'
 
 const styles = StyleSheet.create({

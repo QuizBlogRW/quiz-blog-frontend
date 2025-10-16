@@ -18,7 +18,7 @@ export const getOneScore = createAsyncThunk("scores/getOneScore", async (scoreId
   apiCallHelper(`/api/scores/${scoreId}`, 'get', null, getState, 'getOneScore'))
 
 export const getPopularToday = createAsyncThunk("scores/getPopularToday", async (_, { getState }) =>
-  apiCallHelper('/api/scores/popular-quizes', 'get', null, getState, 'getPopularToday'))
+  apiCallHelper('/api/scores/popular-quizzes', 'get', null, getState, 'getPopularToday'))
 
 export const getUserOfMonth = createAsyncThunk("scores/getUserOfMonth", async (_, { getState }) =>
   apiCallHelper('/api/scores/monthly-user', 'get', null, getState, 'getUserOfMonth'))
@@ -41,7 +41,7 @@ const initialState = {
   takerScores: [],
   rankingScores: [],
   creatorScores: [],
-  popularQuizes: [],
+  popularQuizzes: [],
   feedbacks: [],
   isLoading: false,
   error: null
@@ -59,7 +59,7 @@ const scoresSlice = createSlice({
       state.takerScores = []
       state.rankingScores = []
       state.creatorScores = []
-      state.popularQuizes = []
+      state.popularQuizzes = []
       state.feedbacks = []
       state.isLoading = false
     },
@@ -89,7 +89,7 @@ const scoresSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(getPopularToday.fulfilled, (state, action) => {
-      state.popularQuizes = action.payload
+      state.popularQuizzes = action.payload
       state.isLoading = false
     })
     builder.addCase(getUserOfMonth.fulfilled, (state, action) => {
@@ -97,7 +97,7 @@ const scoresSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(createScore.fulfilled, (state, action) => {
-      state.allScores.push(action.payload)
+      state.allScores.unshift(action.payload)
       state.isLoading = false
     })
     builder.addCase(updateScore.fulfilled, (state, action) => {
@@ -105,7 +105,7 @@ const scoresSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(deleteScore.fulfilled, (state, action) => {
-      state.allScores = state.allScores.filter(score => score._id !== action.payload)
+      state.allScores = state.allScores.filter(score => score._id !== action.payload._id)
       state.isLoading = false
     })
 

@@ -47,15 +47,16 @@ const categoriesSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(createCategory.fulfilled, (state, action) => {
-      state.allcategories.push(action.payload)
+      state.allcategories.unshift(action.payload)
       state.isLoading = false
     })
     builder.addCase(updateCategory.fulfilled, (state, action) => {
       state.allcategories = state.allcategories.map(category => category._id === action.payload._id ? action.payload : category)
+      state.oneCategory = action.payload
       state.isLoading = false
     })
     builder.addCase(deleteCategory.fulfilled, (state, action) => {
-      state.allcategories = state.allcategories.filter(category => category._id !== action.payload)
+      state.allcategories = state.allcategories.filter(category => category._id !== action.payload._id)
       state.isLoading = false
     })
 

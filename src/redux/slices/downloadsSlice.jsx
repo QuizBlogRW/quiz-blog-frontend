@@ -56,11 +56,11 @@ const downloadsSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(saveDownload.fulfilled, (state, action) => {
-      state.allDownloads.push(action.payload)
+      state.allDownloads.unshift(action.payload)
       state.isLoading = false
     })
     builder.addCase(deleteDownload.fulfilled, (state, action) => {
-      state.allDownloads = state.allDownloads.filter(download => download._id !== action.payload)
+      state.allDownloads = state.allDownloads.filter(download => download._id !== action.payload._id)
       state.isLoading = false
     })
 

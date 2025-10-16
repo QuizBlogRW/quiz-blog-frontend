@@ -48,7 +48,7 @@ const schoolsSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(createSchool.fulfilled, (state, action) => {
-      state.allSchools.push(action.payload)
+      state.allSchools.unshift(action.payload)
       state.isLoading = false
     })
     builder.addCase(updateSchool.fulfilled, (state, action) => {
@@ -56,7 +56,7 @@ const schoolsSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(deleteSchool.fulfilled, (state, action) => {
-      state.allSchools = state.allSchools.filter(school => school._id !== action.payload)
+      state.allSchools = state.allSchools.filter(school => school._id !== action.payload._id)
       state.isLoading = false
     })
 

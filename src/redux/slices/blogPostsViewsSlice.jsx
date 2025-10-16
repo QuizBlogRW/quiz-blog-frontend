@@ -2,11 +2,11 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { apiCallHelper, handlePending, handleRejected } from '../configHelpers'
 
 // Async actions with createAsyncThunk
-export const getBlogPostsViews = createAsyncThunk("blogPostsViews/getBlogPostsViews", async ({ limit, skip }, { getState }) =>
-  apiCallHelper(`/api/blog-posts-views?limit=${limit}&skip=${skip ? skip : 0}`, 'get', null, getState, 'getBlogPostsViews'))
+export const getBlogPostsViews = createAsyncThunk("blogPostsViews/getBlogPostsViews", (_, { getState }) =>
+  apiCallHelper(`/api/blog-posts-views`, 'get', null, getState, 'getBlogPostsViews'))
 
 export const getRecentTenViews = createAsyncThunk("blogPostsViews/getRecentTenViews", async (_, { getState }) =>
-  apiCallHelper('/api/blog-posts-views/recentTen', 'get', null, getState, 'getRecentTenViews'))
+  apiCallHelper('/api/blog-posts-views/recent-ten-views', 'get', null, getState, 'getRecentTenViews'))
 
 export const getOneBlogPostView = createAsyncThunk("blogPostsViews/getOneBlogPostView", async (id, { getState }) =>
   apiCallHelper(`/api/blog-posts-views/${id}`, 'get', null, getState, 'getOneBlogPostView'))
@@ -58,7 +58,7 @@ const blogPostsViewsSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(createBlogPostView.fulfilled, (state, action) => {
-      state.allBlogPostsViews.push(action.payload)
+      state.allBlogPostsViews.unshift(action.payload)
       state.isLoading = false
     })
     builder.addCase(updateBlogPostView.fulfilled, (state, action) => {
@@ -66,7 +66,7 @@ const blogPostsViewsSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(deleteBlogPostView.fulfilled, (state, action) => {
-      state.allBlogPostsViews = state.allBlogPostsViews.filter(blogPostView => blogPostView._id !== action.payload)
+      state.allBlogPostsViews = state.allBlogPostsViews.filter(blogPostView => blogPostView._id !== action.payload._id)
       state.isLoading = false
     })
 

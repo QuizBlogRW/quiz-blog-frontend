@@ -1,19 +1,19 @@
 import { useState, useEffect, lazy } from 'react'
 import { Button, Col, Row, Form, FormGroup, Input } from 'reactstrap'
-import SquareAd from '../adsenses/SquareAd'
-import { sendMsg } from '../../redux/slices/contactsSlice'
+import SquareAd from '@/components/adsenses/SquareAd'
+import { sendMsg } from '@/redux/slices/contactsSlice'
 import { useDispatch } from "react-redux"
 import './contact.css'
-import mail from '../../../src/images/mail.svg'
+import mail from '@/images/mail.svg'
 import { useSelector } from "react-redux"
-const ResponsiveHorizontal = lazy(() => import('../adsenses/ResponsiveHorizontal'))
+const ResponsiveHorizontal = lazy(() => import('@/components/adsenses/ResponsiveHorizontal'))
+import { notify } from '@/utils/notifyToast'
 
 const Contact = () => {
 
     // Redux
     const dispatch = useDispatch()
-    const auth = useSelector(state => state.auth)
-    const currentUser = auth && auth.user
+    const { user } = useSelector(state => state.auth)
 
     const [state, setState] = useState({
         contact_name: '',
@@ -23,10 +23,10 @@ const Contact = () => {
 
     // Lifecycle methods
     useEffect(() => {
-        if (currentUser) {
-            setState(state => ({ ...state, contact_name: currentUser.name, email: currentUser.email }))
+        if (user) {
+            setState(state => ({ ...state, contact_name: user.name, email: user.email }))
         }
-    }, [currentUser])
+    }, [user])
 
     const onChangeHandler = e => {
         const { name, value } = e.target
@@ -39,16 +39,20 @@ const Contact = () => {
         const { contact_name, email, message } = state
 
         // VALIDATE
-        if (contact_name.length < 3 || email.length < 4 || message.length < 4) {
-            notify('Insufficient info!')
+        if (contact_name.length < 3 || email.length < 4) {
+            notify('Name and email are required!', 'error')
             return
         }
         else if (contact_name.length > 100) {
-            notify('Name is too long!')
+            notify('Name is too long!', 'error')
+            return
+        }
+        else if (message.length < 4) {
+            notify('Insufficient message!', 'error')
             return
         }
         else if (message.length > 1000) {
-            notify('Message is too long!')
+            notify('Message is too long!', 'error')
             return
         }
 
@@ -106,10 +110,10 @@ const Contact = () => {
                 <Col sm="6" className="mb-5">
                     <Form onSubmit={onContact}>
                         <FormGroup>
-                            <Input type="text" name="contact_name" placeholder="Name" minLength="4" maxLength="30" onChange={onChangeHandler} value={state.contact_name} disabled={currentUser} />
+                            <Input type="text" name="contact_name" placeholder="Name" minLength="4" maxLength="30" onChange={onChangeHandler} value={state.contact_name} disabled={user} />
                         </FormGroup>
                         <FormGroup>
-                            <Input type="email" name="email" placeholder="Email" onChange={onChangeHandler} value={state.email} disabled={currentUser} />
+                            <Input type="email" name="email" placeholder="Email" onChange={onChangeHandler} value={state.email} disabled={user} />
                         </FormGroup>
 
                         <FormGroup>

@@ -1,17 +1,17 @@
 import { useEffect } from 'react'
 import { Button } from 'reactstrap'
-import bruce from '../../images/Bruce.jpg'
-import parmenide from '../../images/parmenide.jpg'
-import thierry from '../../images/thierry.jpg'
-import annick from '../../images/annick.jpg'
-import denyse from '../../images/denyse.jpg'
-import instagram from '../../../src/images/instagram.svg'
-import linkedin from '../../../src/images/linkedin.svg'
-import facebook from '../../../src/images/facebook.svg'
-import twitter from '../../../src/images/twitter.svg'
-import whatsapp from '../../../src/images/whatsapp.svg'
-import github from '../../../src/images/github.svg'
-import web from '../../../src/images/web.svg'
+import bruce from '@/images/Bruce.jpg'
+import parmenide from '@/images/parmenide.jpg'
+import thierry from '@/images/thierry.jpg'
+import annick from '@/images/annick.jpg'
+import denyse from '@/images/denyse.jpg'
+import instagram from '@/images/instagram.svg'
+import linkedin from '@/images/linkedin.svg'
+import facebook from '@/images/facebook.svg'
+import twitter from '@/images/twitter.svg'
+import whatsapp from '@/images/whatsapp.svg'
+import github from '@/images/github.svg'
+import web from '@/images/web.svg'
 
 const Biographies = () => {
 
@@ -45,7 +45,7 @@ const Biographies = () => {
     }, [])
 
     return (
-        <>
+        <div className='p-lg-5'>
             <h2 className="fw-bolder text-center my-5">
                 <u style={{ color: "#ffc107", backgroundColor: "#157A6E", padding: "0.8rem 4rem", clipPath: "polygon(0% 0%, 90% 0%, 100% 50%, 90% 100%, 0% 100%)" }}>
                     Meet the team
@@ -263,7 +263,7 @@ const Biographies = () => {
                 </div>
 
             </div>
-        </>
+        </div>
     )
 }
 

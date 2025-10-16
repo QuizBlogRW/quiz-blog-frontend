@@ -46,12 +46,12 @@ const broadcastsSlice = createSlice({
     })
 
     builder.addCase(sendBroadcast.fulfilled, (state, action) => {
-      state.allBroadcasts.push(action.payload)
+      state.allBroadcasts.unshift(action.payload)
       state.isLoading = false
     })
 
     builder.addCase(deleteBroadcast.fulfilled, (state, action) => {
-      state.allBroadcasts = state.allBroadcasts.filter(broadcast => broadcast._id !== action.payload)
+      state.allBroadcasts = state.allBroadcasts.filter(broadcast => broadcast._id !== action.payload._id)
       state.isLoading = false
     })
 

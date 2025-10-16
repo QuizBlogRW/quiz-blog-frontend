@@ -41,7 +41,7 @@ const logsSlice = createSlice({
       isLoading = false
     })
     builder.addCase(deleteLog.fulfilled, (state, action) => {
-      state.logs = state.logs.filter(log => log._id !== action.payload)
+      state.logs = state.logs.filter(log => log._id !== action.payload._id)
       isLoading = false
     })
 

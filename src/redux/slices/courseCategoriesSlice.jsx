@@ -38,7 +38,7 @@ const courseCategoriesSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(createCourseCategory.fulfilled, (state, action) => {
-      state.allCourseCategories.push(action.payload)
+      state.allCourseCategories.unshift(action.payload)
       state.isLoading = false
     })
     builder.addCase(updateCourseCategory.fulfilled, (state, action) => {
@@ -46,7 +46,7 @@ const courseCategoriesSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(deleteCourseCategory.fulfilled, (state, action) => {
-      state.allCourseCategories = state.allCourseCategories.filter(courseCategory => courseCategory._id !== action.payload)
+      state.allCourseCategories = state.allCourseCategories.filter(courseCategory => courseCategory._id !== action.payload._id)
       state.isLoading = false
     })
 

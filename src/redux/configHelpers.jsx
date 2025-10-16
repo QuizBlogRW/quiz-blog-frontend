@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { notify } from '../utils/notifyToast'
+import { notify } from '@/utils/notifyToast'
 
 // Environment-based URLs
 export const qbURL = 'https://myqb-245fdbd30c9b.herokuapp.com/'
@@ -24,38 +24,37 @@ const getApiUrl = () => {
 };
 
 // Axios instance
-const axiosInstance = axios.create({
+export const axiosInstance = axios.create({
     baseURL: getApiUrl(),
-    timeout: 10000, // 10 second timeout
     headers: {
         'Content-Type': 'application/json',
     }
 })
 
-// Log the API URL being used
-console.log('📡 Axios configured with baseURL:', axiosInstance.defaults.baseURL);
-
 // Add request interceptor for debugging
 if (import.meta.env.VITE_DEBUG === 'true') {
     axiosInstance.interceptors.request.use(request => {
-        console.log('🚀 API Request:', request.method?.toUpperCase(), request.url, request?.data);
         return request;
     });
-    
+
+    // Log responses
     axiosInstance.interceptors.response.use(
         response => {
             console.log('✅ API Response:', response.status, response.config?.url);
             return response;
         },
         error => {
-            console.error('❌ API Error:', error.response?.status, error.config?.url, error?.response?.data?.message || error.message);
-            return Promise.reject(error?.response?.data?.message || error.message);
+            if (!error.response?.status) {
+                console.error('❌ API Error:', error);
+            }
+            console.error('❌ API Error:', error.response?.status, error.config?.url);
+            return Promise.reject(error?.response);
         }
     );
 }
 
 // List of action types that doesn't require a reload
-const reloadActionTypes = ['verify', 'login', 'changeStatus']
+const reloadActionTypes = ['verify', 'login']
 const noToastActionTypes = ['loadUser', 'createBlogPostView']
 
 // Default reload timeout
@@ -65,7 +64,7 @@ const RELOAD_TIMEOUT = 4000
 export const apiCallHelper = async (url, method, body, getState, actionType) => {
     try {
         const headers = { 'Content-Type': 'application/json', 'x-auth-token': getState().auth.token }
-        const response = method === 'get' || method === 'delete' 
+        const response = method === 'get' || method === 'delete'
             ? await axiosInstance[method](url, { headers })
             : await axiosInstance[method](url, body, { headers })
 
@@ -76,41 +75,52 @@ export const apiCallHelper = async (url, method, body, getState, actionType) => 
             }
             else {
                 if (!noToastActionTypes.includes(actionType)) {
-                    notify(response.data?.error ? response.data.error : response.data?.msg ? response.data.msg : '✅ Success', 'success')
+                    notify(response.data?.error ? response.data.error : response.data?.msg ? response.data.msg : 'Success', 'success')
                 }
             }
         }
 
         return response?.data
-    } catch (err) {
+    } catch (error) {
+
         // err might be a string from the axios interceptor or an error object
         let errorMessage = 'An error occurred'
-        
-        if (typeof err === 'string') {
+
+        if (typeof error === 'string') {
+
             // This is the processed error message from axios interceptor
-            errorMessage = err
-        } else if (err.response && err.response.data) {
-            // Handle structured error responses
-            errorMessage = err.response.data.error || err.response.data.message || err.message || 'An error occurred'
-            
-            if (err.response.data.error && !noToastActionTypes.includes(actionType)) {
-                console.log(err.response.data)
-                notify(err.response.data.error, 'error')
-                if (err.response.data.id == 'CONFIRM_ERR') {
-                    throw new Error('CONFIRM_ERR')
+            errorMessage = error
+        } else if (error && error.data) {
+
+            // Handle structured errors
+            if (error.data.message) {
+
+                errorMessage = error.data.message
+                if (!noToastActionTypes.includes(actionType)) {
+                    notify(errorMessage, 'error')
                 }
+            }
+            else {
+                errorMessage = 'An error with data occurred'
+                // console.log(`\n\n${errorMessage}:\n${error.data}`)
+            }
+
+            if (error.data.id == 'CONFIRM_ERR') {
+                throw new Error('CONFIRM_ERR')
             }
         } else {
             // Fallback to error message
-            errorMessage = err.message || 'An error occurred'
+            errorMessage = 'An error occurred'
+            // console.log(`\n\n${errorMessage}:\n${error}`)
         }
-        
+
         // Throw the correct error message
         throw new Error(errorMessage)
     }
 }
 
 // API call helper function to make async actions with createAsyncThunk for file uploads
+// TODO: Add error handling as done in apiCallHelper
 export const apiCallHelperUpload = async (url, method, formData, getState, actionType) => {
     try {
         const response = await axiosInstance[method](url, formData, {
@@ -122,11 +132,11 @@ export const apiCallHelperUpload = async (url, method, formData, getState, actio
         }
 
         return response?.data
-    } catch (err) {
-        if (err.response && err.response.data && err.response.data.error && !noToastActionTypes.includes(actionType)) {
-            notify(err.response?.data?.error, 'error')
+    } catch (error) {
+        if (error.response && error.response.data && error.response.data.error && !noToastActionTypes.includes(actionType)) {
+            notify(error.response?.data?.error, 'error')
         }
-        return Promise.reject(err.response?.data?.error)
+        return Promise.reject(error.response?.data?.error)
     }
 }
 
@@ -137,8 +147,8 @@ export const handlePending = (state) => {
 
 export const handleRejected = (state, action) => {
     state.isLoading = false;
-    state.error = action.error?.message || 'An error occurred';
-    
+    state.error = action.error || `An error occurred.`;
+
     // Log error for debugging
-    console.error('API call failed:', action.error?.message || action.error);
+    // console.error(`API call failed for action type: ${action.type}`, action?.error?.message || action.error);
 };

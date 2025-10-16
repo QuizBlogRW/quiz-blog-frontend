@@ -1,34 +1,33 @@
-import { useState, useEffect, useContext } from 'react'
-import { Button, Row, Col, Form, FormGroup, Label, Input, Breadcrumb, BreadcrumbItem } from 'reactstrap'
+import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from "react-redux"
-import { updateProfile } from '../../redux/slices/authSlice'
-import { getSchools } from '../../redux/slices/schoolsSlice'
-import { fetchSchoolLevels } from '../../redux/slices/levelsSlice'
-import { fetchLevelFaculties } from '../../redux/slices/facultiesSlice'
-import { logRegContext } from '../../appContexts'
-import QBLoadingSM from '../rLoading/QBLoadingSM'
+import { Button, Row, Col, Form, FormGroup, Label, Input, Breadcrumb, BreadcrumbItem } from 'reactstrap'
+import { updateProfile } from '@/redux/slices/authSlice'
+import { getSchools } from '@/redux/slices/schoolsSlice'
+import { fetchSchoolLevels } from '@/redux/slices/levelsSlice'
+import { fetchLevelFaculties } from '@/redux/slices/facultiesSlice'
+import NotAuthenticated from "@/components/auth/NotAuthenticated";
+import { notify } from '@/utils/notifyToast'
 
 const EditProfile = () => {
 
     const { userId } = useParams()
     const dispatch = useDispatch()
 
-    const { currentUser, isAuthenticated, isLoading } = useSelector(state => state.auth)
-    const { toggleL } = useContext(logRegContext)
+    const { user, isAuthenticated } = useSelector(state => state.auth)
     const schools = useSelector(state => state.schools && state.schools.allSchools)
     const schoolLevels = useSelector(state => state.levels && state.levels.schoolLevels)
     const levelFaculties = useSelector(state => state.faculties && state.faculties.levelFaculties)
 
-    const [profileState, setProfileState] = useState(currentUser || {})
-    const [interestsState, setInterestsState] = useState(currentUser?.interests || [])
+    const [profileState, setProfileState] = useState(user || {})
+    const [interestsState, setInterestsState] = useState(user?.interests || [])
     const [yearsState, setYearsState] = useState([])
 
     useEffect(() => {
 
-        setProfileState(currentUser || {})
-        setInterestsState(currentUser?.interests || [])
-    }, [currentUser])
+        setProfileState(user || {})
+        setInterestsState(user?.interests || [])
+    }, [user])
 
     useEffect(() => {
         dispatch(getSchools())
@@ -87,18 +86,18 @@ const EditProfile = () => {
         e.preventDefault()
         const { name, school, level, faculty, year, about } = profileState
 
-        if (name.length < 4) return notify('Insufficient info!')
-        if (school && (!year || !faculty || !level)) return notify('Year, Faculty & Level required!')
-        if (about.length > 2000) return notify('Too long!')
+        if (name.length < 4) return notify('Insufficient info!', 'error')
+        if (school && (!year || !faculty || !level)) return notify('Year, Faculty & Level required!', 'error')
+        if (about.length > 2000) return notify('too long!', 'error')
         if (interestsState.length > 20) return alert('Limit reached!')
 
         const updatedProfile = {
             uId: userId,
             name,
-            school: school || null,
-            level: level || null,
-            faculty: faculty || null,
-            year: year || null,
+            school,
+            level,
+            faculty,
+            year,
             interests: interestsState,
             about
         }
@@ -110,8 +109,8 @@ const EditProfile = () => {
             <Form className="my-3 mt-lg-5 mx-3 mx-lg-5 edit-question" onSubmit={handleSubmit}>
                 <Row className="mb-0 mb-lg-3 mx-0">
                     <Breadcrumb>
-                        <BreadcrumbItem>{currentUser?.name}</BreadcrumbItem>
-                        <BreadcrumbItem>{currentUser?.email}</BreadcrumbItem>
+                        <BreadcrumbItem>{user?.name}</BreadcrumbItem>
+                        <BreadcrumbItem>{user?.email}</BreadcrumbItem>
                         <BreadcrumbItem active>Edit Profile</BreadcrumbItem>
                     </Breadcrumb>
                 </Row>
@@ -174,7 +173,7 @@ const EditProfile = () => {
                         </Input>
                     </Col>
                     <Col sm={2}>
-                        <Input disabled type="text" value={''} />
+                        <Input disabled type="text" value={profileState.year || ''} />
                     </Col>
                 </FormGroup>
 
@@ -215,13 +214,7 @@ const EditProfile = () => {
                     </Col>
                 </FormGroup>
             </Form> :
-            <div className="vh-100 d-flex justify-content-center align-items-center text-danger">
-                {isLoading ? <QBLoadingSM /> :
-                    <Button color="link" className="fw-bolder my-5 border rounded" onClick={toggleL} style={{ backgroundColor: "#ffc107", color: "#157A6E", fontSize: "1.5vw", boxShadow: "-2px 2px 1px 2px #157A6E", border: "2px solid #157A6E" }}>
-                        Login first
-                    </Button>
-                }
-            </div>
+            <NotAuthenticated />
     )
 }
 

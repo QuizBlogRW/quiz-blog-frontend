@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { apiCallHelper, handlePending, handleRejected } from '../configHelpers'
-import { notify } from '../../utils/notifyToast'
+import { notify } from '@/utils/notifyToast'
 
 // Async actions with createAsyncThunk
 export const getSubscribers = createAsyncThunk("subscribers/getSubscribers", async (_, { getState }) =>
@@ -36,12 +36,12 @@ const subscribersSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(subscribeToPosts.fulfilled, (state, action) => {
-      state.subscribedUsers.push(action.payload)
+      state.subscribedUsers.unshift(action.payload)
       state.isLoading = false
       notify('Thank for subscribing to our posts!')
     })
     builder.addCase(deleteSubscriber.fulfilled, (state, action) => {
-      state.subscribedUsers = state.subscribedUsers.filter(subscriber => subscriber.email !== action.payload)
+      state.subscribedUsers = state.subscribedUsers.filter(subscriber => subscriber.email !== action.payload.email)
       state.isLoading = false
     })
 

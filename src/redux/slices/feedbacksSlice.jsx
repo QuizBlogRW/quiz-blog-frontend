@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { apiCallHelper, handlePending, handleRejected } from '../configHelpers'
-import { notify } from '../../utils/notifyToast'
+import { notify } from '@/utils/notifyToast'
 
 // Async actions with createAsyncThunk
 export const getFeedbacks = createAsyncThunk("feedbacks/getFeedbacks", async (pageNo, { getState }) =>
@@ -36,7 +36,7 @@ const feedbackSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(saveFeedback.fulfilled, (state, action) => {
-      state.allFeedbacks.push(action.payload)
+      state.allFeedbacks.unshift(action.payload)
       state.isLoading = false
       notify('Your feedback has been received!')
     })

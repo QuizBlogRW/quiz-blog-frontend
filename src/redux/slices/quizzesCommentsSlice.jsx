@@ -14,8 +14,8 @@ export const getOneComment = createAsyncThunk("quizzesComments/getOneComment", a
 export const createComment = createAsyncThunk("quizzesComments/createComment", async (newComment, { getState }) =>
   apiCallHelper('/api/quizzes-comments', 'post', newComment, getState, 'createComment'))
 
-export const updateComment = createAsyncThunk("quizzesComments/updateComment", async (updatedComment, { getState }) =>
-  apiCallHelper(`/api/quizzes-comments/${updatedComment.commentID}`, 'put', updatedComment, getState, 'updateComment'))
+export const approveRejectComment = createAsyncThunk("quizzesComments/approveRejectComment", async ({ commentID, status }, { getState }) =>
+  apiCallHelper(`/api/questions-comments/approve-reject/${commentID}`, 'put', status, getState, 'approveRejectComment'))
 
 export const deleteComment = createAsyncThunk("quizzesComments/deleteComment", async (commentId, { getState }) =>
   apiCallHelper(`/api/quizzes-comments/${commentId}`, 'delete', null, getState, 'deleteComment'))
@@ -34,19 +34,22 @@ const initialState = {
   error: null
 }
 
-const handlePending = (state, actionType) => {
-  state.isLoading[actionType] = true;
-};
+// Helper function to handle fulfilled cases
+const handleFulfilled = (state, action, key) => {
+  state[key] = action.payload
+  state.isLoading[key] = false
+}
 
-const handleFulfilled = (state, action, actionType, dataKey) => {
-  state[dataKey] = action.payload;
-  state.isLoading[actionType] = false;
-};
+// Helper function to handle pending cases
+const handlePending = (state, key) => {
+  state.isLoading[key] = true
+}
 
-const handleRejected = (state, action, actionType) => {
-  state.isLoading[actionType] = false;
-  state.error = action.error.message;
-};
+// Helper function to handle rejected cases
+const handleRejected = (state, action, key) => {
+  state.isLoading[key] = false
+  state.error = action.error.message
+}
 
 const quizzesCommentsSlice = createSlice({
   name: 'quizzesComments',
@@ -55,37 +58,31 @@ const quizzesCommentsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getAllQuizzesComments.pending, (state) => handlePending(state, 'allQuizzesComments'))
-      .addCase(getAllQuizzesComments.fulfilled, (state, action) => handleFulfilled(state, action, 'allQuizzesComments', 'allQuizzesComments'))
+      .addCase(getAllQuizzesComments.fulfilled, (state, action) => handleFulfilled(state, action, 'allQuizzesComments'))
       .addCase(getAllQuizzesComments.rejected, (state, action) => handleRejected(state, action, 'allQuizzesComments'))
 
-      .addCase(getOneQuizComments.pending, (state) => handlePending(state, 'quizzesComments'))
-      .addCase(getOneQuizComments.fulfilled, (state, action) => handleFulfilled(state, action, 'quizzesComments', 'oneQuizComments'))
-      .addCase(getOneQuizComments.rejected, (state, action) => handleRejected(state, action, 'quizzesComments'))
+      .addCase(getOneQuizComments.pending, (state) => handlePending(state, 'oneQuizComments'))
+      .addCase(getOneQuizComments.fulfilled, (state, action) => handleFulfilled(state, action, 'oneQuizComments'))
+      .addCase(getOneQuizComments.rejected, (state, action) => handleRejected(state, action, 'oneQuizComments'))
 
       .addCase(getOneComment.pending, (state) => handlePending(state, 'oneComment'))
-      .addCase(getOneComment.fulfilled, (state, action) => handleFulfilled(state, action, 'oneComment', 'oneComment'))
+      .addCase(getOneComment.fulfilled, (state, action) => handleFulfilled(state, action, 'oneComment'))
       .addCase(getOneComment.rejected, (state, action) => handleRejected(state, action, 'oneComment'))
 
-      .addCase(createComment.pending, (state) => handlePending(state, 'allQuizzesComments'))
-      .addCase(createComment.fulfilled, (state, action) => {
-        state.allQuizzesComments.push(action.payload);
-        state.isLoading.allQuizzesComments = false;
-      })
-      .addCase(createComment.rejected, (state, action) => handleRejected(state, action, 'allQuizzesComments'))
+      .addCase(createComment.pending, (state) => handlePending(state, 'comment'))
+      .addCase(createComment.fulfilled, (state, action) => handleFulfilled(state, action, 'comment'))
+      .addCase(createComment.rejected, (state, action) => handleRejected(state, action, 'comment'))
 
-      .addCase(updateComment.pending, (state) => handlePending(state, 'allQuizzesComments'))
-      .addCase(updateComment.fulfilled, (state, action) => {
-        state.allQuizzesComments = state.allQuizzesComments.map(comment => comment._id === action.payload._id ? action.payload : comment);
-        state.isLoading.allQuizzesComments = false;
-      })
-      .addCase(updateComment.rejected, (state, action) => handleRejected(state, action, 'allQuizzesComments'))
+      .addCase(approveRejectComment.pending, (state) => handlePending(state, 'comment'))
+      .addCase(approveRejectComment.fulfilled, (state, action) => handleFulfilled(state, action, 'comment'))
+      .addCase(approveRejectComment.rejected, (state, action) => handleRejected(state, action, 'comment'))
 
-      .addCase(deleteComment.pending, (state) => handlePending(state, 'allQuizzesComments'))
+      .addCase(deleteComment.pending, (state) => handlePending(state, 'comment'))
       .addCase(deleteComment.fulfilled, (state, action) => {
-        state.allQuizzesComments = state.allQuizzesComments.filter(comment => comment._id !== action.payload);
+        state.allQuizzesComments = state.allQuizzesComments.filter(comment => comment._id !== action.payload._id);
         state.isLoading.allQuizzesComments = false;
       })
-      .addCase(deleteComment.rejected, (state, action) => handleRejected(state, action, 'allQuizzesComments'));
+      .addCase(deleteComment.rejected, (state, action) => handleRejected(state, action, 'comment'));
   }
 });
 

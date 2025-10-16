@@ -47,7 +47,7 @@ const facultiesSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(createFaculty.fulfilled, (state, action) => {
-      state.allFaculties.push(action.payload)
+      state.allFaculties.unshift(action.payload)
       state.isLoading = false
     })
     builder.addCase(updateFaculty.fulfilled, (state, action) => {
@@ -55,7 +55,7 @@ const facultiesSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(deleteFaculty.fulfilled, (state, action) => {
-      state.allFaculties = state.allFaculties.filter(faculty => faculty._id !== action.payload)
+      state.allFaculties = state.allFaculties.filter(faculty => faculty._id !== action.payload._id)
       state.isLoading = false
     })
 

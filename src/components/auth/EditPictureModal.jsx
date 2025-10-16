@@ -1,21 +1,18 @@
 import { useState } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, UncontrolledTooltip } from 'reactstrap'
-import uploadimage from '../../images/uploadimage.svg'
-import { updateProfileImage } from '../../redux/slices/authSlice'
+import uploadimage from '@/images/uploadimage.svg'
+import { updateProfileImage } from '@/redux/slices/authSlice'
 import { useSelector, useDispatch } from "react-redux"
-import ImageWithFallback from '../../utils/ImageWithFallback'
+import ImageWithFallback from '@/utils/ImageWithFallback'
+import { notify } from '@/utils/notifyToast'
 
 const EditPictureModal = ({ bgColor, clr }) => {
 
   const dispatch = useDispatch()
-
-  // Get the user id and image from the auth
-  const auth = useSelector(state => state.auth)
-  const currentUser = auth && auth.user
-  const uId = currentUser && currentUser._id
-  const userImage = currentUser && currentUser.image
+  const { user } = useSelector(state => state.auth)
+  const userImage = user && user.image
   const [profileImageState, setProfileImageState] = useState()
-  
+
   //properties of the modal
   const [modal, setModal] = useState(false)
 
@@ -23,7 +20,7 @@ const EditPictureModal = ({ bgColor, clr }) => {
   const toggle = () => setModal(!modal)
 
   const onFileHandler = (e) => {
-    if (currentUser) { // Check if currentUser is not null
+    if (user) { // Check if user is not null
       setProfileImageState(e.target.files[0]);
     }
   }
@@ -35,7 +32,7 @@ const EditPictureModal = ({ bgColor, clr }) => {
 
     // VALIDATE
     if (!profileImageState) {
-      notify('The image is required!')
+      notify('The image is required!', 'error')
       return
     }
 
@@ -43,7 +40,7 @@ const EditPictureModal = ({ bgColor, clr }) => {
     formData.append('profile_image', profileImageState)
 
     // Attempt to upload
-    dispatch(updateProfileImage({ formData, uId }))
+    dispatch(updateProfileImage({ formData, uId: user?._id }))
   }
 
   return (
@@ -52,11 +49,11 @@ const EditPictureModal = ({ bgColor, clr }) => {
         <ImageWithFallback
           src={userImage}
           fallbackSrc={uploadimage}
-          alt="profile illustration"
-          id="UncontrolledTooltipExample"
+          alt="profile image"
+          id="profileTootTip"
         />
 
-        <UncontrolledTooltip placement="bottom" target="UncontrolledTooltipExample" transition={{ timeout: 150 }}>
+        <UncontrolledTooltip placement="bottom" target="profileTootTip">
           Click to update profile image
         </UncontrolledTooltip>
       </span>

@@ -1,8 +1,7 @@
-import React from 'react'
 import { Button, Modal, ModalBody, DropdownItem } from 'reactstrap'
-import { logout } from '../../redux/slices/authSlice'
+import { logout } from '@/redux/slices/authSlice'
 import { useDispatch } from "react-redux"
-import powerOff from '../../images/power-off.svg'
+import powerOff from '@/images/power-off.svg'
 
 const Logout = ({ userId, logoutModal, toggleLogoutModal }) => {
 

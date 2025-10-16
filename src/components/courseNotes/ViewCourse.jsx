@@ -1,26 +1,23 @@
-import { useEffect, useState, useContext } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
-import CourseNotes from './notes/CourseNotes'
-import AddChapter from './AddChapter'
-import EditChapterModal from './EditChapterModal'
-import { getChaptersByCourse, deleteChapter } from '../../redux/slices/chaptersSlice'
-import { getOneCourse } from '../../redux/slices/coursesSlice'
+import CourseNotes from '@/components/dashboard/courses/notes/CourseNotes'
+import AddChapter from '@/components/dashboard/courses/AddChapter'
+import EditChapterModal from '@/components/dashboard/courses/EditChapterModal'
+import { getChaptersByCourse, deleteChapter } from '@/redux/slices/chaptersSlice'
+import { getOneCourse } from '@/redux/slices/coursesSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import { Container, Card, Button, CardTitle, CardText, Alert, Breadcrumb, BreadcrumbItem } from 'reactstrap'
-import QBLoadingSM from '../rLoading/QBLoadingSM'
-import { logRegContext } from '../../appContexts'
-import DeleteModal from '../../utils/DeleteModal'
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM'
+import DeleteModal from '@/utils/DeleteModal'
+import NotAuthenticated from "@/components/auth/NotAuthenticated";
 
 const ViewCourse = () => {
 
     const dispatch = useDispatch()
     const chaptersBy = useSelector(state => state.chapters)
     const oneCourse = useSelector(state => state.courses)
-    const auth = useSelector(state => state.auth)
-    const currentUser = auth && auth.user
-    const { toggleL } = useContext(logRegContext)
-
+    const { user, isAuthenticated } = useSelector(state => state.auth)
     const [activeIndex, setActiveIndex] = useState(null)
 
     const collapse = index => {
@@ -37,17 +34,8 @@ const ViewCourse = () => {
 
     return (
 
-        !auth.isAuthenticated ?
-            // If not authenticated or loading
-            <div className="vh-100 d-flex justify-content-center align-items-center text-danger">
-                {
-                    auth.isLoading ?
-                        <QBLoadingSM /> :
-                        <Button color="link" className="fw-bolder my-5 border rounded" onClick={toggleL} style={{ backgroundColor: "#ffc107", color: "#157A6E", fontSize: "1.5vw", boxShadow: "-2px 2px 1px 2px #157A6E", border: "2px solid #157A6E" }}>
-                            Login first
-                        </Button>
-                }
-            </div> :
+        !isAuthenticated ?
+            <NotAuthenticated /> :
 
             <Container className="mt-2 py-2 py-lg-5 view-course-container">
                 <Alert color="success" style={{ backgroundColor: "#157A6E", border: "1px solid #157A6E", color: "#fff" }}>
@@ -61,7 +49,7 @@ const ViewCourse = () => {
                                 Chapters
                             </BreadcrumbItem>
                         </>
-                        {currentUser.role !== 'Visitor' ?
+                        {user.role !== 'Visitor' ?
                             <Button outline color="warning" className="ms-auto">
                                 <strong><AddChapter course={oneCourse.oneCourse} /></strong>
                             </Button> : null}
@@ -89,7 +77,7 @@ const ViewCourse = () => {
 
                                 <CardTitle tag="h5" className="fw-bolder mb-0 d-flex">
                                     Chapter - {index + 1}.&nbsp;{chapter.title}
-                                    {currentUser.role !== 'Visitor' ?
+                                    {user.role !== 'Visitor' ?
 
                                         <span className="ms-auto">
                                             <Button size="sm" color="link" className="mx-2">
@@ -127,7 +115,7 @@ const ViewCourse = () => {
 
                         <Alert color="danger" className="d-flex justify-content-between" style={{ border: "1px solid #157A6E" }}>
                             <strong>No chapters yet for this course!</strong>
-                            {currentUser.role !== 'Visitor' ?
+                            {user.role !== 'Visitor' ?
                                 <Button outline color="success">
                                     <strong><AddChapter course={oneCourse.oneCourse} /></strong>
                                 </Button> : null}

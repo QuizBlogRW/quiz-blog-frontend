@@ -4,52 +4,55 @@ import { Toast } from 'reactstrap'
 import ReactGA from "react-ga4"
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { logRegContext } from './appContexts'
-import { getCategories, getCourseCategories, getLandingDisplayNotes, loadUser } from './redux/slices'
+import { logRegContext } from '@/contexts/appContexts'
+import { getCategories, getCourseCategories, getLandingDisplayNotes, loadUser } from '@/redux/slices'
 import { useSelector, useDispatch } from "react-redux"
-import ForgotPassword from './components/auth/ForgotPassword'
-import ResetPassword from './components/auth/ResetPassword'
-import Unsubscribe from './components/auth/Unsubscribe'
-import EditProfile from './components/auth/EditProfile'
-import Subscribers from './components/users/Subscribers'
-import Contact from './components/contacts/Contact'
-import ChatWrapper from './components/contacts/ChatWrapper'
-import FaqCollapse from './components/faqs/FaqCollapse'
-import About from './components/about/About'
-import Privacy from './components/others/Privacy'
-import Disclaimer from './components/others/Disclaimer'
-import NotFound404 from './components/others/NotFound404'
-import QBLoading from './components/rLoading/QBLoading'
-import SingleCategory from './components/categories/SingleCategory'
-import AllCategories from './components/categories/AllCategories'
-import QuizQuestions from './components/quizes/QuizQuestions'
-import QuizResults from './components/quizes/questionsScore/QuizResults'
-import GetReady from './components/quizes/GetReady'
-import ReviewQuiz from './components/quizes/review/ReviewQuiz'
-import QuizRanking from './components/quizes/QuizRanking'
-import CreateQuestions from './components/questions/CreateQuestions'
-import SingleQuestion from './components/questions/SingleQuestion'
-import EditQuestion from './components/questions/EditQuestion'
-import Broadcasts from './components/broadcasts/Broadcasts'
-import Dashboard from './components/dashboard/Dashboard'
-import Index from './components/courseNotes/Index'
-import ViewCourse from './components/courseNotes/ViewCourse'
-import SchoolsLanding from './components/schools/SchoolsLanding'
-import AllBlogPosts from './components/blog/public/AllBlogPosts'
-import AddBlogPost from './components/blog/blogPosts/AddBlogPost'
-import EditBlogPost from './components/blog/blogPosts/EditBlogPost'
-import ViewBlogPost from './components/blog/public/ViewBlogPost'
-import ByCategory from './components/blog/public/ByCategory'
-import UsersStats from './components/statistics/content/users/UsersStats'
-import BlogStats from './components/statistics/content/blogposts/BlogStats'
-import Verify from './components/auth/Verify'
 
-const Header = lazy(() => import('./components/header/Header'))
-const Footer = lazy(() => import('./components/footer/Footer'))
-const Statistics = lazy(() => import('./components/statistics/Statistics'))
-const Posts = lazy(() => import('./components/posts/Posts'))
-const AllPosts = lazy(() => import('./components/posts/AllPosts'))
-const ViewNotePaper = lazy(() => import('./components/posts/notes/ViewNotePaper'))
+import ForgotPassword from '@/components/auth/ForgotPassword'
+import ResetPassword from '@/components/auth/ResetPassword'
+import Unsubscribe from '@/components/auth/Unsubscribe'
+import EditProfile from '@/components/auth/EditProfile'
+import Subscribers from '@/components/dashboard/users/Subscribers'
+import Contact from '@/components/contacts/Contact'
+import ChatWrapper from '@/components/dashboard/contacts/ChatWrapper'
+import FaqCollapse from '@/components/faqs/FaqCollapse'
+import About from '@/components/about/About'
+import Privacy from '@/components/misc/Privacy'
+import Disclaimer from '@/components/misc/Disclaimer'
+import NotFound404 from '@/components/misc/NotFound404'
+import QBLoading from '@/utils/rLoading/QBLoadingSM'
+import SingleCategory from '@/components/home/categories/SingleCategory'
+import AllCategories from '@/components/home/categories/AllCategories'
+import QuizQuestions from '@/components/quizzes/QuizQuestions'
+import QuizResults from '@/components/quizzes/questionsScore/QuizResults'
+import GetReady from '@/components/quizzes/GetReady'
+import ReviewQuiz from '@/components/quizzes/review/ReviewQuiz'
+import QuizRanking from '@/components/quizzes/QuizRanking'
+import CreateQuestions from '@/components/dashboard/quizzing/questions/CreateQuestions'
+import SingleQuestion from '@/components/dashboard/quizzing/questions/SingleQuestion'
+import EditQuestion from '@/components/dashboard/quizzing/questions/EditQuestion'
+import Broadcasts from '@/components/dashboard/contacts/broadcasts/Broadcasts'
+import Dashboard from '@/components/dashboard/Dashboard'
+import Index from '@/components/dashboard/courses/Index'
+import ViewCourse from '@/components/courseNotes/ViewCourse'
+import Feedbacks from '@/components/dashboard/scores/Feedbacks'
+import AllBlogPosts from '@/components/blog/AllBlogPosts'
+import AddBlogPost from '@/components/dashboard/posts/blog/AddBlogPost'
+import EditBlogPost from '@/components/dashboard/posts/blog/EditBlogPost'
+import ViewBlogPost from '@/components/blog/ViewBlogPost'
+import ByCategory from '@/components/blog/ByCategory'
+import UsersStats from '@/components/dashboard/statistics/content/users/UsersStats'
+import BlogStats from '@/components/dashboard/statistics/content/blogposts/BlogStats'
+import Verify from '@/components/auth/Verify'
+
+const Header = lazy(() => import('@/components/header/Header'))
+const LoginModal = lazy(() => import('@/components/auth/LoginModal'))
+const RegisterModal = lazy(() => import('@/components/auth/RegisterModal'))
+const Footer = lazy(() => import('@/components/footer/Footer'))
+const Statistics = lazy(() => import('@/components/dashboard/statistics/Statistics'))
+const Posts = lazy(() => import('@/components/home/Posts'))
+const AllPosts = lazy(() => import('@/components/home/AllPosts'))
+const ViewNotePaper = lazy(() => import('@/components/home/notes/ViewNotePaper'))
 
 ReactGA.initialize('G-GXLLDMB41B', {
     debug: true,
@@ -88,17 +91,14 @@ const App = () => {
         dispatch(getLandingDisplayNotes())
     }, [dispatch])
 
-    const auth = useSelector(state => state.auth)
-    const currentUser = auth && auth.user
-    const categories = useSelector(state => state.categories)
-    const courseCategories = useSelector(state => state.courseCategories)
+    const { user } = useSelector(state => state.auth)
 
     useEffect(() => {
 
-        if (currentUser) {
+        if (user) {
 
-            const NonEmptyFields = Object.keys(currentUser).filter(key => currentUser[key]).length
-            const percent = (NonEmptyFields - 4) * 10
+            const NonEmptyFields = Object.keys(user).filter(key => user[key]).length
+            const percent = (NonEmptyFields - 2) * 10
 
             if (percent > 0 && percent < 100) {
 
@@ -106,19 +106,19 @@ const App = () => {
                 setModal(true)
             }
         }
-    }, [currentUser])
+    }, [user])
 
     return (
         <logRegContext.Provider value={{ isOpenL, toggleL, isOpenR, toggleR }}>
             <Suspense fallback={<QBLoading />}>
-                <Toast isOpen={modal} className={`w-100 popup-toast`} timeout={500}>
+                <Toast isOpen={modal} className={`w-100 popup-toast`} fade={false}>
                     <div className="bg-warning py-2 px-3 d-flex justify-content-between align-items-center">
                         <p className='text-danger text-center fw-bolder d-block mb-0'>
                             &nbsp;&nbsp;Your profile is {`${percentage}`} % up to date!
                             &nbsp;&nbsp;
-                            <Link to={`/edit-profile/${auth.user && auth.user._id}`}>
+                            <Link to={`/edit-profile/${user && user._id}`}>
                                 <strong className='px-1' style={{ color: '#157A6E', textDecoration: 'underline' }}>
-                                    Consider updating ...
+                                    Updating your picture + details...
                                 </strong>
                             </Link>
                         </p>
@@ -128,6 +128,9 @@ const App = () => {
                     </div>
                 </Toast>
                 <Header />
+                {/* Modals will be opened from anywhere in children since they are global */}
+                <LoginModal />
+                <RegisterModal />
                 <Routes fallback={<QBLoading />}>
                     <Route path="/about" element={<About />} />
                     <Route path="/privacy" element={<Privacy />} />
@@ -152,7 +155,7 @@ const App = () => {
                     <Route path="/all-categories" element={<AllCategories />} />
                     <Route path="/course-notes" element={<Index />} />
                     <Route exact path="/view-course/:courseId" element={<ViewCourse />} />
-                    <Route exact path="/schools" element={<SchoolsLanding />} />
+                    <Route exact path="/feedbacks" element={<Feedbacks />} />
                     <Route exact path="/subscribers" element={<Subscribers />} />
                     <Route exact path="/broadcasts" element={<Broadcasts />} />
                     <Route exact path="/blog" element={<AllBlogPosts />} />
@@ -174,11 +177,11 @@ const App = () => {
                         <Route path="/statistics/with-interests" element={<UsersStats />} />
                         <Route path="/statistics/with-about" element={<UsersStats />} />
                         <Route path="/statistics/all-users" element={<UsersStats />} />
-                        <Route path="/statistics/top-100-quizzing" element={<UsersStats />} />
-                        <Route path="/statistics/top-100-downloaders" element={<UsersStats />} />
-                        <Route path="/statistics/top-20-quizzes" element={<UsersStats />} />
+                        <Route path="/statistics/top-10-quizzing-users" element={<UsersStats />} />
+                        <Route path="/statistics/top-10-downloaders" element={<UsersStats />} />
+                        <Route path="/statistics/top-10-quizzes" element={<UsersStats />} />
                         <Route path="/statistics/quizzes-stats" element={<UsersStats />} />
-                        <Route path="/statistics/top-20-notes" element={<UsersStats />} />
+                        <Route path="/statistics/top-10-notes" element={<UsersStats />} />
                         <Route path="/statistics/notes-stats" element={<UsersStats />} />
                         <Route path="/statistics/quiz-categories-stats" element={<UsersStats />} />
                         <Route path="/statistics/notes-categories-stats" element={<UsersStats />} />

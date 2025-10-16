@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { apiCallHelper, apiCallHelperUpload, handlePending, handleRejected } from '../configHelpers'
-import { notify } from '../../utils/notifyToast'
+import { notify } from '@/utils/notifyToast'
 
 // Async actions with createAsyncThunk
 export const loadUser = createAsyncThunk("auth/loadUser", async (_, { getState }) =>
@@ -154,12 +154,17 @@ const authSlice = createSlice({
       state.adminsCreators = action.payload
     })
     builder.addCase(updateUser.fulfilled, (state, action) => {
+      state.users = state.users.map(user => user._id === action.payload._id ? action.payload : user)
+      state.adminsCreators = state.adminsCreators.map(user => user._id === action.payload._id ? action.payload : user)
+      state.latestUsers = state.latestUsers.map(user => user._id === action.payload._id ? action.payload : user)
       state.isLoading = false
-      state.user = action.payload
+      state.isLoadingUsers = false
+      state.isLoadingLatestUsers = false
+      state.isLoadingAdminsCreators = false
     })
     builder.addCase(updateProfile.fulfilled, (state, action) => {
       state.isLoading = false
-      state.user = action.payload.user
+      state.user = action.payload
     })
     builder.addCase(updateProfileImage.fulfilled, (state, action) => {
       state.isLoading = false
@@ -177,8 +182,13 @@ const authSlice = createSlice({
       notify('Password reset successful! Please login with your new password.')
     })
     builder.addCase(deleteUser.fulfilled, (state, action) => {
+      state.users = state.users.filter(user => user._id !== action.payload._id)
+      state.latestUsers = state.latestUsers.filter(user => user._id !== action.payload._id)
+      state.adminsCreators = state.adminsCreators.filter(user => user._id !== action.payload._id)
       state.isLoading = false
-      state.users = state.users.filter(user => user._id !== action.payload)
+      state.isLoadingUsers = false
+      state.isLoadingLatestUsers = false
+      state.isLoadingAdminsCreators = false
     })
 
     // Pending actions

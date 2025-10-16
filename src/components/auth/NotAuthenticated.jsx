@@ -1,18 +1,20 @@
 import { useContext } from 'react'
-import QBLoadingSM from '../rLoading/QBLoadingSM'
+import { useSelector } from 'react-redux'
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM'
 import { Button } from 'reactstrap'
-import { logRegContext } from '../../appContexts'
+import { logRegContext } from '@/contexts/appContexts'
 import './NotAuthenticated.css'
 
-const NotAuthenticated = ({ auth }) => {
+const NotAuthenticated = () => {
 
     const { toggleL } = useContext(logRegContext)
+    const { isLoading } = useSelector((state) => state.auth);
 
     return (
         // If not authenticated or loading
         <div className="vh-100 d-flex justify-content-center align-items-center text-danger">
             {
-                auth.isLoading ?
+                isLoading ?
                     <QBLoadingSM /> :
                     <Button color="link" className="login-button" onClick={toggleL}>
                         Login first

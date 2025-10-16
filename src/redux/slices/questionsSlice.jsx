@@ -47,7 +47,7 @@ const questionsSlice = createSlice({
             state.isLoading = false
         })
         builder.addCase(addQuestion.fulfilled, (state, action) => {
-            state.questionsData.push(action.payload)
+            state.questionsData.unshift(action.payload)
             state.isLoading = false
         })
         builder.addCase(updateQuestion.fulfilled, (state, action) => {
@@ -55,7 +55,7 @@ const questionsSlice = createSlice({
             state.isLoading = false
         })
         builder.addCase(deleteQuestion.fulfilled, (state, action) => {
-            state.questionsData = state.questionsData.filter(question => question._id !== action.payload)
+            state.questionsData = state.questionsData.filter(question => question._id !== action.payload._id)
             state.isLoading = false
         })
 

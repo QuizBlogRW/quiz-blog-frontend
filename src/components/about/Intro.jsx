@@ -1,11 +1,10 @@
-import React from 'react'
 import { Row, Col } from 'reactstrap'
-import reading from '../../../src/images/reading.svg';
+import reading from '@/images/reading.svg';
 
 const Intro = () => {
     return (
-        <div className='introduct pt-lg-5 mt-5'>
-            <h1 className="display-4 fw-bolder text-center py-4 my-lg-2" style={{ color: "#157A6E" }}>
+        <div className='introduct pt-lg-5'>
+            <h1 className="display-4 fw-bolder text-center py-4" style={{ color: "#157A6E" }}>
                 <span>Get To Know</span> Quiz-Blog
             </h1>
 

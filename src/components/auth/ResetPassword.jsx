@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { Container, Row, Col, Button, Form, Input } from 'reactstrap'
-import ResponsiveAd from '../adsenses/ResponsiveAd'
-import SquareAd from '../adsenses/SquareAd'
-import { sendNewPassword } from '../../redux/slices/authSlice'
+import ResponsiveAd from '@/components/adsenses/ResponsiveAd'
+import SquareAd from '@/components/adsenses/SquareAd'
+import { sendNewPassword } from '@/redux/slices/authSlice'
 import { useDispatch } from "react-redux"
+import { notify } from '@/utils/notifyToast'
 
 const ResetPassword = () => {
 
@@ -24,12 +25,12 @@ const ResetPassword = () => {
         const { password, password1 } = newPasswords
 
         if (!password || !password1) {
-            notify('Passwords can not be empty!')
+            notify('Passwords can not be empty!', 'error')
             return
         }
 
         else if (password !== password1) {
-            notify('Passwords must match!')
+            notify('Passwords must match!', 'error')
             return
         }
 

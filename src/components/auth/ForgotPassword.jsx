@@ -1,9 +1,10 @@
 import { useState } from 'react'
-import { Container, Row, Col, Button, Form, Input } from 'reactstrap'
-import ResponsiveAd from '../adsenses/ResponsiveAd'
-import SquareAd from '../adsenses/SquareAd'
-import { sendResetLink } from '../../redux/slices/authSlice'
 import { useDispatch } from "react-redux"
+import { Container, Row, Col, Button, Form, Input } from 'reactstrap'
+import ResponsiveAd from '@/components/adsenses/ResponsiveAd'
+import SquareAd from '@/components/adsenses/SquareAd'
+import { sendResetLink } from '@/redux/slices/authSlice'
+import { notify } from '@/utils/notifyToast'
 
 const ForgotPassword = () => {
 
@@ -22,11 +23,11 @@ const ForgotPassword = () => {
         const emailTest = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i
 
         if (!fEmail.email) {
-            notify('Please provide your email!')
+            notify('Please provide your email!', 'error')
             return
         }
         else if (!emailTest.test(fEmail.email)) {
-            notify('Please provide a valid email!')
+            notify('Please provide a valid email!', 'error')
             return
         }
 

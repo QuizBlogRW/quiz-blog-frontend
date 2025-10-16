@@ -1,15 +1,20 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
-import { register } from '../../redux/slices/authSlice'
+import { register } from '@/redux/slices/authSlice'
 import { useSelector, useDispatch } from "react-redux"
-import logocirclewhite from '../../../src/images/logocirclewhite.svg'
-import avatar from '../../../src/images/avatar1.svg'
-import QBLoadingSM from '../rLoading/QBLoadingSM'
+import logocirclewhite from '@/images/logocirclewhite.svg'
+import avatar from '@/images/avatar1.svg'
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM'
+import { notify } from '@/utils/notifyToast'
+import { logRegContext } from '@/contexts/appContexts'
 
-const RegisterModal = ({ isOpenR, toggleR, toggleL }) => {
+const RegisterModal = () => {
 
-    const isLoading = useSelector(state => state.auth.isLoading)
-    const isAuthenticated = useSelector(state => state.auth && state.auth.isAuthenticated)
+    // Context
+    const { isOpenR, toggleR, toggleL } = useContext(logRegContext)
+
+    // Redux
+    const { isAuthenticated, isLoading } = useSelector(state => state.auth)
     const dispatch = useDispatch()
 
     const [registerState, setRegisterState] = useState({
@@ -39,11 +44,11 @@ const RegisterModal = ({ isOpenR, toggleR, toggleL }) => {
 
         // VALIDATE
         if (name.length < 3) {
-            notify('Name should be at least 3 characters!')
+            notify('Name should be at least 3 characters!', 'error')
             return
         }
         else if (password.length < 4) {
-            notify('Password should be at least 4 characters!')
+            notify('Password should be at least 4 characters!', 'error')
             return
         }
 

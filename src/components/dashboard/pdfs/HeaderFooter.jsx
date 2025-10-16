@@ -1,11 +1,10 @@
-import React from 'react'
 import { Text, View, Image, Link } from '@react-pdf/renderer'
-import logo from '../../../images/resourceImg.jpg'
-import instagram from '../../../images/instagram.jpg'
-import facebook from '../../../images/facebook.jpg'
-import linkedin from '../../../images/linkedin.jpg'
-import twitter from '../../../images/twitter.jpg'
-import whatsapp from '../../../images/whatsapp.jpg'
+import logo from '@/images/resourceImg.jpg'
+import instagram from '@/images/instagram.jpg'
+import facebook from '@/images/facebook.jpg'
+import linkedin from '@/images/linkedin.jpg'
+import twitter from '@/images/twitter.jpg'
+import whatsapp from '@/images/whatsapp.jpg'
 
 const HeaderFooter = ({ styles, fromFooter }) => {
 

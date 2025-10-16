@@ -15,7 +15,7 @@ const CatDropdown = ({ clr }) => {
 
                 <DropdownToggle className="bg-transparent border-0 profileDropDown-btn" style={{ padding: "0", color: clr, fontWeight: "bolder" }}>
                     <span className='me-1'>
-                        Quizes <i className={`fa-solid fa-chevron-${isOpen ? 'up' : 'down'} ms-lg-1`}></i>
+                        Quizzes <i className={`fa-solid fa-chevron-${isOpen ? 'up' : 'down'} ms-lg-1`}></i>
                     </span>
                 </DropdownToggle>
 

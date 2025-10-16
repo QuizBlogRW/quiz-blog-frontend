@@ -23,8 +23,8 @@ export const createNotes = createAsyncThunk("notes/createNotes", async (newNotes
 export const updateNotes = createAsyncThunk("notes/updateNotes", async (updatedNotes, { getState }) =>
   apiCallHelper(`/api/notes/${updatedNotes.idToUpdate}`, 'put', updatedNotes, getState, 'updateNotes'))
 
-export const addNotesQuizes = createAsyncThunk("notes/addNotesQuizes", async (notesQuizzes, { getState }) =>
-  apiCallHelper(`/api/notes/notes-quizzes/${notesQuizzes.noteID}`, 'put', notesQuizzes, getState, 'addNotesQuizes'))
+export const addNotesQuizzes = createAsyncThunk("notes/addNotesQuizzes", async (notesQuizzes, { getState }) =>
+  apiCallHelper(`/api/notes/notes-quizzes/${notesQuizzes.noteID}`, 'put', notesQuizzes, getState, 'addNotesQuizzes'))
 
 export const deleteNotes = createAsyncThunk("notes/deleteNotes", async (noteID, { getState }) =>
   apiCallHelper(`/api/notes/${noteID}`, 'delete', null, getState, 'deleteNotes'))
@@ -82,19 +82,19 @@ const notesSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(createNotes.fulfilled, (state, action) => {
-      state.allNotes.push(action.payload)
+      state.allNotes.unshift(action.payload)
       state.isLoading = false
     })
     builder.addCase(updateNotes.fulfilled, (state, action) => {
       state.allNotes = state.allNotes.map(note => note._id === action.payload._id ? action.payload : note)
       state.isLoading = false
     })
-    builder.addCase(addNotesQuizes.fulfilled, (state, action) => {
+    builder.addCase(addNotesQuizzes.fulfilled, (state, action) => {
       state.allNotes = state.allNotes.map(note => note._id === action.payload._id ? action.payload : note)
       state.isLoading = false
     })
     builder.addCase(deleteNotes.fulfilled, (state, action) => {
-      state.allNotes = state.allNotes.filter(note => note._id !== action.payload)
+      state.allNotes = state.allNotes.filter(note => note._id !== action.payload._id)
       state.isLoading = false
     })
     builder.addCase(removeQzNt.fulfilled, (state, action) => {
@@ -110,7 +110,7 @@ const notesSlice = createSlice({
     builder.addCase(getNotesByCCatg.pending, handlePending)
     builder.addCase(createNotes.pending, handlePending)
     builder.addCase(updateNotes.pending, handlePending)
-    builder.addCase(addNotesQuizes.pending, handlePending)
+    builder.addCase(addNotesQuizzes.pending, handlePending)
     builder.addCase(deleteNotes.pending, handlePending)
     builder.addCase(removeQzNt.pending, handlePending)
 
@@ -122,7 +122,7 @@ const notesSlice = createSlice({
     builder.addCase(getNotesByCCatg.rejected, handleRejected)
     builder.addCase(createNotes.rejected, handleRejected)
     builder.addCase(updateNotes.rejected, handleRejected)
-    builder.addCase(addNotesQuizes.rejected, handleRejected)
+    builder.addCase(addNotesQuizzes.rejected, handleRejected)
     builder.addCase(deleteNotes.rejected, handleRejected)
     builder.addCase(removeQzNt.rejected, handleRejected)
   }

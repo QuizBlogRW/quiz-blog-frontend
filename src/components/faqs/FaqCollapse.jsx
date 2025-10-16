@@ -2,28 +2,27 @@ import { useEffect, useState, lazy, Suspense } from 'react'
 import { Row, Col, Button } from 'reactstrap'
 import { Collapse } from "react-collapse"
 import classNames from "classnames"
-import faqsStyle from '../../stylesCSS/faqsStyle.module.css'
-import AddIcon from '../../images/plus1.svg'
-import MinusIcon from '../../images/minus.svg'
-import { getFaqs, deleteFaq } from '../../redux/slices/faqsSlice'
+import faqsStyle from './faqsStyle.module.css'
+import AddIcon from '@/images/plus1.svg'
+import MinusIcon from '@/images/minus.svg'
+import { getFaqs, deleteFaq } from '@/redux/slices/faqsSlice'
 import { useSelector, useDispatch } from 'react-redux'
-import QBLoadingSM from '../rLoading/QBLoadingSM'
-import CreateFaq from './CreateFaq'
-import EditFaq from './EditFaq'
-import AddVideo from '../quizes/AddVideo'
-import EmbeddedVideos from '../quizes/EmbeddedVideos'
-import DeleteModal from '../../utils/DeleteModal'
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM'
+import CreateFaq from '@/components/dashboard/posts/faqs/CreateFaq'
+import EditFaq from '@/components/dashboard/posts/faqs/EditFaq'
+import AddVideo from '@/components/dashboard/quizzing/quizzes/AddVideo'
+import EmbeddedVideos from '@/components/quizzes/EmbeddedVideos'
+import DeleteModal from '@/utils/DeleteModal'
 
-const GridMultiplex = lazy(() => import('../adsenses/GridMultiplex'))
-const InFeedAd = lazy(() => import('../adsenses/InFeedAd'))
+const GridMultiplex = lazy(() => import('@/components/adsenses/GridMultiplex'))
+const InFeedAd = lazy(() => import('@/components/adsenses/InFeedAd'))
 
 const FaqCollapse = () => {
 
     // Redux
     const dispatch = useDispatch()
     const faqs = useSelector(state => state.faqs)
-    const auth = useSelector(state => state.auth)
-    const currentUser = auth && auth.user
+    const { user } = useSelector(state => state.auth)
     const faqsToUse = faqs && faqs.allFaqs
 
     // Lifecycle methods
@@ -78,7 +77,7 @@ const FaqCollapse = () => {
                     <hr className="my-2" style={{ height: "2px", borderWidth: 0, color: "#157A6E", backgroundColor: "#157A6E" }} />
                 </div>
 
-                {(currentUser && currentUser.role) === 'Admin' || (currentUser && currentUser.role) === 'SuperAdmin' ?
+                {(user && user.role) === 'Admin' || (user && user.role) === 'SuperAdmin' ?
                     <Row className="m-lg-4 px-lg-5 d-flex justify-content-around align-items-center text-primary">
                         <CreateFaq />
                     </Row> :
@@ -111,7 +110,7 @@ const FaqCollapse = () => {
                                             </Button>
 
                                             {
-                                                (currentUser && currentUser.role) === 'Admin' || (currentUser && currentUser.role) === 'SuperAdmin' ?
+                                                (user && user.role) === 'Admin' || (user && user.role) === 'SuperAdmin' ?
                                                     <>
                                                         <Button size="sm" color="link" className="mx-2">
                                                             <EditFaq faqToEdit={faq} />

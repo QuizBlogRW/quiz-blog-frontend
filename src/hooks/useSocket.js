@@ -2,22 +2,23 @@
 // Provides easy integration of socket functionality into React components
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import socketManager from '../utils/enhanced-socket';
+import socketManager from '@/utils/enhanced-socket';
 
 export const useSocket = (options = {}) => {
+
     const [isConnected, setIsConnected] = useState(false);
     const [onlineUsers, setOnlineUsers] = useState([]);
     const [connectionStatus, setConnectionStatus] = useState('disconnected');
     const [serverStats, setServerStats] = useState(null);
     const [latency, setLatency] = useState(null);
     const [error, setError] = useState(null);
-    
+
     const reconnectTimeoutRef = useRef(null);
     const mountedRef = useRef(true);
 
     useEffect(() => {
         mountedRef.current = true;
-        
+
         // Connect socket if not already connected
         if (!socketManager.socket || !socketManager.isConnected) {
             socketManager.connect(options);
@@ -76,7 +77,7 @@ export const useSocket = (options = {}) => {
         socketManager.onDisconnect(handleDisconnect);
         socketManager.onReconnect(handleReconnect);
         socketManager.onError(handleError);
-        
+
         socketManager.on('onlineUsers', handleOnlineUsers);
         socketManager.on('serverStats', handleServerStats);
         socketManager.on('latencyUpdate', handleLatencyUpdate);
@@ -94,7 +95,7 @@ export const useSocket = (options = {}) => {
             socketManager.off('serverStats', handleServerStats);
             socketManager.off('latencyUpdate', handleLatencyUpdate);
             socketManager.off('connectionError', handleConnectionError);
-            
+
             if (reconnectTimeoutRef.current) {
                 clearTimeout(reconnectTimeoutRef.current);
             }
@@ -107,7 +108,7 @@ export const useSocket = (options = {}) => {
 
     const on = useCallback((event, callback) => {
         socketManager.on(event, callback);
-        
+
         // Return cleanup function
         return () => socketManager.off(event, callback);
     }, []);
@@ -120,7 +121,7 @@ export const useSocket = (options = {}) => {
         if (reconnectTimeoutRef.current) {
             clearTimeout(reconnectTimeoutRef.current);
         }
-        
+
         setConnectionStatus('connecting');
         reconnectTimeoutRef.current = setTimeout(() => {
             socketManager.connect(options);
@@ -140,12 +141,12 @@ export const useSocket = (options = {}) => {
         isConnected,
         connectionStatus,
         error,
-        
+
         // Data
         onlineUsers,
         serverStats,
         latency,
-        
+
         // Methods
         emit,
         on,
@@ -153,7 +154,7 @@ export const useSocket = (options = {}) => {
         reconnect,
         disconnect,
         healthCheck,
-        
+
         // Socket instance (for advanced usage)
         socket: socketManager.socket,
         socketManager
@@ -173,7 +174,7 @@ export const usePrivateMessaging = () => {
         };
 
         const handleMessageDelivered = (data) => {
-            setMessages(prev => prev.map(msg => 
+            setMessages(prev => prev.map(msg =>
                 msg.recipientId === data.recipientId && msg.timestamp === data.timestamp
                     ? { ...msg, delivered: true }
                     : msg
@@ -197,7 +198,7 @@ export const usePrivateMessaging = () => {
 
     const sendMessage = useCallback((recipientId, message, type = 'text') => {
         if (!isConnected) return false;
-        
+
         const messageData = {
             recipientId,
             message,
@@ -205,7 +206,7 @@ export const usePrivateMessaging = () => {
             timestamp: new Date(),
             delivered: false
         };
-        
+
         setMessages(prev => [...prev, { ...messageData, type: 'sent' }]);
         return emit('privateMessage', { recipientId, message, type });
     }, [emit, isConnected]);
@@ -255,11 +256,11 @@ export const useRoomChat = (roomId) => {
 
         const handleUserTyping = (data) => {
             const { userId, userName, isTyping } = data;
-            
+
             if (typingTimeoutRef.current[userId]) {
                 clearTimeout(typingTimeoutRef.current[userId]);
             }
-            
+
             if (isTyping) {
                 setTypingUsers(prev => {
                     if (!prev.find(u => u.userId === userId)) {
@@ -267,7 +268,7 @@ export const useRoomChat = (roomId) => {
                     }
                     return prev;
                 });
-                
+
                 // Auto-remove typing indicator after 3 seconds
                 typingTimeoutRef.current[userId] = setTimeout(() => {
                     setTypingUsers(prev => prev.filter(u => u.userId !== userId));
@@ -295,7 +296,7 @@ export const useRoomChat = (roomId) => {
             cleanupLeft();
             cleanupTyping();
             cleanupRoomJoined();
-            
+
             // Clean up typing timeouts
             Object.values(typingTimeoutRef.current).forEach(clearTimeout);
             typingTimeoutRef.current = {};
@@ -360,7 +361,7 @@ export const useQuizSession = (quizId) => {
         };
 
         const handleParticipantProgress = (data) => {
-            setParticipants(prev => prev.map(p => 
+            setParticipants(prev => prev.map(p =>
                 p.userId === data.userId ? { ...p, ...data } : p
             ));
         };

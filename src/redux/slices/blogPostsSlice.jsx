@@ -62,7 +62,7 @@ const blogPostsSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(createBlogPost.fulfilled, (state, action) => {
-      state.blogPosts.push(action.payload)
+      state.blogPosts.unshift(action.payload)
       state.isLoading = false
     })
     builder.addCase(updateBlogPost.fulfilled, (state, action) => {
@@ -70,7 +70,7 @@ const blogPostsSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(deleteBlogPost.fulfilled, (state, action) => {
-      state.blogPosts = state.blogPosts.filter(blogPost => blogPost._id !== action.payload)
+      state.blogPosts = state.blogPosts.filter(blogPost => blogPost._id !== action.payload._id)
       state.isLoading = false
     })
 
