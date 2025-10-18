@@ -30,17 +30,17 @@ const SystemMetricsTab = ({ services }) => {
                                     <tbody>
                                         {services?.map((service, index) => (
                                             <tr key={index}>
-                                                <td className="font-weight-bold text-capitalize">{service?.value?.service}</td>
+                                                <td className="font-weight-bold text-capitalize">{service?.service}</td>
                                                 <td>
-                                                    <Badge color={getServiceStatusColor(service?.value?.status)}>
-                                                        {service?.value?.status}
+                                                    <Badge color={getServiceStatusColor(service?.status)}>
+                                                        {service?.status}
                                                     </Badge>
                                                 </td>
-                                                <td>{service?.value?.system?.uptime ? formatUptime(service?.value?.system?.uptime) : 'N/A'}</td>
-                                                <td>{service?.value?.system?.platform}</td>
-                                                <td>{service?.value?.system?.architecture}</td>
-                                                <td>{service?.value?.system?.cpus}</td>
-                                                <td>{Math.ceil((service?.value?.system?.freeMemory * 100) / service?.value?.system?.totalMemory)}%</td>
+                                                <td>{service?.system?.uptime ? formatUptime(service?.system?.uptime) : 'N/A'}</td>
+                                                <td>{service?.system?.platform}</td>
+                                                <td>{service?.system?.architecture}</td>
+                                                <td>{service?.system?.cpus}</td>
+                                                <td>{Math.ceil((service?.system?.freeMemory * 100) / service?.system?.totalMemory)}%</td>
                                             </tr>
                                         ))}
                                     </tbody>

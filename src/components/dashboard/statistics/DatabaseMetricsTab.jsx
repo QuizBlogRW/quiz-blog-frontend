@@ -2,9 +2,9 @@ import { Row, Col, TabPane, Card, CardBody, CardTitle, Table, Badge } from 'reac
 
 const DatabaseMetricsTab = ({ services }) => {
 
-    const totalDataSizeMB = services?.reduce((acc, s) => acc + (s.value?.dbStats?.dataSize || 0), 0);
-    const totalIndexSizeMB = services?.reduce((acc, s) => acc + (s.value?.dbStats?.indexSize || 0), 0);
-    const totalStorageSizeMB = services?.reduce((acc, s) => acc + (s.value?.dbStats?.storageSize || 0), 0);
+    const totalDataSizeMB = services?.reduce((acc, s) => acc + (s.dbStats?.dataSize || 0), 0);
+    const totalIndexSizeMB = services?.reduce((acc, s) => acc + (s.dbStats?.indexSize || 0), 0);
+    const totalStorageSizeMB = services?.reduce((acc, s) => acc + (s.dbStats?.storageSize || 0), 0);
 
     const overview = {
         totalDataSize: (totalDataSizeMB / (1024 * 1024)).toLocaleString('en-US', { maximumFractionDigits: 2 }) + ' MB',
@@ -12,41 +12,41 @@ const DatabaseMetricsTab = ({ services }) => {
         totalStorageSize: (totalStorageSizeMB / (1024 * 1024)).toLocaleString('en-US', { maximumFractionDigits: 2 }) + ' MB'
     };
 
-    const serviceRows = services?.sort((a, b) => b?.value?.dbStats?.dataSize - a?.value?.dbStats?.dataSize).map((service, index) => (
+    const serviceRows = services?.sort((a, b) => b?.dbStats?.dataSize - a?.dbStats?.dataSize).map((service, index) => (
         <tr key={index}>
-            <td className="font-weight-bold text-capitalize">{service?.value?.service}</td>
+            <td className="font-weight-bold text-capitalize">{service?.service}</td>
             <td>
-                <Badge color={service?.value?.status === 'healthy' ? 'success' : 'danger'}>
-                    {service?.value?.status}
+                <Badge color={service?.status === 'healthy' ? 'success' : 'danger'}>
+                    {service?.status}
                 </Badge>
             </td>
             <td>
-                {service?.value?.dbStats?.dataSize ?
-                    (service?.value?.dbStats?.dataSize / 1024 / 1024).toFixed(2) + ' MB' :
+                {service?.dbStats?.dataSize ?
+                    (service?.dbStats?.dataSize / 1024 / 1024).toFixed(2) + ' MB' :
                     'N/A'
                 }
             </td>
             <td>
-                {service?.value?.dbStats?.indexSize ?
-                    (service?.value?.dbStats?.indexSize / 1024 / 1024).toFixed(2) + ' MB' :
+                {service?.dbStats?.indexSize ?
+                    (service?.dbStats?.indexSize / 1024 / 1024).toFixed(2) + ' MB' :
                     'N/A'
                 }
             </td>
             <td>
-                {service?.value?.dbStats?.storageSize ?
-                    (service?.value?.dbStats?.storageSize / 1024 / 1024).toFixed(2) + ' MB' :
+                {service?.dbStats?.storageSize ?
+                    (service?.dbStats?.storageSize / 1024 / 1024).toFixed(2) + ' MB' :
                     'N/A'
                 }
             </td>
             <td>
-                {service?.value?.dbStats?.collections ?
-                    service?.value?.dbStats?.collections :
+                {service?.dbStats?.collections ?
+                    service?.dbStats?.collections :
                     'N/A'
                 }
             </td>
             <td>
-                {service?.value?.dbStats?.objects ?
-                    service?.value?.dbStats?.objects :
+                {service?.dbStats?.objects ?
+                    service?.dbStats?.objects :
                     'N/A'
                 }
             </td>

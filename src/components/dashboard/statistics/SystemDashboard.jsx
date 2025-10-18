@@ -7,7 +7,6 @@ import './SystemDashboard.css';
 import { toggle } from './utils'
 import DatabaseMetricsTab from './DatabaseMetricsTab';
 import SystemMetricsTab from './SystemMetricsTab';
-import { Link } from 'react-router-dom';
 
 const SystemDashboard = () => {
 
@@ -241,11 +240,10 @@ const SystemDashboard = () => {
             <TabContent activeTab={activeTab}>
 
                 {/* System Metrics Tab */}
-                <SystemMetricsTab services={dashboardStats?.serviceHealth?.services} />
-
+                <SystemMetricsTab services={dashboardStats?.servicesHealth} />
 
                 {/* Database Metrics Tab */}
-                <DatabaseMetricsTab services={dashboardStats?.serviceHealth?.services} />
+                <DatabaseMetricsTab services={dashboardStats?.servicesHealth} />
             </TabContent>
         </div>
     );

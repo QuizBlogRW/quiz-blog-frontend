@@ -58,7 +58,7 @@ const reloadActionTypes = ['verify', 'login']
 const noToastActionTypes = ['loadUser', 'createBlogPostView']
 
 // Default reload timeout
-const RELOAD_TIMEOUT = 4000
+const RELOAD_TIMEOUT = 2000
 
 // API call helper function to make async actions with createAsyncThunk
 export const apiCallHelper = async (url, method, body, getState, actionType) => {
