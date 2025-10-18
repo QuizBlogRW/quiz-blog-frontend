@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Container, Col, Row, Button } from "reactstrap";
 import PostItemPlaceholder from "@/utils/rLoading/PostItemPlaceholder";
 import { useSelector, useDispatch } from "react-redux";
-import { getQuizzes } from "@/redux/slices/quizzesSlice";
+import { getLimitedQuizzes } from "@/redux/slices/quizzesSlice";
 import ResponsiveAd from "@/components/adsenses/ResponsiveAd";
 import SquareAd from "@/components/adsenses/SquareAd";
 
@@ -17,8 +17,6 @@ const BlogPosts = lazy(() => import("@/components/blog/BlogPosts"));
 const ViewCategories = lazy(() => import("./categories/ViewCategories"));
 
 const Posts = () => {
-  // Selectors from redux store using hooks
-  const { isLoading, limitedQuizzes } = useSelector((state) => state.quizzes);
 
   // Dispatch
   const dispatch = useDispatch();
@@ -26,9 +24,11 @@ const Posts = () => {
   const [limit] = useState(10);
 
   // Lifecycle methods
-  useEffect(() => {
-    dispatch(getQuizzes({ limit: limit }));
-  }, [dispatch, limit]);
+  useEffect(() => { dispatch(getLimitedQuizzes({ limit })); }, [dispatch, limit]);
+
+  // Selectors from redux store using hooks
+  const { isLoading, limitedQuizzes } = useSelector((state) => state.quizzes);
+  console.log(useSelector((state) => state.quizzes))
 
   return (
     <Container className="posts main w-100 px-0">
@@ -92,7 +92,8 @@ const Posts = () => {
             </>
           ) : (
             <div className="p-1 m-1 d-flex justify-content-center align-items-center">
-              No quizzes to display
+              No quizzes available today. &nbsp;
+              <Button onClick={() => window.location.href = '/contact'} outline color="success">Contact us for more</Button>
             </div>
           )}
           <Popular />
