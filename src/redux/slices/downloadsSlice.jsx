@@ -6,10 +6,10 @@ export const getDownloads = createAsyncThunk("downloads/getDownloads", async (pa
   apiCallHelper(`/api/downloads?pageNo=${pageNo}`, 'get', null, getState, 'getDownloads'))
 
 export const getCreatorDownloads = createAsyncThunk("downloads/getCreatorDownloads", async (uId, { getState }) =>
-  apiCallHelper(`/api/downloads/notes-creator/${uId}`, 'get', null, getState, 'getCreatorDownloads'))
+  apiCallHelper(`/api/downloads/creator/${uId}`, 'get', null, getState, 'getCreatorDownloads'))
 
-export const getUserDownloads = createAsyncThunk("downloads/getUserDownloads", async (userId, { getState }) =>
-  apiCallHelper(`/api/downloads/downloaded-by/${userId}`, 'get', null, getState, 'getUserDownloads'))
+export const getNotesDownloader = createAsyncThunk("downloads/getNotesDownloader", async (userId, { getState }) =>
+  apiCallHelper(`/api/downloads/downloaded-by/${userId}`, 'get', null, getState, 'getNotesDownloader'))
 
 export const saveDownload = createAsyncThunk("downloads/saveDownload", async (newDownload, { getState }) =>
   apiCallHelper('/api/downloads', 'post', newDownload, getState, 'saveDownload'))
@@ -51,7 +51,7 @@ const downloadsSlice = createSlice({
       state.creatorDownloads = action.payload
       state.isLoading = false
     })
-    builder.addCase(getUserDownloads.fulfilled, (state, action) => {
+    builder.addCase(getNotesDownloader.fulfilled, (state, action) => {
       state.userDownloads = action.payload
       state.isLoading = false
     })
@@ -67,14 +67,14 @@ const downloadsSlice = createSlice({
     // Pending actions
     builder.addCase(getDownloads.pending, handlePending)
     builder.addCase(getCreatorDownloads.pending, handlePending)
-    builder.addCase(getUserDownloads.pending, handlePending)
+    builder.addCase(getNotesDownloader.pending, handlePending)
     builder.addCase(saveDownload.pending, handlePending)
     builder.addCase(deleteDownload.pending, handlePending)
 
     // Rejected actions
     builder.addCase(getDownloads.rejected, handleRejected)
     builder.addCase(getCreatorDownloads.rejected, handleRejected)
-    builder.addCase(getUserDownloads.rejected, handleRejected)
+    builder.addCase(getNotesDownloader.rejected, handleRejected)
     builder.addCase(saveDownload.rejected, handleRejected)
     builder.addCase(deleteDownload.rejected, handleRejected)
   }

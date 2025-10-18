@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Row, TabPane } from 'reactstrap';
-import { getDownloads, getCreatorDownloads, getUserDownloads } from '@/redux/slices/downloadsSlice'
+import { getDownloads, getCreatorDownloads, getNotesDownloader } from '@/redux/slices/downloadsSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import Pagination from '@/components/dashboard/utils/Pagination';
 import PageOf from '@/components/dashboard/utils/PageOf';
@@ -31,7 +31,7 @@ const DownloadsTabPane = () => {
             dispatch(getCreatorDownloads(user?._id, pageNo))
         }
         else {
-            dispatch(getUserDownloads(user?._id, pageNo))
+            dispatch(getNotesDownloader(user?._id, pageNo))
         }
     }, [dispatch, pageNo, user, totalPages])
 
