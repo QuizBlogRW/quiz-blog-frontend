@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Row, Col, TabPane, ListGroup, ListGroupItem, Alert } from 'reactstrap'
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM'
 import { getQuestions } from '@/redux/slices/questionsSlice'
-import { getQuizzes, getAllNoLimitQuizzes } from '@/redux/slices/quizzesSlice'
+import { getLimitedQuizzes, getQuizzes } from '@/redux/slices/quizzesSlice'
 import QuizToast from './QuizToast'
 import SearchInput from '@/utils/SearchInput'
 import Pagination from '@/components/dashboard/utils/Pagination'
@@ -17,41 +17,37 @@ const QuizzesTabPane = () => {
 
     // Redux
     const dispatch = useDispatch()
-    const quizzes = useSelector(state => state.quizzes)
+    const { isLoading, quizzes, limitedQuizzes, totalPages } = useSelector(state => state.quizzes)
     const questions = useSelector(state => state.questions)
 
     const [pageNo, setPageNo] = useState(1)
     const [numberOfPages, setNumberOfPages] = useState(0)
     const [searchKey, setSearchKey] = useState('')
     const [searchKeyQ, setSearchKeyQ] = useState('')
-    const totPages = quizzes && quizzes.totalPages
 
     // Lifecycle methods
     useEffect(() => {
-        dispatch(getQuizzes({ pageNo }))
+        dispatch(getLimitedQuizzes({ pageNo }))
         dispatch(getQuestions())
-        dispatch(getAllNoLimitQuizzes())
+        dispatch(getQuizzes())
     }, [dispatch, pageNo])
 
     useEffect(() => {
-        setNumberOfPages(totPages)
-    }, [totPages])
+        setNumberOfPages(totalPages)
+    }, [totalPages])
 
     // Quizzes to use - CREATED BY ROUTE
-    const allQuizzes = quizzes && quizzes.paginatedQuizzes
-    const creatorQuizzes = quizzes.paginatedQuizzes && quizzes.paginatedQuizzes
-        .filter(quiz => quiz.created_by && quiz.created_by._id === user._id)
-    const quizzesToUse = user.role === 'Admin' || user.role === 'SuperAdmin' ? allQuizzes : creatorQuizzes
+    const creatorQuizzes = limitedQuizzes?.filter(quiz => quiz.created_by && quiz.created_by._id === user._id)
+    const quizzesToUse = user.role === 'Admin' || user.role === 'SuperAdmin' ? limitedQuizzes : creatorQuizzes
 
     // Questions to use
     const allQuestions = questions && questions.questionsData
-    const creatorQuestions = questions && questions.questionsData
-        .filter(question => question.created_by && question.created_by._id === user._id)
+    const creatorQuestions = questions && questions.questionsData?.filter(question => question.created_by && question.created_by._id === user._id)
     const questionsToUse = user.role === 'Admin' || user.role === 'SuperAdmin' ? allQuestions : creatorQuestions
 
     return (
         <TabPane tabId="2">
-            {quizzes.isLoading ?
+            {isLoading ?
                 <QBLoadingSM title='paginated quizzes' /> :
                 quizzesToUse && quizzesToUse.length > 0 ?
                     <>
@@ -60,7 +56,7 @@ const QuizzesTabPane = () => {
 
                         {
                             // SEARCH BARS
-                            quizzes.isLoading || questions.isLoading ?
+                            isLoading || questions.isLoading ?
                                 <div className="p-1 m-1 d-flex justify-content-center align-items-center">
                                     <QBLoadingSM />  </div> :
                                 <Row className="mt-0">
@@ -96,9 +92,7 @@ const QuizzesTabPane = () => {
 
                         {/* SEARCH QUIZZES */}
                         <Row>
-                            {quizzes.allQuizzesNoLimit && quizzes.allQuizzesNoLimit
-                                .filter(quiz => {
-
+                            {quizzes?.filter(quiz => {
                                     if (searchKey === "") {
                                         return null
                                     } else if (quiz.title.toLowerCase().includes(searchKey.toLowerCase())) {

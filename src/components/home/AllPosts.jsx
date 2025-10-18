@@ -1,6 +1,6 @@
 import { useState, useEffect, lazy, Suspense } from 'react'
 import { Container, Col, Row, Button } from 'reactstrap'
-import { getQuizzes, getAllNoLimitQuizzes } from '@/redux/slices/quizzesSlice'
+import { getLimitedQuizzes, getQuizzes } from '@/redux/slices/quizzesSlice'
 import { useSelector, useDispatch } from "react-redux"
 import ResponsiveAd from '@/components/adsenses/ResponsiveAd'
 import SquareAd from '@/components/adsenses/SquareAd'
@@ -12,9 +12,7 @@ const PostItem = lazy(() => import('./PostItem'))
 const Posts = () => {
 
     // Redux
-    const allQuizzesNoLimit = useSelector(state => state.quizzes.allQuizzesNoLimit)
-    const quizzesPage = useSelector(state => state.quizzes.limitedQuizzes)
-    const isLoading = useSelector(state => state.quizzes.isLoading)
+    const { isLoading, quizzes, limitedQuizzes } = useSelector(state => state.quizzes)
     const dispatch = useDispatch()
 
     const [limit] = useState(20)
@@ -31,8 +29,8 @@ const Posts = () => {
 
     // Lifecycle methods
     useEffect(() => {
-        dispatch(getQuizzes({ skip, limit }))
-        dispatch(getAllNoLimitQuizzes())
+        dispatch(getLimitedQuizzes({ skip, limit }))
+        dispatch(getQuizzes())
     }, [dispatch, skip, limit])
 
     const mystyle = {
@@ -91,15 +89,14 @@ const Posts = () => {
 
                                 {searchKey === "" ? null :
 
-                                    allQuizzesNoLimit && allQuizzesNoLimit
-                                        .map(quiz => (
+                                    quizzes?.map(quiz => (
 
                                             quiz.title.toLowerCase().includes(searchKey.toLowerCase()) ?
                                                 <PostItem key={quiz._id} quiz={quiz} fromSearch={true} /> : null
                                         ))}
 
-                                {quizzesPage && quizzesPage.map(quiz => (
-                                    quiz.questions.length > 5 ?
+                                {limitedQuizzes?.map(quiz => (
+                                    quiz?.questions?.length > 5 ?
                                         <PostItem key={quiz._id} quiz={quiz} /> :
                                         null
                                 ))}
@@ -108,7 +105,7 @@ const Posts = () => {
                                     <Button onClick={previousPage} className={skip < 1 ? `invisible` : `visible`} style={{ backgroundColor: '#157A6E', color: '#ffc107' }} >
                                         Previous
                                     </Button>
-                                    <Button onClick={nextPage} className={quizzesPage.length < limit ? `invisible` : `visible`} style={{ backgroundColor: '#157A6E', color: '#ffc107' }} >
+                                    <Button onClick={nextPage} className={limitedQuizzes?.length < limit ? `invisible` : `visible`} style={{ backgroundColor: '#157A6E', color: '#ffc107' }} >
                                         Next
                                     </Button>
                                 </div>

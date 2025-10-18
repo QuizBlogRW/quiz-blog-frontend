@@ -2,11 +2,11 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { apiCallHelper, handlePending, handleRejected } from '../configHelpers'
 
 // Async actions with createAsyncThunk
-export const getQuizzes = createAsyncThunk("quizzes/getQuizzes", async ({ pageNo, limit, skip }, { getState }) =>
-  apiCallHelper(`/api/quizzes?pageNo=${pageNo}&limit=${limit}&skip=${skip ? skip : 0}`, 'get', null, getState, 'getQuizzes'))
+export const getQuizzes = createAsyncThunk("quizzes/getQuizzes", async (_, { getState }) =>
+  apiCallHelper(`/api/quizzes`, 'get', null, getState, 'getQuizzes'))
 
-export const getAllNoLimitQuizzes = createAsyncThunk("quizzes/getAllNoLimitQuizzes", async (_, { getState }) =>
-  apiCallHelper('/api/quizzes', 'get', null, getState, 'getAllNoLimitQuizzes'))
+export const getLimitedQuizzes = createAsyncThunk("quizzes/getLimitedQuizzes", async ({ pageNo, limit, skip }, { getState }) =>
+  apiCallHelper(`/api/quizzes?pageNo=${pageNo}&limit=${limit}&skip=${skip ? skip : 0}`, 'get', null, getState, 'getLimitedQuizzes'))
 
 export const getOneQuiz = createAsyncThunk("quizzes/getOneQuiz", async (quizSlug, { getState }) =>
   apiCallHelper(`/api/quizzes/${quizSlug}`, 'get', null, getState, 'getOneQuiz'))
@@ -37,13 +37,10 @@ export const notifying = createAsyncThunk("quizzes/notifying", async (newQuizInf
 
 // Quizzes slice
 const initialState = {
-  limitedQuizzes: [],
-  categoryQuizzes: [],
-  notesQuizzes: [],
   isLoading: false,
   oneQuiz: '',
-  allQuizzesNoLimit: [],
-  paginatedQuizzes: [],
+  quizzes: [],
+  limitedQuizzes: [],
   totalPages: 0,
   error: null
 }
@@ -54,12 +51,9 @@ const quizzesSlice = createSlice({
   reducers: {
     clearQuizzes: state => {
       state.limitedQuizzes = []
-      state.categoryQuizzes = []
-      state.notesQuizzes = []
+      state.quizzes = []
       state.isLoading = false
       state.oneQuiz = ''
-      state.allQuizzesNoLimit = []
-      state.paginatedQuizzes = []
       state.totalPages = 0
     }
   },
@@ -67,11 +61,12 @@ const quizzesSlice = createSlice({
 
     // Fullfilled actions
     builder.addCase(getQuizzes.fulfilled, (state, action) => {
-      state.limitedQuizzes = action.payload
+      state.quizzes = action.payload
       state.isLoading = false
     })
-    builder.addCase(getAllNoLimitQuizzes.fulfilled, (state, action) => {
-      state.allQuizzesNoLimit = action.payload
+    builder.addCase(getLimitedQuizzes.fulfilled, (state, action) => {
+      state.limitedQuizzes = action.payload.quizzes
+      state.totalPages = action.payload.totalPages
       state.isLoading = false
     })
     builder.addCase(getOneQuiz.fulfilled, (state, action) => {
@@ -79,41 +74,41 @@ const quizzesSlice = createSlice({
       state.isLoading = false
     })
     builder.addCase(getQuizzesByCategory.fulfilled, (state, action) => {
-      state.categoryQuizzes = action.payload
+      state.quizzes = action.payload
       state.isLoading = false
     })
     builder.addCase(getQuizzesByNotes.fulfilled, (state, action) => {
-      state.notesQuizzes = action.payload
+      state.quizzes = action.payload
       state.isLoading = false
     })
     builder.addCase(createQuiz.fulfilled, (state, action) => {
-      state.paginatedQuizzes.unshift(action.payload)
+      state.limitedQuizzes.unshift(action.payload)
       state.isLoading = false
     })
     builder.addCase(updateQuiz.fulfilled, (state, action) => {
-      state.paginatedQuizzes = state.paginatedQuizzes.map(quiz => quiz._id === action.payload._id ? action.payload : quiz)
+      state.limitedQuizzes = state.limitedQuizzes.map(quiz => quiz._id === action.payload._id ? action.payload : quiz)
       state.isLoading = false
     })
     builder.addCase(addVidLink.fulfilled, (state, action) => {
-      state.paginatedQuizzes = state.paginatedQuizzes.map(quiz => quiz._id === action.payload._id ? action.payload : quiz)
+      state.limitedQuizzes = state.limitedQuizzes.map(quiz => quiz._id === action.payload._id ? action.payload : quiz)
       state.isLoading = false
     })
     builder.addCase(deleteVideo.fulfilled, (state, action) => {
-      state.paginatedQuizzes = state.paginatedQuizzes.map(quiz => quiz._id === action.payload._id ? action.payload : quiz)
+      state.limitedQuizzes = state.limitedQuizzes.map(quiz => quiz._id === action.payload._id ? action.payload : quiz)
       state.isLoading = false
     })
     builder.addCase(deleteQuiz.fulfilled, (state, action) => {
-      state.paginatedQuizzes = state.paginatedQuizzes.filter(quiz => quiz._id !== action.payload._id)
+      state.limitedQuizzes = state.limitedQuizzes.filter(quiz => quiz._id !== action.payload._id)
       state.isLoading = false
     })
     builder.addCase(notifying.fulfilled, (state, action) => {
-      state.paginatedQuizzes = state.paginatedQuizzes.map(quiz => quiz._id === action.payload._id ? action.payload : quiz)
+      state.limitedQuizzes = state.limitedQuizzes.map(quiz => quiz._id === action.payload._id ? action.payload : quiz)
       state.isLoading = false
     })
 
     // Pending actions
+    builder.addCase(getLimitedQuizzes.pending, handlePending)
     builder.addCase(getQuizzes.pending, handlePending)
-    builder.addCase(getAllNoLimitQuizzes.pending, handlePending)
     builder.addCase(getOneQuiz.pending, handlePending)
     builder.addCase(getQuizzesByCategory.pending, handlePending)
     builder.addCase(getQuizzesByNotes.pending, handlePending)
@@ -125,8 +120,8 @@ const quizzesSlice = createSlice({
     builder.addCase(notifying.pending, handlePending)
 
     // Rejected actions
+    builder.addCase(getLimitedQuizzes.rejected, handleRejected)
     builder.addCase(getQuizzes.rejected, handleRejected)
-    builder.addCase(getAllNoLimitQuizzes.rejected, handleRejected)
     builder.addCase(getOneQuiz.rejected, handleRejected)
     builder.addCase(getQuizzesByCategory.rejected, handleRejected)
     builder.addCase(getQuizzesByNotes.rejected, handleRejected)
