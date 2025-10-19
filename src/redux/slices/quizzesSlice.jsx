@@ -38,6 +38,7 @@ export const notifying = createAsyncThunk("quizzes/notifying", async (newQuizInf
 // Quizzes slice
 const initialState = {
   isLoading: false,
+  loadingLimited: false,
   oneQuiz: '',
   quizzes: [],
   limitedQuizzes: [],
@@ -53,6 +54,7 @@ const quizzesSlice = createSlice({
       state.limitedQuizzes = []
       state.quizzes = []
       state.isLoading = false
+      state.loadingLimited = false
       state.oneQuiz = ''
       state.totalPages = 0
     }
@@ -67,7 +69,7 @@ const quizzesSlice = createSlice({
     builder.addCase(getLimitedQuizzes.fulfilled, (state, action) => {
       state.limitedQuizzes = action.payload.quizzes
       state.totalPages = action.payload.totalPages
-      state.isLoading = false
+      state.loadingLimited = false
     })
     builder.addCase(getOneQuiz.fulfilled, (state, action) => {
       state.oneQuiz = action.payload
@@ -107,7 +109,7 @@ const quizzesSlice = createSlice({
     })
 
     // Pending actions
-    builder.addCase(getLimitedQuizzes.pending, handlePending)
+    builder.addCase(getLimitedQuizzes.pending, (state) => { state.loadingLimited = true })
     builder.addCase(getQuizzes.pending, handlePending)
     builder.addCase(getOneQuiz.pending, handlePending)
     builder.addCase(getQuizzesByCategory.pending, handlePending)
@@ -120,7 +122,7 @@ const quizzesSlice = createSlice({
     builder.addCase(notifying.pending, handlePending)
 
     // Rejected actions
-    builder.addCase(getLimitedQuizzes.rejected, handleRejected)
+    builder.addCase(getLimitedQuizzes.rejected, (state) => { state.loadingLimited = false })
     builder.addCase(getQuizzes.rejected, handleRejected)
     builder.addCase(getOneQuiz.rejected, handleRejected)
     builder.addCase(getQuizzesByCategory.rejected, handleRejected)

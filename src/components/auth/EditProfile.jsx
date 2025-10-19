@@ -23,6 +23,8 @@ const EditProfile = () => {
     const [interestsState, setInterestsState] = useState(user?.interests || [])
     const [yearsState, setYearsState] = useState([])
 
+    console.log(profileState)
+
     useEffect(() => {
 
         setProfileState(user || {})

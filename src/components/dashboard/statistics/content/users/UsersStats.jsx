@@ -8,7 +8,6 @@ import { useLocation } from "react-router-dom"
 const UsersStats = () => {
 
     // Redux
-    const stats = useSelector(state => state.statistics)
     const dispatch = useDispatch()
 
     const [usersStats, setUsersStats] = useState([])
@@ -73,6 +72,8 @@ const UsersStats = () => {
                 break
         }
     }, [dispatch, location])
+
+    const stats = useSelector(state => state.statistics)
 
     // Updating the state according to the current route and the data returned from the server
     useEffect(() => {

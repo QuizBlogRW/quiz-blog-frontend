@@ -7,18 +7,19 @@ import QBLoadingSM from '@/utils/rLoading/QBLoadingSM'
 const Charts = () => {
 
     const dispatch = useDispatch()
+    useEffect(() => { dispatch(getDailyUserRegistration()) }, [dispatch])
     const { isLoading, dailyUserRegistration } = useSelector(state => state.statistics)
 
-    useEffect(() => { dispatch(getDailyUserRegistration()) }, [dispatch])
-    const dataSet = dailyUserRegistration && dailyUserRegistration.usersStats
+    const dataSet = dailyUserRegistration
+    console.log(dailyUserRegistration)
 
     // Convert the array of objects to an array of arrays for the chart by only picking the date and the number of users
     let titles = ["DATE", "USERS"]
-    let userData = dataSet && dataSet.map(user => [user.date, user.users])
+    let userData = dataSet && dataSet?.map(user => [user.date, user.users])
 
     // Add the titles to the beginning of the array and the data one by one to the end of the array
     let data = userData && [titles, ...userData]
-    let average = dataSet && dataSet.reduce((a, b) => a + b.users, 0) / dataSet.length
+    let average = dataSet && dataSet?.reduce((a, b) => a + b.users, 0) / dataSet.length
 
     return (
 

@@ -80,7 +80,7 @@ const ReviewForm = ({ isOpen, toggle, onSubmit, quiz, score }) => {
                         How would you rate this quiz?
                     </h6>
                     <FormGroup className="d-flex justify-content-center">
-                        <ButtonGroup size="lg" className="d-flex justify-content-between">
+                        <ButtonGroup size="sm" className="d-flex justify-content-between">
                             {renderRatingButtons()}
                         </ButtonGroup>
                     </FormGroup>

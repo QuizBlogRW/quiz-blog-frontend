@@ -84,7 +84,7 @@ const SchoolsTabPane = () => {
     return (<TabPane tabId="3">
         <div className="add-school mt-lg-5 mx-lg-5 px-lg-5 py-lg-3 d-flex justify-content-around align-items-center border rounded">
             <h5 className='fw-bolder text-info d-none d-sm-block'>SCHOOLS | LEVELS | FACULTIES | YEARS</h5>
-            <Button size="lg" outline color="dark" style={{ display: "inline", marginLeft: "auto", border: "3px solid black" }}>
+            <Button size="sm" outline color="dark" style={{ display: "inline", marginLeft: "auto", border: "3px solid black" }}>
                 <AddSchool />
             </Button>
         </div>

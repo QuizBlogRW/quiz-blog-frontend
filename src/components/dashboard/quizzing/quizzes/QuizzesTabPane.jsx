@@ -9,7 +9,6 @@ import SearchInput from '@/utils/SearchInput'
 import Pagination from '@/components/dashboard/utils/Pagination'
 import PageOf from '@/components/dashboard/utils/PageOf'
 
-
 const QuizzesTabPane = () => {
 
     const { user } = useSelector(state => state.auth)
@@ -17,7 +16,7 @@ const QuizzesTabPane = () => {
 
     // Redux
     const dispatch = useDispatch()
-    const { isLoading, quizzes, limitedQuizzes, totalPages } = useSelector(state => state.quizzes)
+    const { isLoading, loadingLimited, quizzes, limitedQuizzes, totalPages } = useSelector(state => state.quizzes)
     const questions = useSelector(state => state.questions)
 
     const [pageNo, setPageNo] = useState(1)
@@ -27,9 +26,9 @@ const QuizzesTabPane = () => {
 
     // Lifecycle methods
     useEffect(() => {
+        dispatch(getQuizzes())
         dispatch(getLimitedQuizzes({ pageNo }))
         dispatch(getQuestions())
-        dispatch(getQuizzes())
     }, [dispatch, pageNo])
 
     useEffect(() => {
@@ -47,7 +46,7 @@ const QuizzesTabPane = () => {
 
     return (
         <TabPane tabId="2">
-            {isLoading ?
+            {loadingLimited ?
                 <QBLoadingSM title='paginated quizzes' /> :
                 quizzesToUse && quizzesToUse.length > 0 ?
                     <>
@@ -93,13 +92,13 @@ const QuizzesTabPane = () => {
                         {/* SEARCH QUIZZES */}
                         <Row>
                             {quizzes?.filter(quiz => {
-                                    if (searchKey === "") {
-                                        return null
-                                    } else if (quiz.title.toLowerCase().includes(searchKey.toLowerCase())) {
-                                        return quiz
-                                    }
+                                if (searchKey === "") {
                                     return null
-                                })
+                                } else if (quiz.title.toLowerCase().includes(searchKey.toLowerCase())) {
+                                    return quiz
+                                }
+                                return null
+                            })
                                 .map(quiz => <QuizToast
                                     fromSearch={true}
                                     key={quiz._id}
@@ -123,6 +122,7 @@ const QuizzesTabPane = () => {
                             </> : null}
                     </> :
                     <Alert color="danger" className="w-50 text-center mx-auto" style={{ border: '2px solid #157A6E' }}>
+                        {console.log(isLoading, loadingLimited, quizzesToUse)}
                         You have not created any quiz yet!
                     </Alert>
             }

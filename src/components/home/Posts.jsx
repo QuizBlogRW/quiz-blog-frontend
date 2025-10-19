@@ -27,8 +27,7 @@ const Posts = () => {
   useEffect(() => { dispatch(getLimitedQuizzes({ limit })); }, [dispatch, limit]);
 
   // Selectors from redux store using hooks
-  const { isLoading, limitedQuizzes } = useSelector((state) => state.quizzes);
-  console.log(useSelector((state) => state.quizzes))
+  const { loadingLimited, limitedQuizzes } = useSelector((state) => state.quizzes);
 
   return (
     <Container className="posts main w-100 px-0">
@@ -54,7 +53,7 @@ const Posts = () => {
             <span className="part2">The Latest Quizzes</span>
           </h3>
 
-          {isLoading ? (
+          {loadingLimited ? (
             <>
               <PostItemPlaceholder />
               <PostItemPlaceholder />

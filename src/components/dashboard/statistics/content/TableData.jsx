@@ -1,11 +1,11 @@
 import { Table } from 'reactstrap'
-// import ExcelButton from './ExcelButton'
+import ExcelButton from './ExcelButton'
 
 const TableData = ({ data, filename }) => {
 
     return (
         <div>
-            {/* <ExcelButton data={data} filename={filename} /> */}
+            <ExcelButton data={data} filename={filename} />
 
             <Table bordered hover responsive size="sm" striped>
 

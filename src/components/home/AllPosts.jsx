@@ -12,7 +12,7 @@ const PostItem = lazy(() => import('./PostItem'))
 const Posts = () => {
 
     // Redux
-    const { isLoading, quizzes, limitedQuizzes } = useSelector(state => state.quizzes)
+    const { isLoading, loadingLimited, quizzes, limitedQuizzes } = useSelector(state => state.quizzes)
     const dispatch = useDispatch()
 
     const [limit] = useState(20)
@@ -71,7 +71,7 @@ const Posts = () => {
                     <Suspense
                         fallback={<QBLoadingSM />}>
                         <h3 className="mb-3 text-center lead fw-bolder">Entire Quiz Selection</h3>
-                        {isLoading ?
+                        {loadingLimited ?
 
                             <div className="mt-5 pt-5 d-flex justify-content-center align-items-center">
                                 <QBLoadingSM />
@@ -91,9 +91,9 @@ const Posts = () => {
 
                                     quizzes?.map(quiz => (
 
-                                            quiz.title.toLowerCase().includes(searchKey.toLowerCase()) ?
-                                                <PostItem key={quiz._id} quiz={quiz} fromSearch={true} /> : null
-                                        ))}
+                                        quiz.title.toLowerCase().includes(searchKey.toLowerCase()) ?
+                                            <PostItem key={quiz._id} quiz={quiz} fromSearch={true} /> : null
+                                    ))}
 
                                 {limitedQuizzes?.map(quiz => (
                                     quiz?.questions?.length > 5 ?

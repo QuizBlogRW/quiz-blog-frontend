@@ -35,7 +35,8 @@ const Dashboard = () => {
         }
     }
 
-    return (!isAuthenticated ?
+    return (
+        !isAuthenticated ?
         <NotAuthenticated /> :
         <>
             <TopRow />

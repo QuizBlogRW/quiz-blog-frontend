@@ -1,5 +1,4 @@
-import React from 'react'
-import * as XLSX from 'xlsx';
+import { utils, writeFile } from 'xlsx';
 import { Button } from 'reactstrap'
 import moment from 'moment'
 
@@ -63,16 +62,16 @@ const ExcelButton = ({ data, filename }) => {
     const handleExport = () => {
         // Assume that the data you want to export is stored in a 2D array called "data"
         // Convert the 2D array to a worksheet
-        const ws = XLSX.utils.aoa_to_sheet(dataArr);
+        const ws = utils.aoa_to_sheet(dataArr);
 
         // Create a new workbook
-        const wb = XLSX.utils.book_new();
+        const wb = utils.book_new();
 
         // Add the worksheet to the workbook
-        XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+        utils.book_append_sheet(wb, ws, "Sheet1");
 
         // Write the workbook to a file
-        XLSX.writeFile(wb, `${filename}.xlsx`);
+        writeFile(wb, `${filename}.xlsx`);
     }
 
     return (
