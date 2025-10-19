@@ -16,7 +16,7 @@ const CourseNotes = ({ chapter }) => {
 
     // Redux
     const dispatch = useDispatch()
-    useEffect(() => { dispatch(getNotesByChapter(chapter?._id)) }, [dispatch])
+    useEffect(() => { dispatch(getNotesByChapter(chapter?._id)) }, [dispatch, chapter])
 
     const { notesByChapter, isLoading } = useSelector(state => state.notes)
     const { user } = useSelector(state => state.auth)
@@ -40,16 +40,17 @@ const CourseNotes = ({ chapter }) => {
                 <Row>
                     {chapter ?
                         <Button size="sm" outline color="success" className="ms-auto me-1 mx-sm-auto my-2 add-notes-btn">
-                            <strong><AddNotesModal chapter={chapter} /></strong>
+                            <strong>
+                                <AddNotesModal chapter={chapter} />
+                            </strong>
                         </Button> : null
                     }
                 </Row> : null}
-
+            {console.log("notesByChapter: ", notesByChapter)}
             <Row>
-                {notesByChapter?.map((key, note) =>
+                {notesByChapter?.map((note, key) =>
 
                     <Col key={note?._id ? note?._id : key} sm="12" className="mb-3 resouces-card c-notes">
-
                         <Card className="d-flex flex-row p-1 p-sm-4">
                             <CardImg top width="12%" src={img} alt="Card image cap" className="pl-1" />
                             <CardBody style={{ width: "77%" }}>
@@ -79,8 +80,8 @@ const CourseNotes = ({ chapter }) => {
 
                                         <ol style={{ fontSize: ".65rem" }}>
                                             {
-                                                note?.quizzes && note?.quizzes.map((key, qz) =>
-                                                    <li key={qz && qz?._id ? qz?._id : key}>
+                                                note?.quizzes && note?.quizzes.map((qz, index) =>
+                                                    <li key={qz && qz?._id ? qz?._id : index}>
                                                         <Link to={`/view-quiz/${qz && qz?.slug}`}>
                                                             {qz?.title}
                                                         </Link>

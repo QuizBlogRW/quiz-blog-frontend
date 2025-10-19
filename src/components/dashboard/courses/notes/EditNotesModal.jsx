@@ -59,7 +59,7 @@ const EditNotesModal = ({ idToUpdate, editTitle, editDesc }) => {
         formData.append('notes_file', notes_file)
 
         // Attempt to update
-        dispatch(updateNotes({ formData, idToUpdate }))
+        dispatch(updateNotes({ idToUpdate, formData }))
     }
 
     return (

@@ -48,14 +48,17 @@ const chaptersSlice = createSlice({
     })
     builder.addCase(createChapter.fulfilled, (state, action) => {
       state.allChapters.unshift(action.payload)
+      state.chaptersByCourse.unshift(action.payload)
       state.isLoading = false
     })
     builder.addCase(updateChapter.fulfilled, (state, action) => {
       state.allChapters = state.allChapters.map(chapter => chapter._id === action.payload._id ? action.payload : chapter)
+      state.chaptersByCourse = state.chaptersByCourse.map(chapter => chapter._id === action.payload._id ? action.payload : chapter)
       state.isLoading = false
     })
     builder.addCase(deleteChapter.fulfilled, (state, action) => {
       state.allChapters = state.allChapters.filter(chapter => chapter._id !== action.payload._id)
+      state.chaptersByCourse = state.chaptersByCourse.filter(chapter => chapter._id !== action.payload._id)
       state.isLoading = false
     })
 

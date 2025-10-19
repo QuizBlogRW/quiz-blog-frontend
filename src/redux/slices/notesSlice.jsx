@@ -17,11 +17,11 @@ export const getNotesByChapter = createAsyncThunk("notes/getNotesByChapter", asy
 export const getNotesByCCatg = createAsyncThunk("notes/getNotesByCCatg", async (ccatgID, { getState }) =>
   apiCallHelper(`/api/notes/category/${ccatgID}`, 'get', null, getState, 'getNotesByCCatg'))
 
-export const createNotes = createAsyncThunk("notes/createNotes", async (newNotes, { getState }) =>
-  apiCallHelperUpload('/api/notes', 'post', newNotes, getState, 'createNotes'))
+export const createNotes = createAsyncThunk("notes/createNotes", async (formData, { getState }) =>
+  apiCallHelperUpload('/api/notes', 'post', formData, getState, 'createNotes'))
 
-export const updateNotes = createAsyncThunk("notes/updateNotes", async (updatedNotes, { getState }) =>
-  apiCallHelperUpload(`/api/notes/${updatedNotes.idToUpdate}`, 'put', updatedNotes, getState, 'updateNotes'))
+export const updateNotes = createAsyncThunk("notes/updateNotes", async ({ idToUpdate, formData }, { getState }) =>
+  apiCallHelperUpload(`/api/notes/${idToUpdate}`, 'put', formData, getState, 'updateNotes'))
 
 export const addNotesQuizzes = createAsyncThunk("notes/addNotesQuizzes", async (notesQuizzes, { getState }) =>
   apiCallHelper(`/api/notes/notes-quizzes/${notesQuizzes.noteID}`, 'put', notesQuizzes, getState, 'addNotesQuizzes'))
@@ -88,7 +88,7 @@ const notesSlice = createSlice({
     })
     builder.addCase(updateNotes.fulfilled, (state, action) => {
       state.allNotes = state.allNotes.map(note => note._id === action.payload._id ? action.payload : note)
-      state.notesByChapter = state.allNotes.map(note => note._id === action.payload._id ? action.payload : note)
+      state.notesByChapter = state.notesByChapter.map(note => note._id === action.payload._id ? action.payload : note)
       state.isLoading = false
     })
     builder.addCase(addNotesQuizzes.fulfilled, (state, action) => {
