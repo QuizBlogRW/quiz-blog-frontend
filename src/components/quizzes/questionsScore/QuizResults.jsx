@@ -104,7 +104,12 @@ const QuizResults = () => {
                                         }
                                     </PDFDownloadLink>}
 
-                                <ReviewForm isOpen={modalOpen} toggle={toggleModal} onSubmit={submitReview} quiz={thisQuiz && thisQuiz._id} score={mongoScoreId} user={uId} />
+                                <ReviewForm
+                                    isOpen={modalOpen}
+                                    toggle={toggleModal}
+                                    onSubmit={submitReview}
+                                    quiz={thisQuiz && thisQuiz._id}
+                                    score={mongoScoreId} />
                             </> :
 
                             <button type='button' onClick={toggleL} className='text-primary mt-3 mt-sm-0 me-2 me-md-0' style={{ backgroundColor: '#ffc107', border: '2px solid #157A6E', borderRadius: '10px', padding: '5px 12px', fontSize: '0.8rem' }}>

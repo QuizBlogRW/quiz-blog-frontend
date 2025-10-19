@@ -48,7 +48,7 @@ if (import.meta.env.VITE_DEBUG === 'true') {
                 console.error('❌ API Error:', error);
             }
             console.error('❌ API Error:', error.response?.status, error.config?.url);
-            return Promise.reject(error?.response);
+            return Promise.reject(error);
         }
     );
 }
@@ -62,8 +62,10 @@ const RELOAD_TIMEOUT = 2000
 
 // API call helper function to make async actions with createAsyncThunk
 export const apiCallHelper = async (url, method, body, getState, actionType) => {
+
+    const headers = { 'Content-Type': 'application/json', 'x-auth-token': getState().auth.token }
+
     try {
-        const headers = { 'Content-Type': 'application/json', 'x-auth-token': getState().auth.token }
         const response = method === 'get' || method === 'delete'
             ? await axiosInstance[method](url, { headers })
             : await axiosInstance[method](url, body, { headers })
@@ -75,7 +77,7 @@ export const apiCallHelper = async (url, method, body, getState, actionType) => 
             }
             else {
                 if (!noToastActionTypes.includes(actionType)) {
-                    notify(response.data?.error ? response.data.error : response.data?.msg ? response.data.msg : 'Success', 'success')
+                    notify(response.data?.message ? response.data.message : 'Success', 'success')
                 }
             }
         }
@@ -102,7 +104,6 @@ export const apiCallHelper = async (url, method, body, getState, actionType) => 
             }
             else {
                 errorMessage = 'An error with data occurred'
-                // console.log(`\n\n${errorMessage}:\n${error.data}`)
             }
 
             if (error.data.id == 'CONFIRM_ERR') {
@@ -111,35 +112,30 @@ export const apiCallHelper = async (url, method, body, getState, actionType) => 
         } else {
             // Fallback to error message
             errorMessage = 'An error occurred'
-            // console.log(`\n\n${errorMessage}:\n${error}`)
         }
-
-        // Throw the correct error message
         throw new Error(errorMessage)
     }
 }
 
 // API call helper function to make async actions with createAsyncThunk for file uploads
-// TODO: Add error handling as done in apiCallHelper
 export const apiCallHelperUpload = async (url, method, formData, getState, actionType) => {
     try {
         const response = await axiosInstance[method](url, formData, {
             headers: { 'x-auth-token': getState().auth.token },
         })
 
-        if ((response.status === 200 || response.status === 201) && reloadActionTypes.includes(actionType)) {
+        if ((response?.status === 200 || response?.status === 201) && reloadActionTypes.includes(actionType)) {
             setTimeout(() => { window.location.reload() }, RELOAD_TIMEOUT)
         }
 
         return response?.data
     } catch (error) {
-        if (error.response && error.response.data && error.response.data.error && !noToastActionTypes.includes(actionType)) {
-            notify(error.response?.data?.error, 'error')
+        if (error?.response?.data && error?.response?.data?.message && !noToastActionTypes.includes(actionType)) {
+            notify(error?.response?.data?.message, 'error')
         }
-        return Promise.reject(error.response?.data?.error)
+        return Promise.reject(error?.response?.data?.message)
     }
 }
-
 
 export const handlePending = (state) => {
     state.isLoading = true;
@@ -148,7 +144,4 @@ export const handlePending = (state) => {
 export const handleRejected = (state, action) => {
     state.isLoading = false;
     state.error = action.error || `An error occurred.`;
-
-    // Log error for debugging
-    // console.error(`API call failed for action type: ${action.type}`, action?.error?.message || action.error);
 };

@@ -80,10 +80,10 @@ const CreateQuestions = () => {
             notify('Question is too long!', 'error')
             return false
         } else if (answerOptions.length <= 1) {
-            notify('Answers are not sufficient!')
+            notify('Answers are not sufficient!', 'error')
             return false
         } else if (!trueAnswer) {
-            notify('Please provide a true answer!')
+            notify('Please provide a true answer!', 'error')
             return false
         }
         return true
@@ -112,7 +112,6 @@ const CreateQuestions = () => {
         setQuestion_image('')
         setDurationState({ duration: 24 })
         setAnswerOptions([{ id: uuidv4(), answerText: '', explanations: '', isCorrect: false }])
-        toggleL()
     }
 
     const handleAddFields = () => {

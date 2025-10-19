@@ -18,6 +18,13 @@ const DeleteModal = ({ delID, delTitle, deleteFn, deleteFnName }) => {
 
         // Attempt to delete
         dispatch(deleteFn(delID))
+
+        if (deleteFnName === 'deleteQuestion') {
+            window.history.back();
+        } else if (deleteFnName === 'deleteQuiz' ||
+            deleteFnName === 'deleteCategory') {
+            window.location.reload();
+        }
     }
 
     return (

@@ -69,7 +69,6 @@ const AddBlogPost = () => {
             bgColor: '',
         })
         setPost_image('')
-        toggleL()
     }
 
     return (

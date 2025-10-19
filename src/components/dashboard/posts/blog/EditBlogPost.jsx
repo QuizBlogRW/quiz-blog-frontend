@@ -75,7 +75,6 @@ const EditBlogPost = () => {
 
     // Attempt to create
     dispatch(updateBlogPost(updatedBP))
-    toggleL()
   }
 
   return (

@@ -6,6 +6,7 @@ import { getOneQuestion, updateQuestion } from '@/redux/slices/questionsSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import { notify } from '@/utils/notifyToast'
 import NotAuthenticated from '@/components/auth/NotAuthenticated'
+import QBLoading from '@/utils/rLoading/QBLoadingSM'
 
 const EditQuestion = () => {
 
@@ -87,6 +88,13 @@ const EditQuestion = () => {
             return
         }
 
+        else if (answerOptionsState.filter(aOptn => aOptn.isCorrect === true).length === 0) {
+            notify('No correct answer selected!', 'error')
+            return
+        }
+
+        // Add to form data
+        formData.append('question_image', question_image)
         formData.append('questionText', questionTextState.questionText)
         answerOptionsState.forEach(aOptn => {
             formData.append('answerOptions', JSON.stringify(aOptn))
@@ -109,6 +117,8 @@ const EditQuestion = () => {
 
         setAnswerOptionsState(values)
     }
+
+    if (isQnLoading) return <QBLoading />
 
     return (
         isAuthenticated ?
@@ -138,7 +148,9 @@ const EditQuestion = () => {
                     <FormGroup row className="mx-0">
                         <Label sm={2}>Question Edit</Label>
                         <Col sm={10}>
-                            <Input type="text" name="questionText" value={questionTextState && questionTextState.questionText} placeholder="Question here ..." onChange={onQuestionChangeHandler} required />
+                            <Input type="text" name="questionText"
+                                value={questionTextState && questionTextState.questionText} placeholder="Question here ..."
+                                onChange={onQuestionChangeHandler} required />
                         </Col>
                     </FormGroup>
 
@@ -151,14 +163,26 @@ const EditQuestion = () => {
                             </Col>}
 
                         <Col sm={12}>
-                            <Input bsSize="sm" type="file" accept=".jpg, .png, .jpeg, .svg" name="question_image" onChange={onFileHandler} label="Pick an image ..." id="question_image_pick" required />
+                            <Input bsSize="sm"
+                                type="file"
+                                accept=".jpg, .png, .jpeg, .svg"
+                                name="question_image"
+                                onChange={onFileHandler}
+                                label="Pick an image ..."
+                                id="question_image_pick" />
                         </Col>
                     </FormGroup>
 
                     <FormGroup row className="mx-0">
                         <Label sm={2}>Question Duration</Label>
                         <Col sm={3}>
-                            <Input type="number" name="duration" value={durationState && durationState.duration} placeholder="Time in seconds ..." onChange={onDurationChangeHandler} required />
+                            <Input
+                                type="number"
+                                name="duration"
+                                value={durationState && durationState.duration}
+                                placeholder="Time in seconds ..."
+                                onChange={onDurationChangeHandler}
+                                required />
                         </Col>
                     </FormGroup>
 
@@ -189,8 +213,13 @@ const EditQuestion = () => {
                                     </Col>
 
                                     <Col sm={6} xl={2} className="my-3 my-sm-2 d-sm-flex justify-content-around">
-                                        <Input type="checkbox" name="isCorrect" checked={answerOption.isCorrect}
-                                            onChange={event => handleAnswerChangeInput(answerOption._id, event)} id={answerOption._id} label="Is Correct?" required />
+                                        <Input
+                                            type="checkbox"
+                                            name="isCorrect"
+                                            checked={answerOption.isCorrect}
+                                            onChange={event => handleAnswerChangeInput(answerOption._id, event)}
+                                            id={answerOption._id}
+                                            label="Is Correct?" />
                                     </Col>
 
                                     <Col sm={6} xl={1} className="my-3 my-sm-2">

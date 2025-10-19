@@ -23,6 +23,7 @@ const QuizQuestions = () => {
 
     // ACCESS Link Tag State
     const quizState = location.state
+    console.log('quizState', quizState)
 
     // Get the quiz
     const [newScoreId, setNewScoreId] = useState();
