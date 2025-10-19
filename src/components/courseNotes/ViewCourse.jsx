@@ -67,7 +67,8 @@ const ViewCourse = () => {
                 </Alert>
 
 
-                {!chaptersBy.isByCourseLoading ?
+                {chaptersBy.isLoading ?
+                    <QBLoadingSM /> :
 
                     chaptersBy.chaptersByCourse.length > 0 ?
 
@@ -119,10 +120,8 @@ const ViewCourse = () => {
                                 <Button outline color="success">
                                     <strong><AddChapter course={oneCourse.oneCourse} /></strong>
                                 </Button> : null}
-                        </Alert> :
-                    <QBLoadingSM />
+                        </Alert>
                 }
-
             </Container>)
 }
 

@@ -6,7 +6,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import AddIcon from '@/images/plus.svg'
 
 
-const AddRelatedQuiz = ({ noteID, courseCategoryID }) => {
+// TODO: Wrong, needs to push quizzes IDs into specific Notes Model
+const AddRelatedQuiz = ({ noteID }) => {
 
     // Redux
     const dispatch = useDispatch()
@@ -22,10 +23,10 @@ const AddRelatedQuiz = ({ noteID, courseCategoryID }) => {
 
     // Lifecycle methods
     useEffect(() => {
-        if (courseCategoryID) {
-            dispatch(getQuizzesByNotes(courseCategoryID))
+        if (noteID) {
+            dispatch(getQuizzesByNotes(noteID))
         }
-    }, [courseCategoryID, dispatch])
+    }, [noteID, dispatch])
 
     const onChangeHandler = e => {
         getQuizzesState(e.target.value)

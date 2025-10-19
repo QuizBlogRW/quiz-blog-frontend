@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { getNotes, deleteNotes, removeQzNt } from '@/redux/slices/notesSlice'
+import { getNotesByChapter, deleteNotes, removeQzNt } from '@/redux/slices/notesSlice'
 import { saveDownload } from '@/redux/slices/downloadsSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import img from '@/images/resourceImg.svg'
@@ -11,16 +11,15 @@ import AddRelatedQuiz from './AddRelatedQuiz'
 import { Row, Col, Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button } from 'reactstrap'
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM'
 import DeleteModal from '@/utils/DeleteModal'
-import NotAuthenticated from '@/components/auth/NotAuthenticated'
 
 const CourseNotes = ({ chapter }) => {
 
     // Redux
-    const notes = useSelector(state => state.notes)
     const dispatch = useDispatch()
-    const { user } = useSelector(state => state.auth)
+    useEffect(() => { dispatch(getNotesByChapter(chapter?._id)) }, [dispatch])
 
-    useEffect(() => { dispatch(getNotes()) }, [dispatch])
+    const { notesByChapter, isLoading } = useSelector(state => state.notes)
+    const { user } = useSelector(state => state.auth)
 
     const onDownload = (note) => {
         const newDownload = {
@@ -34,92 +33,84 @@ const CourseNotes = ({ chapter }) => {
         dispatch(saveDownload(newDownload))
     }
 
-    return (
+    return (isLoading ?
+        <QBLoadingSM title='notes' /> :
+        <>
+            {user.role !== 'Visitor' ?
+                <Row>
+                    {chapter ?
+                        <Button size="sm" outline color="success" className="ms-auto me-1 mx-sm-auto my-2 add-notes-btn">
+                            <strong><AddNotesModal chapter={chapter} /></strong>
+                        </Button> : null
+                    }
+                </Row> : null}
 
-        isAuth && isAuth ?
+            <Row>
+                {notesByChapter?.map((key, note) =>
 
-            notes.isLoading ?
-                <QBLoadingSM title='notes' /> :
+                    <Col key={note?._id ? note?._id : key} sm="12" className="mb-3 resouces-card c-notes">
 
-                <>
-                    {user.role !== 'Visitor' ?
-                        <Row>
-                            {chapter ?
-                                <Button size="sm" outline color="success" className="ms-auto me-1 mx-sm-auto my-2 add-notes-btn">
-                                    <strong><AddNotesModal chapter={chapter} /></strong>
-                                </Button> : null
-                            }
-                        </Row> : null}
+                        <Card className="d-flex flex-row p-1 p-sm-4">
+                            <CardImg top width="12%" src={img} alt="Card image cap" className="pl-1" />
+                            <CardBody style={{ width: "77%" }}>
 
-                    <Row>
-                        {notes && notes.allNotes.map(note =>
+                                <CardTitle tag="h6" className="text-info fw-bolder mb-1"
+                                    style={{ fontSize: ".7rem" }}>
+                                    {note?.title}
+                                </CardTitle>
 
-                            note.chapter === chapter._id ?
+                                <CardSubtitle tag="small" className="mb-2 text-muted fw-bolder" style={{ fontSize: ".6rem" }}>
+                                    {note?.courseCategory?.title}
+                                </CardSubtitle>
 
-                                <Col key={note._id} sm="12" className="mb-3 resouces-card c-notes">
+                                <CardText className="mb-1">
+                                    <small>{note?.description}</small>
+                                    <br />
+                                    <i className="fw-bolder text-info" style={{ fontSize: ".5rem" }}>
+                                        {note?.notes_file && note?.notes_file.split('/').pop().replace(/%20|%5B|%5D/g, ' ')}
+                                    </i>
+                                </CardText>
 
-                                    <Card className="d-flex flex-row p-1 p-sm-4">
-                                        <CardImg top width="12%" src={img} alt="Card image cap" className="pl-1" />
-                                        <CardBody style={{ width: "77%" }}>
+                                {note?.quizzes && note?.quizzes.length > 0 ?
+                                    <>
+                                        <h6 style={{ fontSize: ".7rem", fontWeight: "bolder", marginTop: "1rem", color: "magenta" }}>
+                                            <u>RELATED QUIZZES</u>
+                                        </h6>
 
-                                            <CardTitle tag="h6" className="text-info fw-bolder mb-1"
-                                                style={{ fontSize: ".7rem" }}>
-                                                {note.title}
-                                            </CardTitle>
+                                        <ol style={{ fontSize: ".65rem" }}>
+                                            {
+                                                note?.quizzes && note?.quizzes.map((key, qz) =>
+                                                    <li key={qz && qz?._id ? qz?._id : key}>
+                                                        <Link to={`/view-quiz/${qz && qz?.slug}`}>
+                                                            {qz?.title}
+                                                        </Link>
 
-                                            <CardSubtitle tag="small" className="mb-2 text-muted fw-bolder" style={{ fontSize: ".6rem" }}>
-                                                {note.courseCategory.title}
-                                            </CardSubtitle>
+                                                        {user.role !== 'Visitor' ?
+                                                            <Button size="sm" color="link" className="ms-2" onClick={() => dispatch(removeQzNt(note?._id, qz && qz?._id))}>
+                                                                <img src={DeleteIcon} alt="" width="10" height="10" />
+                                                            </Button> : null}
+                                                    </li>
+                                                )
+                                            }
+                                        </ol></> : null}
 
-                                            <CardText className="mb-1">
-                                                <small>{note.description}</small>
-                                                <br />
-                                                <i className="fw-bolder text-info" style={{ fontSize: ".5rem" }}>
-                                                    {note.notes_file && note.notes_file.split('/').pop().replace(/%20|%5B|%5D/g, ' ')}
-                                                </i>
-                                            </CardText>
+                                <div className="d-flex">
+                                    <Button size="sm" style={{ backgroundColor: "#ffc107", border: "2px solid #157A6E" }}>
+                                        <a href={note?.notes_file} style={{ color: "#157A6E", fontWeight: 'bold' }} onClick={() => onDownload(note)} target="_blank" rel="noopener noreferrer">Download</a>
+                                    </Button>
 
-                                            {note.quizzes && note.quizzes.length > 0 ?
-                                                <>
-                                                    <h6 style={{ fontSize: ".7rem", fontWeight: "bolder", marginTop: "1rem", color: "magenta" }}>
-                                                        <u>RELATED QUIZZES</u>
-                                                    </h6>
-
-                                                    <ol style={{ fontSize: ".65rem" }}>
-                                                        {
-                                                            note.quizzes && note.quizzes.map(qz =>
-                                                                <li key={qz && qz._id}>
-                                                                    <Link to={`/view-quiz/${qz && qz.slug}`}>
-                                                                        {qz.title}
-                                                                    </Link>
-
-                                                                    {user.role !== 'Visitor' ?
-                                                                        <Button size="sm" color="link" className="ms-2" onClick={() => dispatch(removeQzNt(note._id, qz && qz._id))}>
-                                                                            <img src={DeleteIcon} alt="" width="10" height="10" />
-                                                                        </Button> : null}
-                                                                </li>
-                                                            )
-                                                        }
-                                                    </ol></> : null}
-
-                                            <div className="d-flex">
-                                                <Button size="sm" style={{ backgroundColor: "#ffc107", border: "2px solid #157A6E" }}>
-                                                    <a href={note.notes_file} style={{ color: "#157A6E", fontWeight: 'bold' }} onClick={() => onDownload(note)} target="_blank" rel="noopener noreferrer">Download</a>
-                                                </Button>
-
-                                                {user.role !== 'Visitor' ?
-                                                    <><Button size="sm" color="link" className="mx-2">
-                                                        <EditNotesModal idToUpdate={note._id} editTitle={note.title} editDesc={note.description} />
-                                                    </Button>
-                                                        <DeleteModal deleteFnName="deleteNotes" deleteFn={deleteNotes} delID={note._id} delTitle={note.title} />
-                                                        <AddRelatedQuiz courseCategoryID={note.courseCategory} noteID={note._id} /></> : null}
-                                            </div>
-                                        </CardBody>
-                                    </Card>
-                                </Col> : null)}
-                    </Row>
-                </> :
-            <NotAuthenticated />
+                                    {user.role !== 'Visitor' ?
+                                        <><Button size="sm" color="link" className="mx-2">
+                                            <EditNotesModal idToUpdate={note?._id} editTitle={note?.title} editDesc={note?.description} />
+                                        </Button>
+                                            <DeleteModal deleteFnName="deleteNotes" deleteFn={deleteNotes} delID={note?._id} delTitle={note?.title} />
+                                            <AddRelatedQuiz courseCategoryID={note?.courseCategory} noteID={note?._id} /></> : null}
+                                </div>
+                            </CardBody>
+                        </Card>
+                    </Col>)}
+            </Row>
+        </>
     )
 }
 

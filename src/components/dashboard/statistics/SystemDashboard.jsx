@@ -14,7 +14,7 @@ const SystemDashboard = () => {
     const [dashboardStats, setDashboardStats] = useState(null);
 
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [fetchError, setFetchError] = useState(null);
     const [activeTab, setActiveTab] = useState('1');
     const [lastUpdated, setLastUpdated] = useState(null);
 
@@ -26,7 +26,7 @@ const SystemDashboard = () => {
             fetchAllMetrics();
 
             // Auto-refresh every 30 seconds
-            const interval = setInterval(fetchAllMetrics, 30000);
+            const interval = setInterval(fetchAllMetrics, 60000);
             return () => clearInterval(interval);
         }
     }, [isAuthenticated, user]);
@@ -35,7 +35,7 @@ const SystemDashboard = () => {
 
         // Double-check authentication
         if (!isAuthenticated || !user || (user.role !== 'Admin' && user.role !== 'SuperAdmin')) {
-            setError('Access denied. Admin privileges required.');
+            setFetchError('Access denied. Admin privileges required.');
             return;
         }
 
@@ -47,12 +47,13 @@ const SystemDashboard = () => {
 
             if (dashRes.status === 200 && dashRes.data) {
                 setDashboardStats(dashRes.data);
+                setFetchError(null)
             }
 
             setLastUpdated(new Date().toLocaleTimeString());
         } catch (err) {
             console.error('Error fetching metrics:', err);
-            setError('Failed to fetch system metrics! Check the logs for error.');
+            setFetchError('Failed to fetch system metrics! Check statistics logs for error.');
             setLastUpdated(new Date().toLocaleTimeString());
         } finally {
             setLoading(false);
@@ -110,10 +111,10 @@ const SystemDashboard = () => {
                 </Col>
             </Row>
 
-            {error && (
-                <Alert color={error.includes('Note:') ? "warning" : "danger"} className="mb-4">
-                    <i className={`fas ${error.includes('Note:') ? 'fa-info-circle' : 'fa-exclamation-triangle'} me-2`}></i>
-                    {error}
+            {fetchError && (
+                <Alert color={fetchError.includes('Note:') ? "warning" : "danger"} className="mb-4">
+                    <i className={`fas ${fetchError.includes('Note:') ? 'fa-info-circle' : 'fa-exclamation-triangle'} me-2`}></i>
+                    {fetchError}
                 </Alert>
             )}
 

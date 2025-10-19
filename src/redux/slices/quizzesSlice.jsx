@@ -14,8 +14,8 @@ export const getOneQuiz = createAsyncThunk("quizzes/getOneQuiz", async (quizSlug
 export const getQuizzesByCategory = createAsyncThunk("quizzes/getQuizzesByCategory", async (categoryID, { getState }) =>
   apiCallHelper(`/api/quizzes/category/${categoryID}`, 'get', null, getState, 'getQuizzesByCategory'))
 
-export const getQuizzesByNotes = createAsyncThunk("quizzes/getQuizzesByNotes", async (courseCategoryID, { getState }) =>
-  apiCallHelper(`/api/quizzes/course-notes/${courseCategoryID}`, 'get', null, getState, 'getQuizzesByNotes'))
+export const getQuizzesByNotes = createAsyncThunk("quizzes/getQuizzesByNotes", async (noteID, { getState }) =>
+  apiCallHelper(`/api/quizzes/course-notes/${noteID}`, 'get', null, getState, 'getQuizzesByNotes'))
 
 export const createQuiz = createAsyncThunk("quizzes/createQuiz", async (newQuiz, { getState }) =>
   apiCallHelper('/api/quizzes', 'post', newQuiz, getState, 'createQuiz'))

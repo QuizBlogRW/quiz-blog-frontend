@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux'
 import EditIcon from '@/images/edit.svg'
 import { notify } from '@/utils/notifyToast'
 
+// TODO: Needs to be fixed to edit a notes
 const EditNotesModal = ({ idToUpdate, editTitle, editDesc }) => {
 
     // Redux
@@ -12,7 +13,7 @@ const EditNotesModal = ({ idToUpdate, editTitle, editDesc }) => {
 
     const [notesState, setNotesState] = useState({
         idToUpdate,
-        name: editTitle,
+        title: editTitle,
         description: editDesc,
         notes_file: ''
     })
@@ -36,14 +37,14 @@ const EditNotesModal = ({ idToUpdate, editTitle, editDesc }) => {
         e.preventDefault()
 
         const formData = new FormData()
-        const { idToUpdate, name, description, notes_file } = notesState
+        const { idToUpdate, title, description, notes_file } = notesState
 
         // VALIDATE
-        if (name.length < 4 || description.length < 4) {
+        if (title.length < 4 || description.length < 4) {
             notify('Insufficient info!', 'error')
             return
         }
-        else if (name.length > 80) {
+        else if (title.length > 80) {
             notify('Title is too long!', 'error')
             return
         }
@@ -53,7 +54,7 @@ const EditNotesModal = ({ idToUpdate, editTitle, editDesc }) => {
         }
 
         // Create Notes object
-        formData.append('title', name)
+        formData.append('title', title)
         formData.append('description', description)
         formData.append('notes_file', notes_file)
 
@@ -87,7 +88,7 @@ const EditNotesModal = ({ idToUpdate, editTitle, editDesc }) => {
                                 <strong>Title</strong>
                             </Label>
 
-                            <Input type="text" name="name" id="name" placeholder="Notes title ..." className="mb-3" onChange={onChangeHandler} value={notesState.name} />
+                            <Input type="text" name="title" id="title" placeholder="Notes title ..." className="mb-3" onChange={onChangeHandler} value={notesState.title} />
 
                             <Label for="description">
                                 <strong>Description</strong>

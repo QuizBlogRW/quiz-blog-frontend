@@ -44,7 +44,7 @@ const chaptersSlice = createSlice({
     })
     builder.addCase(getChaptersByCourse.fulfilled, (state, action) => {
       state.chaptersByCourse = action.payload
-      state.isByCourseLoading = false
+      state.isLoading = false
     })
     builder.addCase(createChapter.fulfilled, (state, action) => {
       state.allChapters.unshift(action.payload)

@@ -21,7 +21,7 @@ export const createNotes = createAsyncThunk("notes/createNotes", async (newNotes
   apiCallHelperUpload('/api/notes', 'post', newNotes, getState, 'createNotes'))
 
 export const updateNotes = createAsyncThunk("notes/updateNotes", async (updatedNotes, { getState }) =>
-  apiCallHelper(`/api/notes/${updatedNotes.idToUpdate}`, 'put', updatedNotes, getState, 'updateNotes'))
+  apiCallHelperUpload(`/api/notes/${updatedNotes.idToUpdate}`, 'put', updatedNotes, getState, 'updateNotes'))
 
 export const addNotesQuizzes = createAsyncThunk("notes/addNotesQuizzes", async (notesQuizzes, { getState }) =>
   apiCallHelper(`/api/notes/notes-quizzes/${notesQuizzes.noteID}`, 'put', notesQuizzes, getState, 'addNotesQuizzes'))
@@ -83,22 +83,27 @@ const notesSlice = createSlice({
     })
     builder.addCase(createNotes.fulfilled, (state, action) => {
       state.allNotes.unshift(action.payload)
+      state.notesByChapter.unshift(action.payload)
       state.isLoading = false
     })
     builder.addCase(updateNotes.fulfilled, (state, action) => {
       state.allNotes = state.allNotes.map(note => note._id === action.payload._id ? action.payload : note)
+      state.notesByChapter = state.allNotes.map(note => note._id === action.payload._id ? action.payload : note)
       state.isLoading = false
     })
     builder.addCase(addNotesQuizzes.fulfilled, (state, action) => {
       state.allNotes = state.allNotes.map(note => note._id === action.payload._id ? action.payload : note)
+      state.notesByChapter = state.notesByChapter.map(note => note._id === action.payload._id ? action.payload : note)
       state.isLoading = false
     })
     builder.addCase(deleteNotes.fulfilled, (state, action) => {
       state.allNotes = state.allNotes.filter(note => note._id !== action.payload._id)
+      state.notesByChapter = state.notesByChapter.filter(note => note._id !== action.payload._id)
       state.isLoading = false
     })
     builder.addCase(removeQzNt.fulfilled, (state, action) => {
       state.allNotes = state.allNotes.map(note => note._id === action.payload._id ? action.payload : note)
+      state.notesByChapter = state.notesByChapter.map(note => note._id === action.payload._id ? action.payload : note)
       state.isLoading = false
     })
 
