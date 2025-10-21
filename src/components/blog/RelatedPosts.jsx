@@ -45,7 +45,7 @@ const RelatedPosts = ({ bPCatID }) => {
 
     return (
         bposts.isLoading ? <QBLoadingSM /> :
-            <div className="similar-posts mt-4 mt-lg-2">
+            <div className="similar-posts mt-4 mt-lg-5">
                 <Alert className='border border-warning text-uppercase mb-0'>
                     Related Posts
                 </Alert>

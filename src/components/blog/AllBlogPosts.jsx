@@ -25,11 +25,24 @@ const AllBlogPosts = () => {
   }, [dispatch]);
 
   return (
-    <Container className="posts main blog-posts mt-4">
-      <Row className="mt-lg-5">
-        <Col sm="1" className="mt-md-2"></Col>
-
-        <Col sm="3" className="mt-md-2">
+    <Container className="posts main blog-posts mt-4 py-lg-5">
+      <Row>
+        <Col xs="12" className="mb-3">
+          <div className="blog-hero jbtron rounded p-3 text-center">
+            <h1
+              className="display-4 fw-bolder text-center my-4 mb-lg-4"
+              style={{ color: "var(--accent)" }}
+            >
+              Quiz-Blog Articles
+            </h1>
+            <p className="lead mb-1 mb-lg-4 text-white">
+              Insights, guides and stories to help you learn and prepare.
+            </p>
+          </div>
+        </Col>
+      </Row>
+      <Row className="mt-lg-5 d-flex justify-content-around">
+        <Col md="3" className="mt-md-2 d-none d-md-block">
           {bPcats.isLoading ? (
             <QBLoadingSM />
           ) : bPcats.allPostCategories &&
@@ -37,7 +50,7 @@ const AllBlogPosts = () => {
             <div className="sticky-categories">
               <h5
                 className="fw-bolder text-uppercase text-center mb-5"
-                style={{ color: "#157A6E" }}
+                style={{ color: "var(--brand)" }}
               >
                 Discover Knowledge
               </h5>
@@ -65,6 +78,9 @@ const AllBlogPosts = () => {
                     </Link>
                   ))}
               </ListGroup>
+              <Col md="3" className="mt-md-2 d-none d-md-block">
+                {process.env.NODE_ENV !== "development" ? <SquareAd /> : null}
+              </Col>
             </div>
           ) : (
             <div className="text-center py-4">
@@ -78,7 +94,7 @@ const AllBlogPosts = () => {
           </div>
         </Col>
 
-        <Col sm="6" className="mt-md-2">
+        <Col md="6" xs="12" className="mt-md-2">
           <Suspense fallback={<QBLoadingSM />}>
             {bposts.isLoading ? (
               <QBLoadingSM />
@@ -89,10 +105,6 @@ const AllBlogPosts = () => {
               ))
             )}
           </Suspense>
-        </Col>
-
-        <Col sm="2" className="mt-md-2">
-          {process.env.NODE_ENV !== "development" ? <SquareAd /> : null}
         </Col>
       </Row>
     </Container>

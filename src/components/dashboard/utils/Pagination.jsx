@@ -17,7 +17,7 @@ const Pagination = ({ pageNo, setPageNo, numberOfPages }) => {
         middlePagination = [...Array(numberOfPages)].map((_, pageIndex) => (
             <Button
                 outline color="success"
-                style={pageNo === pageIndex + 1 ? { backgroundColor: "#157A6E", color: "#fff" } : null}
+                style={pageNo === pageIndex + 1 ? { backgroundColor: "var(--brand)", color: "#fff" } : null}
                 key={pageIndex + 1}
                 onClick={() => setPageNo(pageIndex + 1)}
                 disabled={pageNo === pageIndex + 1}>
@@ -34,7 +34,7 @@ const Pagination = ({ pageNo, setPageNo, numberOfPages }) => {
                 {[...Array(3)].map((_, pageIndex) => (
                     <Button
                         outline color="success"
-                        style={pageNo === pageIndex + 1 ? { backgroundColor: "#157A6E", color: "#fff" } : null}
+                        style={pageNo === pageIndex + 1 ? { backgroundColor: "var(--brand)", color: "#fff" } : null}
                         key={startValue + pageIndex + 1}
                         disabled={pageNo === startValue + pageIndex + 1}
                         onClick={() => setPageNo(startValue + pageIndex + 1)}>
@@ -64,7 +64,7 @@ const Pagination = ({ pageNo, setPageNo, numberOfPages }) => {
                         {[...Array(3)].map((_, pageIndex) => (
                             <Button
                                 outline color="success"
-                                style={pageNo === startValue + pageIndex + 1 ? { backgroundColor: "#157A6E", color: "#fff" } : null}
+                                style={pageNo === startValue + pageIndex + 1 ? { backgroundColor: "var(--brand)", color: "#fff" } : null}
                                 key={startValue + pageIndex + 1}
                                 disabled={pageNo === startValue + pageIndex + 1}
                                 onClick={() => setPageNo(startValue + pageIndex + 1)}>
@@ -94,7 +94,7 @@ const Pagination = ({ pageNo, setPageNo, numberOfPages }) => {
                         <Button outline color="success" disabled>...</Button>
                         <Button
                             outline color="success"
-                            style={pageNo === startValue ? { backgroundColor: "#157A6E", color: "#fff" } : null}
+                            style={pageNo === startValue ? { backgroundColor: "var(--brand)", color: "#fff" } : null}
                             onClick={() => setPageNo(startValue)}>
                             {startValue}
                         </Button>
@@ -104,7 +104,7 @@ const Pagination = ({ pageNo, setPageNo, numberOfPages }) => {
                                 outline color="success"
                                 key={startValue + pageIndex + 1}
                                 disabled={pageNo === startValue + pageIndex + 1}
-                                style={pageNo === startValue + pageIndex + 1 ? { backgroundColor: "#157A6E", color: "#fff" } : numberOfPages < startValue + pageIndex + 1 ? { visibility: "hidden" } : null}
+                                style={pageNo === startValue + pageIndex + 1 ? { backgroundColor: "var(--brand)", color: "#fff" } : numberOfPages < startValue + pageIndex + 1 ? { visibility: "hidden" } : null}
                                 onClick={() => setPageNo(startValue + pageIndex + 1)}>
                                 {startValue + pageIndex + 1}
                             </Button>

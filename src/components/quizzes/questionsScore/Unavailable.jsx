@@ -6,7 +6,7 @@ const Unavailable = ({ title, link, more }) => {
             </h4>
 
             <p>
-                <a href={link} style={{ textDecoration: "none", color: "#157A6E", fontSize: ".9rem", fontWeight: "bold", }}>
+                <a href={link} style={{ textDecoration: "none", color: "var(--brand)", fontSize: ".9rem", fontWeight: "bold", }}>
                     <span role="img" aria-label="pointing">👉</span>&nbsp;<u>click here for more {more}</u>
                 </a>
             </p>

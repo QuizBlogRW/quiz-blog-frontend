@@ -62,8 +62,8 @@ const RegisterModal = () => {
     return (
         <div>
             <Modal isOpen={isOpenR} toggle={toggleR} centered={true}>
-                <div className="d-flex justify-content-between align-items-center p-2" style={{ backgroundColor: "#157A6E", color: "#fff" }}>
-                    <img src={logocirclewhite} alt="logo" style={{ maxHeight: "3.2rem", color: "#157A6E" }} />
+                <div className="d-flex justify-content-between align-items-center p-2" style={{ backgroundColor: "var(--brand)", color: "#fff" }}>
+                    <img src={logocirclewhite} alt="logo" style={{ maxHeight: "3.2rem", color: "var(--brand)" }} />
                     <Button className="btn-danger text-uppercase text-red" style={{ padding: "0.1rem 0.3rem", fontSize: ".6rem", fontWeight: "bold" }} onClick={toggleR}>
                         X
                     </Button>
@@ -96,7 +96,7 @@ const RegisterModal = () => {
                             </Label>
                             <Input type="password" name="password" placeholder="Password here ..." className="mb-3" onChange={onChangeHandler} />
 
-                            <Button style={{ marginTop: '2rem', backgroundColor: "#157A6E" }} block>
+                            <Button style={{ marginTop: '2rem', backgroundColor: "var(--brand)" }} block>
                                 Register
                             </Button>
                         </FormGroup>
@@ -104,7 +104,7 @@ const RegisterModal = () => {
 
                     <div className="d-flex align-items-center justify-content-around">
                         <p className="p-2 mb-0">Having an account?</p>
-                        <NavLink onClick={toggleL} className="fw-bolder" style={{ color: "#157A6E" }}>
+                        <NavLink onClick={toggleL} className="fw-bolder" style={{ color: "var(--brand)" }}>
                             Login
                         </NavLink>
                     </div>

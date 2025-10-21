@@ -21,7 +21,7 @@ const CommunicationsTabPane = () => {
 
             <p className='m-3 w-100'>
                 To see more about broadcasts, click here 👉<button className="btn btn-sm btn-outline-warning ms-2">
-                    <a href={'/broadcasts'} style={{ color: '#157A6E', fontWeight: 'bolder' }}>Broadcasts</a>
+                    <a href={'/broadcasts'} style={{ color: 'var(--brand)', fontWeight: 'bolder' }}>Broadcasts</a>
                 </button>
             </p>
 

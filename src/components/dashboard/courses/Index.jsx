@@ -85,7 +85,7 @@ const Index = () => {
                 {
                     isLoading ?
                         <QBLoadingSM title='course categories' /> :
-                        <Button color="link" className="fw-bolder my-5 border rounded" onClick={toggleL} style={{ backgroundColor: "#ffc107", color: "#157A6E", fontSize: "1.5vw", boxShadow: "-2px 2px 1px 2px #157A6E", border: "2px solid #157A6E" }}>
+                        <Button color="link" className="fw-bolder my-5 border rounded" onClick={toggleL} style={{ backgroundColor: "var(--accent)", color: "var(--brand)", fontSize: "1.5vw", boxShadow: "-2px 2px 1px 2px var(--brand)", border: "2px solid var(--brand)" }}>
                             Login for Exclusive Notes Access
                         </Button>
                 }
@@ -134,7 +134,7 @@ const Index = () => {
                                             <Suspense fallback={<QBLoadingSM />}>
                                                 {process.env.NODE_ENV !== 'development' ? <InFeedAd /> : null}
                                             </Suspense>
-                                            <h4 className="d-block fw-bolder" style={{ color: "#157A6E " }}>
+                                            <h4 className="d-block fw-bolder" style={{ color: "var(--brand) " }}>
                                                 Available Courses
                                             </h4>
                                         </Row>

@@ -33,14 +33,14 @@ const ViewCourse = () => {
     }
 
     return (<Container className="mt-2 py-2 py-lg-5 view-course-container">
-        <Alert color="success" style={{ backgroundColor: "#157A6E", border: "1px solid #157A6E", color: "#fff" }}>
+    <Alert color="success" style={{ backgroundColor: "var(--brand)", border: "1px solid var(--brand)", color: "#fff" }}>
             <Breadcrumb tag="nav" listTag="div">
                 <>
                     <BreadcrumbItem tag="a" href="/course-notes" style={{ color: "#fff", fontWeight: "bold" }}>
                         Courses Home
                     </BreadcrumbItem>
 
-                    <BreadcrumbItem active tag="span" style={{ color: "#E5E7E9" }}>
+                    <BreadcrumbItem active tag="span" style={{ color: "#157A6E" }}>
                         Chapters
                     </BreadcrumbItem>
                 </>
@@ -71,7 +71,7 @@ const ViewCourse = () => {
 
                 chaptersByCourse.map((chapter, index) => (
 
-                    <Card key={index} className="mb-3 text-capitalize chapter-card" body style={{ minHeight: "fit-content", border: "2px solid #157A6E" }}>
+                    <Card key={index} className="mb-3 text-capitalize chapter-card" body style={{ minHeight: "fit-content", border: "2px solid var(--brand)" }}>
 
                         <CardTitle tag="h5" className="fw-bolder mb-0 d-flex">
                             Chapter - {index + 1}.&nbsp;{chapter?.title}
@@ -92,7 +92,7 @@ const ViewCourse = () => {
                                 <div className="card-header" id={`heading${index}`}>
                                     <h5 className="mb-0">
 
-                                        <Button block outline color="info" size="sm" index={index} onClick={() => { collapse(index) }} className={`d-flex justify-content-between ${(activeIndex === index || activeIndex === null) ? '' : 'collapsed'}`} data-toggle="collapse" data-target={`#collapse${index}`} aria-expanded={(activeIndex === index || activeIndex === null)} aria-controls={`collapse${index}`}>
+                                        <Button block outline color="success" size="sm" index={index} onClick={() => { collapse(index) }} className={`d-flex justify-content-between ${(activeIndex === index || activeIndex === null) ? '' : 'collapsed'}`} data-toggle="collapse" data-target={`#collapse${index}`} aria-expanded={(activeIndex === index || activeIndex === null)} aria-controls={`collapse${index}`}>
 
                                             <span className="me-auto">Course notes</span>
 
@@ -111,7 +111,7 @@ const ViewCourse = () => {
 
                     </Card>)) :
 
-                <Alert color="danger" className="d-flex justify-content-between" style={{ border: "1px solid #157A6E" }}>
+                <Alert color="danger" className="d-flex justify-content-between" style={{ border: "1px solid var(--brand)" }}>
                     <strong>No chapters yet for this course!</strong>
                     {user?.role !== 'Visitor' ?
                         <Button outline color="success">

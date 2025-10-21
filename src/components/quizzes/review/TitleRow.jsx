@@ -17,7 +17,7 @@ const TitleRow = ({ thisReview, score, qnsAll, curRevQn, currentQuestion }) => {
 
                     <span>
                         <p className="text-primary d-inline">Reviewing ...</p>
-                        <small style={{ color: '#ffc107', fontWeight: 'bolder' }}>
+                        <small style={{ color: 'var(--accent)', fontWeight: 'bolder' }}>
                             &nbsp; Score: ~{Math.round(score * 100 / qnsAll.length)}%
                         </small>
                     </span>
@@ -35,7 +35,7 @@ const TitleRow = ({ thisReview, score, qnsAll, curRevQn, currentQuestion }) => {
 
                 <div className='question-section my-4 mt-sm-5 mx-auto w-75'>
                     <h4 className='question-count text-uppercase text-center text-secondary fw-bolder'>
-                        <span>Question <b style={{ color: "#B4654A" }}>{currentQuestion + 1}</b></span>/{qnsAll.length}
+                        <span>Question <b style={{ color: 'var(--brand)' }}>{currentQuestion + 1}</b></span>/{qnsAll.length}
                     </h4>
                     <h5 className='q-txt my-4 fw-bolder text-center'>{curRevQn && curRevQn.questionText}</h5>
 

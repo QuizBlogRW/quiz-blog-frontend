@@ -65,7 +65,7 @@ const QuizResults = () => {
                     </div>
                 </Suspense>
 
-                <div className={'p-2 p-sm-5 m-2 my-5 mx-sm-auto mx-sm-5 shadow p-3 bg-body rounded'} style={{ border: '3px solid #157A6E' }}>
+                <div className={'p-2 p-sm-5 m-2 my-5 mx-sm-auto mx-sm-5 shadow p-3 bg-body rounded'} style={{ border: '3px solid var(--brand)' }}>
                     <h5 className='fw-bolder'>You answered <b style={{ color: '#B4654A' }}>{marks}</b> out of <b style={{ color: '#B4654A' }}>{qnsLength}</b> questions correctly.
                         <small className='text-primary fw-bolder'>
                             &nbsp;(~{Math.round(marks * 100 / qnsLength)}%)
@@ -75,7 +75,7 @@ const QuizResults = () => {
                     {/* Get ready */}
                     <div className='my-sm-5 d-flex justify-content-around align-items-center'>
                         <a href={`/view-quiz/${thisQuiz.slug}`}>
-                            <button type='button' className='text-primary mt-3 mt-sm-0 me-2 me-md-0' style={{ backgroundColor: '#ffc107', border: '2px solid #157A6E', borderRadius: '10px', padding: '5px 12px' }}>
+                            <button type='button' className='text-primary mt-3 mt-sm-0 me-2 me-md-0' style={{ backgroundColor: 'var(--accent)', border: '2px solid var(--brand)', borderRadius: '10px', padding: '5px 12px' }}>
                                 Retake
                             </button>
                         </a>
@@ -112,7 +112,7 @@ const QuizResults = () => {
                                     score={mongoScoreId} />
                             </> :
 
-                            <button type='button' onClick={toggleL} className='text-primary mt-3 mt-sm-0 me-2 me-md-0' style={{ backgroundColor: '#ffc107', border: '2px solid #157A6E', borderRadius: '10px', padding: '5px 12px', fontSize: '0.8rem' }}>
+                            <button type='button' onClick={toggleL} className='text-primary mt-3 mt-sm-0 me-2 me-md-0' style={{ backgroundColor: 'var(--accent)', border: '2px solid var(--brand)', borderRadius: '10px', padding: '5px 12px', fontSize: '0.8rem' }}>
                                 Login to review answers
                             </button>
                         }

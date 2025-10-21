@@ -1,5 +1,5 @@
-import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
 import SquareAd from '@/components/adsenses/SquareAd';
+import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
 import {
     Container,
     Row,
@@ -22,6 +22,16 @@ const Disclaimer = () => {
                         Disclaimer for Quiz-Blog
                     </h1>
                 </CardHeader>
+
+                {/* Centered hero block using Bootstrap grid (constrained width) */}
+                <Row className="justify-content-center">
+                    <Col md={6} className="mx-auto">
+                        <div className="text-center bg-light rounded p-3 my-3 shadow-sm">
+                            <h2 className="h5 mb-1">Quick summary</h2>
+                            <p className="mb-0 small">This page explains limits of liability and usage terms for content on quizblog.rw.</p>
+                        </div>
+                    </Col>
+                </Row>
 
                 <CardBody className="p-3 p-md-4">
                     <Alert color="info" className="d-flex align-items-center gap-3 mb-4">

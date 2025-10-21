@@ -86,32 +86,30 @@ export const apiCallHelper = async (url, method, body, getState, actionType) => 
     } catch (error) {
 
         // err might be a string from the axios interceptor or an error object
-        let errorMessage = 'An error occurred'
+        let errorMessage = `An error occurred ${error?.message}`
+        console.log(error)
 
         if (typeof error === 'string') {
 
             // This is the processed error message from axios interceptor
             errorMessage = error
-        } else if (error && error.data) {
+        } else if (error?.response?.data) {
+
+            if (error?.response?.data?.id == 'CONFIRM_ERR') {
+                throw new Error('CONFIRM_ERR')
+            }
 
             // Handle structured errors
-            if (error.data.message) {
+            if (error?.response?.data?.message) {
 
-                errorMessage = error.data.message
+                errorMessage = error?.response?.data?.message
                 if (!noToastActionTypes.includes(actionType)) {
                     notify(errorMessage, 'error')
                 }
             }
-            else {
-                errorMessage = 'An error with data occurred'
-            }
-
-            if (error.data.id == 'CONFIRM_ERR') {
-                throw new Error('CONFIRM_ERR')
-            }
         } else {
             // Fallback to error message
-            errorMessage = 'An error occurred'
+            errorMessage = `An error occurred: ${error.message}`
         }
         throw new Error(errorMessage)
     }

@@ -38,27 +38,20 @@ const Header = ({ textContent }) => {
         }
     }, [])
 
-    const bgColor = scrollPosition <= 70 ? '#157A6E' : '#f3f3f0'
-    const clr = scrollPosition <= 70 ? '#f3f3f0' : '#157A6E'
-    const logoBorder = scrollPosition <= 70 ? '#f3f3f0' : '#ffc107'
+    const isScrolled = scrollPosition > 70
 
+    // small accessibility improvements: add aria labels and Escape-to-close behavior to auth dropdown
     const renderAuthLinks = () => (
-        <span className="mx-0 p-0 text-warning d-flex justify-content-center align-items-center toDashboard" style={{ color: clr, border: `3px solid ${clr}`, borderRadius: "50px" }}>
-            <EditPictureModal bgColor={bgColor} clr={clr} />
-            <Link to="/#">
-                <small className="ms-2 d-none d-lg-flex fw-bolder" style={{ color: clr }}>
-                    {user && user.name && user?.name?.toLowerCase().charAt(0).toUpperCase() + user?.name?.slice(1).split(" ")[0]}
-                </small>
-            </Link>
-
-            <Dropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
-                <DropdownToggle>
-                    <span className='profileDropDown mx-2 mx-lg-3'>
-                        <i className={`fa-solid fa-chevron-${dropdownOpen ? 'up' : 'down'}`} style={{ color: clr }}></i>
+        <span className={`mx-0 p-0 d-flex align-items-center toDashboard header-user ${isScrolled ? 'scrolled' : ''}`}>
+            <EditPictureModal />
+            <Dropdown isOpen={dropdownOpen} toggle={toggleDropdown} onKeyDown={(e) => { if (e.key === 'Escape') setDropdownOpen(false) }}>
+                <DropdownToggle aria-haspopup="menu" aria-expanded={dropdownOpen} aria-label="Open profile menu" className='mx-0 px-0'>
+                    <span className='profileDropDown mx-0 px-0'>
+                        <i className={`fa-solid fa-chevron-${dropdownOpen ? 'up' : 'down'}`} aria-hidden="true"></i>
                     </span>
                 </DropdownToggle>
 
-                <DropdownMenu>
+                <DropdownMenu role="menu" aria-label="Profile menu">
                     <DropdownItem header>
                         <ListGroup>
                             <ListGroupItem className='bg-warning'>
@@ -131,12 +124,12 @@ const Header = ({ textContent }) => {
     const renderGuestLinks = () => (
         <>
             <span className="me-1 me-md-4 login-modal">
-                <NavLink onClick={toggleL} style={{ border: `2px solid ${scrollPosition <= 70 ? '#ffc107' : clr}`, color: clr, fontWeight: "bold" }}>
+                <NavLink onClick={toggleL} className={`header-cta ${isScrolled ? 'scrolled' : ''}`}>
                     {textContent || 'Login'}
                 </NavLink>
             </span>
             <span className="me-0 register-modal">
-                <NavLink onClick={toggleR} style={{ border: `2px solid ${scrollPosition <= 70 ? '#ffc107' : clr}`, color: clr, fontWeight: "bold" }}>
+                <NavLink onClick={toggleR} className={`header-cta register ${isScrolled ? 'scrolled' : ''}`}>
                     Register
                 </NavLink>
             </span>
@@ -148,31 +141,31 @@ const Header = ({ textContent }) => {
     }
 
     return (
-        <header style={{ boxShadow: "0 1px 2px -1px rgba(0,0,0,0.5)" }} className="sticky-top">
-            <Navbar light expand="lg" className="px-0 px-lg-5 pb-2 pt-1 py-md-3" style={{ backgroundColor: bgColor, color: clr }}>
-                <NavbarBrand href="/" style={{ fontWeight: "900" }} className='mb-1'>
-                    <img src={logo} alt="Quiz-Blog Logo" style={{ border: `3px solid ${logoBorder}`, borderRadius: "10px", maxHeight: "3.2rem" }} />
+        <header className={`sticky-top site-header ${isScrolled ? 'scrolled' : ''}`} role="banner">
+            <Navbar light expand="lg" className="px-0 px-lg-5 pb-2 pt-1 py-md-3">
+                <NavbarBrand href="/" className='mb-1 site-brand' aria-label="Quiz-Blog home">
+                    <img src={logo} alt="Quiz-Blog Logo" className="site-logo" />
                 </NavbarBrand>
-                <div className="collapse px-1 px-sm-2 py-1 mx-1 m-sm-0" style={{ borderColor: clr }}>
+                <div className="collapse px-1 px-sm-2 py-1 mx-1 m-sm-0 nav-items">
                     {location.pathname !== '/' && (
-                        <Button color="success" size="md" className="ms-1 me-2 px-md-2 me-md-4 back-home d-none d-sm-inline-flex" style={{ border: `3px solid ${clr}` }}>
-                            <Link to="/" className="back-home-link" style={{ color: "white", fontWeight: "bold" }}>
+                        <Button color="success" size="md" className="ms-1 me-2 px-md-2 me-md-4 back-home d-none d-sm-inline-flex">
+                            <Link to="/" className="back-home-link text-white">
                                 Back Home
                             </Link>
                         </Button>
                     )}
-                    <CatDropdown clr={clr} />
+                    <CatDropdown />
                     <span className="me-1 ms-sm-4 me-md-4">
-                        <Link to="/course-notes" style={{ color: clr, fontWeight: "bold" }}>Notes</Link>
+                        <Link to="/course-notes" className="nav-link-custom">Notes</Link>
                     </span>
                     <span className="me-1 me-md-4">
-                        <Link to="/blog" style={{ color: clr, fontWeight: "bold" }}>Blog</Link>
+                        <Link to="/blog" className="nav-link-custom">Blog</Link>
                     </span>
                     <span className="me-1 me-md-4">
-                        <Link to="/about" style={{ color: clr, fontWeight: "bold" }}>About</Link>
+                        <Link to="/about" className="nav-link-custom">About</Link>
                     </span>
                     <span className="me-1 me-md-4">
-                        <Link to="/contact" style={{ color: clr, fontWeight: "bold" }}>Contact</Link>
+                        <Link to="/contact" className="nav-link-custom">Contact</Link>
                     </span>
                     {user ? renderAuthLinks() : renderGuestLinks()}
                 </div>

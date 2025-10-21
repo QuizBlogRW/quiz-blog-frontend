@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, UncontrolledTooltip } from 'reactstrap'
 import uploadimage from '@/images/uploadimage.svg'
 import { updateProfileImage } from '@/redux/slices/authSlice'
@@ -12,6 +12,8 @@ const EditPictureModal = ({ bgColor, clr }) => {
   const { user } = useSelector(state => state.auth)
   const userImage = user && user.image
   const [profileImageState, setProfileImageState] = useState()
+  const [profilePreview, setProfilePreview] = useState(null)
+  const [validationMessage, setValidationMessage] = useState('')
 
   //properties of the modal
   const [modal, setModal] = useState(false)
@@ -21,7 +23,32 @@ const EditPictureModal = ({ bgColor, clr }) => {
 
   const onFileHandler = (e) => {
     if (user) { // Check if user is not null
-      setProfileImageState(e.target.files[0]);
+      const file = e.target.files[0]
+      if (!file) return
+
+      // simple client-side validation
+      const allowed = ['image/jpeg', 'image/jpg', 'image/png', 'image/svg+xml']
+      if (!allowed.includes(file.type)) {
+        setValidationMessage('Unsupported file type. Use jpg, png, or svg.')
+        notify('Unsupported file type. Use jpg, png, or svg.', 'error')
+        setProfileImageState(undefined)
+        setProfilePreview(null)
+        return
+      }
+
+      const maxSize = 2 * 1024 * 1024 // 2MB
+      if (file.size > maxSize) {
+        setValidationMessage('File too large. Max 2MB.')
+        notify('File too large. Max 2MB.', 'error')
+        setProfileImageState(undefined)
+        setProfilePreview(null)
+        return
+      }
+
+      setValidationMessage('')
+      setProfileImageState(file)
+      const url = URL.createObjectURL(file)
+      setProfilePreview(url)
     }
   }
 
@@ -32,6 +59,7 @@ const EditPictureModal = ({ bgColor, clr }) => {
 
     // VALIDATE
     if (!profileImageState) {
+      setValidationMessage('Please choose an image to upload')
       notify('The image is required!', 'error')
       return
     }
@@ -45,7 +73,14 @@ const EditPictureModal = ({ bgColor, clr }) => {
 
   return (
     <>
-      <span className='upload-image' onClick={toggle} style={{ borderRadius: '50%', backgroundColor: bgColor, color: clr, border: '3px solid #ffc107' }}>
+      <span
+        className='upload-image upload-image-button'
+        onClick={toggle}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') toggle() }}
+        aria-label="Open edit profile image dialog"
+      >
         <ImageWithFallback
           src={userImage}
           fallbackSrc={uploadimage}
@@ -58,13 +93,11 @@ const EditPictureModal = ({ bgColor, clr }) => {
         </UncontrolledTooltip>
       </span>
 
-      <Modal isOpen={modal} toggle={toggle} className="resources-modal">
+      <Modal isOpen={modal} toggle={toggle} className="resources-modal" aria-modal>
 
-        <div className="d-flex justify-content-between align-items-center p-2" style={{ backgroundColor: "#157A6E", color: "#fff" }}>
-          Update profile picture
-          <Button className="btn-danger text-uppercase text-red" style={{ padding: "0.1rem 0.3rem", fontSize: ".6rem", fontWeight: "bold" }} onClick={toggle}>
-            X
-          </Button>
+        <div className="edit-picture-header d-flex justify-content-between align-items-center p-2">
+          <span className="h6 mb-0 text-white">Update profile picture</span>
+          <Button className="cat-close-btn text-uppercase" onClick={toggle} aria-label="Close edit picture dialog">Close</Button>
         </div>
 
         <ModalBody>
@@ -73,12 +106,24 @@ const EditPictureModal = ({ bgColor, clr }) => {
 
               <Label for="profile_image" className="my-2">
                 <strong>Upload picture</strong>&nbsp;
-                <small className="text-info"> (.jpg, .jpeg, .png, .svg)</small>
+                <small className="text-muted"> (.jpg, .jpeg, .png, .svg) — max 2MB</small>
               </Label>
 
-              <Input bsSize="sm" type="file" accept=".jpg, .jpeg, .png, .svg" name="profile_image" onChange={onFileHandler} label="Choose an image to upload ..." id="profile_image_pick" className='pb-2' />
+              {/* Preview */}
+              <div className="mb-2">
+                {profilePreview ? (
+                  <img src={profilePreview} alt="Selected preview" className="img-fluid rounded" style={{ maxHeight: '160px' }} />
+                ) : (
+                  <div className="text-muted">Current image will be used if you don't select another.</div>
+                )}
+              </div>
 
-              <Button style={{ marginTop: '2rem', backgroundColor: "#157A6E", color: "#fff" }} block >Upload</Button>
+              <Input bsSize="sm" type="file" accept=".jpg, .jpeg, .png, .svg" name="profile_image" onChange={onFileHandler} label="Choose an image to upload ..." id="profile_image_pick" className='pb-2' aria-describedby="profileUploadHelp" />
+              <small id="profileUploadHelp" className="form-text text-muted">Choose a square image for best results.</small>
+
+              {validationMessage && <div className="text-danger mt-2" role="alert" aria-live="assertive">{validationMessage}</div>}
+
+              <Button className="btn-upload-brand mt-3" block type="submit">Upload</Button>
 
             </FormGroup>
 

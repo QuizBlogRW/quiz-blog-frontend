@@ -34,6 +34,7 @@ const LoginModal = () => {
                 loginResponse.payload ||
                 loginResponse.error ||
                 'Login failed'
+            console.log("err: ", errorMsg)
 
             if (errorMsg === 'CONFIRM_ERR') {
                 setConfirmLogin(true)
@@ -85,9 +86,9 @@ const LoginModal = () => {
             <Modal isOpen={isOpenL} toggle={toggleL} centered={true}>
                 <div
                     className="d-flex justify-content-between align-items-center p-2"
-                    style={{ backgroundColor: "#157A6E", color: "#fff" }}>
+                    style={{ backgroundColor: "var(--brand)", color: "#fff" }}>
                     <img src={logocirclewhite} alt="logo"
-                        style={{ maxHeight: "3.2rem", color: "#157A6E" }} />
+                        style={{ maxHeight: "3.2rem", color: "var(--brand)" }} />
                     <Button className="btn-danger text-uppercase text-red ms-auto me-0"
                         style={{ padding: "0.1rem 0.3rem", fontSize: ".6rem", fontWeight: "bold" }} onClick={toggleL}>
                         X
@@ -111,7 +112,7 @@ const LoginModal = () => {
                     {
                         confirmLogin ?
                             <Button
-                                style={{ marginBottom: '2rem', backgroundColor: "#ffc107", color: "#157A6E", fontWeight: 900 }} block
+                                style={{ marginBottom: '2rem', backgroundColor: "var(--accent)", color: "var(--brand)", fontWeight: 900 }} block
                                 onClick={(e) => onSubmitHandler(e, true)}>
                                 Confirm Login
                             </Button> :
@@ -129,19 +130,19 @@ const LoginModal = () => {
                             </Label>
                             <Input type="password" name="password" placeholder="Password here ..." className="mb-4" onChange={onChangeHandler} />
                             <a href="forgot-password">
-                                <p className="p-2 p-xl-2 fw-bolder" style={{ color: "#157A6E" }}>
+                                <p className="p-2 p-xl-2 fw-bolder" style={{ color: "var(--brand)" }}>
                                     Forgot password?
                                 </p>
                             </a>
                             {confirmLogin ? null :
-                                <Button style={{ marginTop: '2rem', backgroundColor: "#157A6E" }} block>
+                                <Button style={{ marginTop: '2rem', backgroundColor: "var(--brand)" }} block>
                                     Login
                                 </Button>}
                         </FormGroup>
                     </Form>
                     <div className="d-flex align-items-center justify-content-around">
                         <p className="p-2 p-xl-2 m-0">No account yet?</p>
-                        <NavLink onClick={toggleR} className="fw-bolder" style={{ color: "#157A6E" }}>
+                        <NavLink onClick={toggleR} className="fw-bolder" style={{ color: "var(--brand)" }}>
                             Register
                         </NavLink>
                     </div>

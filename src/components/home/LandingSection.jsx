@@ -1,57 +1,49 @@
-import { useContext } from 'react'
-import { Row, Col, Button } from 'reactstrap'
-import { Link } from 'react-router-dom'
-import srcQuestion from '@/images/undraw_Question2.svg'
-import Adverts from './Adverts'
-import { logRegContext } from '@/contexts/appContexts'
+import { useContext } from "react";
+import { Col, Button } from "reactstrap";
+import { Link } from "react-router-dom";
+import srcQuestion from "@/images/undraw_Question2.svg";
+import Adverts from "./Adverts";
+import { logRegContext } from "@/contexts/appContexts";
 
 const LandingSection = () => {
+  const { toggleR } = useContext(logRegContext);
+  const title = "KNOWLEDGE MATTERS, AND SO DOES THE JOY OF QUIZZING!"
 
-    const { toggleR } = useContext(logRegContext)
-    let title = 'KNOWLEDGE MATTERS, AND SO DOES THE JOY OF QUIZZING!'
+  const capitalize = (str) => {
+    const lower = str.toLowerCase()
+    return lower.charAt(0).toUpperCase() + lower.slice(1)
+  }
 
-    const capitalize = (str) => {
-        let lower = str.toLowerCase()
-        return lower.charAt(0).toUpperCase() + lower.slice(1)
-    }
+  return (
+    <section className="intro-landing w-100 d-flex justify-content-around align-items-center mx-auto" aria-label="Landing">
+      <Col sm={7} className="d-flex flex-column text-start pt-5 px-3 p-lg-5">
+        <h1 className="text-primary fw-bolder underline mb-3 mb-lg-0 landing-title">
+          {title.split(' ').map((word) => (
+            <span key={word} className="d-inline-block me-1">{capitalize(word)}&nbsp;</span>
+          ))}
+        </h1>
 
-    return (
-        <Row className="intro-landing w-100 d-flex justify-content-around align-items-center mx-auto">
-            <Col sm={7} className='d-flex flex-column text-center pt-5 px-3 p-lg-5'>
-                <h1 className="text-start text-primary fw-bolder underline pl-lg-4 mb-3 mb-lg-0">
-                    {
-                        title.split(" ").map(word => {
-                            return <span key={word} className="d-inline-block">
-                                {capitalize(word)}&nbsp;
-                            </span>
-                        })
-                    }
-                </h1>
+        <p className="lead pt-lg-4">
+          Explore and test yourself — join the fun of quizzes, build confidence,
+          and get ready to succeed.  <span role="img" aria-label="celebrate">📚🧠🔍🌟🎉</span>
+        </p>
 
-                <p className="text-start pl-lg-4 py-lg-3">
-                    Explore and Test Yourself, Join the Fun of Quizzes and Get Ready to Succeed in your Exams with us, We're in this to Make it Happen! <span role="img" aria-label="home">📚🧠🔍🌟🎉</span>
-                </p>
+        <img src={srcQuestion} alt="question illustration" className="landing-illustration my-4 mx-auto d-block" />
 
-                <img src={srcQuestion} alt="question" style={{ maxHeight: "30vh", maxWidth: "100%" }} className="my-4 d-md-block mx-auto" />
+        <div className="d-flex align-items-center gap-3 mt-2 mt-lg-4">
+          <Button className="landing-cta" onClick={toggleR} aria-label="Get started">Get Started</Button>
 
-                <div className="d-flex align-items-center pl-lg-4 mt-2 mt-lg-4 justify-content-around">
-                    <Button style={{ backgroundColor: "#157A6E", borderRadius: '50px', border: "3px solid #ffc107" }} onClick={toggleR}>
-                        Get Started
-                    </Button>
+          <Link to="/course-notes" className="text-decoration-none">
+            <Button className="landing-cta alt" aria-label="Read notes">Read Notes</Button>
+          </Link>
+        </div>
+      </Col>
 
-                    <Link to="/course-notes" className="text-decoration-none">
-                        <Button style={{ backgroundColor: "#ffc107", marginLeft: '3rem', borderRadius: '50px', border: "3px solid #157A6E" }}>
-                            Read Notes
-                        </Button>
-                    </Link>
-                </div>
-            </Col>
+      <Col sm={5} className="d-flex flex-column text-center py-5 p-lg-5">
+        <Adverts />
+      </Col>
+    </section>
+  );
+};
 
-            <Col sm={5} className="d-flex flex-column text-center py-5 p-lg-5">
-                <Adverts />
-            </Col>
-        </Row>
-    )
-}
-
-export default LandingSection
+export default LandingSection;

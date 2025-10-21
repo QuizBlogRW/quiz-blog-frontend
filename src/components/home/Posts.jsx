@@ -17,17 +17,20 @@ const BlogPosts = lazy(() => import("@/components/blog/BlogPosts"));
 const ViewCategories = lazy(() => import("./categories/ViewCategories"));
 
 const Posts = () => {
-
   // Dispatch
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.categories);
   const [limit] = useState(10);
 
   // Lifecycle methods
-  useEffect(() => { dispatch(getLimitedQuizzes({ limit })); }, [dispatch, limit]);
+  useEffect(() => {
+    dispatch(getLimitedQuizzes({ limit }));
+  }, [dispatch, limit]);
 
   // Selectors from redux store using hooks
-  const { loadingLimited, limitedQuizzes } = useSelector((state) => state.quizzes);
+  const { loadingLimited, limitedQuizzes } = useSelector(
+    (state) => state.quizzes
+  );
 
   return (
     <Container className="posts main w-100 px-0">
@@ -46,9 +49,13 @@ const Posts = () => {
         </Suspense>
       </Row>
 
-      <Row className="mt-5 mx-0 py-sm-3 quizzes-list">
+      <Row
+        className="mt-5 mx-0 py-sm-3 quizzes-list"
+        role="region"
+        aria-label="Latest quizzes"
+      >
         <Col sm="8" className="px-1 px-lg-4 mt-md-2">
-          <h3 className="inversed-title mt-0 my-lg-3 py-lg-3 text-danger text-center fw-bolder py-2">
+          <h3 className="inversed-title mt-0 my-lg-3 py-lg-3 text-center fw-bolder py-2">
             <span className="part1">FreshQuiz:</span>
             <span className="part2">The Latest Quizzes</span>
           </h3>
@@ -62,24 +69,15 @@ const Posts = () => {
             </>
           ) : limitedQuizzes && limitedQuizzes.length > 0 ? (
             <>
-              {limitedQuizzes.map((quiz) =>
-                quiz.questions && quiz.questions.length > 5 ? (
-                  <Suspense key={quiz._id} fallback={<PostItemPlaceholder />}>
-                    <PostItem quiz={quiz} />
-
-                    {/* ON HALF THE NUMBER OF QUIZZES, DIPLAY THE ad */}
-                    {limitedQuizzes.length > 0 &&
-                      limitedQuizzes.indexOf(quiz) ===
-                      Math.floor(limitedQuizzes && limitedQuizzes.length / 2) ? (
-                      <div className="w-100 d-flex justify-content-center align-items-center">
-                        {process.env.NODE_ENV !== "development" ? (
-                          <SquareAd />
-                        ) : null}
-                      </div>
-                    ) : null}
-                  </Suspense>
-                ) : null
-              )}
+              <section className="quizzes-grid" aria-live="polite">
+                {limitedQuizzes.map((quiz) =>
+                  quiz.questions && quiz.questions.length > 5 ? (
+                    <Suspense key={quiz._id} fallback={<PostItemPlaceholder />}>
+                      <PostItem quiz={quiz} />
+                    </Suspense>
+                  ) : null
+                )}
+              </section>
               <div className="my-4 d-flex justify-content-center">
                 <Link to="/allposts">
                   <Button outline color="info" className="view-all-btn">
@@ -88,11 +86,20 @@ const Posts = () => {
                   </Button>
                 </Link>
               </div>
+              <div className="w-100 d-flex justify-content-center align-items-center">
+                {process.env.NODE_ENV !== "development" ? <SquareAd /> : null}
+              </div>
             </>
           ) : (
             <div className="p-1 m-1 d-flex justify-content-center align-items-center">
               No quizzes available today. &nbsp;
-              <Button onClick={() => window.location.href = '/contact'} outline color="success">Contact us for more</Button>
+              <Button
+                onClick={() => (window.location.href = "/contact")}
+                outline
+                color="success"
+              >
+                Contact us for more
+              </Button>
             </div>
           )}
           <Popular />

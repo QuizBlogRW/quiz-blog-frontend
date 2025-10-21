@@ -11,6 +11,7 @@ import "./homePosts.css";
 import QBLoading from "@/utils/rLoading/QBLoading";
 
 const BlogPosts = () => {
+
   // Redux
   const dispatch = useDispatch();
   const { blogPosts: AllBPs, isLoading } = useSelector(
@@ -35,7 +36,7 @@ const BlogPosts = () => {
 
       <Row className="p-2 p-sm-3 px-sm-5">
         <Col sm="12" className="py-lg-3 px-0">
-          <h3 className="inversed-title mt-0 my-lg-3 py-4 py-lg-3 text-danger text-center fw-bolder">
+          <h3 className="inversed-title mt-0 my-lg-3 py-4 py-lg-3 text-center">
             <span className="part1">New Insights:</span>
             <span className="part2">Latest Blog Posts</span>
           </h3>
@@ -49,68 +50,46 @@ const BlogPosts = () => {
               <>
                 {AllBPs && Array.isArray(AllBPs) && AllBPs.length > 0 ? (
                   AllBPs.map((bp) => {
-                    const { _id, slug, title, postCategory, creator, createdAt } =
-                      bp;
+                    const { _id, slug, title, postCategory, creator, createdAt } = bp;
 
                     return (
                       <React.Fragment key={_id}>
-                        <ListGroup
-                          flush
-                          color="warning"
-                          className="px-lg-3 my-1"
-                          style={{ background: "#e7e7e7" }}
-                        >
+                        <ListGroup flush className="px-lg-3 my-1 blogpost-list">
                           <ListGroupItem
                             key={_id}
-                            href="#"
-                            tag="span"
-                            color="alert-link"
-                            className="d-flex flex-column flex-lg-row justify-content-between align-items-center"
-                            style={{ background: "#e7e7e7" }}
+                            tag="div"
+                            className="d-flex flex-column flex-lg-row justify-content-between align-items-center blogpost-item"
                           >
-                            <Link
-                              to={`/view-blog-post/${slug}`}
-                              className="w-100"
-                            >
-                              <b className="text-uppercase text-primary post-title">
-                                {title}
-                              </b>
-                            </Link>
+                            <div className="w-100">
+                              <Link to={`/view-blog-post/${slug}`} className="post-link">
+                                <h4 className="post-title mb-0 text-uppercase">{title}</h4>
+                              </Link>
+                            </div>
 
-                            <span className="w-100 text-dark view-blog-post">
-                              <small className="px-1">
-                                {postCategory && postCategory.title} |
-                              </small>
+                            <div className="w-100 text-dark post-meta text-end mt-2 mt-lg-0 text-uppercase">
+                              <small className="px-1">{postCategory && postCategory.title} |</small>
                               {creator && creator.name && (
                                 <small className="px-1">{creator.name} |</small>
                               )}
-                              <small className="px-1">
-                                {moment(new Date(createdAt)).format(
-                                  "DD MMM YYYY, HH:mm"
-                                )}
-                              </small>
-                            </span>
+                              <small className="px-1">{moment(new Date(createdAt)).format("DD MMM YYYY, HH:mm")}</small>
+                            </div>
                           </ListGroupItem>
                         </ListGroup>
 
                         {/* Ad when half the number of notes*/}
-                        {AllBPs.length > 2 &&
-                          AllBPs.indexOf(bp) ===
-                          Math.floor(AllBPs.length / 2) && (
-                            <div className="w-100">
-                              {process.env.NODE_ENV !== "development" ? (
-                                <SquareAd />
-                              ) : null}
-                            </div>
-                          )}
+                        {AllBPs.length > 2 && AllBPs.indexOf(bp) === Math.floor(AllBPs.length / 2) && (
+                          <div className="w-100">
+                            {process.env.NODE_ENV !== "development" ? (
+                              <SquareAd />
+                            ) : null}
+                          </div>
+                        )}
                       </React.Fragment>
                     );
                   })
                 ) : (
                   <div className="text-center py-4">
-                    <p className="text-muted">
-                      No blog posts available at the moment.
-                    </p>
+                    <p className="text-muted">No blog posts available at the moment.</p>
                   </div>
                 )}
               </>

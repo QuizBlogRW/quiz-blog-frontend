@@ -63,7 +63,7 @@ const EditFaq = ({ faqToEdit }) => {
             </NavLink>
 
             <Modal isOpen={modal} toggle={toggle}>
-                <div className="d-flex justify-content-between align-items-center p-2" style={{ backgroundColor: "#157A6E", color: "#fff" }}>
+                <div className="d-flex justify-content-between align-items-center p-2" style={{ backgroundColor: "var(--brand)", color: "#fff" }}>
                     Edit FAQ
                     <Button className="btn-danger text-uppercase text-red" style={{ padding: "0.1rem 0.3rem", fontSize: ".6rem", fontWeight: "bold" }} onClick={toggle}>
                         X

@@ -33,15 +33,6 @@ const Posts = () => {
         dispatch(getQuizzes())
     }, [dispatch, skip, limit])
 
-    const mystyle = {
-        color: "#157A6E",
-        textAlign: "center",
-        animationDuration: "2s",
-        animationName: "slidein",
-        animationIterationCount: "infinite",
-        animationDirection: "alternate"
-    }
-
     return (
         <Container className="posts main mt-4">
 
@@ -53,9 +44,10 @@ const Posts = () => {
             </blockquote>
 
             <Row className="my-5 mx-0">
-                <div style={mystyle}>
-                    <h4 className='d-inline rounded p-lg-1' style={{ backgroundColor: '#ffc107', color: '#157A6E', border: '2px solid #157A6E' }}>
-                        Get ready for exam success! Let's make it happen together!<span role="img" aria-label="pointing">🍾🎉</span></h4>
+                <div className="callout text-center w-100">
+                    <h4 className='d-inline rounded p-2 callout-text'>
+                        Get ready for exam success! Let's make it happen together! <span role="img" aria-label="celebrate">🍾🎉</span>
+                    </h4>
                 </div>
             </Row>
 
@@ -80,12 +72,15 @@ const Posts = () => {
                             <>
 
                                 {/* Search input*/}
-                                {
-                                    isLoading ?
-                                        <div className="p-1 m-1 d-flex justify-content-center align-items-center">
-                                            <QBLoadingSM />  </div> :
-                                        <SearchInput setSearchKey={setSearchKey} placeholder=" Search quizzes here ...  " />
-                                }
+                                {isLoading ? (
+                                    <div className="p-1 m-1 d-flex justify-content-center align-items-center">
+                                        <QBLoadingSM />
+                                    </div>
+                                ) : (
+                                    <div className="d-flex justify-content-center mb-3">
+                                        <SearchInput setSearchKey={setSearchKey} placeholder="Search quizzes here..." />
+                                    </div>
+                                )}
 
                                 {searchKey === "" ? null :
 
@@ -101,11 +96,12 @@ const Posts = () => {
                                         null
                                 ))}
 
-                                <div className="w-100 d-flex justify-content-around mx-auto my-3 overflow-auto pb-2">
-                                    <Button onClick={previousPage} className={skip < 1 ? `invisible` : `visible`} style={{ backgroundColor: '#157A6E', color: '#ffc107' }} >
+                                <div className="w-100 d-flex justify-content-between mx-auto my-3 overflow-auto pb-2">
+                                    <Button onClick={previousPage} className={`btn-sm ${skip < 1 ? 'invisible' : ''}`} style={{ backgroundColor: 'var(--brand)', color: 'var(--accent)' }} aria-label="Previous page">
                                         Previous
                                     </Button>
-                                    <Button onClick={nextPage} className={limitedQuizzes?.length < limit ? `invisible` : `visible`} style={{ backgroundColor: '#157A6E', color: '#ffc107' }} >
+                                    <div className="text-muted align-self-center small">Showing {limitedQuizzes?.length || 0} items</div>
+                                    <Button onClick={nextPage} className={`btn-sm ${limitedQuizzes?.length < limit ? 'invisible' : ''}`} style={{ backgroundColor: 'var(--brand)', color: 'var(--accent)' }} aria-label="Next page">
                                         Next
                                     </Button>
                                 </div>

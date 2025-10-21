@@ -13,7 +13,6 @@ const ResponsiveHorizontal = lazy(() =>
   import("@/components/adsenses/ResponsiveHorizontal")
 );
 const GridMultiplex = lazy(() => import("@/components/adsenses/GridMultiplex"));
-const InFeedAd = lazy(() => import("@/components/adsenses/InFeedAd"));
 const NotesPapersItem = lazy(() => import("./NotesPapersItem"));
 
 const NotesPapers = () => {
@@ -62,7 +61,7 @@ const NotesPapers = () => {
 
       <Row className="m-1 p-1 px-sm-5 notes-paper">
         <Col sm="12" className="px-1 y-1 w-100">
-          <h3 className="inversed-title mt-0 my-lg-3 py-4 py-lg-3 text-danger text-center fw-bolder">
+          <h3 className="inversed-title mt-0 my-lg-3 py-4 py-lg-3 text-center fw-bolder">
             <span className="part1">Your Resource:</span>
             <span className="part2">Notes & Past Papers</span>
           </h3>
@@ -77,24 +76,14 @@ const NotesPapers = () => {
             </>
           ) : (
             <>
-              {limitedLandingDisplayNotes &&
-                limitedLandingDisplayNotes.length > 0 ? (
-                limitedLandingDisplayNotes.map((note) => (
-                  <Suspense key={note._id} fallback={<PostItemPlaceholder />}>
-                    <NotesPapersItem note={note} />
-
-                    {/* Google in-feed ad when half the number of notes*/}
-                    {limitedLandingDisplayNotes.length > 0 &&
-                      limitedLandingDisplayNotes.indexOf(note) ===
-                      Math.floor(limitedLandingDisplayNotes.length / 2) ? (
-                      <Col sm="12" className="w-100">
-                        {process.env.NODE_ENV !== "development" ? (
-                          <InFeedAd />
-                        ) : null}
-                      </Col>
-                    ) : null}
-                  </Suspense>
-                ))
+              {limitedLandingDisplayNotes && limitedLandingDisplayNotes.length > 0 ? (
+                <section className="notes-grid" aria-live="polite">
+                  {limitedLandingDisplayNotes.map((note) => (
+                    <Suspense key={note._id} fallback={<PostItemPlaceholder />}>
+                      <NotesPapersItem note={note} />
+                    </Suspense>
+                  ))}
+                </section>
               ) : (
                 <div className="p-1 m-1 d-flex justify-content-center align-items-center">
                   No notes to display
@@ -102,8 +91,7 @@ const NotesPapers = () => {
               )}
 
               {/* Newest 10 notes */}
-              {limitedLandingDisplayNotes &&
-                limitedLandingDisplayNotes.length > 0 ? (
+              {limitedLandingDisplayNotes && limitedLandingDisplayNotes.length > 0 ? (
                 <div className="mt-4 mt-sm-5 mb-sm-4 d-flex justify-content-center">
                   <Link to="/course-notes">
                     <Button outline color="info" className="view-all-btn">

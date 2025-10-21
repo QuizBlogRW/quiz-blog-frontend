@@ -51,7 +51,7 @@ const GetReady = () => {
                         <div className="p-2">
                             <Row>
                                 <Col>
-                                    <Card body className='question-section text-center my-2 mx-auto w-75 p-2 p-lg-5' style={{ border: '3px solid #157A6E' }}>
+                                    <Card body className='question-section text-center my-2 mx-auto w-75 p-2 p-lg-5' style={{ border: '3px solid var(--brand)' }}>
 
                                         <CardTitle tag="h5" className='question-count text-uppercase text-center text-primary fw-bolder'>
                                             {qZ.oneQuiz.title}&nbsp;({qZ.oneQuiz.questions && qZ.oneQuiz.questions.length})
@@ -69,7 +69,7 @@ const GetReady = () => {
 
                                         <div className='answer d-flex justify-content-center mx-auto mt-2 w-lg-50'>
                                             <Link to={`/attempt-quiz/${qZ.oneQuiz.slug}`} state={qZ}>
-                                                <Button className="mt-3" style={{ backgroundColor: '#157A6E', color: "fff", border: '2px solid #ffc107', borderRadius: '10px', padding: '5px 12px' }}>
+                                                <Button className="mt-3" style={{ backgroundColor: 'var(--brand)', color: "fff", border: '2px solid var(--accent)', borderRadius: '10px', padding: '5px 12px' }}>
                                                     {currentCategory === "60e8e72d4463f50015a81f96" ? "Tangira Isuzuma" : "Attempt Quiz"}
                                                 </Button>
                                             </Link>
@@ -81,7 +81,7 @@ const GetReady = () => {
                                             </Button>
 
                                             <Link to={'/'}>
-                                                <Button className="mt-3" style={{ backgroundColor: '#ffc107', color: "fff", border: '2px solid #157A6E', borderRadius: '10px', padding: '5px 12px' }}>
+                                                <Button className="mt-3" style={{ backgroundColor: 'var(--accent)', color: "fff", border: '2px solid var(--brand)', borderRadius: '10px', padding: '5px 12px' }}>
                                                     {currentCategory === "60e8e72d4463f50015a81f96" ? "Garuka" : "⬅ Back"}
                                                 </Button>
                                             </Link>

@@ -136,7 +136,7 @@ const EditProfile = () => {
                         </Input>
                     </Col>
                     <Col sm={2}>
-                        <Input disabled type="text" value={profileState.school?.title || ''} style={{ color: "#157A6E" }} />
+                        <Input disabled type="text" value={profileState.school?.title || ''} style={{ color: "var(--brand)" }} />
                     </Col>
                 </FormGroup>
 
@@ -210,7 +210,7 @@ const EditProfile = () => {
 
                 <FormGroup check row className="mx-0 mt-md-4">
                     <Col sm={{ size: 10, offset: 2 }} className="pl-0">
-                        <Button className="btn btn-info text-white" type="submit" style={{ backgroundColor: "#157A6E" }}>
+                        <Button className="btn btn-info text-white" type="submit" style={{ backgroundColor: "var(--brand)" }}>
                             Update
                         </Button>
                     </Col>

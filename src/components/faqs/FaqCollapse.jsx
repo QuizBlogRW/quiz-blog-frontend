@@ -66,15 +66,15 @@ const FaqCollapse = () => {
                         Frequently Asked Questions
                     </h1>
                     <p className="lead mb-1 text-white">
-                        Quiz-Blog is a web application that provides a multi-category space for people to quiz from.
+                        Answers to the questions people most often ask about Quiz-Blog.
                     </p>
 
                     <p className="text-white">
-                        It gives people good time to fix what they studied and even prepare for exams.
+                        Quiz-Blog helps you practice across many categories so you can review what you studied and prepare for exams.
                     </p>
 
-                    <small className='fw-bolder text-white'>Reach us on <a href="mailto:quizblog.rw@gmail.com?subject=Contact%20Quiz%20Blog" style={{ color: "#ffc107" }}><u>quizblog.rw@gmail.com</u></a> for further details.</small>
-                    <hr className="my-2" style={{ height: "2px", borderWidth: 0, color: "#157A6E", backgroundColor: "#157A6E" }} />
+                    <small className='fw-bolder text-white'>Have more questions? Reach us at <a href="mailto:quizblog.rw@gmail.com?subject=Contact%20Quiz%20Blog" style={{ color: "var(--accent)" }}><u>quizblog.rw@gmail.com</u></a>.</small>
+                    <hr className="my-2" style={{ height: "2px", borderWidth: 0, color: "var(--brand)", backgroundColor: "var(--brand)" }} />
                 </div>
 
                 {(user && user.role) === 'Admin' || (user && user.role) === 'SuperAdmin' ?
@@ -95,16 +95,25 @@ const FaqCollapse = () => {
 
                             return (
                                 <li key={index}>
-
                                     <div className={faqsStyle.titleToggler}>
-                                        <h3>
+                                        <h3
+                                            role="button"
+                                            tabIndex={0}
+                                            onClick={() => toggleClass(index)}
+                                            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') toggleClass(index) }}
+                                            aria-controls={`faq-collapse-${index}`}
+                                            aria-expanded={activeIndex === index}
+                                        >
                                             {faq.title}
                                         </h3>
 
-                                        <span>
+                                        <span className={faqsStyle.actionGroup}>
                                             <Button
-                                                className="btn btn-warning btn-xs"
+                                                className={"btn btn-warning btn-xs " + faqsStyle.faqToggleBtn}
                                                 onClick={() => toggleClass(index)}
+                                                aria-label={activeIndex === index ? 'Collapse answer' : 'Expand answer'}
+                                                aria-controls={`faq-collapse-${index}`}
+                                                aria-expanded={activeIndex === index}
                                             >
                                                 {moreLess(index)}
                                             </Button>
@@ -125,6 +134,7 @@ const FaqCollapse = () => {
 
                                     <Collapse isOpened={activeIndex === index}>
                                         <div
+                                            id={`faq-collapse-${index}`}
                                             className={classNames("alert alert-secondary msg", {
                                                 show: activeIndex === index,
                                                 hide: activeIndex !== index

@@ -23,7 +23,7 @@ const CategoriesTabPane = () => {
                 </CardTitle>
                 <CardText>{category.description}</CardText>
                 <div className="actions ms-3">
-                    <Button size="sm" outline className="mx-2" style={{ color: '#157A6E', backgroundColor: '#ffc107' }}>
+                    <Button size="sm" outline className="mx-2" style={{ color: 'var(--brand)', backgroundColor: 'var(--accent)' }}>
                         <AddQuiz category={category} />
                     </Button>
                     {
@@ -40,7 +40,7 @@ const CategoriesTabPane = () => {
                                         delTitle={category.title}
                                         delID={category._id} />
                                 </Button>
-                                <small style={{ color: '#157A6E' }} className="ms-sm-5 text-center text-uppercase">
+                                <small style={{ color: 'var(--brand)' }} className="ms-sm-5 text-center text-uppercase">
                                     <u>{category.courseCategory && category.courseCategory.title}</u>
                                 </small>
                             </>

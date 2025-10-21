@@ -1,134 +1,335 @@
+
+/* Responsive, centered, and visually balanced jbtron (Our Journey) block */
 .about-section .jbtron {
-    background-color: #157A6E !important;
-    padding: 30px !important;
-    border-radius: 50px;
+    background: var(--card-gradient);
+    color: #fff;
+    padding: 2.2rem 1.6rem 2.2rem 1.6rem;
+    border-radius: 32px;
+    margin: 2.2rem auto 0 auto;
+    box-shadow: 0 8px 28px rgba(15,90,74,0.12);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
+/* Responsive paragraph inside jbtron */
 .about-section .introduct .jbtron p {
     color: rgb(231, 231, 231) !important;
-    text-align: justify;
+    text-align: center;
     text-justify: inter-word;
-    font-size: 1.2rem !important;
+    font-size: clamp(1rem, 2vw, 1.18rem) !important;
+    margin: 0 auto;
+    max-width: 90%;
 }
 
 .about-section .memberImg {
     padding: 20px !important;
 }
 
+:root{
+    --brand: #157A6E;
+    --accent: #ffc107;
+    --brand-dark: #0f5a4a;
+    --brand-soft: #1f7f6e;
+    --card-gradient: linear-gradient(135deg, rgba(21,122,110,0.98) 0%, rgba(31,127,110,0.95) 100%);
+    --muted-bg: #d6dbd8;
+    --card-radius: 18px;
+    /* Typographic scale for About page */
+    --text-base: 1rem;
+    --text-small: 0.9rem;
+    --heading-scale: 1.2;
+}
+
+.about-section {
+    margin: 0 auto;
+}
+
+/* Responsive typography rules for About page */
+.about-section,
+.about-section p,
 .about-section .memberText {
-    padding: 10px !important;
+    /* slightly more compact base font with a fluid middle */
+    font-size: clamp(0.9rem, 1.1vw, 1.02rem);
+    line-height: 1.55;
+    color: #222;
+}
+
+.about-section h2 {
+    font-size: clamp(1.25rem, 2.8vw, 2.2rem);
+    text-align: center;
+    line-height: 1.15;
+    margin-bottom: .6rem;
+}
+
+.about-section h4 {
+    font-size: clamp(1rem, 1.8vw, 1.18rem);
+    margin-bottom: 0.25rem;
+}
+
+.about-section h6 {
+    font-size: clamp(0.88rem, 1.2vw, 1rem);
+    color: #333;
+    font-weight: 500;
+}
+
+.about-section .on {
+    background: var(--card-gradient);
+    color: #fff;
+    padding: 1.8rem 1.6rem;
+    border-radius: 22px;
+    margin-top: 2rem; /* a touch more separation from the title */
+    box-shadow: 0 8px 28px rgba(15,90,74,0.12);
+}
+
+.about-section .introduct .jbtron p {
+    color: rgb(231, 231, 231);
     text-align: justify;
-    text-justify: inter-word;
-    margin: auto;
+    font-size: 1.05rem;
+    line-height: 1.6;
+}
+
+.about-section .memberImg {
+    padding: 10px 12px;
+    max-width: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; /* ensure circular frame */
+    flex: 0 0 auto;
+}
+
+.about-section .memberText {
+    padding: 12px;
+    text-align: left;
 }
 
 .about-section .memberImg img {
-    border: 2px solid #157A6E;
+    /* Start hidden; will reveal when .is-visible is added by IntersectionObserver */
+    display: block;
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+    transition: transform 520ms cubic-bezier(.2,.8,.2,1), opacity 520ms ease, box-shadow 520ms ease;
+    border: 3px solid rgba(21,122,110,0.92);
     border-radius: 50%;
-    -moz-box-shadow: 2px 2px 5px 0 rgba(61, 70, 164, .75);
-    -webkit-box-shadow: 2px 2px 5px 0 rgb(61 70 164 / 75%);
-    box-shadow: 2px 2px 5px 0 rgb(61 70 164 / 75%);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+}
+
+.about-section .memberImg img.is-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    box-shadow: 0 14px 34px rgba(0,0,0,0.14);
+}
+
+.about-section .memberImg img:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.16);
 }
 
 .about-section div.social {
-    margin-top: 10px;
-    border: 1px solid #157A6E;
-    border-radius: 5px;
+    margin-top: 8px;
+    border-radius: 8px;
+    gap: 8px;
+    display: inline-flex;
 }
 
 .about-section .introduct .intro-img {
     padding: 8px 10px;
     max-width: 100%;
-    height: 50vh;
-    padding: 10px;
     position: relative;
     display: flex;
+    justify-content: center;
 }
 
 .about-section .introduct .intro-img img {
-    border-radius: 3px;
-    height: auto !important;
-    max-height: 400px;
+    border-radius: 8px;
+    max-height: 360px;
     max-width: 100%;
-    width: auto !important;
-    margin: 20px auto !important;
+    width: auto;
+    object-fit: cover;
 }
 
 .about-section .introduct .intro-text {
-    vertical-align: middle !important;
-    margin: 0 auto !important;
+    vertical-align: middle;
 }
 
 .about-section .introduct p {
+    /* prefer left-aligned on small screens to avoid awkward justification gaps */
     text-align: justify;
-    text-justify: inter-word;
-    font-size: 1.2rem;
-}
-
-.memberImg img {
-    opacity: 0;
-    animation: fadeIn 1s ease-in-out forwards;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
+    font-size: 1.05rem;
 }
 
 .social img,
-.social span {
-    animation: bounce 5s ease-in-out infinite;
+.social span { animation: bounce 6s ease-in-out infinite; }
+
+/* Accent styling for social buttons */
+.about-section .social a,
+.about-section .social button {
+    color: var(--brand-dark);
+    background: rgba(255,255,255,0.96);
+    border-radius: 8px;
+    padding: 0.28rem 0.45rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 16px rgba(15,90,74,0.06);
+}
+
+.about-section .memberText h4 { color: var(--brand-dark); font-weight: 900; }
+.about-section .memberText h6 { color: #1f7f6e; font-size: .8rem; }
+
+/* subtle accent underline for section headings */
+.about-section h2::after {
+    content: '';
+    display: block;
+    width: 56px;
+    height: 6px;
+    margin: 12px auto 0;
+    background: linear-gradient(90deg, var(--accent), rgba(255,193,7,0.6));
+    border-radius: 4px;
+    opacity: 0.95;
+}
+
+/* Make paragraph text wrap cleanly and avoid overflow on narrow viewports */
+.about-section .memberText p {
+    text-align: left;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    font-size: .85rem;
 }
 
 @keyframes bounce {
+    0%, 50%, 100% { transform: translateY(0); }
+    25% { transform: translateY(-4px); }
+    75% { transform: translateY(8px); }
+}
 
-    0%,
-    50%,
-    100% {
-        transform: translateY(0);
+.memberText, .intro-text { transform: translateY(6px); animation: zoomIn 600ms ease-out forwards; }
+@keyframes zoomIn { from { transform: translateY(6px); } to { transform: translateY(0); } }
+
+h2 { color: initial; transition: color 0.5s; }
+h2:hover { color: var(--accent); }
+
+.introduct { background-color: var(--muted-bg); padding: 1.5rem 0.5rem; border-radius: 8px; }
+
+.introduct h1 span { color: var(--accent); background-color: var(--brand); padding-left: 1.2rem; padding-right: 1.8rem; clip-path: polygon(0% 0%, 90% 0%, 100% 50%, 90% 100%, 0% 100%); }
+
+@media screen and (max-width: 768px) {
+    .about-section .jbtron {
+        margin: 10px auto 0 auto !important;
+        padding: 1.1rem 0.7rem !important;
+        border-radius: 18px;
+        max-width: 98vw;
+    }
+    .about-section h2 { font-size: 1.15rem; font-weight: 800; }
+    .about-section .introduct h1 { font-size: 1.4rem; }
+    .about-section .memberText h4 { font-size: 1.02rem; }
+    .about-section .memberText h6 { font-size: .94rem; }
+    .about-section .introduct p { font-size: .95rem; }
+    .social img, .social span { animation: none; }
+    .about-section .memberImg img { width: 120px; height: 120px }
+
+    /* On small screens prefer left alignment to keep spacing predictable */
+    .about-section .introduct p,
+    .about-section .memberText p {
+        text-align: left;
+        font-size: clamp(.84rem, 2.4vw, .98rem);
     }
 
-    25% {
-        transform: translateY(-4px);
-    }
-
-    75% {
-        transform: translateY(8px);
+    /* Remove vertical padding from the top-level container on mobile to tighten layout */
+    .about-section .py-5 {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
     }
 }
 
-.memberText,
-.intro-text {
-    transform: scale(0);
-    animation: zoomIn 1s ease-out forwards;
-}
-
-@keyframes zoomIn {
-    from {
-        transform: scale(0.8);
+/* Extra small phones: tighten typography further */
+@media screen and (max-width: 480px) {
+    .about-section,
+    .about-section p,
+    .about-section .memberText {
+        font-size: 0.82rem !important;
+        line-height: 1.38 !important;
     }
 
-    to {
-        transform: scale(1);
+    .about-section h2 {
+        font-size: 1.1rem !important;
+        margin-bottom: 0.6rem;
+    }
+
+    .about-section h4 {
+        font-size: 0.98rem !important;
+    }
+
+    .about-section h6 {
+        font-size: 0.86rem !important;
+    }
+
+    .about-section .memberImg img { width: 82px !important; height: 82px !important }
+    .about-section .memberText p { font-size: 0.82rem !important }
+    .about-section .jbtron {
+        padding: 0.6rem 0.4rem !important;
+        border-radius: 10px;
+        margin-top: 0.5rem !important;
+        max-width: 99vw;
+    }
+    .about-section .introduct .jbtron p {
+        font-size: 0.74rem !important;
+        line-height: 1.32 !important;
+        text-align: center !important;
+        margin: 0 auto !important;
+        max-width: 98vw;
     }
 }
 
-h2 {
-    color: initial;
-    transition: color 0.5s;
+/* Tighten the 'Our Journey' / jbtron block for extra-small screens */
+@media screen and (max-width: 480px) {
+    .about-section .jbtron {
+        padding: 0.6rem 0.8rem !important;
+        border-radius: 12px;
+        margin-top: 0.75rem !important;
+    }
+
+    .about-section .jbtron h2 {
+        margin-bottom: 0.8rem; /* space under the Our Journey title */
+    }
+
+    .about-section .jbtron h2 {
+        margin-bottom: 0.4rem !important;
+        font-size: 1rem !important;
+    }
+
+    .about-section .jbtron h2 {
+        font-size: 1rem !important;
+        margin: 0.4rem 0 !important;
+    }
+
+    .about-section .jbtron p {
+        font-size: 0.78rem !important;
+        line-height: 1.35 !important;
+        margin-bottom: 0.35rem !important;
+    }
+
+    .about-section .jbtron hr {
+        margin: 0.4rem 0 !important;
+    }
 }
 
-h2:hover {
-    color: #ffc107;
-}
-
-.introduct {
-    background-color: #d6dbd8;
+/* Even stronger specificity for the 'Our Journey' paragraph to beat global overrides */
+@media screen and (max-width: 480px) {
+    .about-section .introduct .jbtron p,
+    .about-section > .introduct .jbtron p {
+        font-size: 0.76rem !important;
+        line-height: 1.35 !important;
+        text-align: left !important;
+        hyphens: auto !important;
+    }
 }
 
 .introduct h1 span {
@@ -141,49 +342,38 @@ h2:hover {
 
 /* MOBILES*/
 @media screen and (max-width: 768px) {
+    /* Additional adjustments for tablets */
     .about-section .jbtron {
         margin: 10px !important;
         padding: 10px !important;
         border-radius: 20px;
-        box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset,
-            rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+        box-shadow: rgba(50, 50, 93, 0.08) 0px 10px 30px -12px inset;
     }
 
-    .about-section h5 {
-        font-size: .9rem;
-    }
+    .about-section h5 { font-size: .95rem; }
 
-    .about-section h2 {
-        font-size: 1.2rem;
-        font-weight: 900;
-    }
+    .about-section h2 { font-size: 1.18rem; font-weight: 800; }
 
-    .about-section .introduct h1 {
-        font-size: 1.4rem !important;
-    }
+    .about-section .introduct h1 { font-size: 1.3rem !important; }
 
-    .about-section .introduct h2 {
-        font-size: 1.3rem !important;
-    }
+    .about-section .introduct h2 { font-size: 1.18rem !important; }
 
-    .about-section .introduct h3 {
-        font-size: 1.2rem !important;
-    }
+    .about-section .introduct h3 { font-size: 1.12rem !important; }
 
-    .about-section .memberText h4 {
-        font-size: 1.13rem !important;
-    }
+    .about-section .memberText h4 { font-size: 1.06rem !important; }
 
-    .about-section .memberText h6 {
-        font-size: .92rem !important;
-    }
+    .about-section .memberText h6 { font-size: .92rem !important; }
 
-    .about-section .introduct p {
-        font-size: .85rem !important;
-    }
+    .about-section .introduct p { font-size: .84rem !important; }
 
-    .social img,
-    .social span {
-        animation: none;
-    }
+    .social img, .social span { animation: none; }
 }
+
+/* Ensure consistent spacing between team rows */
+.about-section section {
+    margin-bottom: 1.25rem;
+}
+
+/* Small adjustments to social icon sizes */
+.about-section .social img { width: 20px; height: 20px; }
+@media screen and (max-width:480px) { .about-section .social img { width: 16px; height: 16px } }

@@ -1,40 +1,41 @@
 /*FOOTER*/
 
 footer {
-  background: #17a2b8;
-  background: -webkit-linear-gradient(59deg, #157A6E, #0a3f47);
-  background: linear-gradient(59deg, #157A6E, #0a3f47);
-  color: white;
+  /* subtle gradient using brand colors */
+  background: linear-gradient(59deg, var(--brand), var(--brand-dark));
+  color: #fff;
+  padding-top: 1.25rem;
 }
 
 footer h4 {
-  color: #ffc107;
+  color: var(--accent);
+  font-weight: 700;
 }
 
 footer a {
   color: #fff;
   font-size: 14px;
-  transition-duration: 0.2s;
+  transition: color .18s ease;
 }
 
 footer a:hover {
-  color: #ffc107 !important;
+  color: var(--accent) !important;
   text-decoration: none;
 }
 
 .copy {
   font-size: 12px;
-  padding: 10px;
-  border-top: 1px solid #FFFFFF;
+  padding: 10px 0;
+  border-top: 1px solid rgba(255,255,255,0.12);
 }
 
 .footer-middle {
-  padding-top: 2em;
-  color: white;
+  padding-top: 1.25rem;
 }
 
 footer .logo img {
-  filter: drop-shadow(0 0 5px #333);
+  filter: drop-shadow(0 6px 12px rgba(0,0,0,0.25));
+  max-width: 140px;
 }
 
 /*SOCİAL İCONS*/
@@ -42,8 +43,9 @@ footer .logo img {
 
 ul.social-network {
   list-style: none;
-  display: inline;
-  margin-left: 0 !important;
+  display: flex;
+  gap: .5rem;
+  margin: 0;
   padding: 0;
 }
 
@@ -88,24 +90,22 @@ ul.social-network li {
 }
 
 .social-circle li a {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
-  margin: 0 auto;
-  -moz-border-radius: 50%;
-  -webkit-border-radius: 50%;
-  border: 3px solid #ffc107;
+  margin: 0;
+  border: 2px solid rgba(255,255,255,0.12);
   border-radius: 50%;
-  text-align: center;
-  width: 30px;
-  height: 30px;
-  font-size: 15px;
+  width: 36px;
+  height: 36px;
+  font-size: 16px;
+  background: rgba(255,255,255,0.06);
 }
 
 .social-circle li a i {
-  margin: 0 auto;
-  text-align: center;
-  vertical-align: middle;
-  line-height: 26px;
+  margin: 0;
+  color: #fff;
 }
 
 .social-circle li a:hover i,
@@ -122,14 +122,21 @@ ul.social-network li {
 }
 
 .social-circle i {
-  color: #595959 !important;
-  -webkit-transition: all 0.8s;
-  -moz-transition: all 0.8s;
-  -o-transition: all 0.8s;
-  -ms-transition: all 0.8s;
-  transition: all 0.8s;
+  color: #fff !important;
+  -webkit-transition: all 0.4s ease;
+  -moz-transition: all 0.4s ease;
+  -o-transition: all 0.4s ease;
+  -ms-transition: all 0.4s ease;
+  transition: all 0.4s ease;
 }
 
 .social-network a {
-  background-color: #F9F9F9 !important;
+  background-color: transparent !important;
 }
+
+/* hover states using brand/accent */
+.social-network a.icoWhatsapp:hover { background-color: var(--brand); color: #fff !important; }
+.social-network a.icoFacebook:hover { background-color: #3b5998; color: #fff !important; }
+.social-network a.icoLinkedin:hover { background-color: #0072b1; color: #fff !important; }
+.social-network a.icoInstagram:hover { background-color: #C13584; color: #fff !important; }
+.social-network a.icoTwitter:hover { background-color: #000; color: #fff !important; }

@@ -72,7 +72,7 @@ const EditNotesModal = ({ idToUpdate, editTitle, editDesc }) => {
                 isOpen={modal}
                 toggle={toggle}
             >
-                <div className="d-flex justify-content-between align-items-center p-2" style={{ backgroundColor: "#157A6E", color: "#fff" }}>
+                <div className="d-flex justify-content-between align-items-center p-2" style={{ backgroundColor: "var(--brand)", color: "#fff" }}>
                     Edit Notes
                     <Button className="btn-danger text-uppercase text-red" style={{ padding: "0.1rem 0.3rem", fontSize: ".6rem", fontWeight: "bold" }} onClick={toggle}>
                         X
@@ -98,7 +98,7 @@ const EditNotesModal = ({ idToUpdate, editTitle, editDesc }) => {
 
                             <Label for="notes_file" className="my-2">
                                 <strong>Upload</strong>&nbsp;
-                                <small className="text-info">.pdf, .doc, .docx, .ppt, .pptx</small>
+                                <small className="text-success">.pdf, .doc, .docx, .ppt, .pptx</small>
                             </Label>
 
                             <Input bsSize="sm" type="file" accept=".pdf, .doc, .docx, .ppt, .pptx" name="notes_file" onChange={onFileHandler} label="Pick a file ..." id="notes_file_pick" />

@@ -121,7 +121,7 @@ const QuizzesTabPane = () => {
                                 <Pagination pageNo={pageNo} setPageNo={setPageNo} numberOfPages={numberOfPages} />
                             </> : null}
                     </> :
-                    <Alert color="danger" className="w-50 text-center mx-auto" style={{ border: '2px solid #157A6E' }}>
+                    <Alert color="danger" className="w-50 text-center mx-auto" style={{ border: '2px solid var(--brand)' }}>
                         {console.log(isLoading, loadingLimited, quizzesToUse)}
                         You have not created any quiz yet!
                     </Alert>

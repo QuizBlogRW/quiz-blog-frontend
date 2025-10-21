@@ -56,7 +56,7 @@ const ResetPassword = () => {
         <Container className="forgot-password mt-4">
             <Row className="mt-5 d-block text-center" style={{ minHeight: '68vh' }}>
                 <>
-                    <h2 className="fw-bolder my-3" style={{ color: '#157A6E' }}>
+                    <h2 className="fw-bolder my-3" style={{ color: 'var(--brand)' }}>
                         Update your password here
                     </h2>
 

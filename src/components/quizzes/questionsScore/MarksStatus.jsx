@@ -16,7 +16,7 @@ const MarksStatus = ({ score, qnLength, passMark }) => {
                     </h6>
 
                     <Link to="/contact">
-                        <button type="button" style={{ backgroundColor: "#157A6E", color: "#fff", border: "2px solid #ffc107", borderRadius: "10px", padding: "5px 12px", textDecoration: "underline" }}>
+                        <button type="button" style={{ backgroundColor: "var(--brand)", color: "#fff", border: "2px solid var(--accent)", borderRadius: "10px", padding: "5px 12px", textDecoration: "underline" }}>
                             Contact us for help!
                         </button>
                     </Link>
@@ -26,7 +26,7 @@ const MarksStatus = ({ score, qnLength, passMark }) => {
                         Congratulations on passing the test! Practice leads to deeper understanding. Reach out for related books or assistance anytime!
                     </h6>
                     <Link to="/contact">
-                        <button type="button" style={{ backgroundColor: "#157A6E", color: "#fff", border: "2px solid #ffc107", borderRadius: "10px", padding: "5px 12px", textDecoration: "underline" }}>
+                        <button type="button" style={{ backgroundColor: "var(--brand)", color: "#fff", border: "2px solid var(--accent)", borderRadius: "10px", padding: "5px 12px", textDecoration: "underline" }}>
                             Contact us for help!
                         </button>
                     </Link>

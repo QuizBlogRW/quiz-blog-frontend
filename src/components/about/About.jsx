@@ -1,4 +1,4 @@
-import { Row, Col } from "reactstrap"
+import { Container, Row, Col } from "reactstrap"
 import SquareAd from '@/components/adsenses/SquareAd'
 import ResponsiveAd from '@/components/adsenses/ResponsiveAd'
 import Biographies from './Biographies'
@@ -7,28 +7,32 @@ import './about.css'
 
 const About = () => {
     return (
-        <section className="about-section px-0 mx-0">
-            <div className="w-100">
+        <section className="about-section">
+            <Container className="py-5">
                 <Intro />
-                {/* Google responsive 1 ad */}
-                <Row className='w-100 px-lg-4'>
-                    <Col sm="12">
-                        <div className='w-100'>
-                            {process.env.NODE_ENV !== 'development' ? <ResponsiveAd /> : null}
-                        </div>
-                    </Col>
-                </Row>
+
+                {/* responsive ad (only in production) */}
+                {process.env.NODE_ENV !== 'development' && (
+                    <Row className="justify-content-center my-4">
+                        <Col xs={12} md={10} className="text-center">
+                            <ResponsiveAd />
+                        </Col>
+                    </Row>
+                )}
+
                 <Biographies />
-                {/* Google square ad */}
-                <Row className='w-100 px-lg-4'>
-                    <Col sm="12">
-                        <div className='w-100'>
-                            {process.env.NODE_ENV !== 'development' ? <SquareAd /> : null}
-                        </div>
-                    </Col>
-                </Row>
-            </div>
-        </section>)
+
+                {/* square ad footer */}
+                {process.env.NODE_ENV !== 'development' && (
+                    <Row className="justify-content-center mt-4">
+                        <Col xs={12} md={6} className="text-center">
+                            <SquareAd />
+                        </Col>
+                    </Row>
+                )}
+            </Container>
+        </section>
+    )
 }
 
 export default About

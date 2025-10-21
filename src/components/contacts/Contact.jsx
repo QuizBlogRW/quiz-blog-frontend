@@ -79,7 +79,7 @@ const Contact = () => {
         <div className='contact-section py-0 px-3 py-5'>
             <div className="jbtron rounded px-3 px-sm-4 py-3 py-sm-5 p-2 m-2 m-sm-0 text-center border border-info">
 
-                <h1 className="display-4 fw-bolder text-center my-4 mb-lg-4" style={{ color: "#ffc107" }}>
+                <h1 className="display-4 fw-bolder text-center my-4 mb-lg-4" style={{ color: "var(--accent)" }}>
                     Reach Out Quiz-Blog
                 </h1>
 
@@ -96,7 +96,7 @@ const Contact = () => {
                 </div>
 
                 <Col sm="6" className="mb-5 px-lg-5">
-                    <small className='fw-bolder' style={{ fontSize: '1.1rem', color: '#157A6E' }}>
+                    <small className='fw-bolder' style={{ fontSize: '1.1rem', color: 'var(--brand)' }}>
                         Require more clarification? Feel free to get in touch with us! <span role="img" aria-label="pointing">👉</span>
                     </small>
 
@@ -119,7 +119,7 @@ const Contact = () => {
                         <FormGroup>
                             <Input type="textarea" name="message" placeholder="Message" rows="5" minLength="10" maxLength="1000" onChange={onChangeHandler} value={state.message} />
                         </FormGroup>
-                        <Button style={{ backgroundColor: '#157A6E', color: '#ffc107' }} className='btn-block'>
+                        <Button style={{ backgroundColor: 'var(--brand)', color: 'var(--accent)' }} className='btn-block'>
                             Send Message
                         </Button>
                     </Form>

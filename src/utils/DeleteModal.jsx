@@ -29,12 +29,12 @@ const DeleteModal = ({ delID, delTitle, deleteFn, deleteFnName }) => {
 
     return (
         <>
-            <NavLink onClick={toggle} className="text-dark p-0 mx-2">
+            <NavLink onClick={toggle} className="text-dark p-0 mx-2 d-inline">
                 <img src={trash} alt="" width="16" height="16" />
             </NavLink>
 
             <Modal centered fullscreen="md" size="md" isOpen={modal} toggle={toggle} style={{ boxShadow: "none" }} className="delete-modal">
-                <div className="d-flex justify-content-between align-items-center p-2" style={{ backgroundColor: "#157A6E", color: "#fff" }}>
+                <div className="d-flex justify-content-between align-items-center p-2" style={{ backgroundColor: "var(--brand)", color: "#fff" }}>
                     Deleting ...
                     <Button className="btn-danger text-uppercase text-red" style={{ padding: "0.1rem 0.3rem", fontSize: ".6rem", fontWeight: "bold" }} onClick={toggle}>
                         X

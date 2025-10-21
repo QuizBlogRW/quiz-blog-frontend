@@ -46,9 +46,9 @@ const Adverts = () => {
                     <Link to={advertToDisplay && advertToDisplay.link} target="_blank">
                         <img
                             src={advertToDisplay && advertToDisplay.advert_image} alt="Quiz-Blog Rwanda"
-                            style={{ maxWidth: "92%", border: '2px solid #157A6E', borderRadius: '5px' }} />
+                            style={{ maxWidth: "92%", border: '2px solid var(--brand)', borderRadius: '5px' }} />
                     </Link>
-                    <p className="mt-2 mb-0 p-1 text-center" style={{ maxWidth: "92%", background: "rgb(255, 193, 7)", fontSize: "1vw", fontWeight: "bold", border: "2px solid #157A6E", borderRadius: '5px' }}>
+                    <p className="mt-2 mb-0 p-1 text-center" style={{ maxWidth: "92%", background: "rgb(255, 193, 7)", fontSize: "1vw", fontWeight: "bold", border: "2px solid var(--brand)", borderRadius: '5px' }}>
                         {advertToDisplay && advertToDisplay.caption}
                     </p>
                 </> :

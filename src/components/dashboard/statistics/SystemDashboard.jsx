@@ -214,7 +214,7 @@ const SystemDashboard = () => {
 
             <p className='m-3 w-100'>
                 For more statistics, click here <button className="btn btn-sm btn-outline-warning ms-2">
-                    <a href={'/statistics'} style={{ color: '#157A6E', fontWeight: 'bolder' }}>Statistics</a>
+                    <a href={'/statistics'} style={{ color: 'var(--brand)', fontWeight: 'bolder' }}>Statistics</a>
                 </button>
             </p>
 

@@ -46,7 +46,7 @@ const ForgotPassword = () => {
                     </Col>
                 </Row>
                 <>
-                    <h2 className="fw-bolder my-3" style={{ color: '#157A6E' }}>
+                    <h2 className="fw-bolder my-3" style={{ color: 'var(--brand)' }}>
                         Restore access to your account here
                     </h2>
 

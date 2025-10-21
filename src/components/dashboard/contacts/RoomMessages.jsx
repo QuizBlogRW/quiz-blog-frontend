@@ -144,7 +144,7 @@ const RoomMessages = ({ oON1room, onlineList }) => {
                         <Input type='textarea' name='message_content' placeholder='Type your message here...' rows="5" onChange={e => setRoomMessageState({ ...roomMessageState, [e.target.name]: e.target.value })}
                             onKeyDown={handleTyping} value={roomMessageState.message_content} required />
                     </FormGroup>
-                    <Button className='mx-auto w-50' style={{ height: "max-content", backgroundColor: "#157A6E" }}>
+                    <Button className='mx-auto w-50' style={{ height: "max-content", backgroundColor: "var(--brand)" }}>
                         Send
                     </Button>
                     <div ref={lastMessageRef} />

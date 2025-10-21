@@ -60,7 +60,7 @@ const ByCategory = () => {
                 <Col sm="3" className="mt-md-2">
                     {bPcats.isLoading ? <QBLoadingSM /> : (
                         <div className='sticky-top sticky-categories'>
-                            <h5 className='fw-bolder text-uppercase text-center mb-5' style={{ color: '#157A6E' }}>
+                            <h5 className='fw-bolder text-uppercase text-center mb-5' style={{ color: 'var(--brand)' }}>
                                 Discover Knowledge
                             </h5>
                             <CategoryList categories={bPcats.allPostCategories} location={location} />

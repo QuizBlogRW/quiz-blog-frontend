@@ -103,7 +103,7 @@ const ChatMessages = ({ onlineList }) => {
                         }}
                         editorStyle={{ height: '200px' }}
                     />
-                    <Button className='mx-auto w-50 mt-4' style={{ height: "max-content", backgroundColor: "#157A6E" }}>
+                    <Button className='mx-auto w-50 mt-4' style={{ height: "max-content", backgroundColor: "var(--brand)" }}>
                         Send
                     </Button>
                     <div ref={lastMessageRef} />

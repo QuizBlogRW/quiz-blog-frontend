@@ -1,9 +1,11 @@
 .container.blog-post-view {
-    padding-left: 150px !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
 }
 
-.container.blog-post-view .viewed-details h1 {
-    font-size: 1.6rem;
+.container.blog-post-view .viewed-details h1,
+.container.blog-post-view .viewed-details h2 {
+    font-size: 1.8rem;
     font-weight: 900;
 }
 
@@ -39,33 +41,35 @@
 .container.blog-post-view .viewed-details p {
     font-size: 1.05rem;
     font-weight: 400 !important;
-    line-height: 1.625 !important;
+    line-height: 1.6 !important;
     text-align: justify;
     text-justify: inter-word;
 }
 
 .container.blog-post-view .viewed-details {
-    background-color: rgb(246, 253, 249);
+    /* keep the section neutral — article card provides white surface */
+    background-color: transparent;
 }
 
 .container.blog-post-view .viewed-details .back-share {
-    height: 60px;
-    background-color: aliceblue;
+    height: auto;
+    background-color: transparent;
     border-bottom: .5px solid #eee;
     text-align: center;
+    padding: .5rem 0;
 }
 
 .container.blog-post-view .viewed-details .back-share .btn {
     margin-left: 5px;
-    height: 30px !important;
-    padding: 1px 6px !important;
+    height: 34px !important;
+    padding: 4px 8px !important;
     border-radius: 6px;
     border: .5px solid #eee !important;
 }
 
 .container.blog-post-view .viewed-details .back-share .like-share p {
-    font-size: .8rem !important;
-    line-height: .8;
+    font-size: .85rem !important;
+    line-height: 1;
     font-weight: 600 !important;
 }
 
@@ -83,7 +87,7 @@
 
 /* social icons */
 .container.blog-post-view .viewed-details .back-share .like-share .social-network a.icoWhatsapp {
-    background-color: #157A6E !important;
+    background-color: var(--brand) !important;
 }
 
 .container.blog-post-view .viewed-details .back-share .like-share .social-network a.icoFacebook {
@@ -112,31 +116,34 @@
 
 /* Follow us */
 .container.blog-post-view .viewed-details .back-share .like-share .social-network li.follow-us {
-    background-color: #ffc107 !important;
-    padding: 9px 5px;
+    background-color: var(--accent) !important;
+    padding: 9px 6px;
     border: .5px solid #fff;
     border-radius: 50%;
 }
 
-.container.blog-post-view .viewed-details .post-details .post-photo {
+.container.blog-post-view .viewed-details .post-details .post-photo,
+.post-article .post-photo {
     margin: 8px 0 24px;
     max-width: 100%;
     padding: 0;
     position: relative;
-    display: flex;
+    display: block;
 }
 
-.container.blog-post-view .viewed-details .post-details .post-photo img {
-    border: 1px solid rgba(5, 22, 12, 0.2);
-    border-radius: 3px;
+.container.blog-post-view .viewed-details .post-details .post-photo img,
+.post-article .post-photo img {
+    border: 1px solid rgba(5, 22, 12, 0.06);
+    border-radius: 6px;
     height: auto !important;
-    max-height: 400px;
+    max-height: 520px;
     max-width: 100%;
     width: auto !important;
-    margin: 20px auto !important;
+    margin: 0 auto 1rem auto !important;
+    display: block;
 }
 
-.container.blog-post-view h2.blogPost-title p {
+.blogPost-title {
     font-size: 1.6rem;
     font-weight: 900 !important;
     margin-bottom: .2rem;
@@ -147,7 +154,7 @@
     font-weight: 900 !important;
 }
 
-.container.blog-post-view .blogPost-description {
+.blogPost-description {
     background-color: rgb(234, 241, 232);
     border-radius: .5rem;
 }
@@ -180,13 +187,13 @@
     color: rgb(57, 105, 209)
 }
 
-.container.blog-post-view .choosen-blogPost img {
+.choosen-blogPost img {
     max-height: 104px;
 }
 
-.container.blog-post-view .choosen-blogPost .post-details img {
-    border: 1px solid rgba(5, 22, 12, 0.2);
-    border-radius: 3px;
+.choosen-blogPost .post-details img {
+    border: 1px solid rgba(5, 22, 12, 0.06);
+    border-radius: 6px;
     height: auto !important;
     max-height: 400px;
     max-width: 100%;
@@ -194,7 +201,7 @@
     margin: 20px auto !important;
 }
 
-.container.blog-post-view .sidebar-content img {
+.sidebar-content img {
     max-height: 56px;
     width: 90px;
 }
@@ -203,8 +210,8 @@
     font-size: .8rem;
 }
 
-.container.blog-post-view .sidebar-content h5 a {
-    color: #157A6E !important;
+.sidebar-content h5 a {
+    color: var(--brand) !important;
     font-weight: 900;
 }
 
@@ -213,13 +220,52 @@
     font-weight: 900;
 }
 
-.container.blog-post-view .blogPost-description strong {
+.blogPost-description strong {
     font-weight: 900 !important;
 }
 
-.container.blog-post-view .blogPost-description code {
+.blogPost-description code {
     font-size: 1rem;
 }
+
+/* Author bio circular photo and reveal animation */
+.author-bio { display:flex; align-items:center; }
+.author-photo { width:56px; height:56px; flex:0 0 56px; }
+.author-photo img { width:56px; height:56px; object-fit:cover; border-radius:50%; border:3px solid rgba(21,122,110,0.12); box-shadow:0 2px 8px rgba(0,0,0,0.06); transform:scale(.96); transition:transform .45s ease, box-shadow .3s ease; }
+.author-bio.is-visible .author-photo img { transform:scale(1); box-shadow:0 6px 18px rgba(0,0,0,0.12); }
+
+/* Article card */
+.post-article { background: #fff; padding: 1.25rem; }
+
+/* Markdown content styling (light GitHub-ish defaults) */
+.markdown-body {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #222;
+}
+.markdown-body p { margin: .8rem 0; }
+.markdown-body h2, .markdown-body h3, .markdown-body h4 { color: var(--brand); margin-top: 1.1rem; }
+.markdown-body a { color: var(--brand); text-decoration: underline; }
+.markdown-body img { max-width: 100%; height: auto; border-radius: 6px; }
+.markdown-body pre { background: #0d1117; color: #e6edf3; padding: .8rem; border-radius: 6px; overflow:auto; }
+.markdown-body code { background: #f6f8fa; padding: .15rem .35rem; border-radius: 4px; }
+
+/* Make BackLikeShare compact on small screens */
+.post-article .back-share { display:flex; gap:.5rem; align-items:center; justify-content:center; }
+
+/* Sticky sidebar for larger screens */
+@media (min-width: 992px) {
+    .sidebar-content { position: sticky; top: 6rem; }
+}
+
+/* Mobile tweaks: slightly reduce base font and tighten margins */
+@media (max-width: 480px) {
+    .post-article { padding: .9rem; }
+    .markdown-body { font-size: .95rem; }
+    .author-photo { width:48px; height:48px; }
+    .author-photo img { width:48px; height:48px; }
+}
+
 
 /*****************/
 /* SMALL TABLET */

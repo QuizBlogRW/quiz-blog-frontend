@@ -12,7 +12,6 @@ const ViewQuizComments = ({ quizID }) => {
   // Redux
   const dispatch = useDispatch()
   const qnCmts = useSelector(state => state.questionsComments)
-  console.log(qnCmts)
   const qzCmts = useSelector(state => state.quizzesComments)
 
   // Lifecycle methods
@@ -52,7 +51,7 @@ const ViewQuizComments = ({ quizID }) => {
             </Card>}
         </Col> :
 
-        <Alert color="danger" className="w-50 text-center mx-auto" style={{ border: '2px solid #157A6E' }}>
+  <Alert color="danger" className="w-50 text-center mx-auto" style={{ border: '2px solid var(--brand)' }}>
           No comments made yet!
         </Alert>
       }

@@ -11,7 +11,7 @@ const SingleCategory = () => {
         <div className="my-2 mt-lg-5 mx-3 mx-lg-5 single-category" key={category._id}>
             <Row key={category._id} className="mb-0 mb-lg-3 mx-0 justify-content-center text-capitalize">
                 <Breadcrumb>
-                    <BreadcrumbItem style={{ color: "#157A6E" }}>
+                    <BreadcrumbItem style={{ color: "var(--brand)" }}>
                         <Link to="/dashboard">{category.title}</Link>
                     </BreadcrumbItem>
                     <BreadcrumbItem active>Quizzes</BreadcrumbItem>

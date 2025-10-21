@@ -1,3 +1,44 @@
+/* Blog posts list responsive typography */
+
+/* Desktop defaults */
+.post-title { font-size: 1.3rem; font-weight: 700; }
+.post-meta { color: #6c757d; }
+
+/* Tablet */
+@media screen and (max-width: 768px) {
+  .post-title { font-size: 1.18rem; }
+  .post-meta small { font-size: .78rem; }
+}
+
+/* Mobile phones */
+@media screen and (max-width: 480px) {
+  .post-title { font-size: 1.12rem; font-weight: 800; }
+  .post-meta small { font-size: .65rem; }
+  .post-thumb img { height: 140px; }
+}
+/* Responsive styles for BlogPosts list */
+
+/* Default desktop tweaks */
+.post-title { font-size: 1.1rem; font-weight: 700; }
+.post-meta { color: #6c757d; }
+
+@media screen and (max-width: 768px) {
+  /* Ensure post title is readable on small tablets */
+  .post-title { 
+    font-size: 1rem; 
+    font-weight: 700;
+  }
+
+  .post-meta small { font-size: .8rem; }
+}
+
+@media screen and (max-width: 480px) {
+  /* Mobile phones: make title most prominent and metadata smaller */
+  .post-title { font-size: 1.05rem; font-weight: 800; }
+  .post-meta small { font-size: .72rem; }
+
+  .post-thumb img { height: 140px; }
+}
 /*****************/
 /* SMALL TABLET */
 /***************/
@@ -13,3 +54,32 @@
     }
 
 }
+
+@media screen and (max-width: 480px) {
+    b.post-title {  
+        font-size: .9rem;
+    }
+
+    span.view-blog-post {
+        font-size: .75rem;
+    }
+
+    .post-thumb img { height: 160px; }
+}
+
+    /* Beautify the list items: left accent, rounded card feel and hover uplift */
+    .blogpost-item{
+      background: #fff;
+      border-left: 6px solid var(--accent);
+      border-radius: .6rem;
+      padding: .8rem 1rem;
+      margin: .4rem 0;
+      box-shadow: 0 6px 18px rgba(21,122,110,0.04);
+      transition: transform .16s ease, box-shadow .16s ease;
+    }
+    .blogpost-item:hover{
+      transform: translateY(-4px);
+      box-shadow: 0 14px 36px rgba(21,122,110,0.08);
+    }
+    .blogpost-item .post-title{ color: var(--brand); }
+    .blogpost-item .post-meta{ text-transform: none; }

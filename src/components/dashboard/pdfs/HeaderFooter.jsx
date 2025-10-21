@@ -9,42 +9,42 @@ import whatsapp from '@/images/whatsapp.jpg'
 const HeaderFooter = ({ styles, fromFooter }) => {
 
     return (
-        <View style={{ backgroundColor: "#157a6e", padding: "5px 10px" }}>
+    <View style={{ backgroundColor: "var(--brand)", padding: "5px 10px" }}>
             <View style={styles.reviewHeader}>
                 <Image src={logo} style={styles.reviewHeaderImage} />
                 <View className="social-network social-circle" style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                     <Link src="https://api.whatsapp.com/send?phone=250780579067" style={{ color: "#fff", textDecoration: "none" }}>
-                        <Image src={whatsapp} style={{ width: "24px", margin: "4px", borderRadius: '4px', border: '1px solid #157a6e' }} />
+                        <Image src={whatsapp} style={{ width: "24px", margin: "4px", borderRadius: '4px', border: '1px solid var(--brand)' }} />
                     </Link>
                     <Link src="https://www.facebook.com/QuizblogRw/" style={{ color: "#fff", textDecoration: "none" }}>
-                        <Image src={facebook} style={{ width: "24px", margin: "4px", borderRadius: '4px', border: '1px solid #157a6e' }} />
+                        <Image src={facebook} style={{ width: "24px", margin: "4px", borderRadius: '4px', border: '1px solid var(--brand)' }} />
                     </Link>
                     <Link src="https://www.linkedin.com/company/quiz-blog/" style={{ color: "#fff", textDecoration: "none" }}>
-                        <Image src={linkedin} style={{ width: "24px", margin: "4px", borderRadius: '4px', border: '1px solid #157a6e' }} />
+                        <Image src={linkedin} style={{ width: "24px", margin: "4px", borderRadius: '4px', border: '1px solid var(--brand)' }} />
                     </Link>
                     <Link src="https://www.instagram.com/quizblogrw/" style={{ color: "#fff", textDecoration: "none" }}>
-                        <Image src={instagram} style={{ width: "24px", margin: "4px", borderRadius: '4px', border: '1px solid #157a6e' }} />
+                        <Image src={instagram} style={{ width: "24px", margin: "4px", borderRadius: '4px', border: '1px solid var(--brand)' }} />
                     </Link>
                     <Link src="https://twitter.com/QuizblogRw" style={{ color: "#fff", textDecoration: "none" }}>
-                        <Image src={twitter} style={{ width: "24px", margin: "4px", borderRadius: '4px', border: '1px solid #157a6e' }} />
+                        <Image src={twitter} style={{ width: "24px", margin: "4px", borderRadius: '4px', border: '1px solid var(--brand)' }} />
                     </Link>
                 </View>
                 <View style={{ fontSize: '12px', display: 'flex', justifyContent: "flex-start", alignItems: 'flex-start' }}>
                     <Text style={{ textAlign: 'left', margin: '8px 0' }}>
                         <Text style={{ color: "#ffffff" }}>Website: </Text>
-                        <Link src="https://www.quizblog.rw" style={{ color: "#ffc107", textDecoration: "none" }}>
+                        <Link src="https://www.quizblog.rw" style={{ color: "var(--accent)", textDecoration: "none" }}>
                             www.quizblog.rw
                         </Link>
                     </Text>
                     <Text style={{ textAlign: 'left', margin: '8px 0' }}>
                         <Text style={{ color: "#ffffff" }}>Email: </Text>
-                        <Link src="mailto:quizblog.rw@gmail.com" style={{ color: "#ffc107", textDecoration: "none" }}>
+                        <Link src="mailto:quizblog.rw@gmail.com" style={{ color: "var(--accent)", textDecoration: "none" }}>
                             quizblog.rw@gmail.com
                         </Link>
                     </Text>
                     <Text style={{ textAlign: 'left', margin: '8px 0' }}>
                         <Text style={{ color: "#ffffff" }}>Phone: </Text>
-                        <Link src="#" style={{ color: "#ffc107", textDecoration: "none" }}>
+                        <Link src="#" style={{ color: "var(--accent)", textDecoration: "none" }}>
                             0780579067
                         </Link>
                     </Text>

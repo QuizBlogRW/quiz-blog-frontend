@@ -10,7 +10,7 @@ const TopRow = () => {
 
     <div className="mx-1 m-lg-4 px-lg-5 d-flex justify-content-around align-items-center text-primary">
       <div className='text-center m-2 m-sm-0'>
-        <Alert style={{ background: '#ffc107', color: '#157A6E', border: '2px solid #157A6E' }}>
+  <Alert style={{ background: 'var(--accent)', color: 'var(--brand)', border: '2px solid var(--brand)' }}>
           <h4 className="alert-heading">
             <strong>
               {user && user?.name?.toLowerCase().charAt(0).toUpperCase() + user?.name?.slice(1)}

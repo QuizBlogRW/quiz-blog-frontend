@@ -15,7 +15,7 @@ const ChatCard = ({ openChat }) => {
     const isLoading = contacts && contacts.isLoading
 
     return (
-        isLoading ? <Alert color="info" className="w-100 w-lg-50 mt-4 text-center mx-auto" style={{ border: '2px solid #157A6E' }}>Loading...</Alert> :
+    isLoading ? <Alert color="info" className="w-100 w-lg-50 mt-4 text-center mx-auto" style={{ border: '2px solid var(--brand)' }}>Loading...</Alert> :
             contactsToUse && contactsToUse.length > 0 ?
                 <>
                     {contactsToUse && contactsToUse.map(contact => (
@@ -60,7 +60,7 @@ const ChatCard = ({ openChat }) => {
                         </Card>
                     ))}
                 </> :
-                <Alert color="danger" className="w-100 w-lg-50 mt-4 text-center mx-auto" style={{ border: '2px solid #157A6E' }}>
+                <Alert color="danger" className="w-100 w-lg-50 mt-4 text-center mx-auto" style={{ border: '2px solid var(--brand)' }}>
                     {user?.role !== 'Visitor' ? 'No messages yet!' : <Link to='/contact'>➕ Start new chat with us</Link>}
                 </Alert>
     )

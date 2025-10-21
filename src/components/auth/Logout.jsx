@@ -14,15 +14,15 @@ const Logout = ({ userId, logoutModal, toggleLogoutModal }) => {
 
   return (
     <>
-      <DropdownItem onClick={toggleLogoutModal}>
-        <span style={{ backgroundColor: "#ffc107", borderRadius: "3px", fontSize: ".7rem", fontWeight: 900, color: "#157A6E" }} className="p-1">
+      <DropdownItem onClick={toggleLogoutModal} className="logout-item">
+        <span className="logout-badge p-1">
           <img src={powerOff} alt="logout to Quiz-Blog" width="16" height="16" />
           <span className='ms-1'>Sign Out</span>
         </span>
       </DropdownItem>
 
       <Modal isOpen={logoutModal} toggle={toggleLogoutModal} centered={true}>
-        <div className="d-flex justify-content-between align-items-center pt-0 fw-bolder" style={{ color: "#157A6E" }}>
+  <div className="d-flex justify-content-between align-items-center pt-0 fw-bolder" style={{ color: "var(--brand)" }}>
           Are you sure you want to logout?
           <Button className="btn-danger text-uppercase text-red" style={{ padding: "0.1rem 0.3rem", fontSize: ".6rem", fontWeight: "bold" }}>
             X
@@ -35,7 +35,7 @@ const Logout = ({ userId, logoutModal, toggleLogoutModal }) => {
             Logout
           </Button>
 
-          <Button style={{ marginTop: '2rem', backgroundColor: "#157A6E" }} onClick={toggleLogoutModal}>
+          <Button style={{ marginTop: '2rem', backgroundColor: "var(--brand)" }} onClick={toggleLogoutModal}>
             Cancel
           </Button>
 

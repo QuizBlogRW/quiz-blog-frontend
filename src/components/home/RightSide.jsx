@@ -75,7 +75,7 @@ const RightSide = ({ categories }) => {
 
                         <Input type="email" name="email" value={subscriberState.email} bsSize="sm" placeholder="Your Email" className="mt-4" onChange={onChangeHandler} required />
 
-                        <Button size="sm" className="me-auto mt-4 bg-primary" style={{ borderRadius: '50px', fontSize: "1.6vw", padding: "2rem!important" }}>
+                        <Button size="sm" className="me-auto mt-4 subscribe-btn bg-primary">
                             Subscribe
                         </Button>
                     </FormGroup>

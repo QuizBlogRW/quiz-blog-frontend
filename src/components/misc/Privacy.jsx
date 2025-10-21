@@ -12,16 +12,26 @@ import {
 import moment from 'moment';
 
 const Privacy = () => {
-    const formattedDate = moment('2021-06-02').format('MMMM D, YYYY');
+    const formattedDate = moment('2025-10-20').format('MMMM D, YYYY');
 
     return (
-        <Container className="my-3 my-md-5">
+        <Container className="my-3 my-md-5 privacy-page">
             <Card className="border-0 shadow-sm">
                 <CardHeader className="bg-light border-bottom">
                     <h1 className="h2 h1-md mb-0 text-center text-md-start">
                         Privacy Policy
                     </h1>
                 </CardHeader>
+
+                {/* Centered hero summary using Bootstrap utilities - constrained width on md+ */}
+                <Row className="justify-content-center">
+                    <Col md={6} className="mx-auto">
+                        <div className="text-center bg-light rounded p-3 my-3 shadow-sm">
+                            <h2 className="h5 mb-1">Privacy at a glance</h2>
+                            <p className="mb-0 small">We collect minimal data to operate and improve the service. This page explains what we collect and why.</p>
+                        </div>
+                    </Col>
+                </Row>
 
                 <CardBody className="p-3 p-md-4">
                     <Alert color="warning" className="d-flex align-items-center gap-3 mb-4">

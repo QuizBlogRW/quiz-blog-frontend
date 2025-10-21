@@ -38,7 +38,7 @@ const ScoresTabPane = () => {
                 <Row>
                     <p className='m-3 w-100'>
                         To see more about quizzes feedbacks, click here 👉<button className="btn btn-sm btn-outline-warning ms-2">
-                            <a href={'/feedbacks'} style={{ color: '#157A6E', fontWeight: 'bolder' }}>Feedbacks</a>
+                            <a href={'/feedbacks'} style={{ color: 'var(--brand)', fontWeight: 'bolder' }}>Feedbacks</a>
                         </button>
                     </p>
                     {(user?.role === 'Admin' || user?.role === 'SuperAdmin') ?

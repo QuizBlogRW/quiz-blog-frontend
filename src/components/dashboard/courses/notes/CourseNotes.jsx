@@ -55,7 +55,7 @@ const CourseNotes = ({ chapter }) => {
                             <CardImg top width="12%" src={img} alt="Card image cap" className="pl-1" />
                             <CardBody style={{ width: "77%" }}>
 
-                                <CardTitle tag="h6" className="text-info fw-bolder mb-1"
+                                <CardTitle tag="h6" className="text-success fw-bolder mb-1"
                                     style={{ fontSize: ".7rem" }}>
                                     {note?.title}
                                 </CardTitle>
@@ -67,7 +67,7 @@ const CourseNotes = ({ chapter }) => {
                                 <CardText className="mb-1">
                                     <small>{note?.description}</small>
                                     <br />
-                                    <i className="fw-bolder text-info" style={{ fontSize: ".5rem" }}>
+                                    <i className="fw-bolder text-success" style={{ fontSize: ".5rem" }}>
                                         {note?.notes_file && note?.notes_file.split('/').pop().replace(/%20|%5B|%5D/g, ' ')}
                                     </i>
                                 </CardText>
@@ -96,8 +96,8 @@ const CourseNotes = ({ chapter }) => {
                                         </ol></> : null}
 
                                 <div className="d-flex">
-                                    <Button size="sm" style={{ backgroundColor: "#ffc107", border: "2px solid #157A6E" }}>
-                                        <a href={note?.notes_file} style={{ color: "#157A6E", fontWeight: 'bold' }} onClick={() => onDownload(note)} target="_blank" rel="noopener noreferrer">Download</a>
+                                    <Button size="sm" style={{ backgroundColor: "var(--accent)", border: "2px solid var(--brand)" }}>
+                                        <a href={note?.notes_file} style={{ color: "var(--brand)", fontWeight: 'bold' }} onClick={() => onDownload(note)} target="_blank" rel="noopener noreferrer">Download</a>
                                     </Button>
 
                                     {user.role !== 'Visitor' ?

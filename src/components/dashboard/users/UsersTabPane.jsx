@@ -36,7 +36,7 @@ const UsersTabPane = () => {
             <>
                     <p className='m-3 w-100'>
                         To see more about subscribers, click here 👉<button className="btn btn-sm btn-outline-warning ms-2">
-                            <a href={'/subscribers'} style={{ color: '#157A6E', fontWeight: 'bolder' }}>Subscribers</a>
+                            <a href={'/subscribers'} style={{ color: 'var(--brand)', fontWeight: 'bolder' }}>Subscribers</a>
                         </button>
                     </p>
                     {
