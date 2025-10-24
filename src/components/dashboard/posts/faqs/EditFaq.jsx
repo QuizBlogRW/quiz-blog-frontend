@@ -1,102 +1,56 @@
-import { useState } from 'react'
-import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
+import UpdateModal from '@/utils/UpdateModal'
 import { updateFaq } from '@/redux/slices/faqsSlice'
-import { useDispatch } from 'react-redux'
 import EditIcon from '@/images/edit.svg'
 import { notify } from '@/utils/notifyToast'
 
 const EditFaq = ({ faqToEdit }) => {
+    const initialData = { faqID: faqToEdit._id, title: faqToEdit.title || '', answer: faqToEdit.answer || '' }
 
-    // Redux
-    const dispatch = useDispatch()
-
-    const [faqState, setFaqState] = useState({
-        faqID: faqToEdit._id,
-        title: faqToEdit.title,
-        answer: faqToEdit.answer
-    })
-
-
-    //properties of the modal
-    const [modal, setModal] = useState(false)
-
-    //showing and hiding modal
-    const toggle = () => setModal(!modal)
-
-    const onChangeHandler = e => {
-        setFaqState({ ...faqState, [e.target.name]: e.target.value })
-    }
-
-    const onSubmitHandler = e => {
-        e.preventDefault()
-
-        const { faqID, title, answer } = faqState
-
-        // VALIDATE
-        if (title.length < 4 || answer.length < 4) {
-            notify('Insufficient info!', 'error')
-            return
-        }
-        else if (title.length > 50) {
-            notify('Title is too long!', 'error')
-            return
-        }
-        else if (answer.length > 100) {
-            notify('Answer is too long!', 'error')
-            return
-        }
-
-        // Create new FAQ object
-        const updatedFaq = {
-            faqID,
-            title,
-            answer
-        }
-
-        // Attempt to update
-        dispatch(updateFaq(updatedFaq))
-    }
-    return (
-        <div>
-            <NavLink onClick={toggle} className="text-dark p-0">
-                <img src={EditIcon} onClick={toggle} alt="" width="16" height="16" className="mx-2" />
-            </NavLink>
-
-            <Modal isOpen={modal} toggle={toggle}>
-                <div className="d-flex justify-content-between align-items-center p-2" style={{ backgroundColor: "var(--brand)", color: "#fff" }}>
-                    Edit FAQ
-                    <Button className="btn-danger text-uppercase text-red" style={{ padding: "0.1rem 0.3rem", fontSize: ".6rem", fontWeight: "bold" }} onClick={toggle}>
-                        X
-                    </Button>
+    const renderForm = (formState, setFormState, firstInputRef) => {
+        const onChange = e => setFormState({ ...formState, [e.target.name]: e.target.value })
+        return (
+            <div>
+                <div className="mb-3">
+                    <label><strong>Title</strong></label>
+                    <input ref={firstInputRef} type="text" name="title" placeholder="FAQ title ..." className="form-control mb-3" onChange={onChange} value={formState.title} />
                 </div>
 
-                <ModalBody>
-                    <Form onSubmit={onSubmitHandler}>
+                <div className="mb-3">
+                    <label><strong>Answer</strong></label>
+                    <input type="text" name="answer" placeholder="FAQ answer ..." className="form-control mb-3" onChange={onChange} value={formState.answer} />
+                </div>
+            </div>
+        )
+    }
 
-                        <FormGroup>
+    const submitFn = (formState) => {
+        const { faqID, title, answer } = formState
+        if (!title || title.length < 4 || !answer || answer.length < 4) {
+            notify('Insufficient info!', 'error')
+            throw new Error('validation')
+        }
+        if (title.length > 50) {
+            notify('Title is too long!', 'error')
+            throw new Error('validation')
+        }
+        if (answer.length > 100) {
+            notify('Answer is too long!', 'error')
+            throw new Error('validation')
+        }
 
-                            <Label for="title">
-                                <strong>Title</strong>
-                            </Label>
+        return (dispatch) => dispatch(updateFaq({ faqID, title, answer }))
+    }
 
-                            <Input type="text" name="title" placeholder="FAQ title ..." className="mb-3" onChange={onChangeHandler} value={faqState.title} />
+    const onSuccess = () => notify('FAQ updated', 'success')
 
-                            <Label for="answer">
-                                <strong>Answer</strong>
-                            </Label>
-
-                            <Input type="text" name="answer" placeholder="FAQ answer ..." className="mb-3" onChange={onChangeHandler} value={faqState.answer} />
-
-                            <Button color="success" style={{ marginTop: '2rem' }} block>
-                                Update
-                            </Button>
-
-                        </FormGroup>
-
-                    </Form>
-                </ModalBody>
-            </Modal>
-        </div>
+    return (
+        <UpdateModal
+            title="Edit FAQ"
+            submitFn={submitFn}
+            renderForm={renderForm}
+            initialData={initialData}
+            onSuccess={onSuccess}
+        />
     )
 }
 

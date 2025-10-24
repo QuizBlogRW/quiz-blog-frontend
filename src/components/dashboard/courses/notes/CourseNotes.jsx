@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import img from '@/images/resourceImg.svg'
 import DeleteIcon from '@/images/trash.svg'
 import AddNotesModal from './AddNotesModal'
-import EditNotesModal from './EditNotesModal'
+import UpdateModal from '@/utils/UpdateModal'
 import AddRelatedQuiz from './AddRelatedQuiz'
 import { Row, Col, Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button } from 'reactstrap'
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM'
@@ -101,11 +101,37 @@ const CourseNotes = ({ chapter }) => {
                                     </Button>
 
                                     {user.role !== 'Visitor' ?
-                                        <><Button size="sm" color="link" className="mx-2">
-                                            <EditNotesModal idToUpdate={note?._id} editTitle={note?.title} editDesc={note?.description} />
-                                        </Button>
+                                        <>
+                                            <Button size="sm" color="link" className="mx-2">
+                                                <UpdateModal
+                                                    title="Edit Notes"
+                                                    initialData={{ idToUpdate: note?._id, title: note?.title, description: note?.description }}
+                                                    submitFn={data => {
+                                                        // data may include a File in notes_file
+                                                        const { title, description, notes_file } = data
+                                                        const res = validators.validateTitleDesc(title, description, { minTitle: 4, minDesc: 4, maxTitle: 80, maxDesc: 200 })
+                                                        if (!res.ok) return Promise.reject(new Error('validation'))
+
+                                                        const formData = new FormData()
+                                                        formData.append('title', title)
+                                                        formData.append('description', description)
+                                                        if (notes_file) formData.append('notes_file', notes_file)
+
+                                                        return updateNotes({ idToUpdate: data.idToUpdate, formData })
+                                                    }}
+                                                    renderForm={(state, setState, firstInputRef) => (
+                                                        <>
+                                                            <Input ref={firstInputRef} type="text" name="title" id="title" placeholder="Notes title ..." className="mb-3" value={state.title || ''} onChange={e => setState({ ...state, title: e.target.value })} />
+                                                            <Input type="text" name="description" id="description" placeholder="Notes description ..." className="mb-3" value={state.description || ''} onChange={e => setState({ ...state, description: e.target.value })} />
+                                                            <Input bsSize="sm" type="file" accept=".pdf, .doc, .docx, .ppt, .pptx" name="notes_file" onChange={e => setState({ ...state, notes_file: e.target.files && e.target.files[0] })} id="notes_file_pick" />
+                                                        </>
+                                                    )}
+                                                    onSuccess={() => dispatch(getNotesByChapter(chapter?._id))}
+                                                />
+                                            </Button>
                                             <DeleteModal deleteFnName="deleteNotes" deleteFn={deleteNotes} delID={note?._id} delTitle={note?.title} />
-                                            <AddRelatedQuiz courseCategoryID={note?.courseCategory} noteID={note?._id} /></> : null}
+                                            <AddRelatedQuiz courseCategoryID={note?.courseCategory} noteID={note?._id} />
+                                        </> : null}
                                 </div>
                             </CardBody>
                         </Card>

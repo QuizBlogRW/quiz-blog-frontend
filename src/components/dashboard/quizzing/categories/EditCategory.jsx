@@ -1,55 +1,66 @@
-import { useState } from 'react'
-import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
+import { useSelector, useDispatch } from 'react-redux'
+import UpdateModal from '@/utils/UpdateModal'
 import { updateCategory } from '@/redux/slices/categoriesSlice'
-import EditIcon from '@/images/edit.svg'
-import { useDispatch, useSelector } from "react-redux"
 import { notify } from '@/utils/notifyToast'
+import { getCategories } from '@/redux/slices/categoriesSlice'
 
 const EditCategory = ({ categoryToEdit }) => {
-
-    const dispatch = useDispatch()
     const { isLoading, user } = useSelector(state => state.auth)
     const { allCourseCategories } = useSelector(state => state.courseCategories)
 
-    const [categoryState, setCategoryState] = useState({
+    const initialData = {
         catID: categoryToEdit && categoryToEdit._id,
-        name: categoryToEdit && categoryToEdit.title,
-        description: categoryToEdit && categoryToEdit.description,
-        oldCourseCatID: categoryToEdit && categoryToEdit.courseCategory && categoryToEdit.courseCategory._id,
-        courseCategory: categoryToEdit && categoryToEdit.courseCategory && categoryToEdit.courseCategory._id
-    })
-
-    //properties of the modal
-    const [modal, setModal] = useState(false)
-
-    //showing and hiding modal
-    const toggle = () => setModal(!modal)
-
-    const onChangeHandler = e => {
-        setCategoryState({ ...categoryState, [e.target.name]: e.target.value })
+        name: categoryToEdit && categoryToEdit.title || '',
+        description: categoryToEdit && categoryToEdit.description || '',
+        oldCourseCatID: categoryToEdit && categoryToEdit.courseCategory && categoryToEdit.courseCategory._id || '',
+        courseCategory: categoryToEdit && categoryToEdit.courseCategory && categoryToEdit.courseCategory._id || ''
     }
 
+    const renderForm = (formState, setFormState, firstInputRef) => {
+        const onChange = (e) => setFormState({ ...formState, [e.target.name]: e.target.value })
 
-    const onSubmitHandler = e => {
-        e.preventDefault()
+        return (
+            <div>
+                <div className="mb-2">
+                    <label><strong>Title</strong></label>
+                    <input ref={firstInputRef} type="text" name="name" placeholder="Category name ..." className="form-control mb-3" onChange={onChange} value={formState.name} />
+                </div>
 
-        const { catID, name, description, oldCourseCatID, courseCategory } = categoryState
+                <div className="mb-2">
+                    <label><strong>Description</strong></label>
+                    <input type="text" name="description" placeholder="Category description ..." className="form-control mb-3" onChange={onChange} value={formState.description} />
+                </div>
+
+                <div className="mb-2">
+                    <label><strong>Course Category</strong></label>
+                    <select name="courseCategory" className="form-control mb-3" onChange={onChange} value={formState.courseCategory}>
+                        {!formState.courseCategory ? <option>Choose a course category ...</option> : null}
+                        {allCourseCategories && allCourseCategories.map(courseCategory => (
+                            <option key={courseCategory._id} value={courseCategory._id}>{courseCategory.title}</option>
+                        ))}
+                    </select>
+                </div>
+            </div>
+        )
+    }
+
+    const submitFn = (formState) => {
+        const { catID, name, description, oldCourseCatID, courseCategory } = formState
 
         // VALIDATE
-        if (name.length < 4 || description.length < 4) {
+        if (!name || name.length < 4 || !description || description.length < 4) {
             notify('Insufficient info!', 'error')
-            return
+            throw new Error('validation')
         }
-        else if (name.length > 50) {
+        if (name.length > 50) {
             notify('Title is too long!', 'error')
-            return
+            throw new Error('validation')
         }
-        else if (description.length > 100) {
+        if (description.length > 100) {
             notify('Description is too long!', 'error')
-            return
+            throw new Error('validation')
         }
 
-        // Create new Category object
         const updatedCategory = {
             catID,
             title: name,
@@ -59,67 +70,23 @@ const EditCategory = ({ categoryToEdit }) => {
             last_updated_by: isLoading ? null : user._id
         }
 
-        // Attempt to update
-        dispatch(updateCategory(updatedCategory))
+        return (dispatch) => dispatch(updateCategory(updatedCategory))
     }
+
+    const dispatch = useDispatch()
+    const onSuccess = () => {
+        notify('Category updated', 'success')
+        dispatch(getCategories())
+    }
+
     return (
-        <div>
-            <NavLink onClick={toggle} className="text-dark p-0">
-                <img src={EditIcon} alt="" width="16" height="16" className="mx-2" />
-            </NavLink>
-
-            <Modal isOpen={modal} toggle={toggle}>
-                <div className="d-flex justify-content-between align-items-center p-2" style={{ backgroundColor: "var(--brand)", color: "#fff" }}>
-                    Edit Category
-                    <Button className="btn-danger text-uppercase text-red" style={{ padding: "0.1rem 0.3rem", fontSize: ".6rem", fontWeight: "bold" }} onClick={toggle}>
-                        X
-                    </Button>
-                </div>
-
-                <ModalBody>
-
-                    <Form onSubmit={onSubmitHandler}>
-
-                        <FormGroup>
-
-                            <Label for="name">
-                                <strong>Title</strong>
-                            </Label>
-
-                            <Input type="text" name="name" id="name" placeholder="Category name ..." className="mb-3" onChange={onChangeHandler} value={categoryState.name} />
-
-                            <Label for="description">
-                                <strong>Description</strong>
-                            </Label>
-
-                            <Input type="text" name="description" id="description" placeholder="Category description ..." className="mb-3" onChange={onChangeHandler} value={categoryState.description} />
-
-                            <Label for="courseCategory">
-                                <strong>Course Category</strong>
-                            </Label>
-
-                            <Input type="select" name="courseCategory" placeholder="Category title..." className="mb-3" onChange={onChangeHandler} value={categoryState.courseCategory}>
-
-                                {!categoryState.courseCategory ?
-                                    <option>Choose a course category ...</option> :
-                                    null}
-                                {allCourseCategories && allCourseCategories.map(courseCategory =>
-                                    <option key={courseCategory._id} value={courseCategory._id}>
-                                        {courseCategory.title}
-                                    </option>
-                                )}
-                            </Input>
-
-                            <Button color="success" style={{ marginTop: '2rem' }} block>
-                                Update
-                            </Button>
-
-                        </FormGroup>
-
-                    </Form>
-                </ModalBody>
-            </Modal>
-        </div>
+        <UpdateModal
+            title="Edit Category"
+            submitFn={submitFn}
+            renderForm={renderForm}
+            initialData={initialData}
+            onSuccess={onSuccess}
+        />
     )
 }
 

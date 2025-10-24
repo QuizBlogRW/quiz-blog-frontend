@@ -1,118 +1,66 @@
-import { useState } from 'react';
-import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap';
+import UpdateModal from '@/utils/UpdateModal'
 import { updateFaculty } from '@/redux/slices/facultiesSlice'
-import { useDispatch } from 'react-redux'
-import EditIcon from '@/images/edit.svg'
 import { notify } from '@/utils/notifyToast'
+import EditIcon from '@/images/edit.svg'
 
 const EditFacultyModal = ({ idToUpdate, editTitle }) => {
+    const initialData = { idToUpdate, title: editTitle || '', years: [] }
 
-    // Redux
-    const dispatch = useDispatch()
-
-    const [facultyState, setFacultyState] = useState({
-        idToUpdate,
-        title: editTitle,
-        years: []
-    })
-
-
-    //properties of the modal
-    const [modal, setModal] = useState(false)
-
-    //showing and hiding modal
-    const toggle = () => setModal(!modal)
-
-    const onChangeHandler = e => {
-        setFacultyState({ ...facultyState, [e.target.name]: e.target.value });
-    }
-
-    const handleSelectYears = (e) => {
-        const yearsnbr = []
-        for (let i = 1; i <= e.target.value; i++) {
-            yearsnbr.push(`Year ${i}`)
-        }
-        setFacultyState({ ...facultyState, years: yearsnbr });
-    }
-
-    const onSubmitHandler = e => {
-        e.preventDefault();
-
-        const { idToUpdate, title, years } = facultyState;
-
-        // VALIDATE
-        if (title.length < 3 || years.length < 1) {
-            notify('Insufficient info!', 'error');
-            return
-        }
-        else if (title.length > 70) {
-            notify('Title is too long!', 'error');
-            return
+    const renderForm = (formState, setFormState, firstInputRef) => {
+        const onChange = (e) => setFormState({ ...formState, [e.target.name]: e.target.value })
+        const handleSelectYears = (e) => {
+            const yearsnbr = []
+            for (let i = 1; i <= e.target.value; i++) yearsnbr.push(`Year ${i}`)
+            setFormState({ ...formState, years: yearsnbr })
         }
 
-        // Create new faculty object
-        const updatedFac = {
-            idToUpdate,
-            title,
-            years
-        }
-
-        // Attempt to create
-        dispatch(updateFaculty(updatedFac));
-        toggle()
-    }
-
-    return (
-        <div>
-            <NavLink onClick={toggle} className="text-dark p-0">
-                <img src={EditIcon} onClick={toggle} alt="" width="16" height="16" className="mx-2" />
-            </NavLink>
-            <Modal
-                isOpen={modal}
-                toggle={toggle}
-            >
-
-                <div className="d-flex justify-content-between align-items-center p-2" style={{ backgroundColor: "var(--brand)", color: "#fff" }}>
-                    Edit Faculty
-                    <Button className="btn-danger text-uppercase text-red" style={{ padding: "0.1rem 0.3rem", fontSize: ".6rem", fontWeight: "bold" }} onClick={toggle}>
-                        X
-                    </Button>
+        return (
+            <div>
+                <div className="mb-2">
+                    <label><strong>Title</strong></label>
+                    <input ref={firstInputRef} value={formState.title} type="text" name="title" id="title" className="form-control mb-3" onChange={onChange} required />
                 </div>
 
-                <ModalBody>
-                    <Form onSubmit={onSubmitHandler}>
+                <div className="mb-2">
+                    <label><strong>Learning years</strong></label>
+                    <select name="selectYear" className="form-control" onChange={handleSelectYears}>
+                        <option>-- Select --</option>
+                        <option value={1}>1</option>
+                        <option value={2}>2</option>
+                        <option value={3}>3</option>
+                        <option value={4}>4</option>
+                        <option value={5}>5</option>
+                        <option value={6}>6</option>
+                    </select>
+                </div>
+            </div>
+        )
+    }
 
-                        <FormGroup>
+    const submitFn = (formState) => {
+        const { idToUpdate, title, years } = formState
+        if (!title || title.length < 3 || !years || years.length < 1) {
+            notify('Insufficient info!', 'error')
+            throw new Error('validation')
+        }
+        if (title.length > 70) {
+            notify('Title is too long!', 'error')
+            throw new Error('validation')
+        }
+        return (dispatch) => dispatch(updateFaculty({ idToUpdate, title, years }))
+    }
 
-                            <Label for="name">
-                                <strong>Title</strong>
-                            </Label>
+    const onSuccess = () => notify('Faculty updated', 'success')
 
-                            <Input value={facultyState.title} type="text" name="title" id="title" className="mb-3" onChange={onChangeHandler} required />
-
-                            <Label for="years">
-                                <strong>Learning years</strong>
-                            </Label>
-
-                            <Input type="select" name="selectYear" onChange={handleSelectYears}>
-                                <option>-- Select --</option>
-                                <option value={1}>1</option>
-                                <option value={2}>2</option>
-                                <option value={3}>3</option>
-                                <option value={4}>4</option>
-                                <option value={5}>5</option>
-                                <option value={6}>6</option>
-                            </Input>
-
-                            <Button color="success" style={{ marginTop: '2rem' }} block >Update</Button>
-
-                        </FormGroup>
-
-                    </Form>
-                </ModalBody>
-            </Modal>
-        </div>
-    );
+    return (
+        <UpdateModal
+            title="Edit Faculty"
+            submitFn={submitFn}
+            renderForm={renderForm}
+            initialData={initialData}
+            onSuccess={onSuccess}
+        />
+    )
 }
 
 export default EditFacultyModal

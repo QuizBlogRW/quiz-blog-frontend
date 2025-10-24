@@ -1,6 +1,9 @@
 import { Component } from 'react'
 class SquareAd extends Component {
-    googleInit = null
+    constructor(props) {
+        super(props)
+        this.googleInit = null
+    }
 
     componentDidMount() {
 

@@ -172,7 +172,7 @@ class SocketManager {
         });
 
         // Ping-pong for latency monitoring
-        this.socket.on('pong', (data) => {
+        this.socket.on('pong', (_data) => {
             if (this.pingStartTime) {
                 const latency = Date.now() - this.pingStartTime;
                 this.updateLatencyStats(latency);

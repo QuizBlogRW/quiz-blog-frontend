@@ -1,109 +1,83 @@
 import { useState } from 'react'
-import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
+import { NavLink } from 'reactstrap'
+import AddModal from '@/utils/AddModal'
 import { addVidLink } from '@/redux/slices/quizzesSlice'
 import { addFaqVidLink } from '@/redux/slices/faqsSlice'
-import { useDispatch } from 'react-redux'
 import { notify } from '@/utils/notifyToast'
 
 const AddVideo = ({ isFromFaqs, faqID, quizID }) => {
 
-    // Redux
-    const dispatch = useDispatch()
-
-    const [vidLinkState, setVidLinkState] = useState({
+    const initialState = {
         vtitle: '',
         vlink: ''
-    })
-
-
-    //properties of the modal
-    const [modal, setModal] = useState(false)
-
-    //showing and hiding modal
-    const toggle = () => setModal(!modal)
-
-    const onChangeHandler = e => {
-        setVidLinkState({ ...vidLinkState, [e.target.name]: e.target.value })
     }
 
-    const onSubmitHandler = e => {
-        e.preventDefault()
+    const submitFn = (payload) => {
+        // payload is the formState from AddModal
+        const newVidLink = { vtitle: payload.vtitle, vlink: payload.vlink }
+        if (isFromFaqs) {
+            // some thunks expect (data, id) signature; wrap in a thunk to dispatch properly
+            return (dispatch) => dispatch(addFaqVidLink(newVidLink, faqID))
+        }
+        return (dispatch) => dispatch(addVidLink(newVidLink, quizID))
+    }
 
-        const { vtitle, vlink } = vidLinkState
+    const renderForm = (formState, setFormState, firstInputRef) => {
+        const onChange = (e) => setFormState({ ...formState, [e.target.name]: e.target.value })
 
-        // VALIDATE
-        if (vtitle.length < 4 || vlink.length < 4) {
+        return (
+            <div>
+                <div className="mb-2">
+                    <label><strong>Title</strong></label>
+                    <input ref={firstInputRef} type="text" name="vtitle" placeholder="Video Title ..." className="form-control mb-3" onChange={onChange} value={formState.vtitle} />
+                </div>
+
+                <div className="mb-2">
+                    <label><strong>Link</strong></label>
+                    <input type="text" name="vlink" placeholder="Video link ..." className="form-control mb-3" onChange={onChange} value={formState.vlink} />
+                </div>
+            </div>
+        )
+    }
+
+    const validateAndNotify = (formState) => {
+        const { vtitle, vlink } = formState
+        if (!vtitle || !vlink || vtitle.length < 4 || vlink.length < 4) {
             notify('Insufficient info!', 'error')
-            return
+            // throw to keep modal open
+            throw new Error('validation')
         }
         else if (vtitle.length > 200) {
             notify('Title is too long!', 'error')
-            return
+            throw new Error('validation')
         }
         else if (vlink.length > 1000) {
             notify('Link is too long!', 'error')
-            return
+            throw new Error('validation')
         }
+        return true
+    }
 
-        // Create new object
-        const newVidLink = {
-            vtitle,
-            vlink
-        }
+    const onSuccess = () => {
+        notify('Video link added', 'success')
+    }
 
-        // Attempt to create
-        isFromFaqs ?
-            dispatch(addFaqVidLink(newVidLink, faqID)) :
-            dispatch(addVidLink(newVidLink, quizID))
-
-        setVidLinkState({
-            vtitle: '',
-            vlink: ''
-        })
-        toggle()
+    // Wrap submitFn so AddModal gets synchronous validation first
+    const submitWrapper = async (formState) => {
+        validateAndNotify(formState)
+        // submitFn returns a thunk; AddModal's runSubmit will dispatch it
+        return submitFn(formState)
     }
 
     return (
-        <div>
-            <NavLink onClick={toggle} className="text-success p-1 border rounded  border-warning">
-                <b>+</b>Video
-            </NavLink>
-
-            <Modal isOpen={modal} toggle={toggle}>
-
-                <div className="d-flex justify-content-between align-items-center p-2" style={{ backgroundColor: "var(--brand)", color: "#fff" }}>
-                    Add a YouTube Video Link
-                    <Button className="btn-danger text-uppercase text-red" style={{ padding: "0.1rem 0.3rem", fontSize: ".6rem", fontWeight: "bold" }} onClick={toggle}>
-                        X
-                    </Button>
-                </div>
-
-                <ModalBody>
-
-                    <Form onSubmit={onSubmitHandler}>
-
-                        <FormGroup>
-
-                            <Label for="vtitle">
-                                <strong>Title</strong>
-                            </Label>
-
-                            <Input type="text" name="vtitle" placeholder="Video Title ..." className="mb-3" onChange={onChangeHandler} value={vidLinkState.vtitle} />
-
-                            <Label for="vlink">
-                                <strong>Link</strong>
-                            </Label>
-
-                            <Input type="text" name="vlink" placeholder="Video link ..." className="mb-3" onChange={onChangeHandler} value={vidLinkState.vlink} />
-
-                            <Button color="success" style={{ marginTop: '2rem' }} block >Add Link</Button>
-
-                        </FormGroup>
-
-                    </Form>
-                </ModalBody>
-            </Modal>
-        </div>
+        <AddModal
+            title="Add a YouTube Video Link"
+            submitFn={submitWrapper}
+            renderForm={renderForm}
+            initialState={initialState}
+            onSuccess={onSuccess}
+            triggerText={"+ Video"}
+        />
     )
 }
 

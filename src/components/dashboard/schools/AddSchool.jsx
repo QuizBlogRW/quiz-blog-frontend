@@ -1,120 +1,37 @@
-import { useState } from 'react'
-import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
+import AddModal from '@/utils/AddModal'
 import { createSchool } from '@/redux/slices/schoolsSlice'
-import { useDispatch } from 'react-redux'
-import AddIcon from '@/images/plus.svg'
+import validators from '@/utils/validators'
+import { Input } from 'reactstrap'
 import { notify } from '@/utils/notifyToast'
+import { useDispatch } from 'react-redux'
+import { getSchools } from '@/redux/slices/schoolsSlice'
 
 const AddSchool = () => {
-
-    // Redux
     const dispatch = useDispatch()
-
-    const [schoolState, setSchoolState] = useState({
-        title: '',
-        location: '',
-        website: '',
-    })
-
-
-    //properties of the modal
-    const [modal, setModal] = useState(false)
-
-    //showing and hiding modal
-    const toggle = () => setModal(!modal)
-
-    const onChangeHandler = e => {
-        setSchoolState({ ...schoolState, [e.target.name]: e.target.value })
-    }
-
-    const onSubmitHandler = e => {
-        e.preventDefault()
-
-        const { title, location, website } = schoolState
-        const websiteTest = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_.~#?&//=]*)/g
-
-        // VALIDATE
-        if (title.length < 3 || location.length < 4 || website.length < 4) {
-            notify('Insufficient info!', 'error')
-            return
-        }
-        else if (title.length > 70) {
-            notify('Title is too long!', 'error')
-            return
-        }
-        else if (location.length > 120) {
-            notify('location is too long!', 'error')
-            return
-        }
-
-        else if (!websiteTest.test(website)) {
-            notify('Invalid website!', 'error')
-            return
-        }
-
-        // Create new school object
-        const newSchool = {
-            title,
-            location,
-            website
-        }
-
-        // Attempt to create
-        dispatch(createSchool(newSchool))
-        toggle()
-    }
-
     return (
-        <div>
-            <NavLink onClick={toggle} className="text-success p-0">
-                <img src={AddIcon} alt="" width="16" height="16" className="mb-1" />
-                &nbsp;School
-            </NavLink>
-
-            <Modal
-                isOpen={modal}
-                toggle={toggle}
-            >
-
-                <div className="d-flex justify-content-between align-items-center p-2" style={{ backgroundColor: "var(--brand)", color: "#fff" }}>
-                    Add New School
-                    <Button className="btn-danger text-uppercase text-red" style={{ padding: "0.1rem 0.3rem", fontSize: ".6rem", fontWeight: "bold" }} onClick={toggle}>
-                        X
-                    </Button>
-                </div>
-
-                <ModalBody>
-                    <Form onSubmit={onSubmitHandler}>
-
-                        <FormGroup>
-
-                            <Label for="name">
-                                <strong>Title</strong>
-                            </Label>
-
-                            <Input type="text" name="title" id="title" placeholder="School title ..." className="mb-3" onChange={onChangeHandler} required />
-
-                            <Label for="location">
-                                <strong>Location</strong>
-                            </Label>
-
-                            <Input type="text" name="location" id="location" placeholder="School location ..." className="mb-3" onChange={onChangeHandler} required />
-
-                            <Label for="website">
-                                <strong>Website</strong>
-                            </Label>
-
-                            <Input type="text" name="website" id="website" placeholder="School website ..." className="mb-3" onChange={onChangeHandler} required />
-
-
-                            <Button color="success" style={{ marginTop: '2rem' }} block >Add</Button>
-
-                        </FormGroup>
-
-                    </Form>
-                </ModalBody>
-            </Modal>
-        </div>
+        <AddModal
+            title="Add New School"
+            triggerText="School"
+            initialState={{ title: '', location: '', website: '' }}
+            submitFn={data => {
+                const { title, location, website } = data
+                const res = validators.validateWebsite(title, location) // not ideal but reuse validators
+                // We'll use validateTitleDesc for title/location and validateWebsite for website
+                const res2 = validators.validateTitleDesc(title, location, { minTitle: 3, minDesc: 4, maxTitle: 70, maxDesc: 120 })
+                if (!res2.ok) return Promise.reject(new Error('validation'))
+                const websiteRes = validators.validateWebsite(website)
+                if (!websiteRes.ok) return Promise.reject(new Error('validation'))
+                return createSchool({ title, location, website })
+            }}
+            onSuccess={() => { notify('School added', 'success'); dispatch(getSchools()) }}
+            renderForm={(state, setState, firstInputRef) => (
+                <>
+                    <Input ref={firstInputRef} type="text" name="title" id="title" placeholder="School title ..." className="mb-3" onChange={e => setState({ ...state, title: e.target.value })} value={state.title || ''} />
+                    <Input type="text" name="location" id="location" placeholder="School location ..." className="mb-3" onChange={e => setState({ ...state, location: e.target.value })} value={state.location || ''} />
+                    <Input type="text" name="website" id="website" placeholder="School website ..." className="mb-3" onChange={e => setState({ ...state, website: e.target.value })} value={state.website || ''} />
+                </>
+            )}
+        />
     )
 }
 

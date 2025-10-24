@@ -1,101 +1,54 @@
-import { useState } from 'react'
-import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
+import AddModal from '@/utils/AddModal'
 import { sendBroadcast } from '@/redux/slices/broadcastsSlice'
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 import { notify } from '@/utils/notifyToast'
 
 const BroadcastModal = () => {
-
-    const dispatch = useDispatch()
     const { user } = useSelector(state => state.auth)
-
     const userId = user && user._id
 
-    const [broadcastState, setBroadcastState] = useState({
-        title: '',
-        message: ''
-    })
+    const initialState = { title: '', message: '' }
 
-    //properties of the modal
-    const [modal, setModal] = useState(false)
+    const renderForm = (formState, setFormState, firstInputRef) => (
+        <>
+            <label><strong>Title</strong></label>
+            <input ref={firstInputRef} type="text" name="title" placeholder="Broadcast title ..." className="form-control mb-3" onChange={e => setFormState({ ...formState, title: e.target.value })} value={formState.title || ''} />
 
-    //showing and hiding modal
-    const toggle = () => setModal(!modal)
+            <label><strong>Message</strong></label>
+            <textarea name="message" placeholder="Broadcast message ..." className="form-control mb-3" minLength="5" maxLength="1000" onChange={e => setFormState({ ...formState, message: e.target.value })} value={formState.message || ''} />
+        </>
+    )
 
-    const onChangeHandler = e => {
-        setBroadcastState({ ...broadcastState, [e.target.name]: e.target.value })
-    }
-
-    const onSubmitHandler = e => {
-        e.preventDefault()
-
-        const { title, message } = broadcastState
-
-        // VALIDATE
-        if (title.length < 4 || message.length < 4) {
+    const submitFn = (formState) => {
+        const { title, message } = formState
+        if (!title || title.length < 4 || !message || message.length < 4) {
             notify('Insufficient info!', 'error')
-            return
+            throw new Error('validation')
         }
-        else if (title.length > 200) {
+        if (title.length > 200) {
             notify('Title is too long!', 'error')
-            return
+            throw new Error('validation')
         }
-        else if (message.length > 1000) {
+        if (message.length > 1000) {
             notify('message is too long!', 'error')
-            return
+            throw new Error('validation')
         }
 
-        // Create new Quiz object
-        const newMessage = {
-            title,
-            message,
-            sent_by: userId
-        }
-
-        // Attempt to create
-        dispatch(sendBroadcast(newMessage))
-
-        setBroadcastState({
-            title: '',
-            message: ''
-        })
-        toggle()
+        const newMessage = { title, message, sent_by: userId }
+        return sendBroadcast(newMessage)
     }
+
+    const onSuccess = () => notify('Broadcast sent', 'success')
 
     return (
-        <div>
-            <NavLink onClick={toggle} className="text-success p-0"><b>+</b> Broadcast</NavLink>
-
-            <Modal isOpen={modal} toggle={toggle}>
-                <div className="d-flex justify-content-between align-items-center p-2" style={{ backgroundColor: "var(--brand)", color: "#fff" }}>
-                    Send a broadcast message
-                    <Button className="btn-danger text-uppercase text-red" style={{ padding: "0.1rem 0.3rem", fontSize: ".6rem", fontWeight: "bold" }} onClick={toggle}>
-                        X
-                    </Button>
-                </div>
-
-                <ModalBody>
-                    <Form onSubmit={onSubmitHandler}>
-
-                        <FormGroup>
-
-                            <Label for="title">
-                                <strong>Title</strong>
-                            </Label>
-
-                            <Input type="text" name="title" placeholder="Broadcast title ..." className="mb-3" onChange={onChangeHandler} value={broadcastState.title} />
-
-                            <Label for="message">
-                                <strong>Message</strong>
-                            </Label>
-
-                            <Input type="textarea" name="message" placeholder="Broadcast message ..." className="mb-3" minLength="5" maxLength="1000" onChange={onChangeHandler} value={broadcastState.message} />
-                            <Button color="success" style={{ marginTop: '2rem' }} block >Add</Button>
-                        </FormGroup>
-                    </Form>
-                </ModalBody>
-            </Modal>
-        </div>
+        <AddModal
+            title="Send a broadcast message"
+            triggerText={<><b>+</b> Broadcast</>}
+            initialState={initialState}
+            submitFn={submitFn}
+            onSuccess={onSuccess}
+            renderForm={renderForm}
+        />
     )
 }
 

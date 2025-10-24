@@ -1,127 +1,56 @@
-import { useState } from 'react'
-import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
+import AddModal from '@/utils/AddModal'
 import { createCategory } from '@/redux/slices/categoriesSlice'
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from 'react-redux'
+import validators from '@/utils/validators'
+import { Input } from 'reactstrap'
 import { notify } from '@/utils/notifyToast'
+import { useDispatch } from 'react-redux'
+import { getCategories } from '@/redux/slices/categoriesSlice'
 
 const CreateCategory = () => {
-
-    const dispatch = useDispatch()
     const { user, isLoading } = useSelector(state => state.auth)
     const { allCourseCategories } = useSelector(state => state.courseCategories)
-    const [categoryState, setCategoryState] = useState({
-        name: '',
-        description: '',
-        courseCategory: ''
-    })
-
-    //properties of the modal
-    const [modal, setModal] = useState(false)
-
-    //showing and hiding modal
-    const toggle = () => setModal(!modal)
-
-    const onChangeHandler = e => {
-        setCategoryState({ ...categoryState, [e.target.name]: e.target.value })
-    }
-
-    const onSubmitHandler = e => {
-        e.preventDefault()
-
-        const { name, description, courseCategory } = categoryState
-
-        // VALIDATE
-        if (name.length < 4 || description.length < 4 || courseCategory.length < 4) {
-            notify('Insufficient info!', 'error')
-            return
-        }
-        else if (name.length > 50) {
-            notify('Title is too long!', 'error')
-            return
-        }
-        else if (description.length > 100) {
-            notify('Description is too long!', 'error')
-            return
-        }
-
-        // Create new Category object
-        const newCategory = {
-            title: name,
-            description,
-            creation_date: Date.now(),
-            created_by: isLoading === false ? user._id : null,
-            courseCategory: courseCategory
-        }
-
-        // Attempt to create
-        dispatch(createCategory(newCategory))
-
-        // Reset the form
-        setCategoryState({
-            name: '',
-            description: '',
-            courseCategory: ''
-        })
-
-        // Close the modal
-        toggle()
-    }
+    const dispatch = useDispatch()
 
     return (
-        <div>
-            <NavLink onClick={toggle} className="text-success p-0"><b>+</b> Create Category</NavLink>
+        <AddModal
+            title="Create Category"
+            triggerText="Create Category"
+            initialState={{ name: '', description: '', courseCategory: '' }}
+            submitFn={data => {
+                const { name, description, courseCategory } = data
+                // basic validation
+                if (!courseCategory) return Promise.reject(new Error('validation'))
+                const res = validators.validateTitleDesc(name, description, { minTitle: 4, minDesc: 4, maxTitle: 50, maxDesc: 100 })
+                if (!res.ok) return Promise.reject(new Error('validation'))
 
-            <Modal isOpen={modal} toggle={toggle}>
-                <div className="d-flex justify-content-between align-items-center p-2" style={{ backgroundColor: "var(--brand)", color: "#fff" }}>
-                    Create Category
-                    <Button className="btn-danger text-uppercase text-red" style={{ padding: "0.1rem 0.3rem", fontSize: ".6rem", fontWeight: "bold" }} onClick={toggle}>
-                        X
-                    </Button>
-                </div>
+                const payload = {
+                    title: name,
+                    description,
+                    creation_date: Date.now(),
+                    created_by: isLoading === false ? user._id : null,
+                    courseCategory
+                }
 
-                <ModalBody>
-                    <Form onSubmit={onSubmitHandler}>
-
-                        <FormGroup>
-                            <Label for="name">
-                                <strong>Title</strong>
-                            </Label>
-
-                            <Input type="text" name="name" id="name" placeholder="Category name ..." className="mb-3" onChange={onChangeHandler} value={categoryState.name} />
-
-                            <Label for="description">
-                                <strong>Description</strong>
-                            </Label>
-
-                            <Input type="text" name="description" id="description" placeholder="Category description ..." className="mb-3" onChange={onChangeHandler} value={categoryState.description} />
-
-                            <Label for="courseCategory">
-                                <strong>Course Category</strong>
-                            </Label>
-
-                            <Input type="select" name="courseCategory" placeholder="Category title..." className="mb-3" onChange={onChangeHandler} value={categoryState.courseCategory}>
-
-                                {!categoryState.courseCategory ?
-                                    <option>Choose a course category ...</option> :
-                                    null}
-
-                                {allCourseCategories && allCourseCategories.map(courseCategory =>
-                                    <option key={courseCategory._id} value={courseCategory._id}>
-                                        {courseCategory.title}
-                                    </option>
-                                )}
-                            </Input>
-
-                            <Button color="success" style={{ marginTop: '2rem' }} block >
-                                Create
-                            </Button>
-
-                        </FormGroup>
-
-                    </Form>
-                </ModalBody>
-            </Modal>
-        </div>
+                return createCategory(payload)
+            }}
+            onSuccess={() => {
+                notify('Category created', 'success')
+                dispatch(getCategories())
+            }}
+                renderForm={(state, setState, firstInputRef) => (
+                <>
+                    <Input ref={firstInputRef} type="text" name="name" id="name" placeholder="Category name ..." className="mb-3" onChange={e => setState({ ...state, name: e.target.value })} value={state.name || ''} />
+                    <Input type="text" name="description" id="description" placeholder="Category description ..." className="mb-3" onChange={e => setState({ ...state, description: e.target.value })} value={state.description || ''} />
+                    <Input type="select" name="courseCategory" placeholder="Category title..." className="mb-3" onChange={e => setState({ ...state, courseCategory: e.target.value })} value={state.courseCategory || ''}>
+                        {!state.courseCategory ? <option>Choose a course category ...</option> : null}
+                        {allCourseCategories && allCourseCategories.map(courseCategory => (
+                            <option key={courseCategory._id} value={courseCategory._id}>{courseCategory.title}</option>
+                        ))}
+                    </Input>
+                </>
+            )}
+        />
     )
 }
 

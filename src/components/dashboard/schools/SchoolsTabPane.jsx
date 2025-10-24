@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react'
 import { Col, Form, FormGroup, Label, Input, Button, Alert, TabPane } from 'reactstrap'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import 'react-tabs/style/react-tabs.css'
-import { getSchools, deleteSchool } from '@/redux/slices/schoolsSlice'
-import { fetchSchoolLevels, deleteLevel } from '@/redux/slices/levelsSlice'
+import { getSchools, deleteSchool, createSchool } from '@/redux/slices/schoolsSlice'
+import { fetchSchoolLevels, deleteLevel, createLevel } from '@/redux/slices/levelsSlice'
 import { useSelector, useDispatch } from 'react-redux'
-import AddSchool from './AddSchool'
-import AddLevel from './AddLevel'
-import AddFaculty from './AddFaculty'
+import AddModal from '@/utils/AddModal'
+import { createFaculty } from '@/redux/slices/facultiesSlice'
+import { notify } from '@/utils/notifyToast'
+import validators from '@/utils/validators'
 import EditSchoolModal from './EditSchoolModal'
 import FacultiesCollapse from './FacultiesCollapse'
 import EditLevelModal from './EditLevelModal'
@@ -19,6 +20,7 @@ const SchoolsTabPane = () => {
     // Redux
     const schools = useSelector(state => state.schools)
     const schoolLevels = useSelector(state => state.levels.schoolLevels)
+    const { user } = useSelector(state => state.auth)
     const dispatch = useDispatch()
 
     // State
@@ -72,7 +74,47 @@ const SchoolsTabPane = () => {
                 <div className="mt-lg-3 ms-lg-5 pl-lg-5 pt-lg-3 d-flex justify-content-around align-items-center">
                     <Button size="md" outline color="info" className="ms-auto">
                         <strong>
-                            <AddFaculty facultyLevel={level} />
+                            <AddModal
+                                title="Add New Faculty"
+                                triggerText="Faculty"
+                                initialState={{ title: '', school: level && level.school, level: level && level._id, years: [] }}
+                                submitFn={data => {
+                                    const { title, years } = data
+                                    const res = validators.validateTitleDesc(title, 'x', { minTitle: 3, minDesc: 1, maxTitle: 70, maxDesc: 1 })
+                                    if (!res.ok || !years) {
+                                        notify('Insufficient info!', 'error')
+                                        return Promise.reject(new Error('validation'))
+                                    }
+                                    return createFaculty({ ...data, created_by: user && user._id ? user._id : null })
+                                }}
+                                onSuccess={() => {
+                                    notify('Faculty added', 'success')
+                                    dispatch(fetchSchoolLevels(level.school))
+                                }}
+                                renderForm={(state, setState, firstInputRef) => (
+                                    <FormGroup>
+                                        <Label for="title"><strong>Title</strong></Label>
+                                        <Input ref={firstInputRef} type="text" name="title" id="title" placeholder="Faculty title ..." className="mb-3" value={state.title || ''} onChange={e => setState({ ...state, title: e.target.value })} required />
+
+                                        <Label for="faculty"><strong>Learning years</strong></Label>
+                                        <Input type="select" name="selectYear" onChange={e => {
+                                            const yearsnbr = []
+                                            for (let i = 1; i <= e.target.value; i++) {
+                                                yearsnbr.push(`Year ${i}`)
+                                            }
+                                            setState({ ...state, years: yearsnbr })
+                                        }}>
+                                            <option>-- Select --</option>
+                                            <option value={1}>1</option>
+                                            <option value={2}>2</option>
+                                            <option value={3}>3</option>
+                                            <option value={4}>4</option>
+                                            <option value={5}>5</option>
+                                            <option value={6}>6</option>
+                                        </Input>
+                                    </FormGroup>
+                                )}
+                            />
                         </strong>
                     </Button>
                 </div>
@@ -85,7 +127,40 @@ const SchoolsTabPane = () => {
         <div className="add-school mt-lg-5 mx-lg-5 px-lg-5 py-lg-3 d-flex justify-content-around align-items-center border rounded">
             <h5 className='fw-bolder text-info d-none d-sm-block'>SCHOOLS | LEVELS | FACULTIES | YEARS</h5>
             <Button size="sm" outline color="dark" style={{ display: "inline", marginLeft: "auto", border: "3px solid black" }}>
-                <AddSchool />
+                <AddModal
+                    title="Add New School"
+                    triggerText="School"
+                    initialState={{ title: '', location: '', website: '' }}
+                    submitFn={data => {
+                        const { title, location, website } = data
+                        const res = validators.validateTitleDesc(title, location, { minTitle: 3, minDesc: 4, maxTitle: 70, maxDesc: 120 })
+                        if (!res.ok) {
+                            notify('Insufficient info!', 'error')
+                            return Promise.reject(new Error('validation'))
+                        }
+                        if (!validators.validateWebsite(website)) {
+                            notify('Invalid website!', 'error')
+                            return Promise.reject(new Error('validation'))
+                        }
+                        return createSchool({ ...data, created_by: user && user._id ? user._id : null })
+                    }}
+                    onSuccess={() => {
+                        notify('School added', 'success')
+                        dispatch(getSchools())
+                    }}
+                    renderForm={(state, setState, firstInputRef) => (
+                        <FormGroup>
+                            <Label for="title"><strong>Title</strong></Label>
+                            <Input ref={firstInputRef} type="text" name="title" id="title" placeholder="School title ..." className="mb-3" value={state.title || ''} onChange={e => setState({ ...state, title: e.target.value })} required />
+
+                            <Label for="location"><strong>Location</strong></Label>
+                            <Input type="text" name="location" id="location" placeholder="School location ..." className="mb-3" value={state.location || ''} onChange={e => setState({ ...state, location: e.target.value })} required />
+
+                            <Label for="website"><strong>Website</strong></Label>
+                            <Input type="text" name="website" id="website" placeholder="School website ..." className="mb-3" value={state.website || ''} onChange={e => setState({ ...state, website: e.target.value })} required />
+                        </FormGroup>
+                    )}
+                />
             </Button>
         </div>
 
@@ -116,7 +191,40 @@ const SchoolsTabPane = () => {
                     </span>
                 )}
                 <Button size="md" outline color="warning" className="ms-auto mb-3 mb-sm-0">
-                    <strong><AddLevel schools={schoolList} /></strong>
+                    <strong>
+                        <AddModal
+                            title="Add New Level"
+                            triggerText="Level"
+                            initialState={{ title: '', school: '' }}
+                            submitFn={data => {
+                                const { title, school } = data
+                                const res = validators.validateTitleDesc(title, 'x', { minTitle: 3, minDesc: 1, maxTitle: 70, maxDesc: 1 })
+                                if (!res.ok || !school) {
+                                    notify('Insufficient info!', 'error')
+                                    return Promise.reject(new Error('validation'))
+                                }
+                                return createLevel({ ...data, created_by: user && user._id ? user._id : null })
+                            }}
+                            onSuccess={res => {
+                                notify('Level added', 'success')
+                                if (selectedSchool) dispatch(fetchSchoolLevels(selectedSchool))
+                            }}
+                            renderForm={(state, setState, firstInputRef) => (
+                                <FormGroup>
+                                    <Label for="title"><strong>Title</strong></Label>
+                                    <Input ref={firstInputRef} type="text" name="title" id="title" placeholder="Level title ..." className="mb-3" value={state.title || ''} onChange={e => setState({ ...state, title: e.target.value })} required />
+
+                                    <Label for="school"><strong>School</strong></Label>
+                                    <Input type="select" name="school" value={state.school || ''} onChange={e => setState({ ...state, school: e.target.value })}>
+                                        <option value="">--Choose a School--</option>
+                                        {schoolList.map(school => (
+                                            <option key={school._id} value={school._id}>{school.title}</option>
+                                        ))}
+                                    </Input>
+                                </FormGroup>
+                            )}
+                        />
+                    </strong>
                 </Button>
             </div>
         </div>

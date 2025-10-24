@@ -39,7 +39,7 @@ export const useSocket = (options = {}) => {
             setError(`Disconnected: ${reason}`);
         };
 
-        const handleReconnect = (attemptNumber) => {
+        const handleReconnect = (_attemptNumber) => {
             if (!mountedRef.current) return;
             setConnectionStatus('connected');
             setError(null);
@@ -165,7 +165,7 @@ export const useSocket = (options = {}) => {
 export const usePrivateMessaging = () => {
     const [messages, setMessages] = useState([]);
     const [unreadCount, setUnreadCount] = useState(0);
-    const { on, off, emit, isConnected } = useSocket();
+    const { on, emit, isConnected } = useSocket();
 
     useEffect(() => {
         const handlePrivateMessage = (message) => {
@@ -235,7 +235,7 @@ export const useRoomChat = (roomId) => {
     const [members, setMembers] = useState([]);
     const [typingUsers, setTypingUsers] = useState([]);
     const [isJoined, setIsJoined] = useState(false);
-    const { on, off, emit, isConnected } = useSocket();
+    const { on, emit, isConnected } = useSocket();
 
     const typingTimeoutRef = useRef({});
 
@@ -280,7 +280,7 @@ export const useRoomChat = (roomId) => {
             }
         };
 
-        const handleRoomJoined = (data) => {
+        const handleRoomJoined = () => {
             setIsJoined(true);
         };
 
@@ -347,7 +347,7 @@ export const useQuizSession = (quizId) => {
     const [leaderboard, setLeaderboard] = useState([]);
     const [isJoined, setIsJoined] = useState(false);
     const [quizStatus, setQuizStatus] = useState('waiting');
-    const { on, off, emit, isConnected } = useSocket();
+    const { on, emit, isConnected } = useSocket();
 
     useEffect(() => {
         if (!quizId) return;

@@ -1,8 +1,10 @@
 import { Component } from 'react'
 
 class ResponsiveHorizontal extends Component {
-
-    googleInit = null
+    constructor(props) {
+        super(props)
+        this.googleInit = null
+    }
 
     componentDidMount() {
 

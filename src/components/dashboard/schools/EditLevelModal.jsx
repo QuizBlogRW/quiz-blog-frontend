@@ -1,81 +1,45 @@
-import { useState } from 'react'
-import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
+import UpdateModal from '@/utils/UpdateModal'
 import { updateLevel } from '@/redux/slices/levelsSlice'
-import { useDispatch } from 'react-redux'
-import EditIcon from '@/images/edit.svg'
 import { notify } from '@/utils/notifyToast'
 
 const EditLevelModal = ({ idToUpdate, editTitle }) => {
+    const initialData = { idToUpdate, title: editTitle || '' }
 
-    // Redux
-    const dispatch = useDispatch()
-    const [levelState, setLevelState] = useState({
-        idToUpdate,
-        title: editTitle
-    })
-
-
-    //properties of the modal
-    const [modal, setModal] = useState(false)
-
-    //showing and hiding modal
-    const toggle = () => setModal(!modal)
-
-    const onChangeHandler = e => {
-        setLevelState({ ...levelState, [e.target.name]: e.target.value })
-    }
-
-    const onSubmitHandler = e => {
-        e.preventDefault()
-
-        const { idToUpdate, title } = levelState
-
-        // VALIDATE
-        if (title.length < 3) {
-            notify('Insufficient info!', 'error')
-            return
-        }
-        else if (title.length > 70) {
-            notify('Title is too long!', 'error')
-            return
-        }
-
-        // update level object
-        const updatedLev = {
-            idToUpdate,
-            title
-        }
-
-        // Attempt to create
-        dispatch(updateLevel(updatedLev))
-        toggle()
-    }
-
-    return (<div>
-        <NavLink onClick={toggle} className="text-dark p-0">
-            <img src={EditIcon} alt="" width="14" height="14" />
-        </NavLink>
-        <Modal isOpen={modal} toggle={toggle}>
-            <div className="d-flex justify-content-between align-items-center p-2" style={{ backgroundColor: "var(--brand)", color: "#fff" }}>
-                Edit Level
-                <Button className="btn-danger text-uppercase text-red" style={{ padding: "0.1rem 0.3rem", fontSize: ".6rem", fontWeight: "bold" }} onClick={toggle}>
-                    X
-                </Button>
+    const renderForm = (formState, setFormState, firstInputRef) => {
+        const onChange = (e) => setFormState({ ...formState, [e.target.name]: e.target.value })
+        return (
+            <div>
+                <div className="mb-2">
+                    <label><strong>Title</strong></label>
+                    <input ref={firstInputRef} value={formState.title} type="text" name="title" id="title" className="form-control mb-3" onChange={onChange} required />
+                </div>
             </div>
+        )
+    }
 
-            <ModalBody>
-                <Form onSubmit={onSubmitHandler}>
-                    <FormGroup>
-                        <Label for="name">
-                            <strong>Title</strong>
-                        </Label>
-                        <Input value={levelState.title} type="text" name="title" id="title" className="mb-3" onChange={onChangeHandler} required />
-                        <Button color="success" style={{ marginTop: '2rem' }} block >Update</Button>
-                    </FormGroup>
-                </Form>
-            </ModalBody>
-        </Modal>
-    </div>
+    const submitFn = (formState) => {
+        const { idToUpdate, title } = formState
+        if (!title || title.length < 3) {
+            notify('Insufficient info!', 'error')
+            throw new Error('validation')
+        }
+        if (title.length > 70) {
+            notify('Title is too long!', 'error')
+            throw new Error('validation')
+        }
+        return (dispatch) => dispatch(updateLevel({ idToUpdate, title }))
+    }
+
+    const onSuccess = () => notify('Level updated', 'success')
+
+    return (
+        <UpdateModal
+            title="Edit Level"
+            submitFn={submitFn}
+            renderForm={renderForm}
+            initialData={initialData}
+            onSuccess={onSuccess}
+        />
     )
 }
 

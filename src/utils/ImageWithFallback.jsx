@@ -1,6 +1,7 @@
 import { useState } from 'react'
+import uploadimage from '@/images/uploadimage.svg'
 
-const ImageWithFallback = ({ src, alt, fallbackSrc, id }) => {
+const ImageWithFallback = ({ src, alt, fallbackSrc = uploadimage, id }) => {
     const [imageSrc, setImageSrc] = useState(src)
     const [imageLoaded, setImageLoaded] = useState(false)
 

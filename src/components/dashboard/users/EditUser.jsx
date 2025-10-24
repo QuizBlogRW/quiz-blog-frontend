@@ -1,122 +1,71 @@
-import { useState } from 'react'
-import { Button, Modal, ModalBody, Form, FormGroup, Label, Input } from 'reactstrap'
+import UpdateModal from '@/utils/UpdateModal'
 import { updateUser } from '@/redux/slices/authSlice'
-import { useDispatch } from 'react-redux'
 import EditIcon from '@/images/edit.svg'
 import { notify } from '@/utils/notifyToast'
 
 const EditUser = ({ userToUse }) => {
-
-    // Redux
-    const dispatch = useDispatch()
-
-    // state
-    const [userState, setUserState] = useState({
+    const initialData = {
         uId: userToUse?._id,
-        name: userToUse?.name,
-        role: userToUse?.role,
-        email: userToUse?.email
-    })
-
-    //properties of the modal
-    const [modal, setModal] = useState(false)
-
-    //showing and hiding modal
-    const toggle = () => setModal(!modal)
-
-    const onChangeHandler = e => {
-        setUserState({ ...userState, [e.target.name]: e.target.value })
+        name: userToUse?.name || '',
+        role: userToUse?.role || '',
+        email: userToUse?.email || ''
     }
 
-    const onSubmitHandler = e => {
-        e.preventDefault()
-
-        const { uId, name, role, email } = userState
-
-        // VALIDATE
-        if (name.length < 4 || role.length < 4 || email.length < 4) {
-            notify('Insufficient info!', 'error')
-            return
-        }
-        else if (name.length > 30) {
-            notify('Name is too long!', 'error')
-            return
-        }
-        else if (role === '') {
-            notify('Role is required!', 'error')
-            return
-        }
-
-        // Create new User object
-        const updatedUser = {
-            uId,
-            name,
-            role,
-            email
-        }
-
-        // Attempt to update
-        dispatch(updateUser(updatedUser))
-
-        // Close modal
-        toggle()
-    }
-    return (
-        <div>
-            <img src={EditIcon} onClick={toggle} alt="" width="16" height="16" className="me-3" />
-
-            <Modal
-                // Set it to the state of modal true or false
-                isOpen={modal}
-                toggle={toggle}
-            >
-
-                <div className="d-flex justify-content-between align-items-center p-2" style={{ backgroundColor: "var(--brand)", color: "#fff" }}>
-                    Edit User
-                    <Button className="btn-danger text-uppercase text-red" style={{ padding: "0.1rem 0.3rem", fontSize: ".6rem", fontWeight: "bold" }} onClick={toggle}>
-                        X
-                    </Button>
+    const renderForm = (formState, setFormState, firstInputRef) => {
+        const onChange = e => setFormState({ ...formState, [e.target.name]: e.target.value })
+        return (
+            <div>
+                <div className="mb-3">
+                    <label><strong>Name</strong></label>
+                    <input ref={firstInputRef} type="text" name="name" id="name" placeholder="User name ..." className="form-control mb-3" onChange={onChange} value={formState.name} />
                 </div>
 
-                <ModalBody>
+                <div className="mb-3">
+                    <label><strong>Role</strong></label>
+                    <select name="role" className="form-control mb-3" onChange={onChange} value={formState.role}>
+                        <option>SuperAdmin</option>
+                        <option>Admin</option>
+                        <option>Creator</option>
+                        <option>Visitor</option>
+                    </select>
+                </div>
 
-                    <Form onSubmit={onSubmitHandler}>
+                <div className="mb-3">
+                    <label><strong>Email</strong></label>
+                    <input type="email" name="email" id="email" placeholder="Category email ..." className="form-control mb-3" onChange={onChange} value={formState.email} />
+                </div>
+            </div>
+        )
+    }
 
-                        <FormGroup>
+    const submitFn = (formState) => {
+        const { uId, name, role, email } = formState
+        if (!name || name.length < 4 || !role || role.length < 4 || !email || email.length < 4) {
+            notify('Insufficient info!', 'error')
+            throw new Error('validation')
+        }
+        if (name.length > 30) {
+            notify('Name is too long!', 'error')
+            throw new Error('validation')
+        }
+        if (role === '') {
+            notify('Role is required!', 'error')
+            throw new Error('validation')
+        }
 
-                            <Label for="name">
-                                <strong>Name</strong>
-                            </Label>
+        return (dispatch) => dispatch(updateUser({ uId, name, role, email }))
+    }
 
-                            <Input type="text" name="name" id="name" placeholder="User name ..." className="mb-3" onChange={onChangeHandler} value={userState.name} />
+    const onSuccess = () => notify('User updated', 'success')
 
-                            <Label for="role">
-                                <strong>Role</strong>
-                            </Label>
-
-                            <Input type="select" name="role" placeholder="Category role ..." className="mb-3" onChange={onChangeHandler} value={userState.role}>
-                                <option>SuperAdmin</option>
-                                <option>Admin</option>
-                                <option>Creator</option>
-                                <option>Visitor</option>
-                            </Input>
-
-                            <Label for="email">
-                                <strong>Email</strong>
-                            </Label>
-
-                            <Input type="email" name="email" id="email" placeholder="Category email ..." className="mb-3" onChange={onChangeHandler} value={userState.email} />
-
-                            <Button color="success" style={{ marginTop: '2rem' }} block>
-                                Update
-                            </Button>
-
-                        </FormGroup>
-
-                    </Form>
-                </ModalBody>
-            </Modal>
-        </div>
+    return (
+        <UpdateModal
+            title="Edit User"
+            submitFn={submitFn}
+            renderForm={renderForm}
+            initialData={initialData}
+            onSuccess={onSuccess}
+        />
     )
 }
 

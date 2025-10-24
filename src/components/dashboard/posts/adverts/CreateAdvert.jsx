@@ -1,139 +1,44 @@
-import { useState } from 'react'
-import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
+import AddModal from '@/utils/AddModal'
 import { createAdvert } from '@/redux/slices/advertsSlice'
-import { useDispatch } from 'react-redux'
+import validators from '@/utils/validators'
+import { Input } from 'reactstrap'
 import { notify } from '@/utils/notifyToast'
 
 const CreateAdvert = () => {
 
-    // Redux
-    const dispatch = useDispatch()
-    const [advertState, setAdvertState] = useState({
-        caption: '',
-        phone: '',
-        owner: '',
-        email: '',
-        link: '',
-        advert_image: '',
-    })
-
-
-    //properties of the modal
-    const [modal, setModal] = useState(false)
-
-    //showing and hiding modal
-    const toggle = () => setModal(!modal)
-
-    const onChangeHandler = e => {
-
-        // Add data
-        setAdvertState({ ...advertState, [e.target.name]: e.target.value })
-    }
-
-    const onFileHandler = (e) => {
-        setAdvertState({ ...advertState, advert_image: e.target.files[0] })
-    }
-
-    const onSubmitHandler = e => {
-        e.preventDefault()
-
-        const { caption, phone, owner, email, link, advert_image } = advertState
-
-        const formData = new FormData()
-
-        // VALIDATE
-        if (caption.length < 4 || phone.length < 4 || owner.length < 4 || email.length < 4) {
-            notify('Insufficient info!', 'error')
-            return
-        }
-
-        // Create new Notes object
-        formData.append('caption', caption)
-        formData.append('phone', phone)
-        formData.append('owner', owner)
-        formData.append('email', email)
-        formData.append('link', link)
-        formData.append('advert_image', advert_image)
-
-        // Attempt to create
-        dispatch(createAdvert(formData))
-
-        // Reset the form
-        setAdvertState({
-            caption: '',
-            phone: '',
-            owner: '',
-            email: '',
-            link: '',
-            advert_image: '',
-        })
-        toggle()
-    }
-
     return (
-        <div>
-            <NavLink onClick={toggle} className="text-success p-0"><b>+</b> Create Advert</NavLink>
+        <AddModal
+            title="Create Advert"
+            triggerText="Create Advert"
+            initialState={{ caption: '', phone: '', owner: '', email: '', link: '', advert_image: null }}
+            submitFn={data => {
+                const { caption, phone, owner, email, link, advert_image } = data
+                if (!caption || caption.length < 4 || !phone || phone.length < 4 || !owner || owner.length < 4 || !email || email.length < 4) {
+                    return Promise.reject(new Error('validation'))
+                }
 
-            <Modal isOpen={modal} toggle={toggle}>
-                <div className="d-flex justify-content-between align-items-center p-2" style={{ backgroundColor: "var(--brand)", color: "#fff" }}>
-                    Create Advert
-                    <Button className="btn-danger text-uppercase text-red" style={{ padding: "0.1rem 0.3rem", fontSize: ".6rem", fontWeight: "bold" }} onClick={toggle}>
-                        X
-                    </Button>
-                </div>
+                const formData = new FormData()
+                formData.append('caption', caption)
+                formData.append('phone', phone)
+                formData.append('owner', owner)
+                formData.append('email', email)
+                formData.append('link', link || '')
+                if (advert_image) formData.append('advert_image', advert_image)
 
-                <ModalBody>
-
-                    <Form onSubmit={onSubmitHandler}>
-
-                        <FormGroup>
-
-                            <Label for="name">
-                                <strong>Caption</strong>
-                            </Label>
-
-                            <Input type="text" name="caption" placeholder="Advert caption ..." className="mb-3" onChange={onChangeHandler} value={advertState.caption} />
-
-                            <Label for="owner">
-                                <strong>Owner</strong>
-                            </Label>
-
-                            <Input type="text" name="owner" placeholder="Advert owner ..." className="mb-3" onChange={onChangeHandler} value={advertState.owner} />
-
-                            <Label for="email">
-                                <strong>Email</strong>
-                            </Label>
-
-                            <Input type="text" name="email" placeholder="Email ..." className="mb-3" onChange={onChangeHandler} value={advertState.email} />
-
-                            <Label for="link">
-                                <strong>Link</strong>
-                            </Label>
-
-                            <Input type="text" name="link" placeholder="Link if any ..." className="mb-3" onChange={onChangeHandler} value={advertState.link} />
-
-                            <Label for="phone">
-                                <strong>Phone</strong>
-                            </Label>
-
-                            <Input type="text" name="phone" placeholder="Phone ..." className="mb-3" onChange={onChangeHandler} value={advertState.phone} />
-
-                            <Label for="advert_image">
-                                <strong>Image</strong>
-                                <small className="text-info"> (.jpg, .jpeg, .png, .svg)</small>
-                            </Label>
-
-                            <Input bsSize="sm" type="file" accept=".jpg, .jpeg, .png, .svg" name="advert_image" onChange={onFileHandler} label="Choose an image to upload ..." id="advert_image" />
-
-                            <Button color="success" style={{ marginTop: '2rem' }} block >
-                                Create
-                            </Button>
-
-                        </FormGroup>
-                    </Form>
-                </ModalBody>
-            </Modal>
-        </div>
+                return createAdvert(formData)
+            }}
+            onSuccess={() => notify('Advert created', 'success')}
+            renderForm={(state, setState, firstInputRef) => (
+                <>
+                    <Input ref={firstInputRef} type="text" name="caption" placeholder="Advert caption ..." className="mb-3" onChange={e => setState({ ...state, caption: e.target.value })} value={state.caption || ''} />
+                    <Input type="text" name="owner" placeholder="Advert owner ..." className="mb-3" onChange={e => setState({ ...state, owner: e.target.value })} value={state.owner || ''} />
+                    <Input type="text" name="email" placeholder="Email ..." className="mb-3" onChange={e => setState({ ...state, email: e.target.value })} value={state.email || ''} />
+                    <Input type="text" name="link" placeholder="Link if any ..." className="mb-3" onChange={e => setState({ ...state, link: e.target.value })} value={state.link || ''} />
+                    <Input type="text" name="phone" placeholder="Phone ..." className="mb-3" onChange={e => setState({ ...state, phone: e.target.value })} value={state.phone || ''} />
+                    <Input bsSize="sm" type="file" accept=".jpg, .jpeg, .png, .svg" name="advert_image" onChange={e => setState({ ...state, advert_image: e.target.files && e.target.files[0] })} id="advert_image" />
+                </>
+            )}
+        />
     )
 }
 

@@ -1,11 +1,13 @@
 import { useState, useEffect, lazy, Suspense, useContext } from 'react'
-import { Row, Col, Breadcrumb, BreadcrumbItem, Button, Collapse, Navbar, NavbarBrand, Nav, NavItem, NavLink, ListGroup, ListGroupItem } from 'reactstrap'
-import { getCourseCategories, deleteCourseCategory } from '@/redux/slices/courseCategoriesSlice'
-import { getCoursesByCategory } from '@/redux/slices/coursesSlice'
+import { Row, Col, Breadcrumb, BreadcrumbItem, Button, Collapse, Navbar, NavbarBrand, Nav, NavItem, NavLink, ListGroup, ListGroupItem, FormGroup, Label, Input } from 'reactstrap'
+import { getCourseCategories, deleteCourseCategory, createCourseCategory } from '@/redux/slices/courseCategoriesSlice'
 import { useSelector, useDispatch } from 'react-redux'
-import AddCourseCategory from './AddCourseCategory'
-import EditCourseCategoryModal from './EditCourseCategoryModal'
-import AddCourse from './AddCourse'
+import AddModal from '@/utils/AddModal'
+import UpdateModal from '@/utils/UpdateModal'
+import { updateCourseCategory } from '@/redux/slices/courseCategoriesSlice'
+import { createCourse, getCoursesByCategory } from '@/redux/slices/coursesSlice'
+import { notify } from '@/utils/notifyToast'
+import validators from '@/utils/validators'
 import CoursesHolder from './CoursesHolder'
 import CategoriesHome from './CategoriesHome'
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM'
@@ -98,9 +100,39 @@ const Index = () => {
                                 Welcome to Quiz-Blog Course Resources Portal
                             </BreadcrumbItem>
                             {user.role === 'Admin' || user.role === 'Creator' ?
-                                <Button size="sm" outline color="info" className="ms-auto">
-                                    <strong><AddCourseCategory /></strong>
-                                </Button> : null}
+                                <strong>
+                                    <AddModal
+                                            title="Add Course Category"
+                                            triggerText="Course Category"
+                                            initialState={{ title: '', description: '' }}
+                                            submitFn={data => {
+                                                const { title, description } = data
+                                                const res = validators.validateTitleDesc(title, description, { minTitle: 4, minDesc: 4, maxTitle: 70, maxDesc: 120 })
+                                                if (!res.ok) {
+                                                    notify('Insufficient info!', 'error')
+                                                    return Promise.reject(new Error('validation'))
+                                                }
+
+                                                return createCourseCategory({
+                                                    ...data,
+                                                    created_by: user && user._id ? user._id : null
+                                                })
+                                            }}
+                                            onSuccess={() => {
+                                                notify('Course category added', 'success')
+                                                dispatch(getCourseCategories())
+                                            }}
+                                            renderForm={(state, setState, firstInputRef) => (
+                                                <FormGroup>
+                                                    <Label for="title"><strong>Title</strong></Label>
+                                                    <Input ref={firstInputRef} type="text" name="title" id="title" placeholder="Course category title ..." className="mb-3" value={state.title || ''} onChange={e => setState({ ...state, title: e.target.value })} />
+
+                                                    <Label for="description"><strong>Description</strong></Label>
+                                                    <Input type="text" name="description" id="description" placeholder="Course category description ..." className="mb-3" value={state.description || ''} onChange={e => setState({ ...state, description: e.target.value })} />
+                                                </FormGroup>
+                                            )}
+                                        />
+                                    </strong> : null}
                         </Breadcrumb>
                     </Col>
                 </Row>
@@ -142,11 +174,59 @@ const Index = () => {
                                             <div key={cCategory._id} className={`tab-pane ${activeTab === cCategory.title ? 'show active' : ''}`} id={`v-pills-${cCategory.title}`} role="tabpanel" aria-labelledby={`v-pills-${cCategory.title}-tab`}>
                                                 {user.role === 'Admin' || (cCategory.created_by && user._id === cCategory.created_by) ?
                                                     <span className='d-flex'>
-                                                        <Button size="sm" outline color="info" className="d-block ms-auto me-lg-3 my-2">
-                                                            <strong><AddCourse categoryId={cCategory._id} /></strong>
-                                                        </Button>
+                                                        <strong>
+                                                            <AddModal
+                                                                    title="Add New Course"
+                                                                    triggerText="Course"
+                                                                    initialState={{ title: '', description: '', courseCategory: cCategory._id }}
+                                                                    submitFn={data => {
+                                                                        const { title, description } = data
+                                                                        const res = validators.validateTitleDesc(title, description, { minTitle: 4, minDesc: 4, maxTitle: 80, maxDesc: 200 })
+                                                                        if (!res.ok) {
+                                                                            notify('Insufficient info!', 'error')
+                                                                            return Promise.reject(new Error('validation'))
+                                                                        }
+
+                                                                        // attach created_by when possible
+                                                                        const payload = {
+                                                                            ...data,
+                                                                            courseCategory: cCategory._id,
+                                                                            created_by: user && user._id ? user._id : null
+                                                                        }
+                                                                        return createCourse(payload)
+                                                                    }}
+                                                                    onSuccess={() => {
+                                                                        notify('Course added', 'success')
+                                                                        dispatch(getCoursesByCategory(cCategory._id))
+                                                                    }}
+                                                                    renderForm={(state, setState, firstInputRef) => (
+                                                                        <FormGroup>
+                                                                            <Label for="title"><strong>Title</strong></Label>
+                                                                            <Input ref={firstInputRef} type="text" name="title" id="title" placeholder="Course title ..." className="mb-3" value={state.title || ''} onChange={e => setState({ ...state, title: e.target.value })} />
+
+                                                                            <Label for="description"><strong>Description</strong></Label>
+                                                                            <Input type="text" name="description" id="description" placeholder="Course description ..." className="mb-3" value={state.description || ''} onChange={e => setState({ ...state, description: e.target.value })} />
+                                                                        </FormGroup>
+                                                                    )}
+                                                                />
+                                                            </strong>
                                                         <Button size="sm" color="link" className="mx-2">
-                                                            <EditCourseCategoryModal idToUpdate={cCategory._id} editTitle={cCategory.title} editDesc={cCategory.description} />
+                                                            <UpdateModal
+                                                                title="Edit Course Category"
+                                                                initialData={{ idToUpdate: cCategory._id, name: cCategory.title, description: cCategory.description }}
+                                                                submitFn={data => {
+                                                                    const { name, description } = data
+                                                                    const res = validators.validateTitleDesc(name, description, { minTitle: 4, minDesc: 4, maxTitle: 80, maxDesc: 200 })
+                                                                    if (!res.ok) return Promise.reject(new Error('validation'))
+                                                                    return updateCourseCategory({ idToUpdate: data.idToUpdate, title: data.name, description: data.description })
+                                                                }}
+                                                                renderForm={(state, setState, firstInputRef) => (
+                                                                    <>
+                                                                        <Input ref={firstInputRef} type="text" name="name" id="name" placeholder="Course title ..." className="mb-3" value={state.name || ''} onChange={e => setState({ ...state, name: e.target.value })} />
+                                                                        <Input type="text" name="description" id="description" placeholder="Course description ..." className="mb-3" value={state.description || ''} onChange={e => setState({ ...state, description: e.target.value })} />
+                                                                    </>
+                                                                )}
+                                                            />
                                                         </Button>
                                                         <DeleteModal deleteFnName="deleteCourseCategory" deleteFn={deleteCourseCategory} delID={cCategory._id} delTitle={cCategory.title} />
                                                     </span> : null}
