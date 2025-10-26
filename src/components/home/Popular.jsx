@@ -1,24 +1,24 @@
-import { useState, useEffect, lazy } from 'react'
-import { Col, Row, ListGroup, ListGroupItem, Badge, Card, CardBody, CardText } from 'reactstrap'
-import uploadimage from '@/images/avatar.svg'
-import { getPopularToday, getUserOfMonth } from '@/redux/slices/scoresSlice'
-import { useSelector, useDispatch } from 'react-redux'
-import QBLoadingSM from '@/utils/rLoading/QBLoadingSM'
-import ImageWithFallback from '@/utils/ImageWithFallback'
+import { useState, useEffect, lazy } from 'react';
+import { Col, Row, ListGroup, ListGroupItem, Badge, Card, CardBody, CardText } from 'reactstrap';
+import uploadimage from '@/images/avatar.svg';
+import { getPopularToday, getUserOfMonth } from '@/redux/slices/scoresSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
+import ImageWithFallback from '@/utils/ImageWithFallback';
 
-const SquareAd = lazy(() => import('@/components/adsenses/SquareAd'))
+const SquareAd = lazy(() => import('@/components/adsenses/SquareAd'));
 
 const Popular = () => {
 
     // Redux
-    const dispatch = useDispatch()
-    const scores = useSelector(state => state.scores)
-    const { popularQuizzes, monthlyUser, isLoading } = scores
+    const dispatch = useDispatch();
+    const scores = useSelector(state => state.scores);
+    const { popularQuizzes, monthlyUser, isLoading } = scores;
 
     useEffect(() => {
-        dispatch(getPopularToday())
-        dispatch(getUserOfMonth())
-    }, [dispatch])
+        dispatch(getPopularToday());
+        dispatch(getUserOfMonth());
+    }, [dispatch]);
 
     return (
         <>
@@ -71,7 +71,7 @@ const Popular = () => {
                 </div> : null
             }
         </>
-    )
-}
+    );
+};
 
-export default Popular
+export default Popular;

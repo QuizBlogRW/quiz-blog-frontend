@@ -1,12 +1,12 @@
-import UpdateModal from '@/utils/UpdateModal'
-import { updateLevel } from '@/redux/slices/levelsSlice'
-import { notify } from '@/utils/notifyToast'
+import UpdateModal from '@/utils/UpdateModal';
+import { updateLevel } from '@/redux/slices/levelsSlice';
+import { notify } from '@/utils/notifyToast';
 
 const EditLevelModal = ({ idToUpdate, editTitle }) => {
-    const initialData = { idToUpdate, title: editTitle || '' }
+    const initialData = { idToUpdate, title: editTitle || '' };
 
     const renderForm = (formState, setFormState, firstInputRef) => {
-        const onChange = (e) => setFormState({ ...formState, [e.target.name]: e.target.value })
+        const onChange = (e) => setFormState({ ...formState, [e.target.name]: e.target.value });
         return (
             <div>
                 <div className="mb-2">
@@ -14,21 +14,21 @@ const EditLevelModal = ({ idToUpdate, editTitle }) => {
                     <input ref={firstInputRef} value={formState.title} type="text" name="title" id="title" className="form-control mb-3" onChange={onChange} required />
                 </div>
             </div>
-        )
-    }
+        );
+    };
 
     const submitFn = (formState) => {
-        const { idToUpdate, title } = formState
+        const { idToUpdate, title } = formState;
         if (!title || title.length < 3) {
-            notify('Insufficient info!', 'error')
-            throw new Error('validation')
+            notify('Insufficient info!', 'error');
+            throw new Error('validation');
         }
         if (title.length > 70) {
-            notify('Title is too long!', 'error')
-            throw new Error('validation')
+            notify('Title is too long!', 'error');
+            throw new Error('validation');
         }
-        return (dispatch) => dispatch(updateLevel({ idToUpdate, title }))
-    }
+        return (dispatch) => dispatch(updateLevel({ idToUpdate, title }));
+    };
 
     return (
         <UpdateModal
@@ -38,7 +38,7 @@ const EditLevelModal = ({ idToUpdate, editTitle }) => {
             initialData={initialData}
 
         />
-    )
-}
+    );
+};
 
-export default EditLevelModal
+export default EditLevelModal;

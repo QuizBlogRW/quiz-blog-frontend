@@ -1,14 +1,14 @@
-import AddModal from "@/utils/AddModal";
-import { createImageUpload } from "@/redux/slices/imageUploadsSlice";
-import { useSelector } from "react-redux";
-import { notify } from "@/utils/notifyToast";
-import { Input } from "reactstrap";
+import AddModal from '@/utils/AddModal';
+import { createImageUpload } from '@/redux/slices/imageUploadsSlice';
+import { useSelector } from 'react-redux';
+import { notify } from '@/utils/notifyToast';
+import { Input } from 'reactstrap';
 
 const UploadPostPhotos = () => {
   const { user } = useSelector((state) => state.auth);
 
   const initialState = {
-    imageTitle: "",
+    imageTitle: '',
     uploadImage: null,
     owner: user?._id,
   };
@@ -32,7 +32,7 @@ const UploadPostPhotos = () => {
             placeholder="Image title ..."
             className="form-control mb-3"
             onChange={onChange}
-            value={formState.imageTitle || ""}
+            value={formState.imageTitle || ''}
           />
         </div>
 
@@ -58,16 +58,16 @@ const UploadPostPhotos = () => {
   const validateAndNotify = (formState) => {
     const { imageTitle, uploadImage } = formState;
     if (!imageTitle || imageTitle.length < 4) {
-      notify("Insufficient info!", "error");
-      throw new Error("validation");
+      notify('Insufficient info!', 'error');
+      throw new Error('validation');
     } else if (imageTitle.length > 70) {
-      notify("Image title is too long!", "error");
-      throw new Error("validation");
+      notify('Image title is too long!', 'error');
+      throw new Error('validation');
     }
 
     if (!uploadImage) {
-      notify("Please pick an image to upload", "error");
-      throw new Error("validation");
+      notify('Please pick an image to upload', 'error');
+      throw new Error('validation');
     }
 
     return true;
@@ -78,9 +78,9 @@ const UploadPostPhotos = () => {
     validateAndNotify(formState);
 
     const fd = new FormData();
-    fd.append("imageTitle", formState.imageTitle);
-    fd.append("uploadImage", formState.uploadImage);
-    fd.append("owner", formState.owner);
+    fd.append('imageTitle', formState.imageTitle);
+    fd.append('uploadImage', formState.uploadImage);
+    fd.append('owner', formState.owner);
 
     // return a thunk that AddModal will dispatch
     return (dispatch) => dispatch(createImageUpload(fd));
@@ -92,7 +92,7 @@ const UploadPostPhotos = () => {
       submitFn={submitWrapper}
       renderForm={renderForm}
       initialState={initialState}
-      triggerText={"Image"}
+      triggerText={'Image'}
     />
   );
 };

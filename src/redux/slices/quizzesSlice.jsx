@@ -1,118 +1,118 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { apiCallHelper, handlePending, handleRejected } from "../configHelpers";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { apiCallHelper, handlePending, handleRejected } from '../configHelpers';
 
 // Async actions with createAsyncThunk
 export const getQuizzes = createAsyncThunk(
-  "quizzes/getQuizzes",
+  'quizzes/getQuizzes',
   async (_, { getState }) =>
-    apiCallHelper(`/api/quizzes`, "get", null, getState, "getQuizzes")
+    apiCallHelper('/api/quizzes', 'get', null, getState, 'getQuizzes')
 );
 
 export const getLimitedQuizzes = createAsyncThunk(
-  "quizzes/getLimitedQuizzes",
+  'quizzes/getLimitedQuizzes',
   async ({ pageNo, limit, skip }, { getState }) =>
     apiCallHelper(
       `/api/quizzes?pageNo=${pageNo}&limit=${limit}&skip=${skip ? skip : 0}`,
-      "get",
+      'get',
       null,
       getState,
-      "getLimitedQuizzes"
+      'getLimitedQuizzes'
     )
 );
 
 export const getOneQuiz = createAsyncThunk(
-  "quizzes/getOneQuiz",
+  'quizzes/getOneQuiz',
   async (quizSlug, { getState }) =>
     apiCallHelper(
       `/api/quizzes/${quizSlug}`,
-      "get",
+      'get',
       null,
       getState,
-      "getOneQuiz"
+      'getOneQuiz'
     )
 );
 
 export const getQuizzesByCategory = createAsyncThunk(
-  "quizzes/getQuizzesByCategory",
+  'quizzes/getQuizzesByCategory',
   async (categoryID, { getState }) =>
     apiCallHelper(
       `/api/quizzes/category/${categoryID}`,
-      "get",
+      'get',
       null,
       getState,
-      "getQuizzesByCategory"
+      'getQuizzesByCategory'
     )
 );
 
 export const getQuizzesByNotes = createAsyncThunk(
-  "quizzes/getQuizzesByNotes",
+  'quizzes/getQuizzesByNotes',
   async (noteID, { getState }) =>
     apiCallHelper(
       `/api/quizzes/course-notes/${noteID}`,
-      "get",
+      'get',
       null,
       getState,
-      "getQuizzesByNotes"
+      'getQuizzesByNotes'
     )
 );
 
 export const createQuiz = createAsyncThunk(
-  "quizzes/createQuiz",
+  'quizzes/createQuiz',
   async (newQuiz, { getState }) =>
-    apiCallHelper("/api/quizzes", "post", newQuiz, getState, "createQuiz")
+    apiCallHelper('/api/quizzes', 'post', newQuiz, getState, 'createQuiz')
 );
 
 export const updateQuiz = createAsyncThunk(
-  "quizzes/updateQuiz",
+  'quizzes/updateQuiz',
   async (updatedQuiz, { getState }) =>
     apiCallHelper(
       `/api/quizzes/${updatedQuiz.quizID}`,
-      "put",
+      'put',
       updatedQuiz,
       getState,
-      "updateQuiz"
+      'updateQuiz'
     )
 );
 
 export const addVidLink = createAsyncThunk(
-  "quizzes/addVidLink",
+  'quizzes/addVidLink',
   async ({ newVidLink, quizID }, { getState }) =>
     apiCallHelper(
       `/api/quizzes/add-video/${quizID}`,
-      "put",
+      'put',
       newVidLink,
       getState,
-      "addVidLink"
+      'addVidLink'
     )
 );
 
 export const deleteVideo = createAsyncThunk(
-  "quizzes/deleteVideo",
+  'quizzes/deleteVideo',
   async ({ vidData, vId }, { getState }) =>
     apiCallHelper(
       `/api/quizzes/delete-video/${vId}`,
-      "put",
+      'put',
       vidData,
       getState,
-      "deleteVideo"
+      'deleteVideo'
     )
 );
 
 export const deleteQuiz = createAsyncThunk(
-  "quizzes/deleteQuiz",
+  'quizzes/deleteQuiz',
   async (id, { getState }) =>
-    apiCallHelper(`/api/quizzes/${id}`, "delete", null, getState, "deleteQuiz")
+    apiCallHelper(`/api/quizzes/${id}`, 'delete', null, getState, 'deleteQuiz')
 );
 
 export const notifying = createAsyncThunk(
-  "quizzes/notifying",
+  'quizzes/notifying',
   async (newQuizInfo, { getState }) =>
     apiCallHelper(
-      "/api/quizzes/notifying",
-      "post",
+      '/api/quizzes/notifying',
+      'post',
       newQuizInfo,
       getState,
-      "notifying"
+      'notifying'
     )
 );
 
@@ -120,7 +120,7 @@ export const notifying = createAsyncThunk(
 const initialState = {
   isLoading: false,
   loadingLimited: false,
-  oneQuiz: "",
+  oneQuiz: '',
   quizzes: [],
   limitedQuizzes: [],
   categoryQuizzes: [],
@@ -129,7 +129,7 @@ const initialState = {
 };
 
 const quizzesSlice = createSlice({
-  name: "quizzes",
+  name: 'quizzes',
   initialState,
   reducers: {
     clearQuizzes: (state) => {
@@ -138,7 +138,7 @@ const quizzesSlice = createSlice({
       state.quizzes = [];
       state.isLoading = false;
       state.loadingLimited = false;
-      state.oneQuiz = "";
+      state.oneQuiz = '';
       state.totalPages = 0;
     },
   },

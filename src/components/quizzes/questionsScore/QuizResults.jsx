@@ -1,22 +1,22 @@
-import { lazy, Suspense, useContext, useState, useEffect } from "react";
-import { Button } from "reactstrap";
-import { Link, useLocation } from "react-router-dom";
-import MarksStatus from "./MarksStatus";
-import PdfDocument from "@/components/dashboard/pdfs/PdfDocument";
-import { PDFDownloadLink } from "@react-pdf/renderer";
-import SimilarQuizzes from "./SimilarQuizzes";
-import RelatedNotes from "./RelatedNotes";
-import ReviewForm from "./ReviewForm";
-import { saveFeedback } from "@/redux/slices/feedbacksSlice";
-import { useSelector, useDispatch } from "react-redux";
-import { logRegContext } from "@/contexts/appContexts";
-import QBLoadingSM from "@/utils/rLoading/QBLoadingSM";
-import ResponsiveAd from "@/components/adsenses/ResponsiveAd";
+import { lazy, Suspense, useContext, useState, useEffect } from 'react';
+import { Button } from 'reactstrap';
+import { Link, useLocation } from 'react-router-dom';
+import MarksStatus from './MarksStatus';
+import PdfDocument from '@/components/dashboard/pdfs/PdfDocument';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import SimilarQuizzes from './SimilarQuizzes';
+import RelatedNotes from './RelatedNotes';
+import ReviewForm from './ReviewForm';
+import { saveFeedback } from '@/redux/slices/feedbacksSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { logRegContext } from '@/contexts/appContexts';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
+import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
 
 const ResponsiveHorizontal = lazy(() =>
-  import("@/components/adsenses/ResponsiveHorizontal")
+  import('@/components/adsenses/ResponsiveHorizontal')
 );
-const GridMultiplex = lazy(() => import("@/components/adsenses/GridMultiplex"));
+const GridMultiplex = lazy(() => import('@/components/adsenses/GridMultiplex'));
 
 const QuizResults = () => {
   // Redux
@@ -70,7 +70,7 @@ const QuizResults = () => {
       <div className="p-sm-5 score-section text-center" id="pdf-container">
         <Suspense fallback={<QBLoadingSM />}>
           <div className="w-100">
-            {process.env.NODE_ENV !== "development" ? (
+            {process.env.NODE_ENV !== 'development' ? (
               <ResponsiveHorizontal />
             ) : null}
           </div>
@@ -78,13 +78,13 @@ const QuizResults = () => {
 
         <div
           className={
-            "p-2 p-sm-5 m-2 my-5 mx-sm-auto mx-sm-5 shadow p-3 bg-body rounded"
+            'p-2 p-sm-5 m-2 my-5 mx-sm-auto mx-sm-5 shadow p-3 bg-body rounded'
           }
-          style={{ border: "3px solid var(--brand)" }}
+          style={{ border: '3px solid var(--brand)' }}
         >
           <h5 className="fw-bolder">
-            You answered <b style={{ color: "#B4654A" }}>{marks}</b> out of{" "}
-            <b style={{ color: "#B4654A" }}>{qnsLength}</b> questions correctly.
+            You answered <b style={{ color: '#B4654A' }}>{marks}</b> out of{' '}
+            <b style={{ color: '#B4654A' }}>{qnsLength}</b> questions correctly.
             <small className="text-primary fw-bolder">
               &nbsp;(~{Math.round((marks * 100) / qnsLength)}%)
             </small>
@@ -97,10 +97,10 @@ const QuizResults = () => {
                 type="button"
                 className="text-primary mt-3 mt-sm-0 me-2 me-md-0"
                 style={{
-                  backgroundColor: "var(--accent)",
-                  border: "2px solid var(--brand)",
-                  borderRadius: "10px",
-                  padding: "5px 12px",
+                  backgroundColor: 'var(--accent)',
+                  border: '2px solid var(--brand)',
+                  borderRadius: '10px',
+                  padding: '5px 12px',
                 }}
               >
                 Retake
@@ -140,7 +140,7 @@ const QuizResults = () => {
                   </Button>
                 </Link>
 
-                {(user?.role === "Admin" || user?.role === "SuperAdmin") && (
+                {(user?.role === 'Admin' || user?.role === 'SuperAdmin') && (
                   <PDFDownloadLink
                     document={<PdfDocument review={quizToReview} />}
                     className="mt-sm-0 share-btn mx-1 mx-md-0"
@@ -180,11 +180,11 @@ const QuizResults = () => {
                 onClick={toggleL}
                 className="text-primary mt-3 mt-sm-0 me-2 me-md-0"
                 style={{
-                  backgroundColor: "var(--accent)",
-                  border: "2px solid var(--brand)",
-                  borderRadius: "10px",
-                  padding: "5px 12px",
-                  fontSize: "0.8rem",
+                  backgroundColor: 'var(--accent)',
+                  border: '2px solid var(--brand)',
+                  borderRadius: '10px',
+                  padding: '5px 12px',
+                  fontSize: '0.8rem',
                 }}
               >
                 Login to review answers
@@ -201,7 +201,7 @@ const QuizResults = () => {
 
         <Suspense fallback={<QBLoadingSM />}>
           <div className="w-100">
-            {process.env.NODE_ENV !== "development" ? <ResponsiveAd /> : null}
+            {process.env.NODE_ENV !== 'development' ? <ResponsiveAd /> : null}
           </div>
         </Suspense>
 
@@ -210,7 +210,7 @@ const QuizResults = () => {
         )}
 
         <Suspense fallback={<QBLoadingSM />}>
-          {process.env.NODE_ENV !== "development" ? <GridMultiplex /> : null}
+          {process.env.NODE_ENV !== 'development' ? <GridMultiplex /> : null}
         </Suspense>
       </>
     </>

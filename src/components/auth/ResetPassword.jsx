@@ -1,55 +1,55 @@
-import { useState } from 'react'
-import { Container, Row, Col, Button, Form, Input } from 'reactstrap'
-import ResponsiveAd from '@/components/adsenses/ResponsiveAd'
-import SquareAd from '@/components/adsenses/SquareAd'
-import { sendNewPassword } from '@/redux/slices/authSlice'
-import { useDispatch } from "react-redux"
-import { notify } from '@/utils/notifyToast'
+import { useState } from 'react';
+import { Container, Row, Col, Button, Form, Input } from 'reactstrap';
+import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
+import SquareAd from '@/components/adsenses/SquareAd';
+import { sendNewPassword } from '@/redux/slices/authSlice';
+import { useDispatch } from 'react-redux';
+import { notify } from '@/utils/notifyToast';
 
 const ResetPassword = () => {
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
     const [newPasswords, setNewPasswords] = useState({
         password: '',
         password1: ''
-    })
+    });
 
     const onChangeHandler = e => {
-        setNewPasswords({ ...newPasswords, [e.target.name]: e.target.value })
-    }
+        setNewPasswords({ ...newPasswords, [e.target.name]: e.target.value });
+    };
 
     const onSubmitHandler = e => {
-        e.preventDefault()
+        e.preventDefault();
 
-        const { password, password1 } = newPasswords
+        const { password, password1 } = newPasswords;
 
         if (!password || !password1) {
-            notify('Passwords can not be empty!', 'error')
-            return
+            notify('Passwords can not be empty!', 'error');
+            return;
         }
 
         else if (password !== password1) {
-            notify('Passwords must match!', 'error')
-            return
+            notify('Passwords must match!', 'error');
+            return;
         }
 
         // Exploit token and userId from URL
-        const queryString = window.location.search
-        const urlParams = new URLSearchParams(queryString)
-        const token = urlParams.get('token')
-        const userId = urlParams.get('id')
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const token = urlParams.get('token');
+        const userId = urlParams.get('id');
 
         // Create new pswd object
         const updatePsw = {
             userId,
             token,
             password
-        }
+        };
 
         // Attempt to reset
-        dispatch(sendNewPassword(updatePsw))
-    }
+        dispatch(sendNewPassword(updatePsw));
+    };
 
     return (
 
@@ -103,7 +103,7 @@ const ResetPassword = () => {
                 </>
             </Row>
         </Container>
-    )
-}
+    );
+};
 
-export default ResetPassword
+export default ResetPassword;

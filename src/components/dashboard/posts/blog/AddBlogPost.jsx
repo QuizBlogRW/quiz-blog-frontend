@@ -1,72 +1,72 @@
-import { useState } from 'react'
-import { Button, Form, FormGroup, Label, Input, Row, Col, Alert, Breadcrumb, BreadcrumbItem } from 'reactstrap'
-import { useParams } from 'react-router-dom'
-import { createBlogPost } from '@/redux/slices'
-import { useDispatch, useSelector } from "react-redux"
-import UploadPostPhotos from './UploadPostPhotos'
-import YourImages from './YourImages'
-import { notify } from '@/utils/notifyToast'
-import NotAuthenticated from '@/components/auth/NotAuthenticated'
+import { useState } from 'react';
+import { Button, Form, FormGroup, Label, Input, Row, Col, Alert, Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import { useParams } from 'react-router-dom';
+import { createBlogPost } from '@/redux/slices';
+import { useDispatch, useSelector } from 'react-redux';
+import UploadPostPhotos from './UploadPostPhotos';
+import YourImages from './YourImages';
+import { notify } from '@/utils/notifyToast';
+import NotAuthenticated from '@/components/auth/NotAuthenticated';
 
 const AddBlogPost = () => {
 
     // redux
-    const dispatch = useDispatch()
-    const { user, isAuthenticated, isLoading } = useSelector(state => state.auth)
+    const dispatch = useDispatch();
+    const { user, isAuthenticated, isLoading } = useSelector(state => state.auth);
 
-    const curUserRole = user && user.role
-    const isAuthorized = curUserRole === 'Admin' || curUserRole === 'SuperAdmin' || curUserRole === 'Creator'
+    const curUserRole = user && user.role;
+    const isAuthorized = curUserRole === 'Admin' || curUserRole === 'SuperAdmin' || curUserRole === 'Creator';
 
-    const { bPCatID } = useParams()
+    const { bPCatID } = useParams();
     const [bPState, setBPState] = useState({
         title: '',
         markdown: '',
         bgColor: ''
-    })
-    const [post_image, setPost_image] = useState('')
+    });
+    const [post_image, setPost_image] = useState('');
     const onChangeHandler = e => {
-        setBPState({ ...bPState, [e.target.name]: e.target.value })
-    }
+        setBPState({ ...bPState, [e.target.name]: e.target.value });
+    };
 
     const onFileHandler = (e) => {
-        setPost_image(e.target.files[0])
-    }
+        setPost_image(e.target.files[0]);
+    };
 
     const onSubmitHandler = e => {
-        e.preventDefault()
+        e.preventDefault();
 
-        const formData = new FormData()
-        const { title, markdown, bgColor } = bPState
+        const formData = new FormData();
+        const { title, markdown, bgColor } = bPState;
 
         // VALIDATE
         if (title.length < 4 || markdown.length < 4) {
-            notify('Insufficient info!', 'error')
-            return
+            notify('Insufficient info!', 'error');
+            return;
         }
         else if (title.length > 70) {
-            notify('Title is too long!', 'error')
-            return
+            notify('Title is too long!', 'error');
+            return;
         }
 
         // Create new BP object
-        formData.append('title', title)
-        formData.append('postCategory', bPCatID)
-        formData.append('markdown', markdown)
-        formData.append('post_image', post_image)
-        formData.append('bgColor', bgColor)
-        formData.append('creator', isLoading === false ? user._id : null)
+        formData.append('title', title);
+        formData.append('postCategory', bPCatID);
+        formData.append('markdown', markdown);
+        formData.append('post_image', post_image);
+        formData.append('bgColor', bgColor);
+        formData.append('creator', isLoading === false ? user._id : null);
 
         // Attempt to create
-        dispatch(createBlogPost(formData))
+        dispatch(createBlogPost(formData));
 
         // Reset form fields
         setBPState({
             title: '',
             markdown: '',
             bgColor: '',
-        })
-        setPost_image('')
-    }
+        });
+        setPost_image('');
+    };
 
     return (
         !isAuthenticated ?
@@ -126,7 +126,7 @@ const AddBlogPost = () => {
                     </Row>
                 </> :
                 <Alert color="danger" className='m-5 text-center'>Access Denied!</Alert>
-    )
-}
+    );
+};
 
-export default AddBlogPost
+export default AddBlogPost;

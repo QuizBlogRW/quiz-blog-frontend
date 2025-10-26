@@ -1,17 +1,17 @@
-import { Row, Col, Toast, ToastBody, ToastHeader, Breadcrumb, BreadcrumbItem } from 'reactstrap'
-import { Link, useParams } from 'react-router-dom'
-import QBLoadingSM from '@/utils/rLoading/QBLoadingSM'
-import { useSelector } from 'react-redux'
+import { Row, Col, Toast, ToastBody, ToastHeader, Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import { Link, useParams } from 'react-router-dom';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
+import { useSelector } from 'react-redux';
 
 const SingleCategory = () => {
-    const categories = useSelector(state => state.categories)
-    const { categoryId } = useParams()
+    const categories = useSelector(state => state.categories);
+    const { categoryId } = useParams();
 
     const renderCategory = (category) => (
         <div className="my-2 mt-lg-5 mx-3 mx-lg-5 single-category" key={category._id}>
             <Row key={category._id} className="mb-0 mb-lg-3 mx-0 justify-content-center text-capitalize">
                 <Breadcrumb>
-                    <BreadcrumbItem style={{ color: "var(--brand)" }}>
+                    <BreadcrumbItem style={{ color: 'var(--brand)' }}>
                         <Link to="/dashboard">{category.title}</Link>
                     </BreadcrumbItem>
                     <BreadcrumbItem active>Quizzes</BreadcrumbItem>
@@ -38,7 +38,7 @@ const SingleCategory = () => {
                             <p className="fw-bolder mt-2">Quizzes ({category.quizes.length})</p>
                             <ul className="pl-1">
                                 {category && category.quizes.map((quiz, index) =>
-                                    <li key={quiz._id} style={{ listStyle: "none", marginBottom: ".3rem" }}>
+                                    <li key={quiz._id} style={{ listStyle: 'none', marginBottom: '.3rem' }}>
                                         {index + 1}.&nbsp;
                                         <Link to={`/view-quiz/${quiz.slug}`}>
                                             {quiz.title}
@@ -53,7 +53,7 @@ const SingleCategory = () => {
                 </Col>
             </Row>
         </div>
-    )
+    );
 
     return (
         !categories.isLoading ?
@@ -65,7 +65,7 @@ const SingleCategory = () => {
             <div className="vh-100 d-flex justify-content-center align-items-center text-danger">
                 <QBLoadingSM title="category" />
             </div>
-    )
-}
+    );
+};
 
-export default SingleCategory
+export default SingleCategory;

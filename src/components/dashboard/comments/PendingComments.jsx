@@ -1,9 +1,9 @@
-import { useEffect } from "react";
-import { Col, Card, Alert } from "reactstrap";
-import { getPendingQnsComments } from "@/redux/slices/questionsCommentsSlice";
-import { useSelector, useDispatch } from "react-redux";
-import Comment from "./Comment";
-import QBLoading from "@/utils/rLoading/QBLoadingSM";
+import { useEffect } from 'react';
+import { Col, Card, Alert } from 'reactstrap';
+import { getPendingQnsComments } from '@/redux/slices/questionsCommentsSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import Comment from './Comment';
+import QBLoading from '@/utils/rLoading/QBLoadingSM';
 
 const renderComments = (pendingComments) => (
   <>

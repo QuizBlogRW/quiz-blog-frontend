@@ -1,8 +1,8 @@
 const BackLikeShare = ({ articleName, articleCreator }) => {
     
-    const currentUrl = typeof window !== 'undefined' ? window.location.href : ''
-    const whatsappText = encodeURIComponent(`${articleName}\n${currentUrl}`)
-    const twitterText = encodeURIComponent(articleName)
+    const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
+    const whatsappText = encodeURIComponent(`${articleName}\n${currentUrl}`);
+    const twitterText = encodeURIComponent(articleName);
 
     return (
         <div className="back-share px-2 d-flex justify-content-between align-items-center">
@@ -41,7 +41,7 @@ const BackLikeShare = ({ articleName, articleCreator }) => {
                 </ul>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default BackLikeShare
+export default BackLikeShare;

@@ -1,5 +1,5 @@
-import moment from 'moment'
-import { Table, Alert } from 'reactstrap'
+import moment from 'moment';
+import { Table, Alert } from 'reactstrap';
 
 const FeedbacksTable = ({ feedbacksToUse, pageNo }) => {
 
@@ -20,12 +20,12 @@ const FeedbacksTable = ({ feedbacksToUse, pageNo }) => {
                 <tbody>
                     {feedbacksToUse && [...feedbacksToUse].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map((feedback, index) => {
 
-                        let date = feedback && new Date(feedback.createdAt)
-                        const numero = ((pageNo - 1) * 20) + index + 1
-                        const quiz = feedback && feedback.quiz
-                        const rating = feedback && feedback.rating
-                        const comment = feedback && feedback.comment
-                        const user = feedback && feedback.user
+                        let date = feedback && new Date(feedback.createdAt);
+                        const numero = ((pageNo - 1) * 20) + index + 1;
+                        const quiz = feedback && feedback.quiz;
+                        const rating = feedback && feedback.rating;
+                        const comment = feedback && feedback.comment;
+                        const user = feedback && feedback.user;
 
                         return (<tr key={index}>
                             <th scope="row" className="table-dark">{numero && numero}</th>
@@ -34,7 +34,7 @@ const FeedbacksTable = ({ feedbacksToUse, pageNo }) => {
                             <td>{quiz && quiz.title}</td>
                             <td>{user && user?.name}</td>
                             <td>{date && moment(date).format('YYYY-MM-DD, HH:mm')}</td>
-                        </tr>)
+                        </tr>);
                     })}
 
                 </tbody>
@@ -42,7 +42,7 @@ const FeedbacksTable = ({ feedbacksToUse, pageNo }) => {
             <Alert color="danger" className="w-50 text-center mx-auto" style={{ border: '2px solid var(--brand)' }}>
                 Seems like you have nothing here!
             </Alert>
-    )
-}
+    );
+};
 
-export default FeedbacksTable
+export default FeedbacksTable;

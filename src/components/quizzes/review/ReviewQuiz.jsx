@@ -1,16 +1,16 @@
-import { useState, useEffect, useCallback } from "react";
-import { Container, Col, Row, Button } from "reactstrap";
-import { useParams, useLocation } from "react-router-dom";
-import QBLoadingSM from "@/utils/rLoading/QBLoadingSM";
-import ReviewView from "./ReviewView";
-import QuestionComments from "../../quizzes/review/questionComments/QuestionComments";
-import OnLastAnswer from "./OnLastAnswer";
-import TitleRow from "./TitleRow";
-import NotAuthenticated from "@/components/auth/NotAuthenticated";
-import ResponsiveAd from "@/components/adsenses/ResponsiveAd";
-import SquareAd from "@/components/adsenses/SquareAd";
-import { getOneScore, createScore } from "@/redux/slices/scoresSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useState, useEffect, useCallback } from 'react';
+import { Container, Col, Row, Button } from 'reactstrap';
+import { useParams, useLocation } from 'react-router-dom';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
+import ReviewView from './ReviewView';
+import QuestionComments from '../../quizzes/review/questionComments/QuestionComments';
+import OnLastAnswer from './OnLastAnswer';
+import TitleRow from './TitleRow';
+import NotAuthenticated from '@/components/auth/NotAuthenticated';
+import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
+import SquareAd from '@/components/adsenses/SquareAd';
+import { getOneScore, createScore } from '@/redux/slices/scoresSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const ReviewQuiz = () => {
 
@@ -53,7 +53,7 @@ const ReviewQuiz = () => {
             <Row className="w-100">
               <Col sm="6" className="w-100">
                 <div className="w-100">
-                  {process.env.NODE_ENV !== "development" ? (
+                  {process.env.NODE_ENV !== 'development' ? (
                     <ResponsiveAd />
                   ) : null}
                 </div>
@@ -66,9 +66,9 @@ const ReviewQuiz = () => {
                     className="main my-2 mx-auto px-lg-5 d-flex flex-column justify-content-center my-lg-5 py-lg-5 w-80"
                     key={Math.floor(Math.random() * 1000)}
                     style={{
-                      border: "3px solid #157A6E",
-                      borderRadius: "10px",
-                      backgroundColor: "#EAFAF1",
+                      border: '3px solid #157A6E',
+                      borderRadius: '10px',
+                      backgroundColor: '#EAFAF1',
                     }}
                   >
                     {lastAnswer ? (
@@ -97,7 +97,7 @@ const ReviewQuiz = () => {
                                   className="mt-2 mt-lg-0 mx-sm-5 px-sm-5"
                                   src={curRevQn && curRevQn.question_image}
                                   onLoad={onLoad}
-                                  style={{ width: "250px", height: "auto" }}
+                                  style={{ width: '250px', height: 'auto' }}
                                   alt="Question Illustration"
                                 />
                               </div>
@@ -131,7 +131,7 @@ const ReviewQuiz = () => {
                   <h4>Quiz's questions unavailable! Refresh! 🔄</h4>
                   <Button
                     color="success"
-                    style={{ width: "120px" }}
+                    style={{ width: '120px' }}
                     className="mx-auto mt-4"
                   >
                     <a href="/dashboard" className="text-white">
@@ -156,7 +156,7 @@ const ReviewQuiz = () => {
                         window.location.reload();
                       }, 3000);
                     } else {
-                      alert("Error saving score!");
+                      alert('Error saving score!');
                     }
                   }}
                 >
@@ -165,7 +165,7 @@ const ReviewQuiz = () => {
 
                 <Button
                   color="dark"
-                  style={{ width: "120px" }}
+                  style={{ width: '120px' }}
                   className="mx-auto mt-4"
                 >
                   <a href="/dashboard" className="text-white">
@@ -180,7 +180,7 @@ const ReviewQuiz = () => {
                 <Row className="w-100">
                   <Col sm="12">
                     <div className="w-100">
-                      {process.env.NODE_ENV !== "development" ? (
+                      {process.env.NODE_ENV !== 'development' ? (
                         <SquareAd />
                       ) : null}
                     </div>

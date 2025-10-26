@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { Button, Modal, ModalBody, ModalFooter } from "reactstrap";
-import { notify } from "@/utils/notifyToast";
-import { useDispatch } from "react-redux";
-import plus from "@/images/plus.svg";
+import { useState } from 'react';
+import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
+import { notify } from '@/utils/notifyToast';
+import { useDispatch } from 'react-redux';
+import plus from '@/images/plus.svg';
 
 /**
  * AddModal
@@ -13,7 +13,7 @@ import plus from "@/images/plus.svg";
  * - initialState: object - initial form state (optional)
  */
 const AddModal = ({
-  title = "Add",
+  title = 'Add',
   submitFn,
   renderForm,
   initialState = {},
@@ -32,11 +32,11 @@ const AddModal = ({
     try {
       const maybeResult = submitFn(data);
       // If the returned value is a function, assume it's a thunk and dispatch it.
-      if (typeof maybeResult === "function") {
+      if (typeof maybeResult === 'function') {
         return await dispatch(maybeResult);
       } else {
         throw new Error(
-          "submitFn must return a function (thunk) when used with AddModal"
+          'submitFn must return a function (thunk) when used with AddModal'
         );
       }
     } catch (err) {
@@ -52,14 +52,14 @@ const AddModal = ({
       setSubmitting(false);
 
       // Only close modal & show success if fulfilled
-      if (result.type.endsWith("/fulfilled")) {
+      if (result.type.endsWith('/fulfilled')) {
         setModal(false);
       } else {
-        console.error("Submission failed: ", result?.error?.message);
+        console.error('Submission failed: ', result?.error?.message);
       }
     } catch (err) {
       setSubmitting(false);
-      console.error("AddModal submit error", err);
+      console.error('AddModal submit error', err);
     }
   };
 
@@ -95,14 +95,14 @@ const AddModal = ({
 
         <form onSubmit={onSubmit}>
           <ModalBody>
-            {typeof renderForm === "function"
+            {typeof renderForm === 'function'
               ? renderForm(formState, setFormState)
               : null}
           </ModalBody>
 
           <ModalFooter className="justify-content-around pb-0">
             <Button color="success" type="submit" disabled={submitting}>
-              {submitting ? "Saving..." : "Save"}
+              {submitting ? 'Saving...' : 'Save'}
             </Button>
             <Button
               color="warning"

@@ -1,6 +1,6 @@
-import { Card, CardTitle, CardText } from "reactstrap";
-import { Link } from "react-router-dom";
-import moment from "moment";
+import { Card, CardTitle, CardText } from 'reactstrap';
+import { Link } from 'react-router-dom';
+import moment from 'moment';
 
 const NotesPapersItem = ({ note, fromSearch }) => {
   const {
@@ -18,14 +18,14 @@ const NotesPapersItem = ({ note, fromSearch }) => {
       body
       className={
         fromSearch
-          ? "note-item bg-info text-white py-3 px-1 px-lg-3 my-2 my-lg-3"
-          : "note-item bg-secondary py-3 px-1 px-lg-3 my-2 my-lg-3"
+          ? 'note-item bg-info text-white py-3 px-1 px-lg-3 my-2 my-lg-3'
+          : 'note-item bg-secondary py-3 px-1 px-lg-3 my-2 my-lg-3'
       }
     >
       <CardTitle
         tag="h5"
         className={`mb-0 ${
-          fromSearch ? "text-white" : "text-primary"
+          fromSearch ? 'text-white' : 'text-primary'
         } text-uppercase text-center`}
       >
         <Link to={`/view-note-paper/${slug}`}>{title && title}</Link>
@@ -45,7 +45,7 @@ const NotesPapersItem = ({ note, fromSearch }) => {
             {courseCategory && courseCategory.title}
           </small>
           <small className="me-2 me-md-5 my-1 text-dark">
-            {moment(new Date(createdAt)).format("DD MMM YYYY, HH:mm")}
+            {moment(new Date(createdAt)).format('DD MMM YYYY, HH:mm')}
           </small>
         </div>
       </div>

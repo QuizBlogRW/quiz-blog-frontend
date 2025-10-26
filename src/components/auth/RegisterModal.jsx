@@ -1,70 +1,70 @@
-import { useState, useEffect, useContext } from 'react'
-import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
-import { register } from '@/redux/slices/authSlice'
-import { useSelector, useDispatch } from "react-redux"
-import logocirclewhite from '@/images/logocirclewhite.svg'
-import avatar from '@/images/avatar1.svg'
-import QBLoadingSM from '@/utils/rLoading/QBLoadingSM'
-import { notify } from '@/utils/notifyToast'
-import { logRegContext } from '@/contexts/appContexts'
+import { useState, useEffect, useContext } from 'react';
+import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap';
+import { register } from '@/redux/slices/authSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import logocirclewhite from '@/images/logocirclewhite.svg';
+import avatar from '@/images/avatar1.svg';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
+import { notify } from '@/utils/notifyToast';
+import { logRegContext } from '@/contexts/appContexts';
 
 const RegisterModal = () => {
 
     // Context
-    const { isOpenR, toggleR, toggleL } = useContext(logRegContext)
+    const { isOpenR, toggleR, toggleL } = useContext(logRegContext);
 
     // Redux
-    const { isAuthenticated, isLoading } = useSelector(state => state.auth)
-    const dispatch = useDispatch()
+    const { isAuthenticated, isLoading } = useSelector(state => state.auth);
+    const dispatch = useDispatch();
 
     const [registerState, setRegisterState] = useState({
         name: '',
         email: '',
         password: ''
-    })
+    });
 
     // Lifecycle methods
     useEffect(() => {
         if (isOpenR) {
             if (isAuthenticated) {
-                toggleR()
+                toggleR();
             }
         }
 
-    }, [isAuthenticated, isOpenR, toggleR])
+    }, [isAuthenticated, isOpenR, toggleR]);
 
     const onChangeHandler = e => {
-        setRegisterState({ ...registerState, [e.target.name]: e.target.value })
-    }
+        setRegisterState({ ...registerState, [e.target.name]: e.target.value });
+    };
 
     const onSubmitHandler = (e) => {
-        e.preventDefault()
+        e.preventDefault();
 
-        const { name, email, password } = registerState
+        const { name, email, password } = registerState;
 
         // VALIDATE
         if (name.length < 3) {
-            notify('Name should be at least 3 characters!', 'error')
-            return
+            notify('Name should be at least 3 characters!', 'error');
+            return;
         }
         else if (password.length < 4) {
-            notify('Password should be at least 4 characters!', 'error')
-            return
+            notify('Password should be at least 4 characters!', 'error');
+            return;
         }
 
         // Create user object
-        const newUser = { name, email, password }
+        const newUser = { name, email, password };
 
         // Attempt to register
-        dispatch(register(newUser))
-    }
+        dispatch(register(newUser));
+    };
 
     return (
         <div>
             <Modal isOpen={isOpenR} toggle={toggleR} centered={true}>
-                <div className="d-flex justify-content-between align-items-center p-2" style={{ backgroundColor: "var(--brand)", color: "#fff" }}>
-                    <img src={logocirclewhite} alt="logo" style={{ maxHeight: "3.2rem", color: "var(--brand)" }} />
-                    <Button className="btn-danger text-uppercase text-red" style={{ padding: "0.1rem 0.3rem", fontSize: ".6rem", fontWeight: "bold" }} onClick={toggleR}>
+                <div className="d-flex justify-content-between align-items-center p-2" style={{ backgroundColor: 'var(--brand)', color: '#fff' }}>
+                    <img src={logocirclewhite} alt="logo" style={{ maxHeight: '3.2rem', color: 'var(--brand)' }} />
+                    <Button className="btn-danger text-uppercase text-red" style={{ padding: '0.1rem 0.3rem', fontSize: '.6rem', fontWeight: 'bold' }} onClick={toggleR}>
                         X
                     </Button>
                 </div>
@@ -73,7 +73,7 @@ const RegisterModal = () => {
 
                 {/* icon + title */}
                 <div className='d-flex justify-content-center align-items-center pt-3'>
-                    <img src={avatar} alt="avatar" style={{ maxHeight: "1.22rem" }} />
+                    <img src={avatar} alt="avatar" style={{ maxHeight: '1.22rem' }} />
                     <h5 className='text-center text-dark fw-bolder align-baseline mb-0 ms-2'>Register</h5>
                 </div>
 
@@ -96,7 +96,7 @@ const RegisterModal = () => {
                             </Label>
                             <Input type="password" name="password" placeholder="Password here ..." className="mb-3" onChange={onChangeHandler} />
 
-                            <Button style={{ marginTop: '2rem', backgroundColor: "var(--brand)" }} block>
+                            <Button style={{ marginTop: '2rem', backgroundColor: 'var(--brand)' }} block>
                                 Register
                             </Button>
                         </FormGroup>
@@ -104,14 +104,14 @@ const RegisterModal = () => {
 
                     <div className="d-flex align-items-center justify-content-around">
                         <p className="p-2 mb-0">Having an account?</p>
-                        <NavLink onClick={toggleL} className="fw-bolder" style={{ color: "var(--brand)" }}>
+                        <NavLink onClick={toggleL} className="fw-bolder" style={{ color: 'var(--brand)' }}>
                             Login
                         </NavLink>
                     </div>
                 </ModalBody>
             </Modal>
         </div>
-    )
-}
+    );
+};
 
-export default RegisterModal
+export default RegisterModal;

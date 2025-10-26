@@ -1,50 +1,50 @@
-import { useState, useContext, useEffect } from 'react'
-import { Navbar, NavbarBrand, NavLink, Button, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, ListGroup, ListGroupItem } from 'reactstrap'
-import { Link, useLocation } from "react-router-dom"
-import { useSelector } from 'react-redux'
-import Logout from '@/components/auth/Logout'
-import CatDropdown from './CatDropdown'
-import logo from '@/images/quizLogo.svg'
-import { logRegContext } from '@/contexts/appContexts'
-import EditPictureModal from '@/components/auth/EditPictureModal'
+import { useState, useContext, useEffect } from 'react';
+import { Navbar, NavbarBrand, NavLink, Button, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, ListGroup, ListGroupItem } from 'reactstrap';
+import { Link, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import Logout from '@/components/auth/Logout';
+import CatDropdown from './CatDropdown';
+import logo from '@/images/quizLogo.svg';
+import { logRegContext } from '@/contexts/appContexts';
+import EditPictureModal from '@/components/auth/EditPictureModal';
 
 const Header = ({ textContent }) => {
 
-    const { user } = useSelector(state => state.auth)
-    const { toggleL, toggleR } = useContext(logRegContext)
-    const userId = user && user._id
+    const { user } = useSelector(state => state.auth);
+    const { toggleL, toggleR } = useContext(logRegContext);
+    const userId = user && user._id;
 
-    const [dropdownOpen, setDropdownOpen] = useState(false)
-    const [logoutModal, setLogoutModal] = useState(false)
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [logoutModal, setLogoutModal] = useState(false);
 
-    const toggleDropdown = () => setDropdownOpen(prevState => !prevState)
-    const toggleLogoutModal = () => setLogoutModal(prevState => !prevState)
+    const toggleDropdown = () => setDropdownOpen(prevState => !prevState);
+    const toggleLogoutModal = () => setLogoutModal(prevState => !prevState);
 
     // location hook from react-router-dom    
-    let location = useLocation()
+    let location = useLocation();
 
     // intersection observer
-    const [scrollPosition, setScrollPosition] = useState(0)
+    const [scrollPosition, setScrollPosition] = useState(0);
 
     useEffect(() => {
         const handleScroll = () => {
-            setScrollPosition(window.scrollY)
-        }
+            setScrollPosition(window.scrollY);
+        };
 
-        window.addEventListener('scroll', handleScroll)
+        window.addEventListener('scroll', handleScroll);
 
         return () => {
-            window.removeEventListener('scroll', handleScroll)
-        }
-    }, [])
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
 
-    const isScrolled = scrollPosition > 70
+    const isScrolled = scrollPosition > 70;
 
     // small accessibility improvements: add aria labels and Escape-to-close behavior to auth dropdown
     const renderAuthLinks = () => (
         <span className={`mx-0 p-0 d-flex align-items-center toDashboard header-user ${isScrolled ? 'scrolled' : ''}`}>
             <EditPictureModal />
-            <Dropdown isOpen={dropdownOpen} toggle={toggleDropdown} onKeyDown={(e) => { if (e.key === 'Escape') setDropdownOpen(false) }}>
+            <Dropdown isOpen={dropdownOpen} toggle={toggleDropdown} onKeyDown={(e) => { if (e.key === 'Escape') setDropdownOpen(false); }}>
                 <DropdownToggle aria-haspopup={true} aria-expanded={dropdownOpen} aria-label="Open profile menu" className='mx-0 px-0'>
                     <span className='profileDropDown mx-0 px-0'>
                         <i className={`fa-solid fa-chevron-${dropdownOpen ? 'up' : 'down'}`} aria-hidden="true"></i>
@@ -55,7 +55,7 @@ const Header = ({ textContent }) => {
                     <DropdownItem header>
                         <ListGroup>
                             <ListGroupItem className='bg-warning'>
-                                <h6 className='mb-0 fw-bolder text-white text-uppercase'>{user && user.name ? user?.name?.split(" ")[0] : ''}</h6>
+                                <h6 className='mb-0 fw-bolder text-white text-uppercase'>{user && user.name ? user?.name?.split(' ')[0] : ''}</h6>
                             </ListGroupItem>
                             {renderProfileLinks()}
                         </ListGroup>
@@ -70,7 +70,7 @@ const Header = ({ textContent }) => {
                 </DropdownMenu>
             </Dropdown>
         </span>
-    )
+    );
 
     const renderProfileLinks = () => (
         <>
@@ -119,7 +119,7 @@ const Header = ({ textContent }) => {
                 )}
             </ListGroupItem>
         </>
-    )
+    );
 
     const renderGuestLinks = () => (
         <>
@@ -134,10 +134,10 @@ const Header = ({ textContent }) => {
                 </NavLink>
             </span>
         </>
-    )
+    );
 
     if (location.pathname.startsWith('/statistics')) {
-        return null
+        return null;
     }
 
     return (
@@ -171,7 +171,7 @@ const Header = ({ textContent }) => {
                 </div>
             </Navbar>
         </header>
-    )
-}
+    );
+};
 
-export default Header
+export default Header;

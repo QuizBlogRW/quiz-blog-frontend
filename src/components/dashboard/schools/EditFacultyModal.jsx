@@ -1,17 +1,17 @@
-import UpdateModal from '@/utils/UpdateModal'
-import { updateFaculty } from '@/redux/slices/facultiesSlice'
-import { notify } from '@/utils/notifyToast'
+import UpdateModal from '@/utils/UpdateModal';
+import { updateFaculty } from '@/redux/slices/facultiesSlice';
+import { notify } from '@/utils/notifyToast';
 
 const EditFacultyModal = ({ idToUpdate, editTitle }) => {
-    const initialData = { idToUpdate, title: editTitle || '', years: [] }
+    const initialData = { idToUpdate, title: editTitle || '', years: [] };
 
     const renderForm = (formState, setFormState, firstInputRef) => {
-        const onChange = (e) => setFormState({ ...formState, [e.target.name]: e.target.value })
+        const onChange = (e) => setFormState({ ...formState, [e.target.name]: e.target.value });
         const handleSelectYears = (e) => {
-            const yearsnbr = []
-            for (let i = 1; i <= e.target.value; i++) yearsnbr.push(`Year ${i}`)
-            setFormState({ ...formState, years: yearsnbr })
-        }
+            const yearsnbr = [];
+            for (let i = 1; i <= e.target.value; i++) yearsnbr.push(`Year ${i}`);
+            setFormState({ ...formState, years: yearsnbr });
+        };
 
         return (
             <div>
@@ -33,21 +33,21 @@ const EditFacultyModal = ({ idToUpdate, editTitle }) => {
                     </select>
                 </div>
             </div>
-        )
-    }
+        );
+    };
 
     const submitFn = (formState) => {
-        const { idToUpdate, title, years } = formState
+        const { idToUpdate, title, years } = formState;
         if (!title || title.length < 3 || !years || years.length < 1) {
-            notify('Insufficient info!', 'error')
-            throw new Error('validation')
+            notify('Insufficient info!', 'error');
+            throw new Error('validation');
         }
         if (title.length > 70) {
-            notify('Title is too long!', 'error')
-            throw new Error('validation')
+            notify('Title is too long!', 'error');
+            throw new Error('validation');
         }
-        return (dispatch) => dispatch(updateFaculty({ idToUpdate, title, years }))
-    }
+        return (dispatch) => dispatch(updateFaculty({ idToUpdate, title, years }));
+    };
     return (
         <UpdateModal
             title="Edit Faculty"
@@ -56,7 +56,7 @@ const EditFacultyModal = ({ idToUpdate, editTitle }) => {
             initialData={initialData}
 
         />
-    )
-}
+    );
+};
 
-export default EditFacultyModal
+export default EditFacultyModal;

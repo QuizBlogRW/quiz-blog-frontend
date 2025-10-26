@@ -1,13 +1,13 @@
-import { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useState, useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import {
   Dropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
   Button,
-} from "reactstrap";
+} from 'reactstrap';
 
 const CatDropdown = ({ clr }) => {
   const categories = useSelector((state) => state.categories);
@@ -18,10 +18,10 @@ const CatDropdown = ({ clr }) => {
   // close on Escape for accessibility
   useEffect(() => {
     const onKey = (e) => {
-      if (e.key === "Escape" && isOpen) setIsOpen(false);
+      if (e.key === 'Escape' && isOpen) setIsOpen(false);
     };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
   }, [isOpen]);
 
   // close when clicking outside (simple guard)
@@ -35,8 +35,8 @@ const CatDropdown = ({ clr }) => {
         setIsOpen(false);
       }
     };
-    document.addEventListener("click", onDoc);
-    return () => document.removeEventListener("click", onDoc);
+    document.addEventListener('click', onDoc);
+    return () => document.removeEventListener('click', onDoc);
   }, [isOpen]);
 
   if (categories.isLoading) return null;
@@ -53,10 +53,10 @@ const CatDropdown = ({ clr }) => {
           aria-label="Open quizzes categories"
         >
           <span className="me-1">
-            Quizzes{" "}
+            Quizzes{' '}
             <i
               className={`fa-solid fa-chevron-${
-                isOpen ? "up" : "down"
+                isOpen ? 'up' : 'down'
               } ms-lg-1`}
               aria-hidden="true"
             ></i>
@@ -75,7 +75,7 @@ const CatDropdown = ({ clr }) => {
           >
             <strong className="text-uppercase">Categories</strong>
             <small className="text-muted">
-              {count} {count === 1 ? "category" : "categories"}
+              {count} {count === 1 ? 'category' : 'categories'}
             </small>
           </DropdownItem>
 

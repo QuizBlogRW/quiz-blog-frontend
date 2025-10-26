@@ -1,4 +1,4 @@
-import { useState, useEffect, lazy, Suspense, useContext } from "react";
+import { useState, useEffect, lazy, Suspense, useContext } from 'react';
 import {
   Row,
   Col,
@@ -16,29 +16,29 @@ import {
   FormGroup,
   Label,
   Input,
-} from "reactstrap";
+} from 'reactstrap';
 import {
   getCourseCategories,
   deleteCourseCategory,
   createCourseCategory,
-} from "@/redux/slices/courseCategoriesSlice";
-import { useSelector, useDispatch } from "react-redux";
-import AddModal from "@/utils/AddModal";
-import UpdateModal from "@/utils/UpdateModal";
-import { updateCourseCategory } from "@/redux/slices/courseCategoriesSlice";
+} from '@/redux/slices/courseCategoriesSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import AddModal from '@/utils/AddModal';
+import UpdateModal from '@/utils/UpdateModal';
+import { updateCourseCategory } from '@/redux/slices/courseCategoriesSlice';
 import {
   createCourse,
   getCoursesByCategory,
-} from "@/redux/slices/coursesSlice";
-import { notify } from "@/utils/notifyToast";
-import validators from "@/utils/validators";
-import CoursesHolder from "./CoursesHolder";
-import CategoriesHome from "./CategoriesHome";
-import QBLoadingSM from "@/utils/rLoading/QBLoadingSM";
-import { logRegContext } from "@/contexts/appContexts";
-import DeleteModal from "@/utils/DeleteModal";
+} from '@/redux/slices/coursesSlice';
+import { notify } from '@/utils/notifyToast';
+import validators from '@/utils/validators';
+import CoursesHolder from './CoursesHolder';
+import CategoriesHome from './CategoriesHome';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
+import { logRegContext } from '@/contexts/appContexts';
+import DeleteModal from '@/utils/DeleteModal';
 
-const InFeedAd = lazy(() => import("@/components/adsenses/InFeedAd"));
+const InFeedAd = lazy(() => import('@/components/adsenses/InFeedAd'));
 
 const MobileNavbar = ({
   allCourseCategories,
@@ -51,18 +51,18 @@ const MobileNavbar = ({
   <Navbar color="faded" light className="d-sm-none w-100 py-0">
     <NavbarBrand
       className={`me-auto nav-link header py-lg-2 px-0 ${
-        activeTab === "header" ? "active" : ""
+        activeTab === 'header' ? 'active' : ''
       }`}
-      id={`v-pills-header-tab`}
+      id={'v-pills-header-tab'}
       data-toggle="pill"
-      href={`#v-pills-header`}
+      href={'#v-pills-header'}
       role="tab"
-      aria-controls={`v-pills-header`}
+      aria-controls={'v-pills-header'}
       aria-selected="true"
-      onClick={() => toggle("header")}
+      onClick={() => toggle('header')}
     >
       <i className="fa fa-home" aria-hidden="true">
-        {" "}
+        {' '}
       </i>
       &nbsp;&nbsp;Categories
     </NavbarBrand>
@@ -86,7 +86,7 @@ const MobileNavbar = ({
             <NavItem key={cCategory._id}>
               <NavLink
                 className={`nav-link item ${
-                  activeTab === cCategory.title ? "active" : ""
+                  activeTab === cCategory.title ? 'active' : ''
                 }`}
                 id={`v-pills-${cCategory.title}-tab`}
                 data-toggle="pill"
@@ -124,18 +124,18 @@ const DesktopNavbar = ({
     >
       <a
         className={`nav-link header py-lg-3 ${
-          activeTab === "header" ? "active" : ""
+          activeTab === 'header' ? 'active' : ''
         }`}
-        id={`v-pills-header-tab`}
+        id={'v-pills-header-tab'}
         data-toggle="pill"
-        href={`#v-pills-header`}
+        href={'#v-pills-header'}
         role="tab"
-        aria-controls={`v-pills-header`}
+        aria-controls={'v-pills-header'}
         aria-selected="true"
-        onClick={() => toggle("header")}
+        onClick={() => toggle('header')}
       >
         <i className="fa fa-home" aria-hidden="true">
-          {" "}
+          {' '}
         </i>
         &nbsp;&nbsp;Categories
       </a>
@@ -144,7 +144,7 @@ const DesktopNavbar = ({
           <a
             key={cCategory._id}
             className={`nav-link item ${
-              activeTab === cCategory.title ? "active" : ""
+              activeTab === cCategory.title ? 'active' : ''
             }`}
             id={`v-pills-${cCategory.title}-tab`}
             data-toggle="pill"
@@ -177,7 +177,7 @@ const Index = () => {
   );
   const [collapsed, setCollapsed] = useState(true);
   const toggleNavbar = () => setCollapsed(!collapsed);
-  const [activeTab, setActiveTab] = useState("");
+  const [activeTab, setActiveTab] = useState('');
   const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
   };
@@ -196,11 +196,11 @@ const Index = () => {
           className="fw-bolder my-5 border rounded"
           onClick={toggleL}
           style={{
-            backgroundColor: "var(--accent)",
-            color: "var(--brand)",
-            fontSize: "1.5vw",
-            boxShadow: "-2px 2px 1px 2px var(--brand)",
-            border: "2px solid var(--brand)",
+            backgroundColor: 'var(--accent)',
+            color: 'var(--brand)',
+            fontSize: '1.5vw',
+            boxShadow: '-2px 2px 1px 2px var(--brand)',
+            border: '2px solid var(--brand)',
           }}
         >
           Login for Exclusive Notes Access
@@ -218,12 +218,12 @@ const Index = () => {
             >
               Welcome to Quiz-Blog Course Resources Portal
             </BreadcrumbItem>
-            {user.role === "Admin" || user.role === "Creator" ? (
+            {user.role === 'Admin' || user.role === 'Creator' ? (
               <strong>
                 <AddModal
                   title="Add Course Category"
                   triggerText="Course Category"
-                  initialState={{ title: "", description: "" }}
+                  initialState={{ title: '', description: '' }}
                   submitFn={(data) => {
                     const { title, description } = data;
                     const res = validators.validateTitleDesc(
@@ -232,8 +232,8 @@ const Index = () => {
                       { minTitle: 4, minDesc: 4, maxTitle: 70, maxDesc: 120 }
                     );
                     if (!res.ok) {
-                      notify("Insufficient info!", "error");
-                      return Promise.reject(new Error("validation"));
+                      notify('Insufficient info!', 'error');
+                      return Promise.reject(new Error('validation'));
                     }
 
                     return createCourseCategory({
@@ -253,7 +253,7 @@ const Index = () => {
                         id="title"
                         placeholder="Course category title ..."
                         className="mb-3"
-                        value={state.title || ""}
+                        value={state.title || ''}
                         onChange={(e) =>
                           setState({ ...state, title: e.target.value })
                         }
@@ -268,7 +268,7 @@ const Index = () => {
                         id="description"
                         placeholder="Course category description ..."
                         className="mb-3"
-                        value={state.description || ""}
+                        value={state.description || ''}
                         onChange={(e) =>
                           setState({ ...state, description: e.target.value })
                         }
@@ -301,12 +301,12 @@ const Index = () => {
           />
           <div className="col-12 col-sm-7 px-1 mb-3 selected-category d-flex flex-column justify-content-center align-items-center">
             <div className="tab-content" id="v-pills-tabContent">
-              {!activeTab || activeTab === "header" ? (
+              {!activeTab || activeTab === 'header' ? (
                 <div
-                  className={`tab-pane show active`}
-                  id={`v-pills-header`}
+                  className={'tab-pane show active'}
+                  id={'v-pills-header'}
                   role="tabpanel"
-                  aria-labelledby={`v-pills-header-tab`}
+                  aria-labelledby={'v-pills-header-tab'}
                 >
                   <CategoriesHome />
                   <div className="d-block d-sm-none">
@@ -316,7 +316,7 @@ const Index = () => {
                           <ListGroupItem className="justify-content-between">
                             <NavLink
                               className={`nav-link item ${
-                                activeTab === cCategory.title ? "active" : ""
+                                activeTab === cCategory.title ? 'active' : ''
                               }`}
                               id={`v-pills-${cCategory.title}-tab`}
                               data-toggle="pill"
@@ -340,13 +340,13 @@ const Index = () => {
                 <>
                   <Row className="text-center d-block py-lg-3 w-100">
                     <Suspense fallback={<QBLoadingSM />}>
-                      {process.env.NODE_ENV !== "development" ? (
+                      {process.env.NODE_ENV !== 'development' ? (
                         <InFeedAd />
                       ) : null}
                     </Suspense>
                     <h4
                       className="d-block fw-bolder"
-                      style={{ color: "var(--brand) " }}
+                      style={{ color: 'var(--brand) ' }}
                     >
                       Available Courses
                     </h4>
@@ -356,13 +356,13 @@ const Index = () => {
                       <div
                         key={cCategory._id}
                         className={`tab-pane ${
-                          activeTab === cCategory.title ? "show active" : ""
+                          activeTab === cCategory.title ? 'show active' : ''
                         }`}
                         id={`v-pills-${cCategory.title}`}
                         role="tabpanel"
                         aria-labelledby={`v-pills-${cCategory.title}-tab`}
                       >
-                        {user.role === "Admin" ||
+                        {user.role === 'Admin' ||
                         (cCategory.created_by &&
                           user._id === cCategory.created_by) ? (
                           <span className="d-flex">
@@ -371,8 +371,8 @@ const Index = () => {
                                 title="Add New Course"
                                 triggerText="Course"
                                 initialState={{
-                                  title: "",
-                                  description: "",
+                                  title: '',
+                                  description: '',
                                   courseCategory: cCategory._id,
                                 }}
                                 submitFn={(data) => {
@@ -388,9 +388,9 @@ const Index = () => {
                                     }
                                   );
                                   if (!res.ok) {
-                                    notify("Insufficient info!", "error");
+                                    notify('Insufficient info!', 'error');
                                     return Promise.reject(
-                                      new Error("validation")
+                                      new Error('validation')
                                     );
                                   }
 
@@ -419,7 +419,7 @@ const Index = () => {
                                       id="title"
                                       placeholder="Course title ..."
                                       className="mb-3"
-                                      value={state.title || ""}
+                                      value={state.title || ''}
                                       onChange={(e) =>
                                         setState({
                                           ...state,
@@ -437,7 +437,7 @@ const Index = () => {
                                       id="description"
                                       placeholder="Course description ..."
                                       className="mb-3"
-                                      value={state.description || ""}
+                                      value={state.description || ''}
                                       onChange={(e) =>
                                         setState({
                                           ...state,
@@ -470,7 +470,7 @@ const Index = () => {
                                 );
                                 if (!res.ok)
                                   return Promise.reject(
-                                    new Error("validation")
+                                    new Error('validation')
                                   );
                                 return updateCourseCategory({
                                   idToUpdate: data.idToUpdate,
@@ -487,7 +487,7 @@ const Index = () => {
                                     id="name"
                                     placeholder="Course title ..."
                                     className="mb-3"
-                                    value={state.name || ""}
+                                    value={state.name || ''}
                                     onChange={(e) =>
                                       setState({
                                         ...state,
@@ -501,7 +501,7 @@ const Index = () => {
                                     id="description"
                                     placeholder="Course description ..."
                                     className="mb-3"
-                                    value={state.description || ""}
+                                    value={state.description || ''}
                                     onChange={(e) =>
                                       setState({
                                         ...state,
@@ -521,7 +521,7 @@ const Index = () => {
                           </span>
                         ) : null}
                         <CoursesHolder courses={courses} />
-                        {cCategory._id === "60f2b2f7bdbf4c47f0fd9430" ? (
+                        {cCategory._id === '60f2b2f7bdbf4c47f0fd9430' ? (
                           <div className="d-flex" id="video-professsor-messer">
                             <iframe
                               className="mx-auto"

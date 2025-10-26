@@ -1,9 +1,9 @@
-import { Link } from "react-router-dom"
-import EditQuiz from './EditQuiz'
-import AddIcon from '@/images/plus.svg'
-import { Col, Toast, ToastBody, ToastHeader } from 'reactstrap'
-import { deleteQuiz } from '@/redux/slices/quizzesSlice'
-import DeleteModal from '@/utils/DeleteModal'
+import { Link } from 'react-router-dom';
+import EditQuiz from './EditQuiz';
+import AddIcon from '@/images/plus.svg';
+import { Col, Toast, ToastBody, ToastHeader } from 'reactstrap';
+import { deleteQuiz } from '@/redux/slices/quizzesSlice';
+import DeleteModal from '@/utils/DeleteModal';
 
 const QuizToast = ({ fromSearch, quiz }) => {
 
@@ -36,7 +36,7 @@ const QuizToast = ({ fromSearch, quiz }) => {
 
                             {quiz && quiz.questions.map((question, index) =>
                                 <ul key={question._id} className="pl-1">
-                                    <li style={{ listStyle: "none" }}>
+                                    <li style={{ listStyle: 'none' }}>
                                         {index + 1}.&nbsp;
                                         <Link to={`/view-question/${question._id}`} style={{ color: fromSearch ? 'khaki' : 'blueviolet' }}>
                                             {question.questionText}
@@ -51,7 +51,7 @@ const QuizToast = ({ fromSearch, quiz }) => {
 
             </Toast>
 
-        </Col>)
-}
+        </Col>);
+};
 
-export default QuizToast
+export default QuizToast;

@@ -1,25 +1,25 @@
-import { useState, useEffect, useRef } from "react";
-import moment from "moment";
-import Markdown from "react-markdown";
-import rehypeHighlight from "rehype-highlight";
-import { useParams } from "react-router-dom";
-import { Container, Row, Col } from "reactstrap";
-import { getOneBlogPost } from "@/redux/slices";
-import { createBlogPostView } from "@/redux/slices/blogPostsViewsSlice";
-import { useSelector, useDispatch } from "react-redux";
-import RelatedPosts from "./RelatedPosts";
-import LatestPosts from "./LatestPosts";
-import altImage from "@/images/dashboard.svg";
-import BackLikeShare from "./BackLikeShare";
-import FollowUs from "./FollowUs";
-import QBLoadingSM from "@/utils/rLoading/QBLoadingSM";
-import "./viewPost.css";
-import ResponsiveAd from "../adsenses/ResponsiveAd";
+import { useState, useEffect, useRef } from 'react';
+import moment from 'moment';
+import Markdown from 'react-markdown';
+import rehypeHighlight from 'rehype-highlight';
+import { useParams } from 'react-router-dom';
+import { Container, Row, Col } from 'reactstrap';
+import { getOneBlogPost } from '@/redux/slices';
+import { createBlogPostView } from '@/redux/slices/blogPostsViewsSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import RelatedPosts from './RelatedPosts';
+import LatestPosts from './LatestPosts';
+import altImage from '@/images/dashboard.svg';
+import BackLikeShare from './BackLikeShare';
+import FollowUs from './FollowUs';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
+import './viewPost.css';
+import ResponsiveAd from '../adsenses/ResponsiveAd';
 
 // Function to fetch IP address and country
 const fetchCountryData = async () => {
   try {
-    const ipResponse = await fetch("https://api.ipify.org?format=json");
+    const ipResponse = await fetch('https://api.ipify.org?format=json');
     const ipData = await ipResponse.json();
     const ipAddress = ipData.ip;
     console.log(`IP address: ${ipAddress}`);
@@ -58,8 +58,8 @@ const ViewBlogPost = () => {
         device: navigator.userAgent.match(
           /Android|iPhone|iPad|iPod|Windows Phone/i
         )
-          ? "mobile"
-          : "desktop",
+          ? 'mobile'
+          : 'desktop',
         country,
       });
     };
@@ -87,7 +87,7 @@ const ViewBlogPost = () => {
       (entries) => {
         entries.forEach((e) => {
           if (e.isIntersecting) {
-            node.classList.add("is-visible");
+            node.classList.add('is-visible');
           }
         });
       },
@@ -100,7 +100,7 @@ const ViewBlogPost = () => {
   return (
     <Container
       className="blog-post-view p-0 p-lg-5 mw-100"
-      style={{ backgroundColor: "var(--bg, #f3f3f2)" }}
+      style={{ backgroundColor: 'var(--bg, #f3f3f2)' }}
     >
       <Row className="viewed-details pb-lg-2">
         <Col
@@ -123,12 +123,12 @@ const ViewBlogPost = () => {
                   {bpToUse && bpToUse.title}
                 </h1>
                 <div className="meta text-muted small">
-                  <strong style={{ color: "var(--brand)" }}>
+                  <strong style={{ color: 'var(--brand)' }}>
                     {bpToUse && bpToUse.creator && bpToUse.creator.name}
                   </strong>
                   &nbsp;•&nbsp;
                   {moment(new Date(bpToUse && bpToUse.createdAt)).format(
-                    "DD MMM YYYY, HH:mm"
+                    'DD MMM YYYY, HH:mm'
                   )}
                 </div>
               </header>

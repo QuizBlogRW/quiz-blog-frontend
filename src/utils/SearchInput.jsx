@@ -1,4 +1,4 @@
-import searchImg from '@/images/loupe.svg'
+import searchImg from '@/images/loupe.svg';
 
 const SearchInput = ({ setSearchKey, placeholder }) => {
 
@@ -10,17 +10,17 @@ const SearchInput = ({ setSearchKey, placeholder }) => {
                     className="form-control "
                     placeholder={placeholder}
                     aria-label="Search"
-                    onChange={e => { setSearchKey(e.target.value) }}
+                    onChange={e => { setSearchKey(e.target.value); }}
                 />
 
                 <div className="input-group-append ms-1 my-auto">
-                    <span className="input-group-text py-1" id="basic-addon2" type="submit" style={{ border: "2px solid var(--accent)" }}>
+                    <span className="input-group-text py-1" id="basic-addon2" type="submit" style={{ border: '2px solid var(--accent)' }}>
                         <img src={searchImg} alt="Quiz-Blog Search" width="20" height="20" />
                     </span>
                 </div>
             </div>
         </form>
-    )
-}
+    );
+};
 
-export default SearchInput
+export default SearchInput;

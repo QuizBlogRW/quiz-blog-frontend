@@ -1,22 +1,22 @@
-import { createNotes } from '@/redux/slices/notesSlice'
-import AddIcon from '@/images/plus.svg'
-import AddModal from '@/utils/AddModal'
-import { useSelector } from 'react-redux'
-import { notify } from '@/utils/notifyToast'
+import { createNotes } from '@/redux/slices/notesSlice';
+import AddIcon from '@/images/plus.svg';
+import AddModal from '@/utils/AddModal';
+import { useSelector } from 'react-redux';
+import { notify } from '@/utils/notifyToast';
 
 const AddNotesModal = ({ chapter }) => {
 
-    const { user } = useSelector(state => state.auth)
+    const { user } = useSelector(state => state.auth);
 
     const initialState = {
         title: '',
         description: '',
         notes_file: null
-    }
+    };
 
     const renderForm = (formState, setFormState, firstInputRef) => {
-        const onChange = (e) => setFormState({ ...formState, [e.target.name]: e.target.value })
-        const onFile = (e) => setFormState({ ...formState, notes_file: e.target.files[0] })
+        const onChange = (e) => setFormState({ ...formState, [e.target.name]: e.target.value });
+        const onFile = (e) => setFormState({ ...formState, notes_file: e.target.files[0] });
 
         return (
             <div>
@@ -35,56 +35,56 @@ const AddNotesModal = ({ chapter }) => {
                     <input type="file" accept=".pdf, .doc, .docx, .ppt, .pptx" name="notes_file" onChange={onFile} className="form-control" />
                 </div>
             </div>
-        )
-    }
+        );
+    };
 
     const submitFn = (formState) => {
-        const { title, description, notes_file } = formState
+        const { title, description, notes_file } = formState;
 
         // Build formData
-        const formData = new FormData()
-        formData.append('title', title)
-        formData.append('description', description)
-        if (notes_file) formData.append('notes_file', notes_file)
-        if (!chapter) return Promise.reject(new Error('Chapter required'))
-        formData.append('chapter', chapter._id)
-        formData.append('course', chapter.course._id)
-        formData.append('courseCategory', chapter.courseCategory)
-        formData.append('uploaded_by', user ? user._id : null)
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('description', description);
+        if (notes_file) formData.append('notes_file', notes_file);
+        if (!chapter) return Promise.reject(new Error('Chapter required'));
+        formData.append('chapter', chapter._id);
+        formData.append('course', chapter.course._id);
+        formData.append('courseCategory', chapter.courseCategory);
+        formData.append('uploaded_by', user ? user._id : null);
 
         // Many action creators for multipart accept formData directly; return a thunk to dispatch
-        return (dispatch) => dispatch(createNotes(formData))
-    }
+        return (dispatch) => dispatch(createNotes(formData));
+    };
 
     const validate = (formState) => {
-        const { title, description, notes_file } = formState
+        const { title, description, notes_file } = formState;
         if (!title || title.length < 4 || !description || description.length < 4) {
-            notify('Insufficient info!', 'error')
-            throw new Error('validation')
+            notify('Insufficient info!', 'error');
+            throw new Error('validation');
         }
         if (title.length > 80) {
-            notify('Title is too long!', 'error')
-            throw new Error('validation')
+            notify('Title is too long!', 'error');
+            throw new Error('validation');
         }
         if (!chapter) {
-            notify('The chapter is required!', 'error')
-            throw new Error('validation')
+            notify('The chapter is required!', 'error');
+            throw new Error('validation');
         }
         if (!notes_file) {
-            notify('The file is required!', 'error')
-            throw new Error('validation')
+            notify('The file is required!', 'error');
+            throw new Error('validation');
         }
         if (description.length > 200) {
-            notify('Description is too long!', 'error')
-            throw new Error('validation')
+            notify('Description is too long!', 'error');
+            throw new Error('validation');
         }
-        return true
-    }
+        return true;
+    };
 
     const submitWrapper = async (formState) => {
-        validate(formState)
-        return submitFn(formState)
-    }
+        validate(formState);
+        return submitFn(formState);
+    };
     return (
         <AddModal
             title={<><img src={AddIcon} alt="" width="10" height="10" className="mb-1" />&nbsp;Add Notes</>}
@@ -94,7 +94,7 @@ const AddNotesModal = ({ chapter }) => {
 
             triggerText={null}
         />
-    )
-}
+    );
+};
 
-export default AddNotesModal
+export default AddNotesModal;

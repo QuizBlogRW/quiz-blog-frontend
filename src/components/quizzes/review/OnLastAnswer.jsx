@@ -1,15 +1,15 @@
-import { Button } from 'reactstrap'
-import { useNavigate, Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { Button } from 'reactstrap';
+import { useNavigate, Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const OnLastAnswer = ({ thisQuiz }) => {
 
-    const { isAuthenticated } = useSelector(state => state.auth)
+    const { isAuthenticated } = useSelector(state => state.auth);
 
     const navigate = useNavigate();
     const goBack = () => {
-        navigate(-1)
-    }
+        navigate(-1);
+    };
     return (
         isAuthenticated ?
 
@@ -38,7 +38,7 @@ const OnLastAnswer = ({ thisQuiz }) => {
             <div className='score-section text-center'>
                 <h5>Only members are allowed!</h5>
             </div>
-    )
-}
+    );
+};
 
-export default OnLastAnswer
+export default OnLastAnswer;

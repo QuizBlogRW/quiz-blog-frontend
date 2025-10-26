@@ -1,28 +1,28 @@
-import { useState, useEffect, useContext } from 'react'
-import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap'
-import { login } from '@/redux/slices/authSlice'
-import { useSelector, useDispatch } from "react-redux"
-import ReactGA from "react-ga4"
-import QBLoadingSM from '@/utils/rLoading/QBLoadingSM'
-import { notify } from '@/utils/notifyToast'
-import logocirclewhite from '@/images/logocirclewhite.svg'
-import avatar from '@/images/avatar1.svg'
-import { logRegContext } from '@/contexts/appContexts'
+import { useState, useEffect, useContext } from 'react';
+import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap';
+import { login } from '@/redux/slices/authSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import ReactGA from 'react-ga4';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
+import { notify } from '@/utils/notifyToast';
+import logocirclewhite from '@/images/logocirclewhite.svg';
+import avatar from '@/images/avatar1.svg';
+import { logRegContext } from '@/contexts/appContexts';
 
 const LoginModal = () => {
 
     // Context
-    const { isOpenL, toggleL, toggleR } = useContext(logRegContext)
+    const { isOpenL, toggleL, toggleR } = useContext(logRegContext);
 
     // Redux
-    const { isLoading, isAuthenticated } = useSelector(state => state.auth)
-    const dispatch = useDispatch()
+    const { isLoading, isAuthenticated } = useSelector(state => state.auth);
+    const dispatch = useDispatch();
 
     //properties of the modal
-    const [loginState, setLoginState] = useState({ email: '', password: '' })
-    const [loginResponse, setLoginResponse] = useState(null) // Corrected typo
-    const [confirmLogin, setConfirmLogin] = useState(false)
-    const [errorMessage, setErrorMessage] = useState('') // Add state for error message
+    const [loginState, setLoginState] = useState({ email: '', password: '' });
+    const [loginResponse, setLoginResponse] = useState(null); // Corrected typo
+    const [confirmLogin, setConfirmLogin] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(''); // Add state for error message
 
     // Lifecycle methods
     useEffect(() => {
@@ -33,64 +33,64 @@ const LoginModal = () => {
             const errorMsg = loginResponse.error?.message ||
                 loginResponse.payload ||
                 loginResponse.error ||
-                'Login failed'
-            console.log("err: ", errorMsg)
+                'Login failed';
+            console.log('err: ', errorMsg);
 
             if (errorMsg === 'CONFIRM_ERR') {
-                setConfirmLogin(true)
+                setConfirmLogin(true);
             }
 
             setErrorMessage(errorMsg === 'CONFIRM_ERR' ?
                 'Already logged in on another device/browser, log them out to use here?' :
-                errorMsg)
+                errorMsg);
         }
 
         // If Authenticated, close isOpenL
         if (isOpenL) {
             if (isAuthenticated) {
-                toggleL()
+                toggleL();
 
                 // Google Analytics
                 ReactGA.event({
                     category: 'auth_category',
                     action: 'login_action',
                     label: 'login_label'
-                })
+                });
             }
         }
-    }, [isAuthenticated, isOpenL, toggleL, loginResponse])
+    }, [isAuthenticated, isOpenL, toggleL, loginResponse]);
 
     const onChangeHandler = e => {
-        setLoginState({ ...loginState, [e.target.name]: e.target.value })
-    }
+        setLoginState({ ...loginState, [e.target.name]: e.target.value });
+    };
 
     const onSubmitHandler = async (e, conf) => {
-        e.preventDefault()
-        setErrorMessage('')
+        e.preventDefault();
+        setErrorMessage('');
 
-        const { email, password } = loginState
-        const user = { email, password, confirmLogin: conf }
+        const { email, password } = loginState;
+        const user = { email, password, confirmLogin: conf };
 
         // VALIDATE
         if (password.length < 4) {
-            notify('Password should be at least 4 characters!', 'error')
-            return
+            notify('Password should be at least 4 characters!', 'error');
+            return;
         }
 
         // Attempt to login
-        const res = await dispatch(login(user))
-        setLoginResponse(res)
-    }
+        const res = await dispatch(login(user));
+        setLoginResponse(res);
+    };
     return (
         <>
             <Modal isOpen={isOpenL} toggle={toggleL} centered={true}>
                 <div
                     className="d-flex justify-content-between align-items-center p-2"
-                    style={{ backgroundColor: "var(--brand)", color: "#fff" }}>
+                    style={{ backgroundColor: 'var(--brand)', color: '#fff' }}>
                     <img src={logocirclewhite} alt="logo"
-                        style={{ maxHeight: "3.2rem", color: "var(--brand)" }} />
+                        style={{ maxHeight: '3.2rem', color: 'var(--brand)' }} />
                     <Button className="btn-danger text-uppercase text-red ms-auto me-0"
-                        style={{ padding: "0.1rem 0.3rem", fontSize: ".6rem", fontWeight: "bold" }} onClick={toggleL}>
+                        style={{ padding: '0.1rem 0.3rem', fontSize: '.6rem', fontWeight: 'bold' }} onClick={toggleL}>
                         X
                     </Button>
                 </div>
@@ -99,7 +99,7 @@ const LoginModal = () => {
 
                 {/* icon + title */}
                 <div className='d-flex justify-content-center align-items-center pt-3'>
-                    <img src={avatar} alt="avatar" style={{ maxHeight: "1.22rem" }} />
+                    <img src={avatar} alt="avatar" style={{ maxHeight: '1.22rem' }} />
                     <h5 className='text-center text-dark fw-bolder align-baseline mb-0 ms-2'>
                         Login
                     </h5>
@@ -107,12 +107,12 @@ const LoginModal = () => {
 
                 <ModalBody className='pb-0'>
                     {errorMessage && <div className="alert alert-danger"
-                        style={{ fontSize: ".65rem", fontWeight: 900 }}>
+                        style={{ fontSize: '.65rem', fontWeight: 900 }}>
                         {errorMessage}</div>}
                     {
                         confirmLogin ?
                             <Button
-                                style={{ marginBottom: '2rem', backgroundColor: "var(--accent)", color: "var(--brand)", fontWeight: 900 }} block
+                                style={{ marginBottom: '2rem', backgroundColor: 'var(--accent)', color: 'var(--brand)', fontWeight: 900 }} block
                                 onClick={(e) => onSubmitHandler(e, true)}>
                                 Confirm Login
                             </Button> :
@@ -130,26 +130,26 @@ const LoginModal = () => {
                             </Label>
                             <Input type="password" name="password" placeholder="Password here ..." className="mb-4" onChange={onChangeHandler} />
                             <a href="forgot-password">
-                                <p className="p-2 p-xl-2 fw-bolder" style={{ color: "var(--brand)" }}>
+                                <p className="p-2 p-xl-2 fw-bolder" style={{ color: 'var(--brand)' }}>
                                     Forgot password?
                                 </p>
                             </a>
                             {confirmLogin ? null :
-                                <Button style={{ marginTop: '2rem', backgroundColor: "var(--brand)" }} block>
+                                <Button style={{ marginTop: '2rem', backgroundColor: 'var(--brand)' }} block>
                                     Login
                                 </Button>}
                         </FormGroup>
                     </Form>
                     <div className="d-flex align-items-center justify-content-around">
                         <p className="p-2 p-xl-2 m-0">No account yet?</p>
-                        <NavLink onClick={toggleR} className="fw-bolder" style={{ color: "var(--brand)" }}>
+                        <NavLink onClick={toggleR} className="fw-bolder" style={{ color: 'var(--brand)' }}>
                             Register
                         </NavLink>
                     </div>
                 </ModalBody>
             </Modal>
         </>
-    )
-}
+    );
+};
 
-export default LoginModal
+export default LoginModal;

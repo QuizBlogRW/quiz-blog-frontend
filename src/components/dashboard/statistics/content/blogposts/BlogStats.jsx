@@ -1,64 +1,64 @@
-import { useEffect, useState } from 'react'
-import TableData from '../TableData'
-import { useLocation } from "react-router-dom"
-import QBLoadingSM from '@/utils/rLoading/QBLoadingSM'
-import { getRecentTenViews, getBlogPostsViews } from '@/redux/slices/blogPostsViewsSlice'
-import { useDispatch, useSelector } from 'react-redux'
+import { useEffect, useState } from 'react';
+import TableData from '../TableData';
+import { useLocation } from 'react-router-dom';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
+import { getRecentTenViews, getBlogPostsViews } from '@/redux/slices/blogPostsViewsSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const BlogStats = () => {
 
     // Redux
-    const stats = useSelector(state => state.blogPostsViews)
-    const dispatch = useDispatch()
+    const stats = useSelector(state => state.blogPostsViews);
+    const dispatch = useDispatch();
 
-    const [blogStats, setBlogStats] = useState([])
-    const [blogStatsLoading, setBlogStatsLoading] = useState(false)
+    const [blogStats, setBlogStats] = useState([]);
+    const [blogStatsLoading, setBlogStatsLoading] = useState(false);
 
     // set the current route
-    const location = useLocation()
+    const location = useLocation();
 
     // Lifecycle method to get the data according to the current route on mount
     useEffect(() => {
         switch (location.pathname) {
 
-            case "/statistics/recent-ten-views":
-                dispatch(getRecentTenViews())
-                break
+            case '/statistics/recent-ten-views':
+                dispatch(getRecentTenViews());
+                break;
 
-            case "/statistics/all-posts-views":
-                dispatch(getBlogPostsViews())
-                break
+            case '/statistics/all-posts-views':
+                dispatch(getBlogPostsViews());
+                break;
 
             default:
-                break
+                break;
         }
-    }, [location, getRecentTenViews, getBlogPostsViews])
+    }, [location, getRecentTenViews, getBlogPostsViews]);
 
     // Updating the state according to the current route and the data returned from the server
     useEffect(() => {
         switch (location.pathname) {
 
-            case "/statistics/recent-ten-views":
-                setBlogStats(stats.recentTenViews)
-                setBlogStatsLoading(stats.isLoading)
-                break
+            case '/statistics/recent-ten-views':
+                setBlogStats(stats.recentTenViews);
+                setBlogStatsLoading(stats.isLoading);
+                break;
 
-            case "/statistics/all-posts-views":
-                setBlogStats(stats.allBlogPostsViews)
-                setBlogStatsLoading(stats.isLoading)
-                break
+            case '/statistics/all-posts-views':
+                setBlogStats(stats.allBlogPostsViews);
+                setBlogStatsLoading(stats.isLoading);
+                break;
 
             default:
-                break
+                break;
         }
-    }, [location, stats])
+    }, [location, stats]);
 
     // Generate filename 
-    const filename = location.pathname.split("/")[2]
-    console.log(stats)
+    const filename = location.pathname.split('/')[2];
+    console.log(stats);
 
     return (
-        <div style={{ position: "relative" }} className="p-1 m-1 d-flex justify-content-center align-items-center overflow-auto">
+        <div style={{ position: 'relative' }} className="p-1 m-1 d-flex justify-content-center align-items-center overflow-auto">
 
             {blogStatsLoading && blogStatsLoading ?
                 <QBLoadingSM /> :
@@ -75,7 +75,7 @@ const BlogStats = () => {
                 </div>
             }
         </div>
-    )
-}
+    );
+};
 
-export default BlogStats
+export default BlogStats;

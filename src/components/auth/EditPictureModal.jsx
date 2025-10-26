@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from 'react';
 import {
   Button,
   Modal,
@@ -8,12 +8,12 @@ import {
   Label,
   Input,
   UncontrolledTooltip,
-} from "reactstrap";
-import uploadimage from "@/images/uploadimage.svg";
-import { updateProfileImage } from "@/redux/slices/authSlice";
-import { useSelector, useDispatch } from "react-redux";
-import ImageWithFallback from "@/utils/ImageWithFallback";
-import { notify } from "@/utils/notifyToast";
+} from 'reactstrap';
+import uploadimage from '@/images/uploadimage.svg';
+import { updateProfileImage } from '@/redux/slices/authSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import ImageWithFallback from '@/utils/ImageWithFallback';
+import { notify } from '@/utils/notifyToast';
 
 const EditPictureModal = ({ bgColor, clr }) => {
   const dispatch = useDispatch();
@@ -21,7 +21,7 @@ const EditPictureModal = ({ bgColor, clr }) => {
   const userImage = user && user.image;
   const [profileImageState, setProfileImageState] = useState();
   const [profilePreview, setProfilePreview] = useState(null);
-  const [validationMessage, setValidationMessage] = useState("");
+  const [validationMessage, setValidationMessage] = useState('');
 
   //properties of the modal
   const [modal, setModal] = useState(false);
@@ -69,10 +69,10 @@ const EditPictureModal = ({ bgColor, clr }) => {
       if (!file) return;
 
       // simple client-side validation
-      const allowed = ["image/jpeg", "image/jpg", "image/png", "image/svg+xml"];
+      const allowed = ['image/jpeg', 'image/jpg', 'image/png', 'image/svg+xml'];
       if (!allowed.includes(file.type)) {
-        setValidationMessage("Unsupported file type. Use jpg, png, or svg.");
-        notify("Unsupported file type. Use jpg, png, or svg.", "error");
+        setValidationMessage('Unsupported file type. Use jpg, png, or svg.');
+        notify('Unsupported file type. Use jpg, png, or svg.', 'error');
         setProfileImageState(undefined);
         setProfilePreview(null);
         return;
@@ -80,14 +80,14 @@ const EditPictureModal = ({ bgColor, clr }) => {
 
       const maxSize = 2 * 1024 * 1024; // 2MB
       if (file.size > maxSize) {
-        setValidationMessage("File too large. Max 2MB.");
-        notify("File too large. Max 2MB.", "error");
+        setValidationMessage('File too large. Max 2MB.');
+        notify('File too large. Max 2MB.', 'error');
         setProfileImageState(undefined);
         setProfilePreview(null);
         return;
       }
 
-      setValidationMessage("");
+      setValidationMessage('');
       setProfileImageState(file);
       const url = URL.createObjectURL(file);
       setProfilePreview(url);
@@ -101,13 +101,13 @@ const EditPictureModal = ({ bgColor, clr }) => {
 
     // VALIDATE
     if (!profileImageState) {
-      setValidationMessage("Please choose an image to upload");
-      notify("The image is required!", "error");
+      setValidationMessage('Please choose an image to upload');
+      notify('The image is required!', 'error');
       return;
     }
 
     // upload profile image
-    formData.append("profilePicture", profileImageState);
+    formData.append('profilePicture', profileImageState);
 
     // Attempt to upload
     dispatch(updateProfileImage({ formData, id: user?._id }));
@@ -121,7 +121,7 @@ const EditPictureModal = ({ bgColor, clr }) => {
         role="button"
         tabIndex={0}
         onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") toggle();
+          if (e.key === 'Enter' || e.key === ' ') toggle();
         }}
         aria-label="Open edit profile image dialog"
         ref={wrapperRef}
@@ -134,8 +134,8 @@ const EditPictureModal = ({ bgColor, clr }) => {
         />
 
         {tooltipReady &&
-          typeof document !== "undefined" &&
-          document.getElementById("profileTootTip") && (
+          typeof document !== 'undefined' &&
+          document.getElementById('profileTootTip') && (
             <UncontrolledTooltip placement="bottom" target="profileTootTip">
               Click to update profile image
             </UncontrolledTooltip>
@@ -167,7 +167,7 @@ const EditPictureModal = ({ bgColor, clr }) => {
               <Label for="profilePicture" className="my-2">
                 <strong>Upload picture</strong>&nbsp;
                 <small className="text-muted">
-                  {" "}
+                  {' '}
                   (.jpg, .jpeg, .png, .svg) — max 2MB
                 </small>
               </Label>
@@ -179,7 +179,7 @@ const EditPictureModal = ({ bgColor, clr }) => {
                     src={profilePreview}
                     alt="Selected preview"
                     className="img-fluid rounded"
-                    style={{ maxHeight: "160px" }}
+                    style={{ maxHeight: '160px' }}
                   />
                 ) : (
                   <div className="text-muted">

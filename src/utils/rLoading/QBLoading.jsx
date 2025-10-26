@@ -1,5 +1,5 @@
-import React from 'react'
-import { Spinner } from 'reactstrap'
+import React from 'react';
+import { Spinner } from 'reactstrap';
 
 const QBLoading = () => {
     return (
@@ -9,7 +9,7 @@ const QBLoading = () => {
                 height: '10rem'
             }}> </Spinner>
         </div>
-    )
-}
+    );
+};
 
-export default QBLoading
+export default QBLoading;

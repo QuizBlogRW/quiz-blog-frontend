@@ -1,127 +1,127 @@
-import { useState, useEffect } from 'react'
-import { useParams, Link } from 'react-router-dom'
-import { Button, Row, Col, Form, FormGroup, Label, Input, Breadcrumb, BreadcrumbItem } from 'reactstrap'
-import Dashboard from '../../Dashboard'
-import { getOneQuestion, updateQuestion } from '@/redux/slices/questionsSlice'
-import { useSelector, useDispatch } from 'react-redux'
-import { notify } from '@/utils/notifyToast'
-import NotAuthenticated from '@/components/auth/NotAuthenticated'
-import QBLoading from '@/utils/rLoading/QBLoadingSM'
+import { useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { Button, Row, Col, Form, FormGroup, Label, Input, Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import Dashboard from '../../Dashboard';
+import { getOneQuestion, updateQuestion } from '@/redux/slices/questionsSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { notify } from '@/utils/notifyToast';
+import NotAuthenticated from '@/components/auth/NotAuthenticated';
+import QBLoading from '@/utils/rLoading/QBLoadingSM';
 
 const EditQuestion = () => {
 
     // Redux
-    const dispatch = useDispatch()
-    const quest = useSelector(state => state.questions.oneQuestion)
-    const isQnLoading = useSelector(state => state.questions.isLoading)
-    const { isAuthenticated, user, isLoading } = useSelector(state => state.auth)
+    const dispatch = useDispatch();
+    const quest = useSelector(state => state.questions.oneQuestion);
+    const isQnLoading = useSelector(state => state.questions.isLoading);
+    const { isAuthenticated, user, isLoading } = useSelector(state => state.auth);
 
     // Access route parameters & history
-    const { questionID } = useParams()
+    const { questionID } = useParams();
 
 
     // Lifecycle methods
     useEffect(() => {
-        dispatch(getOneQuestion(questionID))
-    }, [dispatch, questionID])
+        dispatch(getOneQuestion(questionID));
+    }, [dispatch, questionID]);
 
     useEffect(() => {
         if (quest) {
-            setQuestionTextState({ questionText: quest.questionText })
-            setQuestion_image(quest.question_image)
-            setDurationState({ duration: quest.duration })
-            setAnswerOptionsState(quest.answerOptions)
+            setQuestionTextState({ questionText: quest.questionText });
+            setQuestion_image(quest.question_image);
+            setDurationState({ duration: quest.duration });
+            setAnswerOptionsState(quest.answerOptions);
         }
-    }, [quest])
+    }, [quest]);
 
-    const thisQnCat = quest && quest.category
-    const thisQnQZ = quest && quest.quiz
+    const thisQnCat = quest && quest.category;
+    const thisQnQZ = quest && quest.quiz;
 
-    const [questionTextState, setQuestionTextState] = useState({ questionText: '' })
-    const [question_image, setQuestion_image] = useState('')
-    const [durationState, setDurationState] = useState()
-    const [answerOptionsState, setAnswerOptionsState] = useState(quest && quest.answerOptions)
+    const [questionTextState, setQuestionTextState] = useState({ questionText: '' });
+    const [question_image, setQuestion_image] = useState('');
+    const [durationState, setDurationState] = useState();
+    const [answerOptionsState, setAnswerOptionsState] = useState(quest && quest.answerOptions);
 
     const onQuestionChangeHandler = e => {
-        const { name, value } = e.target
-        setQuestionTextState(questionTextState => ({ ...questionTextState, [name]: value }))
-    }
+        const { name, value } = e.target;
+        setQuestionTextState(questionTextState => ({ ...questionTextState, [name]: value }));
+    };
 
     const onFileHandler = (e) => {
-        setQuestion_image(e.target.files[0])
-    }
+        setQuestion_image(e.target.files[0]);
+    };
 
     const onDurationChangeHandler = e => {
-        const { name, value } = e.target
-        setDurationState(durationState => ({ ...durationState, [name]: value }))
-    }
+        const { name, value } = e.target;
+        setDurationState(durationState => ({ ...durationState, [name]: value }));
+    };
 
     const handleAnswerChangeInput = (id, event) => {
         const updatedAnswerOptions = answerOptionsState.map(oneAnswer => {
             if (id === oneAnswer._id) {
                 return {
-                    ...oneAnswer, [event.target.name]: event.target.type === "checkbox" ? event.target.checked : event.target.value
-                }
+                    ...oneAnswer, [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value
+                };
             }
-            return oneAnswer
-        })
-        setAnswerOptionsState(updatedAnswerOptions)
-    }
+            return oneAnswer;
+        });
+        setAnswerOptionsState(updatedAnswerOptions);
+    };
 
     const handleSubmit = (e) => {
-        e.preventDefault()
+        e.preventDefault();
 
-        const formData = new FormData()
+        const formData = new FormData();
 
         // VALIDATE
         if (questionTextState.questionText.length < 4) {
-            notify('Insufficient info!', 'error')
-            return
+            notify('Insufficient info!', 'error');
+            return;
         }
         else if (questionTextState.questionText.length > 700) {
-            notify('Question is too long!', 'error')
-            return
+            notify('Question is too long!', 'error');
+            return;
         }
 
         else if (answerOptionsState.length <= 1) {
-            alert('Answers are not sufficient!', 'error')
-            return
+            alert('Answers are not sufficient!', 'error');
+            return;
         }
 
         else if (answerOptionsState.filter(aOptn => aOptn.isCorrect === true).length === 0) {
-            notify('No correct answer selected!', 'error')
-            return
+            notify('No correct answer selected!', 'error');
+            return;
         }
 
         // Add to form data
-        formData.append('question_image', question_image)
-        formData.append('questionText', questionTextState.questionText)
+        formData.append('question_image', question_image);
+        formData.append('questionText', questionTextState.questionText);
         answerOptionsState.forEach(aOptn => {
-            formData.append('answerOptions', JSON.stringify(aOptn))
-        })
-        formData.append('last_updated_by', isLoading === false ? user._id : null)
-        formData.append('duration', durationState.duration)
+            formData.append('answerOptions', JSON.stringify(aOptn));
+        });
+        formData.append('last_updated_by', isLoading === false ? user._id : null);
+        formData.append('duration', durationState.duration);
 
         // Attempt to update
-        dispatch(updateQuestion({ questionID, formData }))
+        dispatch(updateQuestion({ questionID, formData }));
 
         // Go back
         window.history.back();
-    }
+    };
 
     const handleAddFields = () => {
-        setAnswerOptionsState([...answerOptionsState, { answerText: '', explanations: '', isCorrect: false }])
-    }
+        setAnswerOptionsState([...answerOptionsState, { answerText: '', explanations: '', isCorrect: false }]);
+    };
 
     const handleRemoveFields = _id => {
 
-        const values = [...answerOptionsState]
-        values.splice(values.findIndex(value => value._id === _id), 1)
+        const values = [...answerOptionsState];
+        values.splice(values.findIndex(value => value._id === _id), 1);
 
-        setAnswerOptionsState(values)
-    }
+        setAnswerOptionsState(values);
+    };
 
-    if (isQnLoading) return <QBLoading />
+    if (isQnLoading) return <QBLoading />;
 
     return (
         isAuthenticated ?
@@ -191,17 +191,17 @@ const EditQuestion = () => {
 
                     {answerOptionsState && answerOptionsState.map(answerOption => {
 
-                        let explanation = answerOption.explanations ? answerOption.explanations : null
+                        let explanation = answerOption.explanations ? answerOption.explanations : null;
 
                         {/* If there is a word in the explanation paragraph that starts with http, make it a link */ }
                         if (explanation) {
-                            let words = explanation.split(" ")
+                            let words = explanation.split(' ');
                             explanation = words.map(word => {
-                                if (word.startsWith("http")) {
-                                    return <a key={word} href={word} target="_blank" rel="noreferrer">{word} </a>
+                                if (word.startsWith('http')) {
+                                    return <a key={word} href={word} target="_blank" rel="noreferrer">{word} </a>;
                                 }
-                                return word + " "
-                            })
+                                return word + ' ';
+                            });
                         }
                         return (
 
@@ -239,7 +239,7 @@ const EditQuestion = () => {
 
                                 </FormGroup>
                             </div>
-                        )
+                        );
                     })}
 
                     <FormGroup check row className="mx-0">
@@ -252,7 +252,7 @@ const EditQuestion = () => {
 
                 <Dashboard /> :
             <NotAuthenticated />
-    )
-}
+    );
+};
 
-export default EditQuestion
+export default EditQuestion;

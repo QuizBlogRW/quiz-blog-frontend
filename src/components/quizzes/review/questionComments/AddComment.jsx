@@ -1,28 +1,28 @@
-import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Button, Form, FormGroup, Input } from 'reactstrap'
-import { createComment } from '@/redux/slices/questionsCommentsSlice'
-import { notify } from '@/utils/notifyToast'
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Button, Form, FormGroup, Input } from 'reactstrap';
+import { createComment } from '@/redux/slices/questionsCommentsSlice';
+import { notify } from '@/utils/notifyToast';
 
 const AddComment = ({ question, quiz, fromSingleQuestion }) => {
 
-    const dispatch = useDispatch()
-    const [comment, setComment] = useState('')
-    const { user } = useSelector(state => state.auth)
-    const onChangeHandler = (e) => setComment(e.target.value)
+    const dispatch = useDispatch();
+    const [comment, setComment] = useState('');
+    const { user } = useSelector(state => state.auth);
+    const onChangeHandler = (e) => setComment(e.target.value);
 
     const onSubmitHandler = e => {
-        e.preventDefault()
+        e.preventDefault();
 
         // VALIDATE
         if (comment.length < 4) {
-            notify('Insufficient info!', 'error')
-            return
+            notify('Insufficient info!', 'error');
+            return;
         }
 
         if (comment.length > 1000) {
-            notify('Comment is too long!', 'error')
-            return
+            notify('Comment is too long!', 'error');
+            return;
         }
 
         // Create new question object
@@ -31,12 +31,12 @@ const AddComment = ({ question, quiz, fromSingleQuestion }) => {
             question,
             quiz,
             comment,
-        }
+        };
 
         // Attempt to create
-        dispatch(createComment(newComment, fromSingleQuestion))
-        setComment('')
-    }
+        dispatch(createComment(newComment, fromSingleQuestion));
+        setComment('');
+    };
 
     return (
         <>
@@ -46,8 +46,8 @@ const AddComment = ({ question, quiz, fromSingleQuestion }) => {
                     <Button color="success" style={{ marginTop: '0.5rem', width: '50%', marginLeft: '25%' }}>Send</Button>
                 </FormGroup>
             </Form>
-        </>)
+        </>);
 
-}
+};
 
-export default AddComment
+export default AddComment;

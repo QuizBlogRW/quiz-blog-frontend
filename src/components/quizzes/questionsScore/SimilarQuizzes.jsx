@@ -1,7 +1,7 @@
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { Card, Button, CardTitle, CardText, Row, Col } from "reactstrap";
-import Unavailable from "./Unavailable";
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Card, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
+import Unavailable from './Unavailable';
 
 const SimilarQuizzes = ({ thisQuiz }) => {
   const { allcategories, isLoading, error } = useSelector(

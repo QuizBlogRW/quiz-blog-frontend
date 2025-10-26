@@ -1,13 +1,13 @@
-import UpdateModal from "@/utils/UpdateModal";
-import { updateNotes } from "@/redux/slices/notesSlice";
-import { notify } from "@/utils/notifyToast";
+import UpdateModal from '@/utils/UpdateModal';
+import { updateNotes } from '@/redux/slices/notesSlice';
+import { notify } from '@/utils/notifyToast';
 
 // TODO: Needs to be fixed to edit a notes
 const EditNotesModal = ({ idToUpdate, editTitle, editDesc }) => {
   const initialData = {
     idToUpdate,
-    title: editTitle || "",
-    description: editDesc || "",
+    title: editTitle || '',
+    description: editDesc || '',
     notes_file: null,
   };
 
@@ -69,21 +69,21 @@ const EditNotesModal = ({ idToUpdate, editTitle, editDesc }) => {
     const formData = new FormData();
     const { title, description, notes_file } = formState;
     if (!title || title.length < 4 || !description || description.length < 4) {
-      notify("Insufficient info!", "error");
-      throw new Error("validation");
+      notify('Insufficient info!', 'error');
+      throw new Error('validation');
     }
     if (title.length > 80) {
-      notify("Title is too long!", "error");
-      throw new Error("validation");
+      notify('Title is too long!', 'error');
+      throw new Error('validation');
     }
     if (description.length > 200) {
-      notify("Description is too long!", "error");
-      throw new Error("validation");
+      notify('Description is too long!', 'error');
+      throw new Error('validation');
     }
 
-    formData.append("title", title);
-    formData.append("description", description);
-    if (notes_file) formData.append("notes_file", notes_file);
+    formData.append('title', title);
+    formData.append('description', description);
+    if (notes_file) formData.append('notes_file', notes_file);
 
     return (dispatch) => dispatch(updateNotes({ idToUpdate, formData }));
   };

@@ -1,81 +1,81 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import {
   apiCallHelper,
   apiCallHelperUpload,
   handlePending,
   handleRejected,
-} from "../configHelpers";
+} from '../configHelpers';
 
 // Async actions with createAsyncThunk
 export const getQuestions = createAsyncThunk(
-  "questions/getQuestions",
+  'questions/getQuestions',
   async (_, { getState }) =>
-    apiCallHelper("/api/questions", "get", null, getState, "getQuestions")
+    apiCallHelper('/api/questions', 'get', null, getState, 'getQuestions')
 );
 
 export const getOneQuestion = createAsyncThunk(
-  "questions/getOneQuestion",
+  'questions/getOneQuestion',
   async (questionID, { getState }) =>
     apiCallHelper(
       `/api/questions/${questionID}`,
-      "get",
+      'get',
       null,
       getState,
-      "getOneQuestion"
+      'getOneQuestion'
     )
 );
 
 export const addQuestion = createAsyncThunk(
-  "questions/addQuestion",
+  'questions/addQuestion',
   async (formData, { getState }) =>
     apiCallHelperUpload(
-      "/api/questions",
-      "post",
+      '/api/questions',
+      'post',
       formData,
       getState,
-      "addQuestion"
+      'addQuestion'
     )
 );
 
 export const updateQuestion = createAsyncThunk(
-  "questions/updateQuestion",
+  'questions/updateQuestion',
   async ({ questionID, formData }, { getState }) =>
     apiCallHelperUpload(
       `/api/questions/${questionID}`,
-      "put",
+      'put',
       formData,
       getState,
-      "updateQuestion"
+      'updateQuestion'
     )
 );
 
 export const deleteQuestion = createAsyncThunk(
-  "questions/deleteQuestion",
+  'questions/deleteQuestion',
   async (questionID, { getState }) =>
     apiCallHelper(
       `/api/questions/${questionID}`,
-      "delete",
+      'delete',
       null,
       getState,
-      "deleteQuestion"
+      'deleteQuestion'
     )
 );
 
 // Questions slice
 const initialState = {
   questionsData: [],
-  oneQuestion: "",
+  oneQuestion: '',
   isLoading: false,
   error: null,
 };
 
 const questionsSlice = createSlice({
-  name: "questions",
+  name: 'questions',
   initialState,
   reducers: {
     clearQuestions: (state) => {
       state.questionsData = [];
-      state.oneQuestion = "";
+      state.oneQuestion = '';
       state.isLoading = false;
     },
   },

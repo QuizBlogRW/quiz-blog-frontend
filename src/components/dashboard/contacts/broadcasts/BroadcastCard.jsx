@@ -1,9 +1,9 @@
-import React from 'react'
-import { Col, Card, Button, CardTitle, CardText, Alert } from 'reactstrap'
-import { Link } from "react-router-dom"
-import BroadcastModal from './BroadcastModal'
-import { deleteBroadcast } from '@/redux/slices/broadcastsSlice'
-import DeleteModal from '@/utils/DeleteModal'
+import React from 'react';
+import { Col, Card, Button, CardTitle, CardText, Alert } from 'reactstrap';
+import { Link } from 'react-router-dom';
+import BroadcastModal from './BroadcastModal';
+import { deleteBroadcast } from '@/redux/slices/broadcastsSlice';
+import DeleteModal from '@/utils/DeleteModal';
 
 const BroadcastsCard = ({ broadcastsToUse }) => {
 
@@ -44,7 +44,7 @@ const BroadcastsCard = ({ broadcastsToUse }) => {
             <Alert color="danger" className="w-50 text-center mx-auto" style={{ border: '2px solid #157A6E' }}>
                 Seems like you have nothing here!
             </Alert>
-    )
-}
+    );
+};
 
-export default BroadcastsCard
+export default BroadcastsCard;

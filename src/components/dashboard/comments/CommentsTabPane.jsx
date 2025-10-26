@@ -1,24 +1,24 @@
-import { useState, useEffect } from "react";
-import { Col, Row, TabPane, Card, Alert, ListGroup, Button } from "reactstrap";
+import { useState, useEffect } from 'react';
+import { Col, Row, TabPane, Card, Alert, ListGroup, Button } from 'reactstrap';
 import {
   getAllQuestionsComments,
   getPaginatedQuestionsComments,
-} from "@/redux/slices/questionsCommentsSlice";
-import { getAllQuizzesComments } from "@/redux/slices/quizzesCommentsSlice";
-import { useSelector, useDispatch } from "react-redux";
-import PendingComments from "./PendingComments";
-import SearchInput from "@/utils/SearchInput";
-import Pagination from "@/components/dashboard/utils/Pagination";
-import PageOf from "@/components/dashboard/utils/PageOf";
-import QBLoading from "@/utils/rLoading/QBLoadingSM";
-import Comment from "./Comment";
+} from '@/redux/slices/questionsCommentsSlice';
+import { getAllQuizzesComments } from '@/redux/slices/quizzesCommentsSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import PendingComments from './PendingComments';
+import SearchInput from '@/utils/SearchInput';
+import Pagination from '@/components/dashboard/utils/Pagination';
+import PageOf from '@/components/dashboard/utils/PageOf';
+import QBLoading from '@/utils/rLoading/QBLoadingSM';
+import Comment from './Comment';
 
 const CommentsTabPane = () => {
   // Local state
   const [pageNo, setPageNo] = useState(1);
   const [numberOfPages, setNumberOfPages] = useState(0);
-  const [searchKey, setSearchKey] = useState("");
-  const [searchKeyQ, setSearchKeyQ] = useState("");
+  const [searchKey, setSearchKey] = useState('');
+  const [searchKeyQ, setSearchKeyQ] = useState('');
   const [showAll, setShowAll] = useState(false);
 
   // Redux
@@ -65,7 +65,7 @@ const CommentsTabPane = () => {
           </Alert>
         ) : (
           <>
-            {(user?.role === "Admin" || user?.role === "SuperAdmin") && (
+            {(user?.role === 'Admin' || user?.role === 'SuperAdmin') && (
               <PageOf pageNo={pageNo} numberOfPages={numberOfPages} />
             )}
             {renderSearchBars(setSearchKeyQ, setSearchKey)}
@@ -95,7 +95,7 @@ const CommentsTabPane = () => {
                 </Card>
               </Col>
             </Row>
-            {user?.role !== "Visitor" && (
+            {user?.role !== 'Visitor' && (
               <Pagination
                 pageNo={pageNo}
                 setPageNo={setPageNo}
@@ -113,7 +113,7 @@ const filterComments = (comments, searchKey) => {
   return (
     comments &&
     comments.filter((cmnt) =>
-      searchKey === ""
+      searchKey === ''
         ? false
         : cmnt.comment.toLowerCase().includes(searchKey.toLowerCase())
     )
@@ -152,7 +152,7 @@ const renderShowAllButton = (showAll, setShowAll, allQuizzesComments) => {
         className="mt-2 mx-auto d-block text-success text-uppercase fw-bolder"
         onClick={() => setShowAll(!showAll)}
       >
-        {showAll ? "Hide" : "Show"} all old quizzes comments
+        {showAll ? 'Hide' : 'Show'} all old quizzes comments
       </Button>
     </>
   );

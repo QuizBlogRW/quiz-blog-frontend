@@ -1,22 +1,22 @@
-import { useEffect } from 'react'
-import moment from 'moment'
-import { Media, Alert } from 'reactstrap'
-import QBLoadingSM from '@/utils/rLoading/QBLoadingSM'
-import { getBlogPosts } from '@/redux/slices'
-import { useSelector, useDispatch } from "react-redux"
-import altImage from '@/images/dashboard.svg'
-import './relatedLatest.css'
+import { useEffect } from 'react';
+import moment from 'moment';
+import { Media, Alert } from 'reactstrap';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
+import { getBlogPosts } from '@/redux/slices';
+import { useSelector, useDispatch } from 'react-redux';
+import altImage from '@/images/dashboard.svg';
+import './relatedLatest.css';
 
 const LatestPosts = () => {
 
     // Redux
-    const dispatch = useDispatch()
-    const bposts = useSelector(state => state.blogPosts)
+    const dispatch = useDispatch();
+    const bposts = useSelector(state => state.blogPosts);
 
     // Lifecycle methods
     useEffect(() => {
-        dispatch(getBlogPosts({}))
-    }, [dispatch])
+        dispatch(getBlogPosts({}));
+    }, [dispatch]);
 
     return (
         bposts.isLoading ?
@@ -53,7 +53,7 @@ const LatestPosts = () => {
                                         {blogPost.creator && blogPost.creator.name}
                                     </small>
 
-                                    <small className={`text-primary`}>
+                                    <small className={'text-primary'}>
                                         {moment(blogPost && blogPost.createdAt).format('YYYY-MM-DD')}
                                     </small>
 
@@ -65,7 +65,7 @@ const LatestPosts = () => {
                     </Media>
                 ))}
             </div>
-    )
-}
+    );
+};
 
-export default LatestPosts
+export default LatestPosts;

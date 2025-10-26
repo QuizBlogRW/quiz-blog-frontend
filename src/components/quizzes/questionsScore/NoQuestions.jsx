@@ -1,5 +1,5 @@
-import React from 'react'
-import { Container, Row, Button } from 'reactstrap'
+import React from 'react';
+import { Container, Row, Button } from 'reactstrap';
 
 const NoQuestions = () => {
 
@@ -8,11 +8,11 @@ const NoQuestions = () => {
             <Row className="main mx-auto d-flex flex-column justify-content-center rounded border border-primary my-5 py-4 w-80 text-center">
                 <h1 className="text-danger fw-bolder">404</h1>
                 <h4>No questions to show!</h4>
-                <Button color="success" style={{ width: "120px" }} className="mx-auto mt-4">
+                <Button color="success" style={{ width: '120px' }} className="mx-auto mt-4">
                     <a href="/dashboard" className="text-white">Back</a></Button>
             </Row>
         </Container>
-    )
-}
+    );
+};
 
-export default NoQuestions
+export default NoQuestions;

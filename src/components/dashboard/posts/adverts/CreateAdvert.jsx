@@ -1,6 +1,6 @@
-import AddModal from '@/utils/AddModal'
-import { createAdvert } from '@/redux/slices/advertsSlice'
-import { Input } from 'reactstrap'
+import AddModal from '@/utils/AddModal';
+import { createAdvert } from '@/redux/slices/advertsSlice';
+import { Input } from 'reactstrap';
 
 const CreateAdvert = () => {
 
@@ -10,20 +10,20 @@ const CreateAdvert = () => {
             triggerText="Create Advert"
             initialState={{ caption: '', phone: '', owner: '', email: '', link: '', advert_image: null }}
             submitFn={data => {
-                const { caption, phone, owner, email, link, advert_image } = data
+                const { caption, phone, owner, email, link, advert_image } = data;
                 if (!caption || caption.length < 4 || !phone || phone.length < 4 || !owner || owner.length < 4 || !email || email.length < 4) {
-                    return Promise.reject(new Error('validation'))
+                    return Promise.reject(new Error('validation'));
                 }
 
-                const formData = new FormData()
-                formData.append('caption', caption)
-                formData.append('phone', phone)
-                formData.append('owner', owner)
-                formData.append('email', email)
-                formData.append('link', link || '')
-                if (advert_image) formData.append('advert_image', advert_image)
+                const formData = new FormData();
+                formData.append('caption', caption);
+                formData.append('phone', phone);
+                formData.append('owner', owner);
+                formData.append('email', email);
+                formData.append('link', link || '');
+                if (advert_image) formData.append('advert_image', advert_image);
 
-                return createAdvert(formData)
+                return createAdvert(formData);
             }}
             renderForm={(state, setState, firstInputRef) => (
                 <>
@@ -36,7 +36,7 @@ const CreateAdvert = () => {
                 </>
             )}
         />
-    )
-}
+    );
+};
 
-export default CreateAdvert
+export default CreateAdvert;

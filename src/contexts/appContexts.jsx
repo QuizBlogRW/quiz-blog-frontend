@@ -1,4 +1,4 @@
 // Contexts here
-import { createContext } from 'react'
+import { createContext } from 'react';
 
-export const logRegContext = createContext()
+export const logRegContext = createContext();

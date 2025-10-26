@@ -1,44 +1,44 @@
-import { useEffect, useState } from 'react'
-import { Row, Col, Toast, ToastBody, ToastHeader, TabPane, ListGroup, ListGroupItem } from 'reactstrap'
-import SearchInput from '@/utils/SearchInput'
-import { Link } from "react-router-dom"
-import { getQuizzes } from '@/redux/slices/quizzesSlice'
-import { useDispatch, useSelector } from "react-redux"
-import QBLoadingSM from '@/utils/rLoading/QBLoadingSM'
+import { useEffect, useState } from 'react';
+import { Row, Col, Toast, ToastBody, ToastHeader, TabPane, ListGroup, ListGroupItem } from 'reactstrap';
+import SearchInput from '@/utils/SearchInput';
+import { Link } from 'react-router-dom';
+import { getQuizzes } from '@/redux/slices/quizzesSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 
 const AllCategories = () => {
     // Redux
-    const dispatch = useDispatch()
-    const quizzes = useSelector(state => state.quizzes)
-    const categories = useSelector(state => state.categories)
+    const dispatch = useDispatch();
+    const quizzes = useSelector(state => state.quizzes);
+    const categories = useSelector(state => state.categories);
 
-    const [searchKeyC, setSearchKeyC] = useState('')
-    const [searchKeyQ, setSearchKeyQ] = useState('')
+    const [searchKeyC, setSearchKeyC] = useState('');
+    const [searchKeyQ, setSearchKeyQ] = useState('');
 
     // Lifecycle methods
-    useEffect(() => { dispatch(getQuizzes()) }, [dispatch])
+    useEffect(() => { dispatch(getQuizzes()); }, [dispatch]);
 
     const filterQuizzes = (quizzes, searchKey) => {
         return quizzes.filter(quiz => {
-            if (searchKey === "") {
-                return null
+            if (searchKey === '') {
+                return null;
             } else if (quiz.title.toLowerCase().includes(searchKey.toLowerCase())) {
-                return quiz
+                return quiz;
             }
-            return null
-        })
-    }
+            return null;
+        });
+    };
 
     const filterCategories = (categories, searchKey) => {
         return categories.filter(category => {
-            if (searchKey === "") {
-                return category
+            if (searchKey === '') {
+                return category;
             } else if (category.title.toLowerCase().includes(searchKey.toLowerCase())) {
-                return category
+                return category;
             }
-            return null
-        })
-    }
+            return null;
+        });
+    };
 
     return (
         <TabPane tabId="100">
@@ -87,7 +87,7 @@ const AllCategories = () => {
                                             <p className="fw-bolder mt-2">Quizzes ({category.quizes.length})</p>
                                             <ul className="pl-1">
                                                 {category && category.quizes.map((quiz, index) =>
-                                                    <li key={quiz._id} style={{ listStyle: "none", marginBottom: ".3rem" }}>
+                                                    <li key={quiz._id} style={{ listStyle: 'none', marginBottom: '.3rem' }}>
                                                         {index + 1}.&nbsp;
                                                         <Link to={`/view-quiz/${quiz.slug}`}>
                                                             {quiz.title}
@@ -105,7 +105,7 @@ const AllCategories = () => {
                 </>
             }
         </TabPane>
-    )
-}
+    );
+};
 
-export default AllCategories
+export default AllCategories;

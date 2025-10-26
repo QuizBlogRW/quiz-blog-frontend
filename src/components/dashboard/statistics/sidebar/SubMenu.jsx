@@ -1,15 +1,15 @@
-import { useState } from "react"
-import { Collapse, NavItem, NavLink } from "reactstrap"
-import { Link } from "react-router-dom"
+import { useState } from 'react';
+import { Collapse, NavItem, NavLink } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 const SubMenu = ({ icon, title, items }) => {
 
-  const [collapsed, setCollapsed] = useState(true)
-  const toggle = () => setCollapsed(!collapsed)
+  const [collapsed, setCollapsed] = useState(true);
+  const toggle = () => setCollapsed(!collapsed);
 
   return (
     <div>
-      <NavItem onClick={toggle} className={!collapsed ? "menu-open" : ""}>
+      <NavItem onClick={toggle} className={!collapsed ? 'menu-open' : ''}>
 
         <NavLink className="dropdown-toggle text-white">
           <i className={`fa fa-${icon} me-2 text-white`}></i>
@@ -17,7 +17,7 @@ const SubMenu = ({ icon, title, items }) => {
         </NavLink>
       </NavItem>
 
-      <Collapse isOpen={!collapsed} navbar className={!collapsed ? "items-menu mb-1" : "items-menu"}>
+      <Collapse isOpen={!collapsed} navbar className={!collapsed ? 'items-menu mb-1' : 'items-menu'}>
 
         {items.map((item, index) => (
           <NavItem key={index} className="pl-4">
@@ -28,7 +28,7 @@ const SubMenu = ({ icon, title, items }) => {
         ))}
       </Collapse>
     </div>
-  )
-}
+  );
+};
 
-export default SubMenu
+export default SubMenu;

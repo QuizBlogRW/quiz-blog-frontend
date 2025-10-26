@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef } from "react";
-import { Button, Modal, ModalBody, ModalFooter } from "reactstrap";
-import edit from "@/images/edit.svg";
-import { useDispatch } from "react-redux";
-import { notify } from "@/utils/notifyToast";
+import { useState, useEffect, useRef } from 'react';
+import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
+import edit from '@/images/edit.svg';
+import { useDispatch } from 'react-redux';
+import { notify } from '@/utils/notifyToast';
 
 /**
  * UpdateModal
@@ -13,7 +13,7 @@ import { notify } from "@/utils/notifyToast";
  * - initialData: object - object to prefill the form (required for updates)
  */
 const UpdateModal = ({
-  title = "Update",
+  title = 'Update',
   submitFn,
   renderForm,
   initialData = {},
@@ -26,7 +26,7 @@ const UpdateModal = ({
   const [formState, setFormState] = useState(initialData);
   const [error, setError] = useState(null);
   const firstInputRef = useRef(null);
-  const modalBodySelector = ".update-modal .modal-body";
+  const modalBodySelector = '.update-modal .modal-body';
 
   useEffect(() => {
     setFormState(initialData);
@@ -39,7 +39,7 @@ const UpdateModal = ({
       setTimeout(() => {
         if (
           firstInputRef.current &&
-          typeof firstInputRef.current.focus === "function"
+          typeof firstInputRef.current.focus === 'function'
         ) {
           firstInputRef.current.focus();
           return;
@@ -50,9 +50,9 @@ const UpdateModal = ({
           const body = document.querySelector(modalBodySelector);
           if (body) {
             const focusable = body.querySelector(
-              "input, select, textarea, button"
+              'input, select, textarea, button'
             );
-            if (focusable && typeof focusable.focus === "function")
+            if (focusable && typeof focusable.focus === 'function')
               focusable.focus();
           }
         } catch (e) {
@@ -74,11 +74,11 @@ const UpdateModal = ({
     try {
       const maybeResult = submitFn(data);
       // If the returned value is a function, assume it's a thunk and dispatch it.
-      if (typeof maybeResult === "function") {
+      if (typeof maybeResult === 'function') {
         return await dispatch(maybeResult);
       } else {
         throw new Error(
-          "submitFn must return a function (thunk) when used with AddModal"
+          'submitFn must return a function (thunk) when used with AddModal'
         );
       }
     } catch (err) {
@@ -94,14 +94,14 @@ const UpdateModal = ({
       setSubmitting(false);
 
       // Only close modal & show success if fulfilled
-      if (result.type.endsWith("/fulfilled")) {
+      if (result.type.endsWith('/fulfilled')) {
         setModal(false);
       } else {
-        console.error("Submission failed: ", result?.error?.message);
+        console.error('Submission failed: ', result?.error?.message);
       }
     } catch (err) {
       setSubmitting(false);
-      console.error("AddModal submit error", err);
+      console.error('AddModal submit error', err);
     }
   };
 
@@ -148,14 +148,14 @@ const UpdateModal = ({
               </div>
             )}
 
-            {typeof renderForm === "function"
+            {typeof renderForm === 'function'
               ? renderForm(formState, setFormState, firstInputRef)
               : null}
           </ModalBody>
 
           <ModalFooter className="justify-content-around pb-0">
             <Button color="success" type="submit" disabled={submitting}>
-              {submitting ? "Updating..." : "Update"}
+              {submitting ? 'Updating...' : 'Update'}
             </Button>
             <Button
               color="warning"

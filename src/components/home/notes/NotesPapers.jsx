@@ -1,19 +1,19 @@
-import { useEffect, useState, lazy, Suspense } from "react";
-import { Col, Row, Button } from "reactstrap";
+import { useEffect, useState, lazy, Suspense } from 'react';
+import { Col, Row, Button } from 'reactstrap';
 
-import { Link } from "react-router-dom";
-import { getLandingDisplayNotes } from "@/redux/slices/notesSlice";
-import { useSelector, useDispatch } from "react-redux";
-import PostItemPlaceholder from "@/utils/rLoading/PostItemPlaceholder";
-import ResponsiveAd from "@/components/adsenses/ResponsiveAd";
+import { Link } from 'react-router-dom';
+import { getLandingDisplayNotes } from '@/redux/slices/notesSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import PostItemPlaceholder from '@/utils/rLoading/PostItemPlaceholder';
+import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
 
-const SquareAd = lazy(() => import("@/components/adsenses/SquareAd"));
-const SideResizable = lazy(() => import("@/components/adsenses/SideResizable"));
+const SquareAd = lazy(() => import('@/components/adsenses/SquareAd'));
+const SideResizable = lazy(() => import('@/components/adsenses/SideResizable'));
 const ResponsiveHorizontal = lazy(() =>
-  import("@/components/adsenses/ResponsiveHorizontal")
+  import('@/components/adsenses/ResponsiveHorizontal')
 );
-const GridMultiplex = lazy(() => import("@/components/adsenses/GridMultiplex"));
-const NotesPapersItem = lazy(() => import("./NotesPapersItem"));
+const GridMultiplex = lazy(() => import('@/components/adsenses/GridMultiplex'));
+const NotesPapersItem = lazy(() => import('./NotesPapersItem'));
 
 const NotesPapers = () => {
   // Redux
@@ -29,12 +29,12 @@ const NotesPapers = () => {
   }, [dispatch, limit]);
 
   return (
-    <div style={{ background: "#eeeded" }}>
+    <div style={{ background: '#eeeded' }}>
       <Row className="px-1 px-lg-4 my-1 w-100">
         {/* Google responsive 1 ad */}
         <Col sm="12">
           <div className="w-100">
-            {process.env.NODE_ENV !== "development" ? <ResponsiveAd /> : null}
+            {process.env.NODE_ENV !== 'development' ? <ResponsiveAd /> : null}
           </div>
         </Col>
       </Row>
@@ -46,7 +46,7 @@ const NotesPapers = () => {
         >
           <Suspense fallback={<PostItemPlaceholder />}>
             <div className="w-100">
-              {process.env.NODE_ENV !== "development" ? (
+              {process.env.NODE_ENV !== 'development' ? (
                 <SideResizable />
               ) : null}
             </div>
@@ -54,7 +54,7 @@ const NotesPapers = () => {
         </Col>
         <Col sm="6" className="w-100">
           <div className="w-100">
-            {process.env.NODE_ENV !== "development" ? <SquareAd /> : null}
+            {process.env.NODE_ENV !== 'development' ? <SquareAd /> : null}
           </div>
         </Col>
       </Row>
@@ -95,7 +95,7 @@ const NotesPapers = () => {
                 <div className="mt-4 mt-sm-5 mb-sm-4 d-flex justify-content-center">
                   <Link to="/course-notes">
                     <Button outline color="success" className="view-all-btn">
-                      More Notes & Past Papers &nbsp;{" "}
+                      More Notes & Past Papers &nbsp;{' '}
                       <i className="fa fa-arrow-right"></i>
                     </Button>
                   </Link>
@@ -103,7 +103,7 @@ const NotesPapers = () => {
               ) : null}
 
               <Suspense fallback={<PostItemPlaceholder />}>
-                {process.env.NODE_ENV !== "development" ? (
+                {process.env.NODE_ENV !== 'development' ? (
                   <GridMultiplex />
                 ) : null}
               </Suspense>
@@ -116,7 +116,7 @@ const NotesPapers = () => {
         <Col sm="12" className="px-1 y-1 w-100">
           <Suspense fallback={<PostItemPlaceholder />}>
             <div className="w-100">
-              {process.env.NODE_ENV !== "development" ? (
+              {process.env.NODE_ENV !== 'development' ? (
                 <ResponsiveHorizontal />
               ) : null}
             </div>

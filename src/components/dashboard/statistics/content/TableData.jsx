@@ -1,5 +1,5 @@
-import { Table } from 'reactstrap'
-import ExcelButton from './ExcelButton'
+import { Table } from 'reactstrap';
+import ExcelButton from './ExcelButton';
 
 const TableData = ({ data, filename }) => {
 
@@ -17,12 +17,12 @@ const TableData = ({ data, filename }) => {
                         {
                             // extract titles from the first object in the array
                             Object.keys(data[0]).map((title, index) => {
-                                if (title === '_id') return null
+                                if (title === '_id') return null;
                                 return (
                                     <th key={index} className="text-uppercase">
                                         {title}
                                     </th>
-                                )
+                                );
                             })
 
                         }
@@ -41,7 +41,7 @@ const TableData = ({ data, filename }) => {
                                     // EXTRACTION OF DATA FROM THE OBJECT
                                     Object.keys(item).map((key, index) => {
 
-                                        if (key === '_id') return null
+                                        if (key === '_id') return null;
                                         return (
                                             <td key={index}>
                                                 {
@@ -62,7 +62,7 @@ const TableData = ({ data, filename }) => {
                                                         item[key]
                                                 }
                                             </td>
-                                        )
+                                        );
                                     })}
                             </tr>
                         ))
@@ -70,7 +70,7 @@ const TableData = ({ data, filename }) => {
                 </tbody>
             </Table>
         </div>
-    )
-}
+    );
+};
 
-export default TableData
+export default TableData;

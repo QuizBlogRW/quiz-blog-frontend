@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 import {
   Row,
   Col,
@@ -7,17 +7,17 @@ import {
   CardTitle,
   CardText,
   TabPane,
-} from "reactstrap";
+} from 'reactstrap';
 import {
   getPostCategories,
   deletePostCategory,
-} from "@/redux/slices/postCategoriesSlice";
-import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
-import EditBPCategory from "@/components/dashboard/posts/blog/EditBPCategory";
-import CreateBPCategory from "@/components/dashboard/posts/blog/CreateBPCategory";
-import QBLoadingSM from "@/utils/rLoading/QBLoadingSM";
-import DeleteModal from "@/utils/DeleteModal";
+} from '@/redux/slices/postCategoriesSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import EditBPCategory from '@/components/dashboard/posts/blog/EditBPCategory';
+import CreateBPCategory from '@/components/dashboard/posts/blog/CreateBPCategory';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
+import DeleteModal from '@/utils/DeleteModal';
 
 const PostCategoriesTabPane = () => {
   const dispatch = useDispatch();
@@ -58,7 +58,7 @@ const PostCategoriesTabPane = () => {
                       </Link>
                     </Button>
 
-                    {user.role === "Admin" || user.role === "SuperAdmin" ? (
+                    {user.role === 'Admin' || user.role === 'SuperAdmin' ? (
                       <>
                         <EditBPCategory categoryToEdit={category} />
                         <DeleteModal

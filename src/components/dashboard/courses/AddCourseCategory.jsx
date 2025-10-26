@@ -1,11 +1,11 @@
-import AddModal from '@/utils/AddModal'
-import { createCourseCategory } from '@/redux/slices/courseCategoriesSlice'
-import { useSelector } from 'react-redux'
-import validators from '@/utils/validators'
-import { Input } from 'reactstrap'
+import AddModal from '@/utils/AddModal';
+import { createCourseCategory } from '@/redux/slices/courseCategoriesSlice';
+import { useSelector } from 'react-redux';
+import validators from '@/utils/validators';
+import { Input } from 'reactstrap';
 
 const AddCourseCategory = () => {
-    const { user, isLoading } = useSelector(state => state.auth)
+    const { user, isLoading } = useSelector(state => state.auth);
 
     return (
         <AddModal
@@ -13,10 +13,10 @@ const AddCourseCategory = () => {
             triggerText="Course Category"
             initialState={{ title: '', description: '' }}
             submitFn={data => {
-                const { title, description } = data
-                const res = validators.validateTitleDesc(title, description, { minTitle: 4, minDesc: 4, maxTitle: 70, maxDesc: 120 })
-                if (!res.ok) return Promise.reject(new Error('validation'))
-                return createCourseCategory({ title, description, created_by: isLoading === false ? user._id : null })
+                const { title, description } = data;
+                const res = validators.validateTitleDesc(title, description, { minTitle: 4, minDesc: 4, maxTitle: 70, maxDesc: 120 });
+                if (!res.ok) return Promise.reject(new Error('validation'));
+                return createCourseCategory({ title, description, created_by: isLoading === false ? user._id : null });
             }}
             renderForm={(state, setState, firstInputRef) => (
                 <>
@@ -25,7 +25,7 @@ const AddCourseCategory = () => {
                 </>
             )}
         />
-    )
-}
+    );
+};
 
-export default AddCourseCategory
+export default AddCourseCategory;

@@ -1,22 +1,22 @@
-import { useState } from "react"
-import { Navbar, Button, NavbarToggler, Collapse, Nav, NavItem, NavLink } from "reactstrap"
-import { Link } from "react-router-dom"
-import Logout from '@/components/auth/Logout'
-import { useSelector } from "react-redux"
+import { useState } from 'react';
+import { Navbar, Button, NavbarToggler, Collapse, Nav, NavItem, NavLink } from 'reactstrap';
+import { Link } from 'react-router-dom';
+import Logout from '@/components/auth/Logout';
+import { useSelector } from 'react-redux';
 
 const Topbar = ({ toggleSidebar }) => {
 
-  const { user } = useSelector(state => state.auth)
-  const [topbarIsOpen, setTopbarOpen] = useState(true)
-  const toggleTopbar = () => setTopbarOpen(!topbarIsOpen)
+  const { user } = useSelector(state => state.auth);
+  const [topbarIsOpen, setTopbarOpen] = useState(true);
+  const toggleTopbar = () => setTopbarOpen(!topbarIsOpen);
 
-  const userName = user && user.name
-  const userId = user && user._id
+  const userName = user && user.name;
+  const userId = user && user._id;
 
   return (
     <Navbar color="light" light
       className="navbar shadow-sm p-3 my-2 bg-white rounded" expand="md"
-      style={{ position: "sticky", top: "0", zIndex: "2" }}>
+      style={{ position: 'sticky', top: '0', zIndex: '2' }}>
 
       <Button color="success" onClick={toggleSidebar}>
         <i className="fa fa-align-left me-2"></i>
@@ -32,25 +32,25 @@ const Topbar = ({ toggleSidebar }) => {
         <Nav className="ms-auto align-items-center" navbar>
 
           <NavItem>
-            <NavLink tag={Link} to={"/"} className="text-success fw-bolder">
+            <NavLink tag={Link} to={'/'} className="text-success fw-bolder">
               Home
             </NavLink>
           </NavItem>
 
           <NavItem>
-            <NavLink tag={Link} to={"/dashboard"} className="text-success fw-bolder">
+            <NavLink tag={Link} to={'/dashboard'} className="text-success fw-bolder">
               Dashboard
             </NavLink>
           </NavItem>
 
           <NavItem>
-            <NavLink tag={Link} to={"/course-notes"} className="text-success fw-bolder">
+            <NavLink tag={Link} to={'/course-notes'} className="text-success fw-bolder">
               Notes
             </NavLink>
           </NavItem>
 
           <NavItem>
-            <NavLink tag={Link} to={"/blog"} className="text-success fw-bolder">
+            <NavLink tag={Link} to={'/blog'} className="text-success fw-bolder">
               Blog
             </NavLink>
           </NavItem>
@@ -63,6 +63,6 @@ const Topbar = ({ toggleSidebar }) => {
 
       </Collapse>
     </Navbar>
-  )
-}
-export default Topbar
+  );
+};
+export default Topbar;

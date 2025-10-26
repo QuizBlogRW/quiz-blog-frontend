@@ -1,93 +1,93 @@
-import { useState, useEffect, useMemo, useCallback } from 'react'
-import { Container } from 'reactstrap'
-import { useParams, useNavigate, useLocation } from 'react-router-dom'
-import { createScore } from '@/redux/slices/scoresSlice'
-import { useDispatch } from 'react-redux'
-import { v4 as uuidv4 } from 'uuid'
-import QBLoadingSM from '@/utils/rLoading/QBLoadingSM'
-import QuestionsView from './QuestionsView'
-import NoQuestions from './questionsScore/NoQuestions'
-import Unavailable from './questionsScore/Unavailable'
-import { useSelector } from "react-redux"
+import { useState, useEffect, useMemo, useCallback } from 'react';
+import { Container } from 'reactstrap';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { createScore } from '@/redux/slices/scoresSlice';
+import { useDispatch } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
+import QuestionsView from './QuestionsView';
+import NoQuestions from './questionsScore/NoQuestions';
+import Unavailable from './questionsScore/Unavailable';
+import { useSelector } from 'react-redux';
 
 const QuizQuestions = () => {
 
     // Redux
-    const dispatch = useDispatch()
-    const { user } = useSelector(state => state.auth)
+    const dispatch = useDispatch();
+    const { user } = useSelector(state => state.auth);
 
     // Access route parameters & get the quiz
-    const { quizSlug } = useParams()
-    const navigate = useNavigate()
-    const location = useLocation()
+    const { quizSlug } = useParams();
+    const navigate = useNavigate();
+    const location = useLocation();
 
     // ACCESS Link Tag State
-    const quizState = location.state
-    console.log('quizState', quizState)
+    const quizState = location.state;
+    console.log('quizState', quizState);
 
     // Get the quiz
     const [newScoreId, setNewScoreId] = useState();
 
     // Question setup
-    const thisQuiz = quizState && quizState.oneQuiz
-    const qnsLength = thisQuiz && thisQuiz.questions && thisQuiz.questions.length
-    const [curQnIndex, setCurQnIndex] = useState(0)
-    const currentQn = thisQuiz && thisQuiz.questions[curQnIndex]
-    const curQnOpts = currentQn && currentQn.answerOptions
+    const thisQuiz = quizState && quizState.oneQuiz;
+    const qnsLength = thisQuiz && thisQuiz.questions && thisQuiz.questions.length;
+    const [curQnIndex, setCurQnIndex] = useState(0);
+    const currentQn = thisQuiz && thisQuiz.questions[curQnIndex];
+    const curQnOpts = currentQn && currentQn.answerOptions;
 
     // Dealing with answers
-    const trueAnsNbr = curQnOpts && curQnOpts.filter(aOpt => aOpt.isCorrect === true).length
+    const trueAnsNbr = curQnOpts && curQnOpts.filter(aOpt => aOpt.isCorrect === true).length;
 
     // Checked and User choices
-    const [selected, setSelected] = useState('')
-    const [checkedState, setCheckedState] = useState([])
-    useEffect(() => { curQnOpts && setCheckedState(new Array(curQnOpts.length).fill(false)) }, [curQnOpts])
+    const [selected, setSelected] = useState('');
+    const [checkedState, setCheckedState] = useState([]);
+    useEffect(() => { curQnOpts && setCheckedState(new Array(curQnOpts.length).fill(false)); }, [curQnOpts]);
 
-    const [choices, setChoices] = useState(0)
-    const [curQnUsrTrueChoices, setCurQnUsrTrueChoices] = useState(0)
-    useEffect(() => { selected && setChoices(selected.filter(value => value).length) }, [selected])
-    useEffect(() => { selected && setCurQnUsrTrueChoices(selected.filter(value => (value === 'true')).length) }, [selected])
+    const [choices, setChoices] = useState(0);
+    const [curQnUsrTrueChoices, setCurQnUsrTrueChoices] = useState(0);
+    useEffect(() => { selected && setChoices(selected.filter(value => value).length); }, [selected]);
+    useEffect(() => { selected && setCurQnUsrTrueChoices(selected.filter(value => (value === 'true')).length); }, [selected]);
 
     // Review
-    const [quizToReview, setQuizToReview] = useState({})
-    const passMark = thisQuiz && thisQuiz.category && thisQuiz.category._id === '60e9a2ba82f7830015c317f1' ? 80 : 50
+    const [quizToReview, setQuizToReview] = useState({});
+    const passMark = thisQuiz && thisQuiz.category && thisQuiz.category._id === '60e9a2ba82f7830015c317f1' ? 80 : 50;
 
     // Function to change selected answer
     const handleOnChange = (event, position) => {
         const updatedCheckedState = checkedState.map((item, index) =>
-            index === position ? !item : item)
+            index === position ? !item : item);
 
-        setCheckedState(updatedCheckedState)
+        setCheckedState(updatedCheckedState);
 
         const selectedAnswer = updatedCheckedState.map(
 
             (curSelState, index) => {
-                var ansArr = ''
+                var ansArr = '';
                 if (curSelState === true) {
-                    return ansArr + curQnOpts[index].isCorrect
+                    return ansArr + curQnOpts[index].isCorrect;
                 }
-                return ansArr
-            })
+                return ansArr;
+            });
 
-        setSelected(selectedAnswer)
+        setSelected(selectedAnswer);
 
         // Review answers
         curQnOpts
             .forEach(opt => {
                 if (event && event.target.value === opt.answerText) {
                     if (opt.choosen === undefined)
-                        opt.choosen = true
+                        opt.choosen = true;
                     else if (opt.choosen === true)
-                        opt.choosen = false
+                        opt.choosen = false;
                     else if (opt.choosen === false)
-                        opt.choosen = true
+                        opt.choosen = true;
                 }
                 else {
                     if (opt.choosen === undefined) {
-                        opt.choosen = false
+                        opt.choosen = false;
                     }
                 }
-            })
+            });
 
         // Preparing the review
         setQuizToReview({
@@ -96,11 +96,11 @@ const QuizQuestions = () => {
             title: thisQuiz.title,
             description: thisQuiz.description,
             questions: thisQuiz.questions
-        })
-        setNewScoreId(uuidv4())
-    }
+        });
+        setNewScoreId(uuidv4());
+    };
 
-    const [saveScoreLoading, setSaveScoreLoading] = useState(false)
+    const [saveScoreLoading, setSaveScoreLoading] = useState(false);
 
     // Save score to database function
     const scoreToSave = useMemo(() => {
@@ -128,52 +128,52 @@ const QuizQuestions = () => {
             quiz: thisQuiz && thisQuiz._id,
             review: quizToReview,
             taken_by: user && user._id
-        }
-    }, [user, thisQuiz, qnsLength, quizToReview, newScoreId])
+        };
+    }, [user, thisQuiz, qnsLength, quizToReview, newScoreId]);
 
     const saveScore = useCallback(async () => {
 
         // SET LOADING
-        setSaveScoreLoading(true)
+        setSaveScoreLoading(true);
 
         // ATTEMPT TO SAVE SCORE
         try {
             // SAVE SCORE ONLY IF USER IS LOGGED IN
             if (user._id) {
-                const scoreSaving = await dispatch(createScore(scoreToSave)).unwrap()
+                const scoreSaving = await dispatch(createScore(scoreToSave)).unwrap();
 
                 if (scoreSaving) {
-                    setSaveScoreLoading(false)
-                    return scoreSaving._id
+                    setSaveScoreLoading(false);
+                    return scoreSaving._id;
                 }
                 else {
-                    setSaveScoreLoading(false)
-                    return null
+                    setSaveScoreLoading(false);
+                    return null;
                 }
             }
 
             // IF USER IS NOT LOGGED IN
             else {
-                setSaveScoreLoading(false)
-                return null
+                setSaveScoreLoading(false);
+                return null;
             }
 
         } catch (err) {
-            setSaveScoreLoading(false)
-            return null
+            setSaveScoreLoading(false);
+            return null;
         }
 
-    }, [user, dispatch, scoreToSave])
+    }, [user, dispatch, scoreToSave]);
 
     // Going to next question
     const goToNextQuestion = useCallback((currentIndex, QuestionsLength) => {
 
         // REVIEW ANSWERS
-        const reviewDetails = { review: quizToReview && quizToReview }
+        const reviewDetails = { review: quizToReview && quizToReview };
 
         // NAVIGATE TO NEXT QUESTION
         if (currentIndex + 1 < QuestionsLength)
-            setCurQnIndex(currentIndex + 1)
+            setCurQnIndex(currentIndex + 1);
 
         else {
             // CALCULATE THE SCORE FROM THE ANSWERS - reviewDetails.review.questions
@@ -208,25 +208,25 @@ const QuizQuestions = () => {
                         review: quizToReview,
                         mongoScoreId: scoreId
                     }
-                })
-            })
+                });
+            });
         }
-    }, [quizToReview, passMark, thisQuiz, navigate, quizSlug, newScoreId, saveScore])
+    }, [quizToReview, passMark, thisQuiz, navigate, quizSlug, newScoreId, saveScore]);
 
 
     useEffect(() => {
         if (trueAnsNbr === choices) {
-            setCheckedState([])
-            setSelected('')
-            setChoices(0)
-            setCurQnUsrTrueChoices(0)
-            goToNextQuestion(curQnIndex, qnsLength)
+            setCheckedState([]);
+            setSelected('');
+            setChoices(0);
+            setCurQnUsrTrueChoices(0);
+            goToNextQuestion(curQnIndex, qnsLength);
         }
 
         // clean up the saving score
-        return () => setSaveScoreLoading(false)
+        return () => setSaveScoreLoading(false);
 
-    }, [trueAnsNbr, choices, curQnUsrTrueChoices, curQnIndex, qnsLength, goToNextQuestion])
+    }, [trueAnsNbr, choices, curQnUsrTrueChoices, curQnIndex, qnsLength, goToNextQuestion]);
 
     if (!quizState.isOneQuizLoading) {
 
@@ -252,14 +252,14 @@ const QuizQuestions = () => {
                     <NoQuestions /> :
 
                 <Unavailable title='Quiz' link='/allposts' more='quizzes' />
-        )
+        );
     }
 
     else if (saveScoreLoading)
-        return (<QBLoadingSM />)
+        return (<QBLoadingSM />);
 
     else
-        return (<QBLoadingSM />)
-}
+        return (<QBLoadingSM />);
+};
 
-export default QuizQuestions
+export default QuizQuestions;

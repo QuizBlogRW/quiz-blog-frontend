@@ -1,25 +1,25 @@
-import { useState, useEffect } from 'react'
-import { Row, TabPane } from 'reactstrap'
-import SearchInput from '@/utils/SearchInput'
-import { getUsers, getLatestUsers, getAdminsCreators } from '@/redux/slices/authSlice'
-import { useSelector, useDispatch } from 'react-redux'
-import UserToast from './UserToast'
-import QBLoadingSM from '@/utils/rLoading/QBLoadingSM'
+import { useState, useEffect } from 'react';
+import { Row, TabPane } from 'reactstrap';
+import SearchInput from '@/utils/SearchInput';
+import { getUsers, getLatestUsers, getAdminsCreators } from '@/redux/slices/authSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import UserToast from './UserToast';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 
 const UsersTabPane = () => {
 
     // Redux
-    const { users, isLoadingUsers, isLoadingLatestUsers, isLoadingAdminsCreators, latestUsers, adminsCreators } = useSelector(state => state.auth)
-    const dispatch = useDispatch()
+    const { users, isLoadingUsers, isLoadingLatestUsers, isLoadingAdminsCreators, latestUsers, adminsCreators } = useSelector(state => state.auth);
+    const dispatch = useDispatch();
 
     // Lifecycle methods
     useEffect(() => {
-        dispatch(getLatestUsers())
-        dispatch(getAdminsCreators())
-        dispatch(getUsers())
-    }, [dispatch])
+        dispatch(getLatestUsers());
+        dispatch(getAdminsCreators());
+        dispatch(getUsers());
+    }, [dispatch]);
 
-    const [searchKey, setSearchKey] = useState('')
+    const [searchKey, setSearchKey] = useState('');
 
     const renderUsers = (usersList, fromSearch = false) => (
         <Row>
@@ -45,7 +45,7 @@ const UsersTabPane = () => {
                             <SearchInput setSearchKey={setSearchKey} placeholder={` Search here any user from ${users.length} available users...  `} />
                     }
 
-                    {searchKey === "" ? null : renderUsers(users.filter(user => user.name.toLowerCase().includes(searchKey.toLowerCase())), true)}
+                    {searchKey === '' ? null : renderUsers(users.filter(user => user.name.toLowerCase().includes(searchKey.toLowerCase())), true)}
                     <p className="text-center my-3 fw-bolder text-underline">
                         <u>Admin and Creators</u>
                     </p>
@@ -59,7 +59,7 @@ const UsersTabPane = () => {
             }
 
         </TabPane>
-    )
-}
+    );
+};
 
-export default UsersTabPane
+export default UsersTabPane;

@@ -1,19 +1,19 @@
-import { useEffect } from 'react'
+import { useEffect } from 'react';
 import { Row, TabPane, Table } from 'reactstrap';
-import { getSubscribers, deleteSubscriber } from '@/redux/slices/subscribersSlice'
+import { getSubscribers, deleteSubscriber } from '@/redux/slices/subscribersSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
-import moment from 'moment'
+import moment from 'moment';
 import DeleteModal from '@/utils/DeleteModal';
 
 const SubscribersTabPane = () => {
 
     // Redux
-    const dispatch = useDispatch()
-    const subscribedUsers = useSelector(state => state.subscribers)
+    const dispatch = useDispatch();
+    const subscribedUsers = useSelector(state => state.subscribers);
 
     // Lifecycle methods
-    useEffect(() => { dispatch(getSubscribers()) }, [dispatch])
+    useEffect(() => { dispatch(getSubscribers()); }, [dispatch]);
 
     return (
         <TabPane tabId="6" className='mx-4'>
@@ -53,7 +53,7 @@ const SubscribersTabPane = () => {
             }
 
         </TabPane>
-    )
-}
+    );
+};
 
-export default SubscribersTabPane
+export default SubscribersTabPane;

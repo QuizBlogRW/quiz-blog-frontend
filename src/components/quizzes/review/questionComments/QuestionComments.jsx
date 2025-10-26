@@ -1,25 +1,25 @@
-import { useState, useEffect } from 'react'
-import { Col, Row, CardTitle, Card, Button } from 'reactstrap'
-import { getCommentsByQuiz, getOneQuestionComments } from '@/redux/slices/questionsCommentsSlice'
-import { getOneQuizComments } from '@/redux/slices/quizzesCommentsSlice'
-import { useSelector, useDispatch } from 'react-redux'
-import Comment from '../../../dashboard/comments/Comment'
-import AddComment from './AddComment'
+import { useState, useEffect } from 'react';
+import { Col, Row, CardTitle, Card, Button } from 'reactstrap';
+import { getCommentsByQuiz, getOneQuestionComments } from '@/redux/slices/questionsCommentsSlice';
+import { getOneQuizComments } from '@/redux/slices/quizzesCommentsSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import Comment from '../../../dashboard/comments/Comment';
+import AddComment from './AddComment';
 
 const QuestionComments = ({ questionID, quizID, fromSingleQuestion }) => {
 
-  const dispatch = useDispatch()
-  const { commentsByQuiz } = useSelector(state => state.questionsComments)
-  const { oneQuestionComments } = useSelector(state => state.questionsComments)
-  const { oneQuizComments } = useSelector(state => state.quizzesComments)
-  const { user } = useSelector(state => state.auth)
+  const dispatch = useDispatch();
+  const { commentsByQuiz } = useSelector(state => state.questionsComments);
+  const { oneQuestionComments } = useSelector(state => state.questionsComments);
+  const { oneQuizComments } = useSelector(state => state.quizzesComments);
+  const { user } = useSelector(state => state.auth);
 
   // Lifecycle methods
   useEffect(() => {
-    dispatch(getCommentsByQuiz(quizID))
-    dispatch(getOneQuestionComments(questionID))
-    dispatch(getOneQuizComments(quizID))
-  }, [dispatch, questionID, quizID])
+    dispatch(getCommentsByQuiz(quizID));
+    dispatch(getOneQuestionComments(questionID));
+    dispatch(getOneQuizComments(quizID));
+  }, [dispatch, questionID, quizID]);
   const [showAll, setShowAll] = useState(false);
 
   return (
@@ -62,8 +62,8 @@ const QuestionComments = ({ questionID, quizID, fromSingleQuestion }) => {
         )}
       </Row>
     </>
-  )
-}
+  );
+};
 
 const CommentsList = ({ comments, showQuestionText }) => {
 
@@ -85,7 +85,7 @@ const CommentsList = ({ comments, showQuestionText }) => {
         </div>
       ))}
     </>
-  )
-}
+  );
+};
 
-export default QuestionComments
+export default QuestionComments;

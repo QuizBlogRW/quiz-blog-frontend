@@ -1,37 +1,37 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { apiCallHelper, handlePending, handleRejected } from "../configHelpers";
-import { notify } from "@/utils/notifyToast";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { apiCallHelper, handlePending, handleRejected } from '../configHelpers';
+import { notify } from '@/utils/notifyToast';
 
 // Async actions with createAsyncThunk
 export const getFeedbacks = createAsyncThunk(
-  "feedbacks/getFeedbacks",
+  'feedbacks/getFeedbacks',
   async (pageNo, { getState }) =>
     apiCallHelper(
       `/api/feedbacks?pageNo=${pageNo}`,
-      "get",
+      'get',
       null,
       getState,
-      "getFeedbacks"
+      'getFeedbacks'
     )
 );
 
 export const saveFeedback = createAsyncThunk(
-  "feedbacks/saveFeedback",
+  'feedbacks/saveFeedback',
   async (feedback, { getState }) =>
-    apiCallHelper("/api/feedbacks", "post", feedback, getState, "saveFeedback")
+    apiCallHelper('/api/feedbacks', 'post', feedback, getState, 'saveFeedback')
 );
 
 // Feedback slice
 const initialState = {
   allFeedbacks: [],
   totalPages: 0,
-  oneFeedback: "",
+  oneFeedback: '',
   isLoading: false,
   error: null,
 };
 
 const feedbackSlice = createSlice({
-  name: "feedbacks",
+  name: 'feedbacks',
   initialState,
   reducers: {
     clearFeedbacks: (state) => {

@@ -1,59 +1,59 @@
-import { useState, useEffect, lazy } from 'react'
-import { Button, Col, Row, Form, FormGroup, Input } from 'reactstrap'
-import SquareAd from '@/components/adsenses/SquareAd'
-import { sendMsg } from '@/redux/slices/contactsSlice'
-import { useDispatch } from "react-redux"
-import './contact.css'
-import mail from '@/images/mail.svg'
-import { useSelector } from "react-redux"
-const ResponsiveHorizontal = lazy(() => import('@/components/adsenses/ResponsiveHorizontal'))
-import { notify } from '@/utils/notifyToast'
+import { useState, useEffect, lazy } from 'react';
+import { Button, Col, Row, Form, FormGroup, Input } from 'reactstrap';
+import SquareAd from '@/components/adsenses/SquareAd';
+import { sendMsg } from '@/redux/slices/contactsSlice';
+import { useDispatch } from 'react-redux';
+import './contact.css';
+import mail from '@/images/mail.svg';
+import { useSelector } from 'react-redux';
+const ResponsiveHorizontal = lazy(() => import('@/components/adsenses/ResponsiveHorizontal'));
+import { notify } from '@/utils/notifyToast';
 
 const Contact = () => {
 
     // Redux
-    const dispatch = useDispatch()
-    const { user } = useSelector(state => state.auth)
+    const dispatch = useDispatch();
+    const { user } = useSelector(state => state.auth);
 
     const [state, setState] = useState({
         contact_name: '',
         email: '',
         message: ''
-    })
+    });
 
     // Lifecycle methods
     useEffect(() => {
         if (user) {
-            setState(state => ({ ...state, contact_name: user.name, email: user.email }))
+            setState(state => ({ ...state, contact_name: user.name, email: user.email }));
         }
-    }, [user])
+    }, [user]);
 
     const onChangeHandler = e => {
-        const { name, value } = e.target
-        setState(state => ({ ...state, [name]: value }))
-    }
+        const { name, value } = e.target;
+        setState(state => ({ ...state, [name]: value }));
+    };
 
     const onContact = e => {
-        e.preventDefault()
+        e.preventDefault();
 
-        const { contact_name, email, message } = state
+        const { contact_name, email, message } = state;
 
         // VALIDATE
         if (contact_name.length < 3 || email.length < 4) {
-            notify('Name and email are required!', 'error')
-            return
+            notify('Name and email are required!', 'error');
+            return;
         }
         else if (contact_name.length > 100) {
-            notify('Name is too long!', 'error')
-            return
+            notify('Name is too long!', 'error');
+            return;
         }
         else if (message.length < 4) {
-            notify('Insufficient message!', 'error')
-            return
+            notify('Insufficient message!', 'error');
+            return;
         }
         else if (message.length > 1000) {
-            notify('Message is too long!', 'error')
-            return
+            notify('Message is too long!', 'error');
+            return;
         }
 
         // Create user object
@@ -61,25 +61,25 @@ const Contact = () => {
             contact_name,
             email,
             message
-        }
+        };
 
         // Attempt to contact
-        dispatch(sendMsg(contactMsg))
-        window.setTimeout(() => window.location.href = "/contact-chat", 4000)
+        dispatch(sendMsg(contactMsg));
+        window.setTimeout(() => window.location.href = '/contact-chat', 4000);
 
         // Reset fields
         setState({
             contact_name: '',
             email: '',
             message: ''
-        })
-    }
+        });
+    };
 
     return (
         <div className='contact-section py-0 px-3 py-5'>
             <div className="jbtron rounded px-3 px-sm-4 py-3 py-sm-5 p-2 m-2 m-sm-0 text-center border border-info">
 
-                <h1 className="display-4 fw-bolder text-center my-4 mb-lg-4" style={{ color: "var(--accent)" }}>
+                <h1 className="display-4 fw-bolder text-center my-4 mb-lg-4" style={{ color: 'var(--accent)' }}>
                     Reach Out Quiz-Blog
                 </h1>
 
@@ -133,7 +133,7 @@ const Contact = () => {
                 </Col>
             </Row>
         </div>
-    )
-}
+    );
+};
 
-export default Contact
+export default Contact;

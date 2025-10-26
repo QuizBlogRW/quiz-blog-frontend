@@ -1,39 +1,39 @@
-import { useState } from 'react'
-import { useDispatch } from "react-redux"
-import { Container, Row, Col, Button, Form, Input } from 'reactstrap'
-import ResponsiveAd from '@/components/adsenses/ResponsiveAd'
-import SquareAd from '@/components/adsenses/SquareAd'
-import { sendResetLink } from '@/redux/slices/authSlice'
-import { notify } from '@/utils/notifyToast'
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { Container, Row, Col, Button, Form, Input } from 'reactstrap';
+import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
+import SquareAd from '@/components/adsenses/SquareAd';
+import { sendResetLink } from '@/redux/slices/authSlice';
+import { notify } from '@/utils/notifyToast';
 
 const ForgotPassword = () => {
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
-    const [fEmail, setFEmail] = useState('')
+    const [fEmail, setFEmail] = useState('');
 
     const onChangeHandler = e => {
-        setFEmail({ [e.target.name]: e.target.value })
-    }
+        setFEmail({ [e.target.name]: e.target.value });
+    };
 
     const onSubmitHandler = e => {
-        e.preventDefault()
+        e.preventDefault();
 
         // VALIDATE
-        const emailTest = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i
+        const emailTest = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
 
         if (!fEmail.email) {
-            notify('Please provide your email!', 'error')
-            return
+            notify('Please provide your email!', 'error');
+            return;
         }
         else if (!emailTest.test(fEmail.email)) {
-            notify('Please provide a valid email!', 'error')
-            return
+            notify('Please provide a valid email!', 'error');
+            return;
         }
 
         // Attempt to send link
-        dispatch(sendResetLink(fEmail))
-    }
+        dispatch(sendResetLink(fEmail));
+    };
 
     return (
         <Container className="forgot-password mt-4">
@@ -79,7 +79,7 @@ const ForgotPassword = () => {
 
             </Row>
         </Container>
-    )
-}
+    );
+};
 
-export default ForgotPassword
+export default ForgotPassword;

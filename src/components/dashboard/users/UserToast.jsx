@@ -1,18 +1,18 @@
-import { Col, Toast, ToastBody, ToastHeader } from 'reactstrap'
-import EditUser from './EditUser'
-import uploadimage from '@/images/uploadimage.svg'
-import moment from 'moment'
-import ImageWithFallback from '@/utils/ImageWithFallback'
-import DeleteModal from '@/utils/DeleteModal'
-import { deleteUser } from '@/redux/slices/authSlice'
-import { useSelector } from 'react-redux'
+import { Col, Toast, ToastBody, ToastHeader } from 'reactstrap';
+import EditUser from './EditUser';
+import uploadimage from '@/images/uploadimage.svg';
+import moment from 'moment';
+import ImageWithFallback from '@/utils/ImageWithFallback';
+import DeleteModal from '@/utils/DeleteModal';
+import { deleteUser } from '@/redux/slices/authSlice';
+import { useSelector } from 'react-redux';
 
 const UserToast = ({ userToUse, fromSearch }) => {
 
-    const { user } = useSelector(state => state.auth)
+    const { user } = useSelector(state => state.auth);
 
     return (
-        <Col sm="3" key={userToUse?._id} className={`mt-3 users-toast`}>
+        <Col sm="3" key={userToUse?._id} className={'mt-3 users-toast'}>
 
             <Toast fade={false}>
                 <ToastHeader className="text-dark overflow-auto">
@@ -54,7 +54,7 @@ const UserToast = ({ userToUse, fromSearch }) => {
             </Toast>
 
         </Col>
-    )
-}
+    );
+};
 
-export default UserToast
+export default UserToast;

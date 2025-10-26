@@ -1,11 +1,11 @@
-import { useEffect } from 'react'
-import { Media, Alert } from 'reactstrap'
-import moment from 'moment'
-import QBLoadingSM from '@/utils/rLoading/QBLoadingSM'
-import { getBlogPostsByCategory } from '@/redux/slices'
-import { useSelector, useDispatch } from "react-redux"
-import altImage from '@/images/dashboard.svg'
-import './relatedLatest.css'
+import { useEffect } from 'react';
+import { Media, Alert } from 'reactstrap';
+import moment from 'moment';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
+import { getBlogPostsByCategory } from '@/redux/slices';
+import { useSelector, useDispatch } from 'react-redux';
+import altImage from '@/images/dashboard.svg';
+import './relatedLatest.css';
 
 // New component for rendering individual blog posts
 const BlogPostItem = ({ blogPost }) => (
@@ -27,21 +27,21 @@ const BlogPostItem = ({ blogPost }) => (
                     <small>
                         {blogPost.creator && blogPost.creator.name}
                     </small>
-                    <small className={`text-primary`}>
+                    <small className={'text-primary'}>
                         {moment(blogPost && blogPost.createdAt).format('YYYY-MM-DD')}
                     </small>
                 </div>
             </Media>
         </Media>
     </Media>
-)
+);
 
 const RelatedPosts = ({ bPCatID }) => {
 
-    const dispatch = useDispatch()
-    let bposts = useSelector(state => state.blogPosts)
+    const dispatch = useDispatch();
+    let bposts = useSelector(state => state.blogPosts);
 
-    useEffect(() => { bPCatID && dispatch(getBlogPostsByCategory(bPCatID)) }, [dispatch, bPCatID])
+    useEffect(() => { bPCatID && dispatch(getBlogPostsByCategory(bPCatID)); }, [dispatch, bPCatID]);
 
     return (
         bposts.isLoading ? <QBLoadingSM /> :
@@ -53,7 +53,7 @@ const RelatedPosts = ({ bPCatID }) => {
                     <BlogPostItem key={blogPost._id} blogPost={blogPost} />
                 ))}
             </div>
-    )
-}
+    );
+};
 
-export default RelatedPosts
+export default RelatedPosts;

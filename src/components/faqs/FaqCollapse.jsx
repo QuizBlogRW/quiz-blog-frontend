@@ -1,21 +1,21 @@
-import { useEffect, useState, lazy, Suspense } from "react";
-import { Row, Col, Button } from "reactstrap";
-import { Collapse } from "react-collapse";
-import classNames from "classnames";
-import faqsStyle from "./faqsStyle.module.css";
-import AddIcon from "@/images/plus1.svg";
-import MinusIcon from "@/images/minus.svg";
-import { getFaqs, deleteFaq } from "@/redux/slices/faqsSlice";
-import { useSelector, useDispatch } from "react-redux";
-import QBLoadingSM from "@/utils/rLoading/QBLoadingSM";
-import CreateFaq from "@/components/dashboard/posts/faqs/CreateFaq";
-import EditFaq from "@/components/dashboard/posts/faqs/EditFaq";
-import AddVideo from "@/components/dashboard/quizzing/quizzes/AddVideo";
-import EmbeddedVideos from "@/components/quizzes/EmbeddedVideos";
-import DeleteModal from "@/utils/DeleteModal";
+import { useEffect, useState, lazy, Suspense } from 'react';
+import { Row, Col, Button } from 'reactstrap';
+import { Collapse } from 'react-collapse';
+import classNames from 'classnames';
+import faqsStyle from './faqsStyle.module.css';
+import AddIcon from '@/images/plus1.svg';
+import MinusIcon from '@/images/minus.svg';
+import { getFaqs, deleteFaq } from '@/redux/slices/faqsSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
+import CreateFaq from '@/components/dashboard/posts/faqs/CreateFaq';
+import EditFaq from '@/components/dashboard/posts/faqs/EditFaq';
+import AddVideo from '@/components/dashboard/quizzing/quizzes/AddVideo';
+import EmbeddedVideos from '@/components/quizzes/EmbeddedVideos';
+import DeleteModal from '@/utils/DeleteModal';
 
-const GridMultiplex = lazy(() => import("@/components/adsenses/GridMultiplex"));
-const InFeedAd = lazy(() => import("@/components/adsenses/InFeedAd"));
+const GridMultiplex = lazy(() => import('@/components/adsenses/GridMultiplex'));
+const InFeedAd = lazy(() => import('@/components/adsenses/InFeedAd'));
 
 const FaqCollapse = () => {
   // Redux
@@ -73,10 +73,10 @@ const FaqCollapse = () => {
         </p>
 
         <small className="fw-bolder text-white">
-          Have more questions? Reach us at{" "}
+          Have more questions? Reach us at{' '}
           <a
             href="mailto:quizblog.rw@gmail.com?subject=Contact%20Quiz%20Blog"
-            style={{ color: "var(--accent)" }}
+            style={{ color: 'var(--accent)' }}
           >
             <u>quizblog.rw@gmail.com</u>
           </a>
@@ -85,22 +85,22 @@ const FaqCollapse = () => {
         <hr
           className="my-2"
           style={{
-            height: "2px",
+            height: '2px',
             borderWidth: 0,
-            color: "var(--brand)",
-            backgroundColor: "var(--brand)",
+            color: 'var(--brand)',
+            backgroundColor: 'var(--brand)',
           }}
         />
       </div>
 
-      {(user && user.role) === "Admin" ||
-      (user && user.role) === "SuperAdmin" ? (
+      {(user && user.role) === 'Admin' ||
+      (user && user.role) === 'SuperAdmin' ? (
         <Row className="m-lg-4 px-lg-5 d-flex justify-content-around align-items-center text-primary">
           <CreateFaq />
         </Row>
       ) : (
         <Suspense fallback={<QBLoadingSM />}>
-          {process.env.NODE_ENV !== "development" ? <InFeedAd /> : null}
+          {process.env.NODE_ENV !== 'development' ? <InFeedAd /> : null}
         </Suspense>
       )}
 
@@ -116,7 +116,7 @@ const FaqCollapse = () => {
                       tabIndex={0}
                       onClick={() => toggleClass(index)}
                       onKeyDown={(e) => {
-                        if (e.key === "Enter" || e.key === " ")
+                        if (e.key === 'Enter' || e.key === ' ')
                           toggleClass(index);
                       }}
                       aria-controls={`faq-collapse-${index}`}
@@ -128,13 +128,13 @@ const FaqCollapse = () => {
                     <span className={faqsStyle.actionGroup}>
                       <Button
                         className={
-                          "btn btn-warning btn-xs " + faqsStyle.faqToggleBtn
+                          'btn btn-warning btn-xs ' + faqsStyle.faqToggleBtn
                         }
                         onClick={() => toggleClass(index)}
                         aria-label={
                           activeIndex === index
-                            ? "Collapse answer"
-                            : "Expand answer"
+                            ? 'Collapse answer'
+                            : 'Expand answer'
                         }
                         aria-controls={`faq-collapse-${index}`}
                         aria-expanded={activeIndex === index}
@@ -142,8 +142,8 @@ const FaqCollapse = () => {
                         {moreLess(index)}
                       </Button>
 
-                      {(user && user.role) === "Admin" ||
-                      (user && user.role) === "SuperAdmin" ? (
+                      {(user && user.role) === 'Admin' ||
+                      (user && user.role) === 'SuperAdmin' ? (
                         <>
                           <EditFaq faqToEdit={faq} />
                           <DeleteModal
@@ -161,7 +161,7 @@ const FaqCollapse = () => {
                   <Collapse isOpened={activeIndex === index}>
                     <div
                       id={`faq-collapse-${index}`}
-                      className={classNames("alert alert-secondary msg", {
+                      className={classNames('alert alert-secondary msg', {
                         show: activeIndex === index,
                         hide: activeIndex !== index,
                       })}
@@ -182,7 +182,7 @@ const FaqCollapse = () => {
 
         <Col sm="12">
           <Suspense fallback={<QBLoadingSM />}>
-            {process.env.NODE_ENV !== "development" ? <GridMultiplex /> : null}
+            {process.env.NODE_ENV !== 'development' ? <GridMultiplex /> : null}
           </Suspense>
         </Col>
       </Row>

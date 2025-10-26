@@ -1,18 +1,18 @@
-import React from 'react'
-import { useLocation } from "react-router-dom"
-import './footer.css'
-import logo from '@/images/quizLogo.svg'
+import React from 'react';
+import { useLocation } from 'react-router-dom';
+import './footer.css';
+import logo from '@/images/quizLogo.svg';
 
 const Footer = () => {
 
-    let location = useLocation()
+    let location = useLocation();
 
     // If the route starts with /questions, /dashboard or /statistics, then don't show the footer
     if (location.pathname.startsWith('/questions') ||
         location.pathname.startsWith('/dashboard') ||
         location.pathname.startsWith('/statistics') ||
         location.pathname.startsWith('/contact-chat')) {
-        return null
+        return null;
 
     } else return (
         <footer className="mainfooter mt-1 px-3" role="contentinfo">
@@ -88,7 +88,7 @@ const Footer = () => {
                 </div>
             </div>
         </footer>
-    )
-}
+    );
+};
 
-export default Footer
+export default Footer;

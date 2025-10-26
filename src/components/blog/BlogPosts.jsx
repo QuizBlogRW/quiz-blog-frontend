@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { Col, Row, Button, ListGroup, ListGroupItem } from "reactstrap";
-import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
-import moment from "moment";
-import ResponsiveAd from "@/components/adsenses/ResponsiveAd";
-import SquareAd from "@/components/adsenses/SquareAd";
+import React, { useEffect, useState } from 'react';
+import { Col, Row, Button, ListGroup, ListGroupItem } from 'reactstrap';
+import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import moment from 'moment';
+import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
+import SquareAd from '@/components/adsenses/SquareAd';
 
-import { getBlogPosts } from "@/redux/slices";
-import "./homePosts.css";
-import QBLoading from "@/utils/rLoading/QBLoading";
+import { getBlogPosts } from '@/redux/slices';
+import './homePosts.css';
+import QBLoading from '@/utils/rLoading/QBLoading';
 
 const BlogPosts = () => {
 
@@ -30,7 +30,7 @@ const BlogPosts = () => {
       <Row sm="12" className="px-1 px-lg-4 my-1">
         {/* Google responsive 1 ad */}
         <div className="w-100">
-          {process.env.NODE_ENV !== "development" ? <ResponsiveAd /> : null}
+          {process.env.NODE_ENV !== 'development' ? <ResponsiveAd /> : null}
         </div>
       </Row>
 
@@ -71,7 +71,7 @@ const BlogPosts = () => {
                               {creator && creator.name && (
                                 <small className="px-1">{creator.name} |</small>
                               )}
-                              <small className="px-1">{moment(new Date(createdAt)).format("DD MMM YYYY, HH:mm")}</small>
+                              <small className="px-1">{moment(new Date(createdAt)).format('DD MMM YYYY, HH:mm')}</small>
                             </div>
                           </ListGroupItem>
                         </ListGroup>
@@ -79,7 +79,7 @@ const BlogPosts = () => {
                         {/* Ad when half the number of notes*/}
                         {AllBPs.length > 2 && AllBPs.indexOf(bp) === Math.floor(AllBPs.length / 2) && (
                           <div className="w-100">
-                            {process.env.NODE_ENV !== "development" ? (
+                            {process.env.NODE_ENV !== 'development' ? (
                               <SquareAd />
                             ) : null}
                           </div>

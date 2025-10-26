@@ -1,13 +1,13 @@
-import { Table, Alert } from 'reactstrap'
-import { Link } from "react-router-dom"
-import moment from 'moment'
-import { deleteBlogPost } from '@/redux/slices'
-import DeleteModal from '@/utils/DeleteModal'
-import { useSelector } from "react-redux"
+import { Table, Alert } from 'reactstrap';
+import { Link } from 'react-router-dom';
+import moment from 'moment';
+import { deleteBlogPost } from '@/redux/slices';
+import DeleteModal from '@/utils/DeleteModal';
+import { useSelector } from 'react-redux';
 
 const BPTable = ({ bpostsToUse }) => {
 
-    const { user } = useSelector(state => state.auth)
+    const { user } = useSelector(state => state.auth);
 
     return (
         <>
@@ -30,12 +30,12 @@ const BPTable = ({ bpostsToUse }) => {
 
                         {bpostsToUse && bpostsToUse.map((bPost, index) => {
 
-                            const numero = index + 1
-                            const bPTitle = bPost && bPost.title
-                            const catg = bPost && bPost.postCategory && bPost.postCategory.title
-                            const creator = bPost && bPost.creator && bPost.creator.name
-                            const creat = bPost && bPost.creator
-                            let date = bPost && new Date(bPost.createdAt)
+                            const numero = index + 1;
+                            const bPTitle = bPost && bPost.title;
+                            const catg = bPost && bPost.postCategory && bPost.postCategory.title;
+                            const creator = bPost && bPost.creator && bPost.creator.name;
+                            const creat = bPost && bPost.creator;
+                            let date = bPost && new Date(bPost.createdAt);
 
                             return (<tr key={index}>
                                 <th scope="row" className="table-dark">{numero && numero}</th>
@@ -49,7 +49,7 @@ const BPTable = ({ bpostsToUse }) => {
                                 <td className={`${((user?.role === 'Admin' || user?.role === 'SuperAdmin') || creat._id === user._id) ? '' : 'd-none'}`}>
                                     <DeleteModal deleteFnName="deleteBlogPost" deleteFn={deleteBlogPost} delID={bPost._id} delTitle={bPost.title} />
                                 </td>
-                            </tr>)
+                            </tr>);
                         })}
 
                     </tbody>
@@ -59,7 +59,7 @@ const BPTable = ({ bpostsToUse }) => {
                     Seems like you have nothing here!
                 </Alert>}
         </>
-    )
-}
+    );
+};
 
-export default BPTable
+export default BPTable;

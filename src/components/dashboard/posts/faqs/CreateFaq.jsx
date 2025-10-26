@@ -1,11 +1,11 @@
-import AddModal from '@/utils/AddModal'
-import { createFq } from '@/redux/slices/faqsSlice'
-import { useSelector } from 'react-redux'
-import validators from '@/utils/validators'
-import { useDispatch } from 'react-redux'
+import AddModal from '@/utils/AddModal';
+import { createFq } from '@/redux/slices/faqsSlice';
+import { useSelector } from 'react-redux';
+import validators from '@/utils/validators';
+import { useDispatch } from 'react-redux';
 
 const CreateFaq = () => {
-    const { user } = useSelector(state => state.auth)
+    const { user } = useSelector(state => state.auth);
 
     return (
         <AddModal
@@ -13,10 +13,10 @@ const CreateFaq = () => {
             triggerText="FAQ"
             initialState={{ title: '', answer: '', created_by: user ? user._id : null }}
             submitFn={data => {
-                const { title, answer } = data
-                const res = validators.validateTitleDesc(title, answer, { minTitle: 4, minDesc: 4, maxTitle: 200, maxDesc: 1000 })
-                if (!res.ok) return Promise.reject(new Error('validation'))
-                return createFq({ ...data })
+                const { title, answer } = data;
+                const res = validators.validateTitleDesc(title, answer, { minTitle: 4, minDesc: 4, maxTitle: 200, maxDesc: 1000 });
+                if (!res.ok) return Promise.reject(new Error('validation'));
+                return createFq({ ...data });
             }}
             renderForm={(state, setState, firstInputRef) => (
                 <>
@@ -25,7 +25,7 @@ const CreateFaq = () => {
                 </>
             )}
         />
-    )
-}
+    );
+};
 
-export default CreateFaq
+export default CreateFaq;

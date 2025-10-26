@@ -1,9 +1,9 @@
-import { Container, Row, Col } from "reactstrap"
-import SquareAd from '@/components/adsenses/SquareAd'
-import ResponsiveAd from '@/components/adsenses/ResponsiveAd'
-import Biographies from './Biographies'
-import Intro from './Intro'
-import './about.css'
+import { Container, Row, Col } from 'reactstrap';
+import SquareAd from '@/components/adsenses/SquareAd';
+import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
+import Biographies from './Biographies';
+import Intro from './Intro';
+import './about.css';
 
 const About = () => {
     return (
@@ -32,7 +32,7 @@ const About = () => {
                 )}
             </Container>
         </section>
-    )
-}
+    );
+};
 
-export default About
+export default About;

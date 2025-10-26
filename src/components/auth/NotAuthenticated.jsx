@@ -1,13 +1,13 @@
-import { useContext } from 'react'
-import { useSelector } from 'react-redux'
-import QBLoadingSM from '@/utils/rLoading/QBLoadingSM'
-import { Button } from 'reactstrap'
-import { logRegContext } from '@/contexts/appContexts'
-import './NotAuthenticated.css'
+import { useContext } from 'react';
+import { useSelector } from 'react-redux';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
+import { Button } from 'reactstrap';
+import { logRegContext } from '@/contexts/appContexts';
+import './NotAuthenticated.css';
 
 const NotAuthenticated = () => {
 
-    const { toggleL } = useContext(logRegContext)
+    const { toggleL } = useContext(logRegContext);
     const { isLoading } = useSelector((state) => state.auth);
 
     return (
@@ -21,7 +21,7 @@ const NotAuthenticated = () => {
                     </Button>
             }
         </div>
-    )
-}
+    );
+};
 
-export default NotAuthenticated
+export default NotAuthenticated;

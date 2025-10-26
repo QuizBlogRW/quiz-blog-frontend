@@ -1,54 +1,54 @@
-import { useState, useEffect } from 'react'
-import { useNavigate } from "react-router-dom"
-import { useSelector, useDispatch } from "react-redux"
-import { Container, Row, Col, Input, Button } from 'reactstrap'
-import { notify } from '@/utils/notifyToast'
-import { verify } from '@/redux/slices/authSlice'
-import QBLoading from '@/utils/rLoading/QBLoading'
-import SquareAd from '@/components/adsenses/SquareAd'
-import ResponsiveAd from '@/components/adsenses/ResponsiveAd'
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { Container, Row, Col, Input, Button } from 'reactstrap';
+import { notify } from '@/utils/notifyToast';
+import { verify } from '@/redux/slices/authSlice';
+import QBLoading from '@/utils/rLoading/QBLoading';
+import SquareAd from '@/components/adsenses/SquareAd';
+import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
 
 export function Verify() {
 
-    const [otp, setOtp] = useState('')
+    const [otp, setOtp] = useState('');
 
-    const navigate = useNavigate()
-    const dispatch = useDispatch()
-    const { isLoading } = useSelector(state => state.auth)
-    const onChangeHandler = e => setOtp(e.target.value)
-    useEffect(() => { document.title = "Verify OTP" }, [])
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { isLoading } = useSelector(state => state.auth);
+    const onChangeHandler = e => setOtp(e.target.value);
+    useEffect(() => { document.title = 'Verify OTP'; }, []);
 
     const handleSubmit = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
 
         if (!localStorage.getItem('emailForOTP')) {
-            notify('Invalid email request, start again!', 'error')
-            return
+            notify('Invalid email request, start again!', 'error');
+            return;
         }
 
         if (otp.length !== 6 || isNaN(otp)) {
-            notify('Invalid code!', 'error')
-            return
+            notify('Invalid code!', 'error');
+            return;
         }
 
         try {
-            const result = await dispatch(verify({ email: localStorage.getItem('emailForOTP'), otp }))
+            const result = await dispatch(verify({ email: localStorage.getItem('emailForOTP'), otp }));
 
             if (result.payload.user) {
                 setTimeout(() => {
-                    navigate('/dashboard')
-                }, 2000)
+                    navigate('/dashboard');
+                }, 2000);
             } else {
-                notify('OTP verification failed. Please try again.', 'error')
+                notify('OTP verification failed. Please try again.', 'error');
             }
         } catch (error) {
-            console.error(error)
-            notify('An error occurred during verification. Please try again.', 'error')
+            console.error(error);
+            notify('An error occurred during verification. Please try again.', 'error');
         }
 
         // Reset fields
-        setOtp('')
-    }
+        setOtp('');
+    };
 
     return (
         <Container className="forgot-password mt-4">
@@ -80,7 +80,7 @@ export function Verify() {
                     </div>
 
                     <Button className="bg-success mt-4" type='submit' disabled={isLoading}>
-                        {isLoading ? <QBLoading /> : "Verify"}
+                        {isLoading ? <QBLoading /> : 'Verify'}
                     </Button>
                 </form>
 
@@ -95,7 +95,7 @@ export function Verify() {
 
             </Row>
         </Container>
-    )
+    );
 }
 
-export default Verify
+export default Verify;

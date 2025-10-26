@@ -1,28 +1,28 @@
-import { useEffect } from 'react'
-import AddModal from '@/utils/AddModal'
-import { getQuizzesByNotes } from '@/redux/slices/quizzesSlice'
-import { addNotesQuizzes } from '@/redux/slices/notesSlice'
-import { useSelector, useDispatch } from 'react-redux'
-import AddIcon from '@/images/plus.svg'
+import { useEffect } from 'react';
+import AddModal from '@/utils/AddModal';
+import { getQuizzesByNotes } from '@/redux/slices/quizzesSlice';
+import { addNotesQuizzes } from '@/redux/slices/notesSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import AddIcon from '@/images/plus.svg';
 
 // TODO: Wrong, needs to push quizzes IDs into specific Notes Model
 const AddRelatedQuiz = ({ noteID }) => {
 
-    const dispatch = useDispatch()
-    const notesQuizzes = useSelector(state => state.quizzes.notesQuizzes)
+    const dispatch = useDispatch();
+    const notesQuizzes = useSelector(state => state.quizzes.notesQuizzes);
 
     const initialState = {
         quizID: ''
-    }
+    };
 
     useEffect(() => {
         if (noteID) {
-            dispatch(getQuizzesByNotes(noteID))
+            dispatch(getQuizzesByNotes(noteID));
         }
-    }, [noteID, dispatch])
+    }, [noteID, dispatch]);
 
     const renderForm = (formState, setFormState, firstInputRef) => {
-        const onChange = (e) => setFormState({ ...formState, quizID: e.target.value })
+        const onChange = (e) => setFormState({ ...formState, quizID: e.target.value });
         return (
             <div>
                 <div className="mb-2">
@@ -36,23 +36,23 @@ const AddRelatedQuiz = ({ noteID }) => {
                     </select>
                 </div>
             </div>
-        )
-    }
+        );
+    };
 
     const submitFn = (formState) => {
-        const payload = { noteID, quizzesState: formState.quizID }
-        return (dispatch) => dispatch(addNotesQuizzes(payload))
-    }
+        const payload = { noteID, quizzesState: formState.quizID };
+        return (dispatch) => dispatch(addNotesQuizzes(payload));
+    };
 
     const validate = (formState) => {
-        if (!formState.quizID) throw new Error('validation')
-        return true
-    }
+        if (!formState.quizID) throw new Error('validation');
+        return true;
+    };
 
     const submitWrapper = async (formState) => {
-        validate(formState)
-        return submitFn(formState)
-    }
+        validate(formState);
+        return submitFn(formState);
+    };
     return (
         <AddModal
             title={<><img src={AddIcon} alt="" width="10" height="10" className="mb-1" />&nbsp; Quizzes</>}
@@ -62,7 +62,7 @@ const AddRelatedQuiz = ({ noteID }) => {
 
             triggerText={null}
         />
-    )
-}
+    );
+};
 
-export default AddRelatedQuiz
+export default AddRelatedQuiz;

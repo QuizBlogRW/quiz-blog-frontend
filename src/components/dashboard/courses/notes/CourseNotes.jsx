@@ -1,17 +1,19 @@
-import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import {
   getNotesByChapter,
   deleteNotes,
   removeQzNt,
-} from "@/redux/slices/notesSlice";
-import { saveDownload } from "@/redux/slices/downloadsSlice";
-import { useSelector, useDispatch } from "react-redux";
-import img from "@/images/resourceImg.svg";
-import DeleteIcon from "@/images/trash.svg";
-import AddNotesModal from "./AddNotesModal";
-import UpdateModal from "@/utils/UpdateModal";
-import AddRelatedQuiz from "./AddRelatedQuiz";
+} from '@/redux/slices/notesSlice';
+import { saveDownload } from '@/redux/slices/downloadsSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import img from '@/images/resourceImg.svg';
+import DeleteIcon from '@/images/trash.svg';
+import AddNotesModal from './AddNotesModal';
+import UpdateModal from '@/utils/UpdateModal';
+import AddRelatedQuiz from './AddRelatedQuiz';
+import validators from '@/utils/validators';
+import { updateNotes } from '@/redux/slices/notesSlice';
 import {
   Row,
   Col,
@@ -23,9 +25,9 @@ import {
   CardSubtitle,
   Button,
   Input,
-} from "reactstrap";
-import QBLoadingSM from "@/utils/rLoading/QBLoadingSM";
-import DeleteModal from "@/utils/DeleteModal";
+} from 'reactstrap';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
+import DeleteModal from '@/utils/DeleteModal';
 
 const CourseNotes = ({ chapter }) => {
   // Redux
@@ -53,7 +55,7 @@ const CourseNotes = ({ chapter }) => {
     <QBLoadingSM title="notes" />
   ) : (
     <>
-      {user.role !== "Visitor" ? (
+      {user.role !== 'Visitor' ? (
         <Row>
           {chapter ? (
             <Button
@@ -85,11 +87,11 @@ const CourseNotes = ({ chapter }) => {
                 alt="Card image cap"
                 className="pl-1"
               />
-              <CardBody style={{ width: "77%" }}>
+              <CardBody style={{ width: '77%' }}>
                 <CardTitle
                   tag="h6"
                   className="text-success fw-bolder mb-1"
-                  style={{ fontSize: ".7rem" }}
+                  style={{ fontSize: '.7rem' }}
                 >
                   {note?.title}
                 </CardTitle>
@@ -97,7 +99,7 @@ const CourseNotes = ({ chapter }) => {
                 <CardSubtitle
                   tag="small"
                   className="mb-2 text-muted fw-bolder"
-                  style={{ fontSize: ".6rem" }}
+                  style={{ fontSize: '.6rem' }}
                 >
                   {note?.courseCategory?.title}
                 </CardSubtitle>
@@ -107,13 +109,13 @@ const CourseNotes = ({ chapter }) => {
                   <br />
                   <i
                     className="fw-bolder text-success"
-                    style={{ fontSize: ".5rem" }}
+                    style={{ fontSize: '.5rem' }}
                   >
                     {note?.notes_file &&
                       note?.notes_file
-                        .split("/")
+                        .split('/')
                         .pop()
-                        .replace(/%20|%5B|%5D/g, " ")}
+                        .replace(/%20|%5B|%5D/g, ' ')}
                   </i>
                 </CardText>
 
@@ -121,17 +123,17 @@ const CourseNotes = ({ chapter }) => {
                   <>
                     <h6
                       style={{
-                        fontSize: ".7rem",
-                        fontWeight: "bolder",
-                        marginTop: "1rem",
-                        color: "magenta",
+                        fontSize: '.7rem',
+                        fontWeight: 'bolder',
+                        marginTop: '1rem',
+                        color: 'magenta',
                       }}
                     >
                       <u>RELATED QUIZZES</u>
                     </h6>
                     {console.log('note?.quizzes', note?.quizzes)}
 
-                    <ol style={{ fontSize: ".65rem" }}>
+                    <ol style={{ fontSize: '.65rem' }}>
                       {note?.quizzes &&
                         note?.quizzes.map((qz, index) => (
                           <li key={qz && qz?._id ? qz?._id : index}>
@@ -139,7 +141,7 @@ const CourseNotes = ({ chapter }) => {
                               {qz?.title}
                             </Link>
 
-                            {user.role !== "Visitor" ? (
+                            {user.role !== 'Visitor' ? (
                               <Button
                                 size="sm"
                                 color="link"
@@ -166,13 +168,13 @@ const CourseNotes = ({ chapter }) => {
                   <Button
                     size="sm"
                     style={{
-                      backgroundColor: "var(--accent)",
-                      border: "2px solid var(--brand)",
+                      backgroundColor: 'var(--accent)',
+                      border: '2px solid var(--brand)',
                     }}
                   >
                     <a
                       href={note?.notes_file}
-                      style={{ color: "var(--brand)", fontWeight: "bold" }}
+                      style={{ color: 'var(--brand)', fontWeight: 'bold' }}
                       onClick={() => onDownload(note)}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -181,7 +183,7 @@ const CourseNotes = ({ chapter }) => {
                     </a>
                   </Button>
 
-                  {user.role !== "Visitor" ? (
+                  {user.role !== 'Visitor' ? (
                     <>
                       <UpdateModal
                         title="Edit Notes"
@@ -204,13 +206,13 @@ const CourseNotes = ({ chapter }) => {
                             }
                           );
                           if (!res.ok)
-                            return Promise.reject(new Error("validation"));
+                            return Promise.reject(new Error('validation'));
 
                           const formData = new FormData();
-                          formData.append("title", title);
-                          formData.append("description", description);
+                          formData.append('title', title);
+                          formData.append('description', description);
                           if (notes_file)
-                            formData.append("notes_file", notes_file);
+                            formData.append('notes_file', notes_file);
 
                           return updateNotes({
                             idToUpdate: data.idToUpdate,
@@ -226,7 +228,7 @@ const CourseNotes = ({ chapter }) => {
                               id="title"
                               placeholder="Notes title ..."
                               className="mb-3"
-                              value={state.title || ""}
+                              value={state.title || ''}
                               onChange={(e) =>
                                 setState({ ...state, title: e.target.value })
                               }
@@ -237,7 +239,7 @@ const CourseNotes = ({ chapter }) => {
                               id="description"
                               placeholder="Notes description ..."
                               className="mb-3"
-                              value={state.description || ""}
+                              value={state.description || ''}
                               onChange={(e) =>
                                 setState({
                                   ...state,

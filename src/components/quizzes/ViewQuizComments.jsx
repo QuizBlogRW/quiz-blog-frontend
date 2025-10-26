@@ -1,24 +1,24 @@
-import { useEffect } from 'react'
-import { Col, Row, CardTitle, Card, Alert } from 'reactstrap'
-import { Link } from 'react-router-dom'
-import QBLoadingSM from '@/utils/rLoading/QBLoadingSM'
-import { getCommentsByQuiz } from '@/redux/slices/questionsCommentsSlice'
-import { getOneQuizComments } from '@/redux/slices/quizzesCommentsSlice'
-import { useSelector, useDispatch } from 'react-redux'
-import Comment from '../dashboard/comments/Comment'
+import { useEffect } from 'react';
+import { Col, Row, CardTitle, Card, Alert } from 'reactstrap';
+import { Link } from 'react-router-dom';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
+import { getCommentsByQuiz } from '@/redux/slices/questionsCommentsSlice';
+import { getOneQuizComments } from '@/redux/slices/quizzesCommentsSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import Comment from '../dashboard/comments/Comment';
 
 const ViewQuizComments = ({ quizID }) => {
 
   // Redux
-  const dispatch = useDispatch()
-  const qnCmts = useSelector(state => state.questionsComments)
-  const qzCmts = useSelector(state => state.quizzesComments)
+  const dispatch = useDispatch();
+  const qnCmts = useSelector(state => state.questionsComments);
+  const qzCmts = useSelector(state => state.quizzesComments);
 
   // Lifecycle methods
   useEffect(() => {
-    dispatch(getCommentsByQuiz(quizID))
-    dispatch(getOneQuizComments(quizID))
-  }, [dispatch, quizID])
+    dispatch(getCommentsByQuiz(quizID));
+    dispatch(getOneQuizComments(quizID));
+  }, [dispatch, quizID]);
 
   return (
     <Row>
@@ -55,7 +55,7 @@ const ViewQuizComments = ({ quizID }) => {
           No comments made yet!
         </Alert>
       }
-    </Row>)
-}
+    </Row>);
+};
 
-export default ViewQuizComments
+export default ViewQuizComments;

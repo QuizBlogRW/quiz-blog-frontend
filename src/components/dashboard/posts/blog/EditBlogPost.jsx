@@ -1,33 +1,33 @@
-import { useState, useEffect } from 'react'
-import { Button, Form, FormGroup, Label, Input, Row, Col, Alert, Breadcrumb, BreadcrumbItem } from 'reactstrap'
-import { useParams } from 'react-router-dom'
-import { updateBlogPost, getOneBlogPost } from '@/redux/slices'
-import { getPostCategories } from '@/redux/slices/postCategoriesSlice'
-import { useSelector, useDispatch } from "react-redux"
-import UploadPostPhotos from './UploadPostPhotos'
-import YourImages from './YourImages'
-import { notify } from '@/utils/notifyToast'
-import NotAuthenticated from '@/components/auth/NotAuthenticated'
+import { useState, useEffect } from 'react';
+import { Button, Form, FormGroup, Label, Input, Row, Col, Alert, Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import { useParams } from 'react-router-dom';
+import { updateBlogPost, getOneBlogPost } from '@/redux/slices';
+import { getPostCategories } from '@/redux/slices/postCategoriesSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import UploadPostPhotos from './UploadPostPhotos';
+import YourImages from './YourImages';
+import { notify } from '@/utils/notifyToast';
+import NotAuthenticated from '@/components/auth/NotAuthenticated';
 
 const EditBlogPost = () => {
 
   // redux
-  const dispatch = useDispatch()
-  const bposts = useSelector(state => state.blogPosts)
-  const bPcats = useSelector(state => state.postCategories)
-  const { user, isAuthenticated } = useSelector(state => state.auth)
+  const dispatch = useDispatch();
+  const bposts = useSelector(state => state.blogPosts);
+  const bPcats = useSelector(state => state.postCategories);
+  const { user, isAuthenticated } = useSelector(state => state.auth);
 
-  const { bPSlug } = useParams()
+  const { bPSlug } = useParams();
 
   // Lifecycle methods
   useEffect(() => {
-    dispatch(getOneBlogPost(bPSlug))
-    dispatch(getPostCategories())
-  }, [bPSlug, dispatch])
+    dispatch(getOneBlogPost(bPSlug));
+    dispatch(getPostCategories());
+  }, [bPSlug, dispatch]);
 
-  const bPToUse = bposts && bposts.oneBlogPost
+  const bPToUse = bposts && bposts.oneBlogPost;
 
-  const [bPState, setBPState] = useState()
+  const [bPState, setBPState] = useState();
 
   useEffect(() => {
     setBPState({
@@ -36,32 +36,32 @@ const EditBlogPost = () => {
       postCategory: bPToUse && bPToUse.postCategory,
       bgColor: bPToUse && bPToUse.bgColor,
       markdown: bPToUse && bPToUse.markdown
-    })
-  }, [bPToUse])
+    });
+  }, [bPToUse]);
 
-  const bPCategories = bPcats && bPcats.allPostCategories
-  const curUserRole = user && user.role
+  const bPCategories = bPcats && bPcats.allPostCategories;
+  const curUserRole = user && user.role;
 
-  const creatorID = bPToUse.creator && bPToUse.creator._id
-  const userID = bPToUse.creator && bPToUse.creator._id
-  const isAuthorized = (curUserRole === 'Admin' || curUserRole === 'SuperAdmin' || userID === creatorID)
+  const creatorID = bPToUse.creator && bPToUse.creator._id;
+  const userID = bPToUse.creator && bPToUse.creator._id;
+  const isAuthorized = (curUserRole === 'Admin' || curUserRole === 'SuperAdmin' || userID === creatorID);
 
   const onChangeHandler = e => {
-    setBPState({ ...bPState, [e.target.name]: e.target.value })
-  }
+    setBPState({ ...bPState, [e.target.name]: e.target.value });
+  };
 
   const onSubmitHandler = e => {
-    e.preventDefault()
-    const { blogPostID, title, postCategory, bgColor, markdown } = bPState
+    e.preventDefault();
+    const { blogPostID, title, postCategory, bgColor, markdown } = bPState;
 
     // VALIDATE
     if (title.length < 4 || markdown.length < 4) {
-      notify('Insufficient info!', 'error')
-      return
+      notify('Insufficient info!', 'error');
+      return;
     }
     else if (title.length > 70) {
-      notify('Title is too long!', 'error')
-      return
+      notify('Title is too long!', 'error');
+      return;
     }
 
     // Create new BP object
@@ -71,11 +71,11 @@ const EditBlogPost = () => {
       postCategory,
       bgColor,
       markdown
-    }
+    };
 
     // Attempt to create
-    dispatch(updateBlogPost(updatedBP))
-  }
+    dispatch(updateBlogPost(updatedBP));
+  };
 
   return (
     !isAuthenticated ?
@@ -150,7 +150,7 @@ const EditBlogPost = () => {
           </Row>
         </> :
 
-        <Alert color="danger" className='m-5 text-center'>Access Denied!</Alert>)
-}
+        <Alert color="danger" className='m-5 text-center'>Access Denied!</Alert>);
+};
 
-export default EditBlogPost
+export default EditBlogPost;

@@ -1,19 +1,19 @@
-import { useState, useEffect, useCallback } from 'react'
-import { Col, Row, Input, Label, FormGroup } from 'reactstrap'
-import CountDown from './questionsScore/CountDown'
-import QBLoadingSM from '@/utils/rLoading/QBLoadingSM'
+import { useState, useEffect, useCallback } from 'react';
+import { Col, Row, Input, Label, FormGroup } from 'reactstrap';
+import CountDown from './questionsScore/CountDown';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 
 const QuestionsView = ({ qnsLength, curQnIndex, currentQn, curQnOpts, checkedState, selected, handleOnChange, goToNextQuestion }) => {
 
     // Load the image
-    const [imgLoaded, setImgLoaded] = useState(false)
-    const onLoad = useCallback(() => { setImgLoaded(true) }, [])
-    useEffect(() => { onLoad() }, [onLoad])
+    const [imgLoaded, setImgLoaded] = useState(false);
+    const onLoad = useCallback(() => { setImgLoaded(true); }, []);
+    useEffect(() => { onLoad(); }, [onLoad]);
 
     return (
 
         imgLoaded ?
-            <div className="question-view p-2" style={{ backgroundColor: "#F5F5F5" }}>
+            <div className="question-view p-2" style={{ backgroundColor: '#F5F5F5' }}>
 
                 {/* Countdown */}
                 <CountDown
@@ -27,7 +27,7 @@ const QuestionsView = ({ qnsLength, curQnIndex, currentQn, curQnOpts, checkedSta
                     <Col>
                         <div className='question-section my-2 mx-auto w-75'>
                             <h4 className='question-count text-uppercase text-center text-secondary fw-bolder'>
-                                <span>Question <b style={{ color: "#B4654A" }}>
+                                <span>Question <b style={{ color: '#B4654A' }}>
                                     {curQnIndex + 1}</b>
                                 </span>/{qnsLength}
                             </h4>
@@ -56,7 +56,7 @@ const QuestionsView = ({ qnsLength, curQnIndex, currentQn, curQnOpts, checkedSta
                                     <div key={index} className="my-3 my-lg-4">
                                         <FormGroup check>
                                             <Label check
-                                                style={{ width: "96%", margin: "auto", border: "2px solid #000", borderRadius: "10px" }}
+                                                style={{ width: '96%', margin: 'auto', border: '2px solid #000', borderRadius: '10px' }}
                                                 className={`p-1 text-center ${selected[index] ? 'bg-secondary text-white' : null}`}>
 
                                                 <Input
@@ -66,20 +66,20 @@ const QuestionsView = ({ qnsLength, curQnIndex, currentQn, curQnOpts, checkedSta
                                                     value={answerOption.answerText}
                                                     checked={checkedState[index]}
                                                     onChange={(e) => handleOnChange(e, index)}
-                                                />{" "}
+                                                />{' '}
                                                 <span>
                                                     {answerOption.answerText}
                                                 </span>
                                             </Label>
                                         </FormGroup>
                                     </div>
-                                )
+                                );
                             })}
                         </div>
                     </Col>
                 </Row>
             </div> : <QBLoadingSM title='question' />
-    )
-}
+    );
+};
 
-export default QuestionsView
+export default QuestionsView;

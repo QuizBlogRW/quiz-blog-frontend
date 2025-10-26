@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
-import { Col, Row, Card, Alert, Button } from "reactstrap";
+import { useState, useEffect } from 'react';
+import { Col, Row, Card, Alert, Button } from 'reactstrap';
 import {
   getImageUploadsByOwner,
   deleteImageUpload,
-} from "@/redux/slices/imageUploadsSlice";
-import { useSelector, useDispatch } from "react-redux";
-import QBLoadingSM from "@/utils/rLoading/QBLoadingSM";
-import DeleteModal from "@/utils/DeleteModal";
-import "./yourimages.css";
+} from '@/redux/slices/imageUploadsSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
+import DeleteModal from '@/utils/DeleteModal';
+import './yourimages.css';
 
 const YourImages = () => {
   const dispatch = useDispatch();
@@ -21,7 +21,7 @@ const YourImages = () => {
     (state) => state.imageUploads
   );
   const [show, setShow] = useState(false);
-  const [imgTitle, setImgTitle] = useState("");
+  const [imgTitle, setImgTitle] = useState('');
 
   const copying = (img) => {
     var cp = navigator.clipboard.writeText(img && img.uploadImage);
@@ -39,7 +39,7 @@ const YourImages = () => {
     <>
       <h5 className="text-center d-block">AVAILABLE IMAGES</h5>
       <small className="d-block text-warning text-center fw-bolder">
-        {show ? `${imgTitle} copied` : ""}
+        {show ? `${imgTitle} copied` : ''}
       </small>
       <Row>
         {imageUploadsByOwner && imageUploadsByOwner.length === 0 ? (

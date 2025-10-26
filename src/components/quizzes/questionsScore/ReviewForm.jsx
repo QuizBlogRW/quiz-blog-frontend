@@ -1,36 +1,36 @@
-import { useState } from 'react'
-import { Button, Modal, ModalBody, ModalFooter, Form, FormGroup, Input, ButtonGroup, Alert } from 'reactstrap'
+import { useState } from 'react';
+import { Button, Modal, ModalBody, ModalFooter, Form, FormGroup, Input, ButtonGroup, Alert } from 'reactstrap';
 
 const ReviewForm = ({ isOpen, toggle, onSubmit, quiz, score, user }) => {
-    const [rating, setRating] = useState(-1)
-    const [comment, setComment] = useState('')
-    const [error, setError] = useState('')
+    const [rating, setRating] = useState(-1);
+    const [comment, setComment] = useState('');
+    const [error, setError] = useState('');
 
     const handleRatingChange = (value) => {
-        setRating(value)
-    }
+        setRating(value);
+    };
 
     const handleCommentChange = (event) => {
-        setComment(event.target.value)
-    }
+        setComment(event.target.value);
+    };
 
     const handleSubmit = () => {
 
         if (rating === -1) {
-            setError('Please select a rating')
-            return
+            setError('Please select a rating');
+            return;
         }
 
-        onSubmit({ rating, comment, quiz, score, user })
-        toggle()
+        onSubmit({ rating, comment, quiz, score, user });
+        toggle();
 
         // Reset the form
-        setRating(-1)
-        setComment('')
-    }
+        setRating(-1);
+        setComment('');
+    };
 
     const renderRatingButtons = () => {
-        const buttons = []
+        const buttons = [];
         for (let i = 0; i <= 10; i++) {
             buttons.push(
                 <Button
@@ -42,26 +42,26 @@ const ReviewForm = ({ isOpen, toggle, onSubmit, quiz, score, user }) => {
                 >
                     {i}
                 </Button>
-            )
+            );
         }
-        return buttons
-    }
+        return buttons;
+    };
 
     const getColorByRating = (value) => {
         if (value === 0) {
-            return 'danger'
+            return 'danger';
         } else if (value >= 5) {
-            return 'success'
+            return 'success';
         } else {
-            return 'warning'
+            return 'warning';
         }
-    }
+    };
 
     return (
         <Modal isOpen={isOpen} toggle={toggle} backdrop={false} centered={true}>
-            <div className="d-flex justify-content-between align-items-center p-2" style={{ backgroundColor: "var(--brand)", color: "#fff" }}>
+            <div className="d-flex justify-content-between align-items-center p-2" style={{ backgroundColor: 'var(--brand)', color: '#fff' }}>
                 Please give us your feedback
-                <Button className="btn-danger text-uppercase text-red" style={{ padding: "0.1rem 0.3rem", fontSize: ".6rem", fontWeight: "bold" }} onClick={toggle}>
+                <Button className="btn-danger text-uppercase text-red" style={{ padding: '0.1rem 0.3rem', fontSize: '.6rem', fontWeight: 'bold' }} onClick={toggle}>
                     X
                 </Button>
             </div>
@@ -105,7 +105,7 @@ const ReviewForm = ({ isOpen, toggle, onSubmit, quiz, score, user }) => {
                 </Button>
             </ModalFooter>
         </Modal>
-    )
-}
+    );
+};
 
-export default ReviewForm
+export default ReviewForm;

@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { Button, Modal, ModalBody, ModalFooter } from "reactstrap";
-import trash from "@/images/trash.svg";
-import { useDispatch } from "react-redux";
-import { notify } from "@/utils/notifyToast";
+import { useState } from 'react';
+import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
+import trash from '@/images/trash.svg';
+import { useDispatch } from 'react-redux';
+import { notify } from '@/utils/notifyToast';
 
 const DeleteModal = ({ delID, delTitle, deleteFn, deleteFnName }) => {
   const dispatch = useDispatch();
@@ -22,22 +22,22 @@ const DeleteModal = ({ delID, delTitle, deleteFn, deleteFnName }) => {
       setSubmitting(false);
 
       // Only close modal & show success if fulfilled
-      if (result.type.endsWith("/fulfilled")) {
+      if (result.type.endsWith('/fulfilled')) {
         setModal(false);
-        if (deleteFnName === "deleteQuestion") {
+        if (deleteFnName === 'deleteQuestion') {
           window.history.back();
         } else if (
-          deleteFnName === "deleteQuiz" ||
-          deleteFnName === "deleteCategory"
+          deleteFnName === 'deleteQuiz' ||
+          deleteFnName === 'deleteCategory'
         ) {
           setTimeout(() => window.location.reload(), 3000);
         }
       } else {
-        console.error("Deletion failed: ", result?.error?.message);
+        console.error('Deletion failed: ', result?.error?.message);
       }
     } catch (err) {
       setSubmitting(false);
-      console.error("AddModal submit error", err);
+      console.error('AddModal submit error', err);
     }
   };
 
@@ -57,7 +57,7 @@ const DeleteModal = ({ delID, delTitle, deleteFn, deleteFnName }) => {
         size="md"
         isOpen={modal}
         toggle={toggle}
-        style={{ boxShadow: "none" }}
+        style={{ boxShadow: 'none' }}
         className="delete-modal"
       >
         <div className="modal-header-text d-flex justify-content-between align-items-center p-2">
@@ -74,14 +74,14 @@ const DeleteModal = ({ delID, delTitle, deleteFn, deleteFnName }) => {
         <form onSubmit={onDelete}>
           <ModalBody
             className="text-center my-4"
-            style={{ backgroundColor: "#f8d7da", fontSize: ".8rem" }}
+            style={{ backgroundColor: '#f8d7da', fontSize: '.8rem' }}
           >
             Delete "<u>{delTitle}</u>" permanently?
           </ModalBody>
 
           <ModalFooter className="justify-content-around pb-0">
             <Button color="danger" type="submit" disabled={submitting}>
-              {submitting ? "Deleting..." : "Delete"}
+              {submitting ? 'Deleting...' : 'Delete'}
             </Button>
             <Button
               color="warning"

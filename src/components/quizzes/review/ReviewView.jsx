@@ -2,22 +2,22 @@ import { Col, Row, Button, Badge, Form, Input, FormGroup, FormFeedback } from 'r
 
 const ReviewView = ({ qnsAll, curRevQn, lastAnswer, currentQuestion, setLastAnswer, setCurrentQuestion }) => {
 
-    const curRevQnOpts = curRevQn && curRevQn.answerOptions
-    const trueAnsNbr = curRevQnOpts && curRevQnOpts.filter(aOpt => aOpt.isCorrect === true).length
-    const trueChoicesNbr = curRevQnOpts && curRevQnOpts.filter(aOpt => aOpt.isCorrect === true && aOpt.choosen === true).length
+    const curRevQnOpts = curRevQn && curRevQn.answerOptions;
+    const trueAnsNbr = curRevQnOpts && curRevQnOpts.filter(aOpt => aOpt.isCorrect === true).length;
+    const trueChoicesNbr = curRevQnOpts && curRevQnOpts.filter(aOpt => aOpt.isCorrect === true && aOpt.choosen === true).length;
 
     const handleNextAnswer = () => {
         const nextQuestion = currentQuestion + 1;
         nextQuestion < qnsAll.length ?
             setCurrentQuestion(nextQuestion) :
-            setLastAnswer(true)
+            setLastAnswer(true);
     };
 
     const handlePrevAnswer = () => {
         const prevQuestion = currentQuestion - 1;
         prevQuestion >= 0 ?
             setCurrentQuestion(prevQuestion) :
-            alert('No previous available!')
+            alert('No previous available!');
     };
 
     return (
@@ -27,17 +27,17 @@ const ReviewView = ({ qnsAll, curRevQn, lastAnswer, currentQuestion, setLastAnsw
                     <Form>
                         {curRevQnOpts && curRevQnOpts.map((answerOption, index) => {
 
-                            let explanation = answerOption.explanations ? answerOption.explanations : null
+                            let explanation = answerOption.explanations ? answerOption.explanations : null;
 
                             {/* If there is a word in the explanation paragraph that starts with http, make it a link */ }
                             if (explanation) {
-                                let words = explanation.split(" ")
+                                let words = explanation.split(' ');
                                 explanation = words.map(word => {
-                                    if (word.startsWith("http")) {
-                                        return <a key={word} href={word} target="_blank" rel="noreferrer">{word} </a>
+                                    if (word.startsWith('http')) {
+                                        return <a key={word} href={word} target="_blank" rel="noreferrer">{word} </a>;
                                     }
-                                    return word + " "
-                                })
+                                    return word + ' ';
+                                });
                             }
 
                             return (
@@ -50,11 +50,11 @@ const ReviewView = ({ qnsAll, curRevQn, lastAnswer, currentQuestion, setLastAnsw
                                         className={`${!answerOption.isCorrect && !answerOption.choosen ?
                                             'border border-secondary' :
                                             null}`}
-                                        style={{ backgroundColor: "#F5F5F5", color: "#000" }}
+                                        style={{ backgroundColor: '#F5F5F5', color: '#000' }}
                                     />
 
                                     <FormFeedback
-                                        style={{ fontSize: ".7rem" }}
+                                        style={{ fontSize: '.7rem' }}
                                         valid={answerOption.isCorrect}
                                         invalid={(!answerOption.isCorrect && answerOption.choosen).toString()}>
                                         {answerOption.isCorrect && answerOption.choosen ? 'You got this right!' :
@@ -62,12 +62,12 @@ const ReviewView = ({ qnsAll, curRevQn, lastAnswer, currentQuestion, setLastAnsw
                                                 answerOption.isCorrect ? 'Correct answer!' : null}
                                     </FormFeedback>
                                     {explanation && <div className="border rounded p-1 p-lg-2 mt-2">
-                                        <small className="text-dark mb-1 pl-1" style={{ fontSize: ".8rem" }}>
+                                        <small className="text-dark mb-1 pl-1" style={{ fontSize: '.8rem' }}>
                                             <span role="img" aria-label="pointing">👉</span> {explanation}
                                         </small>
                                     </div>}
                                 </FormGroup>
-                            )
+                            );
                         })}
                     </Form>
                 </div>
@@ -82,7 +82,7 @@ const ReviewView = ({ qnsAll, curRevQn, lastAnswer, currentQuestion, setLastAnsw
                 </div>
             </Col>
         </Row>
-    )
-}
+    );
+};
 
-export default ReviewView
+export default ReviewView;

@@ -1,11 +1,11 @@
-import { useSelector } from 'react-redux'
-import UpdateModal from '@/utils/UpdateModal'
-import { updateCategory } from '@/redux/slices/categoriesSlice'
-import { notify } from '@/utils/notifyToast'
+import { useSelector } from 'react-redux';
+import UpdateModal from '@/utils/UpdateModal';
+import { updateCategory } from '@/redux/slices/categoriesSlice';
+import { notify } from '@/utils/notifyToast';
 
 const EditCategory = ({ categoryToEdit }) => {
-    const { isLoading, user } = useSelector(state => state.auth)
-    const { allCourseCategories } = useSelector(state => state.courseCategories)
+    const { isLoading, user } = useSelector(state => state.auth);
+    const { allCourseCategories } = useSelector(state => state.courseCategories);
 
     const initialData = {
         catID: categoryToEdit && categoryToEdit._id,
@@ -13,10 +13,10 @@ const EditCategory = ({ categoryToEdit }) => {
         description: categoryToEdit && categoryToEdit.description || '',
         oldCourseCatID: categoryToEdit && categoryToEdit.courseCategory && categoryToEdit.courseCategory._id || '',
         courseCategory: categoryToEdit && categoryToEdit.courseCategory && categoryToEdit.courseCategory._id || ''
-    }
+    };
 
     const renderForm = (formState, setFormState, firstInputRef) => {
-        const onChange = (e) => setFormState({ ...formState, [e.target.name]: e.target.value })
+        const onChange = (e) => setFormState({ ...formState, [e.target.name]: e.target.value });
 
         return (
             <div>
@@ -40,24 +40,24 @@ const EditCategory = ({ categoryToEdit }) => {
                     </select>
                 </div>
             </div>
-        )
-    }
+        );
+    };
 
     const submitFn = (formState) => {
-        const { catID, name, description, oldCourseCatID, courseCategory } = formState
+        const { catID, name, description, oldCourseCatID, courseCategory } = formState;
 
         // VALIDATE
         if (!name || name.length < 4 || !description || description.length < 4) {
-            notify('Insufficient info!', 'error')
-            throw new Error('validation')
+            notify('Insufficient info!', 'error');
+            throw new Error('validation');
         }
         if (name.length > 50) {
-            notify('Title is too long!', 'error')
-            throw new Error('validation')
+            notify('Title is too long!', 'error');
+            throw new Error('validation');
         }
         if (description.length > 100) {
-            notify('Description is too long!', 'error')
-            throw new Error('validation')
+            notify('Description is too long!', 'error');
+            throw new Error('validation');
         }
 
         const updatedCategory = {
@@ -67,10 +67,10 @@ const EditCategory = ({ categoryToEdit }) => {
             oldCourseCatID,
             courseCategory,
             last_updated_by: isLoading ? null : user._id
-        }
+        };
 
-        return (dispatch) => dispatch(updateCategory(updatedCategory))
-    }
+        return (dispatch) => dispatch(updateCategory(updatedCategory));
+    };
 
     return (
         <UpdateModal
@@ -79,7 +79,7 @@ const EditCategory = ({ categoryToEdit }) => {
             renderForm={renderForm}
             initialData={initialData}
         />
-    )
-}
+    );
+};
 
-export default EditCategory
+export default EditCategory;

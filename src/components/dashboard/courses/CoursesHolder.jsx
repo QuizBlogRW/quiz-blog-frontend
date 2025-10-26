@@ -1,15 +1,15 @@
-import { Card, Button, CardTitle, CardText, Input } from "reactstrap";
-import AddModal from "@/utils/AddModal";
-import { createChapter } from "@/redux/slices/chaptersSlice";
-import validators from "@/utils/validators";
-import UpdateModal from "@/utils/UpdateModal";
-import { updateCourse } from "@/redux/slices/coursesSlice";
-import QBLoadingSM from "@/utils/rLoading/QBLoadingSM";
-import DeleteModal from "@/utils/DeleteModal";
-import { deleteCourse } from "@/redux/slices/coursesSlice";
-import { useSelector, useDispatch } from "react-redux";
-import { notify } from "@/utils/notifyToast";
-import NotAuthenticated from "@/components/auth/NotAuthenticated";
+import { Card, Button, CardTitle, CardText, Input } from 'reactstrap';
+import AddModal from '@/utils/AddModal';
+import { createChapter } from '@/redux/slices/chaptersSlice';
+import validators from '@/utils/validators';
+import UpdateModal from '@/utils/UpdateModal';
+import { updateCourse } from '@/redux/slices/coursesSlice';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
+import DeleteModal from '@/utils/DeleteModal';
+import { deleteCourse } from '@/redux/slices/coursesSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { notify } from '@/utils/notifyToast';
+import NotAuthenticated from '@/components/auth/NotAuthenticated';
 
 const CoursesHolder = ({ courses }) => {
   const { user, isAuthenticated } = useSelector((state) => state.auth);
@@ -33,14 +33,14 @@ const CoursesHolder = ({ courses }) => {
               </a>
             </Button>
 
-            {user.role !== "Visitor" ? (
+            {user.role !== 'Visitor' ? (
               <>
                 <AddModal
                   title="Add New Chapter"
                   triggerText="Chapter"
                   initialState={{
-                    title: "",
-                    description: "",
+                    title: '',
+                    description: '',
                     course: course._id,
                     courseCategory: course.courseCategory,
                   }}
@@ -52,8 +52,8 @@ const CoursesHolder = ({ courses }) => {
                       { minTitle: 4, minDesc: 4, maxTitle: 80, maxDesc: 200 }
                     );
                     if (!res.ok) {
-                      notify("Insufficient info!", "error");
-                      return Promise.reject(new Error("validation"));
+                      notify('Insufficient info!', 'error');
+                      return Promise.reject(new Error('validation'));
                     }
                     return createChapter({ ...data });
                   }}
@@ -66,7 +66,7 @@ const CoursesHolder = ({ courses }) => {
                         id="title"
                         placeholder="Chapter title ..."
                         className="mb-3"
-                        value={state.title || ""}
+                        value={state.title || ''}
                         onChange={(e) =>
                           setState({ ...state, title: e.target.value })
                         }
@@ -77,7 +77,7 @@ const CoursesHolder = ({ courses }) => {
                         id="description"
                         placeholder="Chapter description ..."
                         className="mb-3"
-                        value={state.description || ""}
+                        value={state.description || ''}
                         onChange={(e) =>
                           setState({ ...state, description: e.target.value })
                         }
@@ -99,7 +99,7 @@ const CoursesHolder = ({ courses }) => {
                       description,
                       { minTitle: 4, minDesc: 4, maxTitle: 80, maxDesc: 200 }
                     );
-                    if (!res.ok) return Promise.reject(new Error("validation"));
+                    if (!res.ok) return Promise.reject(new Error('validation'));
                     return updateCourse({
                       idToUpdate: data.idToUpdate,
                       title: data.name,
@@ -115,7 +115,7 @@ const CoursesHolder = ({ courses }) => {
                         id="name"
                         placeholder="Course title ..."
                         className="mb-3"
-                        value={state.name || ""}
+                        value={state.name || ''}
                         onChange={(e) =>
                           setState({ ...state, name: e.target.value })
                         }
@@ -126,7 +126,7 @@ const CoursesHolder = ({ courses }) => {
                         id="description"
                         placeholder="Course description ..."
                         className="mb-3"
-                        value={state.description || ""}
+                        value={state.description || ''}
                         onChange={(e) =>
                           setState({ ...state, description: e.target.value })
                         }

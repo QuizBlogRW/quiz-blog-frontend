@@ -1,7 +1,7 @@
-import AddModal from '@/utils/AddModal'
-import { createSchool } from '@/redux/slices/schoolsSlice'
-import validators from '@/utils/validators'
-import { Input } from 'reactstrap'
+import AddModal from '@/utils/AddModal';
+import { createSchool } from '@/redux/slices/schoolsSlice';
+import validators from '@/utils/validators';
+import { Input } from 'reactstrap';
 
 const AddSchool = () => {
 
@@ -11,14 +11,14 @@ const AddSchool = () => {
             triggerText="School"
             initialState={{ title: '', location: '', website: '' }}
             submitFn={data => {
-                const { title, location, website } = data
-                const res = validators.validateWebsite(title, location) // not ideal but reuse validators
+                const { title, location, website } = data;
+                const res = validators.validateWebsite(title, location); // not ideal but reuse validators
                 // We'll use validateTitleDesc for title/location and validateWebsite for website
-                const res2 = validators.validateTitleDesc(title, location, { minTitle: 3, minDesc: 4, maxTitle: 70, maxDesc: 120 })
-                if (!res2.ok) return Promise.reject(new Error('validation'))
-                const websiteRes = validators.validateWebsite(website)
-                if (!websiteRes.ok) return Promise.reject(new Error('validation'))
-                return createSchool({ title, location, website })
+                const res2 = validators.validateTitleDesc(title, location, { minTitle: 3, minDesc: 4, maxTitle: 70, maxDesc: 120 });
+                if (!res2.ok) return Promise.reject(new Error('validation'));
+                const websiteRes = validators.validateWebsite(website);
+                if (!websiteRes.ok) return Promise.reject(new Error('validation'));
+                return createSchool({ title, location, website });
             }}
             renderForm={(state, setState, firstInputRef) => (
                 <>
@@ -28,7 +28,7 @@ const AddSchool = () => {
                 </>
             )}
         />
-    )
-}
+    );
+};
 
-export default AddSchool
+export default AddSchool;

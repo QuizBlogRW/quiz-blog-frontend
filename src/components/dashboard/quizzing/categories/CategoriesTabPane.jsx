@@ -1,12 +1,12 @@
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { Row, Col, Card, CardTitle, CardText, TabPane } from "reactstrap";
-import { deleteCategory } from "@/redux/slices/categoriesSlice";
-import AddQuiz from "./AddQuiz";
-import EditCategory from "./EditCategory";
-import CreateCategory from "./CreateCategory";
-import QBLoadingSM from "@/utils/rLoading/QBLoadingSM";
-import DeleteModal from "@/utils/DeleteModal";
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { Row, Col, Card, CardTitle, CardText, TabPane } from 'reactstrap';
+import { deleteCategory } from '@/redux/slices/categoriesSlice';
+import AddQuiz from './AddQuiz';
+import EditCategory from './EditCategory';
+import CreateCategory from './CreateCategory';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
+import DeleteModal from '@/utils/DeleteModal';
 
 const CategoriesTabPane = () => {
   const { allcategories, isLoading } = useSelector((state) => state.categories);
@@ -26,7 +26,7 @@ const CategoriesTabPane = () => {
         <CardText>{category.description}</CardText>
         <div className="actions ms-3">
           <AddQuiz category={category} />
-          {(user.role === "Admin" || user.role === "SuperAdmin") && (
+          {(user.role === 'Admin' || user.role === 'SuperAdmin') && (
             <>
               <EditCategory categoryToEdit={category} />
               <DeleteModal
@@ -36,7 +36,7 @@ const CategoriesTabPane = () => {
                 delID={category._id}
               />
               <small
-                style={{ color: "var(--brand)" }}
+                style={{ color: 'var(--brand)' }}
                 className="ms-sm-5 text-center text-uppercase"
               >
                 <u>

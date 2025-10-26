@@ -1,4 +1,4 @@
-import { Badge } from 'reactstrap'
+import { Badge } from 'reactstrap';
 
 const PageOf = ({ pageNo, numberOfPages }) => {
     return (
@@ -12,7 +12,7 @@ const PageOf = ({ pageNo, numberOfPages }) => {
                 </Badge>
             </span>
         </div>
-    )
-}
+    );
+};
 
-export default PageOf
+export default PageOf;

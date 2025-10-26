@@ -1,20 +1,20 @@
-import { useEffect, lazy, Suspense } from 'react'
-import { Container, Col, Row, ListGroup, ListGroupItem } from 'reactstrap'
-import { useSelector, useDispatch } from "react-redux"
-import { getBlogPostsByCategory, getPostCategories } from '@/redux/slices'
-import ResponsiveAd from '@/components/adsenses/ResponsiveAd'
-import SquareAd from '@/components/adsenses/SquareAd'
-import QBLoadingSM from '@/utils/rLoading/QBLoadingSM'
-import { Link, useLocation, useParams } from 'react-router-dom'
-import './allBlogPosts.css'
+import { useEffect, lazy, Suspense } from 'react';
+import { Container, Col, Row, ListGroup, ListGroupItem } from 'reactstrap';
+import { useSelector, useDispatch } from 'react-redux';
+import { getBlogPostsByCategory, getPostCategories } from '@/redux/slices';
+import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
+import SquareAd from '@/components/adsenses/SquareAd';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
+import { Link, useLocation, useParams } from 'react-router-dom';
+import './allBlogPosts.css';
 
-const BlogPostItem = lazy(() => import('./BlogPostItem'))
+const BlogPostItem = lazy(() => import('./BlogPostItem'));
 
 const CategoryList = ({ categories, location }) => (
     <ListGroup className='cats-container'>
         <Link to='/blog' className='px-2'>
             <ListGroupItem action>
-                {`All Categories`.toUpperCase()}
+                {'All Categories'.toUpperCase()}
             </ListGroupItem>
         </Link>
         {categories.map(category => (
@@ -25,7 +25,7 @@ const CategoryList = ({ categories, location }) => (
             </Link>
         ))}
     </ListGroup>
-)
+);
 
 const BlogPosts = ({ posts }) => (
     posts.length === 0 ? (
@@ -39,19 +39,19 @@ const BlogPosts = ({ posts }) => (
             <BlogPostItem key={blogPost._id} blogPost={blogPost} />
         ))
     )
-)
+);
 
 const ByCategory = () => {
-    const dispatch = useDispatch()
-    const bposts = useSelector(state => state.blogPosts)
-    const bPcats = useSelector(state => state.postCategories)
-    const location = useLocation()
-    const { bPCatID } = useParams()
+    const dispatch = useDispatch();
+    const bposts = useSelector(state => state.blogPosts);
+    const bPcats = useSelector(state => state.postCategories);
+    const location = useLocation();
+    const { bPCatID } = useParams();
 
     useEffect(() => {
-        dispatch(getPostCategories())
-        dispatch(getBlogPostsByCategory(bPCatID))
-    }, [dispatch, bPCatID])
+        dispatch(getPostCategories());
+        dispatch(getBlogPostsByCategory(bPCatID));
+    }, [dispatch, bPCatID]);
 
     return (
         <Container className="posts main blog-posts mt-4">
@@ -82,7 +82,7 @@ const ByCategory = () => {
                 </Col>
             </Row>
         </Container>
-    )
-}
+    );
+};
 
-export default ByCategory
+export default ByCategory;

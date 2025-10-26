@@ -1,12 +1,12 @@
-import moment from 'moment'
-import { Table, Alert } from 'reactstrap'
-import { Link } from "react-router-dom"
-import { useSelector } from "react-redux"
-import DeleteModal from '@/utils/DeleteModal'
+import moment from 'moment';
+import { Table, Alert } from 'reactstrap';
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import DeleteModal from '@/utils/DeleteModal';
 
 const ScoresTable = ({ scoresToUse, pageNo, deleteScore }) => {
 
-    const { user } = useSelector(state => state.auth)
+    const { user } = useSelector(state => state.auth);
 
     return (
         scoresToUse && scoresToUse?.length > 0 ?
@@ -28,15 +28,15 @@ const ScoresTable = ({ scoresToUse, pageNo, deleteScore }) => {
                 <tbody>
 
                     {scoresToUse && [...scoresToUse].sort((a, b) => new Date(b.test_date) - new Date(a.test_date)).map((score, index) => {
-                        const taker = score && (user?.role === 'Creator') ? score.users_scores_name : score && (user?.role === 'Visitor') ? user && user.name : score.taken_by && score.taken_by.name
+                        const taker = score && (user?.role === 'Creator') ? score.users_scores_name : score && (user?.role === 'Visitor') ? user && user.name : score.taken_by && score.taken_by.name;
 
-                        const qui = score && (user?.role === 'Creator') ? score.quiz_scores_title : score && (user?.role === 'Visitor') ? score.review && score.review.title : score.quiz && score.quiz.title
+                        const qui = score && (user?.role === 'Creator') ? score.quiz_scores_title : score && (user?.role === 'Visitor') ? score.review && score.review.title : score.quiz && score.quiz.title;
 
-                        const catg = score && (user?.role === 'Creator') ? score.category_scores_title : score.category && score.category.title
+                        const catg = score && (user?.role === 'Creator') ? score.category_scores_title : score.category && score.category.title;
 
-                        let date = score && new Date(score.test_date)
+                        let date = score && new Date(score.test_date);
 
-                        const numero = (user?.role === 'Admin' || user?.role === 'SuperAdmin') ? ((pageNo - 1) * 20) + index + 1 : index + 1
+                        const numero = (user?.role === 'Admin' || user?.role === 'SuperAdmin') ? ((pageNo - 1) * 20) + index + 1 : index + 1;
 
                         return (<tr key={index}>
                             <th scope="row" className="table-dark">{numero && numero}</th>
@@ -46,10 +46,10 @@ const ScoresTable = ({ scoresToUse, pageNo, deleteScore }) => {
                             </td>
                             <td>{qui && qui}</td>
                             <td>{catg && catg}</td>
-                            <td className={score.out_of / 2 > score.marks ? "fw-bolder text-danger" : "text-success"}>
+                            <td className={score.out_of / 2 > score.marks ? 'fw-bolder text-danger' : 'text-success'}>
                                 {score.marks}
                             </td>
-                            <td className={score.out_of / 2 > score.marks ? "fw-bolder text-danger" : "text-success"}>
+                            <td className={score.out_of / 2 > score.marks ? 'fw-bolder text-danger' : 'text-success'}>
                                 {score.out_of}
                             </td>
                             <td>
@@ -58,7 +58,7 @@ const ScoresTable = ({ scoresToUse, pageNo, deleteScore }) => {
                             <td className={`table-dark ${(user?.role === 'Admin' || user?.role === 'SuperAdmin') ? '' : 'd-none'}`}>
                                 <DeleteModal deleteFnName="deleteScore" deleteFn={deleteScore} delID={score._id} delTitle={score.quiz && score.quiz.title} />
                             </td>
-                        </tr>)
+                        </tr>);
                     }
                     )}
 
@@ -67,7 +67,7 @@ const ScoresTable = ({ scoresToUse, pageNo, deleteScore }) => {
             <Alert color="danger" className="w-50 text-center mx-auto" style={{ border: '2px solid var(--brand)' }}>
                 Seems like you have nothing here! Please try to take Quizzes.
             </Alert>
-    )
-}
+    );
+};
 
-export default ScoresTable
+export default ScoresTable;

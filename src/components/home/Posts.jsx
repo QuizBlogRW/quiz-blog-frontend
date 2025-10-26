@@ -1,20 +1,20 @@
-import { useEffect, useState, lazy, Suspense } from "react";
-import { Link } from "react-router-dom";
-import { Container, Col, Row, Button } from "reactstrap";
-import PostItemPlaceholder from "@/utils/rLoading/PostItemPlaceholder";
-import { useSelector, useDispatch } from "react-redux";
-import { getLimitedQuizzes } from "@/redux/slices/quizzesSlice";
-import ResponsiveAd from "@/components/adsenses/ResponsiveAd";
-import SquareAd from "@/components/adsenses/SquareAd";
+import { useEffect, useState, lazy, Suspense } from 'react';
+import { Link } from 'react-router-dom';
+import { Container, Col, Row, Button } from 'reactstrap';
+import PostItemPlaceholder from '@/utils/rLoading/PostItemPlaceholder';
+import { useSelector, useDispatch } from 'react-redux';
+import { getLimitedQuizzes } from '@/redux/slices/quizzesSlice';
+import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
+import SquareAd from '@/components/adsenses/SquareAd';
 
-const LandingSection = lazy(() => import("./LandingSection"));
-const PostItem = lazy(() => import("./PostItem"));
-const RightSide = lazy(() => import("./RightSide"));
-const Popular = lazy(() => import("./Popular"));
-const InFeedAd = lazy(() => import("@/components/adsenses/InFeedAd"));
-const NotesPapers = lazy(() => import("./notes/NotesPapers"));
-const BlogPosts = lazy(() => import("@/components/blog/BlogPosts"));
-const ViewCategories = lazy(() => import("./categories/ViewCategories"));
+const LandingSection = lazy(() => import('./LandingSection'));
+const PostItem = lazy(() => import('./PostItem'));
+const RightSide = lazy(() => import('./RightSide'));
+const Popular = lazy(() => import('./Popular'));
+const InFeedAd = lazy(() => import('@/components/adsenses/InFeedAd'));
+const NotesPapers = lazy(() => import('./notes/NotesPapers'));
+const BlogPosts = lazy(() => import('@/components/blog/BlogPosts'));
+const ViewCategories = lazy(() => import('./categories/ViewCategories'));
 
 const Posts = () => {
   // Dispatch
@@ -87,14 +87,14 @@ const Posts = () => {
                 </Link>
               </div>
               <div className="w-100 d-flex justify-content-center align-items-center">
-                {process.env.NODE_ENV !== "development" ? <SquareAd /> : null}
+                {process.env.NODE_ENV !== 'development' ? <SquareAd /> : null}
               </div>
             </>
           ) : (
             <div className="p-1 m-1 d-flex justify-content-center align-items-center">
               No quizzes available today. &nbsp;
               <Button
-                onClick={() => (window.location.href = "/contact")}
+                onClick={() => (window.location.href = '/contact')}
                 outline
                 color="success"
               >
@@ -111,7 +111,7 @@ const Posts = () => {
               className="d-flex justify-content-center align-items-center"
             >
               <div className="w-100 d-flex justify-content-center align-items-center">
-                {process.env.NODE_ENV !== "development" ? <InFeedAd /> : null}
+                {process.env.NODE_ENV !== 'development' ? <InFeedAd /> : null}
               </div>
             </Col>
           </Row>
@@ -134,7 +134,7 @@ const Posts = () => {
           className="d-flex justify-content-center align-items-center"
         >
           <div className="w-100 d-flex justify-content-center align-items-center">
-            {process.env.NODE_ENV !== "development" ? <ResponsiveAd /> : null}
+            {process.env.NODE_ENV !== 'development' ? <ResponsiveAd /> : null}
           </div>
         </Col>
       </Row>

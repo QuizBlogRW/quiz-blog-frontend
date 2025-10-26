@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   Button,
   Row,
@@ -11,13 +11,13 @@ import {
   Input,
   Breadcrumb,
   BreadcrumbItem,
-} from "reactstrap";
-import { updateProfile } from "@/redux/slices/authSlice";
-import { getSchools } from "@/redux/slices/schoolsSlice";
-import { fetchSchoolLevels } from "@/redux/slices/levelsSlice";
-import { fetchLevelFaculties } from "@/redux/slices/facultiesSlice";
-import NotAuthenticated from "@/components/auth/NotAuthenticated";
-import { notify } from "@/utils/notifyToast";
+} from 'reactstrap';
+import { updateProfile } from '@/redux/slices/authSlice';
+import { getSchools } from '@/redux/slices/schoolsSlice';
+import { fetchSchoolLevels } from '@/redux/slices/levelsSlice';
+import { fetchLevelFaculties } from '@/redux/slices/facultiesSlice';
+import NotAuthenticated from '@/components/auth/NotAuthenticated';
+import { notify } from '@/utils/notifyToast';
 
 const EditProfile = () => {
   const { userId } = useParams();
@@ -97,7 +97,7 @@ const EditProfile = () => {
   };
 
   const handleAddInterest = () => {
-    setInterestsState((prevState) => [...prevState, { favorite: "" }]);
+    setInterestsState((prevState) => [...prevState, { favorite: '' }]);
   };
 
   const handleRemoveInterest = (index) => {
@@ -108,11 +108,11 @@ const EditProfile = () => {
     e.preventDefault();
     const { name, school, level, faculty, year, about } = profileState;
 
-    if (name.length < 4) return notify("Insufficient info!", "error");
+    if (name.length < 4) return notify('Insufficient info!', 'error');
     if (school && (!year || !faculty || !level))
-      return notify("Year, Faculty & Level required!", "error");
-    if (about.length > 2000) return notify("too long!", "error");
-    if (interestsState.length > 20) return alert("Limit reached!");
+      return notify('Year, Faculty & Level required!', 'error');
+    if (about.length > 2000) return notify('too long!', 'error');
+    if (interestsState.length > 20) return alert('Limit reached!');
 
     const updatedProfile = {
       uId: userId,
@@ -146,7 +146,7 @@ const EditProfile = () => {
           <Input
             type="text"
             name="name"
-            value={profileState.name || ""}
+            value={profileState.name || ''}
             placeholder="Name here ..."
             onChange={handleInputChange}
           />
@@ -168,9 +168,9 @@ const EditProfile = () => {
             type="select"
             className="form-control"
             onChange={(e) =>
-              handleSelectChange(e, "school", fetchSchoolLevels, schools)
+              handleSelectChange(e, 'school', fetchSchoolLevels, schools)
             }
-            value={profileState.school?._id || ""}
+            value={profileState.school?._id || ''}
             required
           >
             {profileState.school ? (
@@ -189,22 +189,22 @@ const EditProfile = () => {
           <Input
             disabled
             type="text"
-            value={profileState.school?.title || ""}
-            style={{ color: "var(--brand)" }}
+            value={profileState.school?.title || ''}
+            style={{ color: 'var(--brand)' }}
           />
         </Col>
       </FormGroup>
 
-      <FormGroup row className={`mx-0`}>
+      <FormGroup row className={'mx-0'}>
         <Label sm={3}>Update Level</Label>
         <Col sm={7}>
           <Input
             type="select"
             className="form-control"
             onChange={(e) =>
-              handleSelectChange(e, "level", fetchLevelFaculties, schoolLevels)
+              handleSelectChange(e, 'level', fetchLevelFaculties, schoolLevels)
             }
-            value={profileState.level?._id || ""}
+            value={profileState.level?._id || ''}
             required
           >
             {profileState.level ? (
@@ -220,20 +220,20 @@ const EditProfile = () => {
           </Input>
         </Col>
         <Col sm={2}>
-          <Input disabled type="text" value={profileState.level?.title || ""} />
+          <Input disabled type="text" value={profileState.level?.title || ''} />
         </Col>
       </FormGroup>
 
-      <FormGroup row className={`mx-0`}>
+      <FormGroup row className={'mx-0'}>
         <Label sm={3}>Update Faculty</Label>
         <Col sm={7}>
           <Input
             type="select"
             className="form-control"
             onChange={(e) =>
-              handleSelectChange(e, "faculty", null, levelFaculties)
+              handleSelectChange(e, 'faculty', null, levelFaculties)
             }
-            value={profileState.faculty?._id || ""}
+            value={profileState.faculty?._id || ''}
             required
           >
             {profileState.faculty ? (
@@ -252,19 +252,19 @@ const EditProfile = () => {
           <Input
             disabled
             type="text"
-            value={profileState.faculty?.title || ""}
+            value={profileState.faculty?.title || ''}
           />
         </Col>
       </FormGroup>
 
-      <FormGroup row className={`mx-0`}>
+      <FormGroup row className={'mx-0'}>
         <Label sm={3}>Update Year</Label>
         <Col sm={7}>
           <Input
             type="select"
             className="form-control"
-            onChange={(e) => handleSelectChange(e, "year")}
-            value={profileState.year || ""}
+            onChange={(e) => handleSelectChange(e, 'year')}
+            value={profileState.year || ''}
             required
           >
             {profileState.year ? (
@@ -280,7 +280,7 @@ const EditProfile = () => {
           </Input>
         </Col>
         <Col sm={2}>
-          <Input disabled type="text" value={profileState.year || ""} />
+          <Input disabled type="text" value={profileState.year || ''} />
         </Col>
       </FormGroup>
 
@@ -294,9 +294,9 @@ const EditProfile = () => {
               color="success"
               onClick={handleAddInterest}
             >
-              {" "}
-              +{" "}
-            </Button>{" "}
+              {' '}
+              +{' '}
+            </Button>{' '}
           </Col>
         </FormGroup>
       ) : (
@@ -307,7 +307,7 @@ const EditProfile = () => {
               <Input
                 type="text"
                 name="favorite"
-                value={interest.favorite || ""}
+                value={interest.favorite || ''}
                 placeholder="New interest here ..."
                 onChange={(e) => handleInterestsChange(index, e)}
               />
@@ -319,17 +319,17 @@ const EditProfile = () => {
                 color="danger"
                 onClick={() => handleRemoveInterest(index)}
               >
-                {" "}
-                -{" "}
-              </Button>{" "}
+                {' '}
+                -{' '}
+              </Button>{' '}
               <Button
                 className="px-2 py-1"
                 color="success"
                 onClick={handleAddInterest}
               >
-                {" "}
-                +{" "}
-              </Button>{" "}
+                {' '}
+                +{' '}
+              </Button>{' '}
             </Col>
           </FormGroup>
         ))
@@ -345,7 +345,7 @@ const EditProfile = () => {
             minLength="5"
             maxLength="2000"
             onChange={handleInputChange}
-            value={profileState.about || ""}
+            value={profileState.about || ''}
           />
         </Col>
       </FormGroup>
@@ -355,7 +355,7 @@ const EditProfile = () => {
           <Button
             className="btn btn-info text-white"
             type="submit"
-            style={{ backgroundColor: "var(--brand)" }}
+            style={{ backgroundColor: 'var(--brand)' }}
           >
             Update
           </Button>

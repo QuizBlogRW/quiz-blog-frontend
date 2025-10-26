@@ -1,37 +1,37 @@
-import { useState, useEffect, lazy, Suspense } from 'react'
-import { Container, Col, Row, Button } from 'reactstrap'
-import { getLimitedQuizzes, getQuizzes } from '@/redux/slices/quizzesSlice'
-import { useSelector, useDispatch } from "react-redux"
-import ResponsiveAd from '@/components/adsenses/ResponsiveAd'
-import SquareAd from '@/components/adsenses/SquareAd'
-import SearchInput from '@/utils/SearchInput'
-import QBLoadingSM from '@/utils/rLoading/QBLoadingSM'
+import { useState, useEffect, lazy, Suspense } from 'react';
+import { Container, Col, Row, Button } from 'reactstrap';
+import { getLimitedQuizzes, getQuizzes } from '@/redux/slices/quizzesSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
+import SquareAd from '@/components/adsenses/SquareAd';
+import SearchInput from '@/utils/SearchInput';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 
-const PostItem = lazy(() => import('./PostItem'))
+const PostItem = lazy(() => import('./PostItem'));
 
 const Posts = () => {
 
     // Redux
-    const { isLoading, loadingLimited, quizzes, limitedQuizzes } = useSelector(state => state.quizzes)
-    const dispatch = useDispatch()
+    const { isLoading, loadingLimited, quizzes, limitedQuizzes } = useSelector(state => state.quizzes);
+    const dispatch = useDispatch();
 
-    const [limit] = useState(20)
-    const [skip, setSkip] = useState(0)
-    const [searchKey, setSearchKey] = useState('')
+    const [limit] = useState(20);
+    const [skip, setSkip] = useState(0);
+    const [searchKey, setSearchKey] = useState('');
 
     const nextPage = () => {
-        setSkip(skip + limit)
-    }
+        setSkip(skip + limit);
+    };
 
     const previousPage = () => {
-        setSkip(skip - limit)
-    }
+        setSkip(skip - limit);
+    };
 
     // Lifecycle methods
     useEffect(() => {
-        dispatch(getLimitedQuizzes({ skip, limit }))
-        dispatch(getQuizzes())
-    }, [dispatch, skip, limit])
+        dispatch(getLimitedQuizzes({ skip, limit }));
+        dispatch(getQuizzes());
+    }, [dispatch, skip, limit]);
 
     return (
         <Container className="posts main mt-4">
@@ -82,7 +82,7 @@ const Posts = () => {
                                     </div>
                                 )}
 
-                                {searchKey === "" ? null :
+                                {searchKey === '' ? null :
 
                                     quizzes?.map(quiz => (
 
@@ -121,7 +121,7 @@ const Posts = () => {
                 </Col>
             </Row>
         </Container>
-    )
-}
+    );
+};
 
-export default Posts
+export default Posts;

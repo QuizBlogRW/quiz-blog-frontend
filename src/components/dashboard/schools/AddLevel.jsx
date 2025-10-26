@@ -1,7 +1,7 @@
-import AddModal from '@/utils/AddModal'
-import { createLevel } from '@/redux/slices/levelsSlice'
-import validators from '@/utils/validators'
-import { Input } from 'reactstrap'
+import AddModal from '@/utils/AddModal';
+import { createLevel } from '@/redux/slices/levelsSlice';
+import validators from '@/utils/validators';
+import { Input } from 'reactstrap';
 
 const AddLevel = ({ schools }) => {
     return (
@@ -10,12 +10,12 @@ const AddLevel = ({ schools }) => {
             triggerText="Level"
             initialState={{ title: '', school: '' }}
             submitFn={data => {
-                const { title, school } = data
-                if (!school) return Promise.reject(new Error('validation'))
-                const res = validators.minLength(title, 3)
-                if (!res) return Promise.reject(new Error('validation'))
-                if (title.length > 70) return Promise.reject(new Error('validation'))
-                return createLevel({ title, school })
+                const { title, school } = data;
+                if (!school) return Promise.reject(new Error('validation'));
+                const res = validators.minLength(title, 3);
+                if (!res) return Promise.reject(new Error('validation'));
+                if (title.length > 70) return Promise.reject(new Error('validation'));
+                return createLevel({ title, school });
             }}
             renderForm={(state, setState, firstInputRef) => (
                 <>
@@ -27,7 +27,7 @@ const AddLevel = ({ schools }) => {
                 </>
             )}
         />
-    )
-}
+    );
+};
 
-export default AddLevel
+export default AddLevel;

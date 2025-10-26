@@ -1,14 +1,14 @@
-import { useEffect, lazy, Suspense } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { Container, Col, Row, ListGroup, ListGroupItem } from "reactstrap";
-import { getBlogPosts, getPostCategories } from "@/redux/slices";
-import ResponsiveAd from "@/components/adsenses/ResponsiveAd";
-import SquareAd from "@/components/adsenses/SquareAd";
-import QBLoadingSM from "@/utils/rLoading/QBLoadingSM";
-import "./allBlogPosts.css";
+import { useEffect, lazy, Suspense } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { Container, Col, Row, ListGroup, ListGroupItem } from 'reactstrap';
+import { getBlogPosts, getPostCategories } from '@/redux/slices';
+import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
+import SquareAd from '@/components/adsenses/SquareAd';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
+import './allBlogPosts.css';
 
-const BlogPostItem = lazy(() => import("./BlogPostItem"));
+const BlogPostItem = lazy(() => import('./BlogPostItem'));
 
 const AllBlogPosts = () => {
   let location = useLocation();
@@ -31,7 +31,7 @@ const AllBlogPosts = () => {
           <div className="blog-hero jbtron rounded p-3 text-center">
             <h1
               className="display-4 fw-bolder text-center my-4 mb-lg-4"
-              style={{ color: "var(--accent)" }}
+              style={{ color: 'var(--accent)' }}
             >
               Quiz-Blog Articles
             </h1>
@@ -50,7 +50,7 @@ const AllBlogPosts = () => {
             <div className="sticky-categories">
               <h5
                 className="fw-bolder text-uppercase text-center mb-5"
-                style={{ color: "var(--brand)" }}
+                style={{ color: 'var(--brand)' }}
               >
                 Discover Knowledge
               </h5>
@@ -59,9 +59,9 @@ const AllBlogPosts = () => {
                 <Link to="/blog" className="px-2">
                   <ListGroupItem
                     action
-                    active={location.pathname !== "/blog" ? false : true}
+                    active={location.pathname !== '/blog' ? false : true}
                   >
-                    {`All Categories`.toUpperCase()}
+                    {'All Categories'.toUpperCase()}
                   </ListGroupItem>
                 </Link>
 
@@ -79,7 +79,7 @@ const AllBlogPosts = () => {
                   ))}
               </ListGroup>
               <Col md="3" className="mt-md-2 d-none d-md-block">
-                {process.env.NODE_ENV !== "development" ? <SquareAd /> : null}
+                {process.env.NODE_ENV !== 'development' ? <SquareAd /> : null}
               </Col>
             </div>
           ) : (
@@ -90,7 +90,7 @@ const AllBlogPosts = () => {
             </div>
           )}
           <div className="w-100">
-            {process.env.NODE_ENV !== "development" ? <ResponsiveAd /> : null}
+            {process.env.NODE_ENV !== 'development' ? <ResponsiveAd /> : null}
           </div>
         </Col>
 

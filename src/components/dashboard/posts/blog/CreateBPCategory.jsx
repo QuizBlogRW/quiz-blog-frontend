@@ -1,8 +1,8 @@
-import AddModal from "@/utils/AddModal";
-import { createPostCategory } from "@/redux/slices/postCategoriesSlice";
-import { useSelector } from "react-redux";
-import validators from "@/utils/validators";
-import { Input } from "reactstrap";
+import AddModal from '@/utils/AddModal';
+import { createPostCategory } from '@/redux/slices/postCategoriesSlice';
+import { useSelector } from 'react-redux';
+import validators from '@/utils/validators';
+import { Input } from 'reactstrap';
 
 const CreateBPCategory = () => {
   const { user, isLoading } = useSelector((state) => state.auth);
@@ -11,7 +11,7 @@ const CreateBPCategory = () => {
     <AddModal
       title="Create Blog Post Category"
       triggerText="BP Category"
-      initialState={{ title: "", description: "" }}
+      initialState={{ title: '', description: '' }}
       submitFn={(data) => {
         const { title, description } = data;
         const res = validators.validateTitleDesc(title, description, {
@@ -20,7 +20,7 @@ const CreateBPCategory = () => {
           maxTitle: 50,
           maxDesc: 100,
         });
-        if (!res.ok) return Promise.reject(new Error("validation"));
+        if (!res.ok) return Promise.reject(new Error('validation'));
         return createPostCategory({
           title,
           description,
@@ -37,7 +37,7 @@ const CreateBPCategory = () => {
             placeholder="Category title ..."
             className="mb-3"
             onChange={(e) => setState({ ...state, title: e.target.value })}
-            value={state.title || ""}
+            value={state.title || ''}
           />
           <Input
             type="text"
@@ -48,7 +48,7 @@ const CreateBPCategory = () => {
             onChange={(e) =>
               setState({ ...state, description: e.target.value })
             }
-            value={state.description || ""}
+            value={state.description || ''}
           />
         </>
       )}

@@ -1,154 +1,154 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import {
   apiCallHelper,
   apiCallHelperUpload,
   handlePending,
   handleRejected,
-} from "../configHelpers";
-import { notify } from "@/utils/notifyToast";
+} from '../configHelpers';
+import { notify } from '@/utils/notifyToast';
 
 // Async actions with createAsyncThunk
 export const loadUser = createAsyncThunk(
-  "auth/loadUser",
+  'auth/loadUser',
   async (_, { getState }) =>
-    apiCallHelper("/api/users/loadUser", "get", null, getState, "loadUser")
+    apiCallHelper('/api/users/loadUser', 'get', null, getState, 'loadUser')
 );
 
 export const register = createAsyncThunk(
-  "auth/register",
+  'auth/register',
   async ({ name, email, password }, { getState }) =>
     apiCallHelper(
-      "/api/users/register",
-      "post",
+      '/api/users/register',
+      'post',
       { name, email, password },
       getState,
-      "register"
+      'register'
     )
 );
 
 export const verify = createAsyncThunk(
-  "auth/verify-otp",
+  'auth/verify-otp',
   async ({ email, otp }, { getState }) =>
     apiCallHelper(
-      "/api/users/verify-otp",
-      "post",
+      '/api/users/verify-otp',
+      'post',
       { email, otp },
       getState,
-      "verify"
+      'verify'
     )
 );
 
 export const login = createAsyncThunk(
-  "auth/login",
+  'auth/login',
   async ({ email, password, confirmLogin }, { getState }) =>
     apiCallHelper(
-      "/api/users/login",
-      "post",
+      '/api/users/login',
+      'post',
       { email, password, confirmLogin },
       getState,
-      "login"
+      'login'
     )
 );
 
 export const getUsers = createAsyncThunk(
-  "auth/getUsers",
+  'auth/getUsers',
   async (_, { getState }) =>
-    apiCallHelper("/api/users", "get", null, getState, "getUsers")
+    apiCallHelper('/api/users', 'get', null, getState, 'getUsers')
 );
 
 export const getLatestUsers = createAsyncThunk(
-  "auth/getLatestUsers",
+  'auth/getLatestUsers',
   async (_, { getState }) =>
-    apiCallHelper("/api/users/latest", "get", null, getState, "getLatestUsers")
+    apiCallHelper('/api/users/latest', 'get', null, getState, 'getLatestUsers')
 );
 
 export const getAdminsCreators = createAsyncThunk(
-  "auth/getAdminsCreators",
+  'auth/getAdminsCreators',
   async (_, { getState }) =>
     apiCallHelper(
-      "/api/users/admins-creators",
-      "get",
+      '/api/users/admins-creators',
+      'get',
       null,
       getState,
-      "getAdminsCreators"
+      'getAdminsCreators'
     )
 );
 
 export const logout = createAsyncThunk(
-  "auth/logout",
+  'auth/logout',
   async (userId, { getState }) =>
-    apiCallHelper("/api/users/logout", "put", { userId }, getState, "logout")
+    apiCallHelper('/api/users/logout', 'put', { userId }, getState, 'logout')
 );
 
 export const updateUser = createAsyncThunk(
-  "auth/updateUser",
+  'auth/updateUser',
   async (updatedUser, { getState }) =>
     apiCallHelper(
       `/api/users/${updatedUser.uId}`,
-      "put",
+      'put',
       updatedUser,
       getState,
-      "updateUser"
+      'updateUser'
     )
 );
 
 export const updateProfile = createAsyncThunk(
-  "auth/updateProfile",
+  'auth/updateProfile',
   async (updatedProfile, { getState }) =>
     apiCallHelper(
       `/api/users/user-details/${updatedProfile.id}`,
-      "put",
+      'put',
       updatedProfile,
       getState,
-      "updateProfile"
+      'updateProfile'
     )
 );
 
 export const updateProfileImage = createAsyncThunk(
-  "auth/updateProfileImage",
+  'auth/updateProfileImage',
   async ({ formData, id }, { getState }) =>
     apiCallHelperUpload(
       `/api/users/user-image/${id}`,
-      "put",
+      'put',
       formData,
       getState,
-      "updateProfileImage"
+      'updateProfileImage'
     )
 );
 
 export const sendResetLink = createAsyncThunk(
-  "auth/sendResetLink",
+  'auth/sendResetLink',
   async (fEmail, { getState }) =>
     apiCallHelper(
-      "/api/auth/forgot-password",
-      "post",
+      '/api/auth/forgot-password',
+      'post',
       fEmail,
       getState,
-      "sendResetLink"
+      'sendResetLink'
     )
 );
 
 export const sendNewPassword = createAsyncThunk(
-  "auth/sendNewPassword",
+  'auth/sendNewPassword',
   async (updatePsw, { getState }) =>
     apiCallHelper(
-      "/api/auth/reset-password",
-      "post",
+      '/api/auth/reset-password',
+      'post',
       updatePsw,
       getState,
-      "sendNewPassword"
+      'sendNewPassword'
     )
 );
 
 export const deleteUser = createAsyncThunk(
-  "auth/deleteUser",
+  'auth/deleteUser',
   async (id, { getState }) =>
-    apiCallHelper(`/api/users/${id}`, "delete", null, getState, "deleteUser")
+    apiCallHelper(`/api/users/${id}`, 'delete', null, getState, 'deleteUser')
 );
 
 // AUTH SLICE
 const authSlice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState: {
     isLoading: false,
     isLoadingUsers: false,
@@ -160,27 +160,27 @@ const authSlice = createSlice({
     adminsCreators: [],
     pswdResetToken: null,
     user: null,
-    token: localStorage.getItem("token"),
-    confirmLogin: localStorage.getItem("confirmLogin"),
+    token: localStorage.getItem('token'),
+    confirmLogin: localStorage.getItem('confirmLogin'),
     error: null,
   },
 
   // We use the "reducers" property to add the createSlice actions or sync actions
   reducers: {
     setToken: (state, action) => {
-      localStorage.setItem("token", action.payload);
+      localStorage.setItem('token', action.payload);
       state.token = action.payload;
     },
     setLastLogin: (state, action) => {
-      localStorage.setItem("confirmLogin", action.payload);
+      localStorage.setItem('confirmLogin', action.payload);
       state.confirmLogin = action.payload;
     },
     clearToken: (state, action) => {
-      localStorage.removeItem("token");
+      localStorage.removeItem('token');
       state.token = null;
     },
     clearLastLogin: (state, action) => {
-      localStorage.removeItem("confirmLogin");
+      localStorage.removeItem('confirmLogin');
       state.confirmLogin = null;
     },
     clearPswdResetToken: (state, action) => {
@@ -202,8 +202,8 @@ const authSlice = createSlice({
       ) {
         state.isAuthenticated = false;
         state.user = null;
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
       } else {
         state.isAuthenticated = true;
         state.user = action.payload;
@@ -213,24 +213,24 @@ const authSlice = createSlice({
       state.isLoading = false;
       state.isAuthenticated = true;
       state.user = action.payload.user;
-      localStorage.setItem("token", action.payload.current_token);
-      localStorage.setItem("user", JSON.stringify(action.payload.user));
+      localStorage.setItem('token', action.payload.current_token);
+      localStorage.setItem('user', JSON.stringify(action.payload.user));
       notify(`Welcome ${action.payload.user.name}!`);
     });
     builder.addCase(register.fulfilled, (state, action) => {
       state.isLoading = false;
       const { email, msg } = action.payload;
-      localStorage.setItem("emailForOTP", email);
+      localStorage.setItem('emailForOTP', email);
       notify(msg);
-      setTimeout(() => (window.location.href = "/verify"), 5000);
+      setTimeout(() => (window.location.href = '/verify'), 5000);
     });
     builder.addCase(verify.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isAuthenticated = true;
       state.user = action.payload.user;
-      localStorage.setItem("token", action.payload.current_token);
-      localStorage.setItem("user", JSON.stringify(action.payload.user));
-      notify("Account verified! Welcome to Quiz-Blog!");
+      localStorage.setItem('token', action.payload.current_token);
+      localStorage.setItem('user', JSON.stringify(action.payload.user));
+      notify('Account verified! Welcome to Quiz-Blog!');
     });
     builder.addCase(logout.fulfilled, (state, action) => {
       state.isLoading = false;
@@ -238,10 +238,10 @@ const authSlice = createSlice({
       state.user = null;
       state.token = null;
       state.confirmLogin = null;
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      localStorage.removeItem("confirmLogin");
-      notify("Good Bye!");
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      localStorage.removeItem('confirmLogin');
+      notify('Good Bye!');
     });
     builder.addCase(getUsers.fulfilled, (state, action) => {
       state.isLoadingUsers = false;
@@ -277,19 +277,19 @@ const authSlice = createSlice({
     builder.addCase(updateProfileImage.fulfilled, (state, action) => {
       state.isLoading = false;
       state.user = action.payload;
-      notify("Profile image updated!");
+      notify('Profile image updated!');
     });
     builder.addCase(sendResetLink.fulfilled, (state, action) => {
       state.isLoading = false;
       state.email = action.payload;
       notify(
-        "Password reset link sent to your email! Can't find it? Check your spam folder."
+        'Password reset link sent to your email! Can\'t find it? Check your spam folder.'
       );
     });
     builder.addCase(sendNewPassword.fulfilled, (state, action) => {
       state.isLoading = false;
       state.user = action.payload;
-      notify("Password reset successful! Please login with your new password.");
+      notify('Password reset successful! Please login with your new password.');
     });
     builder.addCase(deleteUser.fulfilled, (state, action) => {
       state.users = state.users.filter(

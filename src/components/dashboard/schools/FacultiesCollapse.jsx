@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
-import { ListGroup, ListGroupItem, Button } from "reactstrap";
-import { Collapse } from "react-collapse";
-import AddIcon from "@/images/plusIcon.svg";
-import SubtractIcon from "@/images/minusIcon.svg";
-import { getFaculties, deleteFaculty } from "@/redux/slices/facultiesSlice";
-import { useSelector, useDispatch } from "react-redux";
-import EditFacultyModal from "./EditFacultyModal";
+import { useState, useEffect } from 'react';
+import { ListGroup, ListGroupItem, Button } from 'reactstrap';
+import { Collapse } from 'react-collapse';
+import AddIcon from '@/images/plusIcon.svg';
+import SubtractIcon from '@/images/minusIcon.svg';
+import { getFaculties, deleteFaculty } from '@/redux/slices/facultiesSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import EditFacultyModal from './EditFacultyModal';
 
-import DeleteModal from "@/utils/DeleteModal";
+import DeleteModal from '@/utils/DeleteModal';
 
 const FacultiesCollapse = ({ levelID }) => {
   // Redux
@@ -75,11 +75,11 @@ const FacultiesCollapse = ({ levelID }) => {
               <Collapse isOpened={activeIndex === index}>
                 <div
                   className={`alert alert-info msg ${
-                    activeIndex === index ? "show" : "hide"
+                    activeIndex === index ? 'show' : 'hide'
                   }`}
                 >
                   <ListGroup>
-                    {typeof faculty.years === "object"
+                    {typeof faculty.years === 'object'
                       ? faculty.years.map((yer) => (
                           <ListGroupItem key={yer}>{yer}</ListGroupItem>
                         ))

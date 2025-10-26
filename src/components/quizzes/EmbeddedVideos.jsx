@@ -1,29 +1,29 @@
-import { Col, Row, Card, CardTitle, Button } from 'reactstrap'
-import DeleteIcon from '@/images/trash.svg'
-import { deleteVideo } from '@/redux/slices/quizzesSlice'
-import { deleteFaqVideo } from '@/redux/slices/faqsSlice'
-import { useDispatch } from 'react-redux'
-import { useSelector } from "react-redux"
+import { Col, Row, Card, CardTitle, Button } from 'reactstrap';
+import DeleteIcon from '@/images/trash.svg';
+import { deleteVideo } from '@/redux/slices/quizzesSlice';
+import { deleteFaqVideo } from '@/redux/slices/faqsSlice';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const EmbeddedVideos = ({ quiz, faq, isFromFaqs }) => {
 
-    const dispatch = useDispatch()
-    const { user } = useSelector(state => state.auth)
+    const dispatch = useDispatch();
+    const { user } = useSelector(state => state.auth);
 
-    const videos = isFromFaqs ? faq && faq.video_links : quiz && quiz.oneQuiz && quiz.oneQuiz.video_links
-    const iD = isFromFaqs ? faq && faq._id : quiz && quiz.oneQuiz && quiz.oneQuiz._id
+    const videos = isFromFaqs ? faq && faq.video_links : quiz && quiz.oneQuiz && quiz.oneQuiz.video_links;
+    const iD = isFromFaqs ? faq && faq._id : quiz && quiz.oneQuiz && quiz.oneQuiz._id;
 
     const delHandler = (vId) => {
         // Create new object
-        const vidData = { vId, iD }
+        const vidData = { vId, iD };
         isFromFaqs ?
-            dispatch(deleteFaqVideo(vidData, vId)) : dispatch(deleteVideo(vidData, vId))
-    }
+            dispatch(deleteFaqVideo(vidData, vId)) : dispatch(deleteVideo(vidData, vId));
+    };
 
     return (
         videos?.length > 0 &&
         <Row>
-            <Col sm={12} style={{ backgroundColor: "khaki" }}>
+            <Col sm={12} style={{ backgroundColor: 'khaki' }}>
                 <h4 className="my-2 my-lg-4 text-center fw-bolder d-block">
                     VIDEOS
                 </h4>
@@ -48,7 +48,7 @@ const EmbeddedVideos = ({ quiz, faq, isFromFaqs }) => {
                 </Col>
             ))}
         </Row>
-    )
-}
+    );
+};
 
-export default EmbeddedVideos
+export default EmbeddedVideos;

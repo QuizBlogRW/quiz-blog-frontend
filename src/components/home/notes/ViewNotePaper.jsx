@@ -1,4 +1,4 @@
-import { useEffect, lazy, Suspense, useContext } from "react";
+import { useEffect, lazy, Suspense, useContext } from 'react';
 import {
   Container,
   Col,
@@ -7,16 +7,16 @@ import {
   Button,
   CardTitle,
   CardText,
-} from "reactstrap";
-import moment from "moment";
-import { Link, useParams } from "react-router-dom";
-import { getOneNotePaper } from "@/redux/slices/notesSlice";
-import { saveDownload } from "@/redux/slices/downloadsSlice";
-import { useSelector, useDispatch } from "react-redux";
-import QBLoadingSM from "@/utils/rLoading/QBLoadingSM";
-import { logRegContext } from "@/contexts/appContexts";
+} from 'reactstrap';
+import moment from 'moment';
+import { Link, useParams } from 'react-router-dom';
+import { getOneNotePaper } from '@/redux/slices/notesSlice';
+import { saveDownload } from '@/redux/slices/downloadsSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
+import { logRegContext } from '@/contexts/appContexts';
 
-const GridMultiplex = lazy(() => import("@/components/adsenses/GridMultiplex"));
+const GridMultiplex = lazy(() => import('@/components/adsenses/GridMultiplex'));
 
 const ViewNotePaper = () => {
   // Access route parameters
@@ -29,7 +29,7 @@ const ViewNotePaper = () => {
   }, [dispatch, noteSlug]);
 
   const noteDownload = useSelector((state) => state.notes);
-  console.log("noteDownload: ", noteDownload);
+  console.log('noteDownload: ', noteDownload);
   const { user, isAuthenticated, isLoading } = useSelector(
     (state) => state.auth
   );
@@ -82,7 +82,7 @@ const ViewNotePaper = () => {
                   dateTime={createdAt}
                   className="d-block text-center text-success fw-bolder mb-2"
                 >
-                  {moment(new Date(createdAt)).format("DD MMM YYYY, HH:mm")}
+                  {moment(new Date(createdAt)).format('DD MMM YYYY, HH:mm')}
                 </time>
 
                 {!isAuthenticated ? (
@@ -119,7 +119,7 @@ const ViewNotePaper = () => {
                     </a>
                     <Button
                       className="header-cta"
-                      onClick={() => (window.location.href = "/")}
+                      onClick={() => (window.location.href = '/')}
                       aria-label="Back to home"
                     >
                       Back
@@ -128,7 +128,7 @@ const ViewNotePaper = () => {
                 )}
 
                 <p className="note-meta mt-3 text-center text-muted">
-                  {courseCategory && courseCategory.title} &middot;{" "}
+                  {courseCategory && courseCategory.title} &middot;{' '}
                   {course && course.title} &middot; {chapter && chapter.title}
                 </p>
               </Card>
@@ -138,7 +138,7 @@ const ViewNotePaper = () => {
           <Row>
             <Col sm="12">
               <Suspense fallback={<QBLoadingSM />}>
-                {process.env.NODE_ENV !== "development" ? (
+                {process.env.NODE_ENV !== 'development' ? (
                   <GridMultiplex />
                 ) : null}
               </Suspense>
@@ -150,7 +150,7 @@ const ViewNotePaper = () => {
   ) : (
     <div className="pt-5 d-flex justify-content-center align-items-center flex-column">
       <h4 className="mb-3">This file is unavailable!</h4>
-      <Link to={"/"}>
+      <Link to={'/'}>
         <Button
           className="btn btn-outline-primary mt-3"
           aria-label="Go back to home"

@@ -4,13 +4,13 @@ import { useSelector } from 'react-redux';
 import { Row, Col, Card, CardBody, Alert, Spinner, TabContent, Nav, NavItem, NavLink } from 'reactstrap';
 import classnames from 'classnames';
 import './SystemDashboard.css';
-import { toggle } from './utils'
+import { toggle } from './utils';
 import DatabaseMetricsTab from './DatabaseMetricsTab';
 import SystemMetricsTab from './SystemMetricsTab';
 
 const SystemDashboard = () => {
 
-    const { user, isAuthenticated } = useSelector(state => state.auth)
+    const { user, isAuthenticated } = useSelector(state => state.auth);
     const [dashboardStats, setDashboardStats] = useState(null);
 
     const [loading, setLoading] = useState(true);
@@ -47,7 +47,7 @@ const SystemDashboard = () => {
 
             if (dashRes.status === 200 && dashRes.data) {
                 setDashboardStats(dashRes.data);
-                setFetchError(null)
+                setFetchError(null);
             }
 
             setLastUpdated(new Date().toLocaleTimeString());
@@ -112,7 +112,7 @@ const SystemDashboard = () => {
             </Row>
 
             {fetchError && (
-                <Alert color={fetchError.includes('Note:') ? "warning" : "danger"} className="mb-4">
+                <Alert color={fetchError.includes('Note:') ? 'warning' : 'danger'} className="mb-4">
                     <i className={`fas ${fetchError.includes('Note:') ? 'fa-info-circle' : 'fa-exclamation-triangle'} me-2`}></i>
                     {fetchError}
                 </Alert>

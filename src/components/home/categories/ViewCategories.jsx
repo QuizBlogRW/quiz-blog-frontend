@@ -1,14 +1,14 @@
-import React from 'react'
-import { Link } from "react-router-dom"
-import { Collapse, Button, ListGroup, ListGroupItem, Badge } from 'reactstrap'
-import { useSelector } from "react-redux"
-import QBLoadingSM from '@/utils/rLoading/QBLoadingSM'
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Collapse, Button, ListGroup, ListGroupItem, Badge } from 'reactstrap';
+import { useSelector } from 'react-redux';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 
 const ViewCategories = () => {
 
-    const [openCategoryId, setOpenCategoryId] = React.useState(null)
-    const toggle = (categoryId) => setOpenCategoryId(prev => prev === categoryId ? null : categoryId)
-    const { allcategories, isLoading } = useSelector(state => state.categories)
+    const [openCategoryId, setOpenCategoryId] = React.useState(null);
+    const toggle = (categoryId) => setOpenCategoryId(prev => prev === categoryId ? null : categoryId);
+    const { allcategories, isLoading } = useSelector(state => state.categories);
 
     return (
 
@@ -22,7 +22,7 @@ const ViewCategories = () => {
                                 block
                                 className="mt-2 mob-cat-btn d-flex align-items-center category-toggle"
                                 onClick={() => toggle(category._id)}
-                                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') toggle(category._id) }}
+                                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') toggle(category._id); }}
                                 aria-expanded={openCategoryId === category._id}
                                 aria-controls={`${category._id}-collapse`}
                                 >
@@ -48,7 +48,7 @@ const ViewCategories = () => {
                             </Collapse>
                         </React.Fragment> : null
                 )
-            ) : <p>No categories available.</p>)
-}
+            ) : <p>No categories available.</p>);
+};
 
-export default ViewCategories
+export default ViewCategories;

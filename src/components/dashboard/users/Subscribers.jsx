@@ -1,22 +1,22 @@
-import { useEffect } from 'react'
-import { Row, Button, Table } from 'reactstrap'
-import { getSubscribers, deleteSubscriber } from '@/redux/slices/subscribersSlice'
-import { useSelector, useDispatch } from 'react-redux'
-import trash from '@/images/trash.svg'
-import QBLoadingSM from '@/utils/rLoading/QBLoadingSM'
-import moment from 'moment'
-import DeleteModal from '@/utils/DeleteModal'
+import { useEffect } from 'react';
+import { Row, Button, Table } from 'reactstrap';
+import { getSubscribers, deleteSubscriber } from '@/redux/slices/subscribersSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import trash from '@/images/trash.svg';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
+import moment from 'moment';
+import DeleteModal from '@/utils/DeleteModal';
 
 const Subscribers = () => {
 
     // Redux
-    const subscribedUsers = useSelector(state => state.subscribers)
-    const dispatch = useDispatch()
+    const subscribedUsers = useSelector(state => state.subscribers);
+    const dispatch = useDispatch();
 
     // Lifecycle methods
     useEffect(() => {
-        dispatch(getSubscribers())
-    }, [dispatch])
+        dispatch(getSubscribers());
+    }, [dispatch]);
 
     return (
         <div className='mx-4 my-5'>
@@ -57,7 +57,7 @@ const Subscribers = () => {
                     </Row>
             }
         </div>
-    )
-}
+    );
+};
 
-export default Subscribers
+export default Subscribers;

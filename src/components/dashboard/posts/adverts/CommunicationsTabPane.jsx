@@ -1,10 +1,10 @@
-import { useEffect } from "react";
-import { Row, Col, Button, TabPane, Alert } from "reactstrap";
-import QBLoadingSM from "@/utils/rLoading/QBLoadingSM";
-import { getAdverts } from "@/redux/slices/advertsSlice";
-import { useSelector, useDispatch } from "react-redux";
-import AdvertCard from "./AdvertCard";
-import CreateAdvert from "./CreateAdvert";
+import { useEffect } from 'react';
+import { Row, Col, Button, TabPane, Alert } from 'reactstrap';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
+import { getAdverts } from '@/redux/slices/advertsSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import AdvertCard from './AdvertCard';
+import CreateAdvert from './CreateAdvert';
 
 const CommunicationsTabPane = () => {
   // Redux
@@ -23,8 +23,8 @@ const CommunicationsTabPane = () => {
         To see more about broadcasts, click here 👉
         <button className="btn btn-sm btn-outline-warning ms-2">
           <a
-            href={"/broadcasts"}
-            style={{ color: "var(--brand)", fontWeight: "bolder" }}
+            href={'/broadcasts'}
+            style={{ color: 'var(--brand)', fontWeight: 'bolder' }}
           >
             Broadcasts
           </a>
@@ -37,7 +37,7 @@ const CommunicationsTabPane = () => {
         <Alert
           color="danger"
           className="w-50 text-center mx-auto"
-          style={{ border: "2px solid #157A6E" }}
+          style={{ border: '2px solid #157A6E' }}
         >
           No adverts created yet!
         </Alert>

@@ -1,21 +1,21 @@
-import { useEffect, lazy, Suspense } from 'react'
-import { Container, Col, Row, Card, Button, CardTitle, CardText } from 'reactstrap'
-import { Link, useParams } from 'react-router-dom'
-import { getOneQuiz } from '@/redux/slices/quizzesSlice'
-import { useSelector, useDispatch } from 'react-redux'
-import EmbeddedVideos from './EmbeddedVideos'
-import QBLoadingSM from '@/utils/rLoading/QBLoadingSM'
+import { useEffect, lazy, Suspense } from 'react';
+import { Container, Col, Row, Card, Button, CardTitle, CardText } from 'reactstrap';
+import { Link, useParams } from 'react-router-dom';
+import { getOneQuiz } from '@/redux/slices/quizzesSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import EmbeddedVideos from './EmbeddedVideos';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 
-const ResponsiveHorizontal = lazy(() => import('@/components/adsenses/ResponsiveHorizontal'))
+const ResponsiveHorizontal = lazy(() => import('@/components/adsenses/ResponsiveHorizontal'));
 
 const GetReady = () => {
 
     // Redux
-    const dispatch = useDispatch()
-    let qZ = useSelector(state => state.quizzes)
+    const dispatch = useDispatch();
+    let qZ = useSelector(state => state.quizzes);
 
     // SHUFFLE QUESTIONS
-    const shuffleQuestions = qZ.oneQuiz && qZ.oneQuiz.questions && Array.from(qZ.oneQuiz.questions).sort(() => Math.random() - 0.5)
+    const shuffleQuestions = qZ.oneQuiz && qZ.oneQuiz.questions && Array.from(qZ.oneQuiz.questions).sort(() => Math.random() - 0.5);
 
     qZ = {
         ...qZ,
@@ -23,15 +23,15 @@ const GetReady = () => {
             ...qZ.oneQuiz,
             questions: shuffleQuestions
         }
-    }
+    };
 
-    const { user } = useSelector(state => state.auth)
-    const currentCategory = qZ?.oneQuiz?.category?._id
+    const { user } = useSelector(state => state.auth);
+    const currentCategory = qZ?.oneQuiz?.category?._id;
 
     // Access route parameters
-    const { quizSlug } = useParams()
+    const { quizSlug } = useParams();
 
-    useEffect(() => { dispatch(getOneQuiz(quizSlug)) }, [dispatch, quizSlug])
+    useEffect(() => { dispatch(getOneQuiz(quizSlug)); }, [dispatch, quizSlug]);
 
     if (qZ.isLoading) {
 
@@ -39,7 +39,7 @@ const GetReady = () => {
             <div className="vh-100 d-flex justify-content-center align-items-center">
                 <QBLoadingSM />
             </div>
-        )
+        );
 
     } else {
 
@@ -63,26 +63,26 @@ const GetReady = () => {
 
                                         <small className={`my-4 fw-bolder text-${user ? 'success' : 'danger'}`}>
                                             {user ?
-                                                currentCategory !== "60e8e72d4463f50015a81f96" ? `${user.name}, are you ready to take the quiz?` : `${user.name}, witeguye gutangira isuzuma?` : currentCategory !== "60e8e72d4463f50015a81f96" ? 'To be able to save and review your answers, please Login or Register 😎' :
+                                                currentCategory !== '60e8e72d4463f50015a81f96' ? `${user.name}, are you ready to take the quiz?` : `${user.name}, witeguye gutangira isuzuma?` : currentCategory !== '60e8e72d4463f50015a81f96' ? 'To be able to save and review your answers, please Login or Register 😎' :
                                                     'Kugirango uze kubona uko wasubije, Injira cyangwa ufungure konti 😎'}
                                         </small>
 
                                         <div className='answer d-flex justify-content-center mx-auto mt-2 w-lg-50'>
                                             <Link to={`/attempt-quiz/${qZ.oneQuiz.slug}`} state={qZ}>
-                                                <Button className="mt-3" style={{ backgroundColor: 'var(--brand)', color: "fff", border: '2px solid var(--accent)', borderRadius: '10px', padding: '5px 12px' }}>
-                                                    {currentCategory === "60e8e72d4463f50015a81f96" ? "Tangira Isuzuma" : "Attempt Quiz"}
+                                                <Button className="mt-3" style={{ backgroundColor: 'var(--brand)', color: 'fff', border: '2px solid var(--accent)', borderRadius: '10px', padding: '5px 12px' }}>
+                                                    {currentCategory === '60e8e72d4463f50015a81f96' ? 'Tangira Isuzuma' : 'Attempt Quiz'}
                                                 </Button>
                                             </Link>
 
                                             <Button color="success" className="mt-3 share-btn mx-1 mx-md-3">
                                                 <i className="fa-brands fa-whatsapp"></i>&nbsp;
                                                 <a className="text-white" href={`https://api.whatsapp.com/send?phone=whatsappphonenumber&text=Attempt this ${qZ.oneQuiz.title} quiz on Quiz-Blog
-                        \nhttps://www.quizblog.rw/view-quiz/${qZ.oneQuiz.slug}`}> {currentCategory === "60e8e72d4463f50015a81f96" ? "Sangiza" : "Share"}</a>
+                        \nhttps://www.quizblog.rw/view-quiz/${qZ.oneQuiz.slug}`}> {currentCategory === '60e8e72d4463f50015a81f96' ? 'Sangiza' : 'Share'}</a>
                                             </Button>
 
                                             <Link to={'/'}>
-                                                <Button className="mt-3" style={{ backgroundColor: 'var(--accent)', color: "fff", border: '2px solid var(--brand)', borderRadius: '10px', padding: '5px 12px' }}>
-                                                    {currentCategory === "60e8e72d4463f50015a81f96" ? "Garuka" : "⬅ Back"}
+                                                <Button className="mt-3" style={{ backgroundColor: 'var(--accent)', color: 'fff', border: '2px solid var(--brand)', borderRadius: '10px', padding: '5px 12px' }}>
+                                                    {currentCategory === '60e8e72d4463f50015a81f96' ? 'Garuka' : '⬅ Back'}
                                                 </Button>
                                             </Link>
                                         </div>
@@ -109,8 +109,8 @@ const GetReady = () => {
 
                 <div className="py-5 d-flex justify-content-center align-items-center">
                     <h4 className="py-lg-5 my-lg-5 text-danger">This quiz is not available yet! <a href="/allposts">click here for more quizzes!</a></h4>
-                </div>)
+                </div>);
     }
-}
+};
 
-export default GetReady
+export default GetReady;

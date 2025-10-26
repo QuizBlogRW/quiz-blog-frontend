@@ -1,48 +1,48 @@
-import { useState, useEffect } from 'react'
-import { Col, Form, FormGroup, Label, Input, Button, Alert, TabPane } from 'reactstrap'
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
-import 'react-tabs/style/react-tabs.css'
-import { getSchools, deleteSchool, createSchool } from '@/redux/slices/schoolsSlice'
-import { fetchSchoolLevels, deleteLevel, createLevel } from '@/redux/slices/levelsSlice'
-import { useSelector, useDispatch } from 'react-redux'
-import AddModal from '@/utils/AddModal'
-import { createFaculty } from '@/redux/slices/facultiesSlice'
-import { notify } from '@/utils/notifyToast'
-import validators from '@/utils/validators'
-import EditSchoolModal from './EditSchoolModal'
-import FacultiesCollapse from './FacultiesCollapse'
-import EditLevelModal from './EditLevelModal'
-import QBLoadingSM from '@/utils/rLoading/QBLoadingSM'
-import DeleteModal from '@/utils/DeleteModal'
+import { useState, useEffect } from 'react';
+import { Col, Form, FormGroup, Label, Input, Button, Alert, TabPane } from 'reactstrap';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import 'react-tabs/style/react-tabs.css';
+import { getSchools, deleteSchool, createSchool } from '@/redux/slices/schoolsSlice';
+import { fetchSchoolLevels, deleteLevel, createLevel } from '@/redux/slices/levelsSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import AddModal from '@/utils/AddModal';
+import { createFaculty } from '@/redux/slices/facultiesSlice';
+import { notify } from '@/utils/notifyToast';
+import validators from '@/utils/validators';
+import EditSchoolModal from './EditSchoolModal';
+import FacultiesCollapse from './FacultiesCollapse';
+import EditLevelModal from './EditLevelModal';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
+import DeleteModal from '@/utils/DeleteModal';
 
 const SchoolsTabPane = () => {
 
     // Redux
-    const schools = useSelector(state => state.schools)
-    const schoolLevels = useSelector(state => state.levels.schoolLevels)
-    const { user } = useSelector(state => state.auth)
-    const dispatch = useDispatch()
+    const schools = useSelector(state => state.schools);
+    const schoolLevels = useSelector(state => state.levels.schoolLevels);
+    const { user } = useSelector(state => state.auth);
+    const dispatch = useDispatch();
 
     // State
-    const [selectedSchool, setSelectedSchool] = useState('')
-    const [schoolList, setSchoolList] = useState([])
-    const [levelList, setLevelList] = useState([])
+    const [selectedSchool, setSelectedSchool] = useState('');
+    const [schoolList, setSchoolList] = useState([]);
+    const [levelList, setLevelList] = useState([]);
 
     // Lifecycle methods
     useEffect(() => {
-        dispatch(getSchools())
-    }, [dispatch])
+        dispatch(getSchools());
+    }, [dispatch]);
 
     useEffect(() => {
-        setSchoolList(schools.allSchools || [])
-        setLevelList(schoolLevels || [])
-    }, [schools, schoolLevels])
+        setSchoolList(schools.allSchools || []);
+        setLevelList(schoolLevels || []);
+    }, [schools, schoolLevels]);
 
     const handleSchoolChange = (e) => {
-        e.preventDefault()
-        setSelectedSchool(e.target.value)
-        dispatch(fetchSchoolLevels(e.target.value))
-    }
+        e.preventDefault();
+        setSelectedSchool(e.target.value);
+        dispatch(fetchSchoolLevels(e.target.value));
+    };
 
     const renderSchoolOptions = () => (
         schoolList.map(school => (
@@ -50,7 +50,7 @@ const SchoolsTabPane = () => {
                 {school.title}
             </option>
         ))
-    )
+    );
 
     const renderLevelTabs = () => (
         levelList.map(level => (
@@ -66,7 +66,7 @@ const SchoolsTabPane = () => {
                 </div>
             </Tab>
         ))
-    )
+    );
 
     const renderLevelPanels = () => (
         levelList.map(level => (
@@ -79,13 +79,13 @@ const SchoolsTabPane = () => {
                                 triggerText="Faculty"
                                 initialState={{ title: '', school: level && level.school, level: level && level._id, years: [] }}
                                 submitFn={data => {
-                                    const { title, years } = data
-                                    const res = validators.validateTitleDesc(title, 'x', { minTitle: 3, minDesc: 1, maxTitle: 70, maxDesc: 1 })
+                                    const { title, years } = data;
+                                    const res = validators.validateTitleDesc(title, 'x', { minTitle: 3, minDesc: 1, maxTitle: 70, maxDesc: 1 });
                                     if (!res.ok || !years) {
-                                        notify('Insufficient info!', 'error')
-                                        return Promise.reject(new Error('validation'))
+                                        notify('Insufficient info!', 'error');
+                                        return Promise.reject(new Error('validation'));
                                     }
-                                    return createFaculty({ ...data, created_by: user && user._id ? user._id : null })
+                                    return createFaculty({ ...data, created_by: user && user._id ? user._id : null });
                                 }}
                                 renderForm={(state, setState, firstInputRef) => (
                                     <FormGroup>
@@ -94,11 +94,11 @@ const SchoolsTabPane = () => {
 
                                         <Label for="faculty"><strong>Learning years</strong></Label>
                                         <Input type="select" name="selectYear" onChange={e => {
-                                            const yearsnbr = []
+                                            const yearsnbr = [];
                                             for (let i = 1; i <= e.target.value; i++) {
-                                                yearsnbr.push(`Year ${i}`)
+                                                yearsnbr.push(`Year ${i}`);
                                             }
-                                            setState({ ...state, years: yearsnbr })
+                                            setState({ ...state, years: yearsnbr });
                                         }}>
                                             <option>-- Select --</option>
                                             <option value={1}>1</option>
@@ -117,28 +117,28 @@ const SchoolsTabPane = () => {
                 <FacultiesCollapse levelID={level._id} />
             </TabPanel>
         ))
-    )
+    );
 
     return (<TabPane tabId="3">
         <div className="add-school mt-lg-5 mx-lg-5 px-lg-5 py-lg-3 d-flex justify-content-around align-items-center border rounded">
             <h5 className='fw-bolder text-info d-none d-sm-block'>SCHOOLS | LEVELS | FACULTIES | YEARS</h5>
-            <div className="d-inline-block" style={{ display: "inline", marginLeft: "auto" }}>
+            <div className="d-inline-block" style={{ display: 'inline', marginLeft: 'auto' }}>
                 <AddModal
                     title="Add New School"
                     triggerText="School"
                     initialState={{ title: '', location: '', website: '' }}
                     submitFn={data => {
-                        const { title, location, website } = data
-                        const res = validators.validateTitleDesc(title, location, { minTitle: 3, minDesc: 4, maxTitle: 70, maxDesc: 120 })
+                        const { title, location, website } = data;
+                        const res = validators.validateTitleDesc(title, location, { minTitle: 3, minDesc: 4, maxTitle: 70, maxDesc: 120 });
                         if (!res.ok) {
-                            notify('Insufficient info!', 'error')
-                            return Promise.reject(new Error('validation'))
+                            notify('Insufficient info!', 'error');
+                            return Promise.reject(new Error('validation'));
                         }
                         if (!validators.validateWebsite(website)) {
-                            notify('Invalid website!', 'error')
-                            return Promise.reject(new Error('validation'))
+                            notify('Invalid website!', 'error');
+                            return Promise.reject(new Error('validation'));
                         }
-                        return createSchool({ ...data, created_by: user && user._id ? user._id : null })
+                        return createSchool({ ...data, created_by: user && user._id ? user._id : null });
                     }}
                     renderForm={(state, setState, firstInputRef) => (
                         <FormGroup>
@@ -191,13 +191,13 @@ const SchoolsTabPane = () => {
                             triggerText="Level"
                             initialState={{ title: '', school: '' }}
                             submitFn={data => {
-                                const { title, school } = data
-                                const res = validators.validateTitleDesc(title, 'x', { minTitle: 3, minDesc: 1, maxTitle: 70, maxDesc: 1 })
+                                const { title, school } = data;
+                                const res = validators.validateTitleDesc(title, 'x', { minTitle: 3, minDesc: 1, maxTitle: 70, maxDesc: 1 });
                                 if (!res.ok || !school) {
-                                    notify('Insufficient info!', 'error')
-                                    return Promise.reject(new Error('validation'))
+                                    notify('Insufficient info!', 'error');
+                                    return Promise.reject(new Error('validation'));
                                 }
-                                return createLevel({ ...data, created_by: user && user._id ? user._id : null })
+                                return createLevel({ ...data, created_by: user && user._id ? user._id : null });
                             }}
                             renderForm={(state, setState, firstInputRef) => (
                                 <FormGroup>
@@ -239,7 +239,7 @@ const SchoolsTabPane = () => {
             </Col>
         </div>
     </TabPane>
-    )
-}
+    );
+};
 
-export default SchoolsTabPane
+export default SchoolsTabPane;

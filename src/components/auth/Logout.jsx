@@ -1,16 +1,16 @@
-import { Button, Modal, ModalBody, DropdownItem } from 'reactstrap'
-import { logout } from '@/redux/slices/authSlice'
-import { useDispatch } from "react-redux"
-import powerOff from '@/images/power-off.svg'
+import { Button, Modal, ModalBody, DropdownItem } from 'reactstrap';
+import { logout } from '@/redux/slices/authSlice';
+import { useDispatch } from 'react-redux';
+import powerOff from '@/images/power-off.svg';
 
 const Logout = ({ userId, logoutModal, toggleLogoutModal }) => {
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const logingout = () => {
-    dispatch(logout(userId))
-    window.setTimeout(() => window.location.href = "/", 1000)
-  }
+    dispatch(logout(userId));
+    window.setTimeout(() => window.location.href = '/', 1000);
+  };
 
   return (
     <>
@@ -22,20 +22,20 @@ const Logout = ({ userId, logoutModal, toggleLogoutModal }) => {
       </DropdownItem>
 
       <Modal isOpen={logoutModal} toggle={toggleLogoutModal} centered={true}>
-  <div className="d-flex justify-content-between align-items-center pt-0 fw-bolder" style={{ color: "var(--brand)" }}>
+  <div className="d-flex justify-content-between align-items-center pt-0 fw-bolder" style={{ color: 'var(--brand)' }}>
           Are you sure you want to logout?
-          <Button className="btn-danger text-uppercase text-red" style={{ padding: "0.1rem 0.3rem", fontSize: ".6rem", fontWeight: "bold" }}>
+          <Button className="btn-danger text-uppercase text-red" style={{ padding: '0.1rem 0.3rem', fontSize: '.6rem', fontWeight: 'bold' }}>
             X
           </Button>
         </div>
 
         <ModalBody className='d-flex justify-content-around align-items-center'>
 
-          <Button style={{ marginTop: '2rem', backgroundColor: "red" }} onClick={logingout}>
+          <Button style={{ marginTop: '2rem', backgroundColor: 'red' }} onClick={logingout}>
             Logout
           </Button>
 
-          <Button style={{ marginTop: '2rem', backgroundColor: "var(--brand)" }} onClick={toggleLogoutModal}>
+          <Button style={{ marginTop: '2rem', backgroundColor: 'var(--brand)' }} onClick={toggleLogoutModal}>
             Cancel
           </Button>
 
@@ -43,7 +43,7 @@ const Logout = ({ userId, logoutModal, toggleLogoutModal }) => {
 
       </Modal>
     </>
-  )
-}
+  );
+};
 
-export default Logout
+export default Logout;

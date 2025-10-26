@@ -1,112 +1,112 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { apiCallHelper } from "../configHelpers";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { apiCallHelper } from '../configHelpers';
 
 // Async actions with createAsyncThunk
 export const getAllQuestionsComments = createAsyncThunk(
-  "questionsComments/getAllQuestionsComments",
+  'questionsComments/getAllQuestionsComments',
   async (_, { getState }) =>
     apiCallHelper(
-      "/api/questions-comments",
-      "get",
+      '/api/questions-comments',
+      'get',
       null,
       getState,
-      "getAllQuestionsComments"
+      'getAllQuestionsComments'
     )
 );
 
 export const getPaginatedQuestionsComments = createAsyncThunk(
-  "questionsComments/getPaginatedQuestionsComments",
+  'questionsComments/getPaginatedQuestionsComments',
   async (pageNo, { getState }) =>
     apiCallHelper(
       `/api/questions-comments/paginated/?pageNo=${pageNo}`,
-      "get",
+      'get',
       null,
       getState,
-      "getPaginatedQuestionsComments"
+      'getPaginatedQuestionsComments'
     )
 );
 
 export const getPendingQnsComments = createAsyncThunk(
-  "questionsComments/getPendingQnsComments",
+  'questionsComments/getPendingQnsComments',
   async (_, { getState }) =>
     apiCallHelper(
-      `/api/questions-comments/pending`,
-      "get",
+      '/api/questions-comments/pending',
+      'get',
       null,
       getState,
-      "getPendingQnsComments"
+      'getPendingQnsComments'
     )
 );
 
 export const getCommentsByQuiz = createAsyncThunk(
-  "questionsComments/getCommentsByQuiz",
+  'questionsComments/getCommentsByQuiz',
   async (quizID, { getState }) =>
     apiCallHelper(
       `/api/questions-comments/quiz/${quizID}`,
-      "get",
+      'get',
       null,
       getState,
-      "getCommentsByQuiz"
+      'getCommentsByQuiz'
     )
 );
 
 export const getOneQuestionComments = createAsyncThunk(
-  "questionsComments/getOneQuestionComments",
+  'questionsComments/getOneQuestionComments',
   async (questionID, { getState }) =>
     apiCallHelper(
       `/api/questions-comments/question/${questionID}`,
-      "get",
+      'get',
       null,
       getState,
-      "getOneQuestionComments"
+      'getOneQuestionComments'
     )
 );
 
 export const getOneComment = createAsyncThunk(
-  "questionsComments/getOneComment",
+  'questionsComments/getOneComment',
   async (commentId, { getState }) =>
     apiCallHelper(
       `/api/questions-comments/${commentId}`,
-      "get",
+      'get',
       null,
       getState,
-      "getOneComment"
+      'getOneComment'
     )
 );
 
 export const createComment = createAsyncThunk(
-  "questionsComments/createComment",
+  'questionsComments/createComment',
   async (newComment, { getState }) =>
     apiCallHelper(
-      "/api/questions-comments",
-      "post",
+      '/api/questions-comments',
+      'post',
       newComment,
       getState,
-      "createComment"
+      'createComment'
     )
 );
 
 export const approveRejectComment = createAsyncThunk(
-  "questionsComments/approveRejectComment",
+  'questionsComments/approveRejectComment',
   async (comment, { getState }) =>
     apiCallHelper(
       `/api/questions-comments/approve-reject/${comment.commentID}`,
-      "put",
+      'put',
       { status: comment.status },
       getState,
-      "approveRejectComment"
+      'approveRejectComment'
     )
 );
 
 export const deleteComment = createAsyncThunk(
-  "questionsComments/deleteComment",
+  'questionsComments/deleteComment',
   async (id, { getState }) =>
     apiCallHelper(
       `/api/comments/${id}`,
-      "delete",
+      'delete',
       null,
       getState,
-      "deleteComment"
+      'deleteComment'
     )
 );
 
@@ -139,7 +139,7 @@ const initialState = {
     paginatedQuestionsComments: false,
     pendingQnsComments: false,
   },
-  oneComment: "",
+  oneComment: '',
   oneQuestionComments: [],
   paginatedQuestionsComments: {
     paginatedQuestionsComments: [],
@@ -151,7 +151,7 @@ const initialState = {
 };
 
 const questionsCommentsSlice = createSlice({
-  name: "questionsComments",
+  name: 'questionsComments',
   initialState,
   reducers: {
     clearComments: (state) => {
@@ -163,7 +163,7 @@ const questionsCommentsSlice = createSlice({
       state.isLoading.commentsByQuiz = false;
     },
     clearOneComment: (state) => {
-      state.oneComment = "";
+      state.oneComment = '';
       state.isLoading.oneComment = false;
     },
     clearQuestionsComments: (state) => {
@@ -182,22 +182,22 @@ const questionsCommentsSlice = createSlice({
   extraReducers: (builder) => {
     // Fulfilled actions
     builder.addCase(getAllQuestionsComments.fulfilled, (state, action) =>
-      handleFulfilled(state, action, "allQuestionsComments")
+      handleFulfilled(state, action, 'allQuestionsComments')
     );
     builder.addCase(getPaginatedQuestionsComments.fulfilled, (state, action) =>
-      handleFulfilled(state, action, "paginatedQuestionsComments")
+      handleFulfilled(state, action, 'paginatedQuestionsComments')
     );
     builder.addCase(getPendingQnsComments.fulfilled, (state, action) =>
-      handleFulfilled(state, action, "pendingQnsComments")
+      handleFulfilled(state, action, 'pendingQnsComments')
     );
     builder.addCase(getCommentsByQuiz.fulfilled, (state, action) =>
-      handleFulfilled(state, action, "commentsByQuiz")
+      handleFulfilled(state, action, 'commentsByQuiz')
     );
     builder.addCase(getOneQuestionComments.fulfilled, (state, action) =>
-      handleFulfilled(state, action, "oneQuestionComments")
+      handleFulfilled(state, action, 'oneQuestionComments')
     );
     builder.addCase(getOneComment.fulfilled, (state, action) =>
-      handleFulfilled(state, action, "oneComment")
+      handleFulfilled(state, action, 'oneComment')
     );
     builder.addCase(createComment.fulfilled, (state, action) => {
       state.allQuestionsComments.unshift(action.payload);
@@ -220,60 +220,60 @@ const questionsCommentsSlice = createSlice({
 
     // Pending actions
     builder.addCase(getAllQuestionsComments.pending, (state) =>
-      handlePending(state, "allQuestionsComments")
+      handlePending(state, 'allQuestionsComments')
     );
     builder.addCase(getPaginatedQuestionsComments.pending, (state) =>
-      handlePending(state, "paginatedQuestionsComments")
+      handlePending(state, 'paginatedQuestionsComments')
     );
     builder.addCase(getPendingQnsComments.pending, (state) =>
-      handlePending(state, "pendingQnsComments")
+      handlePending(state, 'pendingQnsComments')
     );
     builder.addCase(getCommentsByQuiz.pending, (state) =>
-      handlePending(state, "commentsByQuiz")
+      handlePending(state, 'commentsByQuiz')
     );
     builder.addCase(getOneQuestionComments.pending, (state) =>
-      handlePending(state, "oneQuestionComments")
+      handlePending(state, 'oneQuestionComments')
     );
     builder.addCase(getOneComment.pending, (state) =>
-      handlePending(state, "oneComment")
+      handlePending(state, 'oneComment')
     );
     builder.addCase(createComment.pending, (state) =>
-      handlePending(state, "comment")
+      handlePending(state, 'comment')
     );
     builder.addCase(approveRejectComment.pending, (state) =>
-      handlePending(state, "comment")
+      handlePending(state, 'comment')
     );
     builder.addCase(deleteComment.pending, (state) =>
-      handlePending(state, "comment")
+      handlePending(state, 'comment')
     );
 
     // Rejected actions
     builder.addCase(getAllQuestionsComments.rejected, (state, action) =>
-      handleRejected(state, action, "allQuestionsComments")
+      handleRejected(state, action, 'allQuestionsComments')
     );
     builder.addCase(getPaginatedQuestionsComments.rejected, (state, action) =>
-      handleRejected(state, action, "paginatedQuestionsComments")
+      handleRejected(state, action, 'paginatedQuestionsComments')
     );
     builder.addCase(getPendingQnsComments.rejected, (state, action) =>
-      handleRejected(state, action, "pendingQnsComments")
+      handleRejected(state, action, 'pendingQnsComments')
     );
     builder.addCase(getCommentsByQuiz.rejected, (state, action) =>
-      handleRejected(state, action, "commentsByQuiz")
+      handleRejected(state, action, 'commentsByQuiz')
     );
     builder.addCase(getOneQuestionComments.rejected, (state, action) =>
-      handleRejected(state, action, "oneQuestionComments")
+      handleRejected(state, action, 'oneQuestionComments')
     );
     builder.addCase(getOneComment.rejected, (state, action) =>
-      handleRejected(state, action, "oneComment")
+      handleRejected(state, action, 'oneComment')
     );
     builder.addCase(createComment.rejected, (state, action) =>
-      handleRejected(state, action, "comment")
+      handleRejected(state, action, 'comment')
     );
     builder.addCase(approveRejectComment.rejected, (state, action) =>
-      handleRejected(state, action, "comment")
+      handleRejected(state, action, 'comment')
     );
     builder.addCase(deleteComment.rejected, (state, action) =>
-      handleRejected(state, action, "comment")
+      handleRejected(state, action, 'comment')
     );
   },
 });

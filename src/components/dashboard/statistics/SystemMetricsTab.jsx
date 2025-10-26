@@ -54,4 +54,4 @@ const SystemMetricsTab = ({ services }) => {
     );
 };
 
-export default SystemMetricsTab
+export default SystemMetricsTab;

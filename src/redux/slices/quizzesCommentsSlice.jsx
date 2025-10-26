@@ -1,24 +1,24 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { apiCallHelper } from '../configHelpers'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { apiCallHelper } from '../configHelpers';
 
 // Async actions with createAsyncThunk
-export const getAllQuizzesComments = createAsyncThunk("quizzesComments/getAllQuizzesComments", async (_, { getState }) =>
-  apiCallHelper('/api/quizzes-comments', 'get', null, getState, 'getAllQuizzesComments'))
+export const getAllQuizzesComments = createAsyncThunk('quizzesComments/getAllQuizzesComments', async (_, { getState }) =>
+  apiCallHelper('/api/quizzes-comments', 'get', null, getState, 'getAllQuizzesComments'));
 
-export const getOneQuizComments = createAsyncThunk("quizzesComments/getOneQuizComments", async (quizID, { getState }) =>
-  apiCallHelper(`/api/quizzes-comments/quiz/${quizID}`, 'get', null, getState, 'getOneQuizComments'))
+export const getOneQuizComments = createAsyncThunk('quizzesComments/getOneQuizComments', async (quizID, { getState }) =>
+  apiCallHelper(`/api/quizzes-comments/quiz/${quizID}`, 'get', null, getState, 'getOneQuizComments'));
 
-export const getOneComment = createAsyncThunk("quizzesComments/getOneComment", async (commentId, { getState }) =>
-  apiCallHelper(`/api/quizzes-comments/${commentId}`, 'get', null, getState, 'getOneComment'))
+export const getOneComment = createAsyncThunk('quizzesComments/getOneComment', async (commentId, { getState }) =>
+  apiCallHelper(`/api/quizzes-comments/${commentId}`, 'get', null, getState, 'getOneComment'));
 
-export const createComment = createAsyncThunk("quizzesComments/createComment", async (newComment, { getState }) =>
-  apiCallHelper('/api/quizzes-comments', 'post', newComment, getState, 'createComment'))
+export const createComment = createAsyncThunk('quizzesComments/createComment', async (newComment, { getState }) =>
+  apiCallHelper('/api/quizzes-comments', 'post', newComment, getState, 'createComment'));
 
-export const approveRejectComment = createAsyncThunk("quizzesComments/approveRejectComment", async ({ commentID, status }, { getState }) =>
-  apiCallHelper(`/api/questions-comments/approve-reject/${commentID}`, 'put', status, getState, 'approveRejectComment'))
+export const approveRejectComment = createAsyncThunk('quizzesComments/approveRejectComment', async ({ commentID, status }, { getState }) =>
+  apiCallHelper(`/api/questions-comments/approve-reject/${commentID}`, 'put', status, getState, 'approveRejectComment'));
 
-export const deleteComment = createAsyncThunk("quizzesComments/deleteComment", async (commentId, { getState }) =>
-  apiCallHelper(`/api/quizzes-comments/${commentId}`, 'delete', null, getState, 'deleteComment'))
+export const deleteComment = createAsyncThunk('quizzesComments/deleteComment', async (commentId, { getState }) =>
+  apiCallHelper(`/api/quizzes-comments/${commentId}`, 'delete', null, getState, 'deleteComment'));
 
 
 // Quiz Comments slice
@@ -32,24 +32,24 @@ const initialState = {
   oneComment: '',
   oneQuizComments: [],
   error: null
-}
+};
 
 // Helper function to handle fulfilled cases
 const handleFulfilled = (state, action, key) => {
-  state[key] = action.payload
-  state.isLoading[key] = false
-}
+  state[key] = action.payload;
+  state.isLoading[key] = false;
+};
 
 // Helper function to handle pending cases
 const handlePending = (state, key) => {
-  state.isLoading[key] = true
-}
+  state.isLoading[key] = true;
+};
 
 // Helper function to handle rejected cases
 const handleRejected = (state, action, key) => {
-  state.isLoading[key] = false
-  state.error = action.error.message
-}
+  state.isLoading[key] = false;
+  state.error = action.error.message;
+};
 
 const quizzesCommentsSlice = createSlice({
   name: 'quizzesComments',

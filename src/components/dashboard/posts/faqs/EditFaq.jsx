@@ -1,12 +1,12 @@
-import UpdateModal from "@/utils/UpdateModal";
-import { updateFaq } from "@/redux/slices/faqsSlice";
-import { notify } from "@/utils/notifyToast";
+import UpdateModal from '@/utils/UpdateModal';
+import { updateFaq } from '@/redux/slices/faqsSlice';
+import { notify } from '@/utils/notifyToast';
 
 const EditFaq = ({ faqToEdit }) => {
   const initialData = {
     faqID: faqToEdit._id,
-    title: faqToEdit.title || "",
-    answer: faqToEdit.answer || "",
+    title: faqToEdit.title || '',
+    answer: faqToEdit.answer || '',
   };
 
   const renderForm = (formState, setFormState, firstInputRef) => {
@@ -49,16 +49,16 @@ const EditFaq = ({ faqToEdit }) => {
   const submitFn = (formState) => {
     const { faqID, title, answer } = formState;
     if (!title || title.length < 4 || !answer || answer.length < 4) {
-      notify("Insufficient info!", "error");
-      throw new Error("validation");
+      notify('Insufficient info!', 'error');
+      throw new Error('validation');
     }
     if (title.length > 50) {
-      notify("Title is too long!", "error");
-      throw new Error("validation");
+      notify('Title is too long!', 'error');
+      throw new Error('validation');
     }
     if (answer.length > 100) {
-      notify("Answer is too long!", "error");
-      throw new Error("validation");
+      notify('Answer is too long!', 'error');
+      throw new Error('validation');
     }
 
     return (dispatch) => dispatch(updateFaq({ faqID, title, answer }));

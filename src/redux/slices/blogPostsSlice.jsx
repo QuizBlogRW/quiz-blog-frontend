@@ -1,81 +1,81 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import {
   apiCallHelper,
   apiCallHelperUpload,
   handlePending,
   handleRejected,
-} from "../configHelpers";
+} from '../configHelpers';
 
 // Async actions with createAsyncThunk
 export const getBlogPosts = createAsyncThunk(
-  "blogPosts/getBlogPosts",
+  'blogPosts/getBlogPosts',
   async ({ limit, skip }, { getState }) =>
     apiCallHelper(
       `/api/blog-posts?limit=${limit}&skip=${skip ? skip : 0}`,
-      "get",
+      'get',
       null,
       getState,
-      "getBlogPosts"
+      'getBlogPosts'
     )
 );
 
 export const getOneBlogPost = createAsyncThunk(
-  "blogPosts/getOneBlogPost",
+  'blogPosts/getOneBlogPost',
   async (bPSlug, { getState }) =>
     apiCallHelper(
       `/api/blog-posts/${bPSlug}`,
-      "get",
+      'get',
       null,
       getState,
-      "getOneBlogPost"
+      'getOneBlogPost'
     )
 );
 
 export const getBlogPostsByCategory = createAsyncThunk(
-  "blogPosts/getBlogPostsByCategory",
+  'blogPosts/getBlogPostsByCategory',
   async (bPCatID, { getState }) =>
     apiCallHelper(
       `/api/blog-posts/post-category/${bPCatID}`,
-      "get",
+      'get',
       null,
       getState,
-      "getBlogPostsByCategory"
+      'getBlogPostsByCategory'
     )
 );
 
 export const createBlogPost = createAsyncThunk(
-  "blogPosts/createBlogPost",
+  'blogPosts/createBlogPost',
   async (newBlogPost, { getState }) =>
     apiCallHelperUpload(
-      "/api/blog-posts",
-      "post",
+      '/api/blog-posts',
+      'post',
       newBlogPost,
       getState,
-      "createBlogPost"
+      'createBlogPost'
     )
 );
 
 export const updateBlogPost = createAsyncThunk(
-  "blogPosts/updateBlogPost",
+  'blogPosts/updateBlogPost',
   async (updatedBP, { getState }) =>
     apiCallHelper(
       `/api/blog-posts/${updatedBP.blogPostID}`,
-      "put",
+      'put',
       updatedBP,
       getState,
-      "updateBlogPost"
+      'updateBlogPost'
     )
 );
 
 export const deleteBlogPost = createAsyncThunk(
-  "blogPosts/deleteBlogPost",
+  'blogPosts/deleteBlogPost',
   async (id, { getState }) =>
     apiCallHelper(
       `/api/blog-posts/${id}`,
-      "delete",
+      'delete',
       null,
       getState,
-      "deleteBlogPost"
+      'deleteBlogPost'
     )
 );
 
@@ -83,19 +83,19 @@ export const deleteBlogPost = createAsyncThunk(
 const initialState = {
   isLoading: false,
   blogPosts: [],
-  oneBlogPost: "",
+  oneBlogPost: '',
   blogPostsByCategory: [],
   error: null,
 };
 
 const blogPostsSlice = createSlice({
-  name: "blogPosts",
+  name: 'blogPosts',
   initialState,
   reducers: {
     clearBlogPosts: (state) => {
       state.isLoading = false;
       state.blogPosts = [];
-      state.oneBlogPost = "";
+      state.oneBlogPost = '';
       state.blogPostsByCategory = [];
     },
   },
@@ -108,7 +108,7 @@ const blogPostsSlice = createSlice({
     });
     builder.addCase(getOneBlogPost.fulfilled, (state, action) => {
       // Handle new API response structure
-      state.oneBlogPost = action.payload?.data || action.payload || "";
+      state.oneBlogPost = action.payload?.data || action.payload || '';
       state.isLoading = false;
     });
     builder.addCase(getBlogPostsByCategory.fulfilled, (state, action) => {

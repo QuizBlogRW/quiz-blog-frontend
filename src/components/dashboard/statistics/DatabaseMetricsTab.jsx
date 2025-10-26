@@ -116,4 +116,4 @@ const DatabaseMetricsTab = ({ services }) => {
     );
 };
 
-export default DatabaseMetricsTab
+export default DatabaseMetricsTab;

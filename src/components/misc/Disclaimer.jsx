@@ -8,7 +8,7 @@ import {
     CardBody,
     CardHeader,
     Alert
-} from "reactstrap";
+} from 'reactstrap';
 import moment from 'moment';
 
 const Disclaimer = () => {

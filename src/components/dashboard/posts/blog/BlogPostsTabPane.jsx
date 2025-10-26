@@ -1,21 +1,21 @@
-import { useEffect } from 'react'
-import { Row, TabPane } from 'reactstrap'
-import { getBlogPosts } from '@/redux/slices'
-import { useSelector, useDispatch } from "react-redux"
-import QBLoadingSM from '@/utils/rLoading/QBLoadingSM'
-import BPTable from './BPTable'
+import { useEffect } from 'react';
+import { Row, TabPane } from 'reactstrap';
+import { getBlogPosts } from '@/redux/slices';
+import { useSelector, useDispatch } from 'react-redux';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
+import BPTable from './BPTable';
 
 const BlogPostsTabPane = () => {
 
     // Redux
-    const dispatch = useDispatch()
-    const bposts = useSelector(state => state.blogPosts)
-    const { isLoading, blogPosts } = bposts
+    const dispatch = useDispatch();
+    const bposts = useSelector(state => state.blogPosts);
+    const { isLoading, blogPosts } = bposts;
 
     // Lifecycle methods
     useEffect(() => {
-        dispatch(getBlogPosts({}))
-    }, [dispatch])
+        dispatch(getBlogPosts({}));
+    }, [dispatch]);
 
     return (
         <TabPane tabId="7" className='mx-4 my-5'>
@@ -26,7 +26,7 @@ const BlogPostsTabPane = () => {
                 </Row>
             }
         </TabPane>
-    )
-}
+    );
+};
 
-export default BlogPostsTabPane
+export default BlogPostsTabPane;

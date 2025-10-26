@@ -1,14 +1,14 @@
-import { useSelector } from "react-redux";
-import AddModal from "@/utils/AddModal";
-import { createQuiz } from "@/redux/slices/quizzesSlice";
-import validators from "@/utils/validators";
+import { useSelector } from 'react-redux';
+import AddModal from '@/utils/AddModal';
+import { createQuiz } from '@/redux/slices/quizzesSlice';
+import validators from '@/utils/validators';
 
 const AddQuiz = ({ category }) => {
   const { user, isLoading } = useSelector((state) => state.auth);
 
   const initialState = {
-    name: "",
-    description: "",
+    name: '',
+    description: '',
   };
 
   const renderForm = (formState, setFormState, firstInputRef) => {
@@ -59,7 +59,7 @@ const AddQuiz = ({ category }) => {
           maxTitle: 50,
           maxDesc: 100,
         });
-        if (!res.ok) return Promise.reject(new Error("validation"));
+        if (!res.ok) return Promise.reject(new Error('validation'));
 
         const newQuiz = {
           title: formState.name,
@@ -71,7 +71,7 @@ const AddQuiz = ({ category }) => {
       }}
       renderForm={renderForm}
       initialState={initialState}
-      triggerText={"Quiz"}
+      triggerText={'Quiz'}
     />
   );
 };

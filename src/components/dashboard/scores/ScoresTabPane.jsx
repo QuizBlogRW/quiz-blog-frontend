@@ -1,33 +1,33 @@
-import { useState, useEffect } from 'react'
-import { Row, TabPane } from 'reactstrap'
-import Pagination from '@/components/dashboard/utils/Pagination'
-import PageOf from '@/components/dashboard/utils/PageOf'
-import ScoresTable from './ScoresTable'
-import QBLoadingSM from '@/utils/rLoading/QBLoadingSM'
-import { setScores, getCreatorScores, getTakerScores, deleteScore } from '@/redux/slices/scoresSlice'
-import { useSelector, useDispatch } from 'react-redux'
+import { useState, useEffect } from 'react';
+import { Row, TabPane } from 'reactstrap';
+import Pagination from '@/components/dashboard/utils/Pagination';
+import PageOf from '@/components/dashboard/utils/PageOf';
+import ScoresTable from './ScoresTable';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
+import { setScores, getCreatorScores, getTakerScores, deleteScore } from '@/redux/slices/scoresSlice';
+import { useSelector, useDispatch } from 'react-redux';
 
 const ScoresTabPane = () => {
 
     // Redux
-    const dispatch = useDispatch()
-    const { isLoading, totalPages, allScores, creatorScores, takerScores } = useSelector(state => state.scores)
-    const { user } = useSelector(state => state.auth)
-    const scoresToUse = allScores && user && (user?.role === 'Admin' || user?.role === 'SuperAdmin') ? allScores : allScores && (user?.role === 'Creator') ? creatorScores : takerScores
-    const [pageNo, setPageNo] = useState(1)
+    const dispatch = useDispatch();
+    const { isLoading, totalPages, allScores, creatorScores, takerScores } = useSelector(state => state.scores);
+    const { user } = useSelector(state => state.auth);
+    const scoresToUse = allScores && user && (user?.role === 'Admin' || user?.role === 'SuperAdmin') ? allScores : allScores && (user?.role === 'Creator') ? creatorScores : takerScores;
+    const [pageNo, setPageNo] = useState(1);
 
     // Lifecycle methods
     useEffect(() => {
         if (user?.role === 'Admin' || user?.role === 'SuperAdmin') {
-            dispatch(setScores(pageNo))
+            dispatch(setScores(pageNo));
         }
         else if (user?.role === 'Creator') {
-            dispatch(getCreatorScores(user?._id, pageNo))
+            dispatch(getCreatorScores(user?._id, pageNo));
         }
         else {
-            dispatch(getTakerScores(user?._id, pageNo))
+            dispatch(getTakerScores(user?._id, pageNo));
         }
-    }, [dispatch, pageNo, user, totalPages])
+    }, [dispatch, pageNo, user, totalPages]);
 
     return (
 
@@ -55,7 +55,7 @@ const ScoresTabPane = () => {
                         </> : null}
                 </Row>}
         </TabPane>
-    )
-}
+    );
+};
 
-export default ScoresTabPane
+export default ScoresTabPane;

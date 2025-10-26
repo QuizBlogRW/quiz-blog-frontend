@@ -1,18 +1,18 @@
-import { useContext } from "react";
-import { Col, Button } from "reactstrap";
-import { Link } from "react-router-dom";
-import srcQuestion from "@/images/undraw_Question2.svg";
-import Adverts from "./Adverts";
-import { logRegContext } from "@/contexts/appContexts";
+import { useContext } from 'react';
+import { Col, Button } from 'reactstrap';
+import { Link } from 'react-router-dom';
+import srcQuestion from '@/images/undraw_Question2.svg';
+import Adverts from './Adverts';
+import { logRegContext } from '@/contexts/appContexts';
 
 const LandingSection = () => {
   const { toggleR } = useContext(logRegContext);
-  const title = "KNOWLEDGE MATTERS, AND SO DOES THE JOY OF QUIZZING!"
+  const title = 'KNOWLEDGE MATTERS, AND SO DOES THE JOY OF QUIZZING!';
 
   const capitalize = (str) => {
-    const lower = str.toLowerCase()
-    return lower.charAt(0).toUpperCase() + lower.slice(1)
-  }
+    const lower = str.toLowerCase();
+    return lower.charAt(0).toUpperCase() + lower.slice(1);
+  };
 
   return (
     <section className="intro-landing w-100 d-flex justify-content-around align-items-center mx-auto" aria-label="Landing">

@@ -1,100 +1,100 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import {
   apiCallHelper,
   apiCallHelperUpload,
   handlePending,
   handleRejected,
-} from "../configHelpers";
+} from '../configHelpers';
 
 // Async actions with createAsyncThunk
 export const getImageUploads = createAsyncThunk(
-  "imageUploads/getImageUploads",
+  'imageUploads/getImageUploads',
   async (_, { getState }) =>
     apiCallHelper(
-      "/api/image-uploads",
-      "get",
+      '/api/image-uploads',
+      'get',
       null,
       getState,
-      "getImageUploads"
+      'getImageUploads'
     )
 );
 
 export const getOneImageUpload = createAsyncThunk(
-  "imageUploads/getOneImageUpload",
+  'imageUploads/getOneImageUpload',
   async (imageUploadID, { getState }) =>
     apiCallHelper(
       `/api/image-uploads/${imageUploadID}`,
-      "get",
+      'get',
       null,
       getState,
-      "getOneImageUpload"
+      'getOneImageUpload'
     )
 );
 
 export const getImageUploadsByOwner = createAsyncThunk(
-  "imageUploads/getImageUploadsByOwner",
+  'imageUploads/getImageUploadsByOwner',
   async (ownerID, { getState }) =>
     apiCallHelper(
       `/api/image-uploads/image-owner/${ownerID}`,
-      "get",
+      'get',
       null,
       getState,
-      "getImageUploadsByOwner"
+      'getImageUploadsByOwner'
     )
 );
 
 export const createImageUpload = createAsyncThunk(
-  "imageUploads/createImageUpload",
+  'imageUploads/createImageUpload',
   async (formData, { getState }) =>
     apiCallHelperUpload(
-      "/api/image-uploads",
-      "post",
+      '/api/image-uploads',
+      'post',
       formData,
       getState,
-      "createImageUpload"
+      'createImageUpload'
     )
 );
 
 export const updateImageUpload = createAsyncThunk(
-  "imageUploads/updateImageUpload",
+  'imageUploads/updateImageUpload',
   async (updatedImgUpload, { getState }) =>
     apiCallHelper(
       `/api/image-uploads/${updatedImgUpload.imageUploadID}`,
-      "put",
+      'put',
       updatedImgUpload,
       getState,
-      "updateImageUpload"
+      'updateImageUpload'
     )
 );
 
 export const deleteImageUpload = createAsyncThunk(
-  "imageUploads/deleteImageUpload",
+  'imageUploads/deleteImageUpload',
   async (id, { getState }) =>
     apiCallHelper(
       `/api/image-uploads/${id}`,
-      "delete",
+      'delete',
       null,
       getState,
-      "deleteImageUpload"
+      'deleteImageUpload'
     )
 );
 
 // Image uploads slice
 const initialState = {
   allImageUploads: [],
-  oneImageUpload: "",
+  oneImageUpload: '',
   imageUploadsByOwner: [],
   isLoading: false,
   error: null,
 };
 
 const imageUploadsSlice = createSlice({
-  name: "imageUploads",
+  name: 'imageUploads',
   initialState,
   reducers: {
     clearImageUploads: (state) => {
       state.allImageUploads = [];
-      state.oneImageUpload = "";
+      state.oneImageUpload = '';
       state.imageUploadsByOwner = [];
       state.isLoading = false;
     },

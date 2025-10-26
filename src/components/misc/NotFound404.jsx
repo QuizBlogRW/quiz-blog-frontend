@@ -43,7 +43,7 @@ const NotFound404 = () => {
                 </Col>
             </Row>
         </Container>
-    )
-}
+    );
+};
 
-export default NotFound404
+export default NotFound404;

@@ -1,10 +1,10 @@
-import { useSelector } from "react-redux"
-import { Alert } from 'reactstrap'
-import dashimg from '@/images/dashboard.svg'
+import { useSelector } from 'react-redux';
+import { Alert } from 'reactstrap';
+import dashimg from '@/images/dashboard.svg';
 
 const TopRow = () => {
 
-  const { user } = useSelector(state => state.auth)
+  const { user } = useSelector(state => state.auth);
 
   return (
 
@@ -34,12 +34,12 @@ const TopRow = () => {
         <div className="dashboard-img d-none d-sm-inline w-auto">
           <img src={dashimg} alt="dashimg" onClick={
             () => {
-              window.location.href = '/contact-chat'
+              window.location.href = '/contact-chat';
             }
           } style={{ cursor: 'pointer', maxHeight: '200px' }} className='shadow-sm animated infinite pulse blink_me' />
         </div>
     </div>
-  )
-}
+  );
+};
 
-export default TopRow
+export default TopRow;

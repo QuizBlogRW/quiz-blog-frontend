@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
-import { v4 as uuidv4 } from "uuid";
+import { useState, useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 import {
   Button,
   Col,
@@ -10,13 +10,13 @@ import {
   Input,
   Breadcrumb,
   BreadcrumbItem,
-} from "reactstrap";
-import Dashboard from "../../Dashboard";
-import { addQuestion, getQuestions } from "@/redux/slices/questionsSlice";
-import { getOneQuiz, notifying } from "@/redux/slices/quizzesSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { notify } from "@/utils/notifyToast";
-import NotAuthenticated from "@/components/auth/NotAuthenticated";
+} from 'reactstrap';
+import Dashboard from '../../Dashboard';
+import { addQuestion, getQuestions } from '@/redux/slices/questionsSlice';
+import { getOneQuiz, notifying } from '@/redux/slices/quizzesSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { notify } from '@/utils/notifyToast';
+import NotAuthenticated from '@/components/auth/NotAuthenticated';
 
 const CreateQuestions = () => {
   // Redux
@@ -30,16 +30,16 @@ const CreateQuestions = () => {
   // Access route parameters
   const { quizSlug } = useParams();
   const [questionText, setQuestionText] = useState({
-    questionText: "",
+    questionText: '',
   });
 
-  const [question_image, setQuestion_image] = useState("");
+  const [question_image, setQuestion_image] = useState('');
   const [durationState, setDurationState] = useState({
     duration: 24,
   });
 
   const [answerOptions, setAnswerOptions] = useState([
-    { id: uuidv4(), answerText: "", explanations: "", isCorrect: false },
+    { id: uuidv4(), answerText: '', explanations: '', isCorrect: false },
   ]);
 
   // Lifecycle methods
@@ -65,7 +65,7 @@ const CreateQuestions = () => {
   const handleAnswerChangeInput = (id, event) => {
     const newAnswerOptions = answerOptions.map((i) => {
       if (id === i.id) {
-        event.target.type === "checkbox"
+        event.target.type === 'checkbox'
           ? (i[event.target.name] = event.target.checked)
           : (i[event.target.name] = event.target.value);
       }
@@ -78,19 +78,19 @@ const CreateQuestions = () => {
   const validateForm = () => {
     const trueAnswer = answerOptions.find((ansop) => ansop.isCorrect === true);
     if (!questionText.questionText && !question_image) {
-      notify("Please give the title or upload question image!", "error");
+      notify('Please give the title or upload question image!', 'error');
       return false;
     } else if (questionText.questionText.length < 4) {
-      notify("Insufficient info!", "error");
+      notify('Insufficient info!', 'error');
       return false;
     } else if (questionText.questionText.length > 700) {
-      notify("Question is too long!", "error");
+      notify('Question is too long!', 'error');
       return false;
     } else if (answerOptions.length <= 1) {
-      notify("Answers are not sufficient!", "error");
+      notify('Answers are not sufficient!', 'error');
       return false;
     } else if (!trueAnswer) {
-      notify("Please provide a true answer!", "error");
+      notify('Please provide a true answer!', 'error');
       return false;
     }
     return true;
@@ -101,32 +101,32 @@ const CreateQuestions = () => {
     if (!validateForm()) return;
 
     const formData = new FormData();
-    formData.append("question_image", question_image);
-    formData.append("questionText", questionText.questionText);
+    formData.append('question_image', question_image);
+    formData.append('questionText', questionText.questionText);
     answerOptions.forEach((aOptn) => {
-      formData.append("answerOptions", JSON.stringify(aOptn));
+      formData.append('answerOptions', JSON.stringify(aOptn));
     });
-    formData.append("category", oneQuiz.category && oneQuiz.category._id);
-    formData.append("quiz", oneQuiz && oneQuiz._id);
-    formData.append("created_by", isLoading === false ? user._id : null);
-    formData.append("duration", durationState.duration);
+    formData.append('category', oneQuiz.category && oneQuiz.category._id);
+    formData.append('quiz', oneQuiz && oneQuiz._id);
+    formData.append('created_by', isLoading === false ? user._id : null);
+    formData.append('duration', durationState.duration);
 
     // Attempt to create
     dispatch(addQuestion(formData));
 
     // Reset form fields
-    setQuestionText({ questionText: "" });
-    setQuestion_image("");
+    setQuestionText({ questionText: '' });
+    setQuestion_image('');
     setDurationState({ duration: 24 });
     setAnswerOptions([
-      { id: uuidv4(), answerText: "", explanations: "", isCorrect: false },
+      { id: uuidv4(), answerText: '', explanations: '', isCorrect: false },
     ]);
   };
 
   const handleAddFields = () => {
     setAnswerOptions([
       ...answerOptions,
-      { id: uuidv4(), answerText: "", explanations: "", isCorrect: false },
+      { id: uuidv4(), answerText: '', explanations: '', isCorrect: false },
     ]);
   };
 
@@ -155,7 +155,7 @@ const CreateQuestions = () => {
   };
 
   return isAuthenticated ? (
-    user.role !== "Visitor" ? (
+    user.role !== 'Visitor' ? (
       <Form
         className="my-3 mt-lg-5 mx-3 mx-lg-5 create-question"
         onSubmit={handleSubmit}
@@ -181,9 +181,9 @@ const CreateQuestions = () => {
             size="sm"
             color="danger"
             style={{
-              display: "block",
-              marginLeft: "auto",
-              border: "3px solid black",
+              display: 'block',
+              marginLeft: 'auto',
+              border: '3px solid black',
             }}
             onClick={() =>
               SendNotification(
@@ -204,7 +204,7 @@ const CreateQuestions = () => {
             <Input
               type="text"
               name="questionText"
-              value={questionText.questionText || ""}
+              value={questionText.questionText || ''}
               placeholder="Question here ..."
               onChange={onQuestionChangeHandler}
               required
@@ -254,16 +254,16 @@ const CreateQuestions = () => {
             /* If there is a word in the explanation paragraph that starts with http, make it a link */
           }
           if (explanation) {
-            let words = explanation.split(" ");
+            let words = explanation.split(' ');
             explanation = words.map((word) => {
-              if (word.startsWith("http")) {
+              if (word.startsWith('http')) {
                 return (
                   <a key={word} href={word} target="_blank" rel="noreferrer">
-                    {word}{" "}
+                    {word}{' '}
                   </a>
                 );
               }
-              return word + " ";
+              return word + ' ';
             });
           }
 
@@ -311,17 +311,17 @@ const CreateQuestions = () => {
                     color="danger"
                     onClick={() => handleRemoveFields(answerOption.id)}
                   >
-                    {" "}
-                    -{" "}
-                  </Button>{" "}
+                    {' '}
+                    -{' '}
+                  </Button>{' '}
                   <Button
                     className="px-2 py-1"
                     color="danger"
                     onClick={handleAddFields}
                   >
-                    {" "}
-                    +{" "}
-                  </Button>{" "}
+                    {' '}
+                    +{' '}
+                  </Button>{' '}
                 </Col>
 
                 {explanation && (

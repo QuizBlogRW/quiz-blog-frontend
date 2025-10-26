@@ -1,40 +1,40 @@
-import { useEffect, useState, lazy, Suspense } from 'react'
-import { Col, Row, Form, FormGroup, Input, Button } from 'reactstrap'
-import subscribe from '@/images/undraw_subscribe.svg'
-import QBLoadingSM from '@/utils/rLoading/QBLoadingSM'
-import ResponsiveAd from '@/components/adsenses/ResponsiveAd'
-import { useSelector, useDispatch } from "react-redux"
-import { subscribeToPosts } from '@/redux/slices/subscribersSlice'
+import { useEffect, useState, lazy, Suspense } from 'react';
+import { Col, Row, Form, FormGroup, Input, Button } from 'reactstrap';
+import subscribe from '@/images/undraw_subscribe.svg';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
+import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
+import { useSelector, useDispatch } from 'react-redux';
+import { subscribeToPosts } from '@/redux/slices/subscribersSlice';
 
-const ViewCategories = lazy(() => import('./categories/ViewCategories'))
-const SquareAd = lazy(() => import('@/components/adsenses/SquareAd'))
+const ViewCategories = lazy(() => import('./categories/ViewCategories'));
+const SquareAd = lazy(() => import('@/components/adsenses/SquareAd'));
 
 const RightSide = ({ categories }) => {
 
     // Redux
-    const dispatch = useDispatch()
-    const { user } = useSelector(state => state.auth)
-    const [subscriberState, setSubscriberState] = useState({ name: '', email: '' })
+    const dispatch = useDispatch();
+    const { user } = useSelector(state => state.auth);
+    const [subscriberState, setSubscriberState] = useState({ name: '', email: '' });
 
     // Lifecycle methods
     useEffect(() => {
         if (user) {
-            setSubscriberState(subscriberState => ({ ...subscriberState, name: user.name, email: user.email }))
+            setSubscriberState(subscriberState => ({ ...subscriberState, name: user.name, email: user.email }));
         }
-    }, [user])
+    }, [user]);
 
     const onChangeHandler = e => {
-        const { name, value } = e.target
-        setSubscriberState(subscriberState => ({ ...subscriberState, [name]: value }))
-    }
+        const { name, value } = e.target;
+        setSubscriberState(subscriberState => ({ ...subscriberState, [name]: value }));
+    };
 
     const onSubscribe = e => {
-        e.preventDefault()
-        const { name, email } = subscriberState
-        const subscribedUser = { name, email }
-        dispatch(subscribeToPosts(subscribedUser))
-        setSubscriberState({ name: '', email: '' })
-    }
+        e.preventDefault();
+        const { name, email } = subscriberState;
+        const subscribedUser = { name, email };
+        dispatch(subscribeToPosts(subscribedUser));
+        setSubscriberState({ name: '', email: '' });
+    };
 
     return (
         <Col sm="4" className='d-flex flex-column justify-content-around'>
@@ -90,7 +90,7 @@ const RightSide = ({ categories }) => {
                 </Col>
             </Row>
         </Col>
-    )
-}
+    );
+};
 
-export default RightSide
+export default RightSide;

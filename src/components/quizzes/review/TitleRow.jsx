@@ -1,11 +1,11 @@
-import { Col, Row, Button } from 'reactstrap'
-import PdfDocument from '@/components/dashboard/pdfs/PdfDocument'
+import { Col, Row, Button } from 'reactstrap';
+import PdfDocument from '@/components/dashboard/pdfs/PdfDocument';
 import { PDFDownloadLink } from '@react-pdf/renderer';
-import { useSelector } from 'react-redux'
+import { useSelector } from 'react-redux';
 
 const TitleRow = ({ thisReview, score, qnsAll, curRevQn, currentQuestion }) => {
 
-    const { user } = useSelector(state => state.auth)
+    const { user } = useSelector(state => state.auth);
 
     return (
         <Row>
@@ -42,7 +42,7 @@ const TitleRow = ({ thisReview, score, qnsAll, curRevQn, currentQuestion }) => {
                 </div>
             </Col>
         </Row>
-    )
-}
+    );
+};
 
-export default TitleRow
+export default TitleRow;

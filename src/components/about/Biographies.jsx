@@ -1,17 +1,17 @@
-import { useEffect } from 'react'
-import { Button } from 'reactstrap'
-import bruce from '@/images/Bruce.jpg'
-import parmenide from '@/images/parmenide.jpg'
-import thierry from '@/images/thierry.jpg'
-import annick from '@/images/annick.jpg'
-import denyse from '@/images/denyse.jpg'
-import instagram from '@/images/instagram.svg'
-import linkedin from '@/images/linkedin.svg'
-import facebook from '@/images/facebook.svg'
-import twitter from '@/images/twitter.svg'
-import whatsapp from '@/images/whatsapp.svg'
-import github from '@/images/github.svg'
-import web from '@/images/web.svg'
+import { useEffect } from 'react';
+import { Button } from 'reactstrap';
+import bruce from '@/images/Bruce.jpg';
+import parmenide from '@/images/parmenide.jpg';
+import thierry from '@/images/thierry.jpg';
+import annick from '@/images/annick.jpg';
+import denyse from '@/images/denyse.jpg';
+import instagram from '@/images/instagram.svg';
+import linkedin from '@/images/linkedin.svg';
+import facebook from '@/images/facebook.svg';
+import twitter from '@/images/twitter.svg';
+import whatsapp from '@/images/whatsapp.svg';
+import github from '@/images/github.svg';
+import web from '@/images/web.svg';
 
 const people = [
   {
@@ -69,45 +69,45 @@ const people = [
       { href: 'https://www.instagram.com/sonie_annick/', label: 'Instagram' },
     ],
   },
-]
+];
 
 const SocialIcon = ({ label }) => {
   switch (label) {
     case 'LinkedIn':
-      return <img src={linkedin} alt="LinkedIn" width="18" height="18" />
+      return <img src={linkedin} alt="LinkedIn" width="18" height="18" />;
     case 'Instagram':
-      return <img src={instagram} alt="Instagram" width="18" height="18" />
+      return <img src={instagram} alt="Instagram" width="18" height="18" />;
     case 'Facebook':
-      return <img src={facebook} alt="Facebook" width="18" height="18" />
+      return <img src={facebook} alt="Facebook" width="18" height="18" />;
     case 'Twitter':
-      return <img src={twitter} alt="Twitter" width="18" height="18" />
+      return <img src={twitter} alt="Twitter" width="18" height="18" />;
     case 'GitHub':
-      return <img src={github} alt="GitHub" width="18" height="18" />
+      return <img src={github} alt="GitHub" width="18" height="18" />;
     case 'Website':
-      return <img src={web} alt="Website" width="18" height="18" />
+      return <img src={web} alt="Website" width="18" height="18" />;
     default:
-      return null
+      return null;
   }
-}
+};
 
 const Biographies = () => {
   useEffect(() => {
     const handleIntersection = (entries, observer) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible')
-          observer.unobserve(entry.target)
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
         }
-      })
-    }
+      });
+    };
 
-    const options = { root: null, rootMargin: '0px', threshold: 0.2 }
-    const observer = new IntersectionObserver(handleIntersection, options)
-    const elements = Array.from(document.querySelectorAll('.memberImg img') || [])
-    elements.forEach((el) => observer.observe(el))
+    const options = { root: null, rootMargin: '0px', threshold: 0.2 };
+    const observer = new IntersectionObserver(handleIntersection, options);
+    const elements = Array.from(document.querySelectorAll('.memberImg img') || []);
+    elements.forEach((el) => observer.observe(el));
 
-    return () => observer.disconnect()
-  }, [])
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <div className="p-lg-5">
@@ -156,7 +156,7 @@ const Biographies = () => {
         </section>
       ))}
     </div>
-  )
-}
+  );
+};
 
-export default Biographies
+export default Biographies;

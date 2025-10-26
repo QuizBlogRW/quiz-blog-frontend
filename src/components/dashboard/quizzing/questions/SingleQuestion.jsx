@@ -1,42 +1,42 @@
-import { useEffect } from 'react'
-import { Row, ListGroup, ListGroupItem, Breadcrumb, BreadcrumbItem } from 'reactstrap'
-import { Link, useParams } from 'react-router-dom'
-import Dashboard from '../../Dashboard'
-import { getOneQuestion, deleteQuestion } from '@/redux/slices/questionsSlice'
-import { useSelector, useDispatch } from 'react-redux'
-import EditIcon from '@/images/edit.svg'
-import ChangeQuiz from './ChangeQuiz'
-import QBLoadingSM from '@/utils/rLoading/QBLoadingSM'
-import QuestionComments from '../../../quizzes/review/questionComments/QuestionComments'
-import DeleteModal from '@/utils/DeleteModal'
-import NotAuthenticated from '@/components/auth/NotAuthenticated'
+import { useEffect } from 'react';
+import { Row, ListGroup, ListGroupItem, Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import { Link, useParams } from 'react-router-dom';
+import Dashboard from '../../Dashboard';
+import { getOneQuestion, deleteQuestion } from '@/redux/slices/questionsSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import EditIcon from '@/images/edit.svg';
+import ChangeQuiz from './ChangeQuiz';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
+import QuestionComments from '../../../quizzes/review/questionComments/QuestionComments';
+import DeleteModal from '@/utils/DeleteModal';
+import NotAuthenticated from '@/components/auth/NotAuthenticated';
 
 const SingleQuestion = () => {
 
-    const dispatch = useDispatch()
-    const quest = useSelector(state => state.questions)
-    const { isAuthenticated, user } = useSelector(state => state.auth)
+    const dispatch = useDispatch();
+    const quest = useSelector(state => state.questions);
+    const { isAuthenticated, user } = useSelector(state => state.auth);
 
     // Access route parameters
-    const { questionID } = useParams()
+    const { questionID } = useParams();
 
     // Lifecycle methods
     useEffect(() => {
-        dispatch(getOneQuestion(questionID))
-    }, [dispatch, questionID])
+        dispatch(getOneQuestion(questionID));
+    }, [dispatch, questionID]);
 
-    const thisQuestion = quest && quest.oneQuestion
-    const thisQnCat = thisQuestion && thisQuestion.category
-    const thisQnQZ = thisQuestion && thisQuestion.quiz
-    const thisQnCrt = thisQuestion && thisQuestion.created_by
+    const thisQuestion = quest && quest.oneQuestion;
+    const thisQnCat = thisQuestion && thisQuestion.category;
+    const thisQnQZ = thisQuestion && thisQuestion.quiz;
+    const thisQnCrt = thisQuestion && thisQuestion.created_by;
 
     const renderExplanation = (explanation) => {
         if (!explanation) return null;
-        return explanation.split(" ").map(word => {
-            if (word.startsWith("http")) {
-                return <a key={word} href={word} target="_blank" rel="noreferrer">{word} </a>
+        return explanation.split(' ').map(word => {
+            if (word.startsWith('http')) {
+                return <a key={word} href={word} target="_blank" rel="noreferrer">{word} </a>;
             }
-            return word + " "
+            return word + ' ';
         });
     };
 
@@ -129,7 +129,7 @@ const SingleQuestion = () => {
                         </Row> :
 
                 <Dashboard /> : <NotAuthenticated />
-    )
-}
+    );
+};
 
-export default SingleQuestion
+export default SingleQuestion;

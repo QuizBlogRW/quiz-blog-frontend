@@ -1,18 +1,18 @@
-import { useEffect } from 'react'
-import { Card, Button, CardTitle, CardText, Row, Col } from 'reactstrap'
-import { Link } from "react-router-dom"
-import { getNotesByCCatg } from '@/redux/slices/notesSlice'
-import { useSelector, useDispatch } from 'react-redux'
-import Unavailable from './Unavailable'
-import QBLoadingSM from '@/utils/rLoading/QBLoadingSM'
+import { useEffect } from 'react';
+import { Card, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
+import { Link } from 'react-router-dom';
+import { getNotesByCCatg } from '@/redux/slices/notesSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import Unavailable from './Unavailable';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 
 const RelatedNotes = ({ ccatgID }) => {
 
-  const dispatch = useDispatch()
-  const notesCCatg = useSelector(state => state.notes)
-  useEffect(() => { dispatch(getNotesByCCatg(ccatgID)) }, [dispatch, ccatgID])
+  const dispatch = useDispatch();
+  const notesCCatg = useSelector(state => state.notes);
+  useEffect(() => { dispatch(getNotesByCCatg(ccatgID)); }, [dispatch, ccatgID]);
 
-  const thisCatNotes = notesCCatg && notesCCatg.notesByCCatg
+  const thisCatNotes = notesCCatg && notesCCatg.notesByCCatg;
 
   return (
     !notesCCatg.isByCCatgLoading ? (
@@ -44,7 +44,7 @@ const RelatedNotes = ({ ccatgID }) => {
     ) : (
       <QBLoadingSM title='notes' />
     )
-  )
-}
+  );
+};
 
-export default RelatedNotes
+export default RelatedNotes;

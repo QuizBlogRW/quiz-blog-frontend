@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 import { Col, Row } from 'reactstrap';
 
 const CountDown = ({ timeInSecs, qnsLength, curQnIndex, goToNextQuestion }) => {
@@ -17,16 +17,16 @@ const CountDown = ({ timeInSecs, qnsLength, curQnIndex, goToNextQuestion }) => {
             }
             if (seconds === 0) {
                 if (minutes === 0) {
-                    clearInterval(myInterval)
+                    clearInterval(myInterval);
                 } else {
                     setSeconds(59);
                     setMinutes(minutes - 1);
                 }
             }
-        }, 1000)
+        }, 1000);
 
         if (minutes === 0 && seconds === 0) {
-            goToNextQuestion(curQnIndex, qnsLength)
+            goToNextQuestion(curQnIndex, qnsLength);
         }
 
         return () => {
@@ -42,7 +42,7 @@ const CountDown = ({ timeInSecs, qnsLength, curQnIndex, goToNextQuestion }) => {
                 </div>
             </Col>
         </Row>
-    )
-}
+    );
+};
 
-export default CountDown
+export default CountDown;

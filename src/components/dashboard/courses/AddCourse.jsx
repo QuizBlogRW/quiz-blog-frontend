@@ -1,13 +1,13 @@
-import AddModal from "@/utils/AddModal";
-import { createCourse } from "@/redux/slices/coursesSlice";
-import { useSelector } from "react-redux";
-import AddIcon from "@/images/plus.svg";
-import { notify } from "@/utils/notifyToast";
+import AddModal from '@/utils/AddModal';
+import { createCourse } from '@/redux/slices/coursesSlice';
+import { useSelector } from 'react-redux';
+import AddIcon from '@/images/plus.svg';
+import { notify } from '@/utils/notifyToast';
 
 const AddCourse = ({ categoryId }) => {
   const { user, isLoading } = useSelector((state) => state.auth);
 
-  const initialState = { title: "", description: "" };
+  const initialState = { title: '', description: '' };
 
   const renderForm = (formState, setFormState, firstInputRef) => {
     const onChange = (e) =>
@@ -47,16 +47,16 @@ const AddCourse = ({ categoryId }) => {
   const submitFn = (formState) => {
     const { title, description } = formState;
     if (!title || title.length < 4 || !description || description.length < 4) {
-      notify("Insufficient info!", "error");
-      throw new Error("validation");
+      notify('Insufficient info!', 'error');
+      throw new Error('validation');
     }
     if (title.length > 80) {
-      notify("Title is too long!", "error");
-      throw new Error("validation");
+      notify('Title is too long!', 'error');
+      throw new Error('validation');
     }
     if (description.length > 200) {
-      notify("Description is too long!", "error");
-      throw new Error("validation");
+      notify('Description is too long!', 'error');
+      throw new Error('validation');
     }
 
     const newCourse = {

@@ -1,8 +1,8 @@
-import AddModal from "@/utils/AddModal";
-import { createChapter } from "@/redux/slices/chaptersSlice";
-import { useSelector } from "react-redux";
-import validators from "@/utils/validators";
-import { Input } from "reactstrap";
+import AddModal from '@/utils/AddModal';
+import { createChapter } from '@/redux/slices/chaptersSlice';
+import { useSelector } from 'react-redux';
+import validators from '@/utils/validators';
+import { Input } from 'reactstrap';
 
 const AddChapter = ({ course }) => {
   const { isLoading, user } = useSelector((state) => state.auth);
@@ -12,8 +12,8 @@ const AddChapter = ({ course }) => {
       title="Add New Chapter"
       triggerText="Chapter"
       initialState={{
-        title: "",
-        description: "",
+        title: '',
+        description: '',
         course: course._id,
         courseCategory: course.courseCategory,
       }}
@@ -25,7 +25,7 @@ const AddChapter = ({ course }) => {
           maxTitle: 80,
           maxDesc: 200,
         });
-        if (!res.ok) return Promise.reject(new Error("validation"));
+        if (!res.ok) return Promise.reject(new Error('validation'));
 
         return createChapter({
           ...data,
@@ -42,7 +42,7 @@ const AddChapter = ({ course }) => {
             placeholder="Chapter title ..."
             className="mb-3"
             onChange={(e) => setState({ ...state, title: e.target.value })}
-            value={state.title || ""}
+            value={state.title || ''}
           />
           <Input
             type="text"
@@ -53,7 +53,7 @@ const AddChapter = ({ course }) => {
             onChange={(e) =>
               setState({ ...state, description: e.target.value })
             }
-            value={state.description || ""}
+            value={state.description || ''}
           />
         </>
       )}
