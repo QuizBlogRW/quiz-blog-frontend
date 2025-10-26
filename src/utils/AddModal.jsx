@@ -54,13 +54,6 @@ const AddModal = ({
       // Only close modal & show success if fulfilled
       if (result.type.endsWith("/fulfilled")) {
         setModal(false);
-        notify("Created successfully", "success");
-
-        if (deleteFnName === "deleteQuestion") {
-          window.history.back();
-        } else if (deleteFnName === "deleteCategory") {
-          setTimeout(() => window.location.reload(), 3000);
-        }
       } else {
         console.error("Submission failed: ", result?.error?.message);
       }
@@ -111,7 +104,12 @@ const AddModal = ({
             <Button color="success" type="submit" disabled={submitting}>
               {submitting ? "Saving..." : "Save"}
             </Button>
-            <Button color="warning" outline onClick={toggle} className="text-success">
+            <Button
+              color="warning"
+              outline
+              onClick={toggle}
+              className="text-success"
+            >
               Cancel
             </Button>
           </ModalFooter>

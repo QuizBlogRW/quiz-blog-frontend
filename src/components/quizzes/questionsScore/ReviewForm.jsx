@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import { Button, Modal, ModalBody, ModalFooter, Form, FormGroup, Input, ButtonGroup, Alert } from 'reactstrap'
 
-const ReviewForm = ({ isOpen, toggle, onSubmit, quiz, score }) => {
-
+const ReviewForm = ({ isOpen, toggle, onSubmit, quiz, score, user }) => {
     const [rating, setRating] = useState(-1)
     const [comment, setComment] = useState('')
     const [error, setError] = useState('')
@@ -22,7 +21,7 @@ const ReviewForm = ({ isOpen, toggle, onSubmit, quiz, score }) => {
             return
         }
 
-        onSubmit({ rating, comment, quiz, score })
+        onSubmit({ rating, comment, quiz, score, user })
         toggle()
 
         // Reset the form

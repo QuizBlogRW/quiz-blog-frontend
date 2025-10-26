@@ -1,76 +1,100 @@
-import { useState } from 'react'
-import { Button, Form, FormGroup, Label, Input } from 'reactstrap'
-import { createImageUpload } from '@/redux/slices/imageUploadsSlice'
-import { useDispatch, useSelector } from "react-redux"
-import { notify } from '@/utils/notifyToast'
+import AddModal from "@/utils/AddModal";
+import { createImageUpload } from "@/redux/slices/imageUploadsSlice";
+import { useSelector } from "react-redux";
+import { notify } from "@/utils/notifyToast";
+import { Input } from "reactstrap";
 
 const UploadPostPhotos = () => {
+  const { user } = useSelector((state) => state.auth);
 
-    const dispatch = useDispatch()
-    const { user } = useSelector(state => state.auth)
-    const [imageDetailsState, setImageDetailsState] = useState({
-        imageTitle: '',
-        owner: user._id
-    })
+  const initialState = {
+    imageTitle: "",
+    uploadImage: null,
+    owner: user?._id,
+  };
 
-    const [uploadImage, setUploadImage] = useState('')
-    const onChangeHandler = e => {
-        setImageDetailsState({ ...imageDetailsState, [e.target.name]: e.target.value })
+  const renderForm = (formState, setFormState) => {
+    const onChange = (e) =>
+      setFormState({ ...formState, [e.target.name]: e.target.value });
+
+    const onFile = (e) =>
+      setFormState({ ...formState, uploadImage: e.target.files[0] });
+
+    return (
+      <div>
+        <div className="mb-2">
+          <label>
+            <strong className="text-success">Image name</strong>
+          </label>
+          <input
+            type="text"
+            name="imageTitle"
+            placeholder="Image title ..."
+            className="form-control mb-3"
+            onChange={onChange}
+            value={formState.imageTitle || ""}
+          />
+        </div>
+
+        <div className="mb-2">
+          <label>
+            <strong className="text-success">Image</strong>&nbsp;
+            <small className="text-info">.jpg, .png, .jpeg, .svg</small>
+          </label>
+
+          <Input
+            bsSize="sm"
+            type="file"
+            accept=".jpg, .png, .jpeg, .svg"
+            name="uploadImage"
+            onChange={onFile}
+            id="uploadImage_pick"
+          />
+        </div>
+      </div>
+    );
+  };
+
+  const validateAndNotify = (formState) => {
+    const { imageTitle, uploadImage } = formState;
+    if (!imageTitle || imageTitle.length < 4) {
+      notify("Insufficient info!", "error");
+      throw new Error("validation");
+    } else if (imageTitle.length > 70) {
+      notify("Image title is too long!", "error");
+      throw new Error("validation");
     }
 
-    const onFileHandler = (e) => {
-        setUploadImage(e.target.files[0])
+    if (!uploadImage) {
+      notify("Please pick an image to upload", "error");
+      throw new Error("validation");
     }
 
-    const onSubmitHandler = e => {
-        e.preventDefault()
+    return true;
+  };
 
-        const formData = new FormData()
-        const { imageTitle, owner } = imageDetailsState
+  const submitWrapper = (formState) => {
+    // synchronous validation first
+    validateAndNotify(formState);
 
-        // VALIDATE
-        if (imageTitle.length < 4) {
-            notify('Insufficient info!', 'error')
-            return
-        }
-        else if (imageTitle.length > 70) {
-            notify('Image title is too long!', 'error')
-            return
-        }
+    const fd = new FormData();
+    fd.append("imageTitle", formState.imageTitle);
+    fd.append("uploadImage", formState.uploadImage);
+    fd.append("owner", formState.owner);
 
-        // Create new BP object
-        formData.append('imageTitle', imageTitle)
-        formData.append('uploadImage', uploadImage)
-        formData.append('owner', owner)
+    // return a thunk that AddModal will dispatch
+    return (dispatch) => dispatch(createImageUpload(fd));
+  };
 
-        // Attempt to create
-        dispatch(createImageUpload(formData))
+  return (
+    <AddModal
+      title="Upload an Image"
+      submitFn={submitWrapper}
+      renderForm={renderForm}
+      initialState={initialState}
+      triggerText={"Image"}
+    />
+  );
+};
 
-        // Reset form fields
-        setImageDetailsState({
-            imageTitle: ''
-        })
-        setUploadImage('')
-    }
-
-    return (<Form onSubmit={onSubmitHandler}>
-                <Label for="imageTitle">
-                    <strong className='text-success'>Image name</strong>
-                </Label>
-
-                <Input type="text" name="imageTitle" placeholder="Image title ..." className="mb-3" onChange={onChangeHandler} value={imageDetailsState.imageTitle || ''} required />
-
-                <FormGroup>
-                    <Label for="uploadImage">
-                        <strong className='text-success'>Image</strong>&nbsp;
-                        <small className="text-info">.jpg, .png, .jpeg, .svg</small>
-                    </Label>
-
-                    <Input bsSize="sm" type="file" accept=".jpg, .png, .jpeg, .svg" name="uploadImage" onChange={onFileHandler} label="Pick an image ..." id="uploadImage_pick" required />
-
-                    <Button color="success" style={{ marginBottom: '3rem', marginTop: '.8rem' }} block >Upload</Button>
-                </FormGroup>
-            </Form>)
-}
-
-export default UploadPostPhotos
+export default UploadPostPhotos;

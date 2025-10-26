@@ -22,6 +22,7 @@ import {
   CardTitle,
   CardSubtitle,
   Button,
+  Input,
 } from "reactstrap";
 import QBLoadingSM from "@/utils/rLoading/QBLoadingSM";
 import DeleteModal from "@/utils/DeleteModal";
@@ -68,7 +69,7 @@ const CourseNotes = ({ chapter }) => {
           ) : null}
         </Row>
       ) : null}
-      {console.log("notesByChapter: ", notesByChapter)}
+      
       <Row>
         {notesByChapter?.map((note, key) => (
           <Col
@@ -128,6 +129,7 @@ const CourseNotes = ({ chapter }) => {
                     >
                       <u>RELATED QUIZZES</u>
                     </h6>
+                    {console.log('note?.quizzes', note?.quizzes)}
 
                     <ol style={{ fontSize: ".65rem" }}>
                       {note?.quizzes &&

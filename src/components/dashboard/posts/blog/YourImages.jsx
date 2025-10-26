@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { Col, Row, Card, Alert, Button } from "reactstrap";
-import { getImageUploadsByOwner } from "@/redux/slices/imageUploadsSlice";
-import { deleteBlogPostImage } from "@/redux/slices";
+import {
+  getImageUploadsByOwner,
+  deleteImageUpload,
+} from "@/redux/slices/imageUploadsSlice";
 import { useSelector, useDispatch } from "react-redux";
 import QBLoadingSM from "@/utils/rLoading/QBLoadingSM";
 import DeleteModal from "@/utils/DeleteModal";
@@ -47,8 +49,8 @@ const YourImages = () => {
           imageUploadsByOwner.map((img) => (
             <Col sm="6" className="yourOneImg" key={img && img._id}>
               <DeleteModal
-                deleteFnName="deleteBlogPostImage"
-                deleteFn={deleteBlogPostImage}
+                deleteFnName="deleteImageUpload"
+                deleteFn={deleteImageUpload}
                 delID={img._id}
                 delTitle={img.imageTitle}
               />

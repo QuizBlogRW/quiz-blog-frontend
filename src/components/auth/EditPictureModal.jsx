@@ -107,10 +107,10 @@ const EditPictureModal = ({ bgColor, clr }) => {
     }
 
     // upload profile image
-    formData.append("profile_image", profileImageState);
+    formData.append("profilePicture", profileImageState);
 
     // Attempt to upload
-    dispatch(updateProfileImage({ formData, uId: user?._id }));
+    dispatch(updateProfileImage({ formData, id: user?._id }));
   };
 
   return (
@@ -133,11 +133,13 @@ const EditPictureModal = ({ bgColor, clr }) => {
           id="profileTootTip"
         />
 
-        {tooltipReady && (
-          <UncontrolledTooltip placement="bottom" target="profileTootTip">
-            Click to update profile image
-          </UncontrolledTooltip>
-        )}
+        {tooltipReady &&
+          typeof document !== "undefined" &&
+          document.getElementById("profileTootTip") && (
+            <UncontrolledTooltip placement="bottom" target="profileTootTip">
+              Click to update profile image
+            </UncontrolledTooltip>
+          )}
       </span>
 
       <Modal
@@ -162,7 +164,7 @@ const EditPictureModal = ({ bgColor, clr }) => {
         <ModalBody>
           <Form onSubmit={onSubmitHandler} encType="multipart/form-data">
             <FormGroup>
-              <Label for="profile_image" className="my-2">
+              <Label for="profilePicture" className="my-2">
                 <strong>Upload picture</strong>&nbsp;
                 <small className="text-muted">
                   {" "}
@@ -190,10 +192,10 @@ const EditPictureModal = ({ bgColor, clr }) => {
                 bsSize="sm"
                 type="file"
                 accept=".jpg, .jpeg, .png, .svg"
-                name="profile_image"
+                name="profilePicture"
                 onChange={onFileHandler}
                 label="Choose an image to upload ..."
-                id="profile_image_pick"
+                id="profilePicture"
                 className="pb-2"
                 aria-describedby="profileUploadHelp"
               />

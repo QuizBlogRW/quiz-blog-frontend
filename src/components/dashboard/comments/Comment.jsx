@@ -5,8 +5,7 @@ import { approveRejectComment } from '@/redux/slices/questionsCommentsSlice'
 import { useDispatch, useSelector } from 'react-redux'
 
 const Comment = ({ comment, isFromPending }) => {
-    console.log("comment: ", comment)
-
+    
     // Redux
     const { user } = useSelector(state => state.auth)
     const dispatch = useDispatch()

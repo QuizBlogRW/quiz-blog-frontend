@@ -72,12 +72,8 @@ export const apiCallHelper = async (
 ) => {
   const headers = {
     "x-auth-token": getState().auth.token,
+    "Content-Type": "application/json",
   };
-
-  // Only set application/json if not FormData
-  if (!(body instanceof FormData)) {
-    headers["Content-Type"] = "application/json";
-  }
 
   try {
     const response =
@@ -93,12 +89,22 @@ export const apiCallHelper = async (
         setTimeout(() => {
           window.location.reload();
         }, RELOAD_TIMEOUT);
+      } else {
+        if (!noToastActionTypes.includes(actionType)) {
+          notify(
+            response.data?.message
+              ? response.data.message
+              : `${
+                  method === "post"
+                    ? "Created"
+                    : method === "put"
+                    ? "Updated"
+                    : "Deleted"
+                } Successfully!`,
+            "success"
+          );
+        }
       }
-      // else {
-      //     if (!noToastActionTypes.includes(actionType)) {
-      //         notify(response.data?.message ? response.data.message : 'Success', 'success')
-      //     }
-      // }
     }
 
     return response?.data;
@@ -144,8 +150,8 @@ export const apiCallHelperUpload = async (
       url: `${axiosInstance.defaults.baseURL}${url}`,
       data: formData,
       headers: {
-        'x-auth-token': getState().auth.token,
-        // DO NOT SET 'Content-Type' at all → Axios auto-handles boundary
+        "x-auth-token": getState().auth.token,
+        "Content-Type": "multipart/form-data",
       },
     });
     if (
@@ -159,6 +165,7 @@ export const apiCallHelperUpload = async (
 
     return response?.data;
   } catch (error) {
+    console.log(error);
     if (
       error?.response?.data &&
       error?.response?.data?.message &&

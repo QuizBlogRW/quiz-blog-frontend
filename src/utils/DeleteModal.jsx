@@ -24,7 +24,6 @@ const DeleteModal = ({ delID, delTitle, deleteFn, deleteFnName }) => {
       // Only close modal & show success if fulfilled
       if (result.type.endsWith("/fulfilled")) {
         setModal(false);
-        notify("Deleted successfully", "success");
         if (deleteFnName === "deleteQuestion") {
           window.history.back();
         } else if (
@@ -34,7 +33,7 @@ const DeleteModal = ({ delID, delTitle, deleteFn, deleteFnName }) => {
           setTimeout(() => window.location.reload(), 3000);
         }
       } else {
-        console.error("Submission failed: ", result?.error?.message);
+        console.error("Deletion failed: ", result?.error?.message);
       }
     } catch (err) {
       setSubmitting(false);

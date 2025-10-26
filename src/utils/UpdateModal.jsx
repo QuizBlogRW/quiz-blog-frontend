@@ -96,7 +96,6 @@ const UpdateModal = ({
       // Only close modal & show success if fulfilled
       if (result.type.endsWith("/fulfilled")) {
         setModal(false);
-        notify("Updated successfully", "success");
       } else {
         console.error("Submission failed: ", result?.error?.message);
       }
