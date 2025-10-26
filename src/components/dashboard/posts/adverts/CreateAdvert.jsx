@@ -1,8 +1,6 @@
 import AddModal from '@/utils/AddModal'
 import { createAdvert } from '@/redux/slices/advertsSlice'
-import validators from '@/utils/validators'
 import { Input } from 'reactstrap'
-import { notify } from '@/utils/notifyToast'
 
 const CreateAdvert = () => {
 
@@ -27,7 +25,6 @@ const CreateAdvert = () => {
 
                 return createAdvert(formData)
             }}
-            onSuccess={() => notify('Advert created', 'success')}
             renderForm={(state, setState, firstInputRef) => (
                 <>
                     <Input ref={firstInputRef} type="text" name="caption" placeholder="Advert caption ..." className="mb-3" onChange={e => setState({ ...state, caption: e.target.value })} value={state.caption || ''} />

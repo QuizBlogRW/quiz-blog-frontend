@@ -130,7 +130,7 @@ const ReviewQuiz = () => {
                   <h1 className="text-danger fw-bolder">404</h1>
                   <h4>Quiz's questions unavailable! Refresh! 🔄</h4>
                   <Button
-                    color="info"
+                    color="success"
                     style={{ width: "120px" }}
                     className="mx-auto mt-4"
                   >

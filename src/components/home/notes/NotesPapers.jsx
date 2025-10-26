@@ -94,7 +94,7 @@ const NotesPapers = () => {
               {limitedLandingDisplayNotes && limitedLandingDisplayNotes.length > 0 ? (
                 <div className="mt-4 mt-sm-5 mb-sm-4 d-flex justify-content-center">
                   <Link to="/course-notes">
-                    <Button outline color="info" className="view-all-btn">
+                    <Button outline color="success" className="view-all-btn">
                       More Notes & Past Papers &nbsp;{" "}
                       <i className="fa fa-arrow-right"></i>
                     </Button>

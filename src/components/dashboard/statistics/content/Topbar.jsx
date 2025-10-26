@@ -18,7 +18,7 @@ const Topbar = ({ toggleSidebar }) => {
       className="navbar shadow-sm p-3 my-2 bg-white rounded" expand="md"
       style={{ position: "sticky", top: "0", zIndex: "2" }}>
 
-      <Button color="info" onClick={toggleSidebar}>
+      <Button color="success" onClick={toggleSidebar}>
         <i className="fa fa-align-left me-2"></i>
       </Button>
 

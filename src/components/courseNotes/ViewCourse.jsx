@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-
 import CourseNotes from '@/components/dashboard/courses/notes/CourseNotes'
 import AddModal from '@/utils/AddModal'
 import UpdateModal from '@/utils/UpdateModal'
@@ -60,7 +59,6 @@ const ViewCourse = () => {
                             }
                             return createChapter({ ...data, created_by: null })
                         }}
-                            onSuccess={() => { notify('Chapter added', 'success'); dispatch(getChaptersByCourse(courseId)) }}
                         renderForm={(state, setState, firstInputRef) => (
                             <>
                                 <Input ref={firstInputRef} type="text" name="title" id="title" placeholder="Chapter title ..." className="mb-3" value={state.title || ''} onChange={e => setState({ ...state, title: e.target.value })} />
@@ -158,7 +156,6 @@ const ViewCourse = () => {
                                 }
                                 return createChapter({ ...data })
                             }}
-                            onSuccess={() => { notify('Chapter added', 'success'); dispatch(getChaptersByCourse(courseId)) }}
                             renderForm={(state, setState, firstInputRef) => (
                                 <>
                                     <Input ref={firstInputRef} type="text" name="title" id="title" placeholder="Chapter title ..." className="mb-3" value={state.title || ''} onChange={e => setState({ ...state, title: e.target.value })} />

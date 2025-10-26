@@ -11,8 +11,8 @@ export const getOneImageUpload = createAsyncThunk("imageUploads/getOneImageUploa
 export const getImageUploadsByOwner = createAsyncThunk("imageUploads/getImageUploadsByOwner", async (ownerID, { getState }) =>
   apiCallHelper(`/api/image-uploads/image-owner/${ownerID}`, 'get', null, getState, 'getImageUploadsByOwner'))
 
-export const createImageUpload = createAsyncThunk("imageUploads/createImageUpload", async (newImageUpload, { getState }) =>
-  apiCallHelperUpload('/api/image-uploads', 'post', newImageUpload, getState, 'createImageUpload'))
+export const createImageUpload = createAsyncThunk("imageUploads/createImageUpload", async (formData, { getState }) =>
+  apiCallHelperUpload('/api/image-uploads', 'post', formData, getState, 'createImageUpload'))
 
 export const updateImageUpload = createAsyncThunk("imageUploads/updateImageUpload", async (updatedImgUpload, { getState }) =>
   apiCallHelper(`/api/image-uploads/${updatedImgUpload.imageUploadID}`, 'put', updatedImgUpload, getState, 'updateImageUpload'))

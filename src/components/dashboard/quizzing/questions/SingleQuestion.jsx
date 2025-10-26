@@ -5,7 +5,7 @@ import Dashboard from '../../Dashboard'
 import { getOneQuestion, deleteQuestion } from '@/redux/slices/questionsSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import EditIcon from '@/images/edit.svg'
-import ChangeQuizModal from './ChangeQuizModal'
+import ChangeQuiz from './ChangeQuiz'
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM'
 import QuestionComments from '../../../quizzes/review/questionComments/QuestionComments'
 import DeleteModal from '@/utils/DeleteModal'
@@ -92,7 +92,7 @@ const SingleQuestion = () => {
                                         user.role === 'SuperAdmin' || user.role === 'Admin' || (thisQnCrt && user._id === thisQnCrt._id) ?
 
                                             <div className="actions d-flex align-items-center">
-                                                <ChangeQuizModal
+                                                <ChangeQuiz
                                                     questionID={thisQuestion && thisQuestion._id}
                                                     questionCatID={thisQnCat && thisQnCat._id}
                                                     oldQuizID={thisQnQZ && thisQnQZ._id} />

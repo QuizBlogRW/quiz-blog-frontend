@@ -1,6 +1,5 @@
 import UpdateModal from '@/utils/UpdateModal'
 import { updateUser } from '@/redux/slices/authSlice'
-import EditIcon from '@/images/edit.svg'
 import { notify } from '@/utils/notifyToast'
 
 const EditUser = ({ userToUse }) => {
@@ -55,16 +54,13 @@ const EditUser = ({ userToUse }) => {
 
         return (dispatch) => dispatch(updateUser({ uId, name, role, email }))
     }
-
-    const onSuccess = () => notify('User updated', 'success')
-
     return (
         <UpdateModal
             title="Edit User"
             submitFn={submitFn}
             renderForm={renderForm}
             initialData={initialData}
-            onSuccess={onSuccess}
+
         />
     )
 }

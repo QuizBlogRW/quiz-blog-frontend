@@ -80,7 +80,7 @@ const Posts = () => {
               </section>
               <div className="my-4 d-flex justify-content-center">
                 <Link to="/allposts">
-                  <Button outline color="info" className="view-all-btn">
+                  <Button outline color="success" className="view-all-btn">
                     More Quizzes Here &nbsp;
                     <i className="fa fa-arrow-right"></i>
                   </Button>

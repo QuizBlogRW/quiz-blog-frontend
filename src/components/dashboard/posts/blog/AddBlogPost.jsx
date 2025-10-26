@@ -23,10 +23,7 @@ const AddBlogPost = () => {
         markdown: '',
         bgColor: ''
     })
-
     const [post_image, setPost_image] = useState('')
-
-
     const onChangeHandler = e => {
         setBPState({ ...bPState, [e.target.name]: e.target.value })
     }

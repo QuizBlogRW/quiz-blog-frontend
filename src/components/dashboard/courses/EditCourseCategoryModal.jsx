@@ -1,9 +1,6 @@
 import UpdateModal from '@/utils/UpdateModal'
 import { updateCourseCategory } from '@/redux/slices/courseCategoriesSlice'
 import { notify } from '@/utils/notifyToast'
-import EditIcon from '@/images/edit.svg'
-import { getCourseCategories } from '@/redux/slices/courseCategoriesSlice'
-import { useDispatch } from 'react-redux'
 
 const EditCourseCategoryModal = ({ idToUpdate, editTitle, editDesc }) => {
     const initialData = {
@@ -47,17 +44,13 @@ const EditCourseCategoryModal = ({ idToUpdate, editTitle, editDesc }) => {
         // previous code passed setProgress; keep simple dispatch here
         return (dispatch) => dispatch(updateCourseCategory(updatedCourse))
     }
-
-    const dispatch = useDispatch()
-    const onSuccess = () => { notify('Course category updated', 'success'); dispatch(getCourseCategories()) }
-
     return (
         <UpdateModal
             title="Edit Course"
             submitFn={submitFn}
             renderForm={renderForm}
             initialData={initialData}
-            onSuccess={onSuccess}
+
         />
     )
 }

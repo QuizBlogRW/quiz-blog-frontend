@@ -53,11 +53,7 @@ const UploadPostPhotos = () => {
         setUploadImage('')
     }
 
-    return (
-        <div>
-
-            <Form onSubmit={onSubmitHandler}>
-
+    return (<Form onSubmit={onSubmitHandler}>
                 <Label for="imageTitle">
                     <strong className='text-success'>Image name</strong>
                 </Label>
@@ -74,9 +70,7 @@ const UploadPostPhotos = () => {
 
                     <Button color="success" style={{ marginBottom: '3rem', marginTop: '.8rem' }} block >Upload</Button>
                 </FormGroup>
-            </Form>
-        </div>
-    )
+            </Form>)
 }
 
 export default UploadPostPhotos

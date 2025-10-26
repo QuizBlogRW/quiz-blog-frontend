@@ -1,8 +1,6 @@
-import { useSelector } from 'react-redux'
 import UpdateModal from '@/utils/UpdateModal'
 import { updateCourse } from '@/redux/slices/coursesSlice'
 import { notify } from '@/utils/notifyToast'
-import EditIcon from '@/images/edit.svg'
 
 const EditCourseModal = ({ idToUpdate, editTitle, editDesc }) => {
     const initialData = {
@@ -45,16 +43,13 @@ const EditCourseModal = ({ idToUpdate, editTitle, editDesc }) => {
         const updatedCourse = { idToUpdate, title: name, description }
         return (dispatch) => dispatch(updateCourse(updatedCourse))
     }
-
-    const onSuccess = () => notify('Course updated', 'success')
-
     return (
         <UpdateModal
             title="Edit Course"
             submitFn={submitFn}
             renderForm={renderForm}
             initialData={initialData}
-            onSuccess={onSuccess}
+
         />
     )
 }

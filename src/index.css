@@ -644,7 +644,7 @@ nav .dropdown-item-text a button {
 }
 
 /* EditPictureModal styles */
-.edit-picture-header {
+.modal-header-text {
   background: var(--brand);
   color: #fff;
 }

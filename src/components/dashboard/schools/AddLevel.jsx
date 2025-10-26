@@ -2,12 +2,8 @@ import AddModal from '@/utils/AddModal'
 import { createLevel } from '@/redux/slices/levelsSlice'
 import validators from '@/utils/validators'
 import { Input } from 'reactstrap'
-import { notify } from '@/utils/notifyToast'
-import { useDispatch } from 'react-redux'
-import { getLevels } from '@/redux/slices/levelsSlice'
 
 const AddLevel = ({ schools }) => {
-    const dispatch = useDispatch()
     return (
         <AddModal
             title="Add New Level"
@@ -21,7 +17,6 @@ const AddLevel = ({ schools }) => {
                 if (title.length > 70) return Promise.reject(new Error('validation'))
                 return createLevel({ title, school })
             }}
-            onSuccess={() => { notify('Level added', 'success'); dispatch(getLevels()) }}
             renderForm={(state, setState, firstInputRef) => (
                 <>
                     <Input ref={firstInputRef} type="text" name="title" id="title" placeholder="Level title ..." className="mb-3" onChange={e => setState({ ...state, title: e.target.value })} value={state.title || ''} />

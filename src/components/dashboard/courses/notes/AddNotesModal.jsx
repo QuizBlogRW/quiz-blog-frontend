@@ -1,9 +1,8 @@
-import { createNotes, getNotesByChapter } from '@/redux/slices/notesSlice'
+import { createNotes } from '@/redux/slices/notesSlice'
 import AddIcon from '@/images/plus.svg'
 import AddModal from '@/utils/AddModal'
 import { useSelector } from 'react-redux'
 import { notify } from '@/utils/notifyToast'
-import { useDispatch } from 'react-redux'
 
 const AddNotesModal = ({ chapter }) => {
 
@@ -86,21 +85,13 @@ const AddNotesModal = ({ chapter }) => {
         validate(formState)
         return submitFn(formState)
     }
-
-    const dispatch = useDispatch()
-    const onSuccess = () => {
-        notify('Notes added', 'success')
-        // Refresh notes list for this chapter
-        if (chapter && chapter._id) dispatch(getNotesByChapter(chapter._id))
-    }
-
     return (
         <AddModal
             title={<><img src={AddIcon} alt="" width="10" height="10" className="mb-1" />&nbsp;Add Notes</>}
             submitFn={submitWrapper}
             renderForm={renderForm}
             initialState={initialState}
-            onSuccess={onSuccess}
+
             triggerText={null}
         />
     )

@@ -2,12 +2,9 @@ import AddModal from '@/utils/AddModal'
 import { createSchool } from '@/redux/slices/schoolsSlice'
 import validators from '@/utils/validators'
 import { Input } from 'reactstrap'
-import { notify } from '@/utils/notifyToast'
-import { useDispatch } from 'react-redux'
-import { getSchools } from '@/redux/slices/schoolsSlice'
 
 const AddSchool = () => {
-    const dispatch = useDispatch()
+
     return (
         <AddModal
             title="Add New School"
@@ -23,7 +20,6 @@ const AddSchool = () => {
                 if (!websiteRes.ok) return Promise.reject(new Error('validation'))
                 return createSchool({ title, location, website })
             }}
-            onSuccess={() => { notify('School added', 'success'); dispatch(getSchools()) }}
             renderForm={(state, setState, firstInputRef) => (
                 <>
                     <Input ref={firstInputRef} type="text" name="title" id="title" placeholder="School title ..." className="mb-3" onChange={e => setState({ ...state, title: e.target.value })} value={state.title || ''} />

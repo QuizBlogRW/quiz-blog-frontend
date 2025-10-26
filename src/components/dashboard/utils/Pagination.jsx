@@ -119,7 +119,7 @@ const Pagination = ({ pageNo, setPageNo, numberOfPages }) => {
         numberOfPages > 1 && (
             <div className="d-flex justify-content-around mx-auto mt-3 scores-pagination overflow-auto pb-2">
                 <Button
-                    color="info"
+                    color="success"
                     disabled={pageNo === 1}
                     onClick={previousPage}
                     className={pageNo < 2 ? `invisible` : `visible`}>
@@ -129,7 +129,7 @@ const Pagination = ({ pageNo, setPageNo, numberOfPages }) => {
                 {middlePagination}
 
                 <Button
-                    color="info"
+                    color="success"
                     disabled={pageNo === numberOfPages}
                     onClick={nextPage}
                     className={pageNo === numberOfPages ? `invisible` : `visible`}>

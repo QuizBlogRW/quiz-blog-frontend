@@ -1,7 +1,6 @@
 import UpdateModal from '@/utils/UpdateModal'
 import { updateFaculty } from '@/redux/slices/facultiesSlice'
 import { notify } from '@/utils/notifyToast'
-import EditIcon from '@/images/edit.svg'
 
 const EditFacultyModal = ({ idToUpdate, editTitle }) => {
     const initialData = { idToUpdate, title: editTitle || '', years: [] }
@@ -49,16 +48,13 @@ const EditFacultyModal = ({ idToUpdate, editTitle }) => {
         }
         return (dispatch) => dispatch(updateFaculty({ idToUpdate, title, years }))
     }
-
-    const onSuccess = () => notify('Faculty updated', 'success')
-
     return (
         <UpdateModal
             title="Edit Faculty"
             submitFn={submitFn}
             renderForm={renderForm}
             initialData={initialData}
-            onSuccess={onSuccess}
+
         />
     )
 }

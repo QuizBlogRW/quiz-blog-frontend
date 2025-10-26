@@ -1,8 +1,6 @@
 import UpdateModal from '@/utils/UpdateModal'
-import { updateChapter, getChapters } from '@/redux/slices/chaptersSlice'
+import { updateChapter } from '@/redux/slices/chaptersSlice'
 import { notify } from '@/utils/notifyToast'
-import EditIcon from '@/images/edit.svg'
-import { useDispatch } from 'react-redux'
 
 const EditChapterModal = ({ idToUpdate, editTitle, editDesc }) => {
     const initialData = {
@@ -45,20 +43,13 @@ const EditChapterModal = ({ idToUpdate, editTitle, editDesc }) => {
         const updatedChapter = { idToUpdate, title: name, description }
         return (dispatch) => dispatch(updateChapter(updatedChapter))
     }
-
-    const dispatch = useDispatch()
-    const onSuccess = () => {
-        notify('Chapter updated', 'success')
-        dispatch(getChapters())
-    }
-
     return (
         <UpdateModal
             title="Edit chapter"
             submitFn={submitFn}
             renderForm={renderForm}
             initialData={initialData}
-            onSuccess={onSuccess}
+
         />
     )
 }

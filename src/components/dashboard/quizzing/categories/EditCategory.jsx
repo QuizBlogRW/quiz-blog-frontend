@@ -1,8 +1,7 @@
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import UpdateModal from '@/utils/UpdateModal'
 import { updateCategory } from '@/redux/slices/categoriesSlice'
 import { notify } from '@/utils/notifyToast'
-import { getCategories } from '@/redux/slices/categoriesSlice'
 
 const EditCategory = ({ categoryToEdit }) => {
     const { isLoading, user } = useSelector(state => state.auth)
@@ -73,19 +72,12 @@ const EditCategory = ({ categoryToEdit }) => {
         return (dispatch) => dispatch(updateCategory(updatedCategory))
     }
 
-    const dispatch = useDispatch()
-    const onSuccess = () => {
-        notify('Category updated', 'success')
-        dispatch(getCategories())
-    }
-
     return (
         <UpdateModal
             title="Edit Category"
             submitFn={submitFn}
             renderForm={renderForm}
             initialData={initialData}
-            onSuccess={onSuccess}
         />
     )
 }

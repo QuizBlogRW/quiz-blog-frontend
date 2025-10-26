@@ -1,5 +1,3 @@
-import { useState } from 'react'
-import { NavLink } from 'reactstrap'
 import AddModal from '@/utils/AddModal'
 import { addVidLink } from '@/redux/slices/quizzesSlice'
 import { addFaqVidLink } from '@/redux/slices/faqsSlice'
@@ -58,10 +56,6 @@ const AddVideo = ({ isFromFaqs, faqID, quizID }) => {
         return true
     }
 
-    const onSuccess = () => {
-        notify('Video link added', 'success')
-    }
-
     // Wrap submitFn so AddModal gets synchronous validation first
     const submitWrapper = async (formState) => {
         validateAndNotify(formState)
@@ -75,7 +69,7 @@ const AddVideo = ({ isFromFaqs, faqID, quizID }) => {
             submitFn={submitWrapper}
             renderForm={renderForm}
             initialState={initialState}
-            onSuccess={onSuccess}
+
             triggerText={"+ Video"}
         />
     )

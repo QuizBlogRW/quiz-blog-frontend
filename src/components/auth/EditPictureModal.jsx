@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Button,
   Modal,
@@ -25,9 +25,42 @@ const EditPictureModal = ({ bgColor, clr }) => {
 
   //properties of the modal
   const [modal, setModal] = useState(false);
+  const [tooltipReady, setTooltipReady] = useState(false);
+  const wrapperRef = useRef(null);
 
   //showing and hiding modal
   const toggle = () => setModal(!modal);
+
+  useEffect(() => {
+    // small defensive: only enable tooltip when target exists and is connected
+    const checkTarget = () => {
+      try {
+        // prefer scoped lookup inside this component to avoid collisions
+        const root = wrapperRef.current || document.body;
+        const e = root.querySelector && root.querySelector('#profileTootTip');
+        if (e && (e.isConnected || document.getElementById('profileTootTip'))) {
+          setTooltipReady(true);
+          return true;
+        }
+        return false;
+      } catch (err) {
+        return false;
+      }
+    };
+
+    setTooltipReady(checkTarget());
+
+    // also observe DOM in case it loads slightly later (ImageWithFallback may swap src)
+    const observer = new MutationObserver(() => {
+      if (checkTarget()) {
+        observer.disconnect();
+      }
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    return () => observer.disconnect();
+  }, []);
 
   const onFileHandler = (e) => {
     if (user) {
@@ -91,6 +124,7 @@ const EditPictureModal = ({ bgColor, clr }) => {
           if (e.key === "Enter" || e.key === " ") toggle();
         }}
         aria-label="Open edit profile image dialog"
+        ref={wrapperRef}
       >
         <ImageWithFallback
           src={userImage}
@@ -99,9 +133,11 @@ const EditPictureModal = ({ bgColor, clr }) => {
           id="profileTootTip"
         />
 
-        <UncontrolledTooltip placement="bottom" target="profileTootTip">
-          Click to update profile image
-        </UncontrolledTooltip>
+        {tooltipReady && (
+          <UncontrolledTooltip placement="bottom" target="profileTootTip">
+            Click to update profile image
+          </UncontrolledTooltip>
+        )}
       </span>
 
       <Modal
@@ -110,14 +146,14 @@ const EditPictureModal = ({ bgColor, clr }) => {
         className="resources-modal"
         aria-modal
       >
-        <div className="edit-picture-header d-flex justify-content-between align-items-center p-2 border border-warning border-2 rounded">
+        <div className="modal-header-text d-flex justify-content-between align-items-center p-2 border border-warning border-2 rounded">
           <span className="h6 mb-0 text-white fw-bolder">
             Update profile picture
           </span>
           <Button
             className="cat-close-btn text-uppercase"
             onClick={toggle}
-            aria-label="Close edit picture dialog"
+            aria-label="Close dialog"
           >
             Close
           </Button>

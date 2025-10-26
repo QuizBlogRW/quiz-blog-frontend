@@ -89,7 +89,7 @@ const QuizResults = () => {
                                 </Button>
 
                                 <Link to={`/review-quiz/${newScoreId && newScoreId}`} state={scoreToSave}>
-                                    <Button outline color='info' className='mt-3 mt-sm-0 share-btn mx-1 mx-md-0'>
+                                    <Button outline color="success" className='mt-3 mt-sm-0 share-btn mx-1 mx-md-0'>
                                         Review Answers
                                     </Button>
                                 </Link>

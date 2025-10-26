@@ -45,7 +45,7 @@ const Header = ({ textContent }) => {
         <span className={`mx-0 p-0 d-flex align-items-center toDashboard header-user ${isScrolled ? 'scrolled' : ''}`}>
             <EditPictureModal />
             <Dropdown isOpen={dropdownOpen} toggle={toggleDropdown} onKeyDown={(e) => { if (e.key === 'Escape') setDropdownOpen(false) }}>
-                <DropdownToggle aria-haspopup="menu" aria-expanded={dropdownOpen} aria-label="Open profile menu" className='mx-0 px-0'>
+                <DropdownToggle aria-haspopup={true} aria-expanded={dropdownOpen} aria-label="Open profile menu" className='mx-0 px-0'>
                     <span className='profileDropDown mx-0 px-0'>
                         <i className={`fa-solid fa-chevron-${dropdownOpen ? 'up' : 'down'}`} aria-hidden="true"></i>
                     </span>

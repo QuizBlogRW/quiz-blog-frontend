@@ -30,15 +30,13 @@ const EditLevelModal = ({ idToUpdate, editTitle }) => {
         return (dispatch) => dispatch(updateLevel({ idToUpdate, title }))
     }
 
-    const onSuccess = () => notify('Level updated', 'success')
-
     return (
         <UpdateModal
             title="Edit Level"
             submitFn={submitFn}
             renderForm={renderForm}
             initialData={initialData}
-            onSuccess={onSuccess}
+
         />
     )
 }

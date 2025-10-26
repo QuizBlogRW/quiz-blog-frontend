@@ -7,7 +7,7 @@ const PageOf = ({ pageNo, numberOfPages }) => {
                 <Badge color="success">
                     <b className='text-white'>{pageNo}</b>
                 </Badge>&nbsp; | &nbsp;
-                <Badge color="info">
+                <Badge color="success">
                     <b className='text-white'>{numberOfPages}</b>
                 </Badge>
             </span>

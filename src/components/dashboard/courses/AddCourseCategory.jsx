@@ -1,13 +1,11 @@
 import AddModal from '@/utils/AddModal'
-import { createCourseCategory, getCourseCategories } from '@/redux/slices/courseCategoriesSlice'
-import { useSelector, useDispatch } from 'react-redux'
+import { createCourseCategory } from '@/redux/slices/courseCategoriesSlice'
+import { useSelector } from 'react-redux'
 import validators from '@/utils/validators'
 import { Input } from 'reactstrap'
-import { notify } from '@/utils/notifyToast'
 
 const AddCourseCategory = () => {
     const { user, isLoading } = useSelector(state => state.auth)
-    const dispatch = useDispatch()
 
     return (
         <AddModal
@@ -20,7 +18,6 @@ const AddCourseCategory = () => {
                 if (!res.ok) return Promise.reject(new Error('validation'))
                 return createCourseCategory({ title, description, created_by: isLoading === false ? user._id : null })
             }}
-            onSuccess={() => { notify('Course category added', 'success'); dispatch(getCourseCategories()) }}
             renderForm={(state, setState, firstInputRef) => (
                 <>
                     <Input ref={firstInputRef} type="text" name="title" id="title" placeholder="Course category title ..." className="mb-3" onChange={e => setState({ ...state, title: e.target.value })} value={state.title || ''} />

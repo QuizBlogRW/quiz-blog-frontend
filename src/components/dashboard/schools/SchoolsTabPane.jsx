@@ -72,7 +72,7 @@ const SchoolsTabPane = () => {
         levelList.map(level => (
             <TabPanel key={level._id}>
                 <div className="mt-lg-3 ms-lg-5 pl-lg-5 pt-lg-3 d-flex justify-content-around align-items-center">
-                    <Button size="md" outline color="info" className="ms-auto">
+                    <div className="ms-auto d-inline-block">
                         <strong>
                             <AddModal
                                 title="Add New Faculty"
@@ -86,10 +86,6 @@ const SchoolsTabPane = () => {
                                         return Promise.reject(new Error('validation'))
                                     }
                                     return createFaculty({ ...data, created_by: user && user._id ? user._id : null })
-                                }}
-                                onSuccess={() => {
-                                    notify('Faculty added', 'success')
-                                    dispatch(fetchSchoolLevels(level.school))
                                 }}
                                 renderForm={(state, setState, firstInputRef) => (
                                     <FormGroup>
@@ -116,7 +112,7 @@ const SchoolsTabPane = () => {
                                 )}
                             />
                         </strong>
-                    </Button>
+                    </div>
                 </div>
                 <FacultiesCollapse levelID={level._id} />
             </TabPanel>
@@ -126,7 +122,7 @@ const SchoolsTabPane = () => {
     return (<TabPane tabId="3">
         <div className="add-school mt-lg-5 mx-lg-5 px-lg-5 py-lg-3 d-flex justify-content-around align-items-center border rounded">
             <h5 className='fw-bolder text-info d-none d-sm-block'>SCHOOLS | LEVELS | FACULTIES | YEARS</h5>
-            <Button size="sm" outline color="dark" style={{ display: "inline", marginLeft: "auto", border: "3px solid black" }}>
+            <div className="d-inline-block" style={{ display: "inline", marginLeft: "auto" }}>
                 <AddModal
                     title="Add New School"
                     triggerText="School"
@@ -144,10 +140,6 @@ const SchoolsTabPane = () => {
                         }
                         return createSchool({ ...data, created_by: user && user._id ? user._id : null })
                     }}
-                    onSuccess={() => {
-                        notify('School added', 'success')
-                        dispatch(getSchools())
-                    }}
                     renderForm={(state, setState, firstInputRef) => (
                         <FormGroup>
                             <Label for="title"><strong>Title</strong></Label>
@@ -161,7 +153,7 @@ const SchoolsTabPane = () => {
                         </FormGroup>
                     )}
                 />
-            </Button>
+            </div>
         </div>
 
         <div className="select-add-school mt-lg-5 mx-lg-5 px-lg-5 pt-lg-3 d-flex justify-content-around align-items-center bg-light border rounded border-success">
@@ -183,14 +175,16 @@ const SchoolsTabPane = () => {
 
             <div className="d-flex align-items-center">
                 {selectedSchool && (
-                    <span>
-                        <Button size="sm" color="link" className="mx-1">
+                    <>
+                        <span className="mx-1 d-inline-block">
                             <EditSchoolModal idToUpdate={selectedSchool} />
-                        </Button>
-                        <DeleteModal deleteFnName="deleteSchool" deleteFn={deleteSchool} delID={selectedSchool} />
-                    </span>
+                        </span>
+                        <span className="mx-1 d-inline-block">
+                            <DeleteModal deleteFnName="deleteSchool" deleteFn={deleteSchool} delID={selectedSchool} />
+                        </span>
+                    </>
                 )}
-                <Button size="md" outline color="warning" className="ms-auto mb-3 mb-sm-0">
+                <div className="ms-auto mb-3 mb-sm-0 d-inline-block">
                     <strong>
                         <AddModal
                             title="Add New Level"
@@ -204,10 +198,6 @@ const SchoolsTabPane = () => {
                                     return Promise.reject(new Error('validation'))
                                 }
                                 return createLevel({ ...data, created_by: user && user._id ? user._id : null })
-                            }}
-                            onSuccess={res => {
-                                notify('Level added', 'success')
-                                if (selectedSchool) dispatch(fetchSchoolLevels(selectedSchool))
                             }}
                             renderForm={(state, setState, firstInputRef) => (
                                 <FormGroup>
@@ -225,7 +215,7 @@ const SchoolsTabPane = () => {
                             )}
                         />
                     </strong>
-                </Button>
+                </div>
             </div>
         </div>
 

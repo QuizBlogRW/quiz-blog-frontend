@@ -34,7 +34,7 @@ const Disclaimer = () => {
                 </Row>
 
                 <CardBody className="p-3 p-md-4">
-                    <Alert color="info" className="d-flex align-items-center gap-3 mb-4">
+                    <Alert color="success" className="d-flex align-items-center gap-3 mb-4">
                         <i className="fas fa-info-circle h4 mb-0"></i>
                         <div>
                             If you require any more information or have any questions about our site's disclaimer,

@@ -6,7 +6,7 @@ const SideBar = ({ isOpen, toggle }) => (
   <div className={isOpen ? "sidebar is-open" : "sidebar"}>
 
     <div className="sidebar-header">
-      <span color="info" onClick={toggle} style={{ color: "#fff" }}>
+      <span color="success" onClick={toggle} style={{ color: "#fff" }}>
         X
       </span>
       <a href="/statistics">

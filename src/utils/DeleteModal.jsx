@@ -1,59 +1,102 @@
-import { useState } from 'react'
-import { Button, Modal, ModalBody, ModalFooter, NavLink } from 'reactstrap'
-import trash from '@/images/trash.svg'
-import { useDispatch } from "react-redux"
+import { useState } from "react";
+import { Button, Modal, ModalBody, ModalFooter } from "reactstrap";
+import trash from "@/images/trash.svg";
+import { useDispatch } from "react-redux";
+import { notify } from "@/utils/notifyToast";
 
 const DeleteModal = ({ delID, delTitle, deleteFn, deleteFnName }) => {
+  const dispatch = useDispatch();
 
-    const dispatch = useDispatch()
+  //properties of the modal
+  const [modal, setModal] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
-    //properties of the modal
-    const [modal, setModal] = useState(false)
+  //showing and hiding modal
+  const toggle = () => setModal(!modal);
 
-    //showing and hiding modal
-    const toggle = () => setModal(!modal)
+  const onDelete = async (e) => {
+    e && e.preventDefault();
+    try {
+      setSubmitting(true);
+      const result = await dispatch(deleteFn(delID));
+      setSubmitting(false);
 
-    const onDeleteHandler = e => {
-        e.preventDefault()
-
-        // Attempt to delete
-        dispatch(deleteFn(delID))
-
-        if (deleteFnName === 'deleteQuestion') {
-            window.history.back();
-        } else if (deleteFnName === 'deleteQuiz' ||
-            deleteFnName === 'deleteCategory') {
-            window.location.reload();
+      // Only close modal & show success if fulfilled
+      if (result.type.endsWith("/fulfilled")) {
+        setModal(false);
+        notify("Deleted successfully", "success");
+        if (deleteFnName === "deleteQuestion") {
+          window.history.back();
+        } else if (
+          deleteFnName === "deleteQuiz" ||
+          deleteFnName === "deleteCategory"
+        ) {
+          setTimeout(() => window.location.reload(), 3000);
         }
+      } else {
+        console.error("Submission failed: ", result?.error?.message);
+      }
+    } catch (err) {
+      setSubmitting(false);
+      console.error("AddModal submit error", err);
     }
+  };
 
-    return (
-        <>
-            <NavLink onClick={toggle} className="text-dark p-0 mx-2 d-inline">
-                <img src={trash} alt="" width="16" height="16" />
-            </NavLink>
+  return (
+    <>
+      <Button
+        color="warning"
+        onClick={toggle}
+        className="text-success p-1 mx-1 mx-md-3 d-inline-flex align-items-center"
+        aria-label={delTitle}
+      >
+        <img src={trash} alt="trash" width="16" height="16" />
+      </Button>
+      <Modal
+        centered
+        fullscreen="md"
+        size="md"
+        isOpen={modal}
+        toggle={toggle}
+        style={{ boxShadow: "none" }}
+        className="delete-modal"
+      >
+        <div className="modal-header-text d-flex justify-content-between align-items-center p-2">
+          <span className="h6 mb-0 text-white">{delTitle}</span>
+          <Button
+            className="cat-close-btn text-uppercase"
+            onClick={toggle}
+            aria-label="Close dialog"
+          >
+            Close
+          </Button>
+        </div>
 
-            <Modal centered fullscreen="md" size="md" isOpen={modal} toggle={toggle} style={{ boxShadow: "none" }} className="delete-modal">
-                <div className="d-flex justify-content-between align-items-center p-2" style={{ backgroundColor: "var(--brand)", color: "#fff" }}>
-                    Deleting ...
-                    <Button className="btn-danger text-uppercase text-red" style={{ padding: "0.1rem 0.3rem", fontSize: ".6rem", fontWeight: "bold" }} onClick={toggle}>
-                        X
-                    </Button>
-                </div>
+        <form onSubmit={onDelete}>
+          <ModalBody
+            className="text-center my-4"
+            style={{ backgroundColor: "#f8d7da", fontSize: ".8rem" }}
+          >
+            Delete "<u>{delTitle}</u>" permanently?
+          </ModalBody>
 
-                <ModalBody className="text-center my-4" style={{ backgroundColor: "#f8d7da", fontSize: ".8rem" }}>
-                    Delete "<u>{delTitle}</u>" permanently?
-                </ModalBody>
+          <ModalFooter className="justify-content-around pb-0">
+            <Button color="danger" type="submit" disabled={submitting}>
+              {submitting ? "Deleting..." : "Delete"}
+            </Button>
+            <Button
+              color="warning"
+              outline
+              onClick={toggle}
+              className="text-success"
+            >
+              Cancel
+            </Button>
+          </ModalFooter>
+        </form>
+      </Modal>
+    </>
+  );
+};
 
-                <ModalFooter className="justify-content-around pb-0">
-                    <Button color="danger" onClick={onDeleteHandler} >
-                        Confirm
-                    </Button>
-                    <Button color="success" outline onClick={toggle}>Cancel</Button>
-                </ModalFooter>
-            </Modal>
-        </>
-    )
-}
-
-export default DeleteModal
+export default DeleteModal;

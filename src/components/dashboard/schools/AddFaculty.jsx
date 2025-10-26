@@ -1,13 +1,9 @@
 import AddModal from '@/utils/AddModal'
 import { createFaculty } from '@/redux/slices/facultiesSlice'
-import validators from '@/utils/validators'
 import { Input } from 'reactstrap'
-import { notify } from '@/utils/notifyToast'
-import { useDispatch } from 'react-redux'
-import { getFaculties } from '@/redux/slices/facultiesSlice'
 
 const AddFaculty = ({ facultyLevel }) => {
-    const dispatch = useDispatch()
+
     return (
         <AddModal
             title="Add New Faculty"
@@ -20,7 +16,6 @@ const AddFaculty = ({ facultyLevel }) => {
                 if (title.length > 70) return Promise.reject(new Error('validation'))
                 return createFaculty(data)
             }}
-            onSuccess={() => { notify('Faculty added', 'success'); dispatch(getFaculties()) }}
             renderForm={(state, setState, firstInputRef) => (
                 <>
                     <Input ref={firstInputRef} type="text" name="title" id="title" placeholder="Faculty title ..." className="mb-3" onChange={e => setState({ ...state, title: e.target.value })} value={state.title || ''} />

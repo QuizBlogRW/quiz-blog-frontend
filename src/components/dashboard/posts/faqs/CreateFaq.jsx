@@ -2,13 +2,10 @@ import AddModal from '@/utils/AddModal'
 import { createFq } from '@/redux/slices/faqsSlice'
 import { useSelector } from 'react-redux'
 import validators from '@/utils/validators'
-import { notify } from '@/utils/notifyToast'
 import { useDispatch } from 'react-redux'
-import { getFaqs } from '@/redux/slices/faqsSlice'
 
 const CreateFaq = () => {
     const { user } = useSelector(state => state.auth)
-    const dispatch = useDispatch()
 
     return (
         <AddModal
@@ -20,10 +17,6 @@ const CreateFaq = () => {
                 const res = validators.validateTitleDesc(title, answer, { minTitle: 4, minDesc: 4, maxTitle: 200, maxDesc: 1000 })
                 if (!res.ok) return Promise.reject(new Error('validation'))
                 return createFq({ ...data })
-            }}
-            onSuccess={() => {
-                notify('FAQ added', 'success')
-                dispatch(getFaqs())
             }}
             renderForm={(state, setState, firstInputRef) => (
                 <>

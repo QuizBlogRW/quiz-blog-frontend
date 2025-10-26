@@ -1,11 +1,10 @@
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import UpdateModal from '@/utils/UpdateModal'
 import { updateQuiz } from '@/redux/slices/quizzesSlice'
 import { notify } from '@/utils/notifyToast'
-import EditIcon from '@/images/edit.svg'
-import { getQuizzesByCategory } from '@/redux/slices/quizzesSlice'
 
 const EditQuiz = ({ quizToEdit }) => {
+
     const categories = useSelector(state => state.categories)
     const { user, isLoading } = useSelector(state => state.auth)
 
@@ -13,8 +12,8 @@ const EditQuiz = ({ quizToEdit }) => {
         quizID: quizToEdit._id,
         name: quizToEdit.title || '',
         description: quizToEdit.description || '',
-        oldCategoryID: quizToEdit.category && quizToEdit.category._1 || '',
-        category: quizToEdit.category && quizToEdit.category._id || ''
+        oldCategoryID: quizToEdit.category && quizToEdit.category._id || null,
+        category: quizToEdit.category && quizToEdit.category._id || null,
     }
 
     const renderForm = (formState, setFormState, firstInputRef) => {
@@ -44,7 +43,6 @@ const EditQuiz = ({ quizToEdit }) => {
 
     const submitFn = (formState) => {
         const { quizID, name, description, category, oldCategoryID } = formState
-        // VALIDATE
         if (!name || name.length < 4 || !description || description.length < 4) {
             notify('Insufficient info!', 'error')
             throw new Error('validation')
@@ -70,19 +68,12 @@ const EditQuiz = ({ quizToEdit }) => {
         return (dispatch) => dispatch(updateQuiz(updatedQuiz))
     }
 
-    const dispatch = useDispatch()
-    const onSuccess = () => {
-        notify('Quiz updated', 'success')
-        if (initialData && initialData.category) dispatch(getQuizzesByCategory(initialData.category))
-    }
-
     return (
         <UpdateModal
             title="Edit Quiz"
             submitFn={submitFn}
             renderForm={renderForm}
             initialData={initialData}
-            onSuccess={onSuccess}
         >
             {/* trigger image retained via UpdateModal's button; keep behavior consistent */}
         </UpdateModal>

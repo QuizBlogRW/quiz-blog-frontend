@@ -1,7 +1,8 @@
-import { useState, useEffect, useRef } from 'react'
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader, NavLink } from 'reactstrap'
-import edit from '@/images/edit.svg'
-import { useDispatch } from 'react-redux'
+import { useState, useEffect, useRef } from "react";
+import { Button, Modal, ModalBody, ModalFooter } from "reactstrap";
+import edit from "@/images/edit.svg";
+import { useDispatch } from "react-redux";
+import { notify } from "@/utils/notifyToast";
 
 /**
  * UpdateModal
@@ -10,123 +11,136 @@ import { useDispatch } from 'react-redux'
  * - submitFn: function - redux action creator or async function to call with formData
  * - renderForm: (formState, setFormState) => ReactNode - render prop that returns the form UI
  * - initialData: object - object to prefill the form (required for updates)
- * - onSuccess: function - optional callback after successful submit
- * - afterSuccess: 'reload' | 'back' | null - optional post-success action
  */
 const UpdateModal = ({
-  title = 'Update',
+  title = "Update",
   submitFn,
   renderForm,
   initialData = {},
-  onSuccess,
-  afterSuccess = null,
   children, // optional custom trigger element
+  triggerText = null,
 }) => {
-  const dispatch = useDispatch()
-  const [modal, setModal] = useState(false)
-  const [submitting, setSubmitting] = useState(false)
-  const [formState, setFormState] = useState(initialData)
-  const [error, setError] = useState(null)
-  const firstInputRef = useRef(null)
-  const modalBodySelector = '.update-modal .modal-body'
+  const dispatch = useDispatch();
+  const [modal, setModal] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [formState, setFormState] = useState(initialData);
+  const [error, setError] = useState(null);
+  const firstInputRef = useRef(null);
+  const modalBodySelector = ".update-modal .modal-body";
 
   useEffect(() => {
-    setFormState(initialData)
-  }, [initialData])
+    setFormState(initialData);
+  }, [initialData]);
 
   useEffect(() => {
     if (modal) {
-      setError(null)
+      setError(null);
       // focus first input if provided via renderForm using ref prop
       setTimeout(() => {
-        if (firstInputRef.current && typeof firstInputRef.current.focus === 'function') {
-          firstInputRef.current.focus()
-          return
+        if (
+          firstInputRef.current &&
+          typeof firstInputRef.current.focus === "function"
+        ) {
+          firstInputRef.current.focus();
+          return;
         }
 
         // fallback: find first focusable element in modal body and focus it
         try {
-          const body = document.querySelector(modalBodySelector)
+          const body = document.querySelector(modalBodySelector);
           if (body) {
-            const focusable = body.querySelector('input, select, textarea, button')
-            if (focusable && typeof focusable.focus === 'function') focusable.focus()
+            const focusable = body.querySelector(
+              "input, select, textarea, button"
+            );
+            if (focusable && typeof focusable.focus === "function")
+              focusable.focus();
           }
         } catch (e) {
           // ignore DOM errors in non-browser envs
         }
-      }, 50)
+      }, 50);
     } else {
       // reset form when closing to avoid stale state
-      setFormState(initialData)
-      setSubmitting(false)
-      setError(null)
+      setFormState(initialData);
+      setSubmitting(false);
+      setError(null);
     }
-  }, [modal, initialData])
+  }, [modal, initialData]);
 
-  const toggle = () => setModal(!modal)
+  const toggle = () => setModal(!modal);
 
-  const runSubmit = async data => {
-    if (!submitFn) return null
-
+  const runSubmit = async (data) => {
+    if (!submitFn) return null;
     try {
-      // submitFn can be:
-      // - an action creator that returns a thunk (function)
-      // - a thunk function directly
-      // - an async function that returns a promise
-      const maybe = submitFn(data)
-
-      // If it's a function (thunk), dispatch it
-      if (typeof maybe === 'function') {
-        const dispatched = dispatch(maybe)
-        if (dispatched && typeof dispatched.then === 'function') return await dispatched
-        return dispatched
+      const maybeResult = submitFn(data);
+      // If the returned value is a function, assume it's a thunk and dispatch it.
+      if (typeof maybeResult === "function") {
+        return await dispatch(maybeResult);
+      } else {
+        throw new Error(
+          "submitFn must return a function (thunk) when used with AddModal"
+        );
       }
-
-      // If submitFn returned a promise
-      if (maybe && typeof maybe.then === 'function') return await maybe
-
-      // If submitFn is an action object, dispatch it and return
-      const dispatched = dispatch(maybe)
-      if (dispatched && typeof dispatched.then === 'function') return await dispatched
-      return dispatched
     } catch (err) {
-      throw err
+      throw err;
     }
-  }
+  };
 
-  const onSubmit = async e => {
-    e && e.preventDefault()
+  const onSubmit = async (e) => {
+    e && e.preventDefault();
     try {
-      setSubmitting(true)
-      const result = await runSubmit(formState)
-      setSubmitting(false)
-      setModal(false)
-      onSuccess && onSuccess(result)
+      setSubmitting(true);
+      const result = await runSubmit(formState);
+      setSubmitting(false);
 
-      if (afterSuccess === 'back') window.history.back()
-      if (afterSuccess === 'reload') window.location.reload()
+      // Only close modal & show success if fulfilled
+      if (result.type.endsWith("/fulfilled")) {
+        setModal(false);
+        notify("Updated successfully", "success");
+      } else {
+        console.error("Submission failed: ", result?.error?.message);
+      }
     } catch (err) {
-      setSubmitting(false)
-      console.error('UpdateModal submit error', err)
-      // normalize error display
-      const msg = (err && (err.message || err.msg || err.error)) || String(err)
-      setError(msg)
+      setSubmitting(false);
+      console.error("AddModal submit error", err);
     }
-  }
+  };
 
   return (
     <>
-      {children
-        ? <span onClick={toggle} className="update-modal-trigger">{children}</span>
-        : (
-          <Button color="link" onClick={toggle} className="text-dark p-0 mx-2 d-inline-flex align-items-center" aria-label={title}>
-            <img src={edit} alt="edit" width="16" height="16" />
+      {children ? (
+        <span onClick={toggle} className="update-modal-trigger">
+          {children}
+        </span>
+      ) : (
+        <Button
+          color="warning"
+          onClick={toggle}
+          className="text-success p-1 mx-1 mx-md-3 d-inline-flex align-items-center"
+          aria-label={title}
+        >
+          <img src={edit} alt="edit" width="16" height="16" />
+          {triggerText ? <span className="ms-1">{triggerText}</span> : null}
+        </Button>
+      )}
+
+      <Modal
+        centered
+        size="md"
+        isOpen={modal}
+        toggle={toggle}
+        className="update-modal"
+      >
+        <div className="modal-header-text d-flex justify-content-between align-items-center p-2">
+          <span className="h6 mb-0 text-white">{title}</span>
+          <Button
+            className="cat-close-btn text-uppercase"
+            onClick={toggle}
+            aria-label="Close dialog"
+          >
+            Close
           </Button>
-        )}
-
-      <Modal centered size="md" isOpen={modal} toggle={toggle} className="update-modal">
-        <ModalHeader toggle={toggle}>{title}</ModalHeader>
-
+        </div>
         <form onSubmit={onSubmit}>
           <ModalBody>
             {error && (
@@ -135,21 +149,28 @@ const UpdateModal = ({
               </div>
             )}
 
-            {typeof renderForm === 'function'
+            {typeof renderForm === "function"
               ? renderForm(formState, setFormState, firstInputRef)
               : null}
           </ModalBody>
 
           <ModalFooter className="justify-content-around pb-0">
-            <Button color="primary" type="submit" disabled={submitting}>
-              {submitting ? 'Updating...' : 'Update'}
+            <Button color="success" type="submit" disabled={submitting}>
+              {submitting ? "Updating..." : "Update"}
             </Button>
-            <Button color="secondary" outline onClick={toggle}>Cancel</Button>
+            <Button
+              color="warning"
+              outline
+              onClick={toggle}
+              className="text-success"
+            >
+              Cancel
+            </Button>
           </ModalFooter>
         </form>
       </Modal>
     </>
-  )
-}
+  );
+};
 
-export default UpdateModal
+export default UpdateModal;

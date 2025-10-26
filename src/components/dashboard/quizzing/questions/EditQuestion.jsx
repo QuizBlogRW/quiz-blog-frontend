@@ -84,7 +84,7 @@ const EditQuestion = () => {
         }
 
         else if (answerOptionsState.length <= 1) {
-            alert('Answers are not sufficient!')
+            alert('Answers are not sufficient!', 'error')
             return
         }
 
@@ -104,6 +104,9 @@ const EditQuestion = () => {
 
         // Attempt to update
         dispatch(updateQuestion({ questionID, formData }))
+
+        // Go back
+        window.history.back();
     }
 
     const handleAddFields = () => {

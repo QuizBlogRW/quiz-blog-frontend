@@ -1,10 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import AddModal from '@/utils/AddModal'
 import { getQuizzesByNotes } from '@/redux/slices/quizzesSlice'
 import { addNotesQuizzes } from '@/redux/slices/notesSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import AddIcon from '@/images/plus.svg'
-import { notify } from '@/utils/notifyToast'
 
 // TODO: Wrong, needs to push quizzes IDs into specific Notes Model
 const AddRelatedQuiz = ({ noteID }) => {
@@ -54,20 +53,13 @@ const AddRelatedQuiz = ({ noteID }) => {
         validate(formState)
         return submitFn(formState)
     }
-
-    const onSuccess = () => {
-        // refresh related quizzes list
-        if (noteID) dispatch(getQuizzesByNotes(noteID))
-        notify('Related quiz added', 'success')
-    }
-
     return (
         <AddModal
             title={<><img src={AddIcon} alt="" width="10" height="10" className="mb-1" />&nbsp; Quizzes</>}
             submitFn={submitWrapper}
             renderForm={renderForm}
             initialState={initialState}
-            onSuccess={onSuccess}
+
             triggerText={null}
         />
     )

@@ -1,72 +1,82 @@
-import { useEffect } from 'react'
-import { Row, Col, Card, Button, CardTitle, CardText, TabPane } from 'reactstrap'
-import { getPostCategories, deletePostCategory } from '@/redux/slices/postCategoriesSlice'
-import { useSelector, useDispatch } from "react-redux"
-import { Link } from 'react-router-dom'
-import EditBPCategory from '@/components/dashboard/posts/blog/EditBPCategory'
-import CreateBPCategory from '@/components/dashboard/posts/blog/CreateBPCategory'
-import QBLoadingSM from '@/utils/rLoading/QBLoadingSM'
-import DeleteModal from '@/utils/DeleteModal'
+import { useEffect } from "react";
+import {
+  Row,
+  Col,
+  Card,
+  Button,
+  CardTitle,
+  CardText,
+  TabPane,
+} from "reactstrap";
+import {
+  getPostCategories,
+  deletePostCategory,
+} from "@/redux/slices/postCategoriesSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import EditBPCategory from "@/components/dashboard/posts/blog/EditBPCategory";
+import CreateBPCategory from "@/components/dashboard/posts/blog/CreateBPCategory";
+import QBLoadingSM from "@/utils/rLoading/QBLoadingSM";
+import DeleteModal from "@/utils/DeleteModal";
 
 const PostCategoriesTabPane = () => {
+  const dispatch = useDispatch();
+  const bPcats = useSelector((state) => state.postCategories);
+  const { isLoading, allPostCategories } = bPcats;
+  const { user } = useSelector((state) => state.auth);
 
-  const dispatch = useDispatch()
-  const bPcats = useSelector(state => state.postCategories)
-  const { isLoading, allPostCategories } = bPcats
-  const { user } = useSelector(state => state.auth)
-
-  useEffect(() => { dispatch(getPostCategories()) }, [dispatch])
+  useEffect(() => {
+    dispatch(getPostCategories());
+  }, [dispatch]);
 
   return (
     <TabPane tabId="6">
-
-      <Button size="sm" outline color="info" className="mx-3 mb-2 p-2 btn btn-warning">
+      <div className="mx-3 mb-2 p-2 d-inline-block btn btn-warning">
         <CreateBPCategory />
-      </Button>
+      </div>
 
-      {isLoading ?
-        <QBLoadingSM title='Blog post categories' /> :
-
+      {isLoading ? (
+        <QBLoadingSM title="Blog post categories" />
+      ) : (
         <Row>
-          {allPostCategories && allPostCategories.map(category => (
+          {allPostCategories &&
+            allPostCategories.map((category) => (
+              <Col sm="6" className="mt-2" key={category._id}>
+                <Card body>
+                  <CardTitle className="text-uppercase">
+                    <strong>{category.title} Blog Posts</strong>
+                  </CardTitle>
 
-            <Col sm="6" className="mt-2" key={category._id}>
-              <Card body>
+                  <CardText>
+                    <small>{category.description}</small>
+                  </CardText>
 
-                <CardTitle className="text-uppercase">
-                  <strong>{category.title} Blog Posts</strong>
-                </CardTitle>
+                  <div className="actions d-flex ms-3">
+                    <Button size="sm" outline color="success" className="mx-2">
+                      <Link to={`/create-bpost/${category && category._id}`} className="text-success">
+                        Add Blog Post
+                      </Link>
+                    </Button>
 
-                <CardText><small>{category.description}</small></CardText>
-
-                <div className="actions d-flex ms-3">
-
-                  <Button size="sm" outline color="info" className="mx-2">
-                    <Link to={`/create-bpost/${category && category._id}`}>Add Blog Post</Link>
-                  </Button>
-
-                  {
-                    user.role === 'Admin' || user.role === 'SuperAdmin' ?
+                    {user.role === "Admin" || user.role === "SuperAdmin" ? (
                       <>
-                        <Button size="sm" color="link" className="mx-2">
-                          <EditBPCategory
-                            categoryToEdit={category} />
-                        </Button>
-                        <DeleteModal deleteFnName="deletePostCategory" deleteFn={deletePostCategory} delID={category._id} delTitle={category.title} />
+                        <EditBPCategory categoryToEdit={category} />
+                        <DeleteModal
+                          deleteFnName="deletePostCategory"
+                          deleteFn={deletePostCategory}
+                          delID={category._id}
+                          delTitle={category.title}
+                        />
                       </>
-                      : null
-                  }
-
-                </div>
-
-              </Card>
-            </Col>
-          ))}
+                    ) : null}
+                  </div>
+                </Card>
+              </Col>
+            ))}
         </Row>
-      }
-
+      )}
     </TabPane>
-  )
-}
+  );
+};
 
-export default PostCategoriesTabPane
+export default PostCategoriesTabPane;

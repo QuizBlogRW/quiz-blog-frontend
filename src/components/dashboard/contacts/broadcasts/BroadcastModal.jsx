@@ -38,15 +38,12 @@ const BroadcastModal = () => {
         return sendBroadcast(newMessage)
     }
 
-    const onSuccess = () => notify('Broadcast sent', 'success')
-
     return (
         <AddModal
             title="Send a broadcast message"
             triggerText={<><b>+</b> Broadcast</>}
             initialState={initialState}
             submitFn={submitFn}
-            onSuccess={onSuccess}
             renderForm={renderForm}
         />
     )
