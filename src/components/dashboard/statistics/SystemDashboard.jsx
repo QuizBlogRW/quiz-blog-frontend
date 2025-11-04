@@ -52,7 +52,6 @@ const SystemDashboard = () => {
 
             setLastUpdated(new Date().toLocaleTimeString());
         } catch (err) {
-            console.error('Error fetching metrics:', err);
             setFetchError('Failed to fetch system metrics! Check statistics logs for error.');
             setLastUpdated(new Date().toLocaleTimeString());
         } finally {

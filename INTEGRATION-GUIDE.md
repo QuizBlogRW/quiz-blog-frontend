@@ -82,7 +82,7 @@ Set `VITE_DEBUG=true` in `.env.development` to see all API requests in the brows
 - **Backend**: Docker services restart automatically on code changes
 
 ### Cache Management
-The API Gateway includes Redis caching with fallback to in-memory cache for better performance.
+The API Gateway includes Redis caching for better performance.
 
 ## 🐳 Backend Services
 

@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from 'react';
-import { Navbar, NavbarBrand, NavLink, Button, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, ListGroup, ListGroupItem } from 'reactstrap';
+import { Navbar, NavbarBrand, NavLink, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, ListGroup, ListGroupItem } from 'reactstrap';
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Logout from '@/components/auth/Logout';
@@ -147,13 +147,6 @@ const Header = ({ textContent }) => {
                     <img src={logo} alt="Quiz-Blog Logo" className="site-logo" />
                 </NavbarBrand>
                 <div className="collapse px-1 px-sm-2 py-1 mx-1 m-sm-0 nav-items">
-                    {location.pathname !== '/' && (
-                        <Button color="success" size="md" className="ms-1 me-2 px-md-2 me-md-4 back-home d-none d-sm-inline-flex">
-                            <Link to="/" className="back-home-link text-white">
-                                Back Home
-                            </Link>
-                        </Button>
-                    )}
                     <CatDropdown />
                     <span className="me-1 ms-sm-4 me-md-4">
                         <Link to="/course-notes" className="nav-link-custom">Notes</Link>

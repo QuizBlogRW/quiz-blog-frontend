@@ -1,5 +1,4 @@
-import React from 'react';
-import { Col, Card, Button, CardTitle, CardText, Alert } from 'reactstrap';
+import { Col, Card, CardTitle, CardText, Alert } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import BroadcastModal from './BroadcastModal';
 import { deleteBroadcast } from '@/redux/slices/broadcastsSlice';
@@ -11,9 +10,7 @@ const BroadcastsCard = ({ broadcastsToUse }) => {
         broadcastsToUse && broadcastsToUse.length > 0 ?
             <>
                 <span className='w-100 d-flex justify-content-end ps-sm-4 mb-sm-4'>
-                    <Button color="warning" size="sm">
-                        <BroadcastModal />
-                    </Button>
+                    <BroadcastModal />
                 </span>
                 {broadcastsToUse && broadcastsToUse.map(broadcast => (
                     <Col sm="6" className="mt-2 contact-card" key={broadcast._id}>

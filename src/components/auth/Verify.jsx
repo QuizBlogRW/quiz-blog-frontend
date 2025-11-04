@@ -42,7 +42,6 @@ export function Verify() {
                 notify('OTP verification failed. Please try again.', 'error');
             }
         } catch (error) {
-            console.error(error);
             notify('An error occurred during verification. Please try again.', 'error');
         }
 
