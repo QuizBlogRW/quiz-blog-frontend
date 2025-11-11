@@ -29,9 +29,9 @@ const Posts = () => {
 
     // Lifecycle methods
     useEffect(() => {
-        dispatch(getLimitedQuizzes({ skip, limit }));
+        dispatch(getLimitedQuizzes({ limit, skip }));
         dispatch(getQuizzes());
-    }, [dispatch, skip, limit]);
+    }, [dispatch, limit, skip]);
 
     return (
         <Container className="posts main mt-4">

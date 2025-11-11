@@ -30,18 +30,19 @@ const QuizToast = ({ fromSearch, quiz }) => {
                     <br />
                     <br />
 
-                    {quiz.questions && quiz.questions.length > 0 ?
+                    {quiz?.questions?.length > 0 ?
                         <>
-                            <p className="fw-bolder">Questions ({quiz.questions.length})</p>
+                            <p className="fw-bolder">Questions ({quiz.question?.length})</p>
 
                             {quiz && quiz.questions.map((question, index) =>
                                 <ul key={question._id} className="pl-1">
                                     <li style={{ listStyle: 'none' }}>
                                         {index + 1}.&nbsp;
-                                        <Link to={`/view-question/${question._id}`} style={{ color: fromSearch ? 'khaki' : 'blueviolet' }}>
+                                        <Link to={`/view-question/${question._id}`}
+                                            style={{ color: fromSearch ? 'khaki' : 'blueviolet' }}>
                                             {question.questionText}
                                         </Link>
-                                        <strong className="text-danger">&nbsp;({question.answerOptions.length} answers)</strong>
+                                        <strong className="text-danger">&nbsp;({question.answerOptions?.length} answers)</strong>
                                     </li>
                                 </ul>
                             )}</> :

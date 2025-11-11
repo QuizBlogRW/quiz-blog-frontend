@@ -28,6 +28,8 @@ const CoursesHolder = ({ courses }) => {
 
           <div className="d-flex justify-content-between">
             <Button className="view-course">
+            {/* MONGODB IMPORT ISSUE MAYBE */}
+              {console.log("/view-course/" + course._id)}
               <a href={`/view-course/${course._id}`} className="text-white">
                 View Notes
               </a>

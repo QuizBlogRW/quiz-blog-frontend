@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Row, Col, TabPane, ListGroup, ListGroupItem, Alert } from 'reactstrap';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 import { getQuestions } from '@/redux/slices/questionsSlice';
-import { getLimitedQuizzes, getQuizzes } from '@/redux/slices/quizzesSlice';
+import { getPaginatedQuizzes, getQuizzes } from '@/redux/slices/quizzesSlice';
 import QuizToast from './QuizToast';
 import SearchInput from '@/utils/SearchInput';
 import Pagination from '@/components/dashboard/utils/Pagination';
@@ -15,7 +15,7 @@ const QuizzesTabPane = () => {
 
   // Redux
   const dispatch = useDispatch();
-  const { isLoading, loadingLimited, quizzes, limitedQuizzes, totalPages } =
+  const { isLoading, loadingPaginated, quizzes, paginatedQuizzes, totalPages } =
     useSelector((state) => state.quizzes);
   const questions = useSelector((state) => state.questions);
 
@@ -27,7 +27,7 @@ const QuizzesTabPane = () => {
   // Lifecycle methods
   useEffect(() => {
     dispatch(getQuizzes());
-    dispatch(getLimitedQuizzes({ pageNo }));
+    dispatch(getPaginatedQuizzes({ pageNo }));
     dispatch(getQuestions());
   }, [dispatch, pageNo]);
 
@@ -36,12 +36,13 @@ const QuizzesTabPane = () => {
   }, [totalPages]);
 
   // Quizzes to use - CREATED BY ROUTE
-  const creatorQuizzes = limitedQuizzes?.filter(
+  const creatorQuizzes = paginatedQuizzes && paginatedQuizzes?.filter(
     (quiz) => quiz.created_by && quiz.created_by._id === user._id
   );
+
   const quizzesToUse =
     user.role === 'Admin' || user.role === 'SuperAdmin'
-      ? limitedQuizzes
+      ? paginatedQuizzes
       : creatorQuizzes;
 
   // Questions to use
@@ -58,7 +59,7 @@ const QuizzesTabPane = () => {
 
   return (
     <TabPane tabId="2">
-      {loadingLimited ? (
+      {loadingPaginated ? (
         <QBLoadingSM title="paginated quizzes" />
       ) : quizzesToUse && quizzesToUse.length > 0 ? (
         <>

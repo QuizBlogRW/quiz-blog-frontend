@@ -34,13 +34,13 @@ const LoginModal = () => {
                 loginResponse.payload ||
                 loginResponse.error ||
                 'Login failed';
-            console.log('err: ', errorMsg);
+            const errCode = loginResponse.error?.code || null;
 
-            if (errorMsg === 'CONFIRM_ERR') {
+            if (errCode === 'CONFIRM_ERR') {
                 setConfirmLogin(true);
             }
 
-            setErrorMessage(errorMsg === 'CONFIRM_ERR' ?
+            setErrorMessage(errCode === 'CONFIRM_ERR' ?
                 'Already logged in on another device/browser, log them out to use here?' :
                 errorMsg);
         }
@@ -79,6 +79,7 @@ const LoginModal = () => {
 
         // Attempt to login
         const res = await dispatch(login(user));
+        console.log("res: ", res)
         setLoginResponse(res);
     };
     return (

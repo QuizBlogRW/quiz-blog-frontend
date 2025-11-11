@@ -32,10 +32,13 @@ const SingleCategory = () => {
                                 </a>
                             </strong>&nbsp;
                             (<small className="mb-0 text-dark">
-                                This category contains <span className="fw-bolder">{category.quizes.length}</span> quiz(zes)</small>)
+                                This category contains <span className="fw-bolder">
+                                    {category.quizes?.length}
+                                </span>{category.quizes?.length === 1 ? ' quiz only' : ' quizzes'}
+                            </small>)
                         </ToastHeader>
                         <ToastBody>
-                            <p className="fw-bolder mt-2">Quizzes ({category.quizes.length})</p>
+                            <p className="fw-bolder mt-2">Quizzes ({category.quizes?.length})</p>
                             <ul className="pl-1">
                                 {category && category.quizes.map((quiz, index) =>
                                     <li key={quiz._id} style={{ listStyle: 'none', marginBottom: '.3rem' }}>
@@ -44,7 +47,7 @@ const SingleCategory = () => {
                                             {quiz.title}
                                         </Link>
                                         <strong className="text-warning">&nbsp;
-                                            ({quiz.questions.length} questions)</strong>
+                                            ({quiz.questions?.length} questions)</strong>
                                     </li>
                                 )}
                             </ul>

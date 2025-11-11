@@ -4,7 +4,6 @@ import moment from 'moment';
 
 const PostItem = ({ quiz, fromSearch }) => {
   const { slug, title, description, creation_date, category, questions } = quiz;
-
   return (
     <Card
       body

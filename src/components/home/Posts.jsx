@@ -17,6 +17,7 @@ const BlogPosts = lazy(() => import('@/components/blog/BlogPosts'));
 const ViewCategories = lazy(() => import('./categories/ViewCategories'));
 
 const Posts = () => {
+
   // Dispatch
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.categories);
@@ -28,9 +29,7 @@ const Posts = () => {
   }, [dispatch, limit]);
 
   // Selectors from redux store using hooks
-  const { loadingLimited, limitedQuizzes } = useSelector(
-    (state) => state.quizzes
-  );
+  const { loadingLimited, limitedQuizzes } = useSelector(state => state.quizzes);
 
   return (
     <Container className="posts main w-100 px-0">

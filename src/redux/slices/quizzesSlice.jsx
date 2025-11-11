@@ -10,13 +10,25 @@ export const getQuizzes = createAsyncThunk(
 
 export const getLimitedQuizzes = createAsyncThunk(
   'quizzes/getLimitedQuizzes',
-  async ({ pageNo, limit, skip }, { getState }) =>
+  async ({ limit, skip = 0 }, { getState }) =>
     apiCallHelper(
-      `/api/quizzes?pageNo=${pageNo}&limit=${limit}&skip=${skip ? skip : 0}`,
+      `/api/quizzes?limit=${limit || 0}&skip=${skip || 0}`,
       'get',
       null,
       getState,
       'getLimitedQuizzes'
+    )
+);
+
+export const getPaginatedQuizzes = createAsyncThunk(
+  'quizzes/getPaginatedQuizzes',
+  async ({ pageNo }, { getState }) =>
+    apiCallHelper(
+      `/api/quizzes?pageNo=${pageNo}`,
+      'get',
+      null,
+      getState,
+      'getPaginatedQuizzes'
     )
 );
 
@@ -120,9 +132,11 @@ export const notifying = createAsyncThunk(
 const initialState = {
   isLoading: false,
   loadingLimited: false,
+  loadingPaginated: false,
   oneQuiz: '',
   quizzes: [],
   limitedQuizzes: [],
+  paginatedQuizzes: [],
   categoryQuizzes: [],
   totalPages: 0,
   error: null,
@@ -149,9 +163,17 @@ const quizzesSlice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(getLimitedQuizzes.fulfilled, (state, action) => {
-      state.limitedQuizzes = action.payload.quizzes;
-      state.totalPages = action.payload.totalPages;
+      state.limitedQuizzes = action.payload;
       state.loadingLimited = false;
+    });
+    builder.addCase(getPaginatedQuizzes.fulfilled, (state, action) => {
+      state.paginatedQuizzes = action.payload.paginatedQuizzes;
+      state.totalPages = action.payload.totalPages;
+      state.currentPage = action.payload.currentPage;
+      state.pageSize = action.payload.pageSize;
+      state.totalQuizzes = action.payload.totalQuizzes;
+      state.totalQuizzes = action.payload.totalQuizzes;
+      state.loadingPaginated = false;
     });
     builder.addCase(getOneQuiz.fulfilled, (state, action) => {
       state.oneQuiz = action.payload;
@@ -220,6 +242,9 @@ const quizzesSlice = createSlice({
     builder.addCase(getLimitedQuizzes.pending, (state) => {
       state.loadingLimited = true;
     });
+    builder.addCase(getPaginatedQuizzes.pending, (state) => {
+      state.loadingPaginated = true;
+    });
     builder.addCase(getQuizzes.pending, handlePending);
     builder.addCase(getOneQuiz.pending, handlePending);
     builder.addCase(getQuizzesByCategory.pending, handlePending);
@@ -234,6 +259,9 @@ const quizzesSlice = createSlice({
     // Rejected actions
     builder.addCase(getLimitedQuizzes.rejected, (state) => {
       state.loadingLimited = false;
+    });
+    builder.addCase(getPaginatedQuizzes.rejected, (state) => {
+      state.loadingPaginated = false;
     });
     builder.addCase(getQuizzes.rejected, handleRejected);
     builder.addCase(getOneQuiz.rejected, handleRejected);

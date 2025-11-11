@@ -50,7 +50,7 @@ if (import.meta.env.VITE_DEBUG === 'true') {
         console.error('❌ API Error:', error);
       }
       console.error('❌ API Error:', error.response?.status, error.config?.url);
-      return Promise.reject(error);
+      return Promise.reject(error.response?.data || error.message || error);
     }
   );
 }
@@ -94,13 +94,12 @@ export const apiCallHelper = async (
           notify(
             response.data?.message
               ? response.data.message
-              : `${
-                  method === 'post'
-                    ? 'Created'
-                    : method === 'put'
-                    ? 'Updated'
-                    : 'Deleted'
-                } Successfully!`,
+              : `${method === 'post'
+                ? 'Created'
+                : method === 'put'
+                  ? 'Updated'
+                  : 'Deleted'
+              } Successfully!`,
             'success'
           );
         }
@@ -117,9 +116,6 @@ export const apiCallHelper = async (
       // This is the processed error message from axios interceptor
       errorMessage = error;
     } else if (error?.response?.data) {
-      if (error?.response?.data?.id == 'CONFIRM_ERR') {
-        throw new Error('CONFIRM_ERR');
-      }
 
       // Handle structured errors
       if (error?.response?.data?.message) {
@@ -132,7 +128,7 @@ export const apiCallHelper = async (
       // Fallback to error message
       errorMessage = `An error occurred: ${error.message}`;
     }
-    throw new Error(errorMessage);
+    throw { message: errorMessage, code: error.code, status: error.response?.status}
   }
 };
 
@@ -165,7 +161,6 @@ export const apiCallHelperUpload = async (
 
     return response?.data;
   } catch (error) {
-    console.log(error);
     if (
       error?.response?.data &&
       error?.response?.data?.message &&

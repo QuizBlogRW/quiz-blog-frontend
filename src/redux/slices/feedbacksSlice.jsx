@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { apiCallHelper, handlePending, handleRejected } from '../configHelpers';
-import { notify } from '@/utils/notifyToast';
 
 // Async actions with createAsyncThunk
 export const getFeedbacks = createAsyncThunk(

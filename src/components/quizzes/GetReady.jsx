@@ -44,7 +44,7 @@ const GetReady = () => {
     } else {
 
         return (
-            qZ.oneQuiz && qZ.oneQuiz.questions.length > 0 ?
+            qZ.oneQuiz && qZ.oneQuiz.questions?.length > 0 ?
                 <div className="py-3 d-flex justify-content-center align-items-center flex-column">
                     <Container className="main mx-auto d-flex flex-column justify-content-center rounded my-3 my-lg-5 py-lg-4 w-80">
 
@@ -54,7 +54,7 @@ const GetReady = () => {
                                     <Card body className='question-section text-center my-2 mx-auto w-75 p-2 p-lg-5' style={{ border: '3px solid var(--brand)' }}>
 
                                         <CardTitle tag="h5" className='question-count text-uppercase text-center text-primary fw-bolder'>
-                                            {qZ.oneQuiz.title}&nbsp;({qZ.oneQuiz.questions && qZ.oneQuiz.questions.length})
+                                            {qZ.oneQuiz.title}&nbsp;({qZ.oneQuiz.questions && qZ.oneQuiz.questions?.length})
                                         </CardTitle>
 
                                         <CardText>

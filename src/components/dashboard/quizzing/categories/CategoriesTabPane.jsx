@@ -12,15 +12,18 @@ const CategoriesTabPane = () => {
   const { allcategories, isLoading } = useSelector((state) => state.categories);
   const { user } = useSelector((state) => state.auth);
 
-  const renderCategory = (category) => (
-    <Col sm="6" className="mt-2" key={category._id}>
+  const renderCategory = (category) => {
+
+    const quizzesCount = category.quizes.length;
+
+    return <Col sm="6" className="mt-2" key={category._id}>
       <Card body>
         <CardTitle>
           <Link
             to={`/category/${category._id}`}
             className="text-success text-uppercase fw-bolder"
           >
-            {category.title} Quizzes ({category.quizes.length})
+            {category.title} [{quizzesCount == 1 ? `${quizzesCount} - Quiz` : quizzesCount > 1 ? `${quizzesCount} - Quizzes` : 'No Quizzes'}]
           </Link>
         </CardTitle>
         <CardText>{category.description}</CardText>
@@ -48,18 +51,12 @@ const CategoriesTabPane = () => {
         </div>
       </Card>
     </Col>
-  );
+  };
 
-  return (
-    <TabPane tabId="1">
-      <CreateCategory />
-      {isLoading ? (
-        <QBLoadingSM title="categories" />
-      ) : (
-        <Row>{allcategories && allcategories.map(renderCategory)}</Row>
-      )}
-    </TabPane>
-  );
+  return <TabPane tabId="1">
+    <CreateCategory />
+    {isLoading ? <QBLoadingSM title="categories" /> : <Row>{allcategories && allcategories.map(renderCategory)}</Row>}
+  </TabPane>
 };
 
 export default CategoriesTabPane;
