@@ -56,7 +56,7 @@ const AllPosts = lazy(() => import('@/components/home/AllPosts'));
 const ViewNotePaper = lazy(() => import('@/components/home/notes/ViewNotePaper'));
 
 ReactGA.initialize('G-GXLLDMB41B', {
-    debug: true,
+debug: true,
     gaOptions: { siteSpeedSampleRate: 100 }
 });
 

@@ -91,7 +91,7 @@ const Posts = () => {
             </>
           ) : (
             <div className="p-1 m-1 d-flex justify-content-center align-items-center">
-              No quizzes available today. &nbsp;
+              No quizzes available today! &nbsp;
               <Button
                 onClick={() => (window.location.href = '/contact')}
                 outline
