@@ -18,7 +18,7 @@ const SystemDashboard = () => {
     const [activeTab, setActiveTab] = useState('1');
     const [lastUpdated, setLastUpdated] = useState(null);
 
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+    const apiUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 
     useEffect(() => {
         // Only fetch data if user is authenticated and has admin role

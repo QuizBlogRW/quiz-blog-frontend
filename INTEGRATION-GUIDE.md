@@ -7,7 +7,7 @@ This guide helps you run the React client with the microservices backend locally
 ### Prerequisites
 - Node.js 18+
 - Docker and Docker Compose
-- Ports available: 3000, 5000, 5001, 5002, 5003, 5008, 6379, 27017
+- Ports available: 3000, 5000, 5001, 5002, 5003, 5000, 6379, 27017
 
 ### Option 1: Automated Setup (Recommended)
 
@@ -55,7 +55,7 @@ The client automatically uses environment-specific configuration:
 
 **Development (.env.development):**
 - API Gateway: `http://localhost:5000`
-- Socket.io: `http://localhost:5008`
+- Socket.io: `http://localhost:5000`
 - Debug mode: Enabled
 
 **Production (.env.production):**
@@ -70,7 +70,7 @@ The client automatically uses environment-specific configuration:
 - **Users Service**: http://localhost:5001
 - **Quizzing Service**: http://localhost:5002
 - **Posts Service**: http://localhost:5003
-- **Contacts Service** (Socket.io): http://localhost:5008
+- **Contacts Service** (Socket.io): http://localhost:5000
 
 ## 🛠️ Development Features
 

@@ -5,11 +5,11 @@ import { apiCallHelper, handlePending, handleRejected } from '../configHelpers';
 export const getDownloads = createAsyncThunk('downloads/getDownloads', async (pageNo, { getState }) =>
   apiCallHelper(`/api/downloads?pageNo=${pageNo}`, 'get', null, getState, 'getDownloads'));
 
-export const getCreatorDownloads = createAsyncThunk('downloads/getCreatorDownloads', async (uId, { getState }) =>
-  apiCallHelper(`/api/downloads/creator/${uId}`, 'get', null, getState, 'getCreatorDownloads'));
+export const getDownloadsByCreator = createAsyncThunk('downloads/getDownloadsByCreator', async (uId, { getState }) =>
+  apiCallHelper(`/api/downloads/creator/${uId}`, 'get', null, getState, 'getDownloadsByCreator'));
 
-export const getNotesDownloader = createAsyncThunk('downloads/getNotesDownloader', async (userId, { getState }) =>
-  apiCallHelper(`/api/downloads/downloaded-by/${userId}`, 'get', null, getState, 'getNotesDownloader'));
+export const getDownloadsByUser = createAsyncThunk('downloads/getDownloadsByUser', async (userId, { getState }) =>
+  apiCallHelper(`/api/downloads/downloaded-by/${userId}`, 'get', null, getState, 'getDownloadsByUser'));
 
 export const saveDownload = createAsyncThunk('downloads/saveDownload', async (newDownload, { getState }) =>
   apiCallHelper('/api/downloads', 'post', newDownload, getState, 'saveDownload'));
@@ -47,11 +47,11 @@ const downloadsSlice = createSlice({
       state.totalPages = action.payload.totalPages;
       state.isLoading = false;
     });
-    builder.addCase(getCreatorDownloads.fulfilled, (state, action) => {
+    builder.addCase(getDownloadsByCreator.fulfilled, (state, action) => {
       state.creatorDownloads = action.payload;
       state.isLoading = false;
     });
-    builder.addCase(getNotesDownloader.fulfilled, (state, action) => {
+    builder.addCase(getDownloadsByUser.fulfilled, (state, action) => {
       state.userDownloads = action.payload;
       state.isLoading = false;
     });
@@ -66,15 +66,15 @@ const downloadsSlice = createSlice({
 
     // Pending actions
     builder.addCase(getDownloads.pending, handlePending);
-    builder.addCase(getCreatorDownloads.pending, handlePending);
-    builder.addCase(getNotesDownloader.pending, handlePending);
+    builder.addCase(getDownloadsByCreator.pending, handlePending);
+    builder.addCase(getDownloadsByUser.pending, handlePending);
     builder.addCase(saveDownload.pending, handlePending);
     builder.addCase(deleteDownload.pending, handlePending);
 
     // Rejected actions
     builder.addCase(getDownloads.rejected, handleRejected);
-    builder.addCase(getCreatorDownloads.rejected, handleRejected);
-    builder.addCase(getNotesDownloader.rejected, handleRejected);
+    builder.addCase(getDownloadsByCreator.rejected, handleRejected);
+    builder.addCase(getDownloadsByUser.rejected, handleRejected);
     builder.addCase(saveDownload.rejected, handleRejected);
     builder.addCase(deleteDownload.rejected, handleRejected);
   }

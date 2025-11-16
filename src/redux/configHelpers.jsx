@@ -4,26 +4,17 @@ import { notify } from '@/utils/notifyToast';
 // Environment-based URLs
 export const qbURL = 'https://myqb-245fdbd30c9b.herokuapp.com/';
 export const qbTestURL = 'https://qb-test-c6396eeaa356.herokuapp.com/';
-export const qbApiGateway =
-  'https://qb-api-gateway-faaa805537e5.herokuapp.com/';
 export const apiURL = 'https://quiz-blog-rw-server.onrender.com/';
 export const devApiURL = 'http://localhost:5000/';
 
 // Use environment variables if available, fallback to hardcoded URLs
 const getApiUrl = () => {
-  if (import.meta.env.VITE_API_URL) {
-    console.log('🔧 Using VITE_API_URL:', import.meta.env.VITE_API_URL);
-    return import.meta.env.VITE_API_URL;
-  }
-  if (import.meta.env.VITE_API_GATEWAY_URL) {
-    console.log(
-      '🔧 Using VITE_API_GATEWAY_URL:',
-      import.meta.env.VITE_API_GATEWAY_URL
-    );
-    return import.meta.env.VITE_API_GATEWAY_URL;
+  if (import.meta.env.VITE_BACKEND_URL) {
+    console.log('🔧 Using VITE_BACKEND_URL:', import.meta.env.VITE_BACKEND_URL);
+    return import.meta.env.VITE_BACKEND_URL;
   }
   const fallbackUrl =
-    import.meta.env.MODE === 'development' ? devApiURL : qbApiGateway || qbURL;
+    import.meta.env.MODE === 'development' ? devApiURL : qbURL;
   console.log('🔧 Using fallback URL:', fallbackUrl);
   return fallbackUrl;
 };
@@ -128,7 +119,7 @@ export const apiCallHelper = async (
       // Fallback to error message
       errorMessage = `An error occurred: ${error.message}`;
     }
-    throw { message: errorMessage, code: error.code, status: error.response?.status}
+    throw { message: errorMessage, code: error.code, status: error.response?.status }
   }
 };
 

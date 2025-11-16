@@ -9,8 +9,8 @@ export const devApiURL = 'http://localhost:5008/';
 
 // Environment-based socket URL
 const getSocketUrl = () => {
-    if (import.meta.env.VITE_SOCKET_URL) {
-        return import.meta.env.VITE_SOCKET_URL;
+    if (import.meta.env.VITE_BACKEND_URL) {
+        return import.meta.env.VITE_BACKEND_URL;
     }
     return import.meta.env.MODE === 'development' ? devApiURL : (qbContactsAPI || qbURL || apiURL);
 };

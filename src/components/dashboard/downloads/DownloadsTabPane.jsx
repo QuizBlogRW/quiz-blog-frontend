@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Row, TabPane } from 'reactstrap';
-import { getDownloads, getCreatorDownloads, getNotesDownloader } from '@/redux/slices/downloadsSlice';
+import { getDownloads, getDownloadsByCreator, getDownloadsByUser } from '@/redux/slices/downloadsSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import Pagination from '@/components/dashboard/utils/Pagination';
 import PageOf from '@/components/dashboard/utils/PageOf';
@@ -28,10 +28,10 @@ const DownloadsTabPane = () => {
             setNumberOfPages(totalPages && totalPages);
         }
         else if (user?.role === 'Creator') {
-            dispatch(getCreatorDownloads(user?._id, pageNo));
+            dispatch(getDownloadsByCreator(user?._id, pageNo));
         }
         else {
-            dispatch(getNotesDownloader(user?._id, pageNo));
+            dispatch(getDownloadsByUser(user?._id, pageNo));
         }
     }, [dispatch, pageNo, user, totalPages]);
 
