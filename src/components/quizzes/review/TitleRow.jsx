@@ -22,7 +22,7 @@ const TitleRow = ({ thisReview, score, qnsAll, curRevQn, currentQuestion }) => {
                         </small>
                     </span>
 
-                    {(user?.role === 'Admin' || user?.role === 'SuperAdmin') &&
+                    {user?.role?.includes('Admin') &&
                         <PDFDownloadLink document={<PdfDocument review={thisReview} />} className="mt-sm-0 share-btn mx-1 mx-md-0" fileName={`${thisReview && thisReview.title}-shared-by-Quiz-Blog.pdf`}>
                             {({ blob, url, loading, error }) => loading ? <small className="text-warning">Loading document...</small> :
                                 <Button color="success"

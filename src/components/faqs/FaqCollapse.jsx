@@ -93,8 +93,7 @@ const FaqCollapse = () => {
         />
       </div>
 
-      {(user && user.role) === 'Admin' ||
-      (user && user.role) === 'SuperAdmin' ? (
+      {user?.role?.includes('Admin') ? (
         <Row className="m-lg-4 px-lg-5 d-flex justify-content-around align-items-center text-primary">
           <CreateFaq />
         </Row>
@@ -142,8 +141,7 @@ const FaqCollapse = () => {
                         {moreLess(index)}
                       </Button>
 
-                      {(user && user.role) === 'Admin' ||
-                      (user && user.role) === 'SuperAdmin' ? (
+                      {user?.role?.includes('Admin') ? (
                         <>
                           <EditFaq faqToEdit={faq} />
                           <DeleteModal

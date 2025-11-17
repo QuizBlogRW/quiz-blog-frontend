@@ -5,7 +5,7 @@ import { approveRejectComment } from '@/redux/slices/questionsCommentsSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
 const Comment = ({ comment, isFromPending }) => {
-    
+
     // Redux
     const { user } = useSelector(state => state.auth);
     const dispatch = useDispatch();
@@ -22,7 +22,7 @@ const Comment = ({ comment, isFromPending }) => {
                     {quizTitle}
                 </Link>
 
-                {isFromPending && user?.role === 'SuperAdmin' ? (
+                {isFromPending && user.role?.includes('Admin') ? (
                     <span>
                         <Button color="success" className='mx-1 text-white text-uppercase'
                             onClick={() => dispatch(approveRejectComment({ commentID: comment?._id, status: 'Approved' }))}>

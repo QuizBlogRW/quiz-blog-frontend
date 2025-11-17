@@ -21,8 +21,8 @@ const BPTable = ({ bpostsToUse }) => {
                             <th scope="col">CATEGORY</th>
                             <th scope="col">CREATOR</th>
                             <th scope="col">DATE</th>
-                            <th scope="col" className={`${(user?.role === 'Admin' || user?.role === 'SuperAdmin') ? '' : 'd-none'}`}>EDIT</th>
-                            <th scope="col" className={`${(user?.role === 'Admin' || user?.role === 'SuperAdmin') ? '' : 'd-none'}`}><span role="img" aria-label="pointing">❌</span></th>
+                            <th scope="col" className={`${user?.role?.includes('Admin') ? '' : 'd-none'}`}>EDIT</th>
+                            <th scope="col" className={`${user?.role?.includes('Admin') ? '' : 'd-none'}`}><span role="img" aria-label="pointing">❌</span></th>
                         </tr>
                     </thead>
 
@@ -43,10 +43,10 @@ const BPTable = ({ bpostsToUse }) => {
                                 <td>{catg && catg}</td>
                                 <td>{creator && creator}</td>
                                 <td>{date && moment(date).format('YYYY-MM-DD, HH:mm')}</td>
-                                <td className={`${((user?.role === 'Admin' || user?.role === 'SuperAdmin') || creat._id === user._id) ? '' : 'd-none'}`}>
+                                <td className={`${(user?.role?.includes('Admin') || creat._id === user._id) ? '' : 'd-none'}`}>
                                     <Link to={`/edit-bpost/${bPost.slug}`}>Edit</Link>
                                 </td>
-                                <td className={`${((user?.role === 'Admin' || user?.role === 'SuperAdmin') || creat._id === user._id) ? '' : 'd-none'}`}>
+                                <td className={`${(user?.role?.includes('Admin') || creat._id === user._id) ? '' : 'd-none'}`}>
                                     <DeleteModal deleteFnName="deleteBlogPost" deleteFn={deleteBlogPost} delID={bPost._id} delTitle={bPost.title} />
                                 </td>
                             </tr>);

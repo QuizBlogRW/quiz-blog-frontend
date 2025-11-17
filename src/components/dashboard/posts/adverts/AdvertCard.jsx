@@ -25,7 +25,7 @@ const AdvertCard = ({ advert }) => {
                     <CardText className='my-4'>{advert.phone}</CardText>
                     <CardText className='my-4 text-info'><u>{advert.link ? advert.link : 'No link'}</u></CardText>
 
-                    {user?.role === 'SuperAdmin' || user?.role === 'Admin' ?
+                    {user.role?.includes('Admin') ?
                         <span>
                             <Button color={`${advert.status === 'Active' ? 'danger' : 'success'}`} className='mx-1 text-white text-uppercase'
                                 onClick={() => dispatch(changeStatus({

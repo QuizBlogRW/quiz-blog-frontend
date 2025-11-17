@@ -19,7 +19,7 @@ const DownloadsTable = ({ downloadsToUse, pageNo }) => {
                         <th scope="col">File</th>
                         <th scope="col">Chapter</th>
                         <th scope="col">Course</th>
-                        <th scope="col" className={`${(user?.role === 'Admin' || user?.role === 'SuperAdmin') ? '' : 'd-none'}`}><span role="img" aria-label="pointing">❌</span></th>
+                        <th scope="col" className={`${user?.role?.includes('Admin') ? '' : 'd-none'}`}><span role="img" aria-label="pointing">❌</span></th>
                     </tr>
                 </thead>
 
@@ -36,7 +36,7 @@ const DownloadsTable = ({ downloadsToUse, pageNo }) => {
 
                         const dat = download && (user?.role === 'Creator') ? new Date(download.updatedAt) : new Date(download.createdAt);
 
-                        const numero = (user?.role === 'Admin' || user?.role === 'SuperAdmin') ? ((pageNo - 1) * 20) + index + 1 : index + 1;
+                        const numero = user?.role?.includes('Admin') ? ((pageNo - 1) * 20) + index + 1 : index + 1;
 
                         return (
                             <tr key={index}>
@@ -46,7 +46,7 @@ const DownloadsTable = ({ downloadsToUse, pageNo }) => {
                                 <td>{note && note}</td>
                                 <td>{chap && chap}</td>
                                 <td>{cours && cours}</td>
-                                <td className={`table-dark ${(user?.role === 'Admin' || user?.role === 'SuperAdmin') ? '' : 'd-none'}`}>
+                                <td className={`table-dark ${user?.role?.includes('Admin') ? '' : 'd-none'}`}>
                                     <DeleteModal deleteFnName="deleteDownload" deleteFn={deleteDownload} delID={download._id} delTitle={download.notes && download.notes.title} />
                                 </td>
                             </tr>

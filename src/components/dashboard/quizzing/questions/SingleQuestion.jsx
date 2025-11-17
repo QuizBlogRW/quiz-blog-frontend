@@ -89,7 +89,7 @@ const SingleQuestion = () => {
                                     <h4 className="mb-4">{thisQuestion && thisQuestion.questionText}</h4>
 
                                     {
-                                        user.role === 'SuperAdmin' || user.role === 'Admin' || (thisQnCrt && user._id === thisQnCrt._id) ?
+                                        user.role?.includes('Admin') || (thisQnCrt && user._id === thisQnCrt._id) ?
 
                                             <div className="actions d-flex align-items-center">
                                                 <ChangeQuiz

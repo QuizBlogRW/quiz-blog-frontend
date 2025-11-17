@@ -7,29 +7,24 @@ import { updateCourse } from '@/redux/slices/coursesSlice';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 import DeleteModal from '@/utils/DeleteModal';
 import { deleteCourse } from '@/redux/slices/coursesSlice';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { notify } from '@/utils/notifyToast';
 import NotAuthenticated from '@/components/auth/NotAuthenticated';
 
 const CoursesHolder = ({ courses }) => {
   const { user, isAuthenticated } = useSelector((state) => state.auth);
 
-  const dispatch = useDispatch();
-
   return isAuthenticated ? (
     courses.isByCatLoading ? (
       <QBLoadingSM title="courses" />
     ) : (
-      courses &&
-      courses.coursesByCategory.map((course) => (
-        <Card key={course._id} className="mb-3" body outline color="warning">
+      courses && courses.coursesByCategory.map((course) => (
+        <Card key={course._id} className="my-3" body outline color="warning">
           <CardTitle tag="h5">{course.title}</CardTitle>
           <CardText>{course.description}</CardText>
 
           <div className="d-flex justify-content-between">
             <Button className="view-course">
-            {/* MONGODB IMPORT ISSUE MAYBE */}
-              {console.log("/view-course/" + course._id)}
               <a href={`/view-course/${course._id}`} className="text-white">
                 View Notes
               </a>

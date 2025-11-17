@@ -65,7 +65,7 @@ const CommentsTabPane = () => {
           </Alert>
         ) : (
           <>
-            {(user?.role === 'Admin' || user?.role === 'SuperAdmin') && (
+            {user?.role?.includes('Admin') && (
               <PageOf pageNo={pageNo} numberOfPages={numberOfPages} />
             )}
             {renderSearchBars(setSearchKeyQ, setSearchKey)}

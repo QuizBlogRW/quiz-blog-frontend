@@ -15,7 +15,7 @@ const AddBlogPost = () => {
     const { user, isAuthenticated, isLoading } = useSelector(state => state.auth);
 
     const curUserRole = user && user.role;
-    const isAuthorized = curUserRole === 'Admin' || curUserRole === 'SuperAdmin' || curUserRole === 'Creator';
+    const isAuthorized = curUserRole?.includes('Admin') || curUserRole === 'Creator';
 
     const { bPCatID } = useParams();
     const [bPState, setBPState] = useState({

@@ -18,7 +18,7 @@ const UserToast = ({ userToUse, fromSearch }) => {
                 <ToastHeader className="text-dark overflow-auto">
                     <strong>{userToUse?.email}</strong>
 
-                    {(user && user.role) === 'SuperAdmin' ?
+                    {user?.role?.includes('Admin') ?
                         <div className="actions text-secondary d-flex">
                             <DeleteModal deleteFnName="deleteUser" deleteFn={deleteUser} delID={userToUse._id} delTitle={userToUse.name} />
                             <EditUser userToUse={userToUse} />

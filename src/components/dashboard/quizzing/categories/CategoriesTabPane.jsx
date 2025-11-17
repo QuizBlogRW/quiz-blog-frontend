@@ -15,6 +15,7 @@ const CategoriesTabPane = () => {
   const renderCategory = (category) => {
 
     const quizzesCount = category.quizes.length;
+    const titleText = quizzesCount == 1 ? `${quizzesCount} - Quiz` : quizzesCount > 1 ? `${quizzesCount} - Quizzes` : 'No Quizzes';
 
     return <Col sm="6" className="mt-2" key={category._id}>
       <Card body>
@@ -23,13 +24,13 @@ const CategoriesTabPane = () => {
             to={`/category/${category._id}`}
             className="text-success text-uppercase fw-bolder"
           >
-            {category.title} [{quizzesCount == 1 ? `${quizzesCount} - Quiz` : quizzesCount > 1 ? `${quizzesCount} - Quizzes` : 'No Quizzes'}]
+            {category.title} [{titleText}]
           </Link>
         </CardTitle>
         <CardText>{category.description}</CardText>
         <div className="actions ms-3">
           <AddQuiz category={category} />
-          {(user.role === 'Admin' || user.role === 'SuperAdmin') && (
+          {(user.role?.includes('Admin')) && (
             <>
               <EditCategory categoryToEdit={category} />
               <DeleteModal

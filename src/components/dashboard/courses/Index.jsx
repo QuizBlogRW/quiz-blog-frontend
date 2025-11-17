@@ -50,9 +50,8 @@ const MobileNavbar = ({
 }) => (
   <Navbar color="faded" light className="d-sm-none w-100 py-0">
     <NavbarBrand
-      className={`me-auto nav-link header py-lg-2 px-0 ${
-        activeTab === 'header' ? 'active' : ''
-      }`}
+      className={`me-auto nav-link header py-lg-2 px-0 ${activeTab === 'header' ? 'active' : ''
+        }`}
       id={'v-pills-header-tab'}
       data-toggle="pill"
       href={'#v-pills-header'}
@@ -85,9 +84,8 @@ const MobileNavbar = ({
           allCourseCategories.map((cCategory) => (
             <NavItem key={cCategory._id}>
               <NavLink
-                className={`nav-link item ${
-                  activeTab === cCategory.title ? 'active' : ''
-                }`}
+                className={`nav-link item ${activeTab === cCategory.title ? 'active' : ''
+                  }`}
                 id={`v-pills-${cCategory.title}-tab`}
                 data-toggle="pill"
                 href={`#v-pills-${cCategory.title}`}
@@ -123,9 +121,8 @@ const DesktopNavbar = ({
       aria-orientation="vertical"
     >
       <a
-        className={`nav-link header py-lg-3 ${
-          activeTab === 'header' ? 'active' : ''
-        }`}
+        className={`nav-link header py-lg-3 ${activeTab === 'header' ? 'active' : ''
+          }`}
         id={'v-pills-header-tab'}
         data-toggle="pill"
         href={'#v-pills-header'}
@@ -143,9 +140,8 @@ const DesktopNavbar = ({
         allCourseCategories.map((cCategory) => (
           <a
             key={cCategory._id}
-            className={`nav-link item ${
-              activeTab === cCategory.title ? 'active' : ''
-            }`}
+            className={`nav-link item ${activeTab === cCategory.title ? 'active' : ''
+              }`}
             id={`v-pills-${cCategory.title}-tab`}
             data-toggle="pill"
             href={`#v-pills-${cCategory.title}`}
@@ -218,7 +214,7 @@ const Index = () => {
             >
               Welcome to Quiz-Blog Course Resources Portal
             </BreadcrumbItem>
-            {user.role === 'Admin' || user.role === 'Creator' ? (
+            {user?.role?.includes('Admin') || user?.role === 'Creator' ? (
               <strong>
                 <AddModal
                   title="Add Course Category"
@@ -315,9 +311,8 @@ const Index = () => {
                         <ListGroup key={cCategory._id} className="mb-1">
                           <ListGroupItem className="justify-content-between">
                             <NavLink
-                              className={`nav-link item ${
-                                activeTab === cCategory.title ? 'active' : ''
-                              }`}
+                              className={`nav-link item ${activeTab === cCategory.title ? 'active' : ''
+                                }`}
                               id={`v-pills-${cCategory.title}-tab`}
                               data-toggle="pill"
                               href={`#v-pills-${cCategory.title}`}
@@ -355,18 +350,17 @@ const Index = () => {
                     allCourseCategories.map((cCategory) => (
                       <div
                         key={cCategory._id}
-                        className={`tab-pane ${
-                          activeTab === cCategory.title ? 'show active' : ''
-                        }`}
+                        className={`tab-pane ${activeTab === cCategory.title ? 'show active' : ''
+                          }`}
                         id={`v-pills-${cCategory.title}`}
                         role="tabpanel"
                         aria-labelledby={`v-pills-${cCategory.title}-tab`}
                       >
-                        {user.role === 'Admin' ||
-                        (cCategory.created_by &&
-                          user._id === cCategory.created_by) ? (
+                        {user.role?.includes('Admin') ||
+                          (cCategory.created_by &&
+                            user._id === cCategory.created_by) ? (
                           <span className="d-flex">
-                            <strong>
+                            <>
                               <AddModal
                                 title="Add New Course"
                                 triggerText="Course"
@@ -448,7 +442,7 @@ const Index = () => {
                                   </FormGroup>
                                 )}
                               />
-                            </strong>
+                            </>
                             <UpdateModal
                               title="Edit Course Category"
                               initialData={{

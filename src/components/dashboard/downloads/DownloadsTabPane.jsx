@@ -15,7 +15,7 @@ const DownloadsTabPane = () => {
     const { isLoading, totalPages, allDownloads, userDownloads, creatorDownloads } = downloads;
 
     const { user } = useSelector(state => state.auth);
-    const downloadsToUse = downloads && (user?.role === 'Admin' || user?.role === 'SuperAdmin') ? allDownloads :
+    const downloadsToUse = downloads && user?.role?.includes('Admin') ? allDownloads :
         downloads && (user?.role === 'Creator') ? creatorDownloads : userDownloads;
 
     const [pageNo, setPageNo] = useState(1);
@@ -23,7 +23,7 @@ const DownloadsTabPane = () => {
 
     // Lifecycle methods
     useEffect(() => {
-        if (user?.role === 'Admin' || user?.role === 'SuperAdmin') {
+        if (user?.role?.includes('Admin')) {
             dispatch(getDownloads(pageNo));
             setNumberOfPages(totalPages && totalPages);
         }
@@ -42,7 +42,7 @@ const DownloadsTabPane = () => {
                 <QBLoadingSM title='downloads' /> :
 
                 <Row>
-                    {(user?.role === 'Admin' || user?.role === 'SuperAdmin') ?
+                    {user?.role?.includes('Admin') ?
                         <PageOf pageNo={pageNo} numberOfPages={numberOfPages} /> : null}
 
                     <DownloadsTable

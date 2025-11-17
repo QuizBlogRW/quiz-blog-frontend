@@ -44,7 +44,7 @@ const EditBlogPost = () => {
 
   const creatorID = bPToUse.creator && bPToUse.creator._id;
   const userID = bPToUse.creator && bPToUse.creator._id;
-  const isAuthorized = (curUserRole === 'Admin' || curUserRole === 'SuperAdmin' || userID === creatorID);
+  const isAuthorized = (curUserRole?.includes('Admin') || userID === creatorID);
 
   const onChangeHandler = e => {
     setBPState({ ...bPState, [e.target.name]: e.target.value });

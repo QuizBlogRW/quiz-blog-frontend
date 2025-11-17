@@ -116,12 +116,10 @@ const QuizResults = () => {
                   <i className="fa-brands fa-whatsapp"></i>&nbsp;
                   <a
                     className="text-white"
-                    href={`https://api.whatsapp.com/send?phone=whatsappphonenumber&text=Attempt this ${
-                      thisQuiz && thisQuiz.title
-                    } quiz on Quiz-Blog
-                        \nhttps://www.quizblog.rw/view-quiz/${
-                          thisQuiz && thisQuiz.slug
-                        }`}
+                    href={`https://api.whatsapp.com/send?phone=whatsappphonenumber&text=Attempt this ${thisQuiz && thisQuiz.title
+                      } quiz on Quiz-Blog
+                        \nhttps://www.quizblog.rw/view-quiz/${thisQuiz && thisQuiz.slug
+                      }`}
                   >
                     Share
                   </a>
@@ -140,13 +138,12 @@ const QuizResults = () => {
                   </Button>
                 </Link>
 
-                {(user?.role === 'Admin' || user?.role === 'SuperAdmin') && (
+                {user?.role?.includes('Admin') && (
                   <PDFDownloadLink
                     document={<PdfDocument review={quizToReview} />}
                     className="mt-sm-0 share-btn mx-1 mx-md-0"
-                    fileName={`${
-                      thisQuiz && thisQuiz.title
-                    }-shared-by-Quiz-Blog.pdf`}
+                    fileName={`${thisQuiz && thisQuiz.title
+                      }-shared-by-Quiz-Blog.pdf`}
                   >
                     {({ blob, url, loading, error }) =>
                       loading ? (

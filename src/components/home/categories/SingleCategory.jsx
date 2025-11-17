@@ -40,16 +40,20 @@ const SingleCategory = () => {
                         <ToastBody>
                             <p className="fw-bolder mt-2">Quizzes ({category.quizes?.length})</p>
                             <ul className="pl-1">
-                                {category && category.quizes.map((quiz, index) =>
-                                    <li key={quiz._id} style={{ listStyle: 'none', marginBottom: '.3rem' }}>
+                                {category && category.quizes.map((quiz, index) => {
+                                    const questionsCount = quiz.questions?.length;
+                                    const questionsText = questionsCount == 1 ? `1 - Question` : questionsCount > 1 ? `${questionsCount} - Questions` : 'No Questions';
+                                    return (<li key={quiz._id} style={{ listStyle: 'none', marginBottom: '.3rem' }}>
                                         {index + 1}.&nbsp;
                                         <Link to={`/view-quiz/${quiz.slug}`}>
                                             {quiz.title}
                                         </Link>
-                                        <strong className="text-warning">&nbsp;
-                                            ({quiz.questions?.length} questions)</strong>
-                                    </li>
-                                )}
+                                        <strong className="text-warning">
+                                            &nbsp;
+                                            ({questionsText})
+                                        </strong>
+                                    </li>)
+                                })}
                             </ul>
                         </ToastBody>
                     </Toast>

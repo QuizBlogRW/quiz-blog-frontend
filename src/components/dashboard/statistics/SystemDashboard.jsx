@@ -12,7 +12,6 @@ const SystemDashboard = () => {
 
     const { user, isAuthenticated } = useSelector(state => state.auth);
     const [dashboardStats, setDashboardStats] = useState(null);
-
     const [loading, setLoading] = useState(true);
     const [fetchError, setFetchError] = useState(null);
     const [activeTab, setActiveTab] = useState('1');
@@ -22,7 +21,7 @@ const SystemDashboard = () => {
 
     useEffect(() => {
         // Only fetch data if user is authenticated and has admin role
-        if (isAuthenticated && user && (user.role === 'Admin' || user.role === 'SuperAdmin')) {
+        if (isAuthenticated && user && (user.role?.includes('Admin'))) {
             fetchAllMetrics();
 
             // Auto-refresh every 30 seconds
@@ -34,7 +33,7 @@ const SystemDashboard = () => {
     const fetchAllMetrics = async () => {
 
         // Double-check authentication
-        if (!isAuthenticated || !user || (user.role !== 'Admin' && user.role !== 'SuperAdmin')) {
+        if (!isAuthenticated || !user || user.role?.includes('Admin') === false) {
             setFetchError('Access denied. Admin privileges required.');
             return;
         }
@@ -80,7 +79,7 @@ const SystemDashboard = () => {
         );
     }
 
-    if (user.role !== 'Admin' && user.role !== 'SuperAdmin') {
+    if (user?.role?.includes('Admin')) {
         return (
             <div className="system-dashboard p-4">
                 <Alert color="danger">

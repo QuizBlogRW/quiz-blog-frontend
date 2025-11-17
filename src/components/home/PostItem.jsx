@@ -15,9 +15,8 @@ const PostItem = ({ quiz, fromSearch }) => {
     >
       <CardTitle
         tag="h5"
-        className={`mb-0 ${
-          fromSearch ? 'text-white' : 'text-primary'
-        } text-uppercase text-center`}
+        className={`mb-0 ${fromSearch ? 'text-white' : 'text-primary'
+          } text-uppercase text-center`}
       >
         <Link to={`/view-quiz/${slug}`}>
           {title && title}

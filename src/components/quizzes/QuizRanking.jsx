@@ -52,7 +52,7 @@ const QuizRanking = () => {
             </BreadcrumbItem>
           </Breadcrumb>
 
-          {(user?.role === 'Admin' || user?.role === 'SuperAdmin') && (
+          {user?.role?.includes('Admin') && (
             <AddVideo quizID={quizID} />
           )}
         </Row>
@@ -70,7 +70,7 @@ const QuizRanking = () => {
             >
               <QBLoadingSM />
             </div>
-          ) : user?.role === 'Admin' || user?.role === 'SuperAdmin' ? (
+          ) : user?.role?.includes('Admin') ? (
             <Table hover responsive>
               <thead>
                 <tr>

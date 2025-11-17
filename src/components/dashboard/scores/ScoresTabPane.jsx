@@ -13,12 +13,12 @@ const ScoresTabPane = () => {
     const dispatch = useDispatch();
     const { isLoading, totalPages, allScores, creatorScores, takerScores } = useSelector(state => state.scores);
     const { user } = useSelector(state => state.auth);
-    const scoresToUse = allScores && user && (user?.role === 'Admin' || user?.role === 'SuperAdmin') ? allScores : allScores && (user?.role === 'Creator') ? creatorScores : takerScores;
+    const scoresToUse = allScores && user && user?.role?.includes('Admin') ? allScores : allScores && (user?.role === 'Creator') ? creatorScores : takerScores;
     const [pageNo, setPageNo] = useState(1);
 
     // Lifecycle methods
     useEffect(() => {
-        if (user?.role === 'Admin' || user?.role === 'SuperAdmin') {
+        if (user?.role?.includes('Admin')) {
             dispatch(setScores(pageNo));
         }
         else if (user?.role === 'Creator') {
@@ -41,7 +41,7 @@ const ScoresTabPane = () => {
                             <a href={'/feedbacks'} style={{ color: 'var(--brand)', fontWeight: 'bolder' }}>Feedbacks</a>
                         </button>
                     </p>
-                    {(user?.role === 'Admin' || user?.role === 'SuperAdmin') ?
+                    {user?.role?.includes('Admin') ?
                         <PageOf pageNo={pageNo} numberOfPages={totalPages} /> : null}
 
                     <ScoresTable

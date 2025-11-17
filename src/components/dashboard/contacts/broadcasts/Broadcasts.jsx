@@ -20,7 +20,7 @@ const Broadcasts = () => {
     const curUserRole = user && user.role;
 
     return (
-        curUserRole === 'Admin' || curUserRole === 'SuperAdmin' ?
+        curUserRole?.includes('Admin') ?
             <div className='mx-4 my-5'>
                 {broadcasts.isLoading ?
                     <QBLoadingSM title='broadcasts' /> :

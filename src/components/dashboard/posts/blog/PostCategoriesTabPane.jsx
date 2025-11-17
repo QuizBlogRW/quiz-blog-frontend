@@ -58,7 +58,7 @@ const PostCategoriesTabPane = () => {
                       </Link>
                     </Button>
 
-                    {user.role === 'Admin' || user.role === 'SuperAdmin' ? (
+                    {user.role?.includes('Admin') ? (
                       <>
                         <EditBPCategory categoryToEdit={category} />
                         <DeleteModal

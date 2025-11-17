@@ -22,7 +22,6 @@ const fetchCountryData = async () => {
     const ipResponse = await fetch('https://api.ipify.org?format=json');
     const ipData = await ipResponse.json();
     const ipAddress = ipData.ip;
-    console.log(`IP address: ${ipAddress}`);
     const geoResponse = await fetch(
       `https://get.geojs.io/v1/ip/geo/${ipAddress}.json`
     );

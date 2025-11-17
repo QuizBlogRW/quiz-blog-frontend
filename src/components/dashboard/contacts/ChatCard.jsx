@@ -11,11 +11,11 @@ const ChatCard = ({ openChat }) => {
 
     const { user } = useSelector(state => state.auth);
     const contacts = useSelector(state => state.contacts);
-    const contactsToUse = contacts && ((user?.role === 'Admin' || user?.role === 'SuperAdmin') || user?.role === 'Creator') ? contacts.allContacts : contacts.userContacts;
+    const contactsToUse = contacts && ((user?.role?.includes('Admin') || user?.role === 'Creator')) ? contacts.allContacts : contacts.userContacts;
     const isLoading = contacts && contacts.isLoading;
 
     return (
-    isLoading ? <Alert color="success" className="w-100 w-lg-50 mt-4 text-center mx-auto" style={{ border: '2px solid var(--brand)' }}>Loading...</Alert> :
+        isLoading ? <Alert color="success" className="w-100 w-lg-50 mt-4 text-center mx-auto" style={{ border: '2px solid var(--brand)' }}>Loading...</Alert> :
             contactsToUse && contactsToUse.length > 0 ?
                 <>
                     {contactsToUse && contactsToUse.map(contact => (
@@ -53,7 +53,7 @@ const ChatCard = ({ openChat }) => {
                                     </i>
                                 </small>
 
-                                <Button size="sm" color="link" className={`me-2 ${(user?.role === 'Admin' || user?.role === 'SuperAdmin') ? '' : 'd-none'}`} onClick={() => dispatch(deleteContact(contact._id))}>
+                                <Button size="sm" color="link" className={`me-2 ${user?.role?.includes('Admin') ? '' : 'd-none'}`} onClick={() => dispatch(deleteContact(contact._id))}>
                                     <img src={DeleteIcon} alt="" width="16" height="16" />
                                 </Button>
                             </div>

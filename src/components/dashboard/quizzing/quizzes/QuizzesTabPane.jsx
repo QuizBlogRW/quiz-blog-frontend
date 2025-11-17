@@ -41,7 +41,7 @@ const QuizzesTabPane = () => {
   );
 
   const quizzesToUse =
-    user.role === 'Admin' || user.role === 'SuperAdmin'
+    user.role?.includes('Admin')
       ? paginatedQuizzes
       : creatorQuizzes;
 
@@ -53,7 +53,7 @@ const QuizzesTabPane = () => {
       (question) => question.created_by && question.created_by._id === user._id
     );
   const questionsToUse =
-    user.role === 'Admin' || user.role === 'SuperAdmin'
+    user.role?.includes('Admin')
       ? allQuestions
       : creatorQuestions;
 
@@ -63,7 +63,7 @@ const QuizzesTabPane = () => {
         <QBLoadingSM title="paginated quizzes" />
       ) : quizzesToUse && quizzesToUse.length > 0 ? (
         <>
-          {user?.role === 'Admin' || user?.role === 'SuperAdmin' ? (
+          {user?.role?.includes('Admin') ? (
             <PageOf pageNo={pageNo} numberOfPages={numberOfPages} />
           ) : null}
 

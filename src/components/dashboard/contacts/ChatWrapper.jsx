@@ -110,7 +110,7 @@ const ChatWrapper = () => {
 
                             <Row className='chat-view vh-100'>
                                 <Col sm="3" style={{ height: '99%' }} className="my-2 overflow-auto">
-                                    {(user?.role === 'Admin' || user?.role === 'SuperAdmin') ? <PageOf pageNo={pageNo} numberOfPages={totalPages} /> : null}
+                                    {user?.role?.includes('Admin') ? <PageOf pageNo={pageNo} numberOfPages={totalPages} /> : null}
                                     <ChatCard openChat={openChat} />
                                     {user?.role !== 'Visitor' ? <><Pagination pageNo={pageNo} setPageNo={setPageNo} numberOfPages={totalPages} /></> : null}
                                 </Col>

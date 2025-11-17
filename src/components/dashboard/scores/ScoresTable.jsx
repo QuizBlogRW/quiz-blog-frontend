@@ -21,7 +21,7 @@ const ScoresTable = ({ scoresToUse, pageNo, deleteScore }) => {
                         <th scope="col">Marks</th>
                         <th scope="col">Out of</th>
                         <th scope="col">Reviewing</th>
-                        <th scope="col" className={`${(user?.role === 'Admin' || user?.role === 'SuperAdmin') ? '' : 'd-none'}`}><span role="img" aria-label="pointing">❌</span></th>
+                        <th scope="col" className={`${user?.role?.includes('Admin') ? '' : 'd-none'}`}><span role="img" aria-label="pointing">❌</span></th>
                     </tr>
                 </thead>
 
@@ -36,7 +36,7 @@ const ScoresTable = ({ scoresToUse, pageNo, deleteScore }) => {
 
                         let date = score && new Date(score.test_date);
 
-                        const numero = (user?.role === 'Admin' || user?.role === 'SuperAdmin') ? ((pageNo - 1) * 20) + index + 1 : index + 1;
+                        const numero = user?.role?.includes('Admin') ? ((pageNo - 1) * 20) + index + 1 : index + 1;
 
                         return (<tr key={index}>
                             <th scope="row" className="table-dark">{numero && numero}</th>
@@ -55,7 +55,7 @@ const ScoresTable = ({ scoresToUse, pageNo, deleteScore }) => {
                             <td>
                                 <Link to={`/review-quiz/${score && score.id}`}>Review</Link>
                             </td>
-                            <td className={`table-dark ${(user?.role === 'Admin' || user?.role === 'SuperAdmin') ? '' : 'd-none'}`}>
+                            <td className={`table-dark ${user?.role?.includes('Admin') ? '' : 'd-none'}`}>
                                 <DeleteModal deleteFnName="deleteScore" deleteFn={deleteScore} delID={score._id} delTitle={score.quiz && score.quiz.title} />
                             </td>
                         </tr>);
