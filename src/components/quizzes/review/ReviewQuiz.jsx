@@ -47,8 +47,8 @@ const ReviewQuiz = () => {
 
   return (
     <Container className="px-lg-5">
-      {isAuthenticated ? (
-        !isLoading ? (
+      {!isAuthenticated ? <NotAuthenticated /> :
+        isLoading ? <QBLoadingSM /> :
           <>
             <Row className="w-100">
               <Col sm="6" className="w-100">
@@ -188,13 +188,7 @@ const ReviewQuiz = () => {
                 </Row>
               </Col>
             </Row>
-          </>
-        ) : (
-          <QBLoadingSM />
-        )
-      ) : (
-        <NotAuthenticated />
-      )}
+          </>}
     </Container>
   );
 };

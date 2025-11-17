@@ -127,7 +127,8 @@ const EditProfile = () => {
     dispatch(updateProfile(updatedProfile));
   };
 
-  return isAuthenticated ? (
+  return !isAuthenticated ?
+    <NotAuthenticated /> :
     <Form
       className="my-3 mt-lg-5 mx-3 mx-lg-5 edit-question"
       onSubmit={handleSubmit}
@@ -362,9 +363,6 @@ const EditProfile = () => {
         </Col>
       </FormGroup>
     </Form>
-  ) : (
-    <NotAuthenticated />
-  );
 };
 
 export default EditProfile;

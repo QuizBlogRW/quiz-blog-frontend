@@ -59,15 +59,25 @@ const SingleQuestion = () => {
     };
 
     return (
-        isAuthenticated ?
+        !isAuthenticated ?
+            <NotAuthenticated /> :
 
-            user.role !== 'Visitor' ?
+            user.role === 'Visitor' ?
+
+                <Dashboard /> :
 
                 quest.isLoading ?
 
                     <QBLoadingSM /> :
 
-                    thisQuestion ?
+                    !thisQuestion ?
+                        <Row className="m-3 p-3 text-danger d-flex justify-content-center align-items-center">
+                            <Breadcrumb>
+                                <BreadcrumbItem>
+                                    Question unavailable!
+                                </BreadcrumbItem>
+                            </Breadcrumb>
+                        </Row> :
                         <div className="mt-2 mt-lg-5 mx-3 mx-lg-5 single-category view-question" key={thisQuestion && thisQuestion._id}>
 
                             <Row className="mb-0 mb-lg-3 mx-0">
@@ -118,17 +128,7 @@ const SingleQuestion = () => {
                             <Row className='d-flex flex-column my-4'>
                                 <QuestionComments questionID={thisQuestion._id} quizID={thisQnQZ._id} fromSingleQuestion={true} />
                             </Row>
-                        </div> :
-
-                        <Row className="m-3 p-3 text-danger d-flex justify-content-center align-items-center">
-                            <Breadcrumb>
-                                <BreadcrumbItem>
-                                    Question unavailable!
-                                </BreadcrumbItem>
-                            </Breadcrumb>
-                        </Row> :
-
-                <Dashboard /> : <NotAuthenticated />
+                        </div>
     );
 };
 

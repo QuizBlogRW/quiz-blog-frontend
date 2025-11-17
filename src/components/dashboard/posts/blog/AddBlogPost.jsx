@@ -14,7 +14,7 @@ const AddBlogPost = () => {
     const dispatch = useDispatch();
     const { user, isAuthenticated, isLoading } = useSelector(state => state.auth);
 
-    const curUserRole = user && user.role;
+    const curUserRole = user?.role;
     const isAuthorized = curUserRole?.includes('Admin') || curUserRole === 'Creator';
 
     const { bPCatID } = useParams();
@@ -72,7 +72,8 @@ const AddBlogPost = () => {
         !isAuthenticated ?
             <NotAuthenticated /> :
 
-            isAuthorized ?
+            !isAuthorized ?
+                <Alert color="danger" className='m-5 text-center'>Access Denied!</Alert> :
                 <>
                     <Row className="p-2 pt-lg-5">
 
@@ -124,8 +125,7 @@ const AddBlogPost = () => {
                             <YourImages />
                         </Col>
                     </Row>
-                </> :
-                <Alert color="danger" className='m-5 text-center'>Access Denied!</Alert>
+                </>
     );
 };
 

@@ -106,8 +106,8 @@ const CreateQuestions = () => {
     answerOptions.forEach((aOptn) => {
       formData.append('answerOptions', JSON.stringify(aOptn));
     });
-    formData.append('category', oneQuiz.category && oneQuiz.category._id);
-    formData.append('quiz', oneQuiz && oneQuiz._id);
+    formData.append('category', oneQuiz?.category?._id);
+    formData.append('quiz', oneQuiz?._id);
     formData.append('created_by', isLoading === false ? user._id : null);
     formData.append('duration', durationState.duration);
 
@@ -154,22 +154,25 @@ const CreateQuestions = () => {
     window.history.back();
   };
 
-  return isAuthenticated ? (
-    user.role !== 'Visitor' ? (
+  return !isAuthenticated ?
+    <NotAuthenticated /> :
+    user.role === 'Visitor' ?
+      <Dashboard /> :
+
+      oneQuiz?.category &&
       <Form
         className="my-3 mt-lg-5 mx-3 mx-lg-5 create-question"
-        onSubmit={handleSubmit}
-      >
+        onSubmit={handleSubmit}>
         <div key={oneQuiz._id} className="mb-0 mb-lg-3 mx-0">
           <Breadcrumb key={oneQuiz._id}>
             <BreadcrumbItem>
               <Link to="/dashboard">
-                {oneQuiz.category && oneQuiz.category.title}
+                {oneQuiz.category.title}
               </Link>
             </BreadcrumbItem>
             <BreadcrumbItem>
               <Link
-                to={`/category/${oneQuiz.category && oneQuiz.category._id}`}
+                to={`/category/${oneQuiz.category._id}`}
               >
                 {oneQuiz.title}
               </Link>
@@ -189,8 +192,8 @@ const CreateQuestions = () => {
               SendNotification(
                 oneQuiz._id,
                 oneQuiz.title,
-                oneQuiz.category && oneQuiz.category.title,
-                oneQuiz.created_by && oneQuiz.created_by.name
+                oneQuiz.category?.title,
+                oneQuiz.created_by?.name
               )
             }
           >
@@ -359,12 +362,6 @@ const CreateQuestions = () => {
           </Col>
         </FormGroup>
       </Form>
-    ) : (
-      <Dashboard />
-    )
-  ) : (
-    <NotAuthenticated />
-  );
 };
 
 export default CreateQuestions;

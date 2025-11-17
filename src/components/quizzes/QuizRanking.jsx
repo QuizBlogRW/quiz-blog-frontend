@@ -39,7 +39,8 @@ const QuizRanking = () => {
     );
   };
 
-  return user?.role == 'Visitor' ? (
+  return user?.role == 'Visitor' ?
+    <Dashboard /> :
     <>
       <div className="mt-5 mx-5 single-category">
         <Row className="mb-0 mb-lg-3 mx-0 d-flex justify-content-around align-items-center">
@@ -51,10 +52,7 @@ const QuizRanking = () => {
               {qTitle} - Comments & Ranking
             </BreadcrumbItem>
           </Breadcrumb>
-
-          {user?.role?.includes('Admin') && (
-            <AddVideo quizID={quizID} />
-          )}
+          <AddVideo quizID={quizID} />
         </Row>
       </div>
       <Row className="mx-2 mx-lg-5">
@@ -63,14 +61,8 @@ const QuizRanking = () => {
         </Col>
 
         <Col sm="6" style={{ height: '95%' }} className="my-2 overflow-auto">
-          {scores.isLoading ? (
-            <div
-              className="d-flex justify-content-center align-items-center"
-              style={{ height: '40vh' }}
-            >
-              <QBLoadingSM />
-            </div>
-          ) : user?.role?.includes('Admin') ? (
+          {scores.isLoading ?
+            <QBLoadingSM /> :
             <Table hover responsive>
               <thead>
                 <tr>
@@ -83,17 +75,10 @@ const QuizRanking = () => {
 
               <tbody>{renderTableRows()}</tbody>
             </Table>
-          ) : (
-            <p className="d-block text-danger text-uppercase fw-bolder vh-100">
-              You are not allowed to view this ...
-            </p>
-          )}
+          }
         </Col>
       </Row>
     </>
-  ) : (
-    <Dashboard />
-  );
 };
 
 export default QuizRanking;

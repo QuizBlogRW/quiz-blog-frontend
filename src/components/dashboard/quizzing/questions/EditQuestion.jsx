@@ -124,23 +124,25 @@ const EditQuestion = () => {
     if (isQnLoading) return <QBLoading />;
 
     return (
-        isAuthenticated ?
+        !isAuthenticated ?
+            <NotAuthenticated /> :
+            user.role === 'Visitor' ?
+                <Dashboard /> :
 
-            user.role !== 'Visitor' ?
-
+                thisQnCat && thisQnQZ &&
                 <Form className="my-3 mt-lg-5 mx-3 mx-lg-5 edit-question" onSubmit={handleSubmit}>
 
                     <Row className="mb-0 mb-lg-3 mx-0">
                         <Breadcrumb>
                             <BreadcrumbItem>
-                                <Link to={`/category/${thisQnCat && thisQnCat._id}`}>
-                                    {thisQnCat && thisQnCat.title}
+                                <Link to={`/category/${thisQnCat._id}`}>
+                                    {thisQnCat.title}
                                 </Link>
                             </BreadcrumbItem>
 
                             <BreadcrumbItem>
-                                <Link to={`/view-quiz/${thisQnQZ && thisQnQZ.slug}`}>
-                                    {thisQnQZ && thisQnQZ.title}
+                                <Link to={`/view-quiz/${thisQnQZ.slug}`}>
+                                    {thisQnQZ.title}
                                 </Link>
                             </BreadcrumbItem>
 
@@ -148,14 +150,16 @@ const EditQuestion = () => {
                         </Breadcrumb>
                     </Row>
 
-                    <FormGroup row className="mx-0">
-                        <Label sm={2}>Question Edit</Label>
-                        <Col sm={10}>
-                            <Input type="text" name="questionText"
-                                value={questionTextState && questionTextState.questionText} placeholder="Question here ..."
-                                onChange={onQuestionChangeHandler} required />
-                        </Col>
-                    </FormGroup>
+                    {questionTextState &&
+                        <FormGroup row className="mx-0">
+                            <Label sm={2}>Question Edit</Label>
+                            <Col sm={10}>
+                                <Input type="text" name="questionText"
+                                    value={questionTextState.questionText} placeholder="Question here ..."
+                                    onChange={onQuestionChangeHandler} required />
+                            </Col>
+                        </FormGroup>
+                    }
 
                     <FormGroup row className="mx-0">
                         {question_image &&
@@ -248,10 +252,7 @@ const EditQuestion = () => {
                         </Col>
                     </FormGroup>
 
-                </Form> :
-
-                <Dashboard /> :
-            <NotAuthenticated />
+                </Form>
     );
 };
 
