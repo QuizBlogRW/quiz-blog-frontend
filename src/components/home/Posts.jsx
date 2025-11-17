@@ -70,11 +70,9 @@ const Posts = () => {
             <>
               <section className="quizzes-grid" aria-live="polite">
                 {limitedQuizzes.map((quiz) =>
-                  quiz.questions && quiz.questions.length > 5 ? (
                     <Suspense key={quiz._id} fallback={<PostItemPlaceholder />}>
                       <PostItem quiz={quiz} />
                     </Suspense>
-                  ) : null
                 )}
               </section>
               <div className="my-4 d-flex justify-content-center">
