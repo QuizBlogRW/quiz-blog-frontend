@@ -18,5 +18,5 @@ export const formatUptime = (seconds) => {
 };
 
 export const getServiceStatusColor = (status) => {
-    return status === 'healthy' ? 'success' : 'danger';
+    return status === 'success' ? 'success' : 'danger';
 };

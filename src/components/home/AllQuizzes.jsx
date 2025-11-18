@@ -7,9 +7,9 @@ import SquareAd from '@/components/adsenses/SquareAd';
 import SearchInput from '@/utils/SearchInput';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 
-const PostItem = lazy(() => import('./PostItem'));
+const QuizItem = lazy(() => import('./QuizItem'));
 
-const Posts = () => {
+const AllQuizzes = () => {
 
     // Redux
     const { isLoading, loadingLimited, quizzes, limitedQuizzes } = useSelector(state => state.quizzes);
@@ -102,7 +102,7 @@ const Posts = () => {
                                             <h5 className="mb-3 text-center">Search Results</h5>
                                             {quizzes?.map(quiz => (
                                                 quiz.title.toLowerCase().includes(searchKey.toLowerCase()) ?
-                                                    <PostItem key={quiz._id} quiz={quiz} fromSearch={true} /> : null
+                                                    <QuizItem key={quiz._id} quiz={quiz} fromSearch={true} /> : null
                                             ))}
                                         </CardBody>
                                     </Card>
@@ -112,7 +112,7 @@ const Posts = () => {
                                     <CardBody className="p-3">
                                         {limitedQuizzes?.map(quiz => (
                                             quiz?.questions?.length > 5 ?
-                                                <PostItem key={quiz._id} quiz={quiz} /> :
+                                                <QuizItem key={quiz._id} quiz={quiz} /> :
                                                 null
                                         ))}
                                     </CardBody>
@@ -148,4 +148,4 @@ const Posts = () => {
     );
 };
 
-export default Posts;
+export default AllQuizzes;

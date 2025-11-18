@@ -2,17 +2,15 @@ import { io } from 'socket.io-client';
 
 // Legacy URLs for fallback
 export const qbURL = 'https://myqb-245fdbd30c9b.herokuapp.com/';
-export const qbTestURL = 'https://qb-test-c6396eeaa356.herokuapp.com/';
-export const qbContactsAPI = 'https://qb-contacts-service-156b2230ac4f.herokuapp.com/';
-export const apiURL = 'https://quiz-blog-rw-server.onrender.com/';
-export const devApiURL = 'http://localhost:5008/';
+export const testURL = 'https://qb-backend-one.vercel.app/';
+export const devApiURL = 'http://localhost:5000/';
 
 // Environment-based socket URL
 const getSocketUrl = () => {
     if (import.meta.env.VITE_BACKEND_URL) {
         return import.meta.env.VITE_BACKEND_URL;
     }
-    return import.meta.env.MODE === 'development' ? devApiURL : (qbContactsAPI || qbURL || apiURL);
+    return import.meta.env.MODE === 'development' ? devApiURL : import.meta.env.MODE === 'test' ? testURL : qbURL;
 };
 
 const serverUrl = getSocketUrl();

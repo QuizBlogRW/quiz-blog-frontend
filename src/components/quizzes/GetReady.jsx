@@ -53,7 +53,7 @@ const GetReady = () => {
                         <br />
                         But don’t worry — there are many other quizzes waiting for you!
                     </CardText>
-                    <Link to="/allposts">
+                    <Link to="/all-quizzes">
                         <Button color="success" className="px-4 py-2 fw-semibold">
                             <i className="fa fa-list me-2"></i> Browse Other Quizzes
                         </Button>

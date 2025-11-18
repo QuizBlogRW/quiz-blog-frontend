@@ -14,8 +14,8 @@ const SimilarQuizzes = ({ thisQuiz }) => {
   const thisCatQuizzes = thisCat?.quizes
     ? thisCat?.quizes
     : thisCat?.quizzes
-    ? thisCat?.quizzes
-    : [];
+      ? thisCat?.quizzes
+      : [];
 
   if (isLoading) return <p>Loading categories...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -57,7 +57,7 @@ const SimilarQuizzes = ({ thisQuiz }) => {
   ) : (
     <Unavailable
       title="No related quizzes available yet"
-      link="/allposts"
+      link="/all-quizzes"
       more="quizzes"
     />
   );

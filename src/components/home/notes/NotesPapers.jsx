@@ -4,7 +4,7 @@ import { Col, Row, Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { getLandingDisplayNotes } from '@/redux/slices/notesSlice';
 import { useSelector, useDispatch } from 'react-redux';
-import PostItemPlaceholder from '@/utils/rLoading/PostItemPlaceholder';
+import ItemPlaceholder from '@/utils/rLoading/ItemPlaceholder';
 import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
 
 const SquareAd = lazy(() => import('@/components/adsenses/SquareAd'));
@@ -44,7 +44,7 @@ const NotesPapers = () => {
           sm="6"
           className="p-1 p-lg-2 d-flex flex-column justify-content-around w-100"
         >
-          <Suspense fallback={<PostItemPlaceholder />}>
+          <Suspense fallback={<ItemPlaceholder />}>
             <div className="w-100">
               {process.env.NODE_ENV !== 'development' ? (
                 <SideResizable />
@@ -70,16 +70,16 @@ const NotesPapers = () => {
         <Col sm="12" className="px-0 px-sm-5 w-100">
           {notes.isLoading ? (
             <>
-              <PostItemPlaceholder />
-              <PostItemPlaceholder />
-              <PostItemPlaceholder />
+              <ItemPlaceholder />
+              <ItemPlaceholder />
+              <ItemPlaceholder />
             </>
           ) : (
             <>
               {limitedLandingDisplayNotes && limitedLandingDisplayNotes.length > 0 ? (
                 <section className="notes-grid" aria-live="polite">
                   {limitedLandingDisplayNotes.map((note) => (
-                    <Suspense key={note._id} fallback={<PostItemPlaceholder />}>
+                    <Suspense key={note._id} fallback={<ItemPlaceholder />}>
                       <NotesPapersItem note={note} />
                     </Suspense>
                   ))}
@@ -102,7 +102,7 @@ const NotesPapers = () => {
                 </div>
               ) : null}
 
-              <Suspense fallback={<PostItemPlaceholder />}>
+              <Suspense fallback={<ItemPlaceholder />}>
                 {process.env.NODE_ENV !== 'development' ? (
                   <GridMultiplex />
                 ) : null}
@@ -114,7 +114,7 @@ const NotesPapers = () => {
 
       <Row className="my-1 w-100">
         <Col sm="12" className="px-1 y-1 w-100">
-          <Suspense fallback={<PostItemPlaceholder />}>
+          <Suspense fallback={<ItemPlaceholder />}>
             <div className="w-100">
               {process.env.NODE_ENV !== 'development' ? (
                 <ResponsiveHorizontal />

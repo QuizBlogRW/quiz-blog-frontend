@@ -1,11 +1,11 @@
 import { Card } from 'reactstrap';
-import './PostItemPlaceholder.css';
+import './ItemPlaceholder.css';
 
-const PostItemPlaceholder = () => {
+const ItemPlaceholder = () => {
 
     return (
         <Card body className="placeholder-item bg-light py-3 px-1 px-sm-3 my-2 my-sm-3 border">
-                <div className="skeleton-container">
+            <div className="skeleton-container">
                 <div className="skeleton-box"></div>
                 <div className="skeleton-box"></div>
                 <div className="skeleton-box"></div>
@@ -13,4 +13,4 @@ const PostItemPlaceholder = () => {
         </Card>
     );
 };
-export default PostItemPlaceholder;
+export default ItemPlaceholder;

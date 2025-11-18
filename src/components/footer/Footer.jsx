@@ -70,7 +70,7 @@ const Footer = () => {
                             <div className="footer-pad">
                                 <h4 className='mt-4 mt-lg-0'>Services</h4>
                                 <ul className="list-unstyled ms-2">
-                                    <li><a href="/allposts">All Quizzes</a></li>
+                                    <li><a href="/all-quizzes">All Quizzes</a></li>
                                     <li><a href="/course-notes">Notes</a></li>
                                     <li><a href="/blog">Blog Posts</a></li>
                                 </ul>

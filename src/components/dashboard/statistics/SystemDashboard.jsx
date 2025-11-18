@@ -11,7 +11,7 @@ import SystemMetricsTab from './SystemMetricsTab';
 const SystemDashboard = () => {
 
     const { user, isAuthenticated } = useSelector(state => state.auth);
-    const [dashboardStats, setDashboardStats] = useState(null);
+    const [SummaryStats, setSummaryStats] = useState(null);
     const [loading, setLoading] = useState(true);
     const [fetchError, setFetchError] = useState(null);
     const [activeTab, setActiveTab] = useState('1');
@@ -22,15 +22,15 @@ const SystemDashboard = () => {
     useEffect(() => {
         // Only fetch data if user is authenticated and has admin role
         if (isAuthenticated && user && (user.role?.includes('Admin'))) {
-            fetchAllMetrics();
+            fetchSummaryStats();
 
             // Auto-refresh every 60 seconds
-            const interval = setInterval(fetchAllMetrics, 60000);
+            const interval = setInterval(fetchSummaryStats, 60000);
             return () => clearInterval(interval);
         }
     }, [isAuthenticated, user]);
 
-    const fetchAllMetrics = async () => {
+    const fetchSummaryStats = async () => {
 
         // Double-check authentication
         if (!isAuthenticated || !user || user.role?.includes('Admin') === false) {
@@ -42,10 +42,10 @@ const SystemDashboard = () => {
             setLoading(true);
 
             // Use existing endpoints - prioritize working ones
-            const dashRes = await axios.get(`${apiUrl}/api/statistics/dashboard-stats`);
+            const res = await axios.get(`${apiUrl}/api/statistics/summary-stats`);
 
-            if (dashRes.status === 200 && dashRes.data) {
-                setDashboardStats(dashRes.data);
+            if (res.status === 200 && res.data) {
+                setSummaryStats(res.data);
                 setFetchError(null);
             }
 
@@ -58,7 +58,7 @@ const SystemDashboard = () => {
         }
     };
 
-    if (loading && !dashboardStats) {
+    if (loading && !SummaryStats) {
         return (
             <div className="d-flex justify-content-center align-items-center" style={{ height: '400px' }}>
                 <Spinner color="primary" size="sm" />
@@ -101,7 +101,7 @@ const SystemDashboard = () => {
                         </h2>
                         <div className="text-muted">
                             Last updated: {lastUpdated}
-                            <button className="btn btn-sm btn-outline-primary ms-2" onClick={fetchAllMetrics} disabled={loading}>
+                            <button className="btn btn-sm btn-outline-primary ms-2" onClick={fetchSummaryStats} disabled={loading}>
                                 <i className="fas fa-sync-alt"></i> Refresh
                             </button>
                         </div>
@@ -117,7 +117,7 @@ const SystemDashboard = () => {
             )}
 
             {/* Overview Cards */}
-            {dashboardStats && (
+            {SummaryStats && (
                 <Row className="mb-4">
                     <Col lg="3" md="6" className="mb-3">
                         <Card className="border-left-primary h-100" onClick={
@@ -131,7 +131,7 @@ const SystemDashboard = () => {
                                             Total Users
                                         </div>
                                         <div className="h5 mb-0 font-weight-bold text-gray-800">
-                                            {dashboardStats.totalUsers?.toLocaleString() || 0}
+                                            {SummaryStats.totalUsers?.toLocaleString() || 0}
                                         </div>
                                     </div>
                                     <div className="ms-auto">
@@ -153,7 +153,7 @@ const SystemDashboard = () => {
                                             Total Quizzes
                                         </div>
                                         <div className="h5 mb-0 font-weight-bold text-gray-800">
-                                            {dashboardStats.totalQuizzes?.toLocaleString() || 0}
+                                            {SummaryStats.totalQuizzes?.toLocaleString() || 0}
                                         </div>
                                     </div>
                                     <div className="ms-auto">
@@ -175,7 +175,7 @@ const SystemDashboard = () => {
                                             Total Downloads
                                         </div>
                                         <div className="h5 mb-0 font-weight-bold text-gray-800">
-                                            {dashboardStats.totalDownloads?.toLocaleString() || 0}
+                                            {SummaryStats.totalDownloads?.toLocaleString() || 0}
                                         </div>
                                     </div>
                                     <div className="ms-auto">
@@ -197,7 +197,7 @@ const SystemDashboard = () => {
                                             Total Scores
                                         </div>
                                         <div className="h5 mb-0 font-weight-bold text-gray-800">
-                                            {dashboardStats.totalScores?.toLocaleString() || 0}
+                                            {SummaryStats.totalScores?.toLocaleString() || 0}
                                         </div>
                                     </div>
                                     <div className="ms-auto">
@@ -239,10 +239,10 @@ const SystemDashboard = () => {
             <TabContent activeTab={activeTab}>
 
                 {/* System Metrics Tab */}
-                <SystemMetricsTab services={dashboardStats?.servicesHealth} />
+                <SystemMetricsTab />
 
                 {/* Database Metrics Tab */}
-                <DatabaseMetricsTab services={dashboardStats?.servicesHealth} />
+                <DatabaseMetricsTab />
             </TabContent>
         </div>
     );

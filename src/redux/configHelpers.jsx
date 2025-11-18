@@ -3,8 +3,7 @@ import { notify } from '@/utils/notifyToast';
 
 // Environment-based URLs
 export const qbURL = 'https://myqb-245fdbd30c9b.herokuapp.com/';
-export const qbTestURL = 'https://qb-test-c6396eeaa356.herokuapp.com/';
-export const apiURL = 'https://quiz-blog-rw-server.onrender.com/';
+export const testURL = 'https://qb-backend-one.vercel.app/';
 export const devApiURL = 'http://localhost:5000/';
 
 // Use environment variables if available, fallback to hardcoded URLs
@@ -14,7 +13,7 @@ const getApiUrl = () => {
     return import.meta.env.VITE_BACKEND_URL;
   }
   const fallbackUrl =
-    import.meta.env.MODE === 'development' ? devApiURL : qbURL;
+    import.meta.env.MODE === 'development' ? devApiURL : import.meta.env.MODE === 'test' ? testURL : qbURL;
   console.log('🔧 Using fallback URL:', fallbackUrl);
   return fallbackUrl;
 };

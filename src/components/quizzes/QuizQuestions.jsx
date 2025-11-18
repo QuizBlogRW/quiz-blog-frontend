@@ -251,7 +251,7 @@ const QuizQuestions = () => {
 
                     <NoQuestions /> :
 
-                <Unavailable title='Quiz' link='/allposts' more='quizzes' />
+                <Unavailable title='Quiz' link='/all-quizzes' more='quizzes' />
         );
     }
 

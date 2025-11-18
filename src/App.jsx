@@ -51,8 +51,8 @@ const LoginModal = lazy(() => import('@/components/auth/LoginModal'));
 const RegisterModal = lazy(() => import('@/components/auth/RegisterModal'));
 const Footer = lazy(() => import('@/components/footer/Footer'));
 const Statistics = lazy(() => import('@/components/dashboard/statistics/Statistics'));
-const Posts = lazy(() => import('@/components/home/Posts'));
-const AllPosts = lazy(() => import('@/components/home/AllPosts'));
+const LandingQuizzes = lazy(() => import('@/components/home/LandingQuizzes'));
+const AllQuizzes = lazy(() => import('@/components/home/AllQuizzes'));
 const ViewNotePaper = lazy(() => import('@/components/home/notes/ViewNotePaper'));
 
 ReactGA.initialize('G-GXLLDMB41B', {
@@ -166,8 +166,8 @@ const App = () => {
                     <Route exact path="/edit-bpost/:bPSlug" element={<EditBlogPost />} />
                     <Route exact path="/view-blog-post/:bPSlug" element={<ViewBlogPost />} />
                     <Route path="/ads.txt" element={<div>google.com, pub-8918850949540829, DIRECT, f08c47fec0942fa0</div>} />
-                    <Route exact path="/" element={<Posts toggleR={toggleR} />} />
-                    <Route exact path="/allposts" element={<AllPosts />} />
+                    <Route exact path="/" element={<LandingQuizzes toggleR={toggleR} />} />
+                    <Route exact path="/all-quizzes" element={<AllQuizzes />} />
                     <Route exact path="/view-note-paper/:noteSlug" element={<ViewNotePaper />} />
                     <Route exact path="/dashboard" element={<Dashboard />} />
                     <Route exact path="/statistics" element={<Statistics />}>
