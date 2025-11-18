@@ -7,6 +7,7 @@ import altImage from '@/images/dashboard.svg';
 const BlogPostItem = ({ blogPost }) => {
 
     const { slug, title, postCategory, post_image, brand, creator, createdAt } = blogPost;
+    const formattedDate = moment(new Date(createdAt)).format('DD MMM YYYY, HH:mm');
 
     return (
         <Card className="bg-light py-3 px-1 px-sm-3 my-2 my-sm-3 border post-card">
@@ -23,7 +24,7 @@ const BlogPostItem = ({ blogPost }) => {
 
                         <div className="small-text text-muted mb-2">
                             <small>
-                                {moment(new Date(createdAt)).format('DD MMM YYYY, HH:mm')}
+                                {formattedDate === 'Invalid date' ? '' : formattedDate}
                                 {' • '}
                                 {postCategory && postCategory.title}
                                 {creator && creator.name ? ` • ${creator.name}` : ''}

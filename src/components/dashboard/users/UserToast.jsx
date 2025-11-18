@@ -11,16 +11,20 @@ const UserToast = ({ userToUse, fromSearch }) => {
 
     const { user } = useSelector(state => state.auth);
 
+    if (!userToUse) return null;
+    const { _id, name, email, image, role, register_date } = userToUse;
+    const formattedDate = moment(new Date(register_date)).format('DD MMM YYYY, HH:mm');
+
     return (
-        <Col sm="3" key={userToUse?._id} className={'mt-3 users-toast'}>
+        <Col sm="3" key={_id} className={'mt-3 users-toast'}>
 
             <Toast fade={false}>
                 <ToastHeader className="text-dark overflow-auto">
-                    <strong>{userToUse?.email}</strong>
+                    <strong>{email}</strong>
 
                     {user?.role?.includes('Admin') ?
                         <div className="actions text-secondary d-flex">
-                            <DeleteModal deleteFnName="deleteUser" deleteFn={deleteUser} delID={userToUse._id} delTitle={userToUse.name} />
+                            <DeleteModal deleteFnName="deleteUser" deleteFn={deleteUser} delID={_id} delTitle={name} />
                             <EditUser userToUse={userToUse} />
                         </div> :
                         <span></span>}
@@ -31,23 +35,25 @@ const UserToast = ({ userToUse, fromSearch }) => {
 
                     <div className="userDetails flex-column d-flex align-items-center justify-content-around">
                         <div className="details d-flex flex-column p-1">
-                            <small className='fw-bolder text-primary text-truncate text-capitalize'>{(userToUse.name)}</small>
+                            <small className='fw-bolder text-primary text-truncate text-capitalize'>{(name)}</small>
                         </div>
 
                         <div className="illustration d-flex flex-column w-50">
                             <span className='illustration-image p-1 border rounded border-secondary'>
                                 {/* <img src={user.image || uploadimage} alt='Profile illustration' /> */}
-                                <ImageWithFallback
-                                    src={userToUse.image}
+                                {image && <ImageWithFallback
+                                    src={image}
                                     fallbackSrc={uploadimage}
                                     alt="profile illustration"
                                 />
+                                }
                             </span>
-                            <p className="fw-bolder text-center text-white bg-dark mt-1"><u>{userToUse.role}</u></p>
-                            <small className='fw-bolder text-secondary text-truncate text-capitalize'><i>
-                                {userToUse && userToUse.register_date ?
-                                    `Registered on ${moment(new Date(userToUse && userToUse.register_date))
-                                        .format('YYYY-MM-DD, HH:mm')}` : ''}</i></small>
+                            <p className="fw-bolder text-center text-white bg-dark mt-1"><u>{role}</u></p>
+                            <small className='fw-bolder text-secondary text-truncate text-capitalize'>
+                                <i>
+                                    {formattedDate === 'Invalid date' ? '' : `Registered on ${formattedDate}`}
+                                </i>
+                            </small>
                         </div>
                     </div>
                 </ToastBody>

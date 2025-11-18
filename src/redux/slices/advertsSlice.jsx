@@ -25,7 +25,7 @@ export const deleteAdvert = createAsyncThunk('adverts/deleteAdvert', async (id, 
 
 // Adverts slice
 const initialState = {
-  allAdverts: [],
+  adverts: [],
   activeAdverts: [],
   isLoading: false,
   oneAdvert: '',
@@ -37,7 +37,7 @@ const advertsSlice = createSlice({
   initialState,
   reducers: {
     clearAdverts: state => {
-      state.allAdverts = [];
+      state.adverts = [];
       state.activeAdverts = [];
       state.isLoading = false;
       state.oneAdvert = '',
@@ -46,7 +46,7 @@ const advertsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(getAdverts.fulfilled, (state, action) => {
-      state.allAdverts = action.payload;
+      state.adverts = action.payload;
       state.isLoading = false;
     });
     builder.addCase(getActiveAdverts.fulfilled, (state, action) => {
@@ -58,20 +58,20 @@ const advertsSlice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(createAdvert.fulfilled, (state, action) => {
-      state.allAdverts.unshift(action.payload);
+      state.adverts.unshift(action.payload);
       state.isLoading = false;
     });
     builder.addCase(changeStatus.fulfilled, (state, action) => {
       state.activeAdverts = state.activeAdverts.map(advert => advert._id === action.payload._id ? action.payload : advert);  // change status of advert
-      state.allAdverts = state.allAdverts.map(advert => advert._id === action.payload._id ? action.payload : advert);
+      state.adverts = state.adverts.map(advert => advert._id === action.payload._id ? action.payload : advert);
       state.isLoading = false;
     });
     builder.addCase(updateAdvert.fulfilled, (state, action) => {
-      state.allAdverts = state.allAdverts.map(advert => advert._id === action.payload._id ? action.payload : advert);
+      state.adverts = state.adverts.map(advert => advert._id === action.payload._id ? action.payload : advert);
       state.isLoading = false;
     });
     builder.addCase(deleteAdvert.fulfilled, (state, action) => {
-      state.allAdverts = state.allAdverts.filter(advert => advert._id !== action.payload._id);
+      state.adverts = state.adverts.filter(advert => advert._id !== action.payload._id);
       state.activeAdverts = state.activeAdverts.filter(advert => advert._id !== action.payload._id);
       state.isLoading = false;
     });

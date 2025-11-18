@@ -50,7 +50,9 @@ const BlogPosts = () => {
               <>
                 {AllBPs && Array.isArray(AllBPs) && AllBPs.length > 0 ? (
                   AllBPs.map((bp) => {
+
                     const { _id, slug, title, postCategory, creator, createdAt } = bp;
+                    const formattedDate = moment(new Date(createdAt)).format('DD MMM YYYY, HH:mm');
 
                     return (
                       <React.Fragment key={_id}>
@@ -71,7 +73,9 @@ const BlogPosts = () => {
                               {creator && creator.name && (
                                 <small className="px-1">{creator.name} |</small>
                               )}
-                              <small className="px-1">{moment(new Date(createdAt)).format('DD MMM YYYY, HH:mm')}</small>
+                              <small className="px-1">
+                                {formattedDate === 'Invalid date' ? '' : formattedDate}
+                              </small>
                             </div>
                           </ListGroupItem>
                         </ListGroup>

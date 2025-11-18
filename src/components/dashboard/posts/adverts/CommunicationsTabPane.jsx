@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Row, Col, Button, TabPane, Alert } from 'reactstrap';
+import { Row, Col, TabPane, Alert } from 'reactstrap';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 import { getAdverts } from '@/redux/slices/advertsSlice';
 import { useSelector, useDispatch } from 'react-redux';
@@ -7,12 +7,9 @@ import AdvertCard from './AdvertCard';
 import CreateAdvert from './CreateAdvert';
 
 const CommunicationsTabPane = () => {
-  // Redux
-  const dispatch = useDispatch();
-  const adverts = useSelector((state) => state.adverts);
-  const { isLoading, allAdverts } = adverts;
 
-  // Lifecycle method
+  const dispatch = useDispatch();
+  const { isLoading, adverts } = useSelector((state) => state.adverts);
   useEffect(() => {
     dispatch(getAdverts());
   }, [dispatch]);
@@ -31,9 +28,7 @@ const CommunicationsTabPane = () => {
         </button>
       </p>
       <CreateAdvert />
-      {isLoading ? (
-        <QBLoadingSM title="adverts" />
-      ) : allAdverts && allAdverts.length < 1 ? (
+      {isLoading ? <QBLoadingSM title="adverts" /> : adverts?.length < 1 ? (
         <Alert
           color="danger"
           className="w-50 text-center mx-auto"
@@ -43,12 +38,11 @@ const CommunicationsTabPane = () => {
         </Alert>
       ) : (
         <Row>
-          {allAdverts &&
-            allAdverts.map((advert) => (
-              <Col sm="6" className="mt-2" key={advert._id}>
-                <AdvertCard advert={advert} />
-              </Col>
-            ))}
+          {adverts?.map((advert) => (
+            <Col sm="6" className="mt-2" key={advert._id}>
+              <AdvertCard advert={advert} />
+            </Col>
+          ))}
         </Row>
       )}
     </TabPane>

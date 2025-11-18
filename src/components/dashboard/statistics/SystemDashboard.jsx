@@ -24,7 +24,7 @@ const SystemDashboard = () => {
         if (isAuthenticated && user && (user.role?.includes('Admin'))) {
             fetchAllMetrics();
 
-            // Auto-refresh every 30 seconds
+            // Auto-refresh every 60 seconds
             const interval = setInterval(fetchAllMetrics, 60000);
             return () => clearInterval(interval);
         }
@@ -79,7 +79,7 @@ const SystemDashboard = () => {
         );
     }
 
-    if (user?.role?.includes('Admin')) {
+    if (!user?.role?.includes('Admin')) {
         return (
             <div className="system-dashboard p-4">
                 <Alert color="danger">

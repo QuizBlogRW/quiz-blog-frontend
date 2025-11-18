@@ -3,7 +3,10 @@ import { Link } from 'react-router-dom';
 import moment from 'moment';
 
 const PostItem = ({ quiz, fromSearch }) => {
+
   const { slug, title, description, creation_date, category, questions } = quiz;
+  const formattedDate = moment(new Date(creation_date)).format('DD MMM YYYY, HH:mm');
+  
   return (
     <Card
       body
@@ -36,7 +39,7 @@ const PostItem = ({ quiz, fromSearch }) => {
         {description && description}
       </CardText>
       <small className="post-date me-2 me-md-5 my-1">
-        {moment(new Date(creation_date)).format('DD MMM YYYY, HH:mm')}
+        {formattedDate === 'Invalid date' ? '' : formattedDate}
       </small>
     </Card>
   );

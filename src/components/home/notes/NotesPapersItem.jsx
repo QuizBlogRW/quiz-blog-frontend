@@ -3,15 +3,9 @@ import { Link } from 'react-router-dom';
 import moment from 'moment';
 
 const NotesPapersItem = ({ note, fromSearch }) => {
-  const {
-    slug,
-    title,
-    description,
-    courseCategory,
-    course,
-    chapter,
-    createdAt,
-  } = note;
+
+  const { slug, title, description, courseCategory, course, chapter, createdAt, } = note;
+  const formattedDate = moment(new Date(createdAt)).format('DD MMM YYYY, HH:mm');
 
   return (
     <Card
@@ -24,9 +18,8 @@ const NotesPapersItem = ({ note, fromSearch }) => {
     >
       <CardTitle
         tag="h5"
-        className={`mb-0 ${
-          fromSearch ? 'text-white' : 'text-primary'
-        } text-uppercase text-center`}
+        className={`mb-0 ${fromSearch ? 'text-white' : 'text-primary'
+          } text-uppercase text-center`}
       >
         <Link to={`/view-note-paper/${slug}`}>{title && title}</Link>
       </CardTitle>
@@ -45,7 +38,7 @@ const NotesPapersItem = ({ note, fromSearch }) => {
             {courseCategory && courseCategory.title}
           </small>
           <small className="me-2 me-md-5 my-1 text-dark">
-            {moment(new Date(createdAt)).format('DD MMM YYYY, HH:mm')}
+            {formattedDate === 'Invalid date' ? '' : formattedDate}
           </small>
         </div>
       </div>

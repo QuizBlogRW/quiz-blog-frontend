@@ -10,7 +10,7 @@ const SubscribersTabPane = () => {
 
     // Redux
     const dispatch = useDispatch();
-    const subscribedUsers = useSelector(state => state.subscribers);
+    const { isLoading, subscribedUsers } = useSelector(state => state.subscribers);
 
     // Lifecycle methods
     useEffect(() => { dispatch(getSubscribers()); }, [dispatch]);
@@ -18,9 +18,9 @@ const SubscribersTabPane = () => {
     return (
         <TabPane tabId="6" className='mx-4'>
             {
-                subscribedUsers.isLoading ?
+                isLoading ?
                     <QBLoadingSM title='subscribers' /> :
-                    <Row>
+                    subscribedUsers && <Row>
                         <Table bordered className='all-scores table-success' hover responsive striped size="sm">
                             <thead className='text-uppercase table-dark'>
                                 <tr>
@@ -32,21 +32,24 @@ const SubscribersTabPane = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {subscribedUsers && subscribedUsers.subscribedUsers.map((subscribedUser, index) => (
-                                    <tr key={subscribedUser._id}>
-                                        <th scope="row" className="table-dark">{index + 1}</th>
-                                        <td className='text-uppercase'>
-                                            {subscribedUser.name.split(' ').slice(0, 2).join(' ')}
-                                        </td>
-                                        <td className='text-lowercase'>{subscribedUser.email}</td>
-                                        <td>
-                                            {moment(new Date(subscribedUser.createdAt))
-                                                .format('YYYY-MM-DD, HH:mm')}
-                                        </td>
-                                        <td className="table-dark">
-                                            <DeleteModal deleteFnName="deleteSubscriber" deleteFn={deleteSubscriber} delID={subscribedUser._id} delTitle={subscribedUser.name} />
-                                        </td>
-                                    </tr>))}
+                                {subscribedUsers?.map((subscribedUser, index) => {
+                                    const { name, email, createdAt, _id } = subscribedUser
+                                    const formattedDate = moment(new Date(createdAt)).format('DD MMM YYYY, HH:mm');
+                                    return (
+                                        <tr key={_id}>
+                                            <th scope="row" className="table-dark">{index + 1}</th>
+                                            <td className='text-uppercase'>
+                                                {name.split(' ').slice(0, 2).join(' ')}
+                                            </td>
+                                            <td className='text-lowercase'>{email}</td>
+                                            <td>
+                                                {formattedDate === 'Invalid date' ? '' : formattedDate}
+                                            </td>
+                                            <td className="table-dark">
+                                                <DeleteModal deleteFnName="deleteSubscriber" deleteFn={deleteSubscriber} delID={_id} delTitle={name} />
+                                            </td>
+                                        </tr>)
+                                })}
                             </tbody>
                         </Table>
                     </Row>

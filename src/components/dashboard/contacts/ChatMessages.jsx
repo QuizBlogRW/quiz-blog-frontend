@@ -12,22 +12,27 @@ import { socket } from '@/utils/socket';
 import SingleReply from './SingleReply';
 
 const ChatMessages = ({ onlineList }) => {
+
     const { oneContact, isLoading } = useSelector(state => state.contacts);
-    const dispatch = useDispatch();
     const { user } = useSelector(state => state.auth);
 
+    const { replies, message, contact_name, _id, email, contact_date } = oneContact;
+    const formattedDate = moment(new Date(contact_date)).format('DD MMM YYYY, HH:mm');
+
+    const dispatch = useDispatch();
+
     const lastMessageRef = useRef(null);
-    const [replies, setReplies] = useState(oneContact ? oneContact.replies : []);
+    const [replState, setReplState] = useState(oneContact ? replies : []);
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
-    const toMail = user.role === 'Visitor' ? 'quizblog.rw@gmail.com' : oneContact?.email;
-    const whoWith = user.role === 'Visitor' ? { username: 'Quiz-Blog Rwanda', email: 'quizblog.rw@gmail.com' } : { username: oneContact?.contact_name, email: oneContact?.email };
+    const toMail = user.role === 'Visitor' ? 'quizblog.rw@gmail.com' : email;
+    const whoWith = user.role === 'Visitor' ? { username: 'Quiz-Blog Rwanda', email: 'quizblog.rw@gmail.com' } : { username: contact_name, email: email };
     const onlineStatus = onlineList.some(user => user.email === toMail) ? '🟢' : '🔴';
 
     useEffect(() => {
-        if (oneContact?.message) {
+        if (message) {
             try {
-                const content = convertFromRaw(JSON.parse(oneContact.message));
+                const content = convertFromRaw(JSON.parse(message));
                 setEditorState(EditorState.createWithContent(content));
             } catch (error) { }
         }
@@ -35,7 +40,7 @@ const ChatMessages = ({ onlineList }) => {
 
     useEffect(() => {
         if (oneContact) {
-            setReplies(oneContact.replies || []);
+            setReplState(replies || []);
         }
     }, [oneContact]);
 
@@ -48,18 +53,18 @@ const ChatMessages = ({ onlineList }) => {
             reply_name: user.name,
             email: user.email,
             to_contact: toMail,
-            to_contact_name: oneContact.contact_name,
-            contact_question: oneContact.message,
+            to_contact_name: contact_name,
+            contact_question: message,
             message: string
         };
 
-        dispatch(replyContact({ idToUpdate: oneContact._id, reply: newReply }));
+        dispatch(replyContact({ idToUpdate: _id, reply: newReply }));
         setEditorState(EditorState.createEmpty());
     };
 
     useEffect(() => {
         const handleReplyReceived = replyReceived => {
-            setReplies(prevReplies => [...prevReplies, replyReceived]);
+            setReplState(prevReplies => [...prevReplies, replyReceived]);
             if (replyReceived.email !== user.email) {
                 notify(`${replyReceived.reply_name} replied to your message`);
             }
@@ -71,7 +76,7 @@ const ChatMessages = ({ onlineList }) => {
 
     useEffect(() => {
         lastMessageRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, [replies]);
+    }, [replState]);
 
     return (
         isLoading ? <QBLoadingSM title='chat messages' /> :
@@ -80,14 +85,14 @@ const ChatMessages = ({ onlineList }) => {
                     {whoWith.username}&nbsp;
                     <small style={{ fontSize: '.5rem', verticalAlign: 'middle' }}>{onlineStatus}</small>
                 </h4>
-                <strong>{oneContact?.message}</strong>
+                <strong>{message}</strong>
                 <small className="text-info mb-2">
                     <i className='text-start d-block mt-2' style={{ fontSize: '.7rem', color: '#6a89cc' }}>
-                        {moment(new Date(oneContact?.contact_date)).format('YYYY-MM-DD, HH:mm')}
+                        {formattedDate === 'Invalid date' ? '' : formattedDate}
                     </i>
                 </small>
                 <hr />
-                {replies.map((reply, index) => <SingleReply key={index} reply={reply} />)}
+                {replState.map((reply, index) => <SingleReply key={index} reply={reply} />)}
                 <hr />
                 <Form className='w-100 m-1 pb-3 mb-lg-5 d-flex flex-column align-center justify-center' onSubmit={sendMessage}>
                     <Editor

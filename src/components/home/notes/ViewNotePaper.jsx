@@ -39,6 +39,7 @@ const ViewNotePaper = () => {
     notes_file,
     createdAt,
   } = noteDownload.oneNotePaper;
+  const formattedDate = moment(new Date(createdAt)).format('DD MMM YYYY, HH:mm');
 
   const onDownload = (note) => {
     const newDownload = {
@@ -85,12 +86,9 @@ const ViewNotePaper = () => {
 
                       <CardText className="mb-2">{description}</CardText>
 
-                      <time
-                        dateTime={createdAt}
-                        className="d-block text-center text-success fw-bolder mb-2"
-                      >
-                        {moment(new Date(createdAt)).format('DD MMM YYYY, HH:mm')}
-                      </time>
+                      {createdAt && <time dateTime={createdAt} className="d-block text-center text-success fw-bolder mb-2">
+                        {formattedDate === 'Invalid date' ? '' : formattedDate}
+                      </time>}
                       <div className="answer d-flex justify-content-center flex-wrap gap-2 mx-auto mt-2">
                         <a
                           href={notes_file}

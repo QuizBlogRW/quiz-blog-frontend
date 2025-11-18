@@ -113,25 +113,31 @@ const RoomMessages = ({ oON1room, onlineList }) => {
                 {/* CHAT MESSAGES */}
                 {
                     oneRoomMessages.length > 0 ?
-                        oneRoomMessages.map((roomMsg, index) => (
-                            <div key={index} className={`mt-2 mt-lg-5 ${roomMsg.sender === user._id ? 'text-end' : 'text-start'}`}>
-                                <div
-                                    className={`bubble d-inline-block p-2 ${roomMsg.sender === user._id ? 'ms-auto' : 'me-auto'}`}
-                                    style={{
-                                        backgroundColor: roomMsg.sender === user._id ? '#f1f0f0' : '#6a89cc',
-                                        color: roomMsg.sender === user._id ? '' : 'white',
-                                        borderRadius: '10px', maxWidth: '80%', wordWrap: 'break-word', whiteSpace: 'pre-wrap', fontSize: '.8rem', fontWeight: '500', lineHeight: '1.2', verticalAlign: 'baseline', wordBreak: 'break-word'
-                                    }}>
-                                    {roomMsg.content}
-                                </div>
+                        oneRoomMessages.map((roomMsg, index) => {
 
-                                <small className="text-info">
-                                    <i className={`${roomMsg.sender === user._id ? 'text-end' : 'text-start'} d-block mt-2`} style={{ fontSize: '.7rem', color: '#999' }}>
-                                        {moment(new Date(roomMsg.createdAt)).format('YYYY-MM-DD, HH:mm')}
-                                    </i>
-                                </small>
-                            </div>
-                        )) :
+                            const { sender, content, createdAt } = roomMsg;
+                            const formattedDate = moment(new Date(createdAt)).format('DD MMM YYYY, HH:mm');
+
+                            return (
+                                <div key={index} className={`mt-2 mt-lg-5 ${sender === user._id ? 'text-end' : 'text-start'}`}>
+                                    <div
+                                        className={`bubble d-inline-block p-2 ${sender === user._id ? 'ms-auto' : 'me-auto'}`}
+                                        style={{
+                                            backgroundColor: sender === user._id ? '#f1f0f0' : '#6a89cc',
+                                            color: sender === user._id ? '' : 'white',
+                                            borderRadius: '10px', maxWidth: '80%', wordWrap: 'break-word', whiteSpace: 'pre-wrap', fontSize: '.8rem', fontWeight: '500', lineHeight: '1.2', verticalAlign: 'baseline', wordBreak: 'break-word'
+                                        }}>
+                                        {content}
+                                    </div>
+
+                                    <small className="text-info">
+                                        <i className={`${sender === user._id ? 'text-end' : 'text-start'} d-block mt-2`} style={{ fontSize: '.7rem', color: '#999' }}>
+                                            {formattedDate === 'Invalid date' ? '' : formattedDate}
+                                        </i>
+                                    </small>
+                                </div>
+                            )
+                        }) :
 
                         <div className='text-center mt-3 text-success'>Start a new chat!</div>
                 }

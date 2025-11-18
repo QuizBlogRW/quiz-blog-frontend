@@ -10,7 +10,7 @@ import DeleteModal from '@/utils/DeleteModal';
 const Subscribers = () => {
 
     // Redux
-    const subscribedUsers = useSelector(state => state.subscribers);
+    const { isLoading, subscribedUsers } = useSelector(state => state.subscribers);
     const dispatch = useDispatch();
 
     // Lifecycle methods
@@ -21,7 +21,7 @@ const Subscribers = () => {
     return (
         <div className='mx-4 my-5'>
             {
-                subscribedUsers.isLoading ?
+                isLoading ?
                     <QBLoadingSM title='subscribers' /> :
                     <Row>
                         <Table bordered className='all-scores table-success' hover responsive striped size="sm">
@@ -35,23 +35,35 @@ const Subscribers = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {subscribedUsers && subscribedUsers.subscribedUsers.map((subscribedUser, index) => (
-                                    <tr key={subscribedUser._id}>
-                                        <th scope="row" className="table-dark">{index + 1}</th>
-                                        <td className='text-uppercase'>
-                                            {subscribedUser.name.split(' ').slice(0, 2).join(' ')}
-                                        </td>
-                                        <td className='text-lowercase'>{subscribedUser.email}</td>
-                                        <td>
-                                            <i>
-                                                {moment(new Date(subscribedUser.createdAt))
-                                                    .format('YYYY-MM-DD, HH:mm')}
-                                            </i>
-                                        </td>
-                                        <td className="table-dark">
-                                            <DeleteModal deleteFnName="deleteSubscriber" deleteFn={deleteSubscriber} delID={subscribedUser._id} delTitle={subscribedUser.name} />
-                                        </td>
-                                    </tr>))}
+                                {subscribedUsers.map((subscribedUser, index) => {
+                                    const { name, email, createdAt, _id } = subscribedUser
+                                    const formattedDate = moment(new Date(
+                                        createdAt)).format('DD MMM YYYY, HH:mm');
+                                    return (
+                                        <tr key={
+                                            _id}>
+                                            <th scope="row" className="table-dark">{index + 1}</th>
+                                            <td className='text-uppercase'>
+                                                {
+                                                    name.split(' ').slice(0, 2).join(' ')}
+                                            </td>
+                                            <td className='text-lowercase'>{
+                                                email}
+                                            </td>
+                                            <td>
+                                                <i>
+                                                    {formattedDate === 'Invalid date' ? '' : formattedDate}
+                                                </i>
+                                            </td>
+                                            <td className="table-dark">
+                                                <DeleteModal
+                                                    deleteFnName="deleteSubscriber"
+                                                    deleteFn={deleteSubscriber}
+                                                    delID={_id}
+                                                    delTitle={name} />
+                                            </td>
+                                        </tr>)
+                                })}
                             </tbody>
                         </Table>
                     </Row>

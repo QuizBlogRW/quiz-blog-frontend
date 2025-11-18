@@ -36,14 +36,16 @@ const fetchCountryData = async () => {
 const ViewBlogPost = () => {
   const dispatch = useDispatch();
   const { bPSlug } = useParams();
-  const bposts = useSelector((state) => state.blogPosts);
+  const { oneBlogPost } = useSelector((state) => state.blogPosts);
+
+  const { _id, title, postCategory, creator, createdAt, markdown, post_image } = oneBlogPost;
+  const formattedDate = moment(new Date(createdAt)).format('DD MMM YYYY, HH:mm');
 
   useEffect(() => {
     dispatch(getOneBlogPost(bPSlug));
   }, [dispatch, bPSlug]);
 
-  const bpToUse = bposts && bposts.oneBlogPost;
-  const bPCatID = bpToUse && bpToUse.postCategory && bpToUse.postCategory._id;
+  const bPCatID = postCategory?._id;
   const { user } = useSelector((state) => state.auth);
   const [newBlogPostView, setNewBlogPostView] = useState();
   const authorRef = useRef();
@@ -52,7 +54,7 @@ const ViewBlogPost = () => {
     const updateBlogPostView = async () => {
       const country = await fetchCountryData();
       setNewBlogPostView({
-        blogPost: bpToUse && bpToUse._id,
+        blogPost: _id,
         user: user && user._id,
         device: navigator.userAgent.match(
           /Android|iPhone|iPad|iPod|Windows Phone/i
@@ -63,7 +65,7 @@ const ViewBlogPost = () => {
       });
     };
     updateBlogPostView();
-  }, [user, bpToUse]);
+  }, [user, oneBlogPost]);
 
   const isCreateCalled = useRef(false);
 
@@ -94,7 +96,7 @@ const ViewBlogPost = () => {
     );
     obs.observe(node);
     return () => obs.disconnect();
-  }, [authorRef, bpToUse]);
+  }, [authorRef, oneBlogPost]);
 
   return (
     <Container
@@ -112,34 +114,32 @@ const ViewBlogPost = () => {
           ) : (
             <article className="post-article px-2 px-lg-3 py-lg-4 bg-white rounded-2 shadow-sm my-lg-3">
               <BackLikeShare
-                articleName={bpToUse && bpToUse.title}
+                articleName={title}
                 articleCreator={
-                  bpToUse && bpToUse.creator && bpToUse.creator.name
+                  creator.name
                 }
               />
               <header className="mb-3 text-center my-lg-5">
                 <h1 className="blogPost-title fw-bold text-uppercase mb-1">
-                  {bpToUse && bpToUse.title}
+                  {title}
                 </h1>
                 <div className="meta text-muted small">
                   <strong style={{ color: 'var(--brand)' }}>
-                    {bpToUse && bpToUse.creator && bpToUse.creator.name}
+                    {creator.name}
                   </strong>
                   &nbsp;•&nbsp;
-                  {moment(new Date(bpToUse && bpToUse.createdAt)).format(
-                    'DD MMM YYYY, HH:mm'
-                  )}
+                  {formattedDate === 'Invalid date' ? '' : formattedDate}
                 </div>
               </header>
 
               <figure className="post-photo mb-4 text-center">
                 <img
                   src={
-                    bpToUse && bpToUse.post_image
-                      ? bpToUse.post_image
+                    post_image
+                      ? post_image
                       : altImage
                   }
-                  alt={bpToUse && bpToUse.title}
+                  alt={title}
                 />
               </figure>
 
@@ -149,7 +149,7 @@ const ViewBlogPost = () => {
               >
                 <div className="markdown-body">
                   <Markdown rehypePlugins={[rehypeHighlight]}>
-                    {bpToUse && bpToUse.markdown}
+                    {markdown}
                   </Markdown>
                 </div>
               </section>
@@ -162,21 +162,21 @@ const ViewBlogPost = () => {
                   <div className="author-photo me-3">
                     <img
                       src={
-                        (bpToUse &&
-                          bpToUse.creator &&
-                          bpToUse.creator.avatar) ||
+                        (oneBlogPost &&
+                          creator &&
+                          creator.avatar) ||
                         altImage
                       }
-                      alt={bpToUse && bpToUse.creator && bpToUse.creator.name}
+                      alt={creator.name}
                     />
                   </div>
                 </div>
 
                 <div className="d-flex align-items-center my-lg-3">
                   <BackLikeShare
-                    articleName={bpToUse && bpToUse.title}
+                    articleName={title}
                     articleCreator={
-                      bpToUse && bpToUse.creator && bpToUse.creator.name
+                      creator.name
                     }
                   />
                 </div>
