@@ -1,66 +1,70 @@
-import { useEffect, useState, useCallback } from 'react';
-import { Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { getActiveAdverts } from '@/redux/slices/advertsSlice';
-import adPlaceholder from '@/images/Einstein.jpg';
+import { useEffect, useState, useCallback } from "react";
+import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { getActiveAdverts } from "@/redux/slices/advertsSlice";
+import adPlaceholder from "@/images/Einstein.jpg";
 
 const Adverts = () => {
 
-    // Redux hooks
-    const adverts = useSelector(state => state.adverts);
-    const allActiveAdverts = adverts && adverts.activeAdverts;
-    const [adShow, setAdShow] = useState();
-
+    const { activeAdverts = [] } = useSelector((state) => state.adverts || {});
+    const [index, setIndex] = useState(0);
     const dispatch = useDispatch();
 
-    // Show each advert for 5 seconds before showing the next one in the array of adverts from the database. Do that repeatedly and continuously.
-    const showAdverts = useCallback(() => {
-        setAdShow(prevState => {
-            if (isNaN(prevState)) {
-                return 0;
-            }
-            return (prevState + 1) % allActiveAdverts.length;
-        });
-    }, [allActiveAdverts]);
-
-    // Lifecycle method
+    // Fetch adverts once
     useEffect(() => {
         dispatch(getActiveAdverts());
     }, [dispatch]);
 
-    // call showAdverts() every 10 seconds
-    useEffect(() => {
-        const interval = setInterval(() => {
-            showAdverts();
-        }, 10000);
-        // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
-        return () => clearInterval(interval);
-    }, [showAdverts, adShow]);
+    // Rotate adverts
+    const rotateAdvert = useCallback(() => {
+        if (activeAdverts.length > 0) {
+            setIndex((prev) => (prev + 1) % activeAdverts.length);
+        }
+    }, [activeAdverts.length]);
 
-    const advertToDisplay = allActiveAdverts && allActiveAdverts[adShow];
+    useEffect(() => {
+        if (activeAdverts.length === 0) return;
+
+        const interval = setInterval(rotateAdvert, 10000);
+        return () => clearInterval(interval);
+    }, [rotateAdvert, activeAdverts.length]);
+
+    // Active or fallback advert
+    const advert =
+        activeAdverts.length > 0
+            ? activeAdverts[index]
+            : {
+                advert_image: adPlaceholder,
+                caption:
+                    "Welcome to Quiz-Blog. Take and review any multiple choice questions quiz you want from Quiz-Blog.",
+                link: "#",
+                fallback: true,
+            };
+
+    // Shared styles
+    const imgStyle = {
+        maxWidth: "92%",
+        border: `2px solid var(--brand)`,
+        borderRadius: "20px",
+    };
+
+    const captionStyle = {
+        maxWidth: "92%",
+        background: "rgb(255, 193, 7)",
+        fontSize: "1vw",
+        fontWeight: "bold",
+        border: `2px solid var(--brand)`,
+        borderRadius: "5px",
+    };
 
     return (
-        <div className='d-flex flex-column justify-content-center align-items-center mt-0'>
-            {advertToDisplay ?
-                <>
-                    <Link to={advertToDisplay && advertToDisplay.link} target="_blank">
-                        <img
-                            src={advertToDisplay && advertToDisplay.advert_image} alt="Quiz-Blog Rwanda"
-                            style={{ maxWidth: '92%', border: '2px solid var(--brand)', borderRadius: '5px' }} />
-                    </Link>
-                    <p className="mt-2 mb-0 p-1 text-center" style={{ maxWidth: '92%', background: 'rgb(255, 193, 7)', fontSize: '1vw', fontWeight: 'bold', border: '2px solid var(--brand)', borderRadius: '5px' }}>
-                        {advertToDisplay && advertToDisplay.caption}
-                    </p>
-                </> :
-
-                <>
-                    <img
-                        src={adPlaceholder && adPlaceholder} alt="Quiz-Blog Rwanda"
-                        style={{ maxWidth: '92%', border: '2px solid #157A6E', borderRadius: '5px' }} />
-                    <p className="mt-2 mb-0 p-1 text-center" style={{ maxWidth: '92%', background: 'rgb(255, 193, 7)', fontSize: '1vw', fontWeight: 'bold', border: '2px solid #157A6E', borderRadius: '5px' }}>
-                        "Welcome to Quiz-Blog. Take and review any multiple choice questions quiz you want from Quiz-Blog."
-                    </p>
-                </>}
+        <div className="d-flex flex-column justify-content-center align-items-center mt-0">
+            <Link to={advert.link || '#'} target="_blank" className="d-flex justify-content-center">
+                <img src={advert.advert_image || advert.fallback} alt="Advert" style={imgStyle} />
+            </Link>
+            <p className="mt-4 mb-0 p-1 text-center" style={captionStyle}>
+                {advert.caption}
+            </p>
         </div>
     );
 };

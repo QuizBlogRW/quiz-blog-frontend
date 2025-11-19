@@ -146,7 +146,7 @@ const Header = ({ textContent }) => {
                 <NavbarBrand href="/" className='mb-1 site-brand' aria-label="Quiz-Blog home">
                     <img src={logo} alt="Quiz-Blog Logo" className="site-logo" />
                 </NavbarBrand>
-                <div className="collapse px-1 px-sm-2 py-1 mx-1 m-sm-0 nav-items">
+                <div className="collapse px-1 px-sm-2 py-1 mx-0 m-sm-0 nav-items">
                     <CatDropdown />
                     <span className="me-1 ms-sm-4 me-md-4">
                         <Link to="/course-notes" className="nav-link-custom">Notes</Link>

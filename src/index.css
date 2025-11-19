@@ -184,7 +184,7 @@ body {
 .site-header .nav-items {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.2rem;
 }
 .nav-link-custom {
   color: #fff;
@@ -742,7 +742,6 @@ nav .dropdown-item-text a button {
   }
   /* keep CTAs side-by-side on small screens, centered and evenly spaced */
   .intro-landing .d-flex.align-items-center {
-    flex-direction: row !important;
     justify-content: space-evenly !important;
     align-items: center !important;
   }

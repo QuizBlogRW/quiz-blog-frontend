@@ -39,7 +39,7 @@ const LandingSection = () => {
         </div>
       </Col>
 
-      <Col sm={5} className="d-flex flex-column text-center py-5 p-lg-5">
+      <Col sm={5} className="py-1 p-md-5">
         <Adverts />
       </Col>
     </section>
