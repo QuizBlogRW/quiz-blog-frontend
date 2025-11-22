@@ -5,6 +5,9 @@ export const notify = (message, status) => {
     if (status === 'error') {
         toast.error(message, { position: 'bottom-center', autoClose: 10000, hideProgressBar: true, closeOnClick: true, pauseOnHover: true, draggable: true, progress: undefined });
     }
+    else if (message === 'clear') {
+        toast.dismiss();
+    }
     else {
         toast.success(message, { position: 'bottom-center', autoClose: 10000, hideProgressBar: true, closeOnClick: true, pauseOnHover: true, draggable: true, progress: undefined });
     }

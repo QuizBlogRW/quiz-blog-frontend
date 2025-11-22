@@ -1,6 +1,16 @@
 import axios from 'axios';
 import { notify } from '@/utils/notifyToast';
 
+// REAL GLOBAL - survives imports
+if (!window.__TOAST_CONTROL__) {
+  window.__TOAST_CONTROL__ = {
+    success: false,
+    error: false,
+    retryNotified: false,   // <-- add this
+  };
+}
+
+
 // Environment-based URLs
 export const qbURL = 'https://myqb-245fdbd30c9b.herokuapp.com/';
 export const testURL = 'https://qb-backend-one.vercel.app/';
@@ -37,10 +47,18 @@ if (import.meta.env.VITE_DEBUG === 'true') {
     },
     (error) => {
       if (!error.response?.status) {
-        console.error('❌ API Error:', error);
+        console.error('❌ API Error status:', error);
       }
-      console.error('❌ API Error:', error.response?.status, error.config?.url);
-      return Promise.reject(error.response?.data || error.message || error);
+      console.error('❌ API Error:', error);
+      // Build the error object with code, message, status
+      const errorObject = {
+        code: error.response?.code || error?.code,
+        name: error.response?.name || error?.name,
+        message: error.response?.data?.message || error?.message || 'Unknown error',
+        status: error.response?.status || error?.status,
+      };
+      console.error('❌ API Error Object:', errorObject);
+      return Promise.reject(errorObject);
     }
   );
 }
@@ -58,69 +76,76 @@ export const apiCallHelper = async (
   method,
   body,
   getState,
-  actionType
+  actionType,
+  retries = 3,
+  retryDelay = 5000
 ) => {
   const headers = {
     'x-auth-token': getState().auth.token,
     'Content-Type': 'application/json',
   };
 
-  try {
-    const response =
-      method === 'get' || method === 'delete'
-        ? await axiosInstance[method](url, { headers })
-        : await axiosInstance[method](url, body, { headers });
+  let attempt = 0;
+  let hasNotifiedRetry = false;
 
-    if (
-      (response.status === 200 || response.status === 201) &&
-      method !== 'get'
-    ) {
-      if (reloadActionTypes.includes(actionType)) {
-        setTimeout(() => {
-          window.location.reload();
-        }, RELOAD_TIMEOUT);
-      } else {
-        if (!noToastActionTypes.includes(actionType)) {
-          notify(
-            response.data?.message
-              ? response.data.message
-              : `${method === 'post'
-                ? 'Created'
-                : method === 'put'
-                  ? 'Updated'
-                  : 'Deleted'
-              } Successfully!`,
-            'success'
-          );
+  while (attempt <= retries) {
+    try {
+      const response =
+        method === 'get' || method === 'delete'
+          ? await axiosInstance[method](url, { headers })
+          : await axiosInstance[method](url, body, { headers });
+
+      // Success notification
+      if ((response.status === 200 || response.status === 201) && method !== 'get') {
+        if (reloadActionTypes.includes(actionType)) {
+          setTimeout(() => window.location.reload(), RELOAD_TIMEOUT);
+        } else if (!noToastActionTypes.includes(actionType)) {
+
+          // Only notify once globally per page load
+          if (!window.__TOAST_CONTROL__.success) {
+            notify(
+              response.data?.message || `${method.toUpperCase()} successfully!`,
+              'success'
+            );
+            window.__TOAST_CONTROL__.success = true;
+          }
         }
       }
-    }
 
-    return response?.data;
-  } catch (error) {
-    // err might be a string from the axios interceptor or an error object
-    let errorMessage = `An error occurred ${error?.message}`;
-    console.log(error);
+      return response.data;
+    } catch (error) {
+      const code = error?.response?.code || error?.code || 'UNKNOWN_ERROR';
+      const isNetworkError =
+        code === 'ERR_NETWORK' ||
+        code === 'ECONNREFUSED' ||
+        code === 'ECONNABORTED';
 
-    if (typeof error === 'string') {
-      // This is the processed error message from axios interceptor
-      errorMessage = error;
-    } else if (error?.response?.data) {
+      attempt++;
 
-      // Handle structured errors
-      if (error?.response?.data?.message) {
-        errorMessage = error?.response?.data?.message;
-        if (!noToastActionTypes.includes(actionType)) {
-          notify(errorMessage, 'error');
+      if (isNetworkError && attempt <= retries) {
+        if (!window.__TOAST_CONTROL__.retryNotified) {
+          notify(`Network error, retrying in ${retryDelay / 1000}s...`, 'error');
+          window.__TOAST_CONTROL__.retryNotified = true;
         }
+
+        await new Promise((resolve) => setTimeout(resolve, retryDelay));
+        continue;
       }
-    } else {
-      // Fallback to error message
-      errorMessage = `An error occurred: ${error.message}`;
+
+      const message =
+        error?.response?.data?.message || error?.message || 'Unknown error';
+
+      // Only notify once globally per page load
+      if (!noToastActionTypes.includes(actionType) && !window.__TOAST_CONTROL__.error) {
+        notify(message, 'error');
+        window.__TOAST_CONTROL__.error = true;
+      }
+
+      throw { message, code: error.code, status: error?.response?.status };
     }
-    throw { message: errorMessage, code: error.code, status: error.response?.status }
   }
 };
+
 
 // API call helper function to make async actions with createAsyncThunk for file uploads
 export const apiCallHelperUpload = async (
@@ -170,3 +195,11 @@ export const handleRejected = (state, action) => {
   state.isLoading = false;
   state.error = action.error || 'An error occurred.';
 };
+
+window.addEventListener('beforeunload', () => {
+  if (window.__TOAST_CONTROL__) {
+    window.__TOAST_CONTROL__.success = false;
+    window.__TOAST_CONTROL__.error = false;
+    window.__TOAST_CONTROL__.retryNotified = false; // <-- important
+  }
+});

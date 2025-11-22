@@ -22,14 +22,13 @@ const QuizQuestions = () => {
     const location = useLocation();
 
     // ACCESS Link Tag State
-    const quizState = location.state;
-    console.log('quizState', quizState);
+    const thisQuiz = location.state;
+    console.log('thisQuiz', thisQuiz);
 
     // Get the quiz
     const [newScoreId, setNewScoreId] = useState();
 
     // Question setup
-    const thisQuiz = quizState && quizState.oneQuiz;
     const qnsLength = thisQuiz && thisQuiz.questions && thisQuiz.questions.length;
     const [curQnIndex, setCurQnIndex] = useState(0);
     const currentQn = thisQuiz && thisQuiz.questions[curQnIndex];
@@ -228,38 +227,32 @@ const QuizQuestions = () => {
 
     }, [trueAnsNbr, choices, curQnUsrTrueChoices, curQnIndex, qnsLength, goToNextQuestion]);
 
-    if (!quizState.isOneQuizLoading) {
-
-        return (
-            thisQuiz ?
-                qnsLength > 0 ?
-
-                    <div key={Math.floor(Math.random() * 1000)} className="py-3 d-flex justify-content-center align-items-center flex-column">
-                        <Container className="main mx-auto d-flex flex-column justify-content-center rounded border border-primary my-5 py-4 w-80">
-                            <QuestionsView
-                                qnsLength={qnsLength}
-                                curQnIndex={curQnIndex}
-                                currentQn={currentQn}
-                                curQnOpts={curQnOpts}
-                                checkedState={checkedState}
-                                selected={selected}
-                                handleOnChange={handleOnChange}
-                                goToNextQuestion={goToNextQuestion}
-                                setCurQnIndex={setCurQnIndex} />
-                        </Container>
-                    </div> :
-
-                    <NoQuestions /> :
-
-                <Unavailable title='Quiz' link='/all-quizzes' more='quizzes' />
-        );
-    }
-
-    else if (saveScoreLoading)
+    if (saveScoreLoading)
         return (<QBLoadingSM />);
 
-    else
-        return (<QBLoadingSM />);
+    return (
+        thisQuiz ?
+            qnsLength > 0 ?
+
+                <div key={Math.floor(Math.random() * 1000)} className="py-3 d-flex justify-content-center align-items-center flex-column">
+                    <Container className="main mx-auto d-flex flex-column justify-content-center rounded border border-primary my-5 py-4 w-80">
+                        <QuestionsView
+                            qnsLength={qnsLength}
+                            curQnIndex={curQnIndex}
+                            currentQn={currentQn}
+                            curQnOpts={curQnOpts}
+                            checkedState={checkedState}
+                            selected={selected}
+                            handleOnChange={handleOnChange}
+                            goToNextQuestion={goToNextQuestion}
+                            setCurQnIndex={setCurQnIndex} />
+                    </Container>
+                </div> :
+
+                <NoQuestions /> :
+
+            <Unavailable title='Quiz' link='/all-quizzes' more='quizzes' />
+    );
 };
 
 export default QuizQuestions;

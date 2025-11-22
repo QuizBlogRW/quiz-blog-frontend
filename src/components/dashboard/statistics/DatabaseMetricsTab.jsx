@@ -6,6 +6,7 @@ import DatabaseCard from "./DatabaseCard";
 import { formatBytes } from "./utils";
 
 const DatabaseMetricsTab = () => {
+
     const { user, isAuthenticated } = useSelector((state) => state.auth);
     const [dataMetrics, setDataMetrics] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -47,6 +48,7 @@ const DatabaseMetricsTab = () => {
     }, [isAuthenticated, user, fetchDataMetrics]);
 
     const databases = dataMetrics ? Object.values(dataMetrics.databases) : [];
+    console.log(databases)
     const redis = dataMetrics?.redis;
 
     const totals = databases.reduce(
