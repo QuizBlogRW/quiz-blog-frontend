@@ -109,6 +109,9 @@ const App = () => {
         }
     }, [user]);
 
+    console.log("import.meta.env.MODE: ", import.meta.env.MODE);
+    console.log("process.env.NODE_ENV: ", process.env.NODE_ENV);
+
     return (
         <logRegContext.Provider value={{ isOpenL, toggleL, isOpenR, toggleR }}>
             <Suspense fallback={<QBLoading />}>
