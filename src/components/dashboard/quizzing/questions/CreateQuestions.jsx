@@ -154,214 +154,212 @@ const CreateQuestions = () => {
     window.history.back();
   };
 
-  return !isAuthenticated ?
-    <NotAuthenticated /> :
-    user.role === 'Visitor' ?
-      <Dashboard /> :
+  if (!isAuthenticated) return <NotAuthenticated />;
+  if (user?.role === 'Visitor') return <Dashboard />;
 
-      oneQuiz?.category &&
-      <Form
-        className="my-3 mt-lg-5 mx-3 mx-lg-5 create-question"
-        onSubmit={handleSubmit}>
-        <div key={oneQuiz._id} className="mb-0 mb-lg-3 mx-0">
-          <Breadcrumb key={oneQuiz._id}>
-            <BreadcrumbItem>
-              <Link to="/dashboard">
-                {oneQuiz.category.title}
-              </Link>
-            </BreadcrumbItem>
-            <BreadcrumbItem>
-              <Link
-                to={`/category/${oneQuiz.category._id}`}
-              >
-                {oneQuiz.title}
-              </Link>
-            </BreadcrumbItem>
-            <BreadcrumbItem active>Create Question</BreadcrumbItem>
-          </Breadcrumb>
-
-          <Button
-            size="sm"
-            color="danger"
-            style={{
-              display: 'block',
-              marginLeft: 'auto',
-              border: '3px solid black',
-            }}
-            onClick={() =>
-              SendNotification(
-                oneQuiz._id,
-                oneQuiz.title,
-                oneQuiz.category?.title,
-                oneQuiz.created_by?.name
-              )
-            }
-          >
-            Finish & Notify
-          </Button>
-        </div>
-
-        <FormGroup row className="mx-0">
-          <Label sm={2}>Question</Label>
-          <Col sm={10}>
-            <Input
-              type="text"
-              name="questionText"
-              value={questionText.questionText || ''}
-              placeholder="Question here ..."
-              onChange={onQuestionChangeHandler}
-              required
-            />
-          </Col>
-        </FormGroup>
-
-        <FormGroup row className="mx-0">
-          <Label sm={2} for="question_image">
-            <strong>Upload</strong>&nbsp;
-            <small className="text-info">.jpg, .png, .jpeg, .svg</small>
-          </Label>
-          <Col sm={10}>
-            <Input
-              bsSize="sm"
-              type="file"
-              accept=".jpg, .png, .jpeg, .svg"
-              name="question_image"
-              onChange={onFileHandler}
-              label="Pick an image ..."
-              id="question_image_pick"
-              required
-            />
-          </Col>
-        </FormGroup>
-
-        <FormGroup row className="mx-0">
-          <Label sm={2}>Question Duration</Label>
-          <Col sm={3}>
-            <Input
-              type="number"
-              name="duration"
-              value={durationState.duration || 0}
-              placeholder="Time in seconds ..."
-              onChange={onDurationChangeHandler}
-              required
-            />
-          </Col>
-        </FormGroup>
-
-        {answerOptions.map((answerOption) => {
-          let explanation = answerOption.explanations
-            ? answerOption.explanations
-            : null;
-
-          {
-            /* If there is a word in the explanation paragraph that starts with http, make it a link */
-          }
-          if (explanation) {
-            let words = explanation.split(' ');
-            explanation = words.map((word) => {
-              if (word.startsWith('http')) {
-                return (
-                  <a key={word} href={word} target="_blank" rel="noreferrer">
-                    {word}{' '}
-                  </a>
-                );
-              }
-              return word + ' ';
-            });
-          }
-
-          return (
-            <div key={answerOption.id}>
-              <FormGroup row className="mx-0">
-                <Label sm={2}>Answer</Label>
-
-                <Col sm={10} xl={7}>
-                  <Input
-                    type="text"
-                    name="answerText"
-                    value={answerOption.answerText}
-                    onChange={(event) =>
-                      handleAnswerChangeInput(answerOption.id, event)
-                    }
-                    id="exampleanswer"
-                    placeholder="Answer here ..."
-                    required
-                  />
-                </Col>
-
-                <Col
-                  sm={6}
-                  xl={2}
-                  className="my-3 my-sm-2 d-sm-flex justify-content-around"
-                >
-                  <Input
-                    type="checkbox"
-                    name="isCorrect"
-                    value={answerOption.isCorrect}
-                    onChange={(event) =>
-                      handleAnswerChangeInput(answerOption.id, event)
-                    }
-                    id={answerOption.id}
-                    label="Is Correct?"
-                    required
-                  />
-                </Col>
-
-                <Col sm={6} xl={1} className="my-3 my-sm-2">
-                  <Button
-                    className="px-2 py-1"
-                    disabled={answerOptions.length === 1}
-                    color="danger"
-                    onClick={() => handleRemoveFields(answerOption.id)}
-                  >
-                    {' '}
-                    -{' '}
-                  </Button>{' '}
-                  <Button
-                    className="px-2 py-1"
-                    color="danger"
-                    onClick={handleAddFields}
-                  >
-                    {' '}
-                    +{' '}
-                  </Button>{' '}
-                </Col>
-
-                {explanation && (
-                  <>
-                    <Label sm={2}>Rationale</Label>
-                    <Col sm={10} xl={7}>
-                      <Input
-                        type="textarea"
-                        name="explanations"
-                        placeholder="Rationales or explanations ..."
-                        minLength="5"
-                        maxLength="1000"
-                        onChange={(event) =>
-                          handleAnswerChangeInput(answerOption.id, event)
-                        }
-                        value={explanation}
-                      />
-                    </Col>
-                  </>
-                )}
-              </FormGroup>
-            </div>
-          );
-        })}
-
-        <FormGroup check row className="mx-0 pl-3">
-          <Col sm={{ size: 10, offset: 2 }} className="pl-0">
-            <Button
-              className="btn btn-info btn-sm"
-              type="submit"
-              onClick={handleSubmit}
+  return oneQuiz?.category &&
+    <Form
+      className="my-3 mt-lg-5 mx-3 mx-lg-5 create-question"
+      onSubmit={handleSubmit}>
+      <div key={oneQuiz._id} className="mb-0 mb-lg-3 mx-0">
+        <Breadcrumb key={oneQuiz._id}>
+          <BreadcrumbItem>
+            <Link to="/dashboard">
+              {oneQuiz.category.title}
+            </Link>
+          </BreadcrumbItem>
+          <BreadcrumbItem>
+            <Link
+              to={`/category/${oneQuiz.category._id}`}
             >
-              Add New
-            </Button>
-          </Col>
-        </FormGroup>
-      </Form>
+              {oneQuiz.title}
+            </Link>
+          </BreadcrumbItem>
+          <BreadcrumbItem active>Create Question</BreadcrumbItem>
+        </Breadcrumb>
+
+        <Button
+          size="sm"
+          color="danger"
+          style={{
+            display: 'block',
+            marginLeft: 'auto',
+            border: '3px solid black',
+          }}
+          onClick={() =>
+            SendNotification(
+              oneQuiz._id,
+              oneQuiz.title,
+              oneQuiz.category?.title,
+              oneQuiz.created_by?.name
+            )
+          }
+        >
+          Finish & Notify
+        </Button>
+      </div>
+
+      <FormGroup row className="mx-0">
+        <Label sm={2}>Question</Label>
+        <Col sm={10}>
+          <Input
+            type="text"
+            name="questionText"
+            value={questionText.questionText || ''}
+            placeholder="Question here ..."
+            onChange={onQuestionChangeHandler}
+            required
+          />
+        </Col>
+      </FormGroup>
+
+      <FormGroup row className="mx-0">
+        <Label sm={2} for="question_image">
+          <strong>Upload</strong>&nbsp;
+          <small className="text-info">.jpg, .png, .jpeg, .svg</small>
+        </Label>
+        <Col sm={10}>
+          <Input
+            bsSize="sm"
+            type="file"
+            accept=".jpg, .png, .jpeg, .svg"
+            name="question_image"
+            onChange={onFileHandler}
+            label="Pick an image ..."
+            id="question_image_pick"
+            required
+          />
+        </Col>
+      </FormGroup>
+
+      <FormGroup row className="mx-0">
+        <Label sm={2}>Question Duration</Label>
+        <Col sm={3}>
+          <Input
+            type="number"
+            name="duration"
+            value={durationState.duration || 0}
+            placeholder="Time in seconds ..."
+            onChange={onDurationChangeHandler}
+            required
+          />
+        </Col>
+      </FormGroup>
+
+      {answerOptions.map((answerOption) => {
+        let explanation = answerOption.explanations
+          ? answerOption.explanations
+          : null;
+
+        {
+          /* If there is a word in the explanation paragraph that starts with http, make it a link */
+        }
+        if (explanation) {
+          let words = explanation.split(' ');
+          explanation = words.map((word) => {
+            if (word.startsWith('http')) {
+              return (
+                <a key={word} href={word} target="_blank" rel="noreferrer">
+                  {word}{' '}
+                </a>
+              );
+            }
+            return word + ' ';
+          });
+        }
+
+        return (
+          <div key={answerOption.id}>
+            <FormGroup row className="mx-0">
+              <Label sm={2}>Answer</Label>
+
+              <Col sm={10} xl={7}>
+                <Input
+                  type="text"
+                  name="answerText"
+                  value={answerOption.answerText}
+                  onChange={(event) =>
+                    handleAnswerChangeInput(answerOption.id, event)
+                  }
+                  id="exampleanswer"
+                  placeholder="Answer here ..."
+                  required
+                />
+              </Col>
+
+              <Col
+                sm={6}
+                xl={2}
+                className="my-3 my-sm-2 d-sm-flex justify-content-around"
+              >
+                <Input
+                  type="checkbox"
+                  name="isCorrect"
+                  value={answerOption.isCorrect}
+                  onChange={(event) =>
+                    handleAnswerChangeInput(answerOption.id, event)
+                  }
+                  id={answerOption.id}
+                  label="Is Correct?"
+                  required
+                />
+              </Col>
+
+              <Col sm={6} xl={1} className="my-3 my-sm-2">
+                <Button
+                  className="px-2 py-1"
+                  disabled={answerOptions.length === 1}
+                  color="danger"
+                  onClick={() => handleRemoveFields(answerOption.id)}
+                >
+                  {' '}
+                  -{' '}
+                </Button>{' '}
+                <Button
+                  className="px-2 py-1"
+                  color="danger"
+                  onClick={handleAddFields}
+                >
+                  {' '}
+                  +{' '}
+                </Button>{' '}
+              </Col>
+
+              {explanation && (
+                <>
+                  <Label sm={2}>Rationale</Label>
+                  <Col sm={10} xl={7}>
+                    <Input
+                      type="textarea"
+                      name="explanations"
+                      placeholder="Rationales or explanations ..."
+                      minLength="5"
+                      maxLength="1000"
+                      onChange={(event) =>
+                        handleAnswerChangeInput(answerOption.id, event)
+                      }
+                      value={explanation}
+                    />
+                  </Col>
+                </>
+              )}
+            </FormGroup>
+          </div>
+        );
+      })}
+
+      <FormGroup check row className="mx-0 pl-3">
+        <Col sm={{ size: 10, offset: 2 }} className="pl-0">
+          <Button
+            className="btn btn-info btn-sm"
+            type="submit"
+            onClick={handleSubmit}
+          >
+            Add New
+          </Button>
+        </Col>
+      </FormGroup>
+    </Form>
 };
 
 export default CreateQuestions;

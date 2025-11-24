@@ -10,7 +10,6 @@ if (!window.__TOAST_CONTROL__) {
   };
 }
 
-
 // Environment-based URLs
 export const qbURL = 'https://myqb-245fdbd30c9b.herokuapp.com/';
 export const testURL = 'https://qb-backend-one.vercel.app/';
@@ -49,26 +48,18 @@ if (import.meta.env.VITE_DEBUG === 'true') {
       if (!error.response?.status) {
         console.error('❌ API Error status:', error);
       }
-      console.error('❌ API Error:', error);
+      console.error('❌ API Error Response:', error.response);
       // Build the error object with code, message, status
       const errorObject = {
-        code: error.response?.code || error?.code,
-        name: error.response?.name || error?.name,
-        message: error.response?.data?.message || error?.message || 'Unknown error',
-        status: error.response?.status || error?.status,
+        code: error.response?.data.code,
+        name: error.response?.data.name,
+        message: error.response?.data?.message || 'Unknown error',
+        status: error.response?.status,
       };
-      console.error('❌ API Error Object:', errorObject);
       return Promise.reject(errorObject);
     }
   );
 }
-
-// List of action types that doesn't require a reload
-const reloadActionTypes = ['verify', 'login'];
-const noToastActionTypes = ['loadUser', 'createBlogPostView'];
-
-// Default reload timeout
-const RELOAD_TIMEOUT = 2000;
 
 // API call helper function to make async actions with createAsyncThunk
 export const apiCallHelper = async (
@@ -80,13 +71,15 @@ export const apiCallHelper = async (
   retries = 3,
   retryDelay = 5000
 ) => {
+  console.log("getState().auth: ", getState().auth);
+  const token = getState().auth.token || localStorage.getItem("token");
+
   const headers = {
-    'x-auth-token': getState().auth.token,
+    'x-auth-token': token,
     'Content-Type': 'application/json',
   };
 
   let attempt = 0;
-  let hasNotifiedRetry = false;
 
   while (attempt <= retries) {
     try {
@@ -95,26 +88,10 @@ export const apiCallHelper = async (
           ? await axiosInstance[method](url, { headers })
           : await axiosInstance[method](url, body, { headers });
 
-      // Success notification
-      if ((response.status === 200 || response.status === 201) && method !== 'get') {
-        if (reloadActionTypes.includes(actionType)) {
-          setTimeout(() => window.location.reload(), RELOAD_TIMEOUT);
-        } else if (!noToastActionTypes.includes(actionType)) {
-
-          // Only notify once globally per page load
-          if (!window.__TOAST_CONTROL__.success) {
-            notify(
-              response.data?.message || `${method.toUpperCase()} successfully!`,
-              'success'
-            );
-            window.__TOAST_CONTROL__.success = true;
-          }
-        }
-      }
-
       return response.data;
-    } catch (error) {
-      const code = error?.response?.code || error?.code || 'UNKNOWN_ERROR';
+    } catch (err) {
+      console.log("err: ", err)
+      const code = err?.response?.code || err?.code || 'UNKNOWN_ERROR';
       const isNetworkError =
         code === 'ERR_NETWORK' ||
         code === 'ECONNREFUSED' ||
@@ -132,16 +109,15 @@ export const apiCallHelper = async (
         continue;
       }
 
-      const message =
-        error?.response?.data?.message || error?.message || 'Unknown error';
+      const message = err?.code !== "NO_TOKEN_LOAD_USER_ERROR" && (err?.message || 'Unknown error');
 
       // Only notify once globally per page load
-      if (!noToastActionTypes.includes(actionType) && !window.__TOAST_CONTROL__.error) {
+      if (message && !window.__TOAST_CONTROL__.error) {
         notify(message, 'error');
         window.__TOAST_CONTROL__.error = true;
       }
 
-      throw { message, code: error.code, status: error?.response?.status };
+      throw { message, code: err.code, status: err?.status };
     }
   }
 };
@@ -156,31 +132,21 @@ export const apiCallHelperUpload = async (
   actionType
 ) => {
   try {
+
+    const token = getState().auth.token || localStorage.getItem("token");
     const response = await axios({
       method,
       url: `${axiosInstance.defaults.baseURL}${url}`,
       data: formData,
       headers: {
-        'x-auth-token': getState().auth.token,
-        'Content-Type': 'multipart/form-data',
+        'x-auth-token': token,
+        'Content-Type': 'application/json',
       },
     });
-    if (
-      (response?.status === 200 || response?.status === 201) &&
-      reloadActionTypes.includes(actionType)
-    ) {
-      setTimeout(() => {
-        window.location.reload();
-      }, RELOAD_TIMEOUT);
-    }
 
     return response?.data;
   } catch (error) {
-    if (
-      error?.response?.data &&
-      error?.response?.data?.message &&
-      !noToastActionTypes.includes(actionType)
-    ) {
+    if (error?.response?.data && error?.response?.data?.message) {
       notify(error?.response?.data?.message, 'error');
     }
     return Promise.reject(error?.response?.data?.message);
@@ -200,6 +166,6 @@ window.addEventListener('beforeunload', () => {
   if (window.__TOAST_CONTROL__) {
     window.__TOAST_CONTROL__.success = false;
     window.__TOAST_CONTROL__.error = false;
-    window.__TOAST_CONTROL__.retryNotified = false; // <-- important
+    window.__TOAST_CONTROL__.retryNotified = false;
   }
 });

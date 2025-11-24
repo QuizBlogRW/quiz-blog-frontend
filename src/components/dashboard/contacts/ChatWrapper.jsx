@@ -97,64 +97,53 @@ const ChatWrapper = () => {
         }
     };
 
-    return (
-        <>
-            {
-                !isAuthenticated ?
-                    <NotAuthenticated /> :
-                    <>
-                        {isLoading ?
-                            <div className="vh-100 d-flex justify-content-center align-items-center text-danger">
-                                <QBLoadingSM title='contacts' />
-                            </div> :
+    if (!isAuthenticated) return <NotAuthenticated />;
+    if (isLoading) return <QBLoadingSM />;
 
-                            <Row className='chat-view vh-100'>
-                                <Col sm="3" style={{ height: '99%' }} className="my-2 overflow-auto">
-                                    {user?.role?.includes('Admin') ? <PageOf pageNo={pageNo} numberOfPages={totalPages} /> : null}
-                                    <ChatCard openChat={openChat} />
-                                    {user?.role !== 'Visitor' ? <><Pagination pageNo={pageNo} setPageNo={setPageNo} numberOfPages={totalPages} /></> : null}
-                                </Col>
+    return (<Row className='chat-view vh-100'>
+        <Col sm="3" style={{ height: '99%' }} className="my-2 overflow-auto">
+            {user?.role?.includes('Admin') ? <PageOf pageNo={pageNo} numberOfPages={totalPages} /> : null}
+            <ChatCard openChat={openChat} />
+            {user?.role !== 'Visitor' ? <><Pagination pageNo={pageNo} setPageNo={setPageNo} numberOfPages={totalPages} /></> : null}
+        </Col>
 
-                                <Col sm="6" style={{ height: '99%' }} className="my-2 bg-white overflow-auto">
-                                    {isChatOpen ? <ChatMessages onlineList={onlineList} /> :
-                                        isChatRoomOpen ? <RoomMessages oON1room={oON1room} onlineList={onlineList} /> : null}
-                                </Col>
+        <Col sm="6" style={{ height: '99%' }} className="my-2 bg-white overflow-auto">
+            {isChatOpen ? <ChatMessages onlineList={onlineList} /> :
+                isChatRoomOpen ? <RoomMessages oON1room={oON1room} onlineList={onlineList} /> : null}
+        </Col>
 
-                                <Col sm="3" style={{ height: '99%' }} className="overflow-auto">
-                                    <div>
-                                        <h5 className='text-center my-4 fw-bolder'>
-                                            CHAT WITH ({onlineList.length})
-                                        </h5>
-                                        <ul style={{ listStyle: 'none' }}>
+        <Col sm="3" style={{ height: '99%' }} className="overflow-auto">
+            <div>
+                <h5 className='text-center my-4 fw-bolder'>
+                    CHAT WITH ({onlineList.length})
+                </h5>
+                <ul style={{ listStyle: 'none' }}>
 
-                                            <li style={{ fontSize: '.8rem', margin: '4px' }}>
-                                                <Link to={'#'}>
-                                                    {user.name.charAt(0).toUpperCase() + user.name.slice(1)}(You)
-                                                </Link>
-                                            </li>
-                                            {onlineList.filter(onlineUser => onlineUser.email !== user.email).map(onlineUser => {
-                                                const sortedRmArr = [user.email, onlineUser.email].sort((a, b) => a.localeCompare(b));
-                                                return (<li key={onlineUser.socketID} style={{ fontSize: '.8rem', margin: '4px' }}>
-                                                    <Link to={'#'}
-                                                        onClick={() => user.email !== onlineUser.email && openChat1on1Room({
-                                                            roomName: sortedRmArr[0] + '_' + sortedRmArr[1],
-                                                            senderID: user._id,
-                                                            receiverID: onlineUser._id,
-                                                            receiverName: onlineUser.name,
-                                                            username: user.name
-                                                        })}>
-                                                        {onlineUser.name.charAt(0).toUpperCase() + onlineUser.name.slice(1)}
-                                                        <small style={{ fontSize: '.5rem', verticalAlign: 'middle' }}> 🟢</small>
-                                                    </Link>
-                                                </li>);
-                                            })}
-                                        </ul>
-                                    </div>
-                                </Col>
-                            </Row>
-                        }
-                    </>}
-        </>
+                    <li style={{ fontSize: '.8rem', margin: '4px' }}>
+                        <Link to={'#'}>
+                            {user.name.charAt(0).toUpperCase() + user.name.slice(1)}(You)
+                        </Link>
+                    </li>
+                    {onlineList.filter(onlineUser => onlineUser.email !== user.email).map(onlineUser => {
+                        const sortedRmArr = [user.email, onlineUser.email].sort((a, b) => a.localeCompare(b));
+                        return (<li key={onlineUser.socketID} style={{ fontSize: '.8rem', margin: '4px' }}>
+                            <Link to={'#'}
+                                onClick={() => user.email !== onlineUser.email && openChat1on1Room({
+                                    roomName: sortedRmArr[0] + '_' + sortedRmArr[1],
+                                    senderID: user._id,
+                                    receiverID: onlineUser._id,
+                                    receiverName: onlineUser.name,
+                                    username: user.name
+                                })}>
+                                {onlineUser.name.charAt(0).toUpperCase() + onlineUser.name.slice(1)}
+                                <small style={{ fontSize: '.5rem', verticalAlign: 'middle' }}> 🟢</small>
+                            </Link>
+                        </li>);
+                    })}
+                </ul>
+            </div>
+        </Col>
+    </Row>
     );
 };
 

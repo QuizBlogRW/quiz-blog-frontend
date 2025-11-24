@@ -97,12 +97,10 @@ const App = () => {
     useEffect(() => {
 
         if (user) {
-
             const NonEmptyFields = Object.keys(user).filter(key => user[key]).length;
             const percent = (NonEmptyFields - 2) * 10;
 
             if (percent > 0 && percent < 100) {
-
                 setPercentage(percent);
                 setModal(true);
             }

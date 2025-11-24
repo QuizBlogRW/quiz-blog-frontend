@@ -65,19 +65,12 @@ const SingleCategory = () => {
         </div>
     );
 
-    return (
-        !isAuthenticated ?
-            <NotAuthenticated /> :
-            !isLoading ?
-                <>
-                    {allcategories && allcategories.map(category => (
-                        category._id === categoryId ? renderCategory(category) : null
-                    ))}
-                </> :
-                <div className="vh-100 d-flex justify-content-center align-items-center text-danger">
-                    <QBLoadingSM title="category" />
-                </div>
-    );
+    if (!isAuthenticated) return <NotAuthenticated />;
+    if (!isLoading) return <QBLoadingSM title="category" />;
+
+    return (allcategories && allcategories.map(category => (
+        category._id === categoryId ? renderCategory(category) : null
+    )));
 };
 
 export default SingleCategory;

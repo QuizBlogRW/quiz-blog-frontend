@@ -22,10 +22,10 @@ const TopRow = () => {
           <hr />
           {user.role !== 'Visitor' ?
             <p className="mb-0">
-              Here you can add, edit and remove features, cheers!!
+              Here you can add, edit and remove features, cheers!
             </p> :
             <p className="mb-0" style={{ fontSize: '.9rem', color: '#FFF' }}>
-              Here you can view your scores, downloads and contacts, cheers!!
+              Here you can view your scores, downloads and contacts, cheers!
             </p>
           }
         </Alert>

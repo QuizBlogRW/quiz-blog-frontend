@@ -77,78 +77,77 @@ const EditBlogPost = () => {
     dispatch(updateBlogPost(updatedBP));
   };
 
-  return !isAuthenticated ?
-    <NotAuthenticated /> :
+  if (!isAuthenticated) return <NotAuthenticated />;
+  if (user?.role === 'Visitor') return <Dashboard />;
+  if (!isAuthorized) return <Alert color="danger" className='m-5 text-center'>Access Denied!</Alert>;
 
-    !isAuthorized ?
-      <Alert color="danger" className='m-5 text-center'>Access Denied!</Alert> :
-      bPState && <>
-        <Row className="m-5">
-          <Col sm="8" className="mt-md-2">
-            <Breadcrumb>
-              <BreadcrumbItem active>Edit Blog Post</BreadcrumbItem>
-            </Breadcrumb>
+  return bPState && <>
+    <Row className="m-5">
+      <Col sm="8" className="mt-md-2">
+        <Breadcrumb>
+          <BreadcrumbItem active>Edit Blog Post</BreadcrumbItem>
+        </Breadcrumb>
 
-            <div className="mx-5">
+        <div className="mx-5">
 
-              <Form onSubmit={onSubmitHandler}>
+          <Form onSubmit={onSubmitHandler}>
 
-                <FormGroup>
+            <FormGroup>
 
-                  <Label for="title">
-                    <strong>Title</strong>
-                  </Label>
+              <Label for="title">
+                <strong>Title</strong>
+              </Label>
 
-                  <Input type="text" name="title" className="mb-3" onChange={onChangeHandler} value={bPState.title} />
+              <Input type="text" name="title" className="mb-3" onChange={onChangeHandler} value={bPState.title} />
 
-                  <Label for="bgColor">
-                    <strong>Background color</strong>
-                  </Label>
+              <Label for="bgColor">
+                <strong>Background color</strong>
+              </Label>
 
-                  <Input type="text" name="bgColor" className="mb-3" onChange={onChangeHandler} value={bPState.bgColor} />
+              <Input type="text" name="bgColor" className="mb-3" onChange={onChangeHandler} value={bPState.bgColor} />
 
-                  <Label for="title">
-                    <strong>Post Category</strong>
-                  </Label>
+              <Label for="title">
+                <strong>Post Category</strong>
+              </Label>
 
-                  <Input type="select" name="postCategory" placeholder="Category title..." className="mb-3" onChange={onChangeHandler} value={bPState.postCategory?._id}>
+              <Input type="select" name="postCategory" placeholder="Category title..." className="mb-3" onChange={onChangeHandler} value={bPState.postCategory?._id}>
 
-                    {!bPState.postCategory ?
-                      <option>-- Select a Category--</option> :
-                      null}
+                {!bPState.postCategory ?
+                  <option>-- Select a Category--</option> :
+                  null}
 
-                    {bPCategories?.map(bpCat =>
-                      <option key={bpCat._id} value={bpCat._id}>
-                        {bpCat.title}
-                      </option>)}
-                  </Input>
+                {bPCategories?.map(bpCat =>
+                  <option key={bpCat._id} value={bpCat._id}>
+                    {bpCat.title}
+                  </option>)}
+              </Input>
 
-                  <Label for="markdown">
-                    <strong>Markdown</strong>
-                  </Label>
+              <Label for="markdown">
+                <strong>Markdown</strong>
+              </Label>
 
-                  <Input type="textarea" name="markdown" minLength="80" rows="15" className="mb-2" onChange={onChangeHandler} value={bPState.markdown} />
+              <Input type="textarea" name="markdown" minLength="80" rows="15" className="mb-2" onChange={onChangeHandler} value={bPState.markdown} />
 
-                  {/* {post_image &&
+              {/* {post_image &&
                   <div className="my-3 mx-sm-5 px-sm-5 d-flex justify-content-center align-items-center">
                     <img className="my-2 mt-lg-0" src={post_image} alt="Blog post" />
                   </div>}
 
                 <CustomInput bsSize="sm" type="file" accept=".jpg, .png, .jpeg, .svg" name="post_image" onChange={onFileHandler} label="Replace image ..." id="post_image_pick" /> */}
 
-                  <Button color="success" style={{ marginTop: '2rem' }} block >Update</Button>
-                </FormGroup>
-              </Form>
-            </div>
-          </Col>
+              <Button color="success" style={{ marginTop: '2rem' }} block >Update</Button>
+            </FormGroup>
+          </Form>
+        </div>
+      </Col>
 
-          <Col sm="4" className="mt-md-2">
-            <UploadPostPhotos />
-            <YourImages />
-          </Col>
+      <Col sm="4" className="mt-md-2">
+        <UploadPostPhotos />
+        <YourImages />
+      </Col>
 
-        </Row>
-      </>
+    </Row>
+  </>
 };
 
 export default EditBlogPost;

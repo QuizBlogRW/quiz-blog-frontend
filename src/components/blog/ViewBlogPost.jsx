@@ -27,7 +27,7 @@ const fetchCountryData = async () => {
     const geoData = await geoResponse.json();
     return geoData.country;
   } catch (error) {
-    console.error(error);
+    console.error(error?.message);
     return null;
   }
 };

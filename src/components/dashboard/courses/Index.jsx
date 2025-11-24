@@ -1,10 +1,9 @@
-import { useState, useEffect, lazy, Suspense, useContext } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import {
   Row,
   Col,
   Breadcrumb,
   BreadcrumbItem,
-  Button,
   Collapse,
   Navbar,
   NavbarBrand,
@@ -35,8 +34,8 @@ import validators from '@/utils/validators';
 import CoursesHolder from './CoursesHolder';
 import CategoriesHome from './CategoriesHome';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
-import { logRegContext } from '@/contexts/appContexts';
 import DeleteModal from '@/utils/DeleteModal';
+import NotAuthenticated from '../../auth/NotAuthenticated';
 
 const InFeedAd = lazy(() => import('@/components/adsenses/InFeedAd'));
 
@@ -167,7 +166,6 @@ const Index = () => {
   );
   const catLoading = useSelector((state) => state.courseCategories.isLoading);
   const courses = useSelector((state) => state.courses);
-  const { toggleL } = useContext(logRegContext);
   const { user, isAuthenticated, isLoading } = useSelector(
     (state) => state.auth
   );
@@ -182,28 +180,8 @@ const Index = () => {
     dispatch(getCourseCategories());
   }, [dispatch]);
 
-  return !isAuthenticated ? (
-    <div className="vh-100 d-flex justify-content-center align-items-center text-danger">
-      {isLoading ? (
-        <QBLoadingSM title="course categories" />
-      ) : (
-        <Button
-          color="link"
-          className="fw-bolder my-5 border rounded"
-          onClick={toggleL}
-          style={{
-            backgroundColor: 'var(--accent)',
-            color: 'var(--brand)',
-            fontSize: '1.5vw',
-            boxShadow: '-2px 2px 1px 2px var(--brand)',
-            border: '2px solid var(--brand)',
-          }}
-        >
-          Login for Exclusive Notes Access
-        </Button>
-      )}
-    </div>
-  ) : (
+  if (!isAuthenticated) return <NotAuthenticated message='Login for Exclusive Notes Access' />;
+  return isLoading ? <QBLoadingSM /> : (
     <div className="course-notes px-3">
       <Row className="mt-lg-5">
         <Col>

@@ -58,77 +58,70 @@ const SingleQuestion = () => {
         });
     };
 
+    if (!isAuthenticated) return <NotAuthenticated />;
+    if (user?.role === 'Visitor') return <Dashboard />;
+    if (quest.isLoading) return <QBLoadingSM />;
+    if (!thisQuestion) return (
+        <Row className="m-3 p-3 text-danger d-flex justify-content-center align-items-center">
+            <Breadcrumb>
+                <BreadcrumbItem>
+                    Question unavailable!
+                </BreadcrumbItem>
+            </Breadcrumb>
+        </Row>
+    )
+
     return (
-        !isAuthenticated ?
-            <NotAuthenticated /> :
+        <div className="mt-2 mt-lg-5 mx-3 mx-lg-5 single-category view-question" key={thisQuestion && thisQuestion._id}>
+            <Row className="mb-0 mb-lg-3 mx-0">
+                <Breadcrumb>
+                    <BreadcrumbItem>
+                        <Link to={`/category/${thisQnCat && thisQnCat._id}`}>{thisQnCat && thisQnCat.title}</Link>
+                    </BreadcrumbItem>
+                    <BreadcrumbItem>
+                        <Link to={`/view-quiz/${thisQnQZ && thisQnQZ.slug}`}>{thisQnQZ && thisQnQZ.title}</Link>
+                    </BreadcrumbItem>
 
-            user.role === 'Visitor' ?
+                    <BreadcrumbItem active>View Question</BreadcrumbItem>
+                </Breadcrumb>
+            </Row>
 
-                <Dashboard /> :
+            <Row className="m-2 m-lg-4 d-block text-primary">
 
-                quest.isLoading ?
+                <div className="d-lg-flex my-3 justify-content-between align-items-baseline title-actions text-uppercase">
+                    <h4 className="mb-4">{thisQuestion && thisQuestion.questionText}</h4>
 
-                    <QBLoadingSM /> :
+                    {
+                        user.role?.includes('Admin') || (thisQnCrt && user._id === thisQnCrt._id) ?
 
-                    !thisQuestion ?
-                        <Row className="m-3 p-3 text-danger d-flex justify-content-center align-items-center">
-                            <Breadcrumb>
-                                <BreadcrumbItem>
-                                    Question unavailable!
-                                </BreadcrumbItem>
-                            </Breadcrumb>
-                        </Row> :
-                        <div className="mt-2 mt-lg-5 mx-3 mx-lg-5 single-category view-question" key={thisQuestion && thisQuestion._id}>
+                            <div className="actions d-flex align-items-center">
+                                <ChangeQuiz
+                                    questionID={thisQuestion && thisQuestion._id}
+                                    questionCatID={thisQnCat && thisQnCat._id}
+                                    oldQuizID={thisQnQZ && thisQnQZ._id} />
+                                <DeleteModal deleteFnName="deleteQuestion" deleteFn={deleteQuestion} delID={thisQuestion && thisQuestion._id} delTitle={thisQuestion && thisQuestion.questionText} />
 
-                            <Row className="mb-0 mb-lg-3 mx-0">
-                                <Breadcrumb>
-                                    <BreadcrumbItem>
-                                        <Link to={`/category/${thisQnCat && thisQnCat._id}`}>{thisQnCat && thisQnCat.title}</Link>
-                                    </BreadcrumbItem>
-                                    <BreadcrumbItem>
-                                        <Link to={`/view-quiz/${thisQnQZ && thisQnQZ.slug}`}>{thisQnQZ && thisQnQZ.title}</Link>
-                                    </BreadcrumbItem>
+                                <Link to={`/edit-question/${thisQuestion && thisQuestion._id}`} className="text-secondary">
+                                    <img src={EditIcon} alt="" width="16" height="16" className="mx-2" />
+                                </Link>
+                            </div> : null}
+                </div>
 
-                                    <BreadcrumbItem active>View Question</BreadcrumbItem>
-                                </Breadcrumb>
-                            </Row>
+                {thisQuestion.question_image &&
+                    <div className="my-3 mx-sm-5 px-sm-5 d-flex justify-content-center align-items-center">
+                        <img className="w-100 mt-2 mt-lg-0 mx-sm-5 px-sm-5" src={thisQuestion && thisQuestion.question_image} alt="Question Illustration" />
+                    </div>}
 
-                            <Row className="m-2 m-lg-4 d-block text-primary">
+                <ListGroup>
+                    {thisQuestion && renderAnswerOptions(thisQuestion.answerOptions)}
+                </ListGroup>
 
-                                <div className="d-lg-flex my-3 justify-content-between align-items-baseline title-actions text-uppercase">
-                                    <h4 className="mb-4">{thisQuestion && thisQuestion.questionText}</h4>
+            </Row>
 
-                                    {
-                                        user.role?.includes('Admin') || (thisQnCrt && user._id === thisQnCrt._id) ?
-
-                                            <div className="actions d-flex align-items-center">
-                                                <ChangeQuiz
-                                                    questionID={thisQuestion && thisQuestion._id}
-                                                    questionCatID={thisQnCat && thisQnCat._id}
-                                                    oldQuizID={thisQnQZ && thisQnQZ._id} />
-                                                <DeleteModal deleteFnName="deleteQuestion" deleteFn={deleteQuestion} delID={thisQuestion && thisQuestion._id} delTitle={thisQuestion && thisQuestion.questionText} />
-
-                                                <Link to={`/edit-question/${thisQuestion && thisQuestion._id}`} className="text-secondary">
-                                                    <img src={EditIcon} alt="" width="16" height="16" className="mx-2" />
-                                                </Link>
-                                            </div> : null}
-                                </div>
-
-                                {thisQuestion.question_image &&
-                                    <div className="my-3 mx-sm-5 px-sm-5 d-flex justify-content-center align-items-center">
-                                        <img className="w-100 mt-2 mt-lg-0 mx-sm-5 px-sm-5" src={thisQuestion && thisQuestion.question_image} alt="Question Illustration" />
-                                    </div>}
-
-                                <ListGroup>
-                                    {thisQuestion && renderAnswerOptions(thisQuestion.answerOptions)}
-                                </ListGroup>
-
-                            </Row>
-
-                            <Row className='d-flex flex-column my-4'>
-                                <QuestionComments questionID={thisQuestion._id} quizID={thisQnQZ._id} fromSingleQuestion={true} />
-                            </Row>
-                        </div>
+            <Row className='d-flex flex-column my-4'>
+                <QuestionComments questionID={thisQuestion._id} quizID={thisQnQZ._id} fromSingleQuestion={true} />
+            </Row>
+        </div>
     );
 };
 

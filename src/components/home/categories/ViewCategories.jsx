@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 
 const ViewCategories = () => {
+    
     const [openCategoryId, setOpenCategoryId] = useState(null);
     const { allcategories, isLoading } = useSelector(state => state.categories);
 

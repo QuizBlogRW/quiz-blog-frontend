@@ -177,9 +177,11 @@ const authSlice = createSlice({
     },
     clearToken: (state, action) => {
       localStorage.removeItem('token');
+      console.log('Cleared in clearToken');
       state.token = null;
     },
     clearLastLogin: (state, action) => {
+      console.log('Cleared in clearToken');
       localStorage.removeItem('confirmLogin');
       state.confirmLogin = null;
     },
@@ -194,12 +196,8 @@ const authSlice = createSlice({
     builder.addCase(loadUser.fulfilled, (state, action) => {
       state.isLoading = false;
 
-      // check if current token is still valid. if not, logout user
-      if (
-        !action.payload.current_token ||
-        !state.token ||
-        action.payload.current_token !== state.token
-      ) {
+      // Check if current token is still valid: Equal to the new token
+      if (!action.payload.current_token || !state.token || action.payload.current_token !== state.token) {
         state.isAuthenticated = false;
         state.user = null;
         localStorage.removeItem('token');
@@ -207,15 +205,22 @@ const authSlice = createSlice({
       } else {
         state.isAuthenticated = true;
         state.user = action.payload;
+        state.token = action.payload.current_token;
+        localStorage.setItem('token', action.payload.current_token);
+        localStorage.setItem('user', JSON.stringify(action.payload));
       }
     });
     builder.addCase(login.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isAuthenticated = true;
-      state.user = action.payload.user;
+      state.user = action.payload;
+      state.token = action.payload.current_token;
       localStorage.setItem('token', action.payload.current_token);
-      localStorage.setItem('user', JSON.stringify(action.payload.user));
-      notify(`Welcome ${action.payload.user.name}!`);
+      localStorage.setItem('user', JSON.stringify(action.payload));
+      notify(`Welcome ${action.payload.name}!`);
+
+      // reload after 2 seconds
+      // setTimeout(() => window.location.reload(), 2000);
     });
     builder.addCase(register.fulfilled, (state, action) => {
       state.isLoading = false;
@@ -228,6 +233,7 @@ const authSlice = createSlice({
       state.isLoading = false;
       state.isAuthenticated = true;
       state.user = action.payload.user;
+      state.token = action.payload.current_token;
       localStorage.setItem('token', action.payload.current_token);
       localStorage.setItem('user', JSON.stringify(action.payload.user));
       notify('Account verified! Welcome to Quiz-Blog!');
@@ -238,6 +244,7 @@ const authSlice = createSlice({
       state.user = null;
       state.token = null;
       state.confirmLogin = null;
+      console.log('Cleared in logout');
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       localStorage.removeItem('confirmLogin');

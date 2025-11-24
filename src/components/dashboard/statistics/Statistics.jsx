@@ -13,16 +13,16 @@ const Statistics = () => {
   const toggleSidebar = () => setSidebarOpen(!sidebarIsOpen);
   const { isLoading, isAuthenticated, user } = useSelector(state => state.auth);
 
+  if (!isAuthenticated) {
+    return <NotAuthenticated />;
+  }
+
   if (isLoading) {
     return (
       <div className="vh-100 d-flex justify-content-center align-items-center text-danger">
         <QBLoadingSM />
       </div>
     );
-  }
-
-  if (!isAuthenticated) {
-    return <NotAuthenticated />;
   }
 
   if (user?.role === 'Visitor') {

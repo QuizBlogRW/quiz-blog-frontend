@@ -22,7 +22,7 @@ const Logout = ({ userId, logoutModal, toggleLogoutModal }) => {
       </DropdownItem>
 
       <Modal isOpen={logoutModal} toggle={toggleLogoutModal} centered={true}>
-  <div className="d-flex justify-content-between align-items-center pt-0 fw-bolder" style={{ color: 'var(--brand)' }}>
+        <div className="d-flex justify-content-between align-items-center pt-0 fw-bolder" style={{ color: 'var(--brand)' }}>
           Are you sure you want to logout?
           <Button className="btn-danger text-uppercase text-red" style={{ padding: '0.1rem 0.3rem', fontSize: '.6rem', fontWeight: 'bold' }}>
             X
@@ -31,11 +31,11 @@ const Logout = ({ userId, logoutModal, toggleLogoutModal }) => {
 
         <ModalBody className='d-flex justify-content-around align-items-center'>
 
-          <Button style={{ marginTop: '2rem', backgroundColor: 'red' }} onClick={logingout}>
+          <Button style={{ marginTop: '2rem', backgroundColor: 'red', color: '#fff' }} onClick={logingout}>
             Logout
           </Button>
 
-          <Button style={{ marginTop: '2rem', backgroundColor: 'var(--brand)' }} onClick={toggleLogoutModal}>
+          <Button style={{ marginTop: '2rem', backgroundColor: 'var(--brand)', color: '#fff' }} onClick={toggleLogoutModal}>
             Cancel
           </Button>
 

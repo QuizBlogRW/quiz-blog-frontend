@@ -20,27 +20,23 @@ const Unsubscribe = () => {
         setUnsubscribed(true);
     };
 
-    return (
+    if (!isAuthenticated) return <NotAuthenticated />;
+    return (<Container className="forgot-password mt-4">
+        <Row className="mt-5 d-block text-center">
 
-        isAuthenticated ?
+            {unsubscribed ?
+                <h6 className="fw-bolder my-5 py-5 text-success">
+                    You have unsubscribed from Quiz-Blog! you will no longer receive updates.
+                </h6> :
 
-            <Container className="forgot-password mt-4">
-                <Row className="mt-5 d-block text-center">
+                <h6 className="fw-bolder my-5 py-5 text-dark">
+                    Are sure, you want to unsubscribe? click here to &nbsp;
+                    <Link to="#/" onClick={onUnsubscribe}>unsubscribe</Link>
+                </h6>
+            }
 
-                    {unsubscribed ?
-                        <h6 className="fw-bolder my-5 py-5 text-success">
-                            You have unsubscribed from Quiz-Blog! you will no longer receive updates.
-                        </h6> :
-
-                        <h6 className="fw-bolder my-5 py-5 text-dark">
-                            Are sure, you want to unsubscribe? click here to &nbsp;
-                            <Link to="#/" onClick={onUnsubscribe}>unsubscribe</Link>
-                        </h6>
-                    }
-
-                </Row>
-            </Container> :
-            <NotAuthenticated />
+        </Row>
+    </Container>
     );
 };
 

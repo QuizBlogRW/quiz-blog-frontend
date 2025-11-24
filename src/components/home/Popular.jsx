@@ -35,9 +35,6 @@ const Popular = () => {
                         <u>Top 3 Popular Quizzes Today</u>
                     </h6>
 
-{
-    console.log(popularQuizzes)
-}
                     {!isLoading ? (
                         <ListGroup flush>
                             {popularQuizzes.map((quiz, index) => (

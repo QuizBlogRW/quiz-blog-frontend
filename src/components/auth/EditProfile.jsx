@@ -126,170 +126,201 @@ const EditProfile = () => {
     };
     dispatch(updateProfile(updatedProfile));
   };
+  if (!isAuthenticated) return <NotAuthenticated />;
+  return <Form
+    className="my-3 mt-lg-5 mx-3 mx-lg-5 edit-question"
+    onSubmit={handleSubmit}
+  >
+    <Row className="mb-0 mb-lg-3 mx-0">
+      <Breadcrumb>
+        <BreadcrumbItem>{user?.name}</BreadcrumbItem>
+        <BreadcrumbItem>{user?.email}</BreadcrumbItem>
+        <BreadcrumbItem active>Edit Profile</BreadcrumbItem>
+      </Breadcrumb>
+    </Row>
 
-  return !isAuthenticated ?
-    <NotAuthenticated /> :
-    <Form
-      className="my-3 mt-lg-5 mx-3 mx-lg-5 edit-question"
-      onSubmit={handleSubmit}
-    >
-      <Row className="mb-0 mb-lg-3 mx-0">
-        <Breadcrumb>
-          <BreadcrumbItem>{user?.name}</BreadcrumbItem>
-          <BreadcrumbItem>{user?.email}</BreadcrumbItem>
-          <BreadcrumbItem active>Edit Profile</BreadcrumbItem>
-        </Breadcrumb>
-      </Row>
+    <FormGroup row className="mx-0">
+      <Label sm={3}>Update Name</Label>
+      <Col sm={7}>
+        <Input
+          type="text"
+          name="name"
+          value={profileState.name || ''}
+          placeholder="Name here ..."
+          onChange={handleInputChange}
+        />
+      </Col>
+      <Col sm={2}>
+        <Input
+          disabled
+          type="text"
+          value="Current Record"
+          className="text-success"
+        />
+      </Col>
+    </FormGroup>
 
+    <FormGroup row className="mx-0">
+      <Label sm={3}>Update School</Label>
+      <Col sm={7}>
+        <Input
+          type="select"
+          className="form-control"
+          onChange={(e) =>
+            handleSelectChange(e, 'school', fetchSchoolLevels, schools)
+          }
+          value={profileState.school?._id || ''}
+          required
+        >
+          {profileState.school ? (
+            <option>{profileState.school.title}</option>
+          ) : (
+            <option>-- Select your school--</option>
+          )}
+          {schools.map((school) => (
+            <option key={school._id} value={school._id}>
+              {school.title}
+            </option>
+          ))}
+        </Input>
+      </Col>
+      <Col sm={2}>
+        <Input
+          disabled
+          type="text"
+          value={profileState.school?.title || ''}
+          style={{ color: 'var(--brand)' }}
+        />
+      </Col>
+    </FormGroup>
+
+    <FormGroup row className={'mx-0'}>
+      <Label sm={3}>Update Level</Label>
+      <Col sm={7}>
+        <Input
+          type="select"
+          className="form-control"
+          onChange={(e) =>
+            handleSelectChange(e, 'level', fetchLevelFaculties, schoolLevels)
+          }
+          value={profileState.level?._id || ''}
+          required
+        >
+          {profileState.level ? (
+            <option>{profileState.level.title}</option>
+          ) : (
+            <option>-- Select your level--</option>
+          )}
+          {schoolLevels.map((level) => (
+            <option key={level._id} value={level._id}>
+              {level.title}
+            </option>
+          ))}
+        </Input>
+      </Col>
+      <Col sm={2}>
+        <Input disabled type="text" value={profileState.level?.title || ''} />
+      </Col>
+    </FormGroup>
+
+    <FormGroup row className={'mx-0'}>
+      <Label sm={3}>Update Faculty</Label>
+      <Col sm={7}>
+        <Input
+          type="select"
+          className="form-control"
+          onChange={(e) =>
+            handleSelectChange(e, 'faculty', null, levelFaculties)
+          }
+          value={profileState.faculty?._id || ''}
+          required
+        >
+          {profileState.faculty ? (
+            <option>{profileState.faculty.title}</option>
+          ) : (
+            <option>-- Select your faculty--</option>
+          )}
+          {levelFaculties.map((faculty) => (
+            <option key={faculty._id} value={faculty._id}>
+              {faculty.title}
+            </option>
+          ))}
+        </Input>
+      </Col>
+      <Col sm={2}>
+        <Input
+          disabled
+          type="text"
+          value={profileState.faculty?.title || ''}
+        />
+      </Col>
+    </FormGroup>
+
+    <FormGroup row className={'mx-0'}>
+      <Label sm={3}>Update Year</Label>
+      <Col sm={7}>
+        <Input
+          type="select"
+          className="form-control"
+          onChange={(e) => handleSelectChange(e, 'year')}
+          value={profileState.year || ''}
+          required
+        >
+          {profileState.year ? (
+            <option>{profileState.year}</option>
+          ) : (
+            <option>-- Select your year--</option>
+          )}
+          {yearsState.map((year) => (
+            <option key={year} value={year}>
+              {year}
+            </option>
+          ))}
+        </Input>
+      </Col>
+      <Col sm={2}>
+        <Input disabled type="text" value={profileState.year || ''} />
+      </Col>
+    </FormGroup>
+
+    {interestsState.length < 1 ? (
       <FormGroup row className="mx-0">
-        <Label sm={3}>Update Name</Label>
-        <Col sm={7}>
-          <Input
-            type="text"
-            name="name"
-            value={profileState.name || ''}
-            placeholder="Name here ..."
-            onChange={handleInputChange}
-          />
-        </Col>
-        <Col sm={2}>
-          <Input
-            disabled
-            type="text"
-            value="Current Record"
-            className="text-success"
-          />
-        </Col>
-      </FormGroup>
-
-      <FormGroup row className="mx-0">
-        <Label sm={3}>Update School</Label>
-        <Col sm={7}>
-          <Input
-            type="select"
-            className="form-control"
-            onChange={(e) =>
-              handleSelectChange(e, 'school', fetchSchoolLevels, schools)
-            }
-            value={profileState.school?._id || ''}
-            required
+        <Label sm={3}>Update Interest</Label>
+        <Col sm={9} className="my-3 my-sm-2">
+          <strong className="text-info">Add Favorite Subject &nbsp;</strong>
+          <Button
+            className="px-2 py-1"
+            color="success"
+            onClick={handleAddInterest}
           >
-            {profileState.school ? (
-              <option>{profileState.school.title}</option>
-            ) : (
-              <option>-- Select your school--</option>
-            )}
-            {schools.map((school) => (
-              <option key={school._id} value={school._id}>
-                {school.title}
-              </option>
-            ))}
-          </Input>
-        </Col>
-        <Col sm={2}>
-          <Input
-            disabled
-            type="text"
-            value={profileState.school?.title || ''}
-            style={{ color: 'var(--brand)' }}
-          />
+            {' '}
+            +{' '}
+          </Button>{' '}
         </Col>
       </FormGroup>
-
-      <FormGroup row className={'mx-0'}>
-        <Label sm={3}>Update Level</Label>
-        <Col sm={7}>
-          <Input
-            type="select"
-            className="form-control"
-            onChange={(e) =>
-              handleSelectChange(e, 'level', fetchLevelFaculties, schoolLevels)
-            }
-            value={profileState.level?._id || ''}
-            required
-          >
-            {profileState.level ? (
-              <option>{profileState.level.title}</option>
-            ) : (
-              <option>-- Select your level--</option>
-            )}
-            {schoolLevels.map((level) => (
-              <option key={level._id} value={level._id}>
-                {level.title}
-              </option>
-            ))}
-          </Input>
-        </Col>
-        <Col sm={2}>
-          <Input disabled type="text" value={profileState.level?.title || ''} />
-        </Col>
-      </FormGroup>
-
-      <FormGroup row className={'mx-0'}>
-        <Label sm={3}>Update Faculty</Label>
-        <Col sm={7}>
-          <Input
-            type="select"
-            className="form-control"
-            onChange={(e) =>
-              handleSelectChange(e, 'faculty', null, levelFaculties)
-            }
-            value={profileState.faculty?._id || ''}
-            required
-          >
-            {profileState.faculty ? (
-              <option>{profileState.faculty.title}</option>
-            ) : (
-              <option>-- Select your faculty--</option>
-            )}
-            {levelFaculties.map((faculty) => (
-              <option key={faculty._id} value={faculty._id}>
-                {faculty.title}
-              </option>
-            ))}
-          </Input>
-        </Col>
-        <Col sm={2}>
-          <Input
-            disabled
-            type="text"
-            value={profileState.faculty?.title || ''}
-          />
-        </Col>
-      </FormGroup>
-
-      <FormGroup row className={'mx-0'}>
-        <Label sm={3}>Update Year</Label>
-        <Col sm={7}>
-          <Input
-            type="select"
-            className="form-control"
-            onChange={(e) => handleSelectChange(e, 'year')}
-            value={profileState.year || ''}
-            required
-          >
-            {profileState.year ? (
-              <option>{profileState.year}</option>
-            ) : (
-              <option>-- Select your year--</option>
-            )}
-            {yearsState.map((year) => (
-              <option key={year} value={year}>
-                {year}
-              </option>
-            ))}
-          </Input>
-        </Col>
-        <Col sm={2}>
-          <Input disabled type="text" value={profileState.year || ''} />
-        </Col>
-      </FormGroup>
-
-      {interestsState.length < 1 ? (
-        <FormGroup row className="mx-0">
+    ) : (
+      interestsState.map((interest, index) => (
+        <FormGroup row className="mx-0" key={index}>
           <Label sm={3}>Update Interest</Label>
-          <Col sm={9} className="my-3 my-sm-2">
-            <strong className="text-info">Add Favorite Subject &nbsp;</strong>
+          <Col sm={7}>
+            <Input
+              type="text"
+              name="favorite"
+              value={interest.favorite || ''}
+              placeholder="New interest here ..."
+              onChange={(e) => handleInterestsChange(index, e)}
+            />
+          </Col>
+          <Col sm={2} className="my-3 my-sm-2">
+            <Button
+              className="px-2 py-1"
+              disabled={interestsState.length <= 1}
+              color="danger"
+              onClick={() => handleRemoveInterest(index)}
+            >
+              {' '}
+              -{' '}
+            </Button>{' '}
             <Button
               className="px-2 py-1"
               color="success"
@@ -300,69 +331,36 @@ const EditProfile = () => {
             </Button>{' '}
           </Col>
         </FormGroup>
-      ) : (
-        interestsState.map((interest, index) => (
-          <FormGroup row className="mx-0" key={index}>
-            <Label sm={3}>Update Interest</Label>
-            <Col sm={7}>
-              <Input
-                type="text"
-                name="favorite"
-                value={interest.favorite || ''}
-                placeholder="New interest here ..."
-                onChange={(e) => handleInterestsChange(index, e)}
-              />
-            </Col>
-            <Col sm={2} className="my-3 my-sm-2">
-              <Button
-                className="px-2 py-1"
-                disabled={interestsState.length <= 1}
-                color="danger"
-                onClick={() => handleRemoveInterest(index)}
-              >
-                {' '}
-                -{' '}
-              </Button>{' '}
-              <Button
-                className="px-2 py-1"
-                color="success"
-                onClick={handleAddInterest}
-              >
-                {' '}
-                +{' '}
-              </Button>{' '}
-            </Col>
-          </FormGroup>
-        ))
-      )}
+      ))
+    )}
 
-      <FormGroup row className="mx-0">
-        <Label sm={3}>Update About You</Label>
-        <Col sm={9}>
-          <Input
-            type="textarea"
-            name="about"
-            placeholder="about you ..."
-            minLength="5"
-            maxLength="2000"
-            onChange={handleInputChange}
-            value={profileState.about || ''}
-          />
-        </Col>
-      </FormGroup>
+    <FormGroup row className="mx-0">
+      <Label sm={3}>Update About You</Label>
+      <Col sm={9}>
+        <Input
+          type="textarea"
+          name="about"
+          placeholder="about you ..."
+          minLength="5"
+          maxLength="2000"
+          onChange={handleInputChange}
+          value={profileState.about || ''}
+        />
+      </Col>
+    </FormGroup>
 
-      <FormGroup check row className="mx-0 mt-md-4">
-        <Col sm={{ size: 10, offset: 2 }} className="pl-0">
-          <Button
-            className="btn btn-info text-white"
-            type="submit"
-            style={{ backgroundColor: 'var(--brand)' }}
-          >
-            Update
-          </Button>
-        </Col>
-      </FormGroup>
-    </Form>
+    <FormGroup check row className="mx-0 mt-md-4">
+      <Col sm={{ size: 10, offset: 2 }} className="pl-0">
+        <Button
+          className="btn btn-info text-white"
+          type="submit"
+          style={{ backgroundColor: 'var(--brand)' }}
+        >
+          Update
+        </Button>
+      </Col>
+    </FormGroup>
+  </Form>
 };
 
 export default EditProfile;

@@ -53,7 +53,9 @@ const ViewNotePaper = () => {
     dispatch(saveDownload(newDownload));
   };
 
-  return !isAuthenticated ? <NotAuthenticated /> :
+  if (!isAuthenticated) return <NotAuthenticated />;
+
+  return (
     user.role === 'Visitor' ? <Dashboard /> :
       noteDownload.isOneNotePaperLoading ? <QBLoadingSM /> :
         !notes_file ?
@@ -133,6 +135,7 @@ const ViewNotePaper = () => {
               </div>
             </article>
           </main>
+  );
 };
 
 export default ViewNotePaper;

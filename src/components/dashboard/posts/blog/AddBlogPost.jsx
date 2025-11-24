@@ -68,64 +68,62 @@ const AddBlogPost = () => {
         setPost_image('');
     };
 
-    return (
-        !isAuthenticated ?
-            <NotAuthenticated /> :
 
-            !isAuthorized ?
-                <Alert color="danger" className='m-5 text-center'>Access Denied!</Alert> :
-                <>
-                    <Row className="p-2 pt-lg-5">
+    if (!isAuthenticated) return <NotAuthenticated />;
+    if (user?.role === 'Visitor') return <Dashboard />;
+    if (!isAuthorized) return <Alert color="danger" className='m-5 text-center'>Access Denied!</Alert>;
 
-                        <Col sm="8" className="mt-md-2">
-                            <Breadcrumb>
-                                <BreadcrumbItem active>Create new blog post</BreadcrumbItem>
-                            </Breadcrumb>
+    return (<><Row className="p-2 pt-lg-5">
+
+        <Col sm="8" className="mt-md-2">
+            <Breadcrumb>
+                <BreadcrumbItem active>Create new blog post</BreadcrumbItem>
+            </Breadcrumb>
 
 
-                            <div className="px-2">
-                                <Form onSubmit={onSubmitHandler}>
+            <div className="px-2">
+                <Form onSubmit={onSubmitHandler}>
 
-                                    <FormGroup>
+                    <FormGroup>
 
-                                        <Label for="title">
-                                            <strong className='text-success'>Title</strong>
-                                        </Label>
+                        <Label for="title">
+                            <strong className='text-success'>Title</strong>
+                        </Label>
 
-                                        <Input type="text" name="title" placeholder="Blog post title ..." className="mb-3" onChange={onChangeHandler} value={bPState.title || ''} />
+                        <Input type="text" name="title" placeholder="Blog post title ..." className="mb-3" onChange={onChangeHandler} value={bPState.title || ''} />
 
-                                        <Label for="bgColor">
-                                            <strong className='text-success'>Background color</strong>
-                                        </Label>
+                        <Label for="bgColor">
+                            <strong className='text-success'>Background color</strong>
+                        </Label>
 
-                                        <Input type="text" name="bgColor" placeholder="Type the post background color ..." className="mb-3" onChange={onChangeHandler} value={bPState.bgColor || ''} />
+                        <Input type="text" name="bgColor" placeholder="Type the post background color ..." className="mb-3" onChange={onChangeHandler} value={bPState.bgColor || ''} />
 
-                                        <Label for="markdown">
-                                            <strong className='text-success'>Markdown</strong>
-                                        </Label>
+                        <Label for="markdown">
+                            <strong className='text-success'>Markdown</strong>
+                        </Label>
 
-                                        <Input type="textarea" name="markdown" placeholder="Blog post details ..." minLength="100" rows="15" className="mb-2" onChange={onChangeHandler} value={bPState.markdown || ''} />
+                        <Input type="textarea" name="markdown" placeholder="Blog post details ..." minLength="100" rows="15" className="mb-2" onChange={onChangeHandler} value={bPState.markdown || ''} />
 
-                                        <Label for="post_image">
-                                            <strong className='text-success'>Representing Image</strong>&nbsp;
-                                            <small className="text-info">.jpg, .png, .jpeg, .svg</small>
-                                        </Label>
-                                        <Col>
-                                            <Input bsSize="sm" type="file" accept=".jpg, .png, .jpeg, .svg" name="post_image" onChange={onFileHandler} label="Pick an image ..." id="post_image_pick" required />
-                                        </Col>
-
-                                        <Button color="success" style={{ marginTop: '2rem' }} block >Create</Button>
-                                    </FormGroup>
-                                </Form>
-                            </div>
+                        <Label for="post_image">
+                            <strong className='text-success'>Representing Image</strong>&nbsp;
+                            <small className="text-info">.jpg, .png, .jpeg, .svg</small>
+                        </Label>
+                        <Col>
+                            <Input bsSize="sm" type="file" accept=".jpg, .png, .jpeg, .svg" name="post_image" onChange={onFileHandler} label="Pick an image ..." id="post_image_pick" required />
                         </Col>
 
-                        <Col sm="4" className="mt-md-2">
-                            <UploadPostPhotos />
-                            <YourImages />
-                        </Col>
-                    </Row>
-                </>
+                        <Button color="success" style={{ marginTop: '2rem' }} block >Create</Button>
+                    </FormGroup>
+                </Form>
+            </div>
+        </Col>
+
+        <Col sm="4" className="mt-md-2">
+            <UploadPostPhotos />
+            <YourImages />
+        </Col>
+    </Row>
+    </>
     );
 };
 
