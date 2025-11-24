@@ -61,7 +61,7 @@ const SystemDashboard = () => {
     if (loading && !SummaryStats) {
         return (
             <div className="d-flex justify-content-center align-items-center" style={{ height: '400px' }}>
-                <Spinner color="primary" size="sm" />
+                <Spinner color="success" size="sm" />
                 <span className="ms-3">Loading system statistics...</span>
             </div>
         );

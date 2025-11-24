@@ -67,7 +67,7 @@ const ResetPassword = () => {
                     {/* Google square ad */}
                     <Row className='w-100'>
                         <Col sm="12">
-                            {process.env.NODE_ENV !== 'development' ? <SquareAd /> : null}
+                            <SquareAd />
                         </Col>
                     </Row>
                     <Form className="my-4" onSubmit={onSubmitHandler}>
@@ -96,7 +96,7 @@ const ResetPassword = () => {
                     <Row className='w-100'>
                         <Col sm="12">
                             <div className='w-100'>
-                                {process.env.NODE_ENV !== 'development' ? <ResponsiveAd /> : null}
+                                <ResponsiveAd />
                             </div>
                         </Col>
                     </Row>

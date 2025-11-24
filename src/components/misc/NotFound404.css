@@ -1,0 +1,22 @@
+.fade-slide {
+    transform: translateY(8px);
+    opacity: 0;
+    transition: transform 0.42s cubic-bezier(.2, .8, .2, 1), opacity 0.42s ease;
+}
+
+.fade-slide.visible {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.btn-primary {
+    background-color: var(--brand);
+    border-color: var(--brand);
+    color: var(--accent);
+}
+
+.btn-secondary {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: var(--brand);
+}

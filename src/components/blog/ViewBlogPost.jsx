@@ -16,7 +16,6 @@ import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 import './viewPost.css';
 import ResponsiveAd from '../adsenses/ResponsiveAd';
 
-// Function to fetch IP address and country
 const fetchCountryData = async () => {
   try {
     const ipResponse = await fetch('https://api.ipify.org?format=json');
@@ -36,14 +35,14 @@ const fetchCountryData = async () => {
 const ViewBlogPost = () => {
   const dispatch = useDispatch();
   const { bPSlug } = useParams();
-  const { oneBlogPost } = useSelector((state) => state.blogPosts);
-
-  const { _id, title, postCategory, creator, createdAt, markdown, post_image } = oneBlogPost;
-  const formattedDate = moment(new Date(createdAt)).format('DD MMM YYYY, HH:mm');
 
   useEffect(() => {
     dispatch(getOneBlogPost(bPSlug));
   }, [dispatch, bPSlug]);
+
+  const { oneBlogPost, isLoading } = useSelector((state) => state.blogPosts);
+  const { _id, title, postCategory, creator, createdAt, markdown, post_image } = oneBlogPost;
+  const formattedDate = moment(new Date(createdAt)).format('DD MMM YYYY, HH:mm');
 
   const bPCatID = postCategory?._id;
   const { user } = useSelector((state) => state.auth);
@@ -98,6 +97,7 @@ const ViewBlogPost = () => {
     return () => obs.disconnect();
   }, [authorRef, oneBlogPost]);
 
+  if (!oneBlogPost) return null;
   return (
     <Container
       className="blog-post-view p-0 p-lg-5 mw-100"
@@ -109,14 +109,14 @@ const ViewBlogPost = () => {
           md="12"
           className="mx-0 py-2 px-0 pl-lg-2 ps-lg-4 choosen-blogPost my-lg-3"
         >
-          {bposts.isLoading ? (
+          {isLoading ? (
             <QBLoadingSM />
           ) : (
             <article className="post-article px-2 px-lg-3 py-lg-4 bg-white rounded-2 shadow-sm my-lg-3">
               <BackLikeShare
                 articleName={title}
                 articleCreator={
-                  creator.name
+                  creator?.name
                 }
               />
               <header className="mb-3 text-center my-lg-5">
@@ -125,7 +125,7 @@ const ViewBlogPost = () => {
                 </h1>
                 <div className="meta text-muted small">
                   <strong style={{ color: 'var(--brand)' }}>
-                    {creator.name}
+                    {creator?.name}
                   </strong>
                   &nbsp;•&nbsp;
                   {formattedDate === 'Invalid date' ? '' : formattedDate}
@@ -163,11 +163,10 @@ const ViewBlogPost = () => {
                     <img
                       src={
                         (oneBlogPost &&
-                          creator &&
-                          creator.avatar) ||
+                          creator?.avatar) ||
                         altImage
                       }
-                      alt={creator.name}
+                      alt={creator?.name}
                     />
                   </div>
                 </div>
@@ -176,7 +175,7 @@ const ViewBlogPost = () => {
                   <BackLikeShare
                     articleName={title}
                     articleCreator={
-                      creator.name
+                      creator?.name
                     }
                   />
                 </div>

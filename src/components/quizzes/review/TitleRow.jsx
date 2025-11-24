@@ -4,42 +4,83 @@ import { PDFDownloadLink } from '@react-pdf/renderer';
 import { useSelector } from 'react-redux';
 
 const TitleRow = ({ thisReview, score, qnsAll, curRevQn, currentQuestion }) => {
-
     const { user } = useSelector(state => state.auth);
 
+    const scorePercent = Math.round((score * 100) / qnsAll.length);
+
     return (
-        <Row>
-            <Col>
-                <div className="mb-sm-5 d-flex justify-content-around">
-                    <Button outline color="success" size="sm">
-                        <a href="/dashboard" className="text-dark">Dashboard</a>
+        <Row className="justify-content-center">
+            <Col lg={10} className="text-center">
+
+                {/* Top action row */}
+                <div className="d-flex flex-wrap gap-3 justify-content-center align-items-center mb-4 mb-sm-5">
+
+                    {/* Dashboard Button */}
+                    <Button
+                        outline
+                        color="success"
+                        size="sm"
+                        tag="a"
+                        href="/dashboard"
+                        className="fw-bold px-3"
+                    >
+                        Dashboard
                     </Button>
 
-                    <span>
-                        <p className="text-primary d-inline">Reviewing ...</p>
-                        <small style={{ color: 'var(--accent)', fontWeight: 'bolder' }}>
-                            &nbsp; Score: ~{Math.round(score * 100 / qnsAll.length)}%
+                    {/* Title + Score */}
+                    <div className="text-center">
+                        <p className="text-primary fw-bold d-inline mb-0">
+                            Reviewing...
+                        </p>
+                        <small
+                            className="fw-bolder ms-2"
+                            style={{ color: 'var(--accent)' }}
+                        >
+                            Score: ~{scorePercent}%
                         </small>
-                    </span>
+                    </div>
 
-                    {user?.role?.includes('Admin') &&
-                        <PDFDownloadLink document={<PdfDocument review={thisReview} />} className="mt-sm-0 share-btn mx-1 mx-md-0" fileName={`${thisReview && thisReview.title}-shared-by-Quiz-Blog.pdf`}>
-                            {({ blob, url, loading, error }) => loading ? <small className="text-warning">Loading document...</small> :
-                                <Button color="success"
-                                    className="mt-sm-0 share-btn mx-1 mx-md-0">
-                                    Download PDF
-                                </Button>
+                    {/* PDF Download */}
+                    {user?.role?.includes('Admin') && (
+                        <PDFDownloadLink
+                            document={<PdfDocument review={thisReview} />}
+                            fileName={`${thisReview?.title}-shared-by-Quiz-Blog.pdf`}
+                            className="text-decoration-none"
+                        >
+                            {({ loading }) =>
+                                loading ? (
+                                    <small className="text-warning">Loading document...</small>
+                                ) : (
+                                    <Button
+                                        color="success"
+                                        size="sm"
+                                        className="fw-bold px-3"
+                                    >
+                                        Download PDF
+                                    </Button>
+                                )
                             }
-                        </PDFDownloadLink>}
+                        </PDFDownloadLink>
+                    )}
                 </div>
 
-                <div className='question-section my-4 mt-sm-5 mx-auto w-75'>
-                    <h4 className='question-count text-uppercase text-center text-secondary fw-bolder'>
-                        <span>Question <b style={{ color: 'var(--brand)' }}>{currentQuestion + 1}</b></span>/{qnsAll.length}
+                {/* Question section */}
+                <div className="question-section mx-auto my-4 p-3 p-sm-4 rounded border shadow-sm"
+                    style={{ maxWidth: "700px" }}
+                >
+                    <h4 className="question-count text-uppercase fw-bolder text-secondary mb-3">
+                        Question{" "}
+                        <span style={{ color: "var(--brand)" }}>
+                            {currentQuestion + 1}
+                        </span>{" "}
+                        / {qnsAll.length}
                     </h4>
-                    <h5 className='q-txt my-4 fw-bolder text-center'>{curRevQn && curRevQn.questionText}</h5>
 
+                    <h5 className="q-txt fw-bolder text-dark text-center my-3">
+                        {curRevQn?.questionText}
+                    </h5>
                 </div>
+
             </Col>
         </Row>
     );

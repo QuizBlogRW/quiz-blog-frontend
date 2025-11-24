@@ -8,52 +8,65 @@ import whatsapp from '@/images/whatsapp.jpg';
 
 const HeaderFooter = ({ styles, fromFooter }) => {
 
+    const iconStyle = {
+        width: 24,
+        height: 24,
+        marginHorizontal: 4,
+        borderRadius: 4,
+        border: '1px solid var(--brand)',
+        objectFit: 'cover'
+    };
+
+    const contactTextStyle = {
+        marginVertical: 4,
+        fontSize: 10,
+        lineHeight: 1.2
+    };
+
     return (
-    <View style={{ backgroundColor: 'var(--brand)', padding: '5px 10px' }}>
-            <View style={styles.reviewHeader}>
+        <View style={{ backgroundColor: 'var(--brand)', paddingVertical: 10, paddingHorizontal: 15, borderRadius: 8 }}>
+            <View style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                marginBottom: 10
+            }}>
+                {/* Logo */}
                 <Image src={logo} style={styles.reviewHeaderImage} />
-                <View className="social-network social-circle" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                    <Link src="https://api.whatsapp.com/send?phone=250780579067" style={{ color: '#fff', textDecoration: 'none' }}>
-                        <Image src={whatsapp} style={{ width: '24px', margin: '4px', borderRadius: '4px', border: '1px solid var(--brand)' }} />
-                    </Link>
-                    <Link src="https://www.facebook.com/QuizblogRw/" style={{ color: '#fff', textDecoration: 'none' }}>
-                        <Image src={facebook} style={{ width: '24px', margin: '4px', borderRadius: '4px', border: '1px solid var(--brand)' }} />
-                    </Link>
-                    <Link src="https://www.linkedin.com/company/quiz-blog/" style={{ color: '#fff', textDecoration: 'none' }}>
-                        <Image src={linkedin} style={{ width: '24px', margin: '4px', borderRadius: '4px', border: '1px solid var(--brand)' }} />
-                    </Link>
-                    <Link src="https://www.instagram.com/quizblogrw/" style={{ color: '#fff', textDecoration: 'none' }}>
-                        <Image src={instagram} style={{ width: '24px', margin: '4px', borderRadius: '4px', border: '1px solid var(--brand)' }} />
-                    </Link>
-                    <Link src="https://twitter.com/QuizblogRw" style={{ color: '#fff', textDecoration: 'none' }}>
-                        <Image src={twitter} style={{ width: '24px', margin: '4px', borderRadius: '4px', border: '1px solid var(--brand)' }} />
-                    </Link>
+
+                {/* Social Icons */}
+                <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginVertical: 5 }}>
+                    <Link src="https://api.whatsapp.com/send?phone=250780579067"><Image src={whatsapp} style={iconStyle} /></Link>
+                    <Link src="https://www.facebook.com/QuizblogRw/"><Image src={facebook} style={iconStyle} /></Link>
+                    <Link src="https://www.linkedin.com/company/quiz-blog/"><Image src={linkedin} style={iconStyle} /></Link>
+                    <Link src="https://www.instagram.com/quizblogrw/"><Image src={instagram} style={iconStyle} /></Link>
+                    <Link src="https://twitter.com/QuizblogRw"><Image src={twitter} style={iconStyle} /></Link>
                 </View>
-                <View style={{ fontSize: '12px', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
-                    <Text style={{ textAlign: 'left', margin: '8px 0' }}>
-                        <Text style={{ color: '#ffffff' }}>Website: </Text>
-                        <Link src="https://www.quizblog.rw" style={{ color: 'var(--accent)', textDecoration: 'none' }}>
-                            www.quizblog.rw
-                        </Link>
+
+                {/* Contact Info */}
+                <View style={{ display: 'flex', flexDirection: 'column', minWidth: 120, marginVertical: 5 }}>
+                    <Text style={contactTextStyle}>
+                        <Text style={{ color: '#ffffff', fontWeight: 700 }}>Website: </Text>
+                        <Link src="https://www.quizblog.rw" style={{ color: 'var(--accent)', textDecoration: 'none' }}>www.quizblog.rw</Link>
                     </Text>
-                    <Text style={{ textAlign: 'left', margin: '8px 0' }}>
-                        <Text style={{ color: '#ffffff' }}>Email: </Text>
-                        <Link src="mailto:quizblog.rw@gmail.com" style={{ color: 'var(--accent)', textDecoration: 'none' }}>
-                            quizblog.rw@gmail.com
-                        </Link>
+                    <Text style={contactTextStyle}>
+                        <Text style={{ color: '#ffffff', fontWeight: 700 }}>Email: </Text>
+                        <Link src="mailto:quizblog.rw@gmail.com" style={{ color: 'var(--accent)', textDecoration: 'none' }}>quizblog.rw@gmail.com</Link>
                     </Text>
-                    <Text style={{ textAlign: 'left', margin: '8px 0' }}>
-                        <Text style={{ color: '#ffffff' }}>Phone: </Text>
-                        <Link src="#" style={{ color: 'var(--accent)', textDecoration: 'none' }}>
-                            0780579067
-                        </Link>
+                    <Text style={contactTextStyle}>
+                        <Text style={{ color: '#ffffff', fontWeight: 700 }}>Phone: </Text>
+                        <Link src="#" style={{ color: 'var(--accent)', textDecoration: 'none' }}>0780579067</Link>
                     </Text>
                 </View>
             </View>
+
+            {/* Footer Text */}
             {fromFooter && (
-                <View style={{ marginTop: 10, display: 'block' }}>
-                    <Text style={{ textAlign: 'center', color: '#fff', fontSize: '.9rem', fontWeight: '500' }}>
-                        &copy; Copyright {new Date().getFullYear()} - Quiz-Blog. All Rights Reserved.
+                <View style={{ marginTop: 10 }}>
+                    <Text style={{ textAlign: 'center', color: '#fff', fontSize: 9, fontWeight: 500 }}>
+                        &copy; {new Date().getFullYear()} - Quiz-Blog. All Rights Reserved.
                     </Text>
                 </View>
             )}

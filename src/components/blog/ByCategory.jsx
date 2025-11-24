@@ -68,7 +68,7 @@ const ByCategory = () => {
                     )}
                     <Row>
                         <div className='w-100'>
-                            {process.env.NODE_ENV !== 'development' && <ResponsiveAd />}
+                            <ResponsiveAd />
                         </div>
                     </Row>
                 </Col>
@@ -78,7 +78,7 @@ const ByCategory = () => {
                     </Suspense>
                 </Col>
                 <Col sm="2" className="mt-md-2">
-                    {process.env.NODE_ENV !== 'development' && <SquareAd />}
+                    <SquareAd />
                 </Col>
             </Row>
         </Container>

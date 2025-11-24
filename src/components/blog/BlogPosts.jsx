@@ -30,7 +30,7 @@ const BlogPosts = () => {
       <Row sm="12" className="px-1 px-lg-4 my-1">
         {/* Google responsive 1 ad */}
         <div className="w-100">
-          {process.env.NODE_ENV !== 'development' ? <ResponsiveAd /> : null}
+          <ResponsiveAd />
         </div>
       </Row>
 
@@ -83,9 +83,7 @@ const BlogPosts = () => {
                         {/* Ad when half the number of notes*/}
                         {AllBPs.length > 2 && AllBPs.indexOf(bp) === Math.floor(AllBPs.length / 2) && (
                           <div className="w-100">
-                            {process.env.NODE_ENV !== 'development' ? (
-                              <SquareAd />
-                            ) : null}
+                            <SquareAd />
                           </div>
                         )}
                       </React.Fragment>

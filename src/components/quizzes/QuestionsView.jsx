@@ -1,75 +1,131 @@
-import { useState, useEffect, useCallback } from 'react';
-import { Col, Row, Input, Label, FormGroup } from 'reactstrap';
-import CountDown from './questionsScore/CountDown';
-import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
+import { useState, useEffect, useRef } from "react";
+import { Col, Row, Input, Label, FormGroup } from "reactstrap";
+import CountDown from "./questionsScore/CountDown";
+import QBLoadingSM from "@/utils/rLoading/QBLoadingSM";
 
-const QuestionsView = ({ qnsLength, curQnIndex, currentQn, curQnOpts, checkedState, selected, handleOnChange, goToNextQuestion }) => {
+const QuestionsView = ({
+    qnsLength,
+    curQnIndex,
+    currentQn,
+    curQnOpts,
+    checkedState,
+    selected,
+    handleOnChange,
+    goToNextQuestion
+}) => {
+    const imgRef = useRef(null);
+    const [imgLoaded, setImgLoaded] = useState(true);
+    const [prevImageUrl, setPrevImageUrl] = useState("");
 
-    // Load the image
-    const [imgLoaded, setImgLoaded] = useState(false);
-    const onLoad = useCallback(() => { setImgLoaded(true); }, []);
-    useEffect(() => { onLoad(); }, [onLoad]);
+    useEffect(() => {
+        if (!currentQn?.question_image) {
+            setImgLoaded(true);
+            setPrevImageUrl("");
+            return;
+        }
+
+        if (currentQn.question_image !== prevImageUrl) {
+            setImgLoaded(false);
+            setPrevImageUrl(currentQn.question_image);
+
+            // Check if the image is already cached
+            const imgEl = imgRef.current;
+            if (imgEl?.complete) {
+                setImgLoaded(true);
+            }
+        }
+    }, [currentQn?.question_image, prevImageUrl]);
+
+    const handleImgLoad = () => setImgLoaded(true);
+    const handleImgError = () => setImgLoaded(true);
+
+    if (!currentQn) return null;
+
+    const questionNumber = curQnIndex + 1;
 
     return (
+        <div className="question-view p-2" style={{ backgroundColor: "#F5F5F5" }}>
+            {/* Countdown — only start when image is loaded */}
+            <CountDown
+                goToNextQuestion={goToNextQuestion}
+                curQnIndex={curQnIndex}
+                qnsLength={qnsLength}
+                timeInSecs={currentQn.duration + 75}
+                start={imgLoaded}
+            />
 
-        imgLoaded ?
-            <div className="question-view p-2" style={{ backgroundColor: '#F5F5F5' }}>
+            {/* Question Header */}
+            <Row>
+                <Col>
+                    <div className="question-section my-2 mx-auto w-75 text-center">
+                        <h4 className="question-count text-uppercase text-secondary fw-bolder">
+                            Question <b style={{ color: "#B4654A" }}>{questionNumber}</b>/{qnsLength}
+                        </h4>
+                        <h5 className="q-txt mt-4 fw-bolder">{currentQn.questionText}</h5>
+                    </div>
+                </Col>
+            </Row>
 
-                {/* Countdown */}
-                <CountDown
-                    goToNextQuestion={goToNextQuestion}
-                    curQnIndex={curQnIndex}
-                    qnsLength={qnsLength}
-                    timeInSecs={currentQn && currentQn.duration + 75} />
-
-                {/* Question */}
+            {/* Image OR Loader */}
+            {currentQn.question_image && (
                 <Row>
-                    <Col>
-                        <div className='question-section my-2 mx-auto w-75'>
-                            <h4 className='question-count text-uppercase text-center text-secondary fw-bolder'>
-                                <span>Question <b style={{ color: '#B4654A' }}>
-                                    {curQnIndex + 1}</b>
-                                </span>/{qnsLength}
-                            </h4>
-
-                            <h5 className='q-txt mt-4 fw-bolder text-center'>{currentQn && currentQn.questionText}</h5>
-                        </div>
+                    <Col className="d-flex justify-content-center">
+                        {!imgLoaded && <QBLoadingSM title="Loading image..." />}
+                        <img
+                            ref={imgRef}
+                            src={currentQn.question_image}
+                            onLoad={handleImgLoad}
+                            onError={handleImgError}
+                            alt="Question"
+                            className="img-fluid my-3 px-sm-5"
+                            style={{
+                                maxWidth: "70%",
+                                maxHeight: "250px",
+                                objectFit: "contain",
+                                borderRadius: "5px",
+                                display: imgLoaded ? "block" : "none",
+                            }}
+                        />
                     </Col>
                 </Row>
+            )}
 
-                {/* Image */}
-                {currentQn && currentQn.question_image ?
-                    <Row>
-                        <Col>
-                            <div className="my-3 mx-sm-5 px-sm-5 d-flex justify-content-center align-items-center">
-                                <img className="w-100 mt-2 mt-lg-0 mx-sm-5 px-sm-5 w-100" src={currentQn && currentQn.question_image} onLoad={onLoad} alt="Question Illustration" />
-                            </div>
-                        </Col>
-                    </Row> : null}
-
-                {/* Answers */}
+            {/* Answers */}
+            {curQnOpts?.length > 0 && (
                 <Row>
                     <Col>
-                        <div className='answer d-flex flex-column mx-auto mt-2 w-lg-50'>
-                            {curQnOpts && curQnOpts.map((answerOption, index) => {
+                        <div className="answer d-flex flex-column mx-auto mt-2 w-lg-50">
+                            {curQnOpts.map((answerOption, index) => {
+                                const isSelected = selected[index];
                                 return (
                                     <div key={index} className="my-3 my-lg-4">
                                         <FormGroup check>
-                                            <Label check
-                                                style={{ width: '96%', margin: 'auto', border: '2px solid #000', borderRadius: '10px' }}
-                                                className={`p-1 text-center ${selected[index] ? 'bg-secondary text-white' : null}`}>
-
+                                            <Label
+                                                check
+                                                className="p-1 text-center"
+                                                style={{
+                                                    width: "96%",
+                                                    margin: "auto",
+                                                    border: "2px solid #000",
+                                                    borderRadius: "10px",
+                                                    backgroundColor:
+                                                        isSelected && answerOption.isCorrect
+                                                            ? "#157a6e"
+                                                            : isSelected && !answerOption.isCorrect
+                                                                ? "#aa1313"
+                                                                : "",
+                                                    color: isSelected ? "#fff" : "",
+                                                    cursor: "pointer",
+                                                }}
+                                            >
                                                 <Input
                                                     className="d-none"
                                                     type="checkbox"
-                                                    name={answerOption.answerText}
                                                     value={answerOption.answerText}
-                                                    checked={checkedState[index]}
+                                                    checked={checkedState[index] ?? false}
                                                     onChange={(e) => handleOnChange(e, index)}
-                                                />{' '}
-                                                <span>
-                                                    {answerOption.answerText}
-                                                </span>
+                                                />
+                                                <span>{answerOption.answerText}</span>
                                             </Label>
                                         </FormGroup>
                                     </div>
@@ -78,7 +134,8 @@ const QuestionsView = ({ qnsLength, curQnIndex, currentQn, curQnOpts, checkedSta
                         </div>
                     </Col>
                 </Row>
-            </div> : <QBLoadingSM title='question' />
+            )}
+        </div>
     );
 };
 

@@ -126,7 +126,7 @@ const ViewNotePaper = () => {
                 <Row>
                   <Col sm="12">
                     <Suspense fallback={<QBLoadingSM />}>
-                      {process.env.NODE_ENV !== 'development' && <GridMultiplex />}
+                      <GridMultiplex />
                     </Suspense>
                   </Col>
                 </Row>

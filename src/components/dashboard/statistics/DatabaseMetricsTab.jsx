@@ -48,7 +48,6 @@ const DatabaseMetricsTab = () => {
     }, [isAuthenticated, user, fetchDataMetrics]);
 
     const databases = dataMetrics ? Object.values(dataMetrics.databases) : [];
-    console.log(databases)
     const redis = dataMetrics?.redis;
 
     const totals = databases.reduce(

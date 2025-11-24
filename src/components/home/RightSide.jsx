@@ -1,6 +1,6 @@
 import { useEffect, useState, lazy, Suspense } from 'react';
 import { Col, Row, Form, FormGroup, Input, Button } from 'reactstrap';
-import subscribe from '@/images/undraw_subscribe.svg';
+import subscribeImg from '@/images/undraw_subscribe.svg';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
 import { useSelector, useDispatch } from 'react-redux';
@@ -10,83 +10,93 @@ const ViewCategories = lazy(() => import('./categories/ViewCategories'));
 const SquareAd = lazy(() => import('@/components/adsenses/SquareAd'));
 
 const RightSide = ({ categories }) => {
-
-    // Redux
     const dispatch = useDispatch();
-    const { user } = useSelector(state => state.auth);
-    const [subscriberState, setSubscriberState] = useState({ name: '', email: '' });
+    const { user } = useSelector((state) => state.auth);
+    const [subscriber, setSubscriber] = useState({ name: '', email: '' });
 
-    // Lifecycle methods
+    // Pre-fill for logged-in users
     useEffect(() => {
         if (user) {
-            setSubscriberState(subscriberState => ({ ...subscriberState, name: user.name, email: user.email }));
+            setSubscriber({ name: user.name, email: user.email });
         }
     }, [user]);
 
-    const onChangeHandler = e => {
+    const handleChange = (e) => {
         const { name, value } = e.target;
-        setSubscriberState(subscriberState => ({ ...subscriberState, [name]: value }));
+        setSubscriber((prev) => ({ ...prev, [name]: value }));
     };
 
-    const onSubscribe = e => {
+    const handleSubscribe = (e) => {
         e.preventDefault();
-        const { name, email } = subscriberState;
-        const subscribedUser = { name, email };
-        dispatch(subscribeToPosts(subscribedUser));
-        setSubscriberState({ name: '', email: '' });
+        dispatch(subscribeToPosts(subscriber));
+        setSubscriber({ name: '', email: '' });
     };
 
     return (
-        <Col sm="4" className='d-flex flex-column justify-content-around'>
-
-            <Row className='w-100 d-flex justify-content-center align-items-center'>
-                <Col sm="12" className='d-flex justify-content-center align-items-center'>
-                    <div className='w-100 d-flex justify-content-center align-items-center'>
-                        {process.env.NODE_ENV !== 'development' ? <SquareAd /> : null}
-                    </div>
+        <Col sm="4" className="d-flex flex-column justify-content-around">
+            {/* Top Square Ad */}
+            <Row className="w-100 mb-4">
+                <Col sm="12" className="d-flex justify-content-center">
+                    <SquareAd />
                 </Col>
             </Row>
 
-            <Row className="mb-4 my-1 d-none d-lg-flex side-category">
-                <Suspense
-                    fallback={<QBLoadingSM />}>
+            {/* Categories (Desktop Only) */}
+            <Row className="mb-4 d-none d-lg-flex side-category">
+                <Suspense fallback={<QBLoadingSM />}>
                     <ViewCategories categories={categories} />
                 </Suspense>
             </Row>
 
-            <Row className='w-100 d-flex justify-content-center align-items-center'>
-                <Col sm="12" className='d-flex justify-content-center align-items-center'>
-                    <div className='w-100 d-flex justify-content-center align-items-center'>
-                        {process.env.NODE_ENV !== 'development' ? <ResponsiveAd /> : null}
-                    </div>
+            {/* Responsive Ad */}
+            <Row className="w-100 mb-4 d-flex justify-content-center">
+                <Col sm="12" className="d-flex justify-content-center">
+                    <ResponsiveAd />
                 </Col>
             </Row>
 
-            <Row className="mb-5 mt-5 mt-lg-0">
-                <Form onSubmit={onSubscribe} className="subscribe-form shadow p-3 mb-5 bg-white rounded">
-                    <FormGroup className="w-100 px-lg-4 d-flex flex-column justify-content-center align-items-center">
-                        <img src={subscribe} alt={subscribe} className="img-fluid w-50 p-2 mt-4 border border-primary rounded shadow-lg p-3 mb-5 bg-white rounded" />
-
-                        <h6 className="mt-2">
-                            <b>Subscribe for updates</b>
-                        </h6>
-
-                        <Input type="text" name="name" value={subscriberState.name} bsSize="sm" placeholder="Your name" className="mt-4" onChange={onChangeHandler} minLength="4" maxLength="30" required />
-
-                        <Input type="email" name="email" value={subscriberState.email} bsSize="sm" placeholder="Your Email" className="mt-4" onChange={onChangeHandler} required />
-
-                        <Button size="sm" className="me-auto mt-4 subscribe-btn bg-primary">
+            {/* Subscribe Form */}
+            <Row className="mb-5">
+                <Form
+                    onSubmit={handleSubscribe}
+                    className="shadow p-4 bg-white rounded text-center"
+                >
+                    <img
+                        src={subscribeImg}
+                        alt="Subscribe"
+                        className="img-fluid w-50 mb-3 shadow-sm rounded"
+                    />
+                    <h6 className="fw-bold mb-3">Subscribe for Updates</h6>
+                    <FormGroup className="d-flex flex-column gap-3">
+                        <Input
+                            type="text"
+                            name="name"
+                            value={subscriber.name}
+                            placeholder="Your Name"
+                            onChange={handleChange}
+                            minLength={4}
+                            maxLength={30}
+                            required
+                        />
+                        <Input
+                            type="email"
+                            name="email"
+                            value={subscriber.email}
+                            placeholder="Your Email"
+                            onChange={handleChange}
+                            required
+                        />
+                        <Button color="success" className="mt-2">
                             Subscribe
                         </Button>
                     </FormGroup>
                 </Form>
             </Row>
 
-            <Row className='w-100 d-flex justify-content-center align-items-center'>
-                <Col sm="12" className='d-flex justify-content-center align-items-center'>
-                    <div className='w-100 d-flex justify-content-center align-items-center'>
-                        {process.env.NODE_ENV !== 'development' ? <SquareAd /> : null}
-                    </div>
+            {/* Bottom Square Ad */}
+            <Row className="w-100 mb-4">
+                <Col sm="12" className="d-flex justify-content-center">
+                    <SquareAd />
                 </Col>
             </Row>
         </Col>

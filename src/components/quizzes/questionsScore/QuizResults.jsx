@@ -1,17 +1,18 @@
 import { lazy, Suspense, useContext, useState, useEffect } from 'react';
 import { Button } from 'reactstrap';
 import { Link, useLocation } from 'react-router-dom';
-import MarksStatus from './MarksStatus';
-import PdfDocument from '@/components/dashboard/pdfs/PdfDocument';
 import { PDFDownloadLink } from '@react-pdf/renderer';
-import SimilarQuizzes from './SimilarQuizzes';
-import RelatedNotes from './RelatedNotes';
-import ReviewForm from './ReviewForm';
 import { saveFeedback } from '@/redux/slices/feedbacksSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { logRegContext } from '@/contexts/appContexts';
-import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
+
 import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
+import MarksStatus from './MarksStatus';
+import PdfDocument from '@/components/dashboard/pdfs/PdfDocument';
+import ReviewForm from './ReviewForm';
+import RelatedNotes from './RelatedNotes';
+import SimilarQuizzes from './SimilarQuizzes';
 
 const ResponsiveHorizontal = lazy(() =>
   import('@/components/adsenses/ResponsiveHorizontal')
@@ -19,25 +20,20 @@ const ResponsiveHorizontal = lazy(() =>
 const GridMultiplex = lazy(() => import('@/components/adsenses/GridMultiplex'));
 
 const QuizResults = () => {
-  // Redux
-  const dispatch = useDispatch();
 
+  const dispatch = useDispatch();
   const location = useLocation();
-  const {
-    newScoreId,
-    score,
-    qnsLength,
-    thisQuiz,
-    quizToReview,
-    passMark,
-    mongoScoreId,
-  } = location.state && location.state;
+
+  const { score, qnsLength, thisQuiz, quizToReview, passMark, mongoScoreID, scoreToSaveID, } = location.state && location.state;
+
+  console.log(location.state)
+
   const marks = isNaN(score) ? 0 : score;
   const { user } = useSelector((state) => state.auth);
   const { toggleL } = useContext(logRegContext);
 
   const scoreToSave = {
-    id: newScoreId,
+    id: scoreToSaveID,
     marks,
     out_of: qnsLength,
     category: thisQuiz && thisQuiz.category && thisQuiz.category._id,
@@ -70,9 +66,7 @@ const QuizResults = () => {
       <div className="p-sm-5 score-section text-center" id="pdf-container">
         <Suspense fallback={<QBLoadingSM />}>
           <div className="w-100">
-            {process.env.NODE_ENV !== 'development' ? (
-              <ResponsiveHorizontal />
-            ) : null}
+            <ResponsiveHorizontal />
           </div>
         </Suspense>
 
@@ -124,19 +118,18 @@ const QuizResults = () => {
                     Share
                   </a>
                 </Button>
+                {scoreToSaveID && (
+                  <Link to={`/review-quiz/${scoreToSaveID}`} state={scoreToSave}>
+                    <Button
+                      outline
+                      color="success"
+                      className="mt-3 mt-sm-0 share-btn mx-1 mx-md-0"
+                    >
+                      Review Answers
+                    </Button>
+                  </Link>
+                )}
 
-                <Link
-                  to={`/review-quiz/${newScoreId && newScoreId}`}
-                  state={scoreToSave}
-                >
-                  <Button
-                    outline
-                    color="success"
-                    className="mt-3 mt-sm-0 share-btn mx-1 mx-md-0"
-                  >
-                    Review Answers
-                  </Button>
-                </Link>
 
                 {user?.role?.includes('Admin') && (
                   <PDFDownloadLink
@@ -167,7 +160,7 @@ const QuizResults = () => {
                   toggle={toggleModal}
                   onSubmit={submitReview}
                   quiz={thisQuiz && thisQuiz._id}
-                  score={mongoScoreId}
+                  score={mongoScoreID}
                   user={user ? user._id : null}
                 />
               </>
@@ -198,7 +191,7 @@ const QuizResults = () => {
 
         <Suspense fallback={<QBLoadingSM />}>
           <div className="w-100">
-            {process.env.NODE_ENV !== 'development' ? <ResponsiveAd /> : null}
+            <ResponsiveAd />
           </div>
         </Suspense>
 
@@ -207,7 +200,7 @@ const QuizResults = () => {
         )}
 
         <Suspense fallback={<QBLoadingSM />}>
-          {process.env.NODE_ENV !== 'development' ? <GridMultiplex /> : null}
+          <GridMultiplex />
         </Suspense>
       </>
     </>

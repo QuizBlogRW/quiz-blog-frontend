@@ -20,10 +20,10 @@ function Example({ modal, toggle, ...args }) {
                 culpa qui officia deserunt mollit anim id est laborum.
             </ModalBody>
             <ModalFooter>
-                <Button color="primary" onClick={toggle}>
+                <Button color="success" onClick={toggle}>
                     Do Something
                 </Button>{' '}
-                <Button color="secondary" onClick={toggle}>
+                <Button color="success" onClick={toggle}>
                     Cancel
                 </Button>
             </ModalFooter>

@@ -6,7 +6,6 @@ class SquareAd extends Component {
     }
 
     componentDidMount() {
-
         this.googleInit = setTimeout(() => {
             if (typeof window !== 'undefined')
                 (window.adsbygoogle = window.adsbygoogle || []).push({});
@@ -18,6 +17,7 @@ class SquareAd extends Component {
     }
 
     render() {
+        if (process.env.NODE_ENV === 'development' || import.meta.env.MODE === 'test') return null;
         return (
             <ins
                 className="adsbygoogle"

@@ -110,11 +110,9 @@ const Biographies = () => {
   }, []);
 
   return (
-    <div className="p-lg-5">
-      <h2 className="fw-bolder text-center my-5">
-  <u style={{ color: 'var(--accent)', backgroundColor: 'var(--brand)', padding: '0.8rem 4rem', clipPath: 'polygon(0% 0%, 90% 0%, 100% 50%, 90% 100%, 0% 100%)' }}>
+    <div className="p-3 p-lg-5">
+      <h2 className="fw-bolder text-center my-5" style={{ color: 'var(--brand)' }}>
           Meet the team
-        </u>
       </h2>
 
       {people.map((p, idx) => (

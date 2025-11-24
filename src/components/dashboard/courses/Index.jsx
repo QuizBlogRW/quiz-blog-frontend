@@ -335,9 +335,7 @@ const Index = () => {
                 <>
                   <Row className="text-center d-block py-lg-3 w-100">
                     <Suspense fallback={<QBLoadingSM />}>
-                      {process.env.NODE_ENV !== 'development' ? (
-                        <InFeedAd />
-                      ) : null}
+                      <InFeedAd />
                     </Suspense>
                     <h4
                       className="d-block fw-bolder"

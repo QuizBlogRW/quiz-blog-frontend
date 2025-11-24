@@ -3,46 +3,48 @@ import reading from '@/images/reading.svg';
 
 const Intro = () => {
     return (
-        <div className='introduct pt-lg-5'>
-            <h1 className="display-4 fw-bolder text-center py-4" style={{ color: 'var(--brand)' }}>
-                <span>Get To Know</span> Quiz-Blog
+        <div className="introduct pt-2 pt-lg-5">
+
+            {/* Main Title */}
+            <h1 className="display-4 fw-bolder text-center my-4 mb-lg-4" style={{ color: 'var(--brand)' }}>
+                Get To Know <span>Quiz-Blog</span>
             </h1>
 
-            <Row className='pt-lg-4 px-1 px-lg-5'>
-                <Col sm='6' className='intro-img'>
-                    <img src={reading} alt="" />
+            {/* Intro Section */}
+            <Row className="pt-lg-4 px-3 px-lg-5 align-items-center">
+                <Col sm="6" className="mb-4 mb-sm-0 text-center">
+                    <img src={reading} alt="Learning Illustration" className="img-fluid" />
                 </Col>
 
-                <Col sm='6' className='intro-text d-flex flex-column align-self-center justify-items-center'>
-                    <h1 className="fw-bolder text-center mb-5">
-                        <u style={{ color: 'var(--brand)' }}>
-                            Empowering learners
-                        </u>
-                    </h1>
+                <Col sm="6" className="intro-text d-flex flex-column justify-content-center">
+                    <h2 className="fw-bolder text-center mb-4" style={{ color: 'var(--brand)' }}>
+                        Empowering Learners
+                    </h2>
 
-                    <p className="lead mb-4 ps-lg-5 fw-200">
-                        Quiz-Blog was developed with the aim of offering a wide range of quizzes and study materials to support students in improving their cognitive skills and readiness for exams. Our blog articles encompass a variety of subjects, providing valuable insights to enhance students' understanding of their coursework.
+                    <p className="lead mb-3 text-center">
+                        Quiz-Blog offers a wide range of quizzes and study resources to help students sharpen their skills and excel in exams. Our blog covers multiple subjects, providing insights that make learning easier and more effective.
                     </p>
-                    <hr />
+                    <hr className="my-2" style={{ borderColor: 'var(--brand)' }} />
                 </Col>
             </Row>
 
-            <Row className='px-3 px-lg-5'>
-                <div className="jbtron rounded px-3 px-sm-4 my-3 my-lg-5">
-
-                    <h2 className="fw-bolder text-center my-4 mb-5">
-                        <b style={{ color: 'var(--accent)', backgroundColor: '#FFF', padding: '0.8rem 4rem', clipPath: 'polygon(0% 0%, 90% 0%, 100% 50%, 90% 100%, 0% 100%)' }}>
-                            Our Journey
-                        </b>
+            {/* Journey Section */}
+            <Row className="px-3 px-lg-5 mt-5">
+                <div className="jbtron rounded px-3 px-sm-4 py-4 my-3 my-lg-5 shadow-sm bg-white">
+                    <h2 className="fw-bolder text-center mb-4" style={{ color: 'var(--accent)' }}>
+                        Our Journey
                     </h2>
-                    <p className='mt-4'>
-                        Bruce started university in late 2019 and found the shift to self-directed learning challenging. He struggled to find enough practice materials for his studies. To address this, he teamed up with his brother, a software developer, to create Quiz-Blog, a website with Multiple Choice Questions (MCQs) to help students like himself. Originally focused on health sciences, Quiz-Blog now offers resources for various subjects and aims to assist students in Rwanda and worldwide in improving their academic performance.
+
+                    <p className="text-center mb-3">
+                        Bruce began university in 2019 and struggled to find enough practice materials for self-directed learning.
+                        To solve this, he collaborated with his brother, a software developer, to create Quiz-Blog — a platform offering Multiple Choice Questions (MCQs) for students.
+                        Initially focused on health sciences, Quiz-Blog now provides resources for various subjects, helping students in Rwanda and worldwide improve their academic performance.
                     </p>
 
-                    <hr className="my-2" style={{ height: '2px', borderWidth: 0, color: 'var(--brand)', backgroundColor: 'var(--brand)' }} />
-
+                    <hr className="my-3" style={{ height: '2px', backgroundColor: 'var(--brand)', border: 'none' }} />
                 </div>
             </Row>
+
         </div>
     );
 };

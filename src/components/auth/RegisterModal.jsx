@@ -96,7 +96,7 @@ const RegisterModal = () => {
                             </Label>
                             <Input type="password" name="password" placeholder="Password here ..." className="mb-3" onChange={onChangeHandler} />
 
-                            <Button style={{ marginTop: '2rem', backgroundColor: 'var(--brand)' }} block>
+                            <Button style={{ marginTop: '2rem', backgroundColor: 'var(--brand)', color: 'var(--accent)' }} block>
                                 Register
                             </Button>
                         </FormGroup>

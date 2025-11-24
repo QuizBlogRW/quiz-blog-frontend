@@ -76,8 +76,8 @@ const Contact = () => {
     };
 
     return (
-        <div className='contact-section py-0 px-3 py-5'>
-            <div className="jbtron rounded px-3 px-sm-4 py-3 py-sm-5 p-2 m-2 m-sm-0 text-center border border-info">
+        <div className='contact-section py-0 px-3 py-5 d-flex flex-column align-items-center'>
+            <div className="jbtron rounded w-lg-75 px-3 px-sm-4 py-3 py-sm-5 p-2 m-2 m-sm-0 text-center border border-info ">
 
                 <h1 className="display-4 fw-bolder text-center my-4 mb-lg-4" style={{ color: 'var(--accent)' }}>
                     Reach Out Quiz-Blog
@@ -88,12 +88,12 @@ const Contact = () => {
                 </p>
             </div>
 
-            <Row className="mx-sm-2 px-sm-1 mx-md-5 px-md-5 py-lg-5 mt-5 contact d-md-flex justify-content-center">
+            <div className='w-100'>
+                {/* Google responsive 1 ad */}
+                <ResponsiveHorizontal />
+            </div>
 
-                <div className='w-100'>
-                    {/* Google responsive 1 ad */}
-                    {process.env.NODE_ENV !== 'development' ? <ResponsiveHorizontal /> : null}
-                </div>
+            <Row className="mx-sm-2 px-sm-1 mx-md-5 px-md-5 py-lg-5 mt-5 contact d-md-flex justify-content-between">
 
                 <Col sm="6" className="mb-5 px-lg-5">
                     <small className='fw-bolder' style={{ fontSize: '1.1rem', color: 'var(--brand)' }}>
@@ -123,13 +123,12 @@ const Contact = () => {
                             Send Message
                         </Button>
                     </Form>
-
-                    {/* Google square ad */}
-                    <Row className='w-100'>
-                        <Col sm="12">
-                            {process.env.NODE_ENV !== 'development' ? <SquareAd /> : null}
-                        </Col>
-                    </Row>
+                </Col>
+            </Row>
+            {/* Google square ad */}
+            <Row className='w-100'>
+                <Col sm="12">
+                    <SquareAd />
                 </Col>
             </Row>
         </div>

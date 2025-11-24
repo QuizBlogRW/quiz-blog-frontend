@@ -136,7 +136,7 @@ const LoginModal = () => {
                                 </p>
                             </a>
                             {confirmLogin ? null :
-                                <Button style={{ marginTop: '2rem', backgroundColor: 'var(--brand)' }} block>
+                                <Button style={{ marginTop: '2rem', backgroundColor: 'var(--brand)', color: 'var(--accent)' }} block>
                                     Login
                                 </Button>}
                         </FormGroup>

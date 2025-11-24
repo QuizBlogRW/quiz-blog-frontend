@@ -33,17 +33,19 @@ const UsersTabPane = () => {
 
         <TabPane tabId="8">
             {
-            <>
+                <>
                     <p className='m-3 w-100'>
                         To see more about subscribers, click here 👉<button className="btn btn-sm btn-outline-warning ms-2">
                             <a href={'/subscribers'} style={{ color: 'var(--brand)', fontWeight: 'bolder' }}>Subscribers</a>
                         </button>
                     </p>
-                    {
-                        isLoadingUsers ?
-                            <QBLoadingSM title='users' /> :
-                            <SearchInput setSearchKey={setSearchKey} placeholder={` Search here any user from ${users.length} available users...  `} />
-                    }
+                    <div className='m-lg-5'>
+                        {
+                            isLoadingUsers ?
+                                <QBLoadingSM title='users' /> :
+                                <SearchInput setSearchKey={setSearchKey} placeholder={` Search here any user from ${users.length} available users...  `} />
+                        }
+                    </div>
 
                     {searchKey === '' ? null : renderUsers(users.filter(user => user.name.toLowerCase().includes(searchKey.toLowerCase())), true)}
                     <p className="text-center my-3 fw-bolder text-underline">

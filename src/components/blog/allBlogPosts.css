@@ -34,20 +34,44 @@
 
 /* Blog hero */
 .blog-hero {
-    background: linear-gradient(180deg, rgba(21,122,110,0.06), rgba(255,255,255,0));
-    border: 1px solid rgba(21,122,110,0.08);
+    background: linear-gradient(180deg, rgba(21, 122, 110, 0.06), rgba(255, 255, 255, 0));
+    border: 1px solid rgba(21, 122, 110, 0.08);
+}
+
+.blog-hero h1::after,
+.blog-hero h2::after {
+    content: '';
+    display: block;
+    width: 110px;
+    height: 7px;
+    margin: 12px auto 0;
+    background: linear-gradient(90deg, var(--accent), rgba(255, 193, 7, 0.6));
+    border-radius: 4px;
+    opacity: 0.95;
 }
 
 /* Post card */
 .post-card {
     transition: transform .18s ease, box-shadow .18s ease;
 }
-.post-card:hover { transform: translateY(-6px); box-shadow: 0 12px 24px rgba(21,122,110,0.06); }
 
-.post-thumb img { width: 220px; height: 140px; object-fit: cover; border-radius: 8px; }
+.post-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 24px rgba(21, 122, 110, 0.06);
+}
+
+.post-thumb img {
+    width: 220px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 8px;
+}
 
 @media screen and (max-width: 768px) {
-    .post-thumb img { width: 100%; height: 190px; }
+    .post-thumb img {
+        width: 100%;
+        height: 190px;
+    }
 }
 
 .blog-posts .cats-container a li {

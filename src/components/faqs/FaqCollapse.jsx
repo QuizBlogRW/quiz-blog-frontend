@@ -99,7 +99,7 @@ const FaqCollapse = () => {
         </Row>
       ) : (
         <Suspense fallback={<QBLoadingSM />}>
-          {process.env.NODE_ENV !== 'development' ? <InFeedAd /> : null}
+          <InFeedAd />
         </Suspense>
       )}
 
@@ -180,7 +180,7 @@ const FaqCollapse = () => {
 
         <Col sm="12">
           <Suspense fallback={<QBLoadingSM />}>
-            {process.env.NODE_ENV !== 'development' ? <GridMultiplex /> : null}
+            <GridMultiplex />
           </Suspense>
         </Col>
       </Row>

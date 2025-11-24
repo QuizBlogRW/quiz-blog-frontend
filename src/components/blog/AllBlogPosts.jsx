@@ -79,7 +79,7 @@ const AllBlogPosts = () => {
                   ))}
               </ListGroup>
               <Col md="3" className="mt-md-2 d-none d-md-block">
-                {process.env.NODE_ENV !== 'development' ? <SquareAd /> : null}
+                <SquareAd />
               </Col>
             </div>
           ) : (
@@ -90,7 +90,7 @@ const AllBlogPosts = () => {
             </div>
           )}
           <div className="w-100">
-            {process.env.NODE_ENV !== 'development' ? <ResponsiveAd /> : null}
+            <ResponsiveAd />
           </div>
         </Col>
 

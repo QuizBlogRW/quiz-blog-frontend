@@ -7,41 +7,49 @@ import { logRegContext } from '@/contexts/appContexts';
 
 const LandingSection = () => {
   const { toggleR } = useContext(logRegContext);
-  const title = 'KNOWLEDGE MATTERS, AND SO DOES THE JOY OF QUIZZING!';
+  const title = 'Knowledge matters, and so does the joy of quizzing!';
 
-  const capitalize = (str) => {
-    const lower = str.toLowerCase();
-    return lower.charAt(0).toUpperCase() + lower.slice(1);
-  };
+  const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 
   return (
-    <section className="intro-landing w-100 d-flex justify-content-around align-items-center mx-auto" aria-label="Landing">
-      <Col sm={7} className="d-flex flex-column text-start pt-5 px-3 p-lg-5">
-        <h1 className="text-primary fw-bolder underline mb-3 mb-lg-0 landing-title">
+    <section className="intro-landing w-100 d-flex flex-column flex-lg-row justify-content-around align-items-center mx-auto py-5" aria-label="Landing">
+
+      <Col sm={12} lg={7} className="d-flex flex-column text-start px-3 px-lg-5">
+        <h1 className="text-primary fw-bolder mb-3 landing-title">
           {title.split(' ').map((word) => (
             <span key={word} className="d-inline-block me-1">{capitalize(word)}&nbsp;</span>
           ))}
         </h1>
 
-        <p className="lead pt-lg-4">
-          Explore and test yourself — join the fun of quizzes, build confidence,
-          and get ready to succeed.  <span role="img" aria-label="celebrate">📚🧠🔍🌟🎉</span>
+        <p className="lead fs-5 pt-3">
+          Dive into quizzes, challenge yourself, build confidence, and have fun while learning!
+          <span role="img" aria-label="celebrate"> 📚🧠🌟🎉</span>
         </p>
 
-        <img src={srcQuestion} alt="question illustration" className="landing-illustration my-4 mx-auto d-block" />
+        <img
+          src={srcQuestion}
+          alt="quiz illustration"
+          className="landing-illustration my-4 mx-auto d-block"
+          style={{ maxWidth: '80%', height: 'auto' }}
+        />
 
-        <div className="d-flex align-items-center gap-3 mt-2 mt-lg-4">
-          <Button className="landing-cta" onClick={toggleR} aria-label="Get started">Get Started</Button>
+        <div className="d-flex flex-wrap gap-3 mt-3">
+          <Button color="success" className="landing-cta px-4 py-2 fw-bold" onClick={toggleR} aria-label="Get started">
+            Get Started
+          </Button>
 
           <Link to="/course-notes" className="text-decoration-none">
-            <Button className="landing-cta alt" aria-label="Read notes">Read Notes</Button>
+            <Button color="success" outline className="landing-cta px-4 py-2 fw-bold" aria-label="Read notes">
+              Read Notes
+            </Button>
           </Link>
         </div>
       </Col>
 
-      <Col sm={5} className="py-1 p-md-5">
+      <Col sm={12} lg={5} className="py-3 p-md-5">
         <Adverts />
       </Col>
+
     </section>
   );
 };

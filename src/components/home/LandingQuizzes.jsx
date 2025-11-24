@@ -84,7 +84,7 @@ const LandingQuizzes = () => {
                 </Link>
               </div>
               <div className="w-100 d-flex justify-content-center align-items-center">
-                {process.env.NODE_ENV !== 'development' ? <SquareAd /> : null}
+                <SquareAd />
               </div>
             </>
           ) : (
@@ -108,7 +108,7 @@ const LandingQuizzes = () => {
               className="d-flex justify-content-center align-items-center"
             >
               <div className="w-100 d-flex justify-content-center align-items-center">
-                {process.env.NODE_ENV !== 'development' ? <InFeedAd /> : null}
+                <InFeedAd />
               </div>
             </Col>
           </Row>
@@ -131,7 +131,7 @@ const LandingQuizzes = () => {
           className="d-flex justify-content-center align-items-center"
         >
           <div className="w-100 d-flex justify-content-center align-items-center">
-            {process.env.NODE_ENV !== 'development' ? <ResponsiveAd /> : null}
+            <ResponsiveAd />
           </div>
         </Col>
       </Row>

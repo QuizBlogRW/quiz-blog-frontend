@@ -83,7 +83,7 @@ export const deleteBlogPost = createAsyncThunk(
 const initialState = {
   isLoading: false,
   blogPosts: [],
-  oneBlogPost: '',
+  oneBlogPost: {},
   blogPostsByCategory: [],
   error: null,
 };
@@ -100,20 +100,16 @@ const blogPostsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // Fullfilled actions
     builder.addCase(getBlogPosts.fulfilled, (state, action) => {
-      // Handle new API response structure
-      state.blogPosts = action.payload?.data || action.payload || [];
+      state.blogPosts = action.payload || [];
       state.isLoading = false;
     });
     builder.addCase(getOneBlogPost.fulfilled, (state, action) => {
-      // Handle new API response structure
-      state.oneBlogPost = action.payload?.data || action.payload || '';
+      state.oneBlogPost = action.payload || {};
       state.isLoading = false;
     });
     builder.addCase(getBlogPostsByCategory.fulfilled, (state, action) => {
-      // Handle new API response structure
-      state.blogPostsByCategory = action.payload?.data || action.payload || [];
+      state.blogPostsByCategory = action.payload || [];
       state.isLoading = false;
     });
     builder.addCase(createBlogPost.fulfilled, (state, action) => {

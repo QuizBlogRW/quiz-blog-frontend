@@ -21,7 +21,7 @@ const QuizRanking = () => {
 
   const rankings = scores?.rankingScores;
   const cTitle = rankings?.[0]?.category?.title;
-  const qTitle = rankings?.[0]?.quiz?.title;
+  const title = rankings?.[0]?.quiz?.title;
 
   const renderTableRows = () => {
     let i = 1;
@@ -49,7 +49,7 @@ const QuizRanking = () => {
               <Link to="/dashboard">{cTitle}</Link>
             </BreadcrumbItem>
             <BreadcrumbItem active>
-              {qTitle} - Comments & Ranking
+              {title} - Comments & Ranking
             </BreadcrumbItem>
           </Breadcrumb>
           <AddVideo quizID={quizID} />

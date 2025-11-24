@@ -46,7 +46,7 @@ const CategoriesHome = () => {
 
                 {/* GridMultiplex Ad in a Suspense */}
                 <Suspense fallback={<QBLoadingSM />}>
-                    {process.env.NODE_ENV !== 'development' ? <GridMultiplex /> : null}
+                    <GridMultiplex />
                 </Suspense>
 
 

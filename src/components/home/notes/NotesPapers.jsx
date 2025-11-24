@@ -34,7 +34,7 @@ const NotesPapers = () => {
         {/* Google responsive 1 ad */}
         <Col sm="12">
           <div className="w-100">
-            {process.env.NODE_ENV !== 'development' ? <ResponsiveAd /> : null}
+            <ResponsiveAd />
           </div>
         </Col>
       </Row>
@@ -46,15 +46,13 @@ const NotesPapers = () => {
         >
           <Suspense fallback={<ItemPlaceholder />}>
             <div className="w-100">
-              {process.env.NODE_ENV !== 'development' ? (
-                <SideResizable />
-              ) : null}
+              <SideResizable />
             </div>
           </Suspense>
         </Col>
         <Col sm="6" className="w-100">
           <div className="w-100">
-            {process.env.NODE_ENV !== 'development' ? <SquareAd /> : null}
+            <SquareAd />
           </div>
         </Col>
       </Row>
@@ -103,9 +101,7 @@ const NotesPapers = () => {
               ) : null}
 
               <Suspense fallback={<ItemPlaceholder />}>
-                {process.env.NODE_ENV !== 'development' ? (
-                  <GridMultiplex />
-                ) : null}
+                <GridMultiplex />
               </Suspense>
             </>
           )}
@@ -116,9 +112,7 @@ const NotesPapers = () => {
         <Col sm="12" className="px-1 y-1 w-100">
           <Suspense fallback={<ItemPlaceholder />}>
             <div className="w-100">
-              {process.env.NODE_ENV !== 'development' ? (
-                <ResponsiveHorizontal />
-              ) : null}
+              <ResponsiveHorizontal />
             </div>
           </Suspense>
         </Col>

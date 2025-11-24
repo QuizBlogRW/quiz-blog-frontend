@@ -12,24 +12,20 @@ const About = () => {
                 <Intro />
 
                 {/* responsive ad (only in production) */}
-                {process.env.NODE_ENV !== 'development' && (
-                    <Row className="justify-content-center my-4">
-                        <Col xs={12} md={10} className="text-center">
-                            <ResponsiveAd />
-                        </Col>
-                    </Row>
-                )}
+                <Row className="justify-content-center my-4">
+                    <Col xs={12} md={10} className="text-center">
+                        <ResponsiveAd />
+                    </Col>
+                </Row>
 
                 <Biographies />
 
                 {/* square ad footer */}
-                {process.env.NODE_ENV !== 'development' && (
-                    <Row className="justify-content-center mt-4">
-                        <Col xs={12} md={6} className="text-center">
-                            <SquareAd />
-                        </Col>
-                    </Row>
-                )}
+                <Row className="justify-content-center mt-4">
+                    <Col xs={12} md={6} className="text-center">
+                        <SquareAd />
+                    </Col>
+                </Row>
             </Container>
         </section>
     );
