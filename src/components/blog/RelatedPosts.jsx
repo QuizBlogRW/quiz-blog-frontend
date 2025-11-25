@@ -1,58 +1,75 @@
 import { useEffect } from 'react';
-import { Media, Alert } from 'reactstrap';
+import { Alert, Card, CardBody, Spinner } from 'reactstrap';
 import moment from 'moment';
-import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
-import { getBlogPostsByCategory } from '@/redux/slices';
 import { useSelector, useDispatch } from 'react-redux';
+import { getBlogPostsByCategory } from '@/redux/slices';
 import altImage from '@/images/dashboard.svg';
-import './relatedLatest.css';
 
-// New component for rendering individual blog posts
 const BlogPostItem = ({ blogPost }) => (
-    <Media className="mt-0 p-3 border-bottom blogPost-title d-flex flex-column flex-lg-row">
-        <Media left href="#" className="m-auto d-flex justify-content-center align-items-center relatedLatestImage">
-            <img src={(blogPost && blogPost.post_image) || altImage} alt={blogPost && blogPost.brand} />
-        </Media>
-        <Media body className="w-100">
-            <Media heading className="p-2 py-lg-0 mb-0 h-100 d-flex flex-column justify-content-between">
-                <p className="text-start mt-3 mt-lg-0 mb-2 post-link">
-                    <a href={`/view-blog-post/${blogPost && blogPost.slug}`} className="fw-light">{blogPost && blogPost.title}</a>
-                </p>
-                <div className="text-muted m-0">
-                    <p className="mb-1 ms-1">
-                        {blogPost.postCategory && blogPost.postCategory.title}
-                    </p>
+    <Card className="mb-3 shadow-sm border-0 rounded-3 hover-effect">
+        <div className="d-flex flex-column flex-lg-row align-items-start gap-3 p-3">
+            <img
+                src={blogPost?.post_image || altImage}
+                alt={blogPost?.title}
+                className="rounded"
+                style={{
+                    width: '100%',
+                    maxWidth: '120px',
+                    height: '80px',
+                    objectFit: 'cover',
+                }}
+            />
+            <CardBody className="p-0 d-flex flex-column justify-content-between">
+                <a
+                    href={`/view-blog-post/${blogPost?.slug}`}
+                    className="fw-bold text-dark mb-1"
+                >
+                    {blogPost?.title}
+                </a>
+                <div className="text-muted small mb-2 text-uppercase">
+                    {blogPost?.postCategory?.title || 'Uncategorized'}
                 </div>
-                <div className="d-flex ms-1 justify-content-between text-muted align-bottom">
-                    <small>
-                        {blogPost.creator && blogPost.creator.name}
-                    </small>
-                    <small className={'text-primary'}>
-                        {moment(blogPost && blogPost.createdAt).format('YYYY-MM-DD')}
-                    </small>
+                <div className="d-flex justify-content-between align-items-center text-muted small">
+                    <span>{blogPost?.creator?.name || 'Unknown'}</span>
+                    <span className="text-primary">
+                        {moment(blogPost?.createdAt).format('YYYY-MM-DD')}
+                    </span>
                 </div>
-            </Media>
-        </Media>
-    </Media>
+            </CardBody>
+        </div>
+    </Card>
 );
 
 const RelatedPosts = ({ bPCatID }) => {
-
     const dispatch = useDispatch();
-    let bposts = useSelector(state => state.blogPosts);
+    const bposts = useSelector(state => state.blogPosts);
 
-    useEffect(() => { bPCatID && dispatch(getBlogPostsByCategory(bPCatID)); }, [dispatch, bPCatID]);
+    useEffect(() => {
+        if (bPCatID) dispatch(getBlogPostsByCategory(bPCatID));
+    }, [dispatch, bPCatID]);
+
+    if (bposts.isLoading) {
+        return (
+            <div className="d-flex justify-content-center py-5">
+                <Spinner color="primary" />
+            </div>
+        );
+    }
 
     return (
-        bposts.isLoading ? <QBLoadingSM /> :
-            <div className="similar-posts mt-4 mt-lg-5">
-                <Alert className='border border-warning text-uppercase mb-0'>
-                    Related Posts
-                </Alert>
-                {bposts && bposts.blogPostsByCategory && Array.from(bposts.blogPostsByCategory).sort(() => 0.5 - Math.random()).slice(0, 7).map(blogPost => (
-                    <BlogPostItem key={blogPost._id} blogPost={blogPost} />
-                ))}
-            </div>
+        <div className="mt-4 mt-lg-5">
+            <Alert className="border border-warning text-uppercase mb-3 fw-bold text-center">
+                Related Posts
+            </Alert>
+            {bposts?.blogPostsByCategory?.length > 0 ? (
+                [...bposts.blogPostsByCategory]
+                    .sort(() => 0.5 - Math.random())
+                    .slice(0, 7)
+                    .map(blogPost => <BlogPostItem key={blogPost._id} blogPost={blogPost} />)
+            ) : (
+                <p className="text-muted text-center">No related posts found.</p>
+            )}
+        </div>
     );
 };
 

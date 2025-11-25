@@ -70,10 +70,7 @@ const ViewNotePaper = () => {
               </Button>
             </Link>
           </div> :
-          <main
-            aria-label="Note paper"
-            className="main mx-auto d-flex flex-column justify-content-center my-5 py-4"
-          >
+          <div className="mx-auto d-flex flex-column justify-content-center my-5 py-4">
             <article className="mx-auto w-100 w-md-75 rounded border border-primary p-3">
               <div className="question-view p-2">
                 <Row>
@@ -134,7 +131,7 @@ const ViewNotePaper = () => {
                 </Row>
               </div>
             </article>
-          </main>
+          </div>
   );
 };
 

@@ -65,20 +65,32 @@ const DatabaseMetricsTab = () => {
             {/* Header */}
             <Row className="mb-4 align-items-center">
                 <Col md="6">
-                    <h2 className="text-primary mb-0">
+                    <h2 className="mb-0" style={{ color: "var(--brand)" }}>
                         <i className="fas fa-database me-2" /> Database Metrics
                     </h2>
                 </Col>
-                <Col md="6" className="text-md-end mt-2 mt-md-0">
-                    <small className="text-muted me-2">Last updated: {lastUpdated ?? "—"}</small>
-                    <Button color="outline-primary" size="sm" onClick={fetchDataMetrics} disabled={loading}>
+
+                <Col md="6" className="text-md-end mt-3 mt-md-0">
+                    <small className="text-muted me-3">
+                        <i className="fas fa-clock me-1" /> Last updated: {lastUpdated ?? "—"}
+                    </small>
+
+                    <Button
+                        color="outline-primary"
+                        size="sm"
+                        className="fw-semibold px-3"
+                        onClick={fetchDataMetrics}
+                        disabled={loading}
+                    >
                         {loading ? (
                             <>
-                                <Spinner size="sm" /> <span className="ms-1">Refreshing</span>
+                                <Spinner size="sm" className="me-1" />
+                                Refreshing...
                             </>
                         ) : (
                             <>
-                                <i className="fas fa-sync-alt me-1" /> Refresh
+                                <i className="fas fa-sync-alt me-1" />
+                                Refresh
                             </>
                         )}
                     </Button>
@@ -87,28 +99,20 @@ const DatabaseMetricsTab = () => {
 
             {/* Error */}
             {fetchError && (
-                <Row className="mb-3">
-                    <Col>
-                        <Alert color="danger" className="mb-0">
-                            <i className="fas fa-exclamation-triangle me-2" />
-                            {fetchError}
-                        </Alert>
-                    </Col>
-                </Row>
+                <Alert color="danger" className="shadow-sm border-0">
+                    <i className="fas fa-exclamation-triangle me-2"></i>
+                    {fetchError}
+                </Alert>
             )}
 
             {/* Loading */}
             {loading && !dataMetrics && (
-                <Row>
-                    <Col>
-                        <Card className="shadow-sm">
-                            <CardBody className="text-center py-5">
-                                <Spinner size="lg" />
-                                <div className="mt-2 text-muted">Loading database metrics…</div>
-                            </CardBody>
-                        </Card>
-                    </Col>
-                </Row>
+                <Card className="shadow-sm border-0">
+                    <CardBody className="text-center py-5">
+                        <Spinner size="lg" />
+                        <div className="mt-2 text-muted">Loading database metrics…</div>
+                    </CardBody>
+                </Card>
             )}
 
             {/* Overview */}
@@ -117,22 +121,31 @@ const DatabaseMetricsTab = () => {
                     <Col md="4" sm="12">
                         <Card className="shadow-sm h-100 border-0">
                             <CardBody>
-                                <CardTitle tag="h6" className="mb-3 text-primary">
+                                <CardTitle tag="h6" className="text-primary mb-3">
                                     Overview
                                 </CardTitle>
-                                <ul className="list-unstyled mb-0">
-                                    <li><strong>Total Data Size:</strong> {formatBytes(totals.dataSize)}</li>
-                                    <li><strong>Total Index Size:</strong> {formatBytes(totals.indexSize)}</li>
-                                    <li><strong>Total Storage Size:</strong> {formatBytes(totals.storageSize)}</li>
-                                    <li>
-                                        <strong>Databases Healthy:</strong>{" "}
-                                        <Badge color={dataMetrics.summary?.databasesHealthy ? "success" : "danger"}>
+
+                                <ul className="list-unstyled small mb-0">
+                                    <li className="mb-2">
+                                        <strong>Total Data:</strong> {formatBytes(totals.dataSize)}
+                                    </li>
+                                    <li className="mb-2">
+                                        <strong>Total Index:</strong> {formatBytes(totals.indexSize)}
+                                    </li>
+                                    <li className="mb-2">
+                                        <strong>Total Storage:</strong> {formatBytes(totals.storageSize)}
+                                    </li>
+
+                                    <li className="mb-2 d-flex align-items-center">
+                                        <strong className="me-2">Databases Healthy:</strong>
+                                        <Badge color={dataMetrics.summary?.databasesHealthy ? "success" : "danger"} pill>
                                             {dataMetrics.summary?.databasesHealthy ? "Yes" : "No"}
                                         </Badge>
                                     </li>
-                                    <li>
-                                        <strong>Redis Healthy:</strong>{" "}
-                                        <Badge color={dataMetrics.summary?.redisHealthy ? "success" : "danger"}>
+
+                                    <li className="d-flex align-items-center">
+                                        <strong className="me-2">Redis Healthy:</strong>
+                                        <Badge color={dataMetrics.summary?.redisHealthy ? "success" : "danger"} pill>
                                             {dataMetrics.summary?.redisHealthy ? "Yes" : "No"}
                                         </Badge>
                                     </li>
@@ -147,12 +160,12 @@ const DatabaseMetricsTab = () => {
             {dataMetrics && (
                 <Row>
                     {databases.map((db) => (
-                        <Col md="6" lg="4" key={db.name}>
+                        <Col className="mb-4" md="6" lg="4" key={db.name}>
                             <DatabaseCard db={db} />
                         </Col>
                     ))}
                     {redis && (
-                        <Col md="6" lg="4">
+                        <Col className="mb-4" md="6" lg="4">
                             <DatabaseCard
                                 db={{
                                     name: "Redis",

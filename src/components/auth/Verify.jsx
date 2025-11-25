@@ -50,7 +50,7 @@ export function Verify() {
     };
 
     return (
-        <Container className="forgot-password mt-4">
+        <div className="forgot-password mt-4">
             <Row className="mt-5 d-flex flex-column justify-content-center align-items-center text-center" style={{ minHeight: '68vh' }}>
 
                 {/* Google square ad */}
@@ -93,7 +93,7 @@ export function Verify() {
                 </Row>
 
             </Row>
-        </Container>
+        </div>
     );
 }
 

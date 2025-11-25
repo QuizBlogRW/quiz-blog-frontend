@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Container, Col, Row, Button } from 'reactstrap';
+import { Col, Row, Button } from 'reactstrap';
 import { useParams, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getOneScore, createScore } from '@/redux/slices/scoresSlice';
@@ -45,7 +45,7 @@ const ReviewQuiz = () => {
   // No score saved
   if (!oneScore) {
     return (
-      <Container className="d-flex justify-content-center align-items-center vh-100">
+      <div className="d-flex justify-content-center align-items-center vh-100">
         <div
           className="text-center p-5 rounded-4 shadow-lg"
           style={{ maxWidth: '480px', width: '100%', backgroundColor: '#EAFAF1' }}
@@ -79,15 +79,15 @@ const ReviewQuiz = () => {
             </Button>
           </div>
         </div>
-      </Container>
+      </div>
     );
   }
 
   // No questions available
   if (!qnsAll.length) {
     return (
-      <Container className="px-lg-5">
-        <Row className="main mx-auto d-flex flex-column justify-content-center rounded border border-primary my-5 py-4 w-80 text-center shadow-sm" style={{ backgroundColor: '#EAFAF1' }}>
+      <div className="px-lg-5">
+        <Row className="mx-auto d-flex flex-column justify-content-center rounded border border-primary my-5 py-4 w-80 text-center shadow-sm" style={{ backgroundColor: '#EAFAF1' }}>
           <h1 className="text-danger fw-bolder mb-3">404</h1>
           <h4 className="mb-3">Quiz's questions unavailable! Refresh! 🔄</h4>
           <Button color="success" style={{ width: '120px' }} className="mx-auto mt-3">
@@ -96,14 +96,14 @@ const ReviewQuiz = () => {
             </a>
           </Button>
         </Row>
-      </Container>
+      </div>
     );
   }
 
   // Question section
   const QuestionSection = () => (
     <Row
-      className="main my-4 mx-auto px-lg-5 d-flex flex-column justify-content-center py-lg-5 w-80 shadow-sm"
+      className="my-4 mx-auto px-lg-5 d-flex flex-column justify-content-center py-lg-5 w-80 shadow-sm"
       key={curRevQn._id}
       style={{
         border: '3px solid #157A6E',
@@ -160,7 +160,7 @@ const ReviewQuiz = () => {
   );
 
   return (
-    <Container className="px-lg-5">
+    <div className="px-lg-5">
       <Row className="w-100 mb-3">
         <Col sm="6" className="w-100">
           <ResponsiveAd />
@@ -174,7 +174,7 @@ const ReviewQuiz = () => {
           <SquareAd />
         </Col>
       </Row>
-    </Container>
+    </div>
   );
 };
 

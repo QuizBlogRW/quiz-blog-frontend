@@ -20,7 +20,6 @@ export const saveFeedback = createAsyncThunk(
     apiCallHelper('/api/feedbacks', 'post', feedback, getState, 'saveFeedback')
 );
 
-// Feedback slice
 const initialState = {
   allFeedbacks: [],
   totalPages: 0,

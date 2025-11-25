@@ -1,5 +1,5 @@
 import { useEffect, lazy, Suspense } from 'react';
-import { Container, Col, Row, ListGroup, ListGroupItem } from 'reactstrap';
+import { Col, Row, ListGroup, ListGroupItem } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { getBlogPostsByCategory, getPostCategories } from '@/redux/slices';
 import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
@@ -54,7 +54,7 @@ const ByCategory = () => {
     }, [dispatch, bPCatID]);
 
     return (
-        <Container className="posts main blog-posts mt-4">
+        <div className="posts blog-posts mt-4">
             <Row className="mt-lg-5">
                 <Col sm="1" className="mt-md-2" />
                 <Col sm="3" className="mt-md-2">
@@ -81,7 +81,7 @@ const ByCategory = () => {
                     <SquareAd />
                 </Col>
             </Row>
-        </Container>
+        </div>
     );
 };
 

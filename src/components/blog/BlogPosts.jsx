@@ -36,10 +36,9 @@ const BlogPosts = () => {
 
       <Row className="p-2 p-sm-3 px-sm-5">
         <Col sm="12" className="py-lg-3 px-0">
-          <h3 className="inversed-title mt-0 my-lg-3 py-4 py-lg-3 text-center">
-            <span className="part1">New Insights:</span>
-            <span className="part2">Latest Blog Posts</span>
-          </h3>
+          <h1 className="mt-0 my-lg-3 py-4 py-lg-3 text-center">
+            Latest Blog Posts
+          </h1>
 
           {isLoading ? (
             <>

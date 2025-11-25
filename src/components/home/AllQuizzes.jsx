@@ -1,5 +1,5 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
-import { Container, Col, Row, Button, Card, CardBody, CardTitle, CardSubtitle, Alert } from 'reactstrap';
+import { Col, Row, Button, Card, CardBody, CardTitle, CardSubtitle, Alert } from 'reactstrap';
 import { getLimitedQuizzes, getQuizzes } from '@/redux/slices/quizzesSlice';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -28,7 +28,7 @@ const AllQuizzes = () => {
     }, [dispatch, limit, skip]);
 
     return (
-        <Container className="posts main mt-4">
+        <div className="posts mt-4">
             {/* Hero section */}
             <Card className="border-0 shadow-sm bg-gradient mb-4 mb-md-5">
                 <CardBody className="text-center py-3 py-md-4 px-2 px-md-4">
@@ -54,7 +54,7 @@ const AllQuizzes = () => {
                 </Col>
             </Row>
 
-            {/* Main content */}
+            {/* content */}
             <Row className="mt-4 mt-lg-5">
                 {/* Left Ad */}
                 <Col xs="12" md="2" className="order-2 order-md-1 mt-3 mt-md-2 d-flex justify-content-center align-items-start">
@@ -119,10 +119,10 @@ const AllQuizzes = () => {
 
                                 {/* Pagination */}
                                 <Card className="border-0 shadow-sm mt-3 mb-5">
-                                    <CardBody className="py-2 py-md-3 d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+                                    <CardBody className="py-2 py-md-3 d-flex justify-content-between align-items-center gap-2">
                                         <Button
                                             onClick={previousPage}
-                                            className={`btn-sm w-100 w-md-auto ${skip < 1 ? 'invisible' : ''}`}
+                                            className={`btn-sm w-md-auto ${skip < 1 ? 'invisible' : ''}`}
                                             color="success"
                                             disabled={skip < 1}
                                             aria-label="Previous page"
@@ -134,7 +134,7 @@ const AllQuizzes = () => {
 
                                         <Button
                                             onClick={nextPage}
-                                            className={`btn-sm w-100 w-md-auto ${limitedQuizzes?.length < limit ? 'invisible' : ''}`}
+                                            className={`btn-sm w-md-auto ${limitedQuizzes?.length < limit ? 'invisible' : ''}`}
                                             color="success"
                                             disabled={limitedQuizzes?.length < limit}
                                             aria-label="Next page"
@@ -153,7 +153,7 @@ const AllQuizzes = () => {
                     <SquareAd />
                 </Col>
             </Row>
-        </Container>
+        </div>
     );
 };
 

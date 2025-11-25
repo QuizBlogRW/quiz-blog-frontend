@@ -133,19 +133,17 @@ const QuizQuestions = () => {
     if (saving) return <QBLoadingSM />;
 
     return (
-        <div className="py-3 d-flex justify-content-center align-items-center flex-column">
-            <Container className="main mx-auto flex-column justify-content-center rounded border border-primary my-5 py-4 w-80">
-                <QuestionsView
-                    qnsLength={qnsLength}
-                    curQnIndex={curQnIndex}
-                    currentQn={currentQn}
-                    curQnOpts={currentQn?.answerOptions}
-                    checkedState={answers}
-                    selected={answers}
-                    handleOnChange={(e, i) => handleOnChange(i)}
-                    goToNextQuestion={goToNextQuestion}
-                />
-            </Container>
+        <div className="mx-auto flex-column justify-content-center rounded border border-primary my-5 py-4 w-80">
+            <QuestionsView
+                qnsLength={qnsLength}
+                curQnIndex={curQnIndex}
+                currentQn={currentQn}
+                curQnOpts={currentQn?.answerOptions}
+                checkedState={answers}
+                selected={answers}
+                handleOnChange={(e, i) => handleOnChange(i)}
+                goToNextQuestion={goToNextQuestion}
+            />
         </div>
     );
 };

@@ -181,6 +181,7 @@ const Index = () => {
   }, [dispatch]);
 
   if (!isAuthenticated) return <NotAuthenticated message='Login for Exclusive Notes Access' />;
+  
   return isLoading ? <QBLoadingSM /> : (
     <div className="course-notes px-3">
       <Row className="mt-lg-5">

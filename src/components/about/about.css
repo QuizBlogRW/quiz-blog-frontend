@@ -332,8 +332,8 @@ h2:hover { color: var(--accent); }
 @media screen and (max-width: 768px) {
     /* Additional adjustments for tablets */
     .about-section .jbtron {
-        margin: 10px !important;
-        padding: 10px !important;
+        margin: 10px;
+        padding: 10px;
         border-radius: 20px;
         box-shadow: rgba(50, 50, 93, 0.08) 0px 10px 30px -12px inset;
     }

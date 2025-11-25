@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Container, Row, Col, Button, Form, Input } from 'reactstrap';
+import { Row, Col, Button, Form, Input } from 'reactstrap';
 import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
 import SquareAd from '@/components/adsenses/SquareAd';
 import { sendNewPassword } from '@/redux/slices/authSlice';
@@ -53,7 +53,7 @@ const ResetPassword = () => {
 
     return (
 
-        <Container className="forgot-password mt-4">
+        <div className="forgot-password mt-4">
             <Row className="mt-5 d-block text-center" style={{ minHeight: '68vh' }}>
                 <>
                     <h2 className="fw-bolder my-3" style={{ color: 'var(--brand)' }}>
@@ -102,7 +102,7 @@ const ResetPassword = () => {
                     </Row>
                 </>
             </Row>
-        </Container>
+        </div>
     );
 };
 

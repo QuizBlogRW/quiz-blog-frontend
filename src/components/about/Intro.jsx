@@ -4,8 +4,6 @@ import reading from '@/images/reading.svg';
 const Intro = () => {
     return (
         <div className="introduct pt-2 pt-lg-5">
-
-            {/* Main Title */}
             <h1 className="display-4 fw-bolder text-center my-4 mb-lg-4" style={{ color: 'var(--brand)' }}>
                 Get To Know <span>Quiz-Blog</span>
             </h1>

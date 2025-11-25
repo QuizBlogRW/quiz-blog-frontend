@@ -1,9 +1,8 @@
-import React from 'react';
-import { Container, Row, Col, Card, CardBody, CardHeader, Alert } from 'reactstrap';
+import { Card, CardBody, CardHeader } from 'reactstrap';
 
 const ItsindirePrivacy = () => {
     return (
-        <Container className="my-5">
+        <div className="my-5">
             <h1 className="mb-4 text-center">Itsindire RW Privacy Policy</h1>
 
             {/* Introduction */}
@@ -114,7 +113,7 @@ const ItsindirePrivacy = () => {
                     </p>
                 </CardBody>
             </Card>
-        </Container>
+        </div>
     );
 };
 

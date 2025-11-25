@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Container, Row, Col, Card, CardBody } from 'reactstrap';
+import { useEffect, useState } from 'react';
+import { Row, Col, Card, CardBody } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import './NotFound404.css'; // we'll put the animation styles here
 
@@ -12,7 +12,7 @@ const NotFound404 = () => {
     }, []);
 
     return (
-        <Container className="py-5 notfound-container" style={{ minHeight: '66vh' }}>
+        <div className="py-5 notfound-container" style={{ minHeight: '66vh' }}>
             <Row className="h-100 justify-content-center align-items-center">
                 <Col xs={12} md={8} lg={6} className="text-center">
                     <Card className="border-0 shadow-sm">
@@ -38,7 +38,7 @@ const NotFound404 = () => {
                     </Card>
                 </Col>
             </Row>
-        </Container>
+        </div>
     );
 };
 

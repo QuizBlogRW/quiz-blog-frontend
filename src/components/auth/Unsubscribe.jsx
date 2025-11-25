@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Container, Row } from 'reactstrap';
+import { Row } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { deleteSubscriber } from '@/redux/slices/subscribersSlice';
 import { useDispatch } from 'react-redux';
@@ -21,9 +21,8 @@ const Unsubscribe = () => {
     };
 
     if (!isAuthenticated) return <NotAuthenticated />;
-    return (<Container className="forgot-password mt-4">
+    return (<div className="forgot-password mt-4">
         <Row className="mt-5 d-block text-center">
-
             {unsubscribed ?
                 <h6 className="fw-bolder my-5 py-5 text-success">
                     You have unsubscribed from Quiz-Blog! you will no longer receive updates.
@@ -36,7 +35,7 @@ const Unsubscribe = () => {
             }
 
         </Row>
-    </Container>
+    </div>
     );
 };
 

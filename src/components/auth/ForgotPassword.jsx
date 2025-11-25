@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Container, Row, Col, Button, Form, Input } from 'reactstrap';
+import { Row, Col, Button, Form, Input } from 'reactstrap';
 import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
 import SquareAd from '@/components/adsenses/SquareAd';
 import { sendResetLink } from '@/redux/slices/authSlice';
@@ -36,7 +36,7 @@ const ForgotPassword = () => {
     };
 
     return (
-        <Container className="forgot-password mt-4">
+        <div className="forgot-password mt-4">
             <Row className="mt-5 d-flex flex-column justify-content-center align-items-center text-center" style={{ minHeight: '68vh' }}>
 
                 {/* Google square ad */}
@@ -78,7 +78,7 @@ const ForgotPassword = () => {
                 </Row>
 
             </Row>
-        </Container>
+        </div>
     );
 };
 

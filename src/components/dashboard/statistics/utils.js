@@ -1,5 +1,8 @@
 export const toggle = (tab, activeTab, setActiveTab) => {
-    if (activeTab !== tab) setActiveTab(tab);
+    if (activeTab !== tab) {
+        setActiveTab(tab);
+        localStorage.setItem('activeMetric', tab);
+    }
 };
 
 export const formatBytes = (bytes) => {

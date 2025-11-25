@@ -1,36 +1,46 @@
+import { Container } from 'reactstrap';
+
 const FollowUs = ({ articleName, articleCreator }) => {
     return (
-        <section className="back-share px-2 d-flex justify-content-between align-items-center mt-3">
-            <div className="like-share d-flex flex-column flex-sm-row justify-content-between align-items-center w-100 p-3">
+        <section className="mt-4">
+            <Container className="p-3 bg-white rounded-3 shadow-sm d-flex flex-column flex-md-row align-items-center justify-content-between">
+                {/* Text */}
+                <p className="mb-3 mb-md-0 fw-semibold text-muted">
+                    Follow us on social media
+                </p>
 
-                <p className='mb-0 me-3 text-muted'>Follow us on social media</p>
-
-                <ul className='social-list d-flex mb-0 list-unstyled gap-2'>
-                    <li>
-                        <a href={'https://www.instagram.com/quizblogrw/'} target="_blank" rel="noopener noreferrer" className="social-btn" aria-label="Follow on Instagram" title="Instagram">
-                            <i className="fa-brands fa-instagram"></i>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href={`http://twitter.com/share?text=${articleName}&url=${window.location.href}&hashtags=${articleName},QuizBlog,${articleCreator}`} target="_blank" rel="noopener noreferrer" className="social-btn" aria-label="Share on X (Twitter)" title="Twitter">
-                            <i className="fa-brands fa-x-twitter"></i>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href={'https://www.facebook.com/QuizblogRw/'} target="_blank" rel="noopener noreferrer" className="social-btn" aria-label="Follow on Facebook" title="Facebook">
-                            <i className="fa-brands fa-facebook"></i>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href={'https://www.linkedin.com/company/quiz-blog/'} target="_blank" rel="noopener noreferrer" className="social-btn" aria-label="Follow on LinkedIn" title="LinkedIn">
-                            <i className="fa-brands fa-linkedin"></i>
-                        </a>
-                    </li>
+                {/* Social Icons */}
+                <ul className="list-unstyled d-flex mb-0 gap-3">
+                    {[
+                        { href: 'https://www.instagram.com/quizblogrw/', icon: 'fab fa-instagram', label: 'Instagram' },
+                        { href: `http://twitter.com/share?text=${articleName}&url=${window.location.href}&hashtags=${articleName},QuizBlog,${articleCreator}`, icon: 'fab fa-twitter', label: 'Twitter' },
+                        { href: 'https://www.facebook.com/QuizblogRw/', icon: 'fab fa-facebook-f', label: 'Facebook' },
+                        { href: 'https://www.linkedin.com/company/quiz-blog/', icon: 'fab fa-linkedin-in', label: 'LinkedIn' },
+                    ].map((social, idx) => (
+                        <li key={idx}>
+                            <a
+                                href={social.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="d-flex align-items-center justify-content-center rounded-circle text-white"
+                                style={{
+                                    width: 45,
+                                    height: 45,
+                                    fontSize: 18,
+                                    backgroundColor: 'var(--brand)',
+                                    transition: 'all 0.3s',
+                                }}
+                                aria-label={social.label}
+                                title={social.label}
+                                onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'var(--accent)'}
+                                onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'var(--brand)'}
+                            >
+                                <i className={social.icon}></i>
+                            </a>
+                        </li>
+                    ))}
                 </ul>
-            </div>
+            </Container>
         </section>
     );
 };

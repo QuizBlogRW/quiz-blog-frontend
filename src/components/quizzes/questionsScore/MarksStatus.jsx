@@ -6,7 +6,7 @@ const MarksStatus = ({ score, qnLength, passMark }) => {
     const isPassed = percentage >= passMark;
 
     return (
-        <Container className="my-5">
+        <div className="my-5">
             <Row className="justify-content-center">
                 <Col xs={12} md={8} lg={6}>
                     <Card
@@ -52,7 +52,7 @@ const MarksStatus = ({ score, qnLength, passMark }) => {
                     </Card>
                 </Col>
             </Row>
-        </Container>
+        </div>
     );
 };
 

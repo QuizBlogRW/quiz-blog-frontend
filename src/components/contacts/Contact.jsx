@@ -97,7 +97,7 @@ const Contact = () => {
 
                 <Col sm="6" className="mb-5 px-lg-5">
                     <small className='fw-bolder' style={{ fontSize: '1.1rem', color: 'var(--brand)' }}>
-                        Require more clarification? Feel free to get in touch with us! <span role="img" aria-label="pointing">👉</span>
+                        More clarification? Feel free to get in touch with us! <span role="img" aria-label="pointing">👉</span>
                     </small>
 
                     <hr className="my-2" />

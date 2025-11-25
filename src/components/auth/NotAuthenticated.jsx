@@ -20,17 +20,17 @@ const NotAuthenticated = ({ message = 'You must be logged in' }) => {
         );
     }
     return (
-        <div className="vh-100 d-flex justify-content-center align-items-center bg-light">
+        <div className="vh-100 d-flex justify-content-center align-items-center">
             <div className="p-4 p-md-5 rounded shadow-sm text-center" style={{ maxWidth: '350px', backgroundColor: '#fff' }}>
                 {<>
-                    <h5 className="fw-bold text-danger mb-3">
+                    <h5 className="fw-bold text-success mb-3">
                         {message}
                     </h5>
 
                     <Button
-                        color="danger"
+                        color="warning"
                         onClick={toggleL}
-                        className="fw-bold px-4 py-2"
+                        className="fw-bold px-4 py-2 text-success"
                     >
                         Login
                     </Button>

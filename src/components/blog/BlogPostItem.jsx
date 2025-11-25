@@ -12,7 +12,7 @@ const BlogPostItem = ({ blogPost }) => {
     return (
         <Card className="bg-light py-3 px-1 px-sm-3 my-2 my-sm-3 border post-card">
             <Link to={`/view-blog-post/${slug}`} className="text-decoration-none text-reset">
-                <div className="d-flex flex-column flex-md-row align-items-start gap-3">
+                <div className="d-flex flex-column flex-md-row align-items-center align-items-lg-start gap-3">
                     <div className="post-thumb flex-shrink-0">
                         <img src={post_image || altImage} alt={brand || title} />
                     </div>

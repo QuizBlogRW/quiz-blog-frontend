@@ -1,7 +1,6 @@
 import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
 import SquareAd from '@/components/adsenses/SquareAd';
 import {
-    Container,
     Row,
     Col,
     Card,
@@ -15,7 +14,7 @@ const Privacy = () => {
     const formattedDate = moment('2025-10-20').format('MMMM D, YYYY');
 
     return (
-        <Container className="my-4 my-md-5 privacy-page">
+        <div className="my-4 my-md-5 privacy-page">
             <Card className="border-0 shadow-sm">
                 <CardHeader className="bg-light border-bottom text-center text-md-start">
                     <h1 className="h2 mb-0">Privacy Policy</h1>
@@ -140,7 +139,7 @@ const Privacy = () => {
 
                 </CardBody>
             </Card>
-        </Container>
+        </div>
     );
 };
 

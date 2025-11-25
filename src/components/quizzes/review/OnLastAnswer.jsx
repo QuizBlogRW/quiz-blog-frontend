@@ -43,7 +43,7 @@ const OnLastAnswer = ({ thisQuiz }) => {
 
                 {/* Back */}
                 <Button color="outline-info" className="w-100 fw-bold" onClick={goBack}>
-                    Back
+                    <i className="fas fa-circle-left me-2"></i> Back
                 </Button>
             </div>
 

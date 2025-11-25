@@ -81,7 +81,7 @@
 /* MOBILES */
 @media screen and (max-width: 768px) {
     .contact-section small {
-        font-size: .78rem !important;
+        font-size: .7rem !important;
     }
 
     .contact-section .jbtron {

@@ -1,7 +1,6 @@
 import SquareAd from '@/components/adsenses/SquareAd';
 import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
 import {
-    Container,
     Row,
     Col,
     Card,
@@ -15,7 +14,7 @@ const Disclaimer = () => {
     const lastUpdated = moment().format('MMMM D, YYYY');
 
     return (
-        <Container className="my-4 my-md-5">
+        <div className="my-4 my-md-5">
             <Card className="border-0 shadow-sm">
                 <CardHeader className="bg-light border-bottom text-center text-md-start">
                     <h1 className="h2 mb-0">Disclaimer for Quiz-Blog</h1>
@@ -45,8 +44,6 @@ const Disclaimer = () => {
                             .
                         </div>
                     </Alert>
-
-                    {/* Main Disclaimer Section */}
                     <Card className="border mb-4">
                         <CardHeader>
                             <h2 className="h4 mb-0">Disclaimers for quizblog.rw</h2>
@@ -123,7 +120,7 @@ const Disclaimer = () => {
                     </Row>
                 </CardBody>
             </Card>
-        </Container>
+        </div>
     );
 };
 

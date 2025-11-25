@@ -15,7 +15,7 @@ const Footer = () => {
         return null;
 
     } else return (
-        <footer className="mainfooter mt-1 px-3" role="contentinfo">
+        <footer className="mainfooter px-3" role="contentinfo">
             <div className="footer-middle">
                 <div className="container">
 

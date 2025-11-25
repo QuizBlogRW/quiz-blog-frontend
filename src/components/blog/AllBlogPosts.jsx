@@ -1,7 +1,7 @@
 import { useEffect, lazy, Suspense } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { Container, Col, Row, ListGroup, ListGroupItem } from 'reactstrap';
+import { Col, Row, ListGroup, ListGroupItem } from 'reactstrap';
 import { getBlogPosts, getPostCategories } from '@/redux/slices';
 import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
 import SquareAd from '@/components/adsenses/SquareAd';
@@ -25,7 +25,7 @@ const AllBlogPosts = () => {
   }, [dispatch]);
 
   return (
-    <Container className="posts main blog-posts mt-4 py-lg-5">
+    <div className="posts blog-posts mt-4 py-lg-5">
       <Row>
         <Col xs="12" className="mb-3">
           <div className="blog-hero jbtron rounded p-3 text-center">
@@ -107,7 +107,7 @@ const AllBlogPosts = () => {
           </Suspense>
         </Col>
       </Row>
-    </Container>
+    </div>
   );
 };
 

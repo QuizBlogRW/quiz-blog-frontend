@@ -7,7 +7,7 @@ import { createChapter, getChaptersByCourse, deleteChapter, updateChapter } from
 import { getOneCourse } from '@/redux/slices/coursesSlice';
 import validators from '@/utils/validators';
 import { useSelector, useDispatch } from 'react-redux';
-import { Container, Card, Button, CardTitle, CardText, Alert, Breadcrumb, BreadcrumbItem, Input } from 'reactstrap';
+import { Card, Button, CardTitle, CardText, Alert, Breadcrumb, BreadcrumbItem, Input } from 'reactstrap';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 import DeleteModal from '@/utils/DeleteModal';
 import { notify } from '@/utils/notifyToast';
@@ -35,8 +35,8 @@ const ViewCourse = () => {
         if (activeIndex !== index) setActiveIndex(index);
     };
 
-    return (<Container className="mt-2 py-2 py-lg-5 view-course-container">
-    <Alert color="success" style={{ backgroundColor: 'var(--brand)', border: '1px solid var(--brand)', color: '#fff' }}>
+    return (<div className="mt-2 py-2 py-lg-5 view-course-container">
+        <Alert color="success" style={{ backgroundColor: 'var(--brand)', border: '1px solid var(--brand)', color: '#fff' }}>
             <Breadcrumb tag="nav" listTag="div">
                 <>
                     <BreadcrumbItem tag="a" href="/course-notes" style={{ color: '#fff', fontWeight: 'bold' }}>
@@ -96,7 +96,7 @@ const ViewCourse = () => {
                             {user?.role !== 'Visitor' ?
 
                                 <span className="ms-auto d-flex align-items-center">
-                                        <UpdateModal
+                                    <UpdateModal
                                         title="Edit Chapter"
                                         initialData={{ idToUpdate: chapter._id, name: chapter.title, description: chapter.description }}
                                         submitFn={data => {
@@ -167,7 +167,7 @@ const ViewCourse = () => {
                         /> : null}
                 </Alert>
         }
-    </Container>);
+    </div>);
 };
 
 export default ViewCourse;

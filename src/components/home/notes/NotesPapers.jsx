@@ -59,10 +59,9 @@ const NotesPapers = () => {
 
       <Row className="m-1 p-1 px-sm-5 notes-paper">
         <Col sm="12" className="px-1 y-1 w-100">
-          <h3 className="inversed-title mt-0 my-lg-3 py-4 py-lg-3 text-center fw-bolder">
-            <span className="part1">Your Resource:</span>
-            <span className="part2">Notes & Past Papers</span>
-          </h3>
+          <h1 className="mt-0 my-lg-3 py-4 py-lg-3 text-center fw-bolder">
+            Notes & Past Papers
+          </h1>
         </Col>
 
         <Col sm="12" className="px-0 px-sm-5 w-100">

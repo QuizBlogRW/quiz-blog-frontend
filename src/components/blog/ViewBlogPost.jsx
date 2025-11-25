@@ -3,31 +3,30 @@ import moment from 'moment';
 import Markdown from 'react-markdown';
 import rehypeHighlight from 'rehype-highlight';
 import { useParams } from 'react-router-dom';
-import { Container, Row, Col } from 'reactstrap';
+import { Container, Row, Col, Card, CardBody } from 'reactstrap';
+import { useSelector, useDispatch } from 'react-redux';
+
 import { getOneBlogPost } from '@/redux/slices';
 import { createBlogPostView } from '@/redux/slices/blogPostsViewsSlice';
-import { useSelector, useDispatch } from 'react-redux';
 import RelatedPosts from './RelatedPosts';
 import LatestPosts from './LatestPosts';
 import altImage from '@/images/dashboard.svg';
 import BackLikeShare from './BackLikeShare';
 import FollowUs from './FollowUs';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
-import './viewPost.css';
 import ResponsiveAd from '../adsenses/ResponsiveAd';
+import './viewPost.css'
 
 const fetchCountryData = async () => {
   try {
     const ipResponse = await fetch('https://api.ipify.org?format=json');
     const ipData = await ipResponse.json();
-    const ipAddress = ipData.ip;
     const geoResponse = await fetch(
-      `https://get.geojs.io/v1/ip/geo/${ipAddress}.json`
+      `https://get.geojs.io/v1/ip/geo/${ipData.ip}.json`
     );
     const geoData = await geoResponse.json();
     return geoData.country;
-  } catch (error) {
-    console.error(error?.message);
+  } catch {
     return null;
   }
 };
@@ -35,29 +34,24 @@ const fetchCountryData = async () => {
 const ViewBlogPost = () => {
   const dispatch = useDispatch();
   const { bPSlug } = useParams();
+  const { oneBlogPost, isLoading } = useSelector((state) => state.blogPosts);
+  const { user } = useSelector((state) => state.auth);
+  const [newBlogPostView, setNewBlogPostView] = useState();
+  const authorRef = useRef();
+  const isCreateCalled = useRef(false);
 
   useEffect(() => {
     dispatch(getOneBlogPost(bPSlug));
   }, [dispatch, bPSlug]);
 
-  const { oneBlogPost, isLoading } = useSelector((state) => state.blogPosts);
-  const { _id, title, postCategory, creator, createdAt, markdown, post_image } = oneBlogPost;
-  const formattedDate = moment(new Date(createdAt)).format('DD MMM YYYY, HH:mm');
-
-  const bPCatID = postCategory?._id;
-  const { user } = useSelector((state) => state.auth);
-  const [newBlogPostView, setNewBlogPostView] = useState();
-  const authorRef = useRef();
-
   useEffect(() => {
+    if (!oneBlogPost) return;
     const updateBlogPostView = async () => {
       const country = await fetchCountryData();
       setNewBlogPostView({
-        blogPost: _id,
-        user: user && user._id,
-        device: navigator.userAgent.match(
-          /Android|iPhone|iPad|iPod|Windows Phone/i
-        )
+        blogPost: oneBlogPost._id,
+        user: user?._id,
+        device: /Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent)
           ? 'mobile'
           : 'desktop',
         country,
@@ -66,29 +60,20 @@ const ViewBlogPost = () => {
     updateBlogPostView();
   }, [user, oneBlogPost]);
 
-  const isCreateCalled = useRef(false);
-
   useEffect(() => {
-    if (
-      newBlogPostView &&
-      newBlogPostView.blogPost &&
-      !isCreateCalled.current
-    ) {
+    if (newBlogPostView && !isCreateCalled.current) {
       dispatch(createBlogPostView(newBlogPostView));
       isCreateCalled.current = true;
     }
   }, [newBlogPostView, dispatch]);
 
-  // IntersectionObserver for reveal animation on author bio
   useEffect(() => {
     const node = authorRef.current;
     if (!node) return;
     const obs = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
-          if (e.isIntersecting) {
-            node.classList.add('is-visible');
-          }
+          if (e.isIntersecting) node.classList.add('is-visible');
         });
       },
       { threshold: 0.15 }
@@ -98,98 +83,95 @@ const ViewBlogPost = () => {
   }, [authorRef, oneBlogPost]);
 
   if (!oneBlogPost) return null;
+
+  const { title, creator, createdAt, markdown, post_image, postCategory } = oneBlogPost;
+  const formattedDate = moment(new Date(createdAt)).format('DD MMM YYYY, HH:mm');
+
   return (
-    <Container
-      className="blog-post-view p-0 p-lg-5 mw-100"
-      style={{ backgroundColor: 'var(--bg, #f3f3f2)' }}
-    >
-      <Row className="viewed-details pb-lg-2">
-        <Col
-          lg="8"
-          md="12"
-          className="mx-0 py-2 px-0 pl-lg-2 ps-lg-4 choosen-blogPost my-lg-3"
-        >
-          {isLoading ? (
-            <QBLoadingSM />
-          ) : (
-            <article className="post-article px-2 px-lg-3 py-lg-4 bg-white rounded-2 shadow-sm my-lg-3">
-              <BackLikeShare
-                articleName={title}
-                articleCreator={
-                  creator?.name
-                }
-              />
-              <header className="mb-3 text-center my-lg-5">
-                <h1 className="blogPost-title fw-bold text-uppercase mb-1">
-                  {title}
-                </h1>
-                <div className="meta text-muted small">
-                  <strong style={{ color: 'var(--brand)' }}>
-                    {creator?.name}
-                  </strong>
-                  &nbsp;•&nbsp;
-                  {formattedDate === 'Invalid date' ? '' : formattedDate}
-                </div>
-              </header>
+    <Container fluid className="py-4 px-2 px-lg-5 bg-light">
+      <Row className="gy-4">
+        {/* Main Article */}
+        <Col lg="8">
+          <Card className="shadow-sm border-0 rounded-3">
+            {isLoading ? (
+              <QBLoadingSM />
+            ) : (
+              <CardBody className="p-4 p-lg-5">
+                {/* Title + Meta */}
+                <header className="text-center mb-4">
+                  <h1 className="fw-bold text-dark text-uppercase mb-2">{title}</h1>
+                  <div className="small text-muted">
+                    <strong style={{ color: 'var(--brand)' }}>{creator?.name}</strong>
+                    &nbsp;•&nbsp;
+                    {formattedDate}
+                  </div>
+                </header>
 
-              <figure className="post-photo mb-4 text-center">
-                <img
-                  src={
-                    post_image
-                      ? post_image
-                      : altImage
-                  }
-                  alt={title}
-                />
-              </figure>
-
-              <section
-                className="post-content mb-4"
-                aria-label="Article content"
-              >
-                <div className="markdown-body">
-                  <Markdown rehypePlugins={[rehypeHighlight]}>
-                    {markdown}
-                  </Markdown>
-                </div>
-              </section>
-
-              <footer className="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-2 mt-4">
-                <div
-                  className="d-flex align-items-center author-bio"
-                  ref={authorRef}
-                >
-                  <div className="author-photo me-3">
+                {/* Post Image */}
+                  <div className="text-center mb-4">
                     <img
-                      src={
-                        (oneBlogPost &&
-                          creator?.avatar) ||
-                        altImage
-                      }
-                      alt={creator?.name}
+                      src={post_image || altImage}
+                      alt={title}
+                      className="img-fluid rounded shadow-sm"
+                      style={{
+                        maxWidth: '100%',      // prevents stretching beyond container
+                        width: '100%',         // responsive
+                        maxHeight: '400px',    // limit tall images
+                        objectFit: 'cover',    // crop if needed
+                        margin: '0 auto',      // center horizontally
+                      }}
                     />
                   </div>
-                </div>
 
-                <div className="d-flex align-items-center my-lg-3">
-                  <BackLikeShare
-                    articleName={title}
-                    articleCreator={
-                      creator?.name
-                    }
-                  />
-                </div>
-              </footer>
 
-              <FollowUs />
-            </article>
-          )}
+                {/* Markdown Content */}
+                <section className="markdown-body mb-4">
+                  <Markdown rehypePlugins={[rehypeHighlight]}>{markdown}</Markdown>
+                </section>
+
+                  {/* Author + Actions */}
+                  <footer className="d-flex flex-column flex-md-row justify-content-between align-items-center gap-4 mt-5 p-3 p-md-4 bg-white rounded-4 shadow-sm border" style={{ borderColor: 'var(--accent)' }}>
+                    {/* Author Info */}
+                    <div className="d-flex align-items-center gap-3" ref={authorRef}>
+                      <img
+                        src={creator?.avatar || altImage}
+                        alt={creator?.name}
+                        className="rounded-circle"
+                        style={{
+                          width: 70,
+                          height: 70,
+                          objectFit: 'cover',
+                          border: '3px solid var(--accent)',
+                          transition: 'transform 0.3s',
+                        }}
+                      />
+                      <div className="text-start">
+                        <div className="fw-bold text-dark">{creator?.name}</div>
+                        <div className="text-muted small">{postCategory?.name}</div>
+                      </div>
+                    </div>
+
+                    {/* Social Sharing */}
+                    <div className="mt-3 mt-md-0">
+                      <BackLikeShare articleName={title} articleCreator={creator?.name} />
+                    </div>
+                  </footer>
+
+                  {/* Follow Section */}
+                  <FollowUs className="mt-4" />
+
+              </CardBody>
+            )}
+          </Card>
         </Col>
 
-        <Col lg="4" md="12" className="sidebar-content mt-3 mt-lg-0">
-          <RelatedPosts bPCatID={bPCatID} />
-          <LatestPosts />
-          <ResponsiveAd />
+        {/* Sidebar */}
+        <Col lg="4">
+          <Row className="gy-3">
+            <Col xs="12"><RelatedPosts bPCatID={postCategory?._id} /></Col>
+            <Col xs="12"><LatestPosts /></Col>
+            <Col xs="12"><ResponsiveAd /></Col>
+          </Row>
         </Col>
       </Row>
     </Container>

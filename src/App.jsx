@@ -1,6 +1,6 @@
 import { useEffect, lazy, Suspense, useState, useCallback } from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
-import { Toast } from 'reactstrap';
+import { Toast, Container } from 'reactstrap';
 import ReactGA from 'react-ga4';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -107,9 +107,6 @@ const App = () => {
         }
     }, [user]);
 
-    console.log("import.meta.env.MODE: ", import.meta.env.MODE);
-    console.log("process.env.NODE_ENV: ", process.env.NODE_ENV);
-
     return (
         <logRegContext.Provider value={{ isOpenL, toggleL, isOpenR, toggleR }}>
             <Suspense fallback={<QBLoading />}>
@@ -133,68 +130,70 @@ const App = () => {
                 {/* Modals will be opened from anywhere in children since they are global */}
                 <LoginModal />
                 <RegisterModal />
-                <Routes fallback={<QBLoading />}>
-                    <Route path="/about" element={<About />} />
-                    <Route path="/privacy" element={<Privacy />} />
-                    <Route path="/itsindire-privacy" element={<ItsindirePrivacy />} />
-                    <Route path="/disclaimer" element={<Disclaimer />} />
-                    <Route path="/unsubscribe" element={<Unsubscribe />} />
-                    <Route path="/forgot-password" element={<ForgotPassword />} />
-                    <Route path="/reset-password" element={<ResetPassword />} />
-                    <Route path="/verify" element={<Verify />} />
-                    <Route exact path="/category/:categoryId" element={<SingleCategory />} />
-                    <Route exact path="/edit-profile/:userId" element={<EditProfile />} />
-                    <Route exact path="/view-quiz/:quizSlug" element={<GetReady />} />
-                    <Route exact path="/attempt-quiz/:quizSlug" element={<QuizQuestions />} />
-                    <Route exact path="/quiz-results/:quizSlug" element={<QuizResults />} />
-                    <Route exact path="/view-question/:questionID" element={<SingleQuestion />} />
-                    <Route exact path="/edit-question/:questionID" element={<EditQuestion />} />
-                    <Route exact path="/review-quiz/:reviewId" element={<ReviewQuiz />} />
-                    <Route exact path="/quiz-ranking/:quizID" element={<QuizRanking />} />
-                    <Route exact path="/questions-create/:quizSlug" element={<CreateQuestions />} />
-                    <Route exact path="/contact" element={<Contact />} />
-                    <Route exact path="/contact-chat" element={<ChatWrapper />} />
-                    <Route exact path="/faqs" element={<FaqCollapse />} />
-                    <Route path="/all-categories" element={<AllCategories />} />
-                    <Route path="/course-notes" element={<Index />} />
-                    <Route exact path="/view-course/:courseId" element={<ViewCourse />} />
-                    <Route exact path="/feedbacks" element={<Feedbacks />} />
-                    <Route exact path="/subscribers" element={<Subscribers />} />
-                    <Route exact path="/broadcasts" element={<Broadcasts />} />
-                    <Route exact path="/blog" element={<AllBlogPosts />} />
-                    <Route exact path="/blog/:bPCatID" element={<ByCategory />} />
-                    <Route exact path="/create-bpost/:bPCatID" element={<AddBlogPost />} />
-                    <Route exact path="/edit-bpost/:bPSlug" element={<EditBlogPost />} />
-                    <Route exact path="/view-blog-post/:bPSlug" element={<ViewBlogPost />} />
-                    <Route path="/ads.txt" element={<div>google.com, pub-8918850949540829, DIRECT, f08c47fec0942fa0</div>} />
-                    <Route exact path="/" element={<LandingQuizzes toggleR={toggleR} />} />
-                    <Route exact path="/all-quizzes" element={<AllQuizzes />} />
-                    <Route exact path="/view-note-paper/:noteSlug" element={<ViewNotePaper />} />
-                    <Route exact path="/dashboard" element={<Dashboard />} />
-                    <Route exact path="/statistics" element={<Statistics />}>
-                        <Route path="/statistics/new-50-users" element={<UsersStats />} />
-                        <Route path="/statistics/with-image" element={<UsersStats />} />
-                        <Route path="/statistics/with-school" element={<UsersStats />} />
-                        <Route path="/statistics/with-level" element={<UsersStats />} />
-                        <Route path="/statistics/with-faculty" element={<UsersStats />} />
-                        <Route path="/statistics/with-interests" element={<UsersStats />} />
-                        <Route path="/statistics/with-about" element={<UsersStats />} />
-                        <Route path="/statistics/all-users" element={<UsersStats />} />
-                        <Route path="/statistics/top-10-quizzing-users" element={<UsersStats />} />
-                        <Route path="/statistics/top-10-downloaders" element={<UsersStats />} />
-                        <Route path="/statistics/top-10-quizzes" element={<UsersStats />} />
-                        <Route path="/statistics/quizzes-stats" element={<UsersStats />} />
-                        <Route path="/statistics/top-10-notes" element={<UsersStats />} />
-                        <Route path="/statistics/notes-stats" element={<UsersStats />} />
-                        <Route path="/statistics/quiz-categories-stats" element={<UsersStats />} />
-                        <Route path="/statistics/notes-categories-stats" element={<UsersStats />} />
-                        <Route path="/statistics/recent-ten-views" element={<BlogStats />} />
-                        <Route path="/statistics/all-posts-views" element={<BlogStats />} />
-                    </Route>
-                    <Route path="/*" element={<NotFound404 />} />
-                </Routes>
-                <ToastContainer limit={2} style={{ fontSize: '0.8rem', textAlign: 'left' }} />
+                <Container className="main">
+                    <Routes fallback={<QBLoading />}>
+                        <Route path="/about" element={<About />} />
+                        <Route path="/privacy" element={<Privacy />} />
+                        <Route path="/itsindire-privacy" element={<ItsindirePrivacy />} />
+                        <Route path="/disclaimer" element={<Disclaimer />} />
+                        <Route path="/unsubscribe" element={<Unsubscribe />} />
+                        <Route path="/forgot-password" element={<ForgotPassword />} />
+                        <Route path="/reset-password" element={<ResetPassword />} />
+                        <Route path="/verify" element={<Verify />} />
+                        <Route exact path="/category/:categoryId" element={<SingleCategory />} />
+                        <Route exact path="/edit-profile/:userId" element={<EditProfile />} />
+                        <Route exact path="/view-quiz/:quizSlug" element={<GetReady />} />
+                        <Route exact path="/attempt-quiz/:quizSlug" element={<QuizQuestions />} />
+                        <Route exact path="/quiz-results/:quizSlug" element={<QuizResults />} />
+                        <Route exact path="/view-question/:questionID" element={<SingleQuestion />} />
+                        <Route exact path="/edit-question/:questionID" element={<EditQuestion />} />
+                        <Route exact path="/review-quiz/:reviewId" element={<ReviewQuiz />} />
+                        <Route exact path="/quiz-ranking/:quizID" element={<QuizRanking />} />
+                        <Route exact path="/questions-create/:quizSlug" element={<CreateQuestions />} />
+                        <Route exact path="/contact" element={<Contact />} />
+                        <Route exact path="/contact-chat" element={<ChatWrapper />} />
+                        <Route exact path="/faqs" element={<FaqCollapse />} />
+                        <Route path="/all-categories" element={<AllCategories />} />
+                        <Route path="/course-notes" element={<Index />} />
+                        <Route exact path="/view-course/:courseId" element={<ViewCourse />} />
+                        <Route exact path="/feedbacks" element={<Feedbacks />} />
+                        <Route exact path="/subscribers" element={<Subscribers />} />
+                        <Route exact path="/broadcasts" element={<Broadcasts />} />
+                        <Route exact path="/blog" element={<AllBlogPosts />} />
+                        <Route exact path="/blog/:bPCatID" element={<ByCategory />} />
+                        <Route exact path="/create-bpost/:bPCatID" element={<AddBlogPost />} />
+                        <Route exact path="/edit-bpost/:bPSlug" element={<EditBlogPost />} />
+                        <Route exact path="/view-blog-post/:bPSlug" element={<ViewBlogPost />} />
+                        <Route path="/ads.txt" element={<div>google.com, pub-8918850949540829, DIRECT, f08c47fec0942fa0</div>} />
+                        <Route exact path="/" element={<LandingQuizzes toggleR={toggleR} />} />
+                        <Route exact path="/all-quizzes" element={<AllQuizzes />} />
+                        <Route exact path="/view-note-paper/:noteSlug" element={<ViewNotePaper />} />
+                        <Route exact path="/dashboard" element={<Dashboard />} />
+                        <Route exact path="/statistics" element={<Statistics />}>
+                            <Route path="/statistics/new-50-users" element={<UsersStats />} />
+                            <Route path="/statistics/with-image" element={<UsersStats />} />
+                            <Route path="/statistics/with-school" element={<UsersStats />} />
+                            <Route path="/statistics/with-level" element={<UsersStats />} />
+                            <Route path="/statistics/with-faculty" element={<UsersStats />} />
+                            <Route path="/statistics/with-interests" element={<UsersStats />} />
+                            <Route path="/statistics/with-about" element={<UsersStats />} />
+                            <Route path="/statistics/all-users" element={<UsersStats />} />
+                            <Route path="/statistics/top-10-quizzing-users" element={<UsersStats />} />
+                            <Route path="/statistics/top-10-downloaders" element={<UsersStats />} />
+                            <Route path="/statistics/top-10-quizzes" element={<UsersStats />} />
+                            <Route path="/statistics/quizzes-stats" element={<UsersStats />} />
+                            <Route path="/statistics/top-10-notes" element={<UsersStats />} />
+                            <Route path="/statistics/notes-stats" element={<UsersStats />} />
+                            <Route path="/statistics/quiz-categories-stats" element={<UsersStats />} />
+                            <Route path="/statistics/notes-categories-stats" element={<UsersStats />} />
+                            <Route path="/statistics/recent-ten-views" element={<BlogStats />} />
+                            <Route path="/statistics/all-posts-views" element={<BlogStats />} />
+                        </Route>
+                        <Route path="/*" element={<NotFound404 />} />
+                    </Routes>
+                </Container>
                 <Footer />
+                <ToastContainer limit={2} style={{ fontSize: '0.8rem', textAlign: 'left' }} />
             </Suspense>
         </logRegContext.Provider>
     );

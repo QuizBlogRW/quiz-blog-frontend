@@ -14,7 +14,7 @@ const SystemDashboard = () => {
     const [SummaryStats, setSummaryStats] = useState(null);
     const [loading, setLoading] = useState(true);
     const [fetchError, setFetchError] = useState(null);
-    const [activeTab, setActiveTab] = useState('1');
+    const [activeTab, setActiveTab] = useState(localStorage.getItem('activeMetric') || '1');
     const [lastUpdated, setLastUpdated] = useState(null);
 
     const apiUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';

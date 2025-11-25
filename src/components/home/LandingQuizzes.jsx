@@ -1,6 +1,6 @@
 import { useEffect, useState, lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import { Container, Col, Row, Button } from 'reactstrap';
+import { Col, Row, Button } from 'reactstrap';
 import ItemPlaceholder from '@/utils/rLoading/ItemPlaceholder';
 import { useSelector, useDispatch } from 'react-redux';
 import { getLimitedQuizzes } from '@/redux/slices/quizzesSlice';
@@ -32,7 +32,7 @@ const LandingQuizzes = () => {
   const { loadingLimited, limitedQuizzes } = useSelector(state => state.quizzes);
 
   return (
-    <Container className="posts main w-100 px-0">
+    <div className="posts w-100 px-0">
       <Row className="mx-0 px-1 px-lg-5">
         <Col sm="12" className="px-1">
           <Suspense fallback={<ItemPlaceholder />}>
@@ -54,10 +54,9 @@ const LandingQuizzes = () => {
         aria-label="Latest quizzes"
       >
         <Col sm="8" className="px-1 px-lg-4 mt-md-2">
-          <h3 className="inversed-title mt-0 my-lg-3 py-lg-3 text-center fw-bolder py-2">
-            <span className="part1">FreshQuiz:</span>
-            <span className="part2">The Latest Quizzes</span>
-          </h3>
+          <h1 className="mt-0 my-lg-3 py-lg-3 text-center fw-bolder py-2">
+            Latest Quizzes
+          </h1>
 
           {loadingLimited ? (
             <>
@@ -135,7 +134,7 @@ const LandingQuizzes = () => {
           </div>
         </Col>
       </Row>
-    </Container>
+    </div>
   );
 };
 
