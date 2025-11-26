@@ -83,7 +83,7 @@ const contactsSlice = createSlice({
     builder.addCase(replyContact.fulfilled, (state, action) => {
       state.reply = action.payload;
       state.isLoading = false;
-      socket.emit('newReply', action.payload);
+      if (socket) socket.emit('newReply', action.payload);
     });
     builder.addCase(deleteContact.fulfilled, (state, action) => {
       state.allContacts = state.allContacts.filter(contact => contact._id !== action.payload._id);
@@ -101,7 +101,7 @@ const contactsSlice = createSlice({
     builder.addCase(sendRoomMessage.fulfilled, (state, action) => {
       state.oneRoomMessages.unshift(action.payload);
       state.isLoading = false;
-      socket.emit('room_message', action.payload);
+      if (socket) socket.emit('room_message', action.payload);
     });
 
     // Pending actions

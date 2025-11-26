@@ -63,6 +63,8 @@ const ChatMessages = ({ onlineList }) => {
     };
 
     useEffect(() => {
+        if (!socket) return;
+
         const handleReplyReceived = replyReceived => {
             setReplState(prevReplies => [...prevReplies, replyReceived]);
             if (replyReceived.email !== user.email) {
