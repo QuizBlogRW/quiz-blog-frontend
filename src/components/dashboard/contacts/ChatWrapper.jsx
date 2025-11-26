@@ -27,6 +27,8 @@ const ChatWrapper = () => {
     const { user, isAuthenticated } = useSelector(state => state.auth);
 
     const setupSocketListeners = () => {
+        if (!socket) return;
+
         // Listen for 'newUserOnline' event
         socket.on('newUserOnline', ({ onlineUsers, new_user }) => {
             setOnlineList(onlineUsers);
@@ -51,11 +53,13 @@ const ChatWrapper = () => {
 
             if (user && user.name) {
                 document.title = `${user.name.charAt(0).toUpperCase() + user.name.slice(1)} - Contacts`;
-                socket.emit('newUserConnected', {
-                    _id: user._id,
-                    name: user.name,
-                    email: user.email
-                });
+                if (socket) {
+                    socket.emit('newUserConnected', {
+                        _id: user._id,
+                        name: user.name,
+                        email: user.email
+                    });
+                }
             }
         }
 
@@ -92,7 +96,7 @@ const ChatWrapper = () => {
         dispatch(getCreateRoom({ roomName, users: [senderID, receiverID] }));
 
         // Join the room
-        if (roomName !== '' && username !== '') {
+        if (roomName !== '' && username !== '' && socket) {
             socket.emit('join_room', { username, roomName });
         }
     };

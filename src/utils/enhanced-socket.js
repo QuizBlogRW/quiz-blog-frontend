@@ -37,12 +37,6 @@ class SocketManager {
 
     connect(options = {}) {
         const defaultOptions = {
-            urls: [
-                process.env.REACT_APP_SOCKET_URL || 'http://localhost:3001',
-                process.env.REACT_APP_API_URL || 'http://localhost:3001',
-                'http://localhost:3001',
-                'http://localhost:8080'
-            ],
             transports: ['websocket', 'polling'],
             timeout: 20000,
             forceNew: true,

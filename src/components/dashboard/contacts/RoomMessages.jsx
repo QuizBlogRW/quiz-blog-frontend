@@ -24,8 +24,9 @@ const RoomMessages = ({ oON1room, onlineList }) => {
     const [typingStatus, setTypingStatus] = useState('');
 
     // Typing state on form
-    const handleTyping = () =>
-        socket.emit('typing', `${user && user.name} is typing`);
+    const handleTyping = () => {
+        if (socket) socket.emit('typing', `${user && user.name} is typing`);
+    }
 
     const sendMessage = e => {
         e.preventDefault();
@@ -61,6 +62,8 @@ const RoomMessages = ({ oON1room, onlineList }) => {
 
     // runs whenever a the backend returns back the bRoomMsg received
     useEffect(() => {
+        if (!socket) return;
+
         socket.on('typingResponse', (data) => setTypingStatus(data));
         socket.on('welcome_room_message', (data) => {
             setWelcomeMessage(data.message);
