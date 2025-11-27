@@ -1,171 +1,375 @@
 import axios from 'axios';
 import { notify } from '@/utils/notifyToast';
 
-// REAL GLOBAL - survives imports
-if (!window.__TOAST_CONTROL__) {
-  window.__TOAST_CONTROL__ = {
-    success: false,
-    error: false,
-    retryNotified: false,   // <-- add this
-  };
-}
-
-// Environment-based URLs
-export const qbURL = 'https://myqb-245fdbd30c9b.herokuapp.com/';
-export const testURL = 'https://qb-backend-one.vercel.app/';
-export const devApiURL = 'http://localhost:5000/';
-
-// Use environment variables if available, fallback to hardcoded URLs
-const getApiUrl = () => {
-  if (import.meta.env.VITE_BACKEND_URL) {
-    console.log('🔧 Using VITE_BACKEND_URL:', import.meta.env.VITE_BACKEND_URL);
-    return import.meta.env.VITE_BACKEND_URL;
+// ----------------------------
+// Global Toast Control (Singleton)
+// ----------------------------
+const initToastControl = () => {
+  if (!window.__TOAST_CONTROL__) {
+    window.__TOAST_CONTROL__ = {
+      success: false,
+      error: false,
+      retryNotified: false,
+      lastErrorTime: 0,
+      errorCooldown: 3000, // Prevent duplicate errors within 3s
+    };
   }
-  const fallbackUrl =
-    import.meta.env.MODE === 'development' ? devApiURL : import.meta.env.MODE === 'test' ? testURL : qbURL;
-  console.log('🔧 Using fallback URL:', fallbackUrl);
+  return window.__TOAST_CONTROL__;
+};
+
+const toastControl = initToastControl();
+
+// ----------------------------
+// Backend URLs Configuration
+// ----------------------------
+export const BACKEND_URLS = {
+  production: 'https://myqb-245fdbd30c9b.herokuapp.com/',
+  test: 'https://qb-backend-one.vercel.app/',
+  development: 'http://localhost:5000/',
+};
+
+// ----------------------------
+// Environment Detection & URL Selection
+// ----------------------------
+const getApiUrl = () => {
+  // Priority 1: Explicit environment variable
+  const envUrl = import.meta.env.VITE_BACKEND_URL;
+  if (envUrl) {
+    console.log('🔧 Using VITE_BACKEND_URL:', envUrl);
+    return envUrl.endsWith('/') ? envUrl : `${envUrl}/`;
+  }
+
+  // Priority 2: Mode-based fallback
+  const mode = import.meta.env.MODE;
+  const fallbackUrl = BACKEND_URLS[mode] || BACKEND_URLS.production;
+
+  console.log('🔧 Using fallback URL:', fallbackUrl, `(mode: ${mode})`);
   return fallbackUrl;
 };
 
-// Axios instance
+export const API_BASE_URL = getApiUrl();
+
+// Check if backend is Vercel (affects retry logic)
+const isVercelBackend = API_BASE_URL.includes('vercel.app');
+
+// ----------------------------
+// Axios Instance Configuration
+// ----------------------------
 export const axiosInstance = axios.create({
-  baseURL: getApiUrl(),
+  baseURL: API_BASE_URL,
+  timeout: isVercelBackend ? 25000 : 30000, // Vercel has 10s limit for hobby, 60s for pro
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
-// Add request interceptor for debugging
-if (import.meta.env.VITE_DEBUG === 'true') {
-  axiosInstance.interceptors.request.use((request) => {
-    return request;
-  });
-
-  // Log responses
-  axiosInstance.interceptors.response.use(
-    (response) => {
-      console.log('✅ API Response:', response.status, response.config?.url);
-      return response;
-    },
-    (error) => {
-      if (!error.response?.status) {
-        console.error('❌ API Error status:', error);
-      }
-      console.error('❌ API Error Response:', error.response);
-      // Build the error object with code, message, status
-      const errorObject = {
-        code: error.response?.data.code,
-        name: error.response?.data.name,
-        message: error.response?.data?.message || 'Unknown error',
-        status: error.response?.status,
-      };
-      return Promise.reject(errorObject);
+// ----------------------------
+// Request Interceptor
+// ----------------------------
+axiosInstance.interceptors.request.use(
+  (config) => {
+    // Auto-attach token if available
+    const token = localStorage.getItem('token');
+    if (token && !config.headers['x-auth-token']) {
+      config.headers['x-auth-token'] = token;
     }
-  );
-}
 
-// API call helper function to make async actions with createAsyncThunk
+    if (import.meta.env.VITE_DEBUG === 'true') {
+      console.log('📤 API Request:', config.method?.toUpperCase(), config.url);
+    }
+
+    return config;
+  },
+  (error) => {
+    console.error('❌ Request interceptor error:', error);
+    return Promise.reject(error);
+  }
+);
+
+// ----------------------------
+// Response Interceptor
+// ----------------------------
+axiosInstance.interceptors.response.use(
+  (response) => {
+    if (import.meta.env.VITE_DEBUG === 'true') {
+      console.log('✅ API Response:', response.status, response.config?.url);
+    }
+
+    // Reset error toast control on successful request
+    if (toastControl.error) {
+      toastControl.error = false;
+      toastControl.retryNotified = false;
+    }
+
+    return response;
+  },
+  (error) => {
+    // Build standardized error object
+    const errorData = {
+      code: error.response?.data?.code || 'UNKNOWN_ERROR',
+      name: error.response?.data?.name || error.response?.statusText || 'Unknown Error',
+      message: error.response?.data?.message || 'Unknown error occurred',
+      status: error.response?.status || null,
+      isNetworkError: !error.response && error.request,
+    };
+
+    if (import.meta.env.VITE_DEBUG === 'true') {
+      console.error('❌ API Error:', errorData);
+    }
+
+    return Promise.reject(errorData);
+  }
+);
+
+// ----------------------------
+// Retry Configuration
+// ----------------------------
+const RETRY_CONFIG = {
+  maxRetries: isVercelBackend ? 2 : 3, // Fewer retries for Vercel (cold starts)
+  retryDelay: isVercelBackend ? 3000 : 5000,
+  retryableStatusCodes: [408, 429, 500, 502, 503, 504],
+  retryableErrorCodes: ['ERR_NETWORK', 'ECONNREFUSED', 'ECONNABORTED', 'ETIMEDOUT'],
+};
+
+// ----------------------------
+// Error Notification Helper
+// ----------------------------
+const notifyError = (message, code) => {
+  console.log(`Message: ${message}, Code: ${code}`)
+  // Skip notifications for specific error codes
+  const skipCodes = ['NO_TOKEN_LOAD_USER_ERROR', 'TOKEN_EXPIRED'];
+  if (skipCodes.includes(code)) {
+    return;
+  }
+
+  // Prevent duplicate notifications
+  const now = Date.now();
+  if (toastControl.error && (now - toastControl.lastErrorTime) < toastControl.errorCooldown) {
+    return;
+  }
+
+  notify(message, 'error');
+  toastControl.error = true;
+  toastControl.lastErrorTime = now;
+};
+
+// ----------------------------
+// Retry Logic Helper
+// ----------------------------
+const shouldRetry = (error, attempt, maxRetries) => {
+  if (attempt >= maxRetries) return false;
+
+  // Check if error is retryable
+  const isRetryableCode = RETRY_CONFIG.retryableErrorCodes.includes(error.code);
+  const isRetryableStatus = error.status && RETRY_CONFIG.retryableStatusCodes.includes(error.status);
+  const isNetworkError = error.isNetworkError;
+
+  return isRetryableCode || isRetryableStatus || isNetworkError;
+};
+
+const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+// ----------------------------
+// Main API Call Helper
+// ----------------------------
 export const apiCallHelper = async (
   url,
-  method,
-  body,
-  getState,
-  actionType,
-  retries = 3,
-  retryDelay = 5000
+  method = 'get',
+  body = null,
+  getState = null,
+  actionType = null,
+  options = {}
 ) => {
-  console.log("getState().auth: ", getState().auth);
-  const token = getState().auth.token || localStorage.getItem("token");
+  const {
+    retries = RETRY_CONFIG.maxRetries,
+    retryDelay = RETRY_CONFIG.retryDelay,
+    skipNotification = false,
+    customHeaders = {},
+  } = options;
 
-  const headers = {
-    'x-auth-token': token,
-    'Content-Type': 'application/json',
+  // Get token from Redux state or localStorage
+  const token = getState?.()?.auth?.token || localStorage.getItem('token');
+
+  const config = {
+    headers: {
+      ...customHeaders,
+      ...(token && { 'x-auth-token': token }),
+    },
   };
 
   let attempt = 0;
 
   while (attempt <= retries) {
     try {
-      const response =
-        method === 'get' || method === 'delete'
-          ? await axiosInstance[method](url, { headers })
-          : await axiosInstance[method](url, body, { headers });
+      let response;
+
+      if (method === 'get' || method === 'delete') {
+        response = await axiosInstance[method](url, config);
+      } else {
+        response = await axiosInstance[method](url, body, config);
+      }
+
+      // Reset retry notification flag on success
+      toastControl.retryNotified = false;
 
       return response.data;
-    } catch (err) {
-      console.log("err: ", err)
-      const code = err?.response?.code || err?.code || 'UNKNOWN_ERROR';
-      const isNetworkError =
-        code === 'ERR_NETWORK' ||
-        code === 'ECONNREFUSED' ||
-        code === 'ECONNABORTED';
 
+    } catch (error) {
+      console.error('API Error:', error);
       attempt++;
 
-      if (isNetworkError && attempt <= retries) {
-        if (!window.__TOAST_CONTROL__.retryNotified) {
-          notify(`Network error, retrying in ${retryDelay / 1000}s...`, 'error');
-          window.__TOAST_CONTROL__.retryNotified = true;
+      const willRetry = shouldRetry(error, attempt, retries);
+
+      // Handle retry notification
+      if (willRetry) {
+        if (!toastControl.retryNotified) {
+          notify(
+            `Connection issue. Retrying in ${retryDelay / 1000}s... (${attempt}/${retries})`,
+            'error'
+          );
+          toastControl.retryNotified = true;
         }
 
-        await new Promise((resolve) => setTimeout(resolve, retryDelay));
+        await wait(retryDelay);
         continue;
       }
 
-      const message = err?.code !== "NO_TOKEN_LOAD_USER_ERROR" && (err?.message || 'Unknown error');
-
-      // Only notify once globally per page load
-      if (message && !window.__TOAST_CONTROL__.error) {
-        notify(message, 'error');
-        window.__TOAST_CONTROL__.error = true;
+      // Final error - no more retries
+      if (!skipNotification) {
+        notifyError(error.message, error.code);
       }
 
-      throw { message, code: err.code, status: err?.status };
+      throw {
+        message: error.message,
+        code: error.code,
+        status: error.status,
+        name: error.name,
+      };
     }
   }
 };
 
-
-// API call helper function to make async actions with createAsyncThunk for file uploads
+// ----------------------------
+// File Upload Helper
+// ----------------------------
 export const apiCallHelperUpload = async (
   url,
-  method,
   formData,
-  getState,
-  actionType
+  getState = null,
+  options = {}
 ) => {
-  try {
+  const {
+    method = 'post',
+    onUploadProgress = null,
+    skipNotification = false,
+  } = options;
 
-    const token = getState().auth.token || localStorage.getItem("token");
-    const response = await axios({
+  try {
+    const token = getState?.()?.auth?.token || localStorage.getItem('token');
+
+    const config = {
       method,
-      url: `${axiosInstance.defaults.baseURL}${url}`,
+      url: `${API_BASE_URL}${url}`,
       data: formData,
       headers: {
         'x-auth-token': token,
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
       },
-    });
+      timeout: 60000, // 60s for uploads
+      ...(onUploadProgress && { onUploadProgress }),
+    };
 
-    return response?.data;
+    const response = await axios(config);
+    return response.data;
+
   } catch (error) {
-    if (error?.response?.data && error?.response?.data?.message) {
-      notify(error?.response?.data?.message, 'error');
+    const message = error.response?.data?.message || error.message || 'Upload failed';
+
+    if (!skipNotification) {
+      notify(message, 'error');
     }
-    return Promise.reject(error?.response?.data?.message);
+
+    throw {
+      message,
+      code: error.code,
+      status: error.response?.status,
+    };
   }
 };
 
-export const handlePending = (state) => {
+// ----------------------------
+// Redux Async Thunk Helpers
+// ----------------------------
+export const handlePending = (state, action) => {
   state.isLoading = true;
+  state.error = null;
+};
+
+export const handleFulfilled = (state, action) => {
+  state.isLoading = false;
+  state.error = null;
 };
 
 export const handleRejected = (state, action) => {
   state.isLoading = false;
-  state.error = action.error || 'An error occurred.';
+  state.error = action.payload?.message || action.error?.message || 'An error occurred';
 };
 
-window.addEventListener('beforeunload', () => {
-  if (window.__TOAST_CONTROL__) {
-    window.__TOAST_CONTROL__.success = false;
-    window.__TOAST_CONTROL__.error = false;
-    window.__TOAST_CONTROL__.retryNotified = false;
+// ----------------------------
+// Utility Functions
+// ----------------------------
+export const resetToastControl = () => {
+  toastControl.success = false;
+  toastControl.error = false;
+  toastControl.retryNotified = false;
+  toastControl.lastErrorTime = 0;
+};
+
+export const setAuthToken = (token) => {
+  if (token) {
+    localStorage.setItem('token', token);
+    axiosInstance.defaults.headers.common['x-auth-token'] = token;
+  } else {
+    localStorage.removeItem('token');
+    delete axiosInstance.defaults.headers.common['x-auth-token'];
   }
-});
+};
+
+export const clearAuthToken = () => setAuthToken(null);
+
+// ----------------------------
+// Health Check Utility
+// ----------------------------
+export const checkBackendHealth = async () => {
+  try {
+    const response = await axiosInstance.get('/api/health', {
+      timeout: 5000,
+    });
+    return {
+      healthy: response.data.status === 'OK',
+      data: response.data,
+    };
+  } catch (error) {
+    return {
+      healthy: false,
+      error: error.message,
+    };
+  }
+};
+
+// ----------------------------
+// Cleanup on Page Unload
+// ----------------------------
+window.addEventListener('beforeunload', resetToastControl);
+
+// ----------------------------
+// Debug Info
+// ----------------------------
+if (import.meta.env.DEV) {
+  console.log('🔍 API Configuration:', {
+    baseURL: API_BASE_URL,
+    mode: import.meta.env.MODE,
+    isVercel: isVercelBackend,
+    retryConfig: RETRY_CONFIG,
+  });
+}
