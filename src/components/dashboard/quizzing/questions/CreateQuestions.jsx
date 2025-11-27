@@ -13,7 +13,7 @@ import {
 } from 'reactstrap';
 import Dashboard from '../../Dashboard';
 import { addQuestion, getQuestions } from '@/redux/slices/questionsSlice';
-import { getOneQuiz, notifying } from '@/redux/slices/quizzesSlice';
+import { getOneQuiz } from '@/redux/slices/quizzesSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { notify } from '@/utils/notifyToast';
 import NotAuthenticated from '@/components/auth/NotAuthenticated';

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Button, Container, Row, Col, Card } from 'reactstrap';
+import { Button, Row, Col, Card } from 'reactstrap';
 
 const MarksStatus = ({ score, qnLength, passMark }) => {
     const percentage = Math.round((score * 100) / qnLength);

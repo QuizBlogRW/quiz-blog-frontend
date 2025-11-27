@@ -1,5 +1,7 @@
 import SquareAd from '@/components/adsenses/SquareAd';
+import isAdEnabled from '@/utils/isAdEnabled';
 import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
+
 import {
     Row,
     Col,
@@ -49,11 +51,11 @@ const Disclaimer = () => {
                             <h2 className="h4 mb-0">Disclaimers for quizblog.rw</h2>
                         </CardHeader>
                         <CardBody>
-                            <Row className="mb-4">
+                            {isAdEnabled() && <Row className="mb-4">
                                 <Col xs={12}>
                                     <ResponsiveAd />
                                 </Col>
-                            </Row>
+                            </Row>}
 
                             <p>
                                 All information on this website {' '}
@@ -113,11 +115,11 @@ const Disclaimer = () => {
                     </Card>
 
                     {/* Bottom Ad */}
-                    <Row>
+                    {isAdEnabled() && <Row>
                         <Col xs={12}>
                             <SquareAd />
                         </Col>
-                    </Row>
+                    </Row>}
                 </CardBody>
             </Card>
         </div>

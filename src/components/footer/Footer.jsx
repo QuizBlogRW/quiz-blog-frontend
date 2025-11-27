@@ -1,4 +1,3 @@
-import React from 'react';
 import { useLocation } from 'react-router-dom';
 import './footer.css';
 import logo from '@/images/quizLogo.svg';

@@ -32,6 +32,7 @@ const DatabaseMetricsTab = () => {
                 setFetchError("Unexpected response from metrics endpoint.");
             }
         } catch (err) {
+            console.error("Error fetching data metrics:", err);
             setFetchError("Failed to fetch data metrics! Check statistics logs for error.");
         } finally {
             setLastUpdated(new Date().toLocaleTimeString());

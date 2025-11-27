@@ -6,7 +6,7 @@ const ExcelButton = ({ data, filename }) => {
 
     // CONVERT THE FIELDS WITH EMPTY STRINGS TO NULL - DONE INPLACE
     // Create a new array with modified values
-    const modifiedData = data && data.map((obj, index) => {
+    const modifiedData = data && data.map((obj) => {
         // Create a new object with modified values
         const modifiedObj = { ...obj };
         Object.keys(modifiedObj).forEach(key => {
@@ -39,10 +39,10 @@ const ExcelButton = ({ data, filename }) => {
 
             if (typeof item === 'object' && item !== null) {
 
-                if (item.hasOwnProperty('title')) {
+                if (Object.prototype.hasOwnProperty.call(item, 'title')) {
                     arr[index] = item.title;
                 }
-                else if (item.hasOwnProperty('name')) {
+                else if (Object.prototype.hasOwnProperty.call(item, 'name')) {
                     arr[index] = item.name;
                 }
 

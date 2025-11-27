@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
 import trash from '@/images/trash.svg';
 import { useDispatch } from 'react-redux';
-import { notify } from '@/utils/notifyToast';
 
 const DeleteModal = ({ delID, delTitle, deleteFn, deleteFnName }) => {
   const dispatch = useDispatch();
@@ -76,7 +75,7 @@ const DeleteModal = ({ delID, delTitle, deleteFn, deleteFnName }) => {
             className="text-center my-4"
             style={{ backgroundColor: '#f8d7da', fontSize: '.8rem' }}
           >
-            Delete "<u>{delTitle}</u>" permanently?
+            Delete <u>{delTitle}</u> permanently?
           </ModalBody>
 
           <ModalFooter className="justify-content-around pb-0">

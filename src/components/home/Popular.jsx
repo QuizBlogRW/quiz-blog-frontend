@@ -5,6 +5,7 @@ import { getPopularToday, getUserOfMonth } from '@/redux/slices/scoresSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 import ImageWithFallback from '@/utils/ImageWithFallback';
+import isAdEnabled from '@/utils/isAdEnabled';
 
 const SquareAd = lazy(() => import('@/components/adsenses/SquareAd'));
 
@@ -22,11 +23,11 @@ const Popular = () => {
     return (
         <>
             {/* Google square ad for mobile */}
-            <Row className="d-block d-lg-none mb-3">
+            {isAdEnabled() && <Row className="d-block d-lg-none mb-3">
                 <Col className="d-flex justify-content-center align-items-center">
                     <SquareAd />
                 </Col>
-            </Row>
+            </Row>}
 
             <div className="popular my-3 py-3 d-flex flex-column flex-lg-row justify-content-between bg-white shadow-sm rounded">
                 {/* Popular Quizzes */}

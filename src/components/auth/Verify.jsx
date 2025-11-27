@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { Container, Row, Col, Input, Button } from 'reactstrap';
+import { Row, Col, Input, Button } from 'reactstrap';
 import { notify } from '@/utils/notifyToast';
 import { verify } from '@/redux/slices/authSlice';
 import QBLoading from '@/utils/rLoading/QBLoading';
 import SquareAd from '@/components/adsenses/SquareAd';
+import isAdEnabled from '@/utils/isAdEnabled';
 import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
 
 export function Verify() {
@@ -42,6 +43,7 @@ export function Verify() {
                 notify('OTP verification failed. Please try again.', 'error');
             }
         } catch (error) {
+            console.error(error);
             notify('An error occurred during verification. Please try again.', 'error');
         }
 
@@ -54,11 +56,12 @@ export function Verify() {
             <Row className="mt-5 d-flex flex-column justify-content-center align-items-center text-center" style={{ minHeight: '68vh' }}>
 
                 {/* Google square ad */}
-                <Row className='w-100'>
+                {isAdEnabled() && <Row className='w-100'>
                     <Col sm="12">
                         <SquareAd />
                     </Col>
                 </Row>
+                }
                 <div className="text-center">
 
                     <h2 className="font-weight-bold mb-4 text-success">
@@ -84,13 +87,13 @@ export function Verify() {
                 </form>
 
                 {/* Google responsive 1 ad */}
-                <Row className='w-100'>
+                {isAdEnabled() && <Row className='w-100'>
                     <Col sm="12">
                         <div className='w-100'>
                             <ResponsiveAd />
                         </div>
                     </Col>
-                </Row>
+                </Row>}
 
             </Row>
         </div>

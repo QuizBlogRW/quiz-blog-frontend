@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Col, Row, ListGroup, ListGroupItem } from 'reactstrap';
 import { getBlogPosts, getPostCategories } from '@/redux/slices';
 import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
+import isAdEnabled from '@/utils/isAdEnabled';
 import SquareAd from '@/components/adsenses/SquareAd';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 import './allBlogPosts.css';
@@ -78,9 +79,9 @@ const AllBlogPosts = () => {
                     </Link>
                   ))}
               </ListGroup>
-              <Col md="3" className="mt-md-2 d-none d-md-block">
+              {isAdEnabled() && <Col md="3" className="mt-md-2 d-none d-md-block">
                 <SquareAd />
-              </Col>
+              </Col>}
             </div>
           ) : (
             <div className="text-center py-4">
@@ -89,9 +90,9 @@ const AllBlogPosts = () => {
               </p>
             </div>
           )}
-          <div className="w-100">
+          {isAdEnabled() && <div className="w-100">
             <ResponsiveAd />
-          </div>
+          </div>}
         </Col>
 
         <Col md="6" xs="12" className="mt-md-2">

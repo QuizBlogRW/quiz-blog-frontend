@@ -36,6 +36,7 @@ import CategoriesHome from './CategoriesHome';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 import DeleteModal from '@/utils/DeleteModal';
 import NotAuthenticated from '../../auth/NotAuthenticated';
+import isAdEnabled from '@/utils/isAdEnabled';
 
 const InFeedAd = lazy(() => import('@/components/adsenses/InFeedAd'));
 
@@ -313,9 +314,9 @@ const Index = () => {
               ) : (
                 <>
                   <Row className="text-center d-block py-lg-3 w-100">
-                    <Suspense fallback={<QBLoadingSM />}>
+                        {isAdEnabled() && <Suspense fallback={<QBLoadingSM />}>
                       <InFeedAd />
-                    </Suspense>
+                    </Suspense>}
                     <h4
                       className="d-block fw-bolder"
                       style={{ color: 'var(--brand) ' }}

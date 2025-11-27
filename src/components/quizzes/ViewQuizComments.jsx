@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { Col, Row, CardTitle, Card, Alert } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 import { getCommentsByQuiz } from '@/redux/slices/questionsCommentsSlice';
 import { getOneQuizComments } from '@/redux/slices/quizzesCommentsSlice';
 import { useSelector, useDispatch } from 'react-redux';

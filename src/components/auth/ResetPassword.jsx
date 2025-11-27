@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Row, Col, Button, Form, Input } from 'reactstrap';
 import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
+import isAdEnabled from '@/utils/isAdEnabled';
 import SquareAd from '@/components/adsenses/SquareAd';
 import { sendNewPassword } from '@/redux/slices/authSlice';
 import { useDispatch } from 'react-redux';
@@ -65,11 +66,11 @@ const ResetPassword = () => {
                     </p>
 
                     {/* Google square ad */}
-                    <Row className='w-100'>
+                    {isAdEnabled() && <Row className='w-100'>
                         <Col sm="12">
                             <SquareAd />
                         </Col>
-                    </Row>
+                    </Row>}
                     <Form className="my-4" onSubmit={onSubmitHandler}>
                         <div className="input-group mx-auto my-5 search w-50">
                             <Input type="password"
@@ -93,13 +94,13 @@ const ResetPassword = () => {
 
                     </Form>
                     {/* Google responsive 1 ad */}
-                    <Row className='w-100'>
+                    {isAdEnabled() && <Row className='w-100'>
                         <Col sm="12">
                             <div className='w-100'>
                                 <ResponsiveAd />
                             </div>
                         </Col>
-                    </Row>
+                    </Row>}
                 </>
             </Row>
         </div>

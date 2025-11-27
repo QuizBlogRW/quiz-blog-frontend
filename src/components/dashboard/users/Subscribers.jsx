@@ -1,8 +1,7 @@
 import { useEffect } from 'react';
-import { Row, Button, Table } from 'reactstrap';
+import { Row, Table } from 'reactstrap';
 import { getSubscribers, deleteSubscriber } from '@/redux/slices/subscribersSlice';
 import { useSelector, useDispatch } from 'react-redux';
-import trash from '@/images/trash.svg';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 import moment from 'moment';
 import DeleteModal from '@/utils/DeleteModal';

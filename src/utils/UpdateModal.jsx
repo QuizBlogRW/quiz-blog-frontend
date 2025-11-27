@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
 import edit from '@/images/edit.svg';
 import { useDispatch } from 'react-redux';
-import { notify } from '@/utils/notifyToast';
 
 /**
  * UpdateModal
@@ -56,6 +55,7 @@ const UpdateModal = ({
               focusable.focus();
           }
         } catch (e) {
+          console.error(e);
           // ignore DOM errors in non-browser envs
         }
       }, 50);
@@ -71,18 +71,14 @@ const UpdateModal = ({
 
   const runSubmit = async (data) => {
     if (!submitFn) return null;
-    try {
-      const maybeResult = submitFn(data);
-      // If the returned value is a function, assume it's a thunk and dispatch it.
-      if (typeof maybeResult === 'function') {
-        return await dispatch(maybeResult);
-      } else {
-        throw new Error(
-          'submitFn must return a function (thunk) when used with AddModal'
-        );
-      }
-    } catch (err) {
-      throw err;
+    const maybeResult = submitFn(data);
+    // If the returned value is a function, assume it's a thunk and dispatch it.
+    if (typeof maybeResult === 'function') {
+      return await dispatch(maybeResult);
+    } else {
+      throw new Error(
+        'submitFn must return a function (thunk) when used with AddModal'
+      );
     }
   };
 

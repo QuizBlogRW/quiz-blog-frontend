@@ -12,7 +12,7 @@ const AddSchool = () => {
             initialState={{ title: '', location: '', website: '' }}
             submitFn={data => {
                 const { title, location, website } = data;
-                const res = validators.validateWebsite(title, location); // not ideal but reuse validators
+                // const res = validators.validateWebsite(title, location); // not ideal but reuse validators
                 // We'll use validateTitleDesc for title/location and validateWebsite for website
                 const res2 = validators.validateTitleDesc(title, location, { minTitle: 3, minDesc: 4, maxTitle: 70, maxDesc: 120 });
                 if (!res2.ok) return Promise.reject(new Error('validation'));

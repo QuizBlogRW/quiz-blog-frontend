@@ -34,7 +34,9 @@ const ChatMessages = ({ onlineList }) => {
             try {
                 const content = convertFromRaw(JSON.parse(message));
                 setEditorState(EditorState.createWithContent(content));
-            } catch (error) { }
+            } catch (error) { 
+                console.log(error);
+            }
         }
     }, [oneContact]);
 

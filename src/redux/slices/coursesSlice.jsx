@@ -37,7 +37,7 @@ const coursesSlice = createSlice({
       state.allCourses = [];
       state.coursesByCategory = [];
       state.oneCourse = {};
-      isLoading: false;
+      false;
     }
   },
   extraReducers: (builder) => {

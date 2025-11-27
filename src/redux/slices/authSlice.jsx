@@ -175,17 +175,17 @@ const authSlice = createSlice({
       localStorage.setItem('confirmLogin', action.payload);
       state.confirmLogin = action.payload;
     },
-    clearToken: (state, action) => {
+    clearToken: (state) => {
       localStorage.removeItem('token');
       console.log('Cleared in clearToken');
       state.token = null;
     },
-    clearLastLogin: (state, action) => {
+    clearLastLogin: (state) => {
       console.log('Cleared in clearToken');
       localStorage.removeItem('confirmLogin');
       state.confirmLogin = null;
     },
-    clearPswdResetToken: (state, action) => {
+    clearPswdResetToken: (state) => {
       state.pswdResetToken = null;
     },
   },
@@ -238,7 +238,7 @@ const authSlice = createSlice({
       localStorage.setItem('user', JSON.stringify(action.payload.user));
       notify('Account verified! Welcome to Quiz-Blog!');
     });
-    builder.addCase(logout.fulfilled, (state, action) => {
+    builder.addCase(logout.fulfilled, (state) => {
       state.isLoading = false;
       state.isAuthenticated = false;
       state.user = null;

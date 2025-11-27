@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getBlogPostsByCategory, getPostCategories } from '@/redux/slices';
 import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
 import SquareAd from '@/components/adsenses/SquareAd';
+import isAdEnabled from '@/utils/isAdEnabled';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import './allBlogPosts.css';
@@ -66,20 +67,20 @@ const ByCategory = () => {
                             <CategoryList categories={bPcats.allPostCategories} location={location} />
                         </div>
                     )}
-                    <Row>
+                    {isAdEnabled() && <Row>
                         <div className='w-100'>
                             <ResponsiveAd />
                         </div>
-                    </Row>
+                    </Row>}
                 </Col>
                 <Col sm="6" className="mt-md-2">
                     <Suspense fallback={<QBLoadingSM />}>
                         {bposts.isLoading ? <QBLoadingSM /> : <BlogPosts posts={bposts.blogPostsByCategory} />}
                     </Suspense>
                 </Col>
-                <Col sm="2" className="mt-md-2">
+                {isAdEnabled() && <Col sm="2" className="mt-md-2">
                     <SquareAd />
-                </Col>
+                </Col>}
             </Row>
         </div>
     );

@@ -14,7 +14,9 @@ import { saveDownload } from '@/redux/slices/downloadsSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 import NotAuthenticated from '@/components/auth/NotAuthenticated';
+import isAdEnabled from '@/utils/isAdEnabled';
 
+const Dashboard = lazy(() => import('@/components/dashboard/Dashboard'));
 const GridMultiplex = lazy(() => import('@/components/adsenses/GridMultiplex'));
 
 const ViewNotePaper = () => {
@@ -122,13 +124,13 @@ const ViewNotePaper = () => {
                   </Col>
                 </Row>
 
-                <Row>
+                {isAdEnabled() && <Row>
                   <Col sm="12">
                     <Suspense fallback={<QBLoadingSM />}>
                       <GridMultiplex />
                     </Suspense>
                   </Col>
-                </Row>
+                </Row>}
               </div>
             </article>
           </div>

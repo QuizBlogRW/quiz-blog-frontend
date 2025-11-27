@@ -6,6 +6,7 @@ import { getLandingDisplayNotes } from '@/redux/slices/notesSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import ItemPlaceholder from '@/utils/rLoading/ItemPlaceholder';
 import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
+import isAdEnabled from '@/utils/isAdEnabled';
 
 const SquareAd = lazy(() => import('@/components/adsenses/SquareAd'));
 const SideResizable = lazy(() => import('@/components/adsenses/SideResizable'));
@@ -30,16 +31,16 @@ const NotesPapers = () => {
 
   return (
     <div style={{ background: '#eeeded' }}>
-      <Row className="px-1 px-lg-4 my-1 w-100">
+      {isAdEnabled() && <Row className="px-1 px-lg-4 my-1 w-100">
         {/* Google responsive 1 ad */}
         <Col sm="12">
           <div className="w-100">
             <ResponsiveAd />
           </div>
         </Col>
-      </Row>
+      </Row>}
 
-      <Row className="px-1 px-lg-4 my-1 w-100">
+      {isAdEnabled() && <Row className="px-1 px-lg-4 my-1 w-100">
         <Col
           sm="6"
           className="p-1 p-lg-2 d-flex flex-column justify-content-around w-100"
@@ -50,12 +51,12 @@ const NotesPapers = () => {
             </div>
           </Suspense>
         </Col>
-        <Col sm="6" className="w-100">
+       <Col sm="6" className="w-100">
           <div className="w-100">
             <SquareAd />
           </div>
         </Col>
-      </Row>
+      </Row>}
 
       <Row className="m-1 p-1 px-sm-5 notes-paper">
         <Col sm="12" className="px-1 y-1 w-100">
@@ -99,15 +100,15 @@ const NotesPapers = () => {
                 </div>
               ) : null}
 
-              <Suspense fallback={<ItemPlaceholder />}>
+              {isAdEnabled() && <Suspense fallback={<ItemPlaceholder />}>
                 <GridMultiplex />
-              </Suspense>
+              </Suspense>}
             </>
           )}
         </Col>
       </Row>
 
-      <Row className="my-1 w-100">
+      {isAdEnabled() && <Row className="my-1 w-100">
         <Col sm="12" className="px-1 y-1 w-100">
           <Suspense fallback={<ItemPlaceholder />}>
             <div className="w-100">
@@ -115,7 +116,7 @@ const NotesPapers = () => {
             </div>
           </Suspense>
         </Col>
-      </Row>
+      </Row>}
     </div>
   );
 };

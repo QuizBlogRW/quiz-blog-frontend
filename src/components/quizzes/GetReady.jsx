@@ -1,10 +1,11 @@
 import { useEffect, useMemo, lazy, Suspense } from 'react';
-import { Container, Col, Row, Card, Button, CardTitle, CardText } from 'reactstrap';
+import { Col, Row, Card, Button, CardTitle, CardText } from 'reactstrap';
 import { Link, useParams } from 'react-router-dom';
 import { getOneQuiz } from '@/redux/slices/quizzesSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import EmbeddedVideos from './EmbeddedVideos';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
+import isAdEnabled from '@/utils/isAdEnabled';
 
 const ResponsiveHorizontal = lazy(() => import('@/components/adsenses/ResponsiveHorizontal'));
 
@@ -145,9 +146,9 @@ const GetReady = () => {
                     </Card>
 
                     {/* Adsense */}
-                    <Suspense fallback={<QBLoadingSM />}>
+                    {isAdEnabled && <Suspense fallback={<QBLoadingSM />}>
                         <ResponsiveHorizontal />
-                    </Suspense>
+                    </Suspense>}
 
                     {/* Videos */}
                     <EmbeddedVideos quiz={oneQuiz} />

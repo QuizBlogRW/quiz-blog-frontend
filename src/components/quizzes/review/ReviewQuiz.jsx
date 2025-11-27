@@ -12,6 +12,7 @@ import TitleRow from './TitleRow';
 
 import NotAuthenticated from '@/components/auth/NotAuthenticated';
 import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
+import isAdEnabled from '@/utils/isAdEnabled';
 import SquareAd from '@/components/adsenses/SquareAd';
 
 const ReviewQuiz = () => {
@@ -89,7 +90,7 @@ const ReviewQuiz = () => {
       <div className="px-lg-5">
         <Row className="mx-auto d-flex flex-column justify-content-center rounded border border-primary my-5 py-4 w-80 text-center shadow-sm" style={{ backgroundColor: '#EAFAF1' }}>
           <h1 className="text-danger fw-bolder mb-3">404</h1>
-          <h4 className="mb-3">Quiz's questions unavailable! Refresh! 🔄</h4>
+          <h4 className="mb-3">Quiz&apos;s questions unavailable! Refresh! 🔄</h4>
           <Button color="success" style={{ width: '120px' }} className="mx-auto mt-3">
             <a href="/dashboard" className="text-white text-decoration-none">
               ⬅️ Back
@@ -161,19 +162,19 @@ const ReviewQuiz = () => {
 
   return (
     <div className="px-lg-5">
-      <Row className="w-100 mb-3">
+      {isAdEnabled() && <Row className="w-100 mb-3">
         <Col sm="6" className="w-100">
           <ResponsiveAd />
         </Col>
-      </Row>
+      </Row>}
 
       <QuestionSection />
 
-      <Row className="mt-4">
+      {isAdEnabled() && <Row className="mt-4">
         <Col sm="6">
           <SquareAd />
         </Col>
-      </Row>
+      </Row>}
     </div>
   );
 };

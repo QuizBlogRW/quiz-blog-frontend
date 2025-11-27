@@ -3,6 +3,7 @@ import { Button } from 'reactstrap';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 import { useSelector } from 'react-redux';
 import NotAuthenticated from '@/components/auth/NotAuthenticated';
+import isAdEnabled from '@/utils/isAdEnabled';
 
 const GridMultiplex = lazy(() => import('@/components/adsenses/GridMultiplex'));
 
@@ -33,7 +34,7 @@ const CategoriesHome = () => {
             </div>
 
             <p className="share-text">
-                <i className="fa fa-share-alt"></i> &nbsp; So, if you find this interesting, please don't forget to share it with your friends via social media or any other means you prefer.
+                <i className="fa fa-share-alt"></i> &nbsp; So, if you find this interesting, please don&apos;t forget to share it with your friends via social media or any other means you prefer.
             </p>
 
             <Button style={{ backgroundColor: 'var(--brand)' }} className="ms-1 py-1 px-2 mb-0 share-btn">
@@ -44,9 +45,9 @@ const CategoriesHome = () => {
         </div>
 
         {/* GridMultiplex Ad in a Suspense */}
-        <Suspense fallback={<QBLoadingSM />}>
+        {isAdEnabled() && <Suspense fallback={<QBLoadingSM />}>
             <GridMultiplex />
-        </Suspense>
+        </Suspense>}
     </>
     );
 };

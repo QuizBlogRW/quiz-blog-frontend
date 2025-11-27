@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ListGroup, ListGroupItem, Button } from 'reactstrap';
+import { ListGroup, ListGroupItem } from 'reactstrap';
 import { Collapse } from 'react-collapse';
 import AddIcon from '@/images/plusIcon.svg';
 import SubtractIcon from '@/images/minusIcon.svg';
@@ -23,7 +23,7 @@ const FacultiesCollapse = ({ levelID }) => {
     faculties && faculties.allFaculties.filter((fac) => fac.level === levelID);
   const [activeState, setActiveState] = useState({ activeIndex: null });
 
-  const toggleClass = (index, e) => {
+  const toggleClass = (index) => {
     setActiveState({
       activeIndex: activeState.activeIndex === index ? null : index,
     });

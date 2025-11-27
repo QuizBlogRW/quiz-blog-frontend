@@ -7,6 +7,7 @@ import SearchInput from '@/utils/SearchInput';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 
 import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
+import isAdEnabled from '@/utils/isAdEnabled';
 import SquareAd from '@/components/adsenses/SquareAd';
 
 const QuizItem = lazy(() => import('./QuizItem'));
@@ -48,7 +49,7 @@ const AllQuizzes = () => {
                 <Col xs="12" className="px-3 px-md-4">
                     <Alert color="info" className="text-center py-2 py-md-3 mb-4 mb-md-5 shadow-sm">
                         <h4 className="mb-0 fw-bold fs-5 fs-md-4">
-                            Get ready for exam success! Let's make it happen together! <span role="img" aria-label="celebrate">🍾🎉</span>
+                            Get ready for exam success! Let&apos;s make it happen together! <span role="img" aria-label="celebrate">🍾🎉</span>
                         </h4>
                     </Alert>
                 </Col>
@@ -57,11 +58,11 @@ const AllQuizzes = () => {
             {/* content */}
             <Row className="mt-4 mt-lg-5">
                 {/* Left Ad */}
-                <Col xs="12" md="2" className="order-2 order-md-1 mt-3 mt-md-2 d-flex justify-content-center align-items-start">
+                {isAdEnabled() && <Col xs="12" md="2" className="order-2 order-md-1 mt-3 mt-md-2 d-flex justify-content-center align-items-start">
                     <div className='w-100 d-flex justify-content-center align-items-center'>
                         <ResponsiveAd />
                     </div>
-                </Col>
+                </Col>}
 
                 {/* Quiz list */}
                 <Col xs="12" md="8" className="order-1 order-md-2 mt-3 mt-md-2">
@@ -149,9 +150,9 @@ const AllQuizzes = () => {
                 </Col>
 
                 {/* Right Ad */}
-                <Col xs="12" md="2" className="order-3 mt-3 mt-md-2 w-100 d-flex justify-content-center align-items-start">
+                {isAdEnabled() && <Col xs="12" md="2" className="order-3 mt-3 mt-md-2 w-100 d-flex justify-content-center align-items-start">
                     <SquareAd />
-                </Col>
+                </Col>}
             </Row>
         </div>
     );

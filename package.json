@@ -42,13 +42,19 @@
     "start:integration": "./start-integration.sh",
     "backend:start": "cd ../qb-backend-microservices && docker-compose up -d mongodb redis api-gateway users-service contacts-service quizzing-service posts-service",
     "backend:stop": "cd ../qb-backend-microservices && docker-compose down",
-    "backend:logs": "cd ../qb-backend-microservices && docker-compose logs -f"
+    "backend:logs": "cd ../qb-backend-microservices && docker-compose logs -f",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "devDependencies": {
     "@babel/plugin-transform-private-property-in-object": "^7.24.7",
     "@vitejs/plugin-react": "^4.3.1",
     "compress-create-react-app": "^1.2.1",
-    "eslint-plugin-unused-imports": "^3.2.0",
+    "eslint": "^9.39.1",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "globals": "^16.5.0",
     "terser": "^5.44.0",
     "vite": "^6.4.0"
   },

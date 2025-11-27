@@ -3,6 +3,7 @@ import { Col, Row, Form, FormGroup, Input, Button } from 'reactstrap';
 import subscribeImg from '@/images/undraw_subscribe.svg';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
+import isAdEnabled from '@/utils/isAdEnabled';
 import { useSelector, useDispatch } from 'react-redux';
 import { subscribeToPosts } from '@/redux/slices/subscribersSlice';
 
@@ -35,11 +36,11 @@ const RightSide = ({ categories }) => {
     return (
         <Col sm="4" className="d-flex flex-column justify-content-around">
             {/* Top Square Ad */}
-            <Row className="w-100 mb-4">
+            {isAdEnabled() && <Row className="w-100 mb-4">
                 <Col sm="12" className="d-flex justify-content-center">
                     <SquareAd />
                 </Col>
-            </Row>
+            </Row>}
 
             {/* Categories (Desktop Only) */}
             <Row className="mb-4 d-none d-lg-flex side-category">
@@ -94,11 +95,11 @@ const RightSide = ({ categories }) => {
             </Row>
 
             {/* Bottom Square Ad */}
-            <Row className="w-100 mb-4">
+            {isAdEnabled() && <Row className="w-100 mb-4">
                 <Col sm="12" className="d-flex justify-content-center">
                     <SquareAd />
                 </Col>
-            </Row>
+            </Row>}
         </Col>
     );
 };

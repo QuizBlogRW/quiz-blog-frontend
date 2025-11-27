@@ -1,8 +1,8 @@
 import AddModal from '@/utils/AddModal';
+import { Input } from 'reactstrap';
 import { createFq } from '@/redux/slices/faqsSlice';
 import { useSelector } from 'react-redux';
 import validators from '@/utils/validators';
-import { useDispatch } from 'react-redux';
 
 const CreateFaq = () => {
     const { user } = useSelector(state => state.auth);

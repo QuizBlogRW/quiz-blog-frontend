@@ -53,7 +53,6 @@ const EditNotesModal = ({ idToUpdate, editTitle, editDesc }) => {
             </small>
           </label>
           <input
-            bsSize="sm"
             type="file"
             accept=".pdf, .doc, .docx, .ppt, .pptx"
             name="notes_file"

@@ -4,7 +4,7 @@ import Topbar from './Topbar';
 import Charts from './Charts';
 
 const Content = ({ sidebarIsOpen, toggleSidebar }) => (
-  <div fluid className={sidebarIsOpen ? 'content is-open' : 'content'}>
+  <div className={sidebarIsOpen ? 'content is-open' : 'content'}>
 
     <Topbar toggleSidebar={toggleSidebar} />
     

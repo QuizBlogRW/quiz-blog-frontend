@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
+import isAdEnabled from '@/utils/isAdEnabled';
 import SquareAd from '@/components/adsenses/SquareAd';
 
 import { getBlogPosts } from '@/redux/slices';
@@ -27,12 +28,12 @@ const BlogPosts = () => {
 
   return (
     <div className="blogPosts">
-      <Row sm="12" className="px-1 px-lg-4 my-1">
+      {isAdEnabled() && <Row sm="12" className="px-1 px-lg-4 my-1">
         {/* Google responsive 1 ad */}
         <div className="w-100">
           <ResponsiveAd />
         </div>
-      </Row>
+      </Row>}
 
       <Row className="p-2 p-sm-3 px-sm-5">
         <Col sm="12" className="py-lg-3 px-0">
@@ -80,7 +81,7 @@ const BlogPosts = () => {
                         </ListGroup>
 
                         {/* Ad when half the number of notes*/}
-                        {AllBPs.length > 2 && AllBPs.indexOf(bp) === Math.floor(AllBPs.length / 2) && (
+                        {isAdEnabled() && AllBPs.length > 2 && AllBPs.indexOf(bp) === Math.floor(AllBPs.length / 2) && (
                           <div className="w-100">
                             <SquareAd />
                           </div>

@@ -31,7 +31,6 @@ const usageColor = (value) => {
 const useAnimatedNumber = (value, duration = 500) => {
     const [display, setDisplay] = useState(value ?? 0);
     const rafRef = useRef(null);
-    const startRef = useRef(null);
     const fromRef = useRef(display);
 
     useEffect(() => {
@@ -94,7 +93,7 @@ const SystemMetricsTab = () => {
                 setFetchError("Unexpected response from metrics endpoint.");
             }
             setLastUpdated(new Date().toLocaleTimeString());
-        } catch (err) {
+        } catch {
             setFetchError(
                 "Failed to fetch system metrics! Check statistics logs for error."
             );
@@ -410,7 +409,7 @@ const SystemMetricsTab = () => {
             {/* <pre className="mt-3">{JSON.stringify(systemMetrics, null, 2)}</pre> */}
 
             {/* Inline styles for small progress smoothing & spacing */}
-            <style jsx>{`
+            <style>{` 
         .progress-sm {
           border-radius: 6px;
           overflow: hidden;

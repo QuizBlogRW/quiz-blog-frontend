@@ -8,6 +8,7 @@ import UploadPostPhotos from './UploadPostPhotos';
 import YourImages from './YourImages';
 import { notify } from '@/utils/notifyToast';
 import NotAuthenticated from '@/components/auth/NotAuthenticated';
+import Dashboard from '@/components/dashboard/Dashboard';
 
 const EditBlogPost = () => {
 

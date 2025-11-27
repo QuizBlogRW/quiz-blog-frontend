@@ -28,7 +28,7 @@ const NotFound404 = () => {
 
                             <h1 className="display-1 mb-2 fw-bold" style={{ color: 'var(--brand)' }}>404</h1>
                             <h2 className="h4 mb-3" style={{ color: 'var(--brand-dark)' }}>Page not found</h2>
-                            <p className="mb-4 text-muted">We couldn't find the page you're looking for. It may have been moved or removed.</p>
+                            <p className="mb-4 text-muted">We couldn&apos;t find the page you&apos;re looking for. It may have been moved or removed.</p>
 
                             <div className="d-flex justify-content-center gap-3">
                                 <Link to="/" className="btn btn-lg btn-primary">Go home</Link>

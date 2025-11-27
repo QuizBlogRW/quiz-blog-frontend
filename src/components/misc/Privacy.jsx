@@ -1,5 +1,7 @@
 import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
+import isAdEnabled from '@/utils/isAdEnabled';
 import SquareAd from '@/components/adsenses/SquareAd';
+
 import {
     Row,
     Col,
@@ -50,11 +52,11 @@ const Privacy = () => {
                     <p>Capitalized terms have the meanings defined here, whether singular or plural.</p>
 
                     {/* Ad */}
-                    <Row className="my-4">
+                    {isAdEnabled() && <Row className="my-4">
                         <Col xs={12}>
                             <ResponsiveAd />
                         </Col>
-                    </Row>
+                    </Row>}
 
                     <h3>Key Definitions</h3>
                     <ul>
@@ -88,11 +90,11 @@ const Privacy = () => {
                     </ul>
 
                     {/* Ad */}
-                    <Row className="my-4">
+                    {isAdEnabled() && <Row className="my-4">
                         <Col xs={12}>
                             <SquareAd />
                         </Col>
-                    </Row>
+                    </Row>}
 
                     <h2>How We Use Your Data</h2>
                     <ul>
@@ -115,7 +117,7 @@ const Privacy = () => {
                     <h2>Retention & Security</h2>
                     <p>We retain data only as long as necessary and implement commercially reasonable security measures. However, no online method is 100% secure.</p>
 
-                    <h2>Children's Privacy</h2>
+                    <h2>Children&apos;s Privacy</h2>
                     <p>Our Service is not intended for children under 13. We do not knowingly collect data from children under 13.</p>
 
                     <h2>External Links</h2>
@@ -131,11 +133,11 @@ const Privacy = () => {
                         <li>Website: <a href="https://www.quizblog.rw/contact" target="_blank" rel="noopener noreferrer">Contact Page</a></li>
                     </ul>
 
-                    <Row className="my-4">
+                    {isAdEnabled() && <Row className="my-4">
                         <Col xs={12}>
                             <SquareAd />
                         </Col>
-                    </Row>
+                    </Row>}
 
                 </CardBody>
             </Card>

@@ -39,7 +39,7 @@ export const useSocket = (options = {}) => {
             setError(`Disconnected: ${reason}`);
         };
 
-        const handleReconnect = (_attemptNumber) => {
+        const handleReconnect = () => {
             if (!mountedRef.current) return;
             setConnectionStatus('connected');
             setError(null);

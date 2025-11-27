@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
-import { notify } from '@/utils/notifyToast';
 import { useDispatch } from 'react-redux';
 import plus from '@/images/plus.svg';
 
@@ -29,18 +28,14 @@ const AddModal = ({
   const runSubmit = async (data) => {
     if (!submitFn) return null;
 
-    try {
-      const maybeResult = submitFn(data);
-      // If the returned value is a function, assume it's a thunk and dispatch it.
-      if (typeof maybeResult === 'function') {
-        return await dispatch(maybeResult);
-      } else {
-        throw new Error(
-          'submitFn must return a function (thunk) when used with AddModal'
-        );
-      }
-    } catch (err) {
-      throw err;
+    const maybeResult = submitFn(data);
+    // If the returned value is a function, assume it's a thunk and dispatch it.
+    if (typeof maybeResult === 'function') {
+      return await dispatch(maybeResult);
+    } else {
+      throw new Error(
+        'submitFn must return a function (thunk) when used with AddModal'
+      );
     }
   };
 

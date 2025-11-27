@@ -22,7 +22,7 @@ const SingleCategory = () => {
             </Row>
             <small className="ms-2 one-cat-desc d-flex justify-content-center">
                 <i className="text-success text-start text-capitalize">
-                    "{category.description}"
+                   {category.description}
                 </i>
             </small>
             <Row className="mx-0 mx-lg-5 mt-2 m-lg-4 d-flex justify-content-between align-items-center text-primary">

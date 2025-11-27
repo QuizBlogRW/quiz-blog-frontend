@@ -15,7 +15,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import ImageWithFallback from '@/utils/ImageWithFallback';
 import { notify } from '@/utils/notifyToast';
 
-const EditPictureModal = ({ bgColor, clr }) => {
+const EditPictureModal = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const userImage = user && user.image;
@@ -44,6 +44,7 @@ const EditPictureModal = ({ bgColor, clr }) => {
         }
         return false;
       } catch (err) {
+        console.error(err);
         return false;
       }
     };
@@ -183,7 +184,7 @@ const EditPictureModal = ({ bgColor, clr }) => {
                   />
                 ) : (
                   <div className="text-muted">
-                    Current image will be used if you don't select another.
+                    Current image will be used if you don&apos;t select another.
                   </div>
                 )}
               </div>

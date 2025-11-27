@@ -13,6 +13,7 @@ import EditFaq from '@/components/dashboard/posts/faqs/EditFaq';
 import AddVideo from '@/components/dashboard/quizzing/quizzes/AddVideo';
 import EmbeddedVideos from '@/components/quizzes/EmbeddedVideos';
 import DeleteModal from '@/utils/DeleteModal';
+import isAdEnabled from '@/utils/isAdEnabled';
 
 const GridMultiplex = lazy(() => import('@/components/adsenses/GridMultiplex'));
 const InFeedAd = lazy(() => import('@/components/adsenses/InFeedAd'));
@@ -33,7 +34,7 @@ const FaqCollapse = () => {
     activeIndex: null,
   });
 
-  const toggleClass = (index, e) => {
+  const toggleClass = (index) => {
     setState({ activeIndex: state.activeIndex === index ? null : index });
   };
 
@@ -97,11 +98,9 @@ const FaqCollapse = () => {
         <Row className="m-lg-4 px-lg-5 d-flex justify-content-around align-items-center text-primary">
           <CreateFaq />
         </Row>
-      ) : (
-        <Suspense fallback={<QBLoadingSM />}>
-          <InFeedAd />
-        </Suspense>
-      )}
+      ) : (isAdEnabled() && <Suspense fallback={<QBLoadingSM />}>
+        <InFeedAd />
+      </Suspense>)}
 
       <Row className="m-lg-4 px-lg-5 d-flex justify-content-around align-items-center text-primary">
         <ul className={faqsStyle.docsList}>
@@ -178,11 +177,11 @@ const FaqCollapse = () => {
             })}
         </ul>
 
-        <Col sm="12">
+        {isAdEnabled() && <Col sm="12">
           <Suspense fallback={<QBLoadingSM />}>
             <GridMultiplex />
           </Suspense>
-        </Col>
+        </Col>}
       </Row>
     </div>
   );

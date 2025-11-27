@@ -9,7 +9,7 @@ import {
   Button,
 } from 'reactstrap';
 
-const CatDropdown = ({ clr }) => {
+const CatDropdown = () => {
   const categories = useSelector((state) => state.categories);
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen((prev) => !prev);

@@ -5,6 +5,7 @@ import ItemPlaceholder from '@/utils/rLoading/ItemPlaceholder';
 import { useSelector, useDispatch } from 'react-redux';
 import { getLimitedQuizzes } from '@/redux/slices/quizzesSlice';
 import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
+import isAdEnabled from '@/utils/isAdEnabled';
 import SquareAd from '@/components/adsenses/SquareAd';
 
 const LandingSection = lazy(() => import('./LandingSection'));
@@ -82,9 +83,9 @@ const LandingQuizzes = () => {
                   </Button>
                 </Link>
               </div>
-              <div className="w-100 d-flex justify-content-center align-items-center">
+              {isAdEnabled() && <div className="w-100 d-flex justify-content-center align-items-center">
                 <SquareAd />
-              </div>
+              </div>}
             </>
           ) : (
             <div className="p-1 m-1 d-flex justify-content-center align-items-center">
@@ -101,7 +102,7 @@ const LandingQuizzes = () => {
           <Popular />
 
           {/* ad */}
-          <Row className="w-100 d-flex justify-content-center align-items-center">
+          {isAdEnabled() && <Row className="w-100 d-flex justify-content-center align-items-center">
             <Col
               sm="12"
               className="d-flex justify-content-center align-items-center"
@@ -110,7 +111,7 @@ const LandingQuizzes = () => {
                 <InFeedAd />
               </div>
             </Col>
-          </Row>
+          </Row>}
         </Col>
 
         <RightSide categories={categories} />
@@ -124,7 +125,7 @@ const LandingQuizzes = () => {
         <NotesPapers />
       </Suspense>
 
-      <Row className="w-100 d-flex justify-content-center align-items-center">
+      {isAdEnabled() && <Row className="w-100 d-flex justify-content-center align-items-center">
         <Col
           sm="12"
           className="d-flex justify-content-center align-items-center"
@@ -133,7 +134,7 @@ const LandingQuizzes = () => {
             <ResponsiveAd />
           </div>
         </Col>
-      </Row>
+      </Row>}
     </div>
   );
 };

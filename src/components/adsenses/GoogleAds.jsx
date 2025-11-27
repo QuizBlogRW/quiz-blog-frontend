@@ -8,8 +8,6 @@ function GoogleAds(props) {
         window.adsbygoogle.push({});
     }, []);
 
-    if (process.env.NODE_ENV === 'development' || import.meta.env.MODE === 'test') return null;
-
     return (
         <ins className="adsbygoogle"
             style={{ display: 'block' }}

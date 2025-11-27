@@ -1,6 +1,7 @@
 import { useState, useEffect, lazy } from 'react';
 import { Button, Col, Row, Form, FormGroup, Input } from 'reactstrap';
 import SquareAd from '@/components/adsenses/SquareAd';
+import isAdEnabled from '@/utils/isAdEnabled';
 import { sendMsg } from '@/redux/slices/contactsSlice';
 import { useDispatch } from 'react-redux';
 import './contact.css';
@@ -84,14 +85,14 @@ const Contact = () => {
                 </h1>
 
                 <p className="lead mb-1 mb-lg-4 text-white">
-                    Quiz-Blog was created with the intention of offering a diverse range of quizzes and study materials aimed at enhancing students' critical thinking abilities and exam preparedness. Our blog articles span various subjects, serving to deepen students' understanding of their lessons.
+                    Quiz-Blog was created with the intention of offering a diverse range of quizzes and study materials aimed at enhancing students&apos; critical thinking abilities and exam preparedness. Our blog articles span various subjects, serving to deepen students&apos; understanding of their lessons.
                 </p>
             </div>
 
-            <div className='w-100'>
+            {isAdEnabled() && <div className='w-100'>
                 {/* Google responsive 1 ad */}
                 <ResponsiveHorizontal />
-            </div>
+            </div>}
 
             <Row className="mx-sm-2 px-sm-1 mx-md-5 px-md-5 py-lg-5 mt-5 contact d-md-flex justify-content-between">
 
@@ -126,11 +127,12 @@ const Contact = () => {
                 </Col>
             </Row>
             {/* Google square ad */}
-            <Row className='w-100'>
+            {isAdEnabled() && <Row className='w-100'>
                 <Col sm="12">
                     <SquareAd />
                 </Col>
             </Row>
+            }
         </div>
     );
 };

@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { logRegContext } from '@/contexts/appContexts';
 
 import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
+import isAdEnabled from '@/utils/isAdEnabled';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 import MarksStatus from './MarksStatus';
 import PdfDocument from '@/components/dashboard/pdfs/PdfDocument';
@@ -64,11 +65,11 @@ const QuizResults = () => {
   return (
     <>
       <div className="p-sm-5 score-section text-center" id="pdf-container">
-        <Suspense fallback={<QBLoadingSM />}>
+        {isAdEnabled() && <Suspense fallback={<QBLoadingSM />}>
           <div className="w-100">
             <ResponsiveHorizontal />
           </div>
-        </Suspense>
+        </Suspense>}
 
         <div
           className={
@@ -141,7 +142,12 @@ const QuizResults = () => {
                     {({ blob, url, loading, error }) =>
                       loading ? (
                         <small className="text-warning">
-                          Loading document...
+                          {console.log(url, blob)}
+                          {loading ? 'Generating PDF...' : null}
+                        </small>
+                      ) : error ? (
+                        <small className="text-danger">
+                          {error ? error.message : null}
                         </small>
                       ) : (
                         <Button
@@ -189,19 +195,19 @@ const QuizResults = () => {
       <>
         <SimilarQuizzes thisQuiz={thisQuiz && thisQuiz} />
 
-        <Suspense fallback={<QBLoadingSM />}>
+        {isAdEnabled() && <Suspense fallback={<QBLoadingSM />}>
           <div className="w-100">
             <ResponsiveAd />
           </div>
-        </Suspense>
+        </Suspense>}
 
         {thisQuiz && thisQuiz.category && thisQuiz.category.courseCategory && (
           <RelatedNotes ccatgID={thisQuiz.category.courseCategory} />
         )}
 
-        <Suspense fallback={<QBLoadingSM />}>
+        {isAdEnabled() && <Suspense fallback={<QBLoadingSM />}>
           <GridMultiplex />
-        </Suspense>
+        </Suspense>}
       </>
     </>
   );

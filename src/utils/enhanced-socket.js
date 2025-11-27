@@ -166,7 +166,7 @@ class SocketManager {
         });
 
         // Ping-pong for latency monitoring
-        this.socket.on('pong', (_data) => {
+        this.socket.on('pong', () => {
             if (this.pingStartTime) {
                 const latency = Date.now() - this.pingStartTime;
                 this.updateLatencyStats(latency);
@@ -396,6 +396,7 @@ class SocketManager {
             const payload = JSON.parse(atob(token.split('.')[1]));
             return payload.id;
         } catch (error) {
+            console.error('Failed to parse token for user ID:', error);
             return null;
         }
     }

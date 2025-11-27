@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Row, Col, Button, Form, Input } from 'reactstrap';
 import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
+import isAdEnabled from '@/utils/isAdEnabled';
 import SquareAd from '@/components/adsenses/SquareAd';
 import { sendResetLink } from '@/redux/slices/authSlice';
 import { notify } from '@/utils/notifyToast';
@@ -40,11 +41,11 @@ const ForgotPassword = () => {
             <Row className="mt-5 d-flex flex-column justify-content-center align-items-center text-center" style={{ minHeight: '68vh' }}>
 
                 {/* Google square ad */}
-                <Row className='w-100'>
+                {isAdEnabled() && <Row className='w-100'>
                     <Col sm="12">
                         <SquareAd />
                     </Col>
-                </Row>
+                </Row>}
                 <>
                     <h2 className="fw-bolder my-3" style={{ color: 'var(--brand)' }}>
                         Restore access to your account here
@@ -69,14 +70,13 @@ const ForgotPassword = () => {
                 </>
 
                 {/* Google responsive 1 ad */}
-                <Row className='w-100'>
+                {isAdEnabled() && <Row className='w-100'>
                     <Col sm="12">
                         <div className='w-100'>
                             <ResponsiveAd />
                         </div>
                     </Col>
-                </Row>
-
+                </Row>}
             </Row>
         </div>
     );

@@ -215,7 +215,7 @@ export const apiCallHelper = async (
       return response.data;
 
     } catch (error) {
-      console.error('API Error:', error);
+      console.error('API Error:', error, 'actionType:', actionType);
       attempt++;
 
       const willRetry = shouldRetry(error, attempt, retries);
@@ -300,12 +300,12 @@ export const apiCallHelperUpload = async (
 // ----------------------------
 // Redux Async Thunk Helpers
 // ----------------------------
-export const handlePending = (state, action) => {
+export const handlePending = (state) => {
   state.isLoading = true;
   state.error = null;
 };
 
-export const handleFulfilled = (state, action) => {
+export const handleFulfilled = (state) => {
   state.isLoading = false;
   state.error = null;
 };
