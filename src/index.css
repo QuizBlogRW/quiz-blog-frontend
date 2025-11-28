@@ -1138,7 +1138,7 @@ ul.dashboard-navbar {
 }
 
 ul.dashboard-navbar li a {
-    color: var(--accent) !important;
+  color: var(--accent) !important;
 }
 
 .dashboard-img img {
@@ -1948,6 +1948,22 @@ form.subscribe-form img {
 
   .question-section h5 {
     font-size: 1rem;
+  }
+
+  .score-section .btn-retake {
+    background-color: var(--accent);
+    border: 2px solid var(--brand);
+    border-radius: 10px;
+    padding: 5px 12px;
+    color: var(--primary);
+  }
+
+  .score-section .border-brand {
+    border: 3px solid var(--brand);
+  }
+
+  .score-section .text-brand {
+    color: #B4654A;
   }
 
   .question-view .btn,

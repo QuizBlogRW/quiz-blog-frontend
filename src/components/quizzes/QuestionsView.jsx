@@ -124,6 +124,7 @@ const QuestionsView = ({
                                                     value={answerOption.answerText}
                                                     checked={checkedState[index] ?? false}
                                                     onChange={(e) => handleOnChange(e, index)}
+                                                    disabled={!imgLoaded} // disable interaction when image is not loaded
                                                 />
                                                 <span>{answerOption.answerText}</span>
                                             </Label>

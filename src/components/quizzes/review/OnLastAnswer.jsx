@@ -11,7 +11,7 @@ const OnLastAnswer = ({ thisQuiz }) => {
     if (!isAuthenticated) {
         return (
             <div className="score-section text-center py-5">
-                <h5 className="fw-bold text-danger">Only members are allowed!</h5>
+                <h5 className="fw-bold text-danger">Unauthorized!</h5>
             </div>
         );
     }
