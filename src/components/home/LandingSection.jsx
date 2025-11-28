@@ -33,7 +33,7 @@ const LandingSection = () => {
           style={{ maxWidth: '80%', height: 'auto' }}
         />
 
-        <div className="d-flex flex-wrap gap-3 mt-3">
+        <div className="d-flex flex-wrap gap-3 mt-3 justify-content-around">
           <Button color="success" className="landing-cta px-4 py-2 fw-bold" onClick={toggleR} aria-label="Get started">
             Get Started
           </Button>
