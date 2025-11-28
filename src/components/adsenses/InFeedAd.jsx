@@ -1,5 +1,4 @@
 import { Component } from 'react';
-import isAdEnabled from '@/utils/isAdEnabled';
 
 class InFeedAd extends Component {
     constructor(props) {
@@ -20,7 +19,6 @@ class InFeedAd extends Component {
     }
 
     render() {
-        if (!isAdEnabled()) return null;
         return (
             <ins
                 className="adsbygoogle"

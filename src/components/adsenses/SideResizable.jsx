@@ -1,5 +1,4 @@
 import { Component } from 'react';
-import isAdEnabled from '@/utils/isAdEnabled';
 
 class SideResizable extends Component {
 
@@ -8,7 +7,6 @@ class SideResizable extends Component {
     }
 
     render() {
-        if (!isAdEnabled()) return null;
         return (
             <ins
                 className="adsbygoogle"
