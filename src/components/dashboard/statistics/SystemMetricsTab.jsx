@@ -1,5 +1,4 @@
 // SystemMetricsTab.jsx
-import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import {
     Row,
@@ -16,18 +15,19 @@ import {
     Alert,
     Button,
 } from "reactstrap";
-import { useSelector } from "react-redux";
-import { formatUptime, getServiceStatusColor } from "./utils"; // keep your helpers
+import { useDispatch, useSelector } from "react-redux";
 
-// --- Helper: pick color for usage bars ---
+import { getSystemMetrics } from "@/redux/slices/statisticsSlice";
+import { formatUptime, getServiceStatusColor } from "./utils";
+
 const usageColor = (value) => {
-    // value is percent 0..100
     if (value >= 85) return "danger";
     if (value >= 65) return "warning";
     return "success";
 };
 
-// --- Lightweight number animation (smooth increment) ---
+const safe = (v, d = "N/A") => (v === undefined || v === null ? d : v);
+
 const useAnimatedNumber = (value, duration = 500) => {
     const [display, setDisplay] = useState(value ?? 0);
     const rafRef = useRef(null);
@@ -40,9 +40,10 @@ const useAnimatedNumber = (value, duration = 500) => {
         const diff = to - from;
 
         if (rafRef.current) cancelAnimationFrame(rafRef.current);
+
         const step = (ts) => {
             const t = Math.min(1, (ts - start) / duration);
-            const eased = t < 0.5 ? (2 * t * t) : (-1 + (4 - 2 * t) * t); // easeInOutQuad-like
+            const eased = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t; // easeInOut-like
             setDisplay(from + diff * eased);
             if (t < 1) {
                 rafRef.current = requestAnimationFrame(step);
@@ -50,6 +51,7 @@ const useAnimatedNumber = (value, duration = 500) => {
                 fromRef.current = to;
             }
         };
+
         rafRef.current = requestAnimationFrame(step);
         return () => {
             if (rafRef.current) cancelAnimationFrame(rafRef.current);
@@ -60,50 +62,16 @@ const useAnimatedNumber = (value, duration = 500) => {
 };
 
 const SystemMetricsTab = () => {
-    const { user, isAuthenticated } = useSelector((state) => state.auth);
-    const [systemMetrics, setSystemMetrics] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [fetchError, setFetchError] = useState(null);
+    const dispatch = useDispatch();
+
+    // Selectors
+    const { user, isAuthenticated } = useSelector((s) => s.auth);
+    const { systemMetrics, isLoading, error } = useSelector((s) => s.statistics);
+
+    // local UI-only state
     const [lastUpdated, setLastUpdated] = useState(null);
 
-    const apiUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
-
-    useEffect(() => {
-        if (isAuthenticated && user && user.role?.includes("Admin")) {
-            fetchSystemMetrics();
-            const interval = setInterval(fetchSystemMetrics, 60000);
-            return () => clearInterval(interval);
-        }
-    }, [isAuthenticated, user]);
-
-    const fetchSystemMetrics = async () => {
-        if (!isAuthenticated || !user || user.role?.includes("Admin") === false) {
-            setFetchError("Access denied. Admin privileges required.");
-            setLoading(false);
-            return;
-        }
-
-        try {
-            setLoading(true);
-            const res = await axios.get(`${apiUrl}/api/statistics/system-metrics`);
-            if (res.status === 200 && res.data) {
-                setSystemMetrics(res.data);
-                setFetchError(null);
-            } else {
-                setFetchError("Unexpected response from metrics endpoint.");
-            }
-            setLastUpdated(new Date().toLocaleTimeString());
-        } catch {
-            setFetchError(
-                "Failed to fetch system metrics! Check statistics logs for error."
-            );
-            setLastUpdated(new Date().toLocaleTimeString());
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    // Animated numbers
+    // Animated numbers (read from redux-provided systemMetrics)
     const cpuUsageAnimated = useAnimatedNumber(
         systemMetrics?.system?.cpuUsagePercentage ?? 0,
         450
@@ -121,9 +89,23 @@ const SystemMetricsTab = () => {
         450
     );
 
-    // small safe getters
-    const safe = (v, d = "N/A") =>
-        v === undefined || v === null ? d : v;
+    const fetchSystemMetrics = () => {
+        if (!isAuthenticated || !user?.role?.includes("Admin")) {
+            // Do not dispatch if user is not allowed; slice can manage its own errors if needed
+            return;
+        }
+        dispatch(getSystemMetrics());
+        setLastUpdated(new Date().toLocaleTimeString());
+    };
+
+    useEffect(() => {
+        if (!isAuthenticated || !user?.role?.includes("Admin")) return;
+
+        fetchSystemMetrics(); // initial load
+        const interval = setInterval(fetchSystemMetrics, 60000);
+        return () => clearInterval(interval);
+    }, [isAuthenticated, user]); // dispatch and getSystemMetrics are stable (assumed)
+
 
     return (
         <TabPane tabId="1">
@@ -136,14 +118,17 @@ const SystemMetricsTab = () => {
                         </h2>
 
                         <div className="text-muted d-flex align-items-center">
-                            <small className="me-2">Last updated: {lastUpdated ?? "—"}</small>
+                            <small className="me-2">
+                                Last updated: {lastUpdated ?? "—"}
+                            </small>
+
                             <Button
                                 color="outline-primary"
                                 size="sm"
                                 onClick={fetchSystemMetrics}
-                                disabled={loading}
+                                disabled={isLoading}
                             >
-                                {loading ? (
+                                {isLoading ? (
                                     <>
                                         <Spinner size="sm" /> <span className="ms-1">Refreshing</span>
                                     </>
@@ -158,19 +143,20 @@ const SystemMetricsTab = () => {
                 </Col>
             </Row>
 
-            {fetchError && (
+            {/* Error (from redux slice) */}
+            {error && (
                 <Row className="mb-3">
                     <Col>
                         <Alert color="danger" className="mb-0">
                             <i className="fas fa-exclamation-triangle me-2" />
-                            {fetchError}
+                            {error}
                         </Alert>
                     </Col>
                 </Row>
             )}
 
             {/* Loading skeleton */}
-            {loading && !systemMetrics && (
+            {isLoading && !systemMetrics && (
                 <Row>
                     <Col>
                         <Card className="shadow-sm">
@@ -183,6 +169,7 @@ const SystemMetricsTab = () => {
                 </Row>
             )}
 
+            {/* Metrics UI */}
             {systemMetrics && (
                 <Row>
                     {/* System Info */}
@@ -277,7 +264,6 @@ const SystemMetricsTab = () => {
                                         <Progress
                                             value={Math.min(100, Math.max(0, cpuUsageAnimated))}
                                             animated
-                                            striped={false}
                                             className="progress-sm"
                                             color={usageColor(Math.round(cpuUsageAnimated))}
                                             style={{ height: 8, transition: "width 450ms ease" }}
@@ -298,7 +284,6 @@ const SystemMetricsTab = () => {
                                         <Progress
                                             value={Math.min(100, Math.max(0, memoryUsageAnimated))}
                                             animated
-                                            striped={false}
                                             className="progress-sm"
                                             color={usageColor(Math.round(memoryUsageAnimated))}
                                             style={{ height: 8, transition: "width 450ms ease" }}
@@ -373,7 +358,6 @@ const SystemMetricsTab = () => {
                                         <Progress
                                             value={Math.min(100, Math.max(0, processMemAnimated))}
                                             animated
-                                            striped={false}
                                             className="progress-sm"
                                             color={usageColor(processMemAnimated)}
                                             style={{ height: 8, transition: "width 450ms ease" }}
@@ -405,15 +389,12 @@ const SystemMetricsTab = () => {
                 </Row>
             )}
 
-            {/* optional debug console */}
-            {/* <pre className="mt-3">{JSON.stringify(systemMetrics, null, 2)}</pre> */}
-
-            {/* Inline styles for small progress smoothing & spacing */}
-            <style>{` 
+            {/* Small styling for progress and list spacing */}
+            <style>{`
         .progress-sm {
           border-radius: 6px;
           overflow: hidden;
-          box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.08);
+          box-shadow: inset 0 -1px 0 rgba(255,255,255,0.08);
         }
         .list-group-item {
           border: 0;

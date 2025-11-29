@@ -21,7 +21,7 @@ const Comment = ({ comment, isFromPending }) => {
 
             {/* Top Row */}
             <CardTitle
-                tag="p"
+                tag="div"
                 className="
           d-flex 
           justify-content-between 

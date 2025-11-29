@@ -1,54 +1,50 @@
-import axios from "axios";
-import { useState, useEffect, useCallback } from "react";
-import { useSelector } from "react-redux";
-import { Row, Col, TabPane, Card, CardBody, CardTitle, Badge, Spinner, Alert, Button } from "reactstrap";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    Row,
+    Col,
+    TabPane,
+    Card,
+    CardBody,
+    CardTitle,
+    Badge,
+    Spinner,
+    Alert,
+    Button,
+} from "reactstrap";
+
+import { getDataMetrics } from "@/redux/slices/statisticsSlice";
 import DatabaseCard from "./DatabaseCard";
 import { formatBytes } from "./utils";
 
 const DatabaseMetricsTab = () => {
+    const dispatch = useDispatch();
+
+    // Redux selector
+    const { dataMetrics, isLoading, dataError } = useSelector(
+        (state) => state.statistics
+    );
 
     const { user, isAuthenticated } = useSelector((state) => state.auth);
-    const [dataMetrics, setDataMetrics] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [fetchError, setFetchError] = useState(null);
     const [lastUpdated, setLastUpdated] = useState(null);
 
-    const apiUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
-
-    const fetchDataMetrics = useCallback(async () => {
-        if (!isAuthenticated || !user?.role?.includes("Admin")) {
-            setFetchError("Access denied. Admin privileges required.");
-            setLoading(false);
-            return;
-        }
-
-        try {
-            setLoading(true);
-            const res = await axios.get(`${apiUrl}/api/statistics/data-metrics`);
-            if (res.status === 200 && res.data) {
-                setDataMetrics(res.data);
-                setFetchError(null);
-            } else {
-                setFetchError("Unexpected response from metrics endpoint.");
-            }
-        } catch (err) {
-            console.error("Error fetching data metrics:", err);
-            setFetchError("Failed to fetch data metrics! Check statistics logs for error.");
-        } finally {
+    const fetchMetrics = () => {
+        if (isAuthenticated && user?.role?.includes("Admin")) {
+            dispatch(getDataMetrics());
             setLastUpdated(new Date().toLocaleTimeString());
-            setLoading(false);
         }
-    }, [isAuthenticated, user, apiUrl]);
+    };
 
     useEffect(() => {
-        if (isAuthenticated && user?.role?.includes("Admin")) {
-            fetchDataMetrics();
-            const interval = setInterval(fetchDataMetrics, 60000);
-            return () => clearInterval(interval);
-        }
-    }, [isAuthenticated, user, fetchDataMetrics]);
+        if (!isAuthenticated || !user?.role?.includes("Admin")) return;
 
-    const databases = dataMetrics ? Object.values(dataMetrics.databases) : [];
+        fetchMetrics(); // initial load
+
+        const interval = setInterval(fetchMetrics, 60000);
+        return () => clearInterval(interval);
+    }, [isAuthenticated, user]);
+
+    const databases = dataMetrics ? Object.values(dataMetrics.databases || {}) : [];
     const redis = dataMetrics?.redis;
 
     const totals = databases.reduce(
@@ -73,25 +69,24 @@ const DatabaseMetricsTab = () => {
 
                 <Col md="6" className="text-md-end mt-3 mt-md-0">
                     <small className="text-muted me-3">
-                        <i className="fas fa-clock me-1" /> Last updated: {lastUpdated ?? "—"}
+                        <i className="fas fa-clock me-1" /> Last updated:{" "}
+                        {lastUpdated ?? "—"}
                     </small>
 
                     <Button
                         color="outline-primary"
                         size="sm"
                         className="fw-semibold px-3"
-                        onClick={fetchDataMetrics}
-                        disabled={loading}
+                        onClick={fetchMetrics}
+                        disabled={isLoading}
                     >
-                        {loading ? (
+                        {isLoading ? (
                             <>
-                                <Spinner size="sm" className="me-1" />
-                                Refreshing...
+                                <Spinner size="sm" className="me-1" /> Refreshing...
                             </>
                         ) : (
                             <>
-                                <i className="fas fa-sync-alt me-1" />
-                                Refresh
+                                <i className="fas fa-sync-alt me-1" /> Refresh
                             </>
                         )}
                     </Button>
@@ -99,15 +94,15 @@ const DatabaseMetricsTab = () => {
             </Row>
 
             {/* Error */}
-            {fetchError && (
+            {dataError && (
                 <Alert color="danger" className="shadow-sm border-0">
                     <i className="fas fa-exclamation-triangle me-2"></i>
-                    {fetchError}
+                    {dataError}
                 </Alert>
             )}
 
-            {/* Loading */}
-            {loading && !dataMetrics && (
+            {/* Loading screen */}
+            {isLoading && !dataMetrics && (
                 <Card className="shadow-sm border-0">
                     <CardBody className="text-center py-5">
                         <Spinner size="lg" />
@@ -134,19 +129,34 @@ const DatabaseMetricsTab = () => {
                                         <strong>Total Index:</strong> {formatBytes(totals.indexSize)}
                                     </li>
                                     <li className="mb-2">
-                                        <strong>Total Storage:</strong> {formatBytes(totals.storageSize)}
+                                        <strong>Total Storage:</strong>{" "}
+                                        {formatBytes(totals.storageSize)}
                                     </li>
 
                                     <li className="mb-2 d-flex align-items-center">
                                         <strong className="me-2">Databases Healthy:</strong>
-                                        <Badge color={dataMetrics.summary?.databasesHealthy ? "success" : "danger"} pill>
+                                        <Badge
+                                            color={
+                                                dataMetrics.summary?.databasesHealthy
+                                                    ? "success"
+                                                    : "danger"
+                                            }
+                                            pill
+                                        >
                                             {dataMetrics.summary?.databasesHealthy ? "Yes" : "No"}
                                         </Badge>
                                     </li>
 
                                     <li className="d-flex align-items-center">
                                         <strong className="me-2">Redis Healthy:</strong>
-                                        <Badge color={dataMetrics.summary?.redisHealthy ? "success" : "danger"} pill>
+                                        <Badge
+                                            color={
+                                                dataMetrics.summary?.redisHealthy
+                                                    ? "success"
+                                                    : "danger"
+                                            }
+                                            pill
+                                        >
                                             {dataMetrics.summary?.redisHealthy ? "Yes" : "No"}
                                         </Badge>
                                     </li>
@@ -157,7 +167,7 @@ const DatabaseMetricsTab = () => {
                 </Row>
             )}
 
-            {/* Database Cards */}
+            {/* Database & Redis Cards */}
             {dataMetrics && (
                 <Row>
                     {databases.map((db) => (
@@ -165,6 +175,7 @@ const DatabaseMetricsTab = () => {
                             <DatabaseCard db={db} />
                         </Col>
                     ))}
+
                     {redis && (
                         <Col className="mb-4" md="6" lg="4">
                             <DatabaseCard

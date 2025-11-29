@@ -41,6 +41,17 @@ export const getTop10Notes = createAsyncThunk('statistics/getTop10Notes', async 
 export const getDailyUserRegistration = createAsyncThunk('statistics/getDailyUserRegistration', async (_, { getState }) =>
   apiCallHelper('/api/statistics/daily-user-registration', 'get', null, getState, 'getDailyUserRegistration'));
 
+// Stats
+export const getSummaryStats = createAsyncThunk('statistics/getSummaryStats', async (_, { getState }) =>
+  apiCallHelper('/api/statistics/summary-stats', 'get', null, getState, 'getSummaryStats'));
+
+export const getSystemMetrics = createAsyncThunk('statistics/getSystemMetrics', async (_, { getState }) =>
+  apiCallHelper('/api/statistics/system-metrics', 'get', null, getState, 'getSystemMetrics'));
+
+export const getDataMetrics = createAsyncThunk('statistics/getDataMetrics', async (_, { getState }) =>
+  apiCallHelper('/api/statistics/data-metrics', 'get', null, getState, 'getDataMetrics'));
+
+
 // Statistics slice
 const initialState = {
   new50Users: [],
@@ -57,6 +68,9 @@ const initialState = {
   top10Quizzes: [],
   top10Notes: [],
   dailyUserRegistration: [],
+  summaryStats: [],
+  systemMetrics: [],
+  dataMetrics: [],
   message: null,
   error: null
 };
@@ -80,6 +94,9 @@ const statisticsSlice = createSlice({
       state.top10Quizzes = [];
       state.top10Notes = [];
       state.dailyUserRegistration = [];
+      state.summaryStats = [];
+      state.systemMetrics = [];
+      state.dataMetrics = [];
       state.msg = null;
     }
   },
@@ -138,6 +155,18 @@ const statisticsSlice = createSlice({
       state.dailyUserRegistration = action.payload;
       state.isLoading = false;
     });
+    builder.addCase(getSummaryStats.fulfilled, (state, action) => {
+      state.summaryStats = action.payload;
+      state.isLoading = false;
+    });
+    builder.addCase(getSystemMetrics.fulfilled, (state, action) => {
+      state.systemMetrics = action.payload;
+      state.isLoading = false;
+    });
+    builder.addCase(getDataMetrics.fulfilled, (state, action) => {
+      state.dataMetrics = action.payload;
+      state.isLoading = false;
+    });
 
     // Pending actions
     builder.addCase(get50NewUsers.pending, handlePending);
@@ -153,6 +182,9 @@ const statisticsSlice = createSlice({
     builder.addCase(getTop10Quizzes.pending, handlePending);
     builder.addCase(getTop10Notes.pending, handlePending);
     builder.addCase(getDailyUserRegistration.pending, handlePending);
+    builder.addCase(getSummaryStats.pending, handlePending);
+    builder.addCase(getSystemMetrics.pending, handlePending);
+    builder.addCase(getDataMetrics.pending, handlePending);
 
     // Rejected actions
     builder.addCase(get50NewUsers.rejected, handleRejected);
@@ -168,6 +200,9 @@ const statisticsSlice = createSlice({
     builder.addCase(getTop10Quizzes.rejected, handleRejected);
     builder.addCase(getTop10Notes.rejected, handleRejected);
     builder.addCase(getDailyUserRegistration.rejected, handleRejected);
+    builder.addCase(getSummaryStats.rejected, handleRejected);
+    builder.addCase(getSystemMetrics.rejected, handleRejected);
+    builder.addCase(getDataMetrics.rejected, handleRejected);
   }
 });
 
