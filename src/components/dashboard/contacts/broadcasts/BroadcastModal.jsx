@@ -41,7 +41,7 @@ const BroadcastModal = () => {
     return (
         <AddModal
             title="Send a broadcast message"
-            triggerText={<><b>+</b> Broadcast</>}
+            triggerText={"Broadcast"}
             initialState={initialState}
             submitFn={submitFn}
             renderForm={renderForm}

@@ -16,11 +16,7 @@ import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
 import SquareAd from '@/components/adsenses/SquareAd';
 import isAdEnabled from '@/utils/isAdEnabled';
 
-
-// ------------------------
 // REUSABLE INLINE BLOCKS
-// ------------------------
-
 const EmptyScoreBlock = ({ onSave }) => (
   <div className="d-flex justify-content-center align-items-center vh-100">
     <div className="text-center p-5 rounded-4 shadow-lg" style={{ maxWidth: 480, background: '#EAFAF1' }}>
@@ -54,11 +50,7 @@ const NoQuestionsBlock = () => (
   </div>
 );
 
-
-// ------------------------
 // QUESTION SECTION
-// ------------------------
-
 const QuestionSection = ({
   oneScore,
   qnsAll,
@@ -118,10 +110,7 @@ const QuestionSection = ({
   </Row>
 );
 
-
-// ------------------------
 // MAIN COMPONENT
-// ------------------------
 
 const ReviewQuiz = () => {
   const dispatch = useDispatch();
@@ -135,7 +124,8 @@ const ReviewQuiz = () => {
   const [lastAnswer, setLastAnswer] = useState(false);
 
   // Score restoring logic simplified
-  const storedScore = localStorage.getItem(reviewId);
+  let storedScore = localStorage.getItem(reviewId);
+  if (storedScore) storedScore = JSON.stringify({ ...JSON.parse(storedScore), taken_by: user?._id });
   const newScoreToSave = location.state || storedScore ? JSON.parse(storedScore) : null;
 
   const qnsAll = oneScore?.review?.questions || [];

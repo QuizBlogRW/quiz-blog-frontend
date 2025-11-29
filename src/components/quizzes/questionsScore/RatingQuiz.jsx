@@ -88,7 +88,7 @@ const RatingQuiz = ({ isOpen, toggle, onSubmit, quiz, score, user }) => {
                     key={i}
                     color={rating === i ? ratingColor(i) : "white"}
                     onClick={() => setRating(i)}
-                    className="border border-secondary rounded-circle m-1 shadow-sm"
+                    className="border border-secondary rounded-circle m-1 m-lg-2 shadow-sm"
                     size="sm"
                 >
                     {i}

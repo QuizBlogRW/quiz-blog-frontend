@@ -1,4 +1,4 @@
-import { Card, CardTitle, CardText, Row, Col, Button, CardImg } from 'reactstrap';
+import { Card, CardText, Button, CardImg } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeStatus, deleteAdvert } from '@/redux/slices/advertsSlice';
@@ -10,38 +10,56 @@ const AdvertCard = ({ advert }) => {
     const { user } = useSelector(state => state.auth);
 
     return (
-        <Card body style={{ height: '100%' }}>
-            <CardTitle className='mb-4 d-flex justify-content-between'>
-                <Link to={`/advert/${advert._id}`} className="text-success text-uppercase">
+        <Card body className="h-100 shadow-sm">
+            <div className="d-flex justify-content-between align-items-start mb-3">
+                <Link to={`/advert/${advert._id}`} className="text-success fw-bold text-uppercase">
                     {advert.caption}
                 </Link>
-                <DeleteModal deleteFnName="deleteAdvert" deleteFn={deleteAdvert} delID={advert._id} delTitle={advert.caption} />
-            </CardTitle>
 
-            <Row style={{ fontSize: '.7rem' }}>
-                <Col sm="4">
-                    <CardText className='my-4'>{advert.owner}</CardText>
-                    <CardText className='my-4'>{advert.email}</CardText>
-                    <CardText className='my-4'>{advert.phone}</CardText>
-                    <CardText className='my-4 text-info'><u>{advert.link ? advert.link : 'No link'}</u></CardText>
+                <DeleteModal
+                    deleteFnName="deleteAdvert"
+                    deleteFn={deleteAdvert}
+                    delID={advert._id}
+                    delTitle={advert.caption}
+                />
+            </div>
 
-                    {user.role?.includes('Admin') ?
-                        <span>
-                            <Button color={`${advert.status === 'Active' ? 'danger' : 'success'}`} className='mx-1 text-white text-uppercase'
-                                onClick={() => dispatch(changeStatus({
-                                    advertID: advert && advert._id,
-                                    status: advert.status === 'Active' ? 'Inactive' : 'Active'
-                                }))}>
-                                {advert.status === 'Active' ? 'Deactivate' : 'Activate'}
-                            </Button>
-                        </span>
-                        : null}
-                </Col>
-                <Col sm="8">
-                    <CardImg top style={{ maxWidth: '100%', height: 'auto' }}
-                        src={advert.advert_image ? advert.advert_image : adImage} alt="Card image cap" />
-                </Col>
-            </Row>
+            {/* Responsive Row inside Card */}
+            <div className="row g-3">
+                <div className="col-12 col-md-6">
+                    <CardImg
+                        src={advert.advert_image || adImage}
+                        alt="advert"
+                        className="img-fluid rounded"
+                    />
+                </div>
+
+                <div className="col-12 col-md-6">
+                    <CardText className="mb-2 text-wrap text-break">{advert.owner}</CardText>
+                    <CardText className="mb-2 text-wrap text-break">{advert.email}</CardText>
+                    <CardText className="mb-2 text-wrap text-break">{advert.phone}</CardText>
+                    <CardText className="mb-3 text-info text-wrap text-break">
+                        <u>{advert.link || 'No link'}</u>
+                    </CardText>
+
+                    {user.role?.includes('Admin') && (
+                        <Button
+                            color={advert.status === 'Active' ? 'danger' : 'success'}
+                            className="text-white text-uppercase"
+                            onClick={() =>
+                                dispatch(
+                                    changeStatus({
+                                        advertID: advert._id,
+                                        status: advert.status === 'Active' ? 'Inactive' : 'Active'
+                                    })
+                                )
+                            }
+                        >
+                            {advert.status === 'Active' ? 'Deactivate' : 'Activate'}
+                        </Button>
+                    )}
+                </div>
+            </div>
         </Card>
     );
 };

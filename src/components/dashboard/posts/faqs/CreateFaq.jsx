@@ -1,29 +1,74 @@
 import AddModal from '@/utils/AddModal';
 import { Input } from 'reactstrap';
-import { createFq } from '@/redux/slices/faqsSlice';
 import { useSelector } from 'react-redux';
+import { createFq } from '@/redux/slices/faqsSlice';
 import validators from '@/utils/validators';
 
 const CreateFaq = () => {
-    const { user } = useSelector(state => state.auth);
+    const { user } = useSelector((state) => state.auth);
+
+    const initialState = {
+        title: '',
+        answer: '',
+        created_by: user?._id || null,
+    };
+
+    const submitFn = async (data) => {
+        const { title, answer } = data;
+
+        const res = validators.validateTitleDesc(title, answer, {
+            minTitle: 4,
+            maxTitle: 200,
+            minDesc: 4,
+            maxDesc: 1000,
+        });
+
+        if (!res.ok) {
+            return Promise.reject(new Error('validation'));
+        }
+
+        return createFq(data);
+    };
+
+    const renderForm = (state, setState, firstInputRef) => {
+        const updateField = (e) =>
+            setState({ ...state, [e.target.name]: e.target.value });
+
+        return (
+            <>
+                <Input
+                    innerRef={firstInputRef}
+                    type="text"
+                    name="title"
+                    placeholder="FAQ title..."
+                    className="mb-3"
+                    value={state.title}
+                    onChange={updateField}
+                    maxLength={200}
+                />
+
+                <Input
+                    type="textarea"
+                    name="answer"
+                    placeholder="FAQ answer..."
+                    className="mb-3"
+                    value={state.answer}
+                    onChange={updateField}
+                    minLength={4}
+                    maxLength={1000}
+                    style={{ minHeight: '120px' }}
+                />
+            </>
+        );
+    };
 
     return (
         <AddModal
             title="Create a FAQ"
             triggerText="FAQ"
-            initialState={{ title: '', answer: '', created_by: user ? user._id : null }}
-            submitFn={data => {
-                const { title, answer } = data;
-                const res = validators.validateTitleDesc(title, answer, { minTitle: 4, minDesc: 4, maxTitle: 200, maxDesc: 1000 });
-                if (!res.ok) return Promise.reject(new Error('validation'));
-                return createFq({ ...data });
-            }}
-            renderForm={(state, setState, firstInputRef) => (
-                <>
-                    <Input ref={firstInputRef} type="text" name="title" placeholder="FAQ title ..." className="mb-3" onChange={e => setState({ ...state, title: e.target.value })} value={state.title || ''} />
-                    <Input type="textarea" name="answer" placeholder="FAQ answer ..." className="mb-3" minLength="5" maxLength="1000" onChange={e => setState({ ...state, answer: e.target.value })} value={state.answer || ''} />
-                </>
-            )}
+            initialState={initialState}
+            submitFn={submitFn}
+            renderForm={renderForm}
         />
     );
 };

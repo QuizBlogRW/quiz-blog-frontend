@@ -1,9 +1,8 @@
 import AddModal from '@/utils/AddModal';
-import { addVidLink } from '@/redux/slices/quizzesSlice';
 import { addFaqVidLink } from '@/redux/slices/faqsSlice';
 import { notify } from '@/utils/notifyToast';
 
-const AddVideo = ({ isFromFaqs, faqID, quizID }) => {
+const AddVideo = ({ isFromFaqs, faqID, }) => {
 
     const initialState = {
         vtitle: '',
@@ -17,7 +16,6 @@ const AddVideo = ({ isFromFaqs, faqID, quizID }) => {
             // some thunks expect (data, id) signature; wrap in a thunk to dispatch properly
             return (dispatch) => dispatch(addFaqVidLink(newVidLink, faqID));
         }
-        return (dispatch) => dispatch(addVidLink(newVidLink, quizID));
     };
 
     const renderForm = (formState, setFormState, firstInputRef) => {
@@ -70,7 +68,7 @@ const AddVideo = ({ isFromFaqs, faqID, quizID }) => {
             renderForm={renderForm}
             initialState={initialState}
 
-            triggerText={'+ Video'}
+            triggerText={'Video'}
         />
     );
 };

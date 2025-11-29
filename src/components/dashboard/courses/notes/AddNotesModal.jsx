@@ -91,8 +91,7 @@ const AddNotesModal = ({ chapter }) => {
             submitFn={submitWrapper}
             renderForm={renderForm}
             initialState={initialState}
-
-            triggerText={null}
+            triggerText="Notes"
         />
     );
 };

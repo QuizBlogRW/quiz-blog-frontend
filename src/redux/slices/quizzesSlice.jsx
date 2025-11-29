@@ -56,15 +56,15 @@ export const getQuizzesByCategory = createAsyncThunk(
     )
 );
 
-export const getQuizzesByNotes = createAsyncThunk(
-  'quizzes/getQuizzesByNotes',
-  async (noteID, { getState }) =>
+export const getQuizzesByCourseCategory = createAsyncThunk(
+  'quizzes/getQuizzesByCourseCategory',
+  async (ccID, { getState }) =>
     apiCallHelper(
-      `/api/quizzes/course-notes/${noteID}`,
+      `/api/quizzes/course-category/${ccID}`,
       'get',
       null,
       getState,
-      'getQuizzesByNotes'
+      'getQuizzesByCourseCategory'
     )
 );
 
@@ -138,6 +138,7 @@ const initialState = {
   limitedQuizzes: [],
   paginatedQuizzes: [],
   categoryQuizzes: [],
+  ccQuizzes: [],
   totalPages: 0,
   error: null,
 };
@@ -149,6 +150,7 @@ const quizzesSlice = createSlice({
     clearQuizzes: (state) => {
       state.limitedQuizzes = [];
       state.categoryQuizzes = [];
+      state.ccQuizzes = [];
       state.quizzes = [];
       state.isLoading = false;
       state.loadingLimited = false;
@@ -183,8 +185,8 @@ const quizzesSlice = createSlice({
       state.categoryQuizzes = action.payload;
       state.isLoading = false;
     });
-    builder.addCase(getQuizzesByNotes.fulfilled, (state, action) => {
-      state.quizzes = action.payload;
+    builder.addCase(getQuizzesByCourseCategory.fulfilled, (state, action) => {
+      state.ccQuizzes = action.payload;
       state.isLoading = false;
     });
     builder.addCase(createQuiz.fulfilled, (state, action) => {
@@ -248,7 +250,7 @@ const quizzesSlice = createSlice({
     builder.addCase(getQuizzes.pending, handlePending);
     builder.addCase(getOneQuiz.pending, handlePending);
     builder.addCase(getQuizzesByCategory.pending, handlePending);
-    builder.addCase(getQuizzesByNotes.pending, handlePending);
+    builder.addCase(getQuizzesByCourseCategory.pending, handlePending);
     builder.addCase(createQuiz.pending, handlePending);
     builder.addCase(updateQuiz.pending, handlePending);
     builder.addCase(addVidLink.pending, handlePending);
@@ -266,7 +268,7 @@ const quizzesSlice = createSlice({
     builder.addCase(getQuizzes.rejected, handleRejected);
     builder.addCase(getOneQuiz.rejected, handleRejected);
     builder.addCase(getQuizzesByCategory.rejected, handleRejected);
-    builder.addCase(getQuizzesByNotes.rejected, handleRejected);
+    builder.addCase(getQuizzesByCourseCategory.rejected, handleRejected);
     builder.addCase(createQuiz.rejected, handleRejected);
     builder.addCase(updateQuiz.rejected, handleRejected);
     builder.addCase(addVidLink.rejected, handleRejected);

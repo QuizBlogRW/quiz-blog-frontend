@@ -50,7 +50,7 @@ const Pagination = ({ pageNo, setPageNo, numberOfPages }) => {
         if (pageNo > 3) {
 
             if (numberOfPages - pageNo >= 3) {
-                
+
                 middlePagination = (
                     <>
                         <Button outline color="success" disabled>...</Button>
@@ -122,7 +122,7 @@ const Pagination = ({ pageNo, setPageNo, numberOfPages }) => {
                     color="success"
                     disabled={pageNo === 1}
                     onClick={previousPage}
-                    className={pageNo < 2 ? 'invisible' : 'visible'}>
+                    className={pageNo < 2 ? 'd-none' : 'd-inline-block'}>
                     &#171;
                 </Button>
 
@@ -132,7 +132,7 @@ const Pagination = ({ pageNo, setPageNo, numberOfPages }) => {
                     color="success"
                     disabled={pageNo === numberOfPages}
                     onClick={nextPage}
-                    className={pageNo === numberOfPages ? 'invisible' : 'visible'}>
+                    className={pageNo === numberOfPages ? 'd-none' : 'd-inline-block'}>
                     &#187;
                 </Button>
             </div>

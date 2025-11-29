@@ -2,117 +2,176 @@ import { Card, CardBody, CardHeader } from 'reactstrap';
 
 const ItsindirePrivacy = () => {
     return (
-        <div className="my-5">
-            <h1 className="mb-4 text-center">Itsindire RW Privacy Policy</h1>
+        <div className="py-0 px-3 py-lg-5 w-100">
 
-            {/* Introduction */}
-            <Card className="mb-4 shadow-sm">
-                <CardHeader className="bg-light">
-                    <h2 className="h5 mb-0">Introduction</h2>
-                </CardHeader>
-                <CardBody>
-                    <p>
-                        Welcome to Itsindire RW app. We are committed to protecting your personal information and your right to privacy.
-                        If you have any questions about our policy or practices regarding your personal information, please contact us at{' '}
-                        <a href="mailto:itsindire.rw@gmail.com">itsindire.rw@gmail.com</a>.
-                    </p>
-                </CardBody>
-            </Card>
+            {/* FAQ-style jumbotron */}
+            <div className="jbtron rounded px-3 px-sm-4 py-3 py-sm-5 p-2 py-lg-4 my-3 my-sm-4 text-center border border-info">
+                <h1 className="display-5 fw-bolder text-white">Itsindire RW Privacy Policy</h1>
 
-            {/* Information We Collect */}
-            <Card className="mb-4 shadow-sm">
-                <CardHeader className="bg-light">
-                    <h2 className="h5 mb-0">Information We Collect</h2>
-                </CardHeader>
-                <CardBody>
-                    <p>
-                        We collect personal information you voluntarily provide when registering, expressing interest in our products or services, participating in app activities, or contacting us.
-                    </p>
-                    <p>The personal information collected depends on your interactions and choices, including:</p>
-                    <ul>
-                        <li><strong>Name and Contact Data:</strong> First/last name, email, phone number, and similar contact info.</li>
-                        <li><strong>Credentials:</strong> Passwords, hints, and authentication info.</li>
-                        <li><strong>Payment Data:</strong> Payment instrument info, such as Momo number and security codes, for processing purchases.</li>
-                    </ul>
-                </CardBody>
-            </Card>
+                <p className="lead mb-1 text-white">
+                    Learn how Itsindire RW collects, uses, and protects your personal information.
+                </p>
 
-            {/* How We Use Your Information */}
-            <Card className="mb-4 shadow-sm">
-                <CardHeader className="bg-light">
-                    <h2 className="h5 mb-0">How We Use Your Information</h2>
-                </CardHeader>
-                <CardBody>
-                    <p>
-                        We process personal information to operate and improve our app, based on legitimate business interests, contractual obligations, consent, and legal requirements:
-                    </p>
-                    <ul>
-                        <li>Facilitate account creation and logon process.</li>
-                        <li>Send administrative information.</li>
-                        <li>Fulfill and manage orders.</li>
-                        <li>Post testimonials.</li>
-                        <li>Request feedback.</li>
-                        <li>Protect our services.</li>
-                        <li>Enforce terms, conditions, and policies.</li>
-                        <li>Respond to legal requests and prevent harm.</li>
-                        <li>Manage user accounts.</li>
-                        <li>Deliver services to users.</li>
-                        <li>Provide user support.</li>
-                    </ul>
-                </CardBody>
-            </Card>
+                <p className="text-white">
+                    We value transparency and are committed to keeping your data safe.
+                </p>
 
-            {/* Sharing Your Information */}
-            <Card className="mb-4 shadow-sm">
-                <CardHeader className="bg-light">
-                    <h2 className="h5 mb-0">Sharing Your Information</h2>
-                </CardHeader>
-                <CardBody>
-                    <p>We only share your information in specific situations:</p>
-                    <ul>
-                        <li><strong>Compliance with Laws:</strong> Disclose data to meet legal obligations or governmental requests.</li>
-                        <li><strong>Vital Interests & Legal Rights:</strong> Prevent harm, investigate policy violations, fraud, or threats.</li>
-                        <li><strong>Vendors & Service Providers:</strong> Third-party partners for payment, hosting, support, marketing, or analytics.</li>
-                    </ul>
-                </CardBody>
-            </Card>
+                <small className="fw-bolder text-white">
+                    Have questions? Contact us at{' '}
+                    <a
+                        href="mailto:itsindire.rw@gmail.com"
+                        style={{ color: 'var(--accent)' }}
+                    >
+                        <u>itsindire.rw@gmail.com</u>
+                    </a>
+                    .
+                </small>
 
-            {/* Security of Your Information */}
-            <Card className="mb-4 shadow-sm">
-                <CardHeader className="bg-light">
-                    <h2 className="h5 mb-0">Security of Your Information</h2>
-                </CardHeader>
-                <CardBody>
-                    <p>
-                        We implement administrative, technical, and physical measures to protect your data. However, no method of storage or transmission is 100% secure.
-                    </p>
-                </CardBody>
-            </Card>
+                <hr
+                    className="my-2"
+                    style={{
+                        height: '2px',
+                        borderWidth: 0,
+                        backgroundColor: 'var(--brand)',
+                    }}
+                />
+            </div>
 
-            {/* Your Privacy Rights */}
-            <Card className="mb-4 shadow-sm">
-                <CardHeader className="bg-light">
-                    <h2 className="h5 mb-0">Your Privacy Rights</h2>
-                </CardHeader>
-                <CardBody>
-                    <p>
-                        You may have rights under applicable data protection laws, including access, correction, erasure, restriction of processing, data portability, or objection. To exercise these rights, contact us via the details below.
-                    </p>
-                </CardBody>
-            </Card>
+            {/* Main content */}
+            <div className="m-lg-4 px-lg-5 text-primary">
 
-            {/* Contact Us */}
-            <Card className="mb-4 shadow-sm">
-                <CardHeader className="bg-light">
-                    <h2 className="h5 mb-0">Contact Us</h2>
-                </CardHeader>
-                <CardBody>
-                    <p>
-                        For questions or comments about this policy, contact: Itsindire RW at{' '}
-                        <a href="mailto:itsindire.rw@gmail.com">itsindire.rw@gmail.com</a>.
-                    </p>
-                </CardBody>
-            </Card>
+                {/* Introduction */}
+                <Card className="border rounded shadow-sm mb-4">
+                    <CardHeader className="bg-light">
+                        <h2 className="h4 fw-bold mb-0">Introduction</h2>
+                    </CardHeader>
+                    <CardBody>
+                        <p>
+                            Welcome to the Itsindire RW App. We are committed to protecting your personal information and your right to privacy.
+                            If you have any questions about our policy or practices, please contact us at{' '}
+                            <a href="mailto:itsindire.rw@gmail.com" className="text-primary">
+                                <u>itsindire.rw@gmail.com</u>
+                            </a>.
+                        </p>
+                    </CardBody>
+                </Card>
+
+                {/* Information We Collect */}
+                <Card className="border rounded shadow-sm mb-4">
+                    <CardHeader className="bg-light">
+                        <h2 className="h4 fw-bold mb-0">Information We Collect</h2>
+                    </CardHeader>
+                    <CardBody>
+                        <p>
+                            We collect personal information that you voluntarily provide when registering an account, showing interest in our services,
+                            participating in app activities, or contacting us.
+                        </p>
+
+                        <p>The information collected may include:</p>
+
+                        <ul>
+                            <li>
+                                <strong>Name & Contact Data:</strong> First/last name, phone number, email address, and other contact information.
+                            </li>
+                            <li>
+                                <strong>Credentials:</strong> Passwords, hints, and security authentication information.
+                            </li>
+                            <li>
+                                <strong>Payment Data:</strong> Mobile money details (e.g., MoMo number) or other payment information used for purchases.
+                            </li>
+                        </ul>
+                    </CardBody>
+                </Card>
+
+                {/* How We Use Your Information */}
+                <Card className="border rounded shadow-sm mb-4">
+                    <CardHeader className="bg-light">
+                        <h2 className="h4 fw-bold mb-0">How We Use Your Information</h2>
+                    </CardHeader>
+                    <CardBody>
+                        <p>
+                            We process your information to operate, improve, and protect the Itsindire RW App. This includes:
+                        </p>
+
+                        <ul>
+                            <li>Facilitating account creation and login.</li>
+                            <li>Sending important administrative updates.</li>
+                            <li>Managing and fulfilling orders.</li>
+                            <li>Posting user testimonials.</li>
+                            <li>Requesting user feedback.</li>
+                            <li>Protecting the app and preventing fraud.</li>
+                            <li>Enforcing terms and policies.</li>
+                            <li>Responding to legal requests.</li>
+                            <li>Managing user accounts.</li>
+                            <li>Providing and improving the service.</li>
+                            <li>Offering customer support.</li>
+                        </ul>
+                    </CardBody>
+                </Card>
+
+                {/* Sharing Your Information */}
+                <Card className="border rounded shadow-sm mb-4">
+                    <CardHeader className="bg-light">
+                        <h2 className="h4 fw-bold mb-0">Sharing Your Information</h2>
+                    </CardHeader>
+                    <CardBody>
+                        <p>We only share your information under specific circumstances, such as:</p>
+
+                        <ul>
+                            <li>
+                                <strong>Compliance with Laws:</strong> Meeting legal obligations or responding to government requests.
+                            </li>
+                            <li>
+                                <strong>Vital Interests & Legal Rights:</strong> Preventing harm, investigating fraud, or enforcing policies.
+                            </li>
+                            <li>
+                                <strong>Service Providers:</strong> Trusted third parties for hosting, payments, analytics, or app support.
+                            </li>
+                        </ul>
+                    </CardBody>
+                </Card>
+
+                {/* Security */}
+                <Card className="border rounded shadow-sm mb-4">
+                    <CardHeader className="bg-light">
+                        <h2 className="h4 fw-bold mb-0">Security of Your Information</h2>
+                    </CardHeader>
+                    <CardBody>
+                        <p>
+                            We apply administrative, technical, and physical safeguards to protect your information.
+                            However, no method of online transmission or storage is completely secure.
+                        </p>
+                    </CardBody>
+                </Card>
+
+                {/* Privacy Rights */}
+                <Card className="border rounded shadow-sm mb-4">
+                    <CardHeader className="bg-light">
+                        <h2 className="h4 fw-bold mb-0">Your Privacy Rights</h2>
+                    </CardHeader>
+                    <CardBody>
+                        <p>
+                            Depending on your region, you may have rights such as access, correction, deletion, restriction,
+                            data portability, or objection to processing. Contact us to exercise these rights.
+                        </p>
+                    </CardBody>
+                </Card>
+
+                {/* Contact Us */}
+                <Card className="border rounded shadow-sm mb-4">
+                    <CardHeader className="bg-light">
+                        <h2 className="h4 fw-bold mb-0">Contact Us</h2>
+                    </CardHeader>
+                    <CardBody>
+                        <p>
+                            If you have questions or comments about this policy, reach out at:{' '}
+                            <a href="mailto:itsindire.rw@gmail.com" className="text-primary">
+                                <u>itsindire.rw@gmail.com</u>
+                            </a>.
+                        </p>
+                    </CardBody>
+                </Card>
+            </div>
         </div>
     );
 };

@@ -1,12 +1,15 @@
-import { useEffect, useState, lazy, Suspense } from 'react';
+import { useEffect, useState, lazy, Suspense, useCallback } from 'react';
 import { Row, Col, Button } from 'reactstrap';
 import { Collapse } from 'react-collapse';
 import classNames from 'classnames';
+
 import faqsStyle from './faqsStyle.module.css';
 import AddIcon from '@/images/plus1.svg';
 import MinusIcon from '@/images/minus.svg';
+
 import { getFaqs, deleteFaq } from '@/redux/slices/faqsSlice';
 import { useSelector, useDispatch } from 'react-redux';
+
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 import CreateFaq from '@/components/dashboard/posts/faqs/CreateFaq';
 import EditFaq from '@/components/dashboard/posts/faqs/EditFaq';
@@ -19,58 +22,48 @@ const GridMultiplex = lazy(() => import('@/components/adsenses/GridMultiplex'));
 const InFeedAd = lazy(() => import('@/components/adsenses/InFeedAd'));
 
 const FaqCollapse = () => {
-  // Redux
   const dispatch = useDispatch();
-  const faqs = useSelector((state) => state.faqs);
+  const { allFaqs, isLoading } = useSelector((state) => state.faqs);
   const { user } = useSelector((state) => state.auth);
-  const faqsToUse = faqs && faqs.allFaqs;
 
-  // Lifecycle methods
+  const [activeIndex, setActiveIndex] = useState(null);
+
   useEffect(() => {
     dispatch(getFaqs());
   }, [dispatch]);
 
-  const [state, setState] = useState({
-    activeIndex: null,
-  });
+  const toggleFAQ = useCallback(
+    (index) => {
+      setActiveIndex((prev) => (prev === index ? null : index));
+    },
+    []
+  );
 
-  const toggleClass = (index) => {
-    setState({ activeIndex: state.activeIndex === index ? null : index });
-  };
+  const ToggleIcon = ({ isOpen }) => (
+    <img
+      src={isOpen ? MinusIcon : AddIcon}
+      alt={isOpen ? 'collapse' : 'expand'}
+      width={20}
+      height={20}
+    />
+  );
 
-  const moreLess = (index) => {
-    if (state.activeIndex === index) {
-      return (
-        <span>
-          <img src={MinusIcon} alt="collapse" width={20} height={20} />
-        </span>
-      );
-    } else {
-      return (
-        <span>
-          <img src={AddIcon} alt="expand" width={20} height={20} />
-        </span>
-      );
-    }
-  };
+  if (isLoading) return <QBLoadingSM title="faqs" />;
 
-  const { activeIndex } = state;
-
-  return faqs.isLoading ? (
-    <QBLoadingSM title="faqs" />
-  ) : (
+  return (
     <div className="py-0 px-3 py-lg-5 w-100">
+
+      {/* Jumbotron */}
       <div className="jbtron rounded px-3 px-sm-4 py-3 py-sm-5 p-2 py-lg-4 my-3 my-sm-4 text-center border border-info">
-        <h1 className="display-5 fw-bolder text-white">
-          Frequently Asked Questions
-        </h1>
+        <h1 className="display-5 fw-bolder text-white">Frequently Asked Questions</h1>
+
         <p className="lead mb-1 text-white">
           Answers to the questions people most often ask about Quiz-Blog.
         </p>
 
         <p className="text-white">
-          Quiz-Blog helps you practice across many categories so you can review
-          what you studied and prepare for exams.
+          Quiz-Blog helps you practice across many categories so you can review what you
+          studied and prepare for exams.
         </p>
 
         <small className="fw-bolder text-white">
@@ -83,105 +76,102 @@ const FaqCollapse = () => {
           </a>
           .
         </small>
+
         <hr
           className="my-2"
           style={{
             height: '2px',
             borderWidth: 0,
-            color: 'var(--brand)',
             backgroundColor: 'var(--brand)',
           }}
         />
       </div>
 
-      {user?.role?.includes('Admin') ? (
-        <Row className="m-lg-4 px-lg-5 d-flex justify-content-around align-items-center text-primary">
-          <CreateFaq />
-        </Row>
-      ) : (isAdEnabled() && <Suspense fallback={<QBLoadingSM />}>
-        <InFeedAd />
-      </Suspense>)}
-
+      {/* Admin create FAQ OR Advertisement */}
       <Row className="m-lg-4 px-lg-5 d-flex justify-content-around align-items-center text-primary">
+        {user?.role?.includes('Admin') ? (
+          <Col xs="auto" className="mb-2">
+            <CreateFaq />
+          </Col>
+        ) : (
+          isAdEnabled() && (
+            <Suspense fallback={<QBLoadingSM />}>
+              <InFeedAd />
+            </Suspense>
+          )
+        )}
+      </Row>
+
+      {/* FAQ List */}
+      <Row className="m-lg-4 px-lg-5 text-primary">
         <ul className={faqsStyle.docsList}>
-          {faqsToUse &&
-            faqsToUse.map((faq, index) => {
-              return (
-                <li key={index}>
-                  <div className={faqsStyle.titleToggler}>
-                    <h3
-                      role="button"
-                      tabIndex={0}
-                      onClick={() => toggleClass(index)}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ')
-                          toggleClass(index);
-                      }}
-                      aria-controls={`faq-collapse-${index}`}
-                      aria-expanded={activeIndex === index}
+          {allFaqs?.map((faq, index) => {
+            const isOpen = activeIndex === index;
+
+            return (
+              <li key={faq._id}>
+                <div className={faqsStyle.titleToggler}>
+                  <h3
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => toggleFAQ(index)}
+                    onKeyDown={(e) => (e.key === 'Enter' ? toggleFAQ(index) : null)}
+                    aria-expanded={isOpen}
+                    aria-controls={`faq-panel-${index}`}
+                  >
+                    {faq.title}
+                  </h3>
+
+                  <div className={faqsStyle.actionGroup}>
+                    <Button
+                      className={`btn btn-warning btn-xs ${faqsStyle.faqToggleBtn}`}
+                      onClick={() => toggleFAQ(index)}
+                      aria-expanded={isOpen}
+                      aria-controls={`faq-panel-${index}`}
                     >
-                      {faq.title}
-                    </h3>
+                      <ToggleIcon isOpen={isOpen} />
+                    </Button>
 
-                    <span className={faqsStyle.actionGroup}>
-                      <Button
-                        className={
-                          'btn btn-warning btn-xs ' + faqsStyle.faqToggleBtn
-                        }
-                        onClick={() => toggleClass(index)}
-                        aria-label={
-                          activeIndex === index
-                            ? 'Collapse answer'
-                            : 'Expand answer'
-                        }
-                        aria-controls={`faq-collapse-${index}`}
-                        aria-expanded={activeIndex === index}
-                      >
-                        {moreLess(index)}
-                      </Button>
-
-                      {user?.role?.includes('Admin') ? (
-                        <>
-                          <EditFaq faqToEdit={faq} />
-                          <DeleteModal
-                            deleteFnName="deleteFaq"
-                            deleteFn={deleteFaq}
-                            delID={faq._id}
-                            delTitle={faq.title}
-                          />
-                          <AddVideo faqID={faq._id} isFromFaqs={true} />
-                        </>
-                      ) : null}
-                    </span>
+                    {user?.role?.includes('Admin') && (
+                      <>
+                        <EditFaq faqToEdit={faq} />
+                        <DeleteModal
+                          deleteFnName="deleteFaq"
+                          deleteFn={deleteFaq}
+                          delID={faq._id}
+                          delTitle={faq.title}
+                        />
+                        <AddVideo faqID={faq._id} isFromFaqs={true} />
+                      </>
+                    )}
                   </div>
+                </div>
 
-                  <Collapse isOpened={activeIndex === index}>
-                    <div
-                      id={`faq-collapse-${index}`}
-                      className={classNames('alert alert-secondary msg', {
-                        show: activeIndex === index,
-                        hide: activeIndex !== index,
-                      })}
-                    >
-                      <div className={faqsStyle.collapseContent}>
-                        <div className={faqsStyle.docsLinks}>
-                          <p>{faq.answer}</p>
-                        </div>
-                      </div>
+                <Collapse isOpened={isOpen}>
+                  <div
+                    id={`faq-panel-${index}`}
+                    className={classNames('alert alert-secondary msg')}
+                  >
+                    <div className={faqsStyle.collapseContent}>
+                      <p>{faq.answer}</p>
                     </div>
 
                     <EmbeddedVideos faq={faq} isFromFaqs={true} />
-                  </Collapse>
-                </li>
-              );
-            })}
+                  </div>
+                </Collapse>
+              </li>
+            );
+          })}
         </ul>
 
-        {isAdEnabled() && <Col sm="12">
-          <Suspense fallback={<QBLoadingSM />}>
-            <GridMultiplex />
-          </Suspense>
-        </Col>}
+        {/* Bottom Ad */}
+        {isAdEnabled() && (
+          <Col sm="12">
+            <Suspense fallback={<QBLoadingSM />}>
+              <GridMultiplex />
+            </Suspense>
+          </Col>
+        )}
       </Row>
     </div>
   );

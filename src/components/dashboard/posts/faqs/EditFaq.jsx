@@ -3,66 +3,76 @@ import { updateFaq } from '@/redux/slices/faqsSlice';
 import { notify } from '@/utils/notifyToast';
 
 const EditFaq = ({ faqToEdit }) => {
+
   const initialData = {
     faqID: faqToEdit._id,
     title: faqToEdit.title || '',
     answer: faqToEdit.answer || '',
   };
 
+  const validate = (title, answer) => {
+    if (!title || title.length < 4)
+      return notify('Title must be at least 4 characters!', 'error');
+
+    if (!answer || answer.length < 4)
+      return notify('Answer must be at least 4 characters!', 'error');
+
+    if (title.length > 200)
+      return notify('Title is too long (max 200 chars)!', 'error');
+
+    if (answer.length > 1000)
+      return notify('Answer is too long (max 1000 chars)!', 'error');
+
+    return true;
+  };
+
   const renderForm = (formState, setFormState, firstInputRef) => {
-    const onChange = (e) =>
+    const update = (e) =>
       setFormState({ ...formState, [e.target.name]: e.target.value });
+
     return (
-      <div>
+      <>
         <div className="mb-3">
-          <label>
-            <strong>Title</strong>
-          </label>
+          <label className="fw-bold">Title</label>
           <input
             ref={firstInputRef}
             type="text"
             name="title"
-            placeholder="FAQ title ..."
             className="form-control mb-3"
-            onChange={onChange}
+            placeholder="FAQ title..."
             value={formState.title}
+            onChange={update}
+            maxLength={200}
           />
         </div>
 
         <div className="mb-3">
-          <label>
-            <strong>Answer</strong>
-          </label>
-          <input
-            type="text"
+          <label className="fw-bold">Answer</label>
+          <textarea
             name="answer"
-            placeholder="FAQ answer ..."
             className="form-control mb-3"
-            onChange={onChange}
+            placeholder="FAQ answer..."
             value={formState.answer}
+            onChange={update}
+            rows={4}
+            maxLength={1000}
           />
         </div>
-      </div>
+      </>
     );
   };
 
   const submitFn = (formState) => {
     const { faqID, title, answer } = formState;
-    if (!title || title.length < 4 || !answer || answer.length < 4) {
-      notify('Insufficient info!', 'error');
-      throw new Error('validation');
-    }
-    if (title.length > 50) {
-      notify('Title is too long!', 'error');
-      throw new Error('validation');
-    }
-    if (answer.length > 100) {
-      notify('Answer is too long!', 'error');
+
+    if (!validate(title, answer)) {
       throw new Error('validation');
     }
 
-    return (dispatch) => dispatch(updateFaq({ faqID, title, answer }));
+    return (dispatch) =>
+      dispatch(updateFaq({ faqID, title, answer }));
   };
+
   return (
     <UpdateModal
       title="Edit FAQ"

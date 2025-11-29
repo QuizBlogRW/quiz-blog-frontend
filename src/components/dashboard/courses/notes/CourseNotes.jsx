@@ -1,218 +1,168 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Row, Col, Card, CardBody, CardTitle, CardSubtitle, CardText, Button, Input } from 'reactstrap';
+import { useDispatch, useSelector } from 'react-redux';
+
 import {
   getNotesByChapter,
   deleteNotes,
-  removeQzNt,
+  removeQuizFromNotes,
+  updateNotes
 } from '@/redux/slices/notesSlice';
+
 import { saveDownload } from '@/redux/slices/downloadsSlice';
-import { useSelector, useDispatch } from 'react-redux';
-import img from '@/images/resourceImg.svg';
-import DeleteIcon from '@/images/trash.svg';
 import AddNotesModal from './AddNotesModal';
-import UpdateModal from '@/utils/UpdateModal';
 import AddRelatedQuiz from './AddRelatedQuiz';
-import validators from '@/utils/validators';
-import { updateNotes } from '@/redux/slices/notesSlice';
-import {
-  Row,
-  Col,
-  Card,
-  CardImg,
-  CardText,
-  CardBody,
-  CardTitle,
-  CardSubtitle,
-  Button,
-  Input,
-} from 'reactstrap';
-import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
+import UpdateModal from '@/utils/UpdateModal';
 import DeleteModal from '@/utils/DeleteModal';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
+import validators from '@/utils/validators';
+import DeleteIcon from '@/images/trash.svg';
 
 const CourseNotes = ({ chapter }) => {
-  // Redux
+
   const dispatch = useDispatch();
+  const { notesByChapter, isLoading } = useSelector((s) => s.notes);
+  const { user } = useSelector((s) => s.auth);
+
+  const isVisitor = user?.role === "Visitor";
+
   useEffect(() => {
-    dispatch(getNotesByChapter(chapter?._id));
-  }, [dispatch, chapter]);
+    if (chapter?._id) dispatch(getNotesByChapter(chapter._id));
+  }, [chapter, dispatch]);
 
-  const { notesByChapter, isLoading } = useSelector((state) => state.notes);
-  const { user } = useSelector((state) => state.auth);
-
-  const onDownload = (note) => {
-    const newDownload = {
-      notes: note._id,
-      chapter: note.chapter,
-      course: note.course,
-      courseCategory: note.courseCategory,
-      downloaded_by: user ? user._id : null,
-    };
-
-    dispatch(saveDownload(newDownload));
+  const handleDownload = (note) => {
+    dispatch(
+      saveDownload({
+        notes: note._id,
+        chapter: note.chapter,
+        course: note.course,
+        courseCategory: note.courseCategory,
+        downloaded_by: user?._id
+      })
+    );
   };
 
   return isLoading ? (
     <QBLoadingSM title="notes" />
   ) : (
     <>
-      {user.role !== 'Visitor' ? (
-        <Row>
-          {chapter ? (
-            <Button
-              size="sm"
-              outline
-              color="success"
-              className="ms-auto me-1 mx-sm-auto my-2 add-notes-btn"
-            >
-              <strong>
-                <AddNotesModal chapter={chapter} />
-              </strong>
-            </Button>
-          ) : null}
-        </Row>
-      ) : null}
-      
+      {!isVisitor && chapter && (
+        <div className="my-2 d-flex justify-content-center">
+            <AddNotesModal chapter={chapter} />
+        </div>
+      )}
+
       <Row>
-        {notesByChapter?.map((note, key) => (
-          <Col
-            key={note?._id ? note?._id : key}
-            sm="12"
-            className="mb-3 resouces-card c-notes"
-          >
-            <Card className="d-flex flex-row p-1 p-sm-4">
-              <CardImg
-                top
-                width="12%"
-                src={img}
-                alt="Card image cap"
-                className="pl-1"
-              />
-              <CardBody style={{ width: '77%' }}>
-                <CardTitle
-                  tag="h6"
-                  className="text-success fw-bolder mb-1"
-                  style={{ fontSize: '.7rem' }}
-                >
-                  {note?.title}
+        {notesByChapter?.map((note) => (
+          <Col sm="12" key={note._id} className="mb-3">
+            <Card className="p-sm-4 p-2 d-flex flex-column flex-sm-row">
+
+              <CardBody className="flex-grow-1">
+
+                {/* Title */}
+                <CardTitle tag="h6" className="text-success fw-bold mb-1 small">
+                  {note.title}
                 </CardTitle>
 
-                <CardSubtitle
-                  tag="small"
-                  className="mb-2 text-muted fw-bolder"
-                  style={{ fontSize: '.6rem' }}
-                >
+                {/* Category */}
+                <CardSubtitle tag="small" className="text-muted fw-bold mb-2">
                   {note?.courseCategory?.title}
                 </CardSubtitle>
 
+                {/* Description + filename */}
                 <CardText className="mb-1">
                   <small>{note?.description}</small>
                   <br />
-                  <i
-                    className="fw-bolder text-success"
-                    style={{ fontSize: '.5rem' }}
-                  >
-                    {note?.notes_file &&
-                      note?.notes_file
-                        .split('/')
-                        .pop()
-                        .replace(/%20|%5B|%5D/g, ' ')}
-                  </i>
+                  {note?.notes_file && (
+                    <i className="fw-bold text-success small">
+                      {decodeURIComponent(
+                        note.notes_file.split("/").pop()
+                      )}
+                    </i>
+                  )}
                 </CardText>
 
-                {note?.quizzes && note?.quizzes.length > 0 ? (
+                {/* Related quizzes */}
+                {note?.quizes?.length > 0 && (
                   <>
-                    <h6
-                      style={{
-                        fontSize: '.7rem',
-                        fontWeight: 'bolder',
-                        marginTop: '1rem',
-                        color: 'magenta',
-                      }}
-                    >
+                    <h6 className="fw-bold mt-3" style={{ color: "magenta", fontSize: ".75rem" }}>
                       <u>RELATED QUIZZES</u>
                     </h6>
-                    {console.log('note?.quizzes', note?.quizzes)}
 
-                    <ol style={{ fontSize: '.65rem' }}>
-                      {note?.quizzes &&
-                        note?.quizzes.map((qz, index) => (
-                          <li key={qz && qz?._id ? qz?._id : index}>
-                            <Link to={`/view-quiz/${qz && qz?.slug}`}>
-                              {qz?.title}
-                            </Link>
+                    <ol className="small">
+                      {note.quizes.map((qz) => (
+                        <li key={qz._id}>
+                          <Link to={`/view-quiz/${qz.slug}`}>
+                            {qz.title}
+                          </Link>
 
-                            {user.role !== 'Visitor' ? (
-                              <Button
-                                size="sm"
-                                color="link"
-                                className="ms-2"
-                                onClick={() =>
-                                  dispatch(removeQzNt(note?._id, qz && qz?._id))
-                                }
-                              >
-                                <img
-                                  src={DeleteIcon}
-                                  alt=""
-                                  width="10"
-                                  height="10"
-                                />
-                              </Button>
-                            ) : null}
-                          </li>
-                        ))}
+                          {!isVisitor && (
+                            <Button
+                              size="sm"
+                              color="link"
+                              className="ms-2 p-0"
+                              onClick={() =>
+                                dispatch(
+                                  removeQuizFromNotes({
+                                    noteID: note._id,
+                                    quizID: qz._id
+                                  })
+                                )
+                              }
+                            >
+                              <img src={DeleteIcon} alt="" width="10" height="10" />
+                            </Button>
+                          )}
+                        </li>
+                      ))}
                     </ol>
                   </>
-                ) : null}
+                )}
 
-                <div className="d-flex">
+                {/* Actions */}
+                <div className="d-flex flex-wrap gap-2 mt-2">
+
                   <Button
                     size="sm"
+                    tag="a"
+                    href={note?.notes_file}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => handleDownload(note)}
                     style={{
                       backgroundColor: 'var(--accent)',
                       border: '2px solid var(--brand)',
+                      color: 'var(--brand)',
+                      fontWeight: 'bold'
                     }}
                   >
-                    <a
-                      href={note?.notes_file}
-                      style={{ color: 'var(--brand)', fontWeight: 'bold' }}
-                      onClick={() => onDownload(note)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Download
-                    </a>
+                    Download
                   </Button>
 
-                  {user.role !== 'Visitor' ? (
+                  {!isVisitor && (
                     <>
+                      {/* Update */}
                       <UpdateModal
                         title="Edit Notes"
                         initialData={{
-                          idToUpdate: note?._id,
-                          title: note?.title,
-                          description: note?.description,
+                          idToUpdate: note._id,
+                          title: note.title,
+                          description: note.description,
                         }}
                         submitFn={(data) => {
-                          // data may include a File in notes_file
                           const { title, description, notes_file } = data;
                           const res = validators.validateTitleDesc(
                             title,
                             description,
-                            {
-                              minTitle: 4,
-                              minDesc: 4,
-                              maxTitle: 80,
-                              maxDesc: 200,
-                            }
+                            { minTitle: 4, minDesc: 4, maxTitle: 80, maxDesc: 200 }
                           );
-                          if (!res.ok)
-                            return Promise.reject(new Error('validation'));
+                          if (!res.ok) return Promise.reject("validation");
 
                           const formData = new FormData();
-                          formData.append('title', title);
-                          formData.append('description', description);
-                          if (notes_file)
-                            formData.append('notes_file', notes_file);
+                          formData.append("title", title);
+                          formData.append("description", description);
+                          if (notes_file) formData.append("notes_file", notes_file);
 
                           return updateNotes({
                             idToUpdate: data.idToUpdate,
@@ -222,62 +172,54 @@ const CourseNotes = ({ chapter }) => {
                         renderForm={(state, setState, firstInputRef) => (
                           <>
                             <Input
-                              ref={firstInputRef}
+                              innerRef={firstInputRef}
                               type="text"
-                              name="title"
                               id="title"
-                              placeholder="Notes title ..."
+                              placeholder="Notes title..."
                               className="mb-3"
-                              value={state.title || ''}
-                              onChange={(e) =>
-                                setState({ ...state, title: e.target.value })
-                              }
+                              value={state.title}
+                              onChange={(e) => setState({ ...state, title: e.target.value })}
                             />
                             <Input
                               type="text"
-                              name="description"
                               id="description"
-                              placeholder="Notes description ..."
+                              placeholder="Notes description..."
                               className="mb-3"
-                              value={state.description || ''}
+                              value={state.description}
                               onChange={(e) =>
-                                setState({
-                                  ...state,
-                                  description: e.target.value,
-                                })
+                                setState({ ...state, description: e.target.value })
                               }
                             />
                             <Input
                               bsSize="sm"
                               type="file"
-                              accept=".pdf, .doc, .docx, .ppt, .pptx"
-                              name="notes_file"
+                              accept=".pdf,.doc,.docx,.ppt,.pptx"
                               onChange={(e) =>
                                 setState({
                                   ...state,
-                                  notes_file:
-                                    e.target.files && e.target.files[0],
+                                  notes_file: e.target.files?.[0],
                                 })
                               }
-                              id="notes_file_pick"
                             />
                           </>
                         )}
                       />
+
+                      {/* Delete */}
                       <DeleteModal
                         deleteFnName="deleteNotes"
                         deleteFn={deleteNotes}
-                        delID={note?._id}
-                        delTitle={note?.title}
+                        delID={note._id}
+                        delTitle={note.title}
                       />
-                      <AddRelatedQuiz
-                        courseCategoryID={note?.courseCategory}
-                        noteID={note?._id}
-                      />
+
+                      {/* Add quiz */}
+                      <AddRelatedQuiz note={note} />
                     </>
-                  ) : null}
+                  )}
                 </div>
               </CardBody>
+
             </Card>
           </Col>
         ))}

@@ -23,14 +23,14 @@ export const createNotes = createAsyncThunk('notes/createNotes', async (formData
 export const updateNotes = createAsyncThunk('notes/updateNotes', async ({ idToUpdate, formData }, { getState }) =>
   apiCallHelperUpload(`/api/notes/${idToUpdate}`, 'put', formData, getState, 'updateNotes'));
 
-export const addNotesQuizzes = createAsyncThunk('notes/addNotesQuizzes', async (notesQuizzes, { getState }) =>
-  apiCallHelper(`/api/notes/notes-quizzes/${notesQuizzes.noteID}`, 'put', notesQuizzes, getState, 'addNotesQuizzes'));
+export const addQuizToNotes = createAsyncThunk('notes/addQuizToNotes', async ({ noteID, quizID }, { getState }) =>
+  apiCallHelper(`/api/notes/notes-quizzes/add/${noteID}`, 'put', { quizID }, getState, 'addQuizToNotes'));
 
 export const deleteNotes = createAsyncThunk('notes/deleteNotes', async (noteID, { getState }) =>
   apiCallHelper(`/api/notes/${noteID}`, 'delete', null, getState, 'deleteNotes'));
 
-export const removeQzNt = createAsyncThunk('notes/removeQzNt', async ({ noteID, quizID }, { getState }) =>
-  apiCallHelper(`/api/notes/notes-quizzes/remove/${noteID}`, 'put', { noteID, quizID }, getState, 'removeQzNt'));
+export const removeQuizFromNotes = createAsyncThunk('notes/removeQuizFromNotes', async ({ noteID, quizID }, { getState }) =>
+  apiCallHelper(`/api/notes/notes-quizzes/remove/${noteID}`, 'put', { quizID }, getState, 'removeQuizFromNotes'));
 
 // Notes slice
 const initialState = {
@@ -91,7 +91,7 @@ const notesSlice = createSlice({
       state.notesByChapter = state.notesByChapter.map(note => note._id === action.payload._id ? action.payload : note);
       state.isLoading = false;
     });
-    builder.addCase(addNotesQuizzes.fulfilled, (state, action) => {
+    builder.addCase(addQuizToNotes.fulfilled, (state, action) => {
       state.allNotes = state.allNotes.map(note => note._id === action.payload._id ? action.payload : note);
       state.notesByChapter = state.notesByChapter.map(note => note._id === action.payload._id ? action.payload : note);
       state.isLoading = false;
@@ -101,7 +101,7 @@ const notesSlice = createSlice({
       state.notesByChapter = state.notesByChapter.filter(note => note._id !== action.payload._id);
       state.isLoading = false;
     });
-    builder.addCase(removeQzNt.fulfilled, (state, action) => {
+    builder.addCase(removeQuizFromNotes.fulfilled, (state, action) => {
       state.allNotes = state.allNotes.map(note => note._id === action.payload._id ? action.payload : note);
       state.notesByChapter = state.notesByChapter.map(note => note._id === action.payload._id ? action.payload : note);
       state.isLoading = false;
@@ -115,9 +115,9 @@ const notesSlice = createSlice({
     builder.addCase(getNotesByCCatg.pending, handlePending);
     builder.addCase(createNotes.pending, handlePending);
     builder.addCase(updateNotes.pending, handlePending);
-    builder.addCase(addNotesQuizzes.pending, handlePending);
+    builder.addCase(addQuizToNotes.pending, handlePending);
     builder.addCase(deleteNotes.pending, handlePending);
-    builder.addCase(removeQzNt.pending, handlePending);
+    builder.addCase(removeQuizFromNotes.pending, handlePending);
 
     // Rejected actions
     builder.addCase(getNotes.rejected, handleRejected);
@@ -127,9 +127,9 @@ const notesSlice = createSlice({
     builder.addCase(getNotesByCCatg.rejected, handleRejected);
     builder.addCase(createNotes.rejected, handleRejected);
     builder.addCase(updateNotes.rejected, handleRejected);
-    builder.addCase(addNotesQuizzes.rejected, handleRejected);
+    builder.addCase(addQuizToNotes.rejected, handleRejected);
     builder.addCase(deleteNotes.rejected, handleRejected);
-    builder.addCase(removeQzNt.rejected, handleRejected);
+    builder.addCase(removeQuizFromNotes.rejected, handleRejected);
   }
 });
 

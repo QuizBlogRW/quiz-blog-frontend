@@ -1373,7 +1373,7 @@ form.subscribe-form:hover,
 
 .scores-pagination .btn {
   font-weight: 900;
-  padding: 0.2rem 0.6rem;
+  padding: 0.2rem 0.24rem;
   font-size: 0.9rem;
   line-height: 1;
   border-radius: 0.25rem;
@@ -1826,6 +1826,22 @@ form.subscribe-form img {
     margin: 0 auto;
   }
 
+  /* Wrap text inside table cells */
+  table td.wrap-text,
+  table th.wrap-text {
+    white-space: normal;
+    /* allow wrapping */
+    word-break: break-word;
+    /* break long words like emails or URLs */
+    max-width: 200px;
+    /* optional, adjust as needed */
+  }
+
+  /* Optional: table-responsive container already handles horizontal scroll */
+  .table-responsive {
+    overflow-x: auto;
+  }
+
   nav span.upload-image {
     border: 2px solid #fff;
     padding: 0.01rem !important;
@@ -2060,9 +2076,12 @@ form.subscribe-form img {
     font-size: 0.6rem;
   }
 
-  .actions .btn-group-sm>.btn,
+  
+  .btn-group-sm>.btn,
   .btn-sm {
     font-size: 0.5rem !important;
+    padding: 0.2rem 0.3rem !important;
+      line-height: 1 !important;
   }
 
   form.edit-question,
@@ -2191,8 +2210,9 @@ form.subscribe-form img {
   }
 
   .scores-pagination .btn {
-    padding: 0.18rem 0.4rem;
-    margin-left: 0.5rem;
+    padding: 0.18rem 0.2rem !important;
+    margin-left: 0.3rem;
+    font-size: 0.6rem;
   }
 
   .course-notes .nav-pills .nav-link.header {

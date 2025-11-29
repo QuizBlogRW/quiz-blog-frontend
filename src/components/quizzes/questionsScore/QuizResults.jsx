@@ -30,10 +30,7 @@ const GridMultiplex = lazy(() =>
   import("@/components/adsenses/GridMultiplex")
 );
 
-// ------------------------
 // REUSABLE INLINE BLOCKS
-// ------------------------
-
 const LazyAd = ({ children }) =>
   isAdEnabled() ? (
     <Suspense fallback={<QBLoadingSM />}>{children}</Suspense>
@@ -79,10 +76,7 @@ const PdfDownloadBtn = ({ quiz, review }) => (
   </PDFDownloadLink>
 );
 
-// ------------------------
 // MAIN COMPONENT
-// ------------------------
-
 const QuizResults = () => {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -124,7 +118,7 @@ const QuizResults = () => {
   // Save score for guests
   useEffect(() => {
     if (!isAuthenticated && scoreToSaveID) {
-      localStorage.setItem("scoreToSave", JSON.stringify(scoreToSave));
+      localStorage.setItem(scoreToSaveID, JSON.stringify(scoreToSave));
     }
   }, [isAuthenticated, scoreToSaveID, scoreToSave]);
 
@@ -137,10 +131,7 @@ const QuizResults = () => {
 
   const submitRating = (data) => dispatch(saveFeedback(data));
 
-  // ------------------------
   // RENDER
-  // ------------------------
-
   return (
     <>
       <div className="p-sm-5 text-center score-section" id="pdf-container">

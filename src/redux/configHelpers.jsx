@@ -1,9 +1,7 @@
 import axios from 'axios';
 import { notify } from '@/utils/notifyToast';
 
-// ----------------------------
 // Global Toast Control (Singleton)
-// ----------------------------
 const initToastControl = () => {
   if (!window.__TOAST_CONTROL__) {
     window.__TOAST_CONTROL__ = {
@@ -19,18 +17,14 @@ const initToastControl = () => {
 
 const toastControl = initToastControl();
 
-// ----------------------------
 // Backend URLs Configuration
-// ----------------------------
 export const BACKEND_URLS = {
   production: 'https://myqb-245fdbd30c9b.herokuapp.com',
   test: 'https://qb-backend-one.vercel.app',
   development: 'http://localhost:5000',
 };
 
-// ----------------------------
 // Environment Detection & URL Selection
-// ----------------------------
 const getApiUrl = () => {
   // Priority 1: Explicit environment variable
   const envUrl = import.meta.env.VITE_BACKEND_URL;
@@ -52,20 +46,16 @@ export const API_BASE_URL = getApiUrl();
 // Check if backend is Vercel (affects retry logic)
 const isVercelBackend = API_BASE_URL.includes('vercel.app');
 
-// ----------------------------
 // Axios Instance Configuration
-// ----------------------------
 export const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
-  timeout: isVercelBackend ? 25000 : 30000, // Vercel has 10s limit for hobby, 60s for pro
+  timeout: isVercelBackend ? 25000 : 60000, // Vercel has 10s limit for hobby, 60s for pro
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// ----------------------------
 // Request Interceptor
-// ----------------------------
 axiosInstance.interceptors.request.use(
   (config) => {
     // Auto-attach token if available
@@ -86,9 +76,7 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-// ----------------------------
 // Response Interceptor
-// ----------------------------
 axiosInstance.interceptors.response.use(
   (response) => {
     if (import.meta.env.VITE_DEBUG === 'true') {
@@ -106,24 +94,22 @@ axiosInstance.interceptors.response.use(
   (error) => {
     // Build standardized error object
     const errorData = {
-      code: error.response?.data?.code || 'UNKNOWN_ERROR',
-      name: error.response?.data?.name || error.response?.statusText || 'Unknown Error',
+      code: error.response?.data?.code || error?.code || 'UNKNOWN_ERROR',
+      name: error.response?.data?.name || error.response?.statusText || error?.name || 'Unknown Error',
       message: error.response?.data?.message || 'Unknown error occurred',
       status: error.response?.status || null,
       isNetworkError: !error.response && error.request,
     };
 
     if (import.meta.env.VITE_DEBUG === 'true') {
-      console.error('❌ API Error:', errorData);
+      console.error('❌ API Error:', error);
     }
 
     return Promise.reject(errorData);
   }
 );
 
-// ----------------------------
 // Retry Configuration
-// ----------------------------
 const RETRY_CONFIG = {
   maxRetries: isVercelBackend ? 2 : 3, // Fewer retries for Vercel (cold starts)
   retryDelay: isVercelBackend ? 3000 : 5000,
@@ -131,9 +117,7 @@ const RETRY_CONFIG = {
   retryableErrorCodes: ['ERR_NETWORK', 'ECONNREFUSED', 'ECONNABORTED', 'ETIMEDOUT'],
 };
 
-// ----------------------------
 // Error Notification Helper
-// ----------------------------
 const notifyError = (message, code) => {
   console.log(`Message: ${message}, Code: ${code}`)
   // Skip notifications for specific error codes
@@ -153,9 +137,7 @@ const notifyError = (message, code) => {
   toastControl.lastErrorTime = now;
 };
 
-// ----------------------------
 // Retry Logic Helper
-// ----------------------------
 const shouldRetry = (error, attempt, maxRetries) => {
   if (attempt >= maxRetries) return false;
 
@@ -169,9 +151,7 @@ const shouldRetry = (error, attempt, maxRetries) => {
 
 const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-// ----------------------------
 // Main API Call Helper
-// ----------------------------
 export const apiCallHelper = async (
   url,
   method = 'get',
@@ -249,9 +229,7 @@ export const apiCallHelper = async (
   }
 };
 
-// ----------------------------
 // File Upload Helper
-// ----------------------------
 export const apiCallHelperUpload = async (
   url,
   formData,
@@ -297,9 +275,7 @@ export const apiCallHelperUpload = async (
   }
 };
 
-// ----------------------------
 // Redux Async Thunk Helpers
-// ----------------------------
 export const handlePending = (state) => {
   state.isLoading = true;
   state.error = null;
@@ -315,9 +291,7 @@ export const handleRejected = (state, action) => {
   state.error = action.payload?.message || action.error?.message || 'An error occurred';
 };
 
-// ----------------------------
 // Utility Functions
-// ----------------------------
 export const resetToastControl = () => {
   toastControl.success = false;
   toastControl.error = false;
@@ -337,9 +311,7 @@ export const setAuthToken = (token) => {
 
 export const clearAuthToken = () => setAuthToken(null);
 
-// ----------------------------
 // Health Check Utility
-// ----------------------------
 export const checkBackendHealth = async () => {
   try {
     const response = await axiosInstance.get('/api/health', {
@@ -357,14 +329,10 @@ export const checkBackendHealth = async () => {
   }
 };
 
-// ----------------------------
 // Cleanup on Page Unload
-// ----------------------------
 window.addEventListener('beforeunload', resetToastControl);
 
-// ----------------------------
 // Debug Info
-// ----------------------------
 if (import.meta.env.DEV) {
   console.log('🔍 API Configuration:', {
     baseURL: API_BASE_URL,
