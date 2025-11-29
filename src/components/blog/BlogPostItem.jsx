@@ -1,7 +1,8 @@
 import { Card, CardBody, CardTitle } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import altImage from '@/images/dashboard.svg';
+import altImage from '@/images/resourceImg.svg';
+import ImageWithFallback from '@/utils/ImageWithFallback';
 
 const BlogPostItem = ({ blogPost }) => {
 
@@ -13,7 +14,11 @@ const BlogPostItem = ({ blogPost }) => {
             <Link to={`/view-blog-post/${slug}`} className="text-decoration-none text-reset">
                 <div className="d-flex flex-column flex-md-row align-items-center align-items-lg-start gap-3">
                     <div className="post-thumb flex-shrink-0">
-                        <img src={post_image || altImage} alt={brand || title} />
+                        <ImageWithFallback
+                            src={post_image}
+                            fallbackSrc={altImage}
+                            alt={brand || title}
+                        />
                     </div>
 
                     <CardBody className="p-0">

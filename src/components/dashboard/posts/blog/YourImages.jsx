@@ -7,6 +7,7 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 import DeleteModal from '@/utils/DeleteModal';
+import ImageWithFallback from '@/utils/ImageWithFallback';
 import './yourimages.css';
 
 const YourImages = () => {
@@ -55,6 +56,10 @@ const YourImages = () => {
                 delTitle={img.imageTitle}
               />
               <Card inverse>
+                <ImageWithFallback
+                  src={img && img.uploadImage}
+                  alt={img && img.imageTitle}
+                />
                 <img src={img && img.uploadImage} alt="" />
                 <Button
                   className="btn-info mt-1 py-0"

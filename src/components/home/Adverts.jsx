@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getActiveAdverts } from "@/redux/slices/advertsSlice";
 import adPlaceholder from "@/images/Einstein.jpg";
+import ImageWithFallback from '@/utils/ImageWithFallback';
 
 const Adverts = () => {
     const { activeAdverts = [] } = useSelector((state) => state.adverts || {});
@@ -41,14 +42,11 @@ const Adverts = () => {
 
     return (
         <div className="d-flex flex-column justify-content-center align-items-center mt-3">
-            <Link
-                to={advert.link || "#"}
-                target="_blank"
-                className="d-flex justify-content-center w-100"
-            >
-                <img
+            <Link to={advert.link || "#"} target="_blank" className="d-flex justify-content-center w-100">
+                <ImageWithFallback
                     src={advert.advert_image || advert.fallback}
                     alt="Advert"
+                    fallback={adPlaceholder}
                     className="img-fluid shadow-sm"
                     style={{
                         maxWidth: "90%",

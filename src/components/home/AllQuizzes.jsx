@@ -65,7 +65,7 @@ const AllQuizzes = () => {
                 </Col>}
 
                 {/* Quiz list */}
-                <Col xs="12" md="8" className="order-1 order-md-2 mt-3 mt-md-2">
+                <Col xs="12" className="order-1 order-md-2 mt-3 mt-md-2">
                     <Suspense fallback={<QBLoadingSM />}>
                         {/* Section header */}
                         <Card className="border-0 shadow-sm mb-3 mb-md-4">

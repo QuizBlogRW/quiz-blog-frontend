@@ -18,7 +18,7 @@ const Subscribers = () => {
     }, [dispatch]);
 
     return (
-        <div className='mx-4 my-5'>
+        <div className='mx-2 mx-lg-4 my-lg-5'>
             {
                 isLoading ?
                     <QBLoadingSM title='subscribers' /> :

@@ -39,7 +39,7 @@ const UsersTabPane = () => {
                             <a href={'/subscribers'} style={{ color: 'var(--brand)', fontWeight: 'bolder' }}>Subscribers</a>
                         </button>
                     </p>
-                    <div className='m-lg-5'>
+                    <div className='mx-2 m-lg-5'>
                         {
                             isLoadingUsers ?
                                 <QBLoadingSM title='users' /> :

@@ -35,8 +35,8 @@ const GetReady = () => {
                 ? 'Kugirango uze kubona uko wasubije, Injira cyangwa ufungure konti 😎'
                 : 'To save and review your answers, please log in or create an account 😎',
         attempt: isAmategeko ? 'Tangira Isuzuma' : 'Start Quiz',
-        share: isAmategeko ? 'Sangiza' : 'Share this Quiz',
-        back: isAmategeko ? 'Garuka' : 'Back to Quizzes',
+        share: isAmategeko ? 'Sangiza' : 'Share Quiz',
+        back: isAmategeko ? 'Garuka' : 'Go Back',
     };
 
     if (isLoading)
@@ -84,7 +84,7 @@ const GetReady = () => {
                 <Col xs="12" md="10" lg="8">
                     <Card
                         body
-                        className="text-center mx-auto p-4 shadow rounded-4 border border-2"
+                        className="text-center m-3 mx-md-auto p-4 shadow rounded-4 border border-2"
                         style={{
                             borderColor: 'var(--brand)',
                             background: '#ffffff',

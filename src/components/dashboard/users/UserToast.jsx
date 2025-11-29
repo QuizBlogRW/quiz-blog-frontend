@@ -40,7 +40,6 @@ const UserToast = ({ userToUse, fromSearch }) => {
 
                         <div className="illustration d-flex flex-column w-50">
                             <span className='illustration-image p-1 border rounded border-secondary'>
-                                {/* <img src={user.image || uploadimage} alt='Profile illustration' /> */}
                                 {image && <ImageWithFallback
                                     src={image}
                                     fallbackSrc={uploadimage}

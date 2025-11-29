@@ -21,7 +21,7 @@ const Broadcasts = () => {
 
     return (
         curUserRole?.includes('Admin') ?
-            <div className='mx-4 my-5'>
+            <div className='mx-md-4 my-md-5'>
                 {broadcasts.isLoading ?
                     <QBLoadingSM title='broadcasts' /> :
 

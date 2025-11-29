@@ -15,6 +15,7 @@ import BackLikeShare from './BackLikeShare';
 import FollowUs from './FollowUs';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 import ResponsiveAd from '../adsenses/ResponsiveAd';
+import ImageWithFallback from '@/utils/ImageWithFallback';
 import './viewPost.css';
 
 // ----------------------------------------------
@@ -128,18 +129,18 @@ const ViewBlogPost = () => {
 
                 {/* Post Image */}
                 <div className="text-center mb-4">
-                  <img
-                    src={post_image || altImage}
-                    alt={title}
-                    className="img-fluid rounded shadow-sm"
-                    style={{
-                      maxWidth: '100%',
-                      width: '100%',
-                      maxHeight: '400px',
-                      objectFit: 'cover',
-                      margin: '0 auto',
-                    }}
-                  />
+                    <ImageWithFallback
+                      src={post_image}
+                      fallbackSrc={altImage}
+                      alt={title}
+                      style={{
+                        maxWidth: '100%',
+                        width: '100%',
+                        maxHeight: '400px',
+                        objectFit: 'cover',
+                        margin: '0 auto',
+                      }}
+                    />
                 </div>
 
                 {/* Markdown Content */}

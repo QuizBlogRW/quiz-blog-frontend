@@ -18,7 +18,7 @@ const BlogPostsTabPane = () => {
     }, [dispatch]);
 
     return (
-        <TabPane tabId="7" className='mx-4 my-5'>
+        <TabPane tabId="7" className='mx-2 mx-lg-4 my-lg-5'>
             {isLoading ?
                 <QBLoadingSM /> :
                 <Row>
