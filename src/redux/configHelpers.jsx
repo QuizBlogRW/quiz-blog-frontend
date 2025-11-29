@@ -23,9 +23,9 @@ const toastControl = initToastControl();
 // Backend URLs Configuration
 // ----------------------------
 export const BACKEND_URLS = {
-  production: 'https://myqb-245fdbd30c9b.herokuapp.com/',
-  test: 'https://qb-backend-one.vercel.app/',
-  development: 'http://localhost:5000/',
+  production: 'https://myqb-245fdbd30c9b.herokuapp.com',
+  test: 'https://qb-backend-one.vercel.app',
+  development: 'http://localhost:5000',
 };
 
 // ----------------------------

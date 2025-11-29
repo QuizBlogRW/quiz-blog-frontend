@@ -4,9 +4,9 @@ import { io } from 'socket.io-client';
 // Backend URLs Configuration
 // ----------------------------
 const URLS = {
-    production: 'https://myqb-245fdbd30c9b.herokuapp.com/',
-    test: 'https://qb-backend-one.vercel.app/',
-    local: 'http://localhost:5000/'
+    production: 'https://myqb-245fdbd30c9b.herokuapp.com',
+    test: 'https://qb-backend-one.vercel.app',
+    local: 'http://localhost:5000'
 };
 
 // ----------------------------
