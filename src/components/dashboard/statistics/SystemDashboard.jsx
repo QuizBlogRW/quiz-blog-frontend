@@ -1,98 +1,142 @@
-import axios from 'axios';
-import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { Row, Col, Card, CardBody, Alert, Spinner, TabContent, Nav, NavItem, NavLink } from 'reactstrap';
-import classnames from 'classnames';
-import './SystemDashboard.css';
-import { toggle } from './utils';
-import DatabaseMetricsTab from './DatabaseMetricsTab';
-import SystemMetricsTab from './SystemMetricsTab';
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    Row,
+    Col,
+    Card,
+    CardBody,
+    Alert,
+    Spinner,
+    TabContent,
+    Nav,
+    NavItem,
+    NavLink,
+} from "reactstrap";
+import classnames from "classnames";
+import { useNavigate } from "react-router-dom";
 
-const SystemDashboard = () => {
+import { getSummaryStats } from "@/redux/slices/statisticsSlice";
 
-    const { user, isAuthenticated } = useSelector(state => state.auth);
-    const [SummaryStats, setSummaryStats] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [fetchError, setFetchError] = useState(null);
-    const [activeTab, setActiveTab] = useState(localStorage.getItem('activeMetric') || '1');
+import DatabaseMetricsTab from "./DatabaseMetricsTab";
+import SystemMetricsTab from "./SystemMetricsTab";
+
+import "./SystemDashboard.css";
+
+const useAccess = () => {
+    const { user, isAuthenticated } = useSelector((s) => s.auth);
+    const isAdmin = isAuthenticated && user?.role?.includes("Admin");
+    return { user, isAuthenticated, isAdmin };
+};
+
+const useSummaryStats = (enabled) => {
+    const dispatch = useDispatch();
+    const { summaryStats, isLoading, error } = useSelector(
+        (s) => s.statistics
+    );
     const [lastUpdated, setLastUpdated] = useState(null);
 
-    const apiUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+    useEffect(() => {
+        if (!enabled) return;
+
+        const fetchStats = () => {
+            dispatch(getSummaryStats());
+            setLastUpdated(new Date().toLocaleTimeString());
+        };
+
+        fetchStats(); // initial load
+
+        const interval = setInterval(fetchStats, 60000);
+        return () => clearInterval(interval);
+    }, [enabled, dispatch]);
+
+    return { summaryStats, isLoading, error, lastUpdated };
+};
+
+const StatCard = ({ title, value, icon, color, onClick }) => (
+    <Col lg="3" md="6" className="mb-3">
+        <Card
+            className={`border-left-${color} h-100`}
+            onClick={onClick}
+            style={{ cursor: "pointer" }}
+        >
+            <CardBody>
+                <div className="d-flex align-items-center">
+                    <div>
+                        <div
+                            className={`text-xs font-weight-bold text-${color} text-uppercase mb-1`}
+                        >
+                            {title}
+                        </div>
+                        <div className="h5 mb-0 font-weight-bold text-gray-800">
+                            {value?.toLocaleString() || 0}
+                        </div>
+                    </div>
+
+                    <div className="ms-auto">
+                        <i className={`fas ${icon} fa-2x text-gray-300`} />
+                    </div>
+                </div>
+            </CardBody>
+        </Card>
+    </Col>
+);
+
+const LoadingScreen = () => (
+    <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "400px" }}
+    >
+        <Spinner color="success" size="sm" />
+        <span className="ms-3">Loading system statistics...</span>
+    </div>
+);
+
+const NotLoggedIn = () => (
+    <div className="system-dashboard p-4">
+        <Alert color="warning">
+            <i className="fas fa-sign-in-alt me-2"></i>
+            Please log in to access the System Dashboard.
+        </Alert>
+    </div>
+);
+
+const Unauthorized = () => (
+    <div className="system-dashboard p-4">
+        <Alert color="danger">
+            <i className="fas fa-shield-alt me-2"></i>
+            Access denied. Admin privileges required to view the System Dashboard.
+        </Alert>
+    </div>
+);
+
+const SystemDashboard = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const { isAuthenticated, isAdmin } = useAccess();
+    const { summaryStats, isLoading, error, lastUpdated } =
+        useSummaryStats(isAdmin);
+
+    // Persist active tab
+    const [activeTab, setActiveTab] = useState("1");
 
     useEffect(() => {
-        // Only fetch data if user is authenticated and has admin role
-        if (isAuthenticated && user && (user.role?.includes('Admin'))) {
-            fetchSummaryStats();
+        const saved = localStorage.getItem("activeMetric");
+        if (saved) setActiveTab(saved);
+    }, []);
 
-            // Auto-refresh every 60 seconds
-            const interval = setInterval(fetchSummaryStats, 60000);
-            return () => clearInterval(interval);
-        }
-    }, [isAuthenticated, user]);
-
-    const fetchSummaryStats = async () => {
-
-        // Double-check authentication
-        if (!isAuthenticated || !user || user.role?.includes('Admin') === false) {
-            setFetchError('Access denied. Admin privileges required.');
-            return;
-        }
-
-        try {
-            setLoading(true);
-
-            // Use existing endpoints - prioritize working ones
-            const res = await axios.get(`${apiUrl}/api/statistics/summary-stats`);
-
-            if (res.status === 200 && res.data) {
-                setSummaryStats(res.data);
-                setFetchError(null);
-            }
-
-            setLastUpdated(new Date().toLocaleTimeString());
-        } catch (err) {
-            console.error('Error fetching system metrics:', err);
-            setFetchError('Failed to fetch system metrics! Check statistics logs for error.');
-            setLastUpdated(new Date().toLocaleTimeString());
-        } finally {
-            setLoading(false);
-        }
+    const changeTab = (tab) => {
+        setActiveTab(tab);
+        localStorage.setItem("activeMetric", tab);
     };
 
-    if (loading && !SummaryStats) {
-        return (
-            <div className="d-flex justify-content-center align-items-center" style={{ height: '400px' }}>
-                <Spinner color="success" size="sm" />
-                <span className="ms-3">Loading system statistics...</span>
-            </div>
-        );
-    }
-
-    // Check authentication and role before rendering
-    if (!isAuthenticated || !user) {
-        return (
-            <div className="system-dashboard p-4">
-                <Alert color="warning">
-                    <i className="fas fa-sign-in-alt me-2"></i>
-                    Please log in to access the System Dashboard.
-                </Alert>
-            </div>
-        );
-    }
-
-    if (!user?.role?.includes('Admin')) {
-        return (
-            <div className="system-dashboard p-4">
-                <Alert color="danger">
-                    <i className="fas fa-shield-alt me-2"></i>
-                    Access denied. Admin privileges required to view the System Dashboard.
-                </Alert>
-            </div>
-        );
-    }
+    if (!isAuthenticated) return <NotLoggedIn />;
+    if (!isAdmin) return <Unauthorized />;
+    if (isLoading && (!summaryStats || !summaryStats?.totalUsers)) return <LoadingScreen />;
 
     return (
         <div className="system-dashboard p-4">
+            {/* Header */}
             <Row className="mb-4">
                 <Col>
                     <div className="d-flex justify-content-between align-items-center">
@@ -100,9 +144,14 @@ const SystemDashboard = () => {
                             <i className="fas fa-tachometer-alt me-2"></i>
                             System Dashboard
                         </h2>
+
                         <div className="text-muted">
                             Last updated: {lastUpdated}
-                            <button className="btn btn-sm btn-outline-primary ms-2" onClick={fetchSummaryStats} disabled={loading}>
+                            <button
+                                className="btn btn-sm btn-outline-primary ms-2"
+                                onClick={() => dispatch(getSummaryStats())}
+                                disabled={error}
+                            >
                                 <i className="fas fa-sync-alt"></i> Refresh
                             </button>
                         </div>
@@ -110,139 +159,96 @@ const SystemDashboard = () => {
                 </Col>
             </Row>
 
-            {fetchError && (
-                <Alert color={fetchError.includes('Note:') ? 'warning' : 'danger'} className="mb-4">
-                    <i className={`fas ${fetchError.includes('Note:') ? 'fa-info-circle' : 'fa-exclamation-triangle'} me-2`}></i>
-                    {fetchError}
+            {/* Error */}
+            {error && (
+                <Alert
+                    color={error.includes("Note:") ? "warning" : "danger"}
+                    className="mb-4"
+                >
+                    <i
+                        className={`fas ${error.includes("Note:")
+                            ? "fa-info-circle"
+                            : "fa-exclamation-triangle"
+                            } me-2`}
+                    ></i>
+                    {error}
                 </Alert>
             )}
 
-            {/* Overview Cards */}
-            {SummaryStats && (
+            {/* Metrics Summary */}
+            {summaryStats && (
                 <Row className="mb-4">
-                    <Col lg="3" md="6" className="mb-3">
-                        <Card className="border-left-primary h-100" onClick={
-                            // redirect to users page
-                            () => window.location.href = '/statistics/new-50-users'
-                        } style={{ cursor: 'pointer' }}>
-                            <CardBody>
-                                <div className="d-flex align-items-center">
-                                    <div>
-                                        <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                            Total Users
-                                        </div>
-                                        <div className="h5 mb-0 font-weight-bold text-gray-800">
-                                            {SummaryStats.totalUsers?.toLocaleString() || 0}
-                                        </div>
-                                    </div>
-                                    <div className="ms-auto">
-                                        <i className="fas fa-users fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                            </CardBody>
-                        </Card>
-                    </Col>
-                    <Col lg="3" md="6" className="mb-3">
-                        <Card className="border-left-success h-100" onClick={
-                            // redirect to quizzes page
-                            () => window.location.href = '/statistics/top-10-quizzes'
-                        } style={{ cursor: 'pointer' }}>
-                            <CardBody>
-                                <div className="d-flex align-items-center">
-                                    <div>
-                                        <div className="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                            Total Quizzes
-                                        </div>
-                                        <div className="h5 mb-0 font-weight-bold text-gray-800">
-                                            {SummaryStats.totalQuizzes?.toLocaleString() || 0}
-                                        </div>
-                                    </div>
-                                    <div className="ms-auto">
-                                        <i className="fas fa-question-circle fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                            </CardBody>
-                        </Card>
-                    </Col>
-                    <Col lg="3" md="6" className="mb-3">
-                        <Card className="border-left-warning h-100" onClick={
-                            // redirect to downloads page
-                            () => window.location.href = '/statistics/top-10-notes'
-                        } style={{ cursor: 'pointer' }}>
-                            <CardBody>
-                                <div className="d-flex align-items-center">
-                                    <div>
-                                        <div className="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                            Total Downloads
-                                        </div>
-                                        <div className="h5 mb-0 font-weight-bold text-gray-800">
-                                            {SummaryStats.totalDownloads?.toLocaleString() || 0}
-                                        </div>
-                                    </div>
-                                    <div className="ms-auto">
-                                        <i className="fas fa-download fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                            </CardBody>
-                        </Card>
-                    </Col>
-                    <Col lg="3" md="6" className="mb-3">
-                        <Card className="border-left-info h-100" onClick={
-                            // redirect to scores page
-                            () => window.location.href = '/statistics/top-10-quizzing-users'
-                        } style={{ cursor: 'pointer' }}>
-                            <CardBody>
-                                <div className="d-flex align-items-center">
-                                    <div>
-                                        <div className="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                            Total Scores
-                                        </div>
-                                        <div className="h5 mb-0 font-weight-bold text-gray-800">
-                                            {SummaryStats.totalScores?.toLocaleString() || 0}
-                                        </div>
-                                    </div>
-                                    <div className="ms-auto">
-                                        <i className="fas fa-chart-bar fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                            </CardBody>
-                        </Card>
-                    </Col>
+                    <StatCard
+                        title="Total Users"
+                        value={summaryStats.totalUsers}
+                        icon="fa-users"
+                        color="primary"
+                        onClick={() => navigate("/statistics/new-50-users")}
+                    />
+
+                    <StatCard
+                        title="Total Quizzes"
+                        value={summaryStats.totalQuizzes}
+                        icon="fa-question-circle"
+                        color="success"
+                        onClick={() => navigate("/statistics/top-10-quizzes")}
+                    />
+
+                    <StatCard
+                        title="Total Downloads"
+                        value={summaryStats.totalDownloads}
+                        icon="fa-download"
+                        color="warning"
+                        onClick={() => navigate("/statistics/top-10-notes")}
+                    />
+
+                    <StatCard
+                        title="Total Scores"
+                        value={summaryStats.totalScores}
+                        icon="fa-chart-bar"
+                        color="info"
+                        onClick={() => navigate("/statistics/top-10-quizzing-users")}
+                    />
                 </Row>
             )}
 
-            <p className='m-3 w-100'>
-                For more statistics, click here <button className="btn btn-sm btn-outline-warning ms-2">
-                    <a href={'/statistics'} style={{ color: 'var(--brand)', fontWeight: 'bolder' }}>Statistics</a>
+            {/* More Stats Button */}
+            <p className="m-3 w-100">
+                For more statistics, click here{" "}
+                <button className="btn btn-sm btn-outline-warning ms-2">
+                    <a
+                        href="/statistics"
+                        style={{ color: "var(--brand)", fontWeight: "bolder" }}
+                    >
+                        Statistics
+                    </a>
                 </button>
             </p>
 
-            {/* Tabs Navigation */}
+            {/* Tabs */}
             <Nav tabs className="mb-4">
                 <NavItem>
                     <NavLink
-                        className={classnames({ active: activeTab === '1' })}
-                        onClick={() => toggle('1', activeTab, setActiveTab)}
+                        className={classnames({ active: activeTab === "1" })}
+                        onClick={() => changeTab("1")}
                     >
                         <i className="fas fa-server me-2"></i>System Metrics
                     </NavLink>
                 </NavItem>
+
                 <NavItem>
                     <NavLink
-                        className={classnames({ active: activeTab === '2' })}
-                        onClick={() => toggle('2', activeTab, setActiveTab)}
+                        className={classnames({ active: activeTab === "2" })}
+                        onClick={() => changeTab("2")}
                     >
                         <i className="fas fa-database me-2"></i>Database Metrics
                     </NavLink>
                 </NavItem>
             </Nav>
 
+            {/* Tab Content */}
             <TabContent activeTab={activeTab}>
-
-                {/* System Metrics Tab */}
                 <SystemMetricsTab />
-
-                {/* Database Metrics Tab */}
                 <DatabaseMetricsTab />
             </TabContent>
         </div>
