@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const OnLastAnswer = ({ thisQuiz }) => {
-    const { isAuthenticated } = useSelector(state => state.auth);
+    const { isAuthenticated } = useSelector(state => state.users);
     const navigate = useNavigate();
 
     const goBack = () => navigate(-1);

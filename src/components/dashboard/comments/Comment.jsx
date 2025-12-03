@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const Comment = ({ comment, isFromPending }) => {
 
-    const { user } = useSelector(state => state.auth);
+    const { user } = useSelector(state => state.users);
     const dispatch = useDispatch();
 
     const { _id: questionID, questionText } = comment?.question || {};

@@ -1,5 +1,5 @@
 import UpdateModal from '@/utils/UpdateModal';
-import { updateUser } from '@/redux/slices/authSlice';
+import { updateUser } from '@/redux/slices/usersSlice';
 import { notify } from '@/utils/notifyToast';
 
 const EditUser = ({ userToUse }) => {

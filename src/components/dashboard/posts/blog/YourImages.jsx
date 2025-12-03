@@ -12,7 +12,7 @@ import './yourimages.css';
 
 const YourImages = () => {
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.users);
 
   useEffect(() => {
     dispatch(getImageUploadsByOwner(user?._id));

@@ -25,7 +25,7 @@ const DatabaseMetricsTab = () => {
         (state) => state.statistics
     );
 
-    const { user, isAuthenticated } = useSelector((state) => state.auth);
+    const { user, isAuthenticated } = useSelector((state) => state.users);
     const [lastUpdated, setLastUpdated] = useState(null);
 
     const fetchMetrics = () => {

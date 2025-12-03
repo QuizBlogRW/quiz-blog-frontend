@@ -9,13 +9,13 @@ import { notify } from '@/utils/notifyToast';
 
 // Async actions with createAsyncThunk
 export const loadUser = createAsyncThunk(
-  'auth/loadUser',
+  'users/loadUser',
   async (_, { getState }) =>
     apiCallHelper('/api/users/loadUser', 'get', null, getState, 'loadUser')
 );
 
 export const register = createAsyncThunk(
-  'auth/register',
+  'users/register',
   async ({ name, email, password }, { getState }) =>
     apiCallHelper(
       '/api/users/register',
@@ -27,7 +27,7 @@ export const register = createAsyncThunk(
 );
 
 export const verify = createAsyncThunk(
-  'auth/verify-otp',
+  'users/verify-otp',
   async ({ email, otp }, { getState }) =>
     apiCallHelper(
       '/api/users/verify-otp',
@@ -38,8 +38,20 @@ export const verify = createAsyncThunk(
     )
 );
 
+export const resendOTP = createAsyncThunk(
+  'users/resendOTP',
+  async ({ email }, { getState }) =>
+    apiCallHelper(
+      '/api/users/resend-otp',
+      'post',
+      { email },
+      getState,
+      'resendOTP'
+    )
+);
+
 export const login = createAsyncThunk(
-  'auth/login',
+  'users/login',
   async ({ email, password, confirmLogin }, { getState }) =>
     apiCallHelper(
       '/api/users/login',
@@ -51,19 +63,19 @@ export const login = createAsyncThunk(
 );
 
 export const getUsers = createAsyncThunk(
-  'auth/getUsers',
+  'users/getUsers',
   async (_, { getState }) =>
     apiCallHelper('/api/users', 'get', null, getState, 'getUsers')
 );
 
 export const getLatestUsers = createAsyncThunk(
-  'auth/getLatestUsers',
+  'users/getLatestUsers',
   async (_, { getState }) =>
     apiCallHelper('/api/users/latest', 'get', null, getState, 'getLatestUsers')
 );
 
 export const getAdminsCreators = createAsyncThunk(
-  'auth/getAdminsCreators',
+  'users/getAdminsCreators',
   async (_, { getState }) =>
     apiCallHelper(
       '/api/users/admins-creators',
@@ -75,13 +87,13 @@ export const getAdminsCreators = createAsyncThunk(
 );
 
 export const logout = createAsyncThunk(
-  'auth/logout',
+  'users/logout',
   async (userId, { getState }) =>
     apiCallHelper('/api/users/logout', 'put', { userId }, getState, 'logout')
 );
 
 export const updateUser = createAsyncThunk(
-  'auth/updateUser',
+  'users/updateUser',
   async (updatedUser, { getState }) =>
     apiCallHelper(
       `/api/users/${updatedUser.uId}`,
@@ -93,7 +105,7 @@ export const updateUser = createAsyncThunk(
 );
 
 export const updateProfile = createAsyncThunk(
-  'auth/updateProfile',
+  'users/updateProfile',
   async (updatedProfile, { getState }) =>
     apiCallHelper(
       `/api/users/user-details/${updatedProfile.id}`,
@@ -105,7 +117,7 @@ export const updateProfile = createAsyncThunk(
 );
 
 export const updateProfileImage = createAsyncThunk(
-  'auth/updateProfileImage',
+  'users/updateProfileImage',
   async ({ formData, id }, { getState }) =>
     apiCallHelperUpload(
       `/api/users/user-image/${id}`,
@@ -117,10 +129,10 @@ export const updateProfileImage = createAsyncThunk(
 );
 
 export const sendResetLink = createAsyncThunk(
-  'auth/sendResetLink',
+  'users/sendResetLink',
   async (fEmail, { getState }) =>
     apiCallHelper(
-      '/api/auth/forgot-password',
+      '/api/users/forgot-password',
       'post',
       fEmail,
       getState,
@@ -129,10 +141,10 @@ export const sendResetLink = createAsyncThunk(
 );
 
 export const sendNewPassword = createAsyncThunk(
-  'auth/sendNewPassword',
+  'users/sendNewPassword',
   async (updatePsw, { getState }) =>
     apiCallHelper(
-      '/api/auth/reset-password',
+      '/api/users/reset-password',
       'post',
       updatePsw,
       getState,
@@ -141,14 +153,14 @@ export const sendNewPassword = createAsyncThunk(
 );
 
 export const deleteUser = createAsyncThunk(
-  'auth/deleteUser',
+  'users/deleteUser',
   async (id, { getState }) =>
     apiCallHelper(`/api/users/${id}`, 'delete', null, getState, 'deleteUser')
 );
 
-// AUTH SLICE
-const authSlice = createSlice({
-  name: 'auth',
+// USERS SLICE
+const usersSlice = createSlice({
+  name: 'users',
   initialState: {
     isLoading: false,
     isLoadingUsers: false,
@@ -204,10 +216,12 @@ const authSlice = createSlice({
         localStorage.removeItem('user');
       } else {
         state.isAuthenticated = true;
+
         state.user = action.payload;
-        state.token = action.payload.current_token;
-        localStorage.setItem('token', action.payload.current_token);
         localStorage.setItem('user', JSON.stringify(action.payload));
+        
+        state.token = action.payload.current_token;
+        action.payload.current_token && localStorage.setItem('token', action.payload.current_token);
       }
     });
     builder.addCase(login.fulfilled, (state, action) => {
@@ -215,7 +229,7 @@ const authSlice = createSlice({
       state.isAuthenticated = true;
       state.user = action.payload;
       state.token = action.payload.current_token;
-      localStorage.setItem('token', action.payload.current_token);
+      action.payload.current_token && localStorage.setItem('token', action.payload.current_token);
       localStorage.setItem('user', JSON.stringify(action.payload));
       notify(`Welcome ${action.payload.name}!`);
 
@@ -224,19 +238,29 @@ const authSlice = createSlice({
     });
     builder.addCase(register.fulfilled, (state, action) => {
       state.isLoading = false;
-      const { email, msg } = action.payload;
-      localStorage.setItem('emailForOTP', email);
-      notify(msg);
-      setTimeout(() => (window.location.href = '/verify'), 5000);
+      const { user, message } = action.payload;
+      user?.email && localStorage.setItem('emailForOTP', user?.email);
+      notify(message);
+      setTimeout(() => (window.location.href = '/verify'), 3000);
     });
     builder.addCase(verify.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isAuthenticated = true;
-      state.user = action.payload.user;
+
+      state.user = action.payload;
+      action.payload.user && localStorage.setItem('user', JSON.stringify(action.payload));
+
       state.token = action.payload.current_token;
-      localStorage.setItem('token', action.payload.current_token);
-      localStorage.setItem('user', JSON.stringify(action.payload.user));
+      action.payload.current_token && localStorage.setItem('token', action.payload.current_token);
       notify('Account verified! Welcome to Quiz-Blog!');
+    });
+    builder.addCase(resendOTP.fulfilled, (state, action) => {
+      state.isLoading = false;
+      const { user, message } = action.payload;
+      console.log(user)
+      user?.email && localStorage.setItem('emailForOTP', user?.email);
+      notify(message);
+      setTimeout(() => (window.location.href = '/verify'), 3000);
     });
     builder.addCase(logout.fulfilled, (state) => {
       state.isLoading = false;
@@ -329,6 +353,7 @@ const authSlice = createSlice({
       state.isLoadingAdminsCreators = true;
     });
     builder.addCase(logout.pending, handlePending);
+    builder.addCase(resendOTP.pending, handlePending);
     builder.addCase(updateUser.pending, handlePending);
     builder.addCase(updateProfile.pending, handlePending);
     builder.addCase(updateProfileImage.pending, handlePending);
@@ -351,6 +376,7 @@ const authSlice = createSlice({
       state.isLoadingAdminsCreators = false;
     });
     builder.addCase(logout.rejected, handleRejected);
+    builder.addCase(resendOTP.rejected, handleRejected);
     builder.addCase(updateUser.rejected, handleRejected);
     builder.addCase(updateProfile.rejected, handleRejected);
     builder.addCase(updateProfileImage.rejected, handleRejected);
@@ -367,7 +393,7 @@ export const {
   clearToken,
   clearLastLogin,
   clearPswdResetToken,
-} = authSlice.actions;
+} = usersSlice.actions;
 
 // Export the reducer
-export default authSlice.reducer;
+export default usersSlice.reducer;

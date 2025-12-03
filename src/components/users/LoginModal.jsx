@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap';
-import { login } from '@/redux/slices/authSlice';
+import { login } from '@/redux/slices/usersSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import ReactGA from 'react-ga4';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
@@ -15,7 +15,7 @@ const LoginModal = () => {
     const { isOpenL, toggleL, toggleR } = useContext(logRegContext);
 
     // Redux
-    const { isLoading, isAuthenticated } = useSelector(state => state.auth);
+    const { isLoading, isAuthenticated } = useSelector(state => state.users);
     const dispatch = useDispatch();
 
     //properties of the modal

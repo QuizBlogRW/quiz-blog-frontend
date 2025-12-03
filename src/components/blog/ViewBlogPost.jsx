@@ -49,7 +49,7 @@ const ViewBlogPost = () => {
   const { bPSlug } = useParams();
 
   const { oneBlogPost, isLoading } = useSelector((state) => state.blogPosts);
-  const { user } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.users);
 
   const authorRef = useRef(null);
   const hasSentView = useRef(false);
@@ -129,18 +129,18 @@ const ViewBlogPost = () => {
 
                 {/* Post Image */}
                 <div className="text-center mb-4">
-                    <ImageWithFallback
-                      src={post_image}
-                      fallbackSrc={altImage}
-                      alt={title}
-                      style={{
-                        maxWidth: '100%',
-                        width: '100%',
-                        maxHeight: '400px',
-                        objectFit: 'cover',
-                        margin: '0 auto',
-                      }}
-                    />
+                  <ImageWithFallback
+                    src={post_image}
+                    fallbackSrc={altImage}
+                    alt={title}
+                    style={{
+                      maxWidth: '100%',
+                      width: '100%',
+                      maxHeight: '400px',
+                      objectFit: 'cover',
+                      margin: '0 auto',
+                    }}
+                  />
                 </div>
 
                 {/* Markdown Content */}

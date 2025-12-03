@@ -5,7 +5,7 @@ import validators from '@/utils/validators';
 import { Input } from 'reactstrap';
 
 const CreateBPCategory = () => {
-  const { user, isLoading } = useSelector((state) => state.auth);
+  const { user, isLoading } = useSelector((state) => state.users);
 
   return (
     <AddModal

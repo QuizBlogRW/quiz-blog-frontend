@@ -12,6 +12,9 @@ export const subscribeToPosts = createAsyncThunk('subscribers/subscribeToPosts',
 export const deleteSubscriber = createAsyncThunk('subscribers/deleteSubscriber', async (uemail, { getState }) =>
   apiCallHelper(`/api/subscribed-users/${uemail}`, 'delete', null, getState, 'deleteSubscriber'));
 
+export const unsubscribe = createAsyncThunk('subscribers/unsubscribe', async (user, { getState }) =>
+  apiCallHelper(`/api/subscribed-users/unsubscribe?id=${user?.id}&email=${user?.email}`, 'delete', null, getState, 'unsubscribe'));
+
 // Subscribers slice
 const initialState = {
   subscribedUsers: [],
@@ -44,16 +47,22 @@ const subscribersSlice = createSlice({
       state.subscribedUsers = state.subscribedUsers.filter(subscriber => subscriber.email !== action.payload.email);
       state.isLoading = false;
     });
+    builder.addCase(unsubscribe.fulfilled, (state, action) => {
+      state.subscribedUsers = state.subscribedUsers.filter(subscriber => subscriber.email !== action.payload.email);
+      state.isLoading = false;
+    });
 
     // Pending actions
     builder.addCase(getSubscribers.pending, handlePending);
     builder.addCase(subscribeToPosts.pending, handlePending);
     builder.addCase(deleteSubscriber.pending, handlePending);
+    builder.addCase(unsubscribe.pending, handlePending);
 
     // Rejected actions
     builder.addCase(getSubscribers.rejected, handleRejected);
     builder.addCase(subscribeToPosts.rejected, handleRejected);
     builder.addCase(deleteSubscriber.rejected, handleRejected);
+    builder.addCase(unsubscribe.rejected, handleRejected);
   }
 });
 

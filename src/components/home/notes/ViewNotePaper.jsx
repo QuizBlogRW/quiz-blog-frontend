@@ -13,7 +13,7 @@ import { getOneNotePaper } from '@/redux/slices/notesSlice';
 import { saveDownload } from '@/redux/slices/downloadsSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
-import NotAuthenticated from '@/components/auth/NotAuthenticated';
+import NotAuthenticated from '@/components/users/NotAuthenticated';
 import isAdEnabled from '@/utils/isAdEnabled';
 
 const Dashboard = lazy(() => import('@/components/dashboard/Dashboard'));
@@ -30,7 +30,7 @@ const ViewNotePaper = () => {
   }, [dispatch, noteSlug]);
 
   const noteDownload = useSelector((state) => state.notes);
-  const { user, isAuthenticated } = useSelector((state) => state.auth);
+  const { user, isAuthenticated } = useSelector((state) => state.users);
 
   const {
     title,

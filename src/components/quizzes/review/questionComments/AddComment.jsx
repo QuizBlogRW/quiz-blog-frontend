@@ -8,7 +8,7 @@ const AddComment = ({ question, quiz, fromSingleQuestion }) => {
 
     const dispatch = useDispatch();
     const [comment, setComment] = useState('');
-    const { user } = useSelector(state => state.auth);
+    const { user } = useSelector(state => state.users);
 
     const onChangeHandler = (e) => setComment(e.target.value);
 

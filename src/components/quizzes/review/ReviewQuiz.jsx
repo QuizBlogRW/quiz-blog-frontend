@@ -11,7 +11,7 @@ import QuestionComments from '@/components/quizzes/review/questionComments/Quest
 import OnLastAnswer from './OnLastAnswer';
 import TitleRow from './TitleRow';
 
-import NotAuthenticated from '@/components/auth/NotAuthenticated';
+import NotAuthenticated from '@/components/users/NotAuthenticated';
 import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
 import SquareAd from '@/components/adsenses/SquareAd';
 import isAdEnabled from '@/utils/isAdEnabled';
@@ -145,7 +145,7 @@ const ReviewQuiz = () => {
     });
   };
 
-  // AUTH / LOADING
+  // AUTH LOADING
   if (!isAuthenticated) return <NotAuthenticated />;
   if (isLoading) return <QBLoadingSM />;
 

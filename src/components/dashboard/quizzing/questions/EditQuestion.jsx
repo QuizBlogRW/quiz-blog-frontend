@@ -5,7 +5,7 @@ import Dashboard from '../../Dashboard';
 import { getOneQuestion, updateQuestion } from '@/redux/slices/questionsSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { notify } from '@/utils/notifyToast';
-import NotAuthenticated from '@/components/auth/NotAuthenticated';
+import NotAuthenticated from '@/components/users/NotAuthenticated';
 import QBLoading from '@/utils/rLoading/QBLoadingSM';
 
 const EditQuestion = () => {
@@ -14,7 +14,7 @@ const EditQuestion = () => {
     const dispatch = useDispatch();
     const quest = useSelector(state => state.questions.oneQuestion);
     const isQnLoading = useSelector(state => state.questions.isLoading);
-    const { isAuthenticated, user, isLoading } = useSelector(state => state.auth);
+    const { isAuthenticated, user, isLoading } = useSelector(state => state.users);
 
     // Access route parameters & history
     const { questionID } = useParams();

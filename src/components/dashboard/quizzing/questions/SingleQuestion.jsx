@@ -9,13 +9,13 @@ import ChangeQuiz from './ChangeQuiz';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 import QuestionComments from '../../../quizzes/review/questionComments/QuestionComments';
 import DeleteModal from '@/utils/DeleteModal';
-import NotAuthenticated from '@/components/auth/NotAuthenticated';
+import NotAuthenticated from '@/components/users/NotAuthenticated';
 
 const SingleQuestion = () => {
 
     const dispatch = useDispatch();
     const quest = useSelector(state => state.questions);
-    const { isAuthenticated, user } = useSelector(state => state.auth);
+    const { isAuthenticated, user } = useSelector(state => state.users);
 
     // Access route parameters
     const { questionID } = useParams();

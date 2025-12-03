@@ -9,7 +9,7 @@ import ChatCard from './ChatCard';
 import ChatMessages from './ChatMessages';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 import RoomMessages from './RoomMessages';
-import NotAuthenticated from '@/components/auth/NotAuthenticated';
+import NotAuthenticated from '@/components/users/NotAuthenticated';
 
 import { notify } from '@/utils/notifyToast';
 
@@ -24,7 +24,7 @@ const ChatWrapper = () => {
     const { totalPages, isLoading, oneChatRoom } = contacts;
     const [pageNo, setPageNo] = useState(1);
     const [onlineList, setOnlineList] = useState([]);
-    const { user, isAuthenticated } = useSelector(state => state.auth);
+    const { user, isAuthenticated } = useSelector(state => state.users);
 
     const setupSocketListeners = () => {
         if (!socket) return;

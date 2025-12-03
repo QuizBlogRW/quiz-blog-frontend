@@ -20,7 +20,7 @@ const SchoolsTabPane = () => {
     // Redux
     const schools = useSelector(state => state.schools);
     const schoolLevels = useSelector(state => state.levels.schoolLevels);
-    const { user } = useSelector(state => state.auth);
+    const { user } = useSelector(state => state.users);
     const dispatch = useDispatch();
 
     // State

@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, NavLink } from 'reactstrap';
-import { register } from '@/redux/slices/authSlice';
+import { register } from '@/redux/slices/usersSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import logocirclewhite from '@/images/logocirclewhite.svg';
 import avatar from '@/images/avatar1.svg';
@@ -14,7 +14,7 @@ const RegisterModal = () => {
     const { isOpenR, toggleR, toggleL } = useContext(logRegContext);
 
     // Redux
-    const { isAuthenticated, isLoading } = useSelector(state => state.auth);
+    const { isAuthenticated, isLoading } = useSelector(state => state.users);
     const dispatch = useDispatch();
 
     const [registerState, setRegisterState] = useState({

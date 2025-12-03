@@ -12,7 +12,7 @@ const QuizRanking = () => {
   // Redux
   const dispatch = useDispatch();
   const scores = useSelector((state) => state.scores);
-  const { user } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.users);
   const { quizID } = useParams();
 
   useEffect(() => {

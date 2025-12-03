@@ -1,4 +1,4 @@
-export * from './authSlice';
+export * from './usersSlice';
 export * from './advertsSlice';
 export * from './subscribersSlice';
 export * from './questionsSlice';

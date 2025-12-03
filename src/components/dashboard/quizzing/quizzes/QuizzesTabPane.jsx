@@ -10,7 +10,7 @@ import Pagination from '@/components/dashboard/utils/Pagination';
 import PageOf from '@/components/dashboard/utils/PageOf';
 
 const QuizzesTabPane = () => {
-  const { user } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.users);
   const categories = useSelector((state) => state.categories);
 
   // Redux

@@ -4,7 +4,7 @@ import { PDFDownloadLink } from '@react-pdf/renderer';
 import { useSelector } from 'react-redux';
 
 const TitleRow = ({ thisReview, score, qnsAll, curRevQn, currentQuestion }) => {
-    const { user } = useSelector(state => state.auth);
+    const { user } = useSelector(state => state.users);
 
     const scorePercent = Math.round((score * 100) / qnsAll.length);
 

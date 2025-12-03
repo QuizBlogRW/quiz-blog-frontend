@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import UploadPostPhotos from './UploadPostPhotos';
 import YourImages from './YourImages';
 import { notify } from '@/utils/notifyToast';
-import NotAuthenticated from '@/components/auth/NotAuthenticated';
+import NotAuthenticated from '@/components/users/NotAuthenticated';
 import Dashboard from '@/components/dashboard/Dashboard';
 
 const EditBlogPost = () => {
@@ -16,7 +16,7 @@ const EditBlogPost = () => {
   const dispatch = useDispatch();
   const bposts = useSelector(state => state.blogPosts);
   const bPcats = useSelector(state => state.postCategories);
-  const { user, isAuthenticated } = useSelector(state => state.auth);
+  const { user, isAuthenticated } = useSelector(state => state.users);
 
   const { bPSlug } = useParams();
 

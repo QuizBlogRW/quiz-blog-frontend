@@ -35,7 +35,7 @@ import CoursesHolder from './CoursesHolder';
 import CategoriesHome from './CategoriesHome';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 import DeleteModal from '@/utils/DeleteModal';
-import NotAuthenticated from '../../auth/NotAuthenticated';
+import NotAuthenticated from '@/components/users/NotAuthenticated';
 import isAdEnabled from '@/utils/isAdEnabled';
 
 const InFeedAd = lazy(() => import('@/components/adsenses/InFeedAd'));
@@ -168,7 +168,7 @@ const Index = () => {
   const catLoading = useSelector((state) => state.courseCategories.isLoading);
   const courses = useSelector((state) => state.courses);
   const { user, isAuthenticated, isLoading } = useSelector(
-    (state) => state.auth
+    (state) => state.users
   );
   const [collapsed, setCollapsed] = useState(true);
   const toggleNavbar = () => setCollapsed(!collapsed);
@@ -182,7 +182,7 @@ const Index = () => {
   }, [dispatch]);
 
   if (!isAuthenticated) return <NotAuthenticated message='Login for Exclusive Notes Access' />;
-  
+
   return isLoading ? <QBLoadingSM /> : (
     <div className="course-notes px-3">
       <Row className="mt-lg-5">
@@ -314,7 +314,7 @@ const Index = () => {
               ) : (
                 <>
                   <Row className="text-center d-block py-lg-3 w-100">
-                        {isAdEnabled() && <Suspense fallback={<QBLoadingSM />}>
+                    {isAdEnabled() && <Suspense fallback={<QBLoadingSM />}>
                       <InFeedAd />
                     </Suspense>}
                     <h4

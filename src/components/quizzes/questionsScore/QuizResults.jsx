@@ -81,7 +81,7 @@ const QuizResults = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const { toggleL } = useContext(logRegContext);
-  const { user, isAuthenticated } = useSelector((state) => state.auth);
+  const { user, isAuthenticated } = useSelector((state) => state.users);
 
   // Extract safe values from location.state
   const {

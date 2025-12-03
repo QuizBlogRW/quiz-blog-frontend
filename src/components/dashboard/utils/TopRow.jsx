@@ -4,7 +4,7 @@ import dashimg from '@/images/dashboard.svg';
 
 const TopRow = () => {
 
-  const { user } = useSelector(state => state.auth);
+  const { user } = useSelector(state => state.users);
 
   return (
 

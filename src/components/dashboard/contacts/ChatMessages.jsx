@@ -14,7 +14,7 @@ import SingleReply from './SingleReply';
 const ChatMessages = ({ onlineList }) => {
 
     const { oneContact, isLoading } = useSelector(state => state.contacts);
-    const { user } = useSelector(state => state.auth);
+    const { user } = useSelector(state => state.users);
 
     const { replies, message, contact_name, _id, email, contact_date } = oneContact;
     const formattedDate = moment(new Date(contact_date)).format('DD MMM YYYY, HH:mm');
@@ -34,7 +34,7 @@ const ChatMessages = ({ onlineList }) => {
             try {
                 const content = convertFromRaw(JSON.parse(message));
                 setEditorState(EditorState.createWithContent(content));
-            } catch (error) { 
+            } catch (error) {
                 console.log(error);
             }
         }
@@ -112,7 +112,7 @@ const ChatMessages = ({ onlineList }) => {
                         }}
                         editorStyle={{ height: '200px' }}
                     />
-                    <Button className='mx-auto w-50 mt-4' style={{ height: 'max-content', backgroundColor: 'var(--brand)' }}>
+                    <Button className='mx-auto text-white mt-4' style={{ height: 'max-content', backgroundColor: 'var(--brand)' }}>
                         Send
                     </Button>
                     <div ref={lastMessageRef} />

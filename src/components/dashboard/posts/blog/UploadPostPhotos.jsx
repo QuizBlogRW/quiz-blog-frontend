@@ -5,7 +5,7 @@ import { notify } from '@/utils/notifyToast';
 import { Input } from 'reactstrap';
 
 const UploadPostPhotos = () => {
-  const { user } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.users);
 
   const initialState = {
     imageTitle: '',

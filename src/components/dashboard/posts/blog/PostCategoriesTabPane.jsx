@@ -23,7 +23,7 @@ const PostCategoriesTabPane = () => {
   const dispatch = useDispatch();
   const bPcats = useSelector((state) => state.postCategories);
   const { isLoading, allPostCategories } = bPcats;
-  const { user } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.users);
 
   useEffect(() => {
     dispatch(getPostCategories());

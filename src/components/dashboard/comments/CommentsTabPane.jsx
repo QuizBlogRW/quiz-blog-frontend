@@ -23,7 +23,7 @@ const CommentsTabPane = () => {
 
   // Redux
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.users);
   const { allQuizzesComments } = useSelector((state) => state.quizzesComments);
   const { allQuestionsComments, paginatedQuestionsComments, isLoading } =
     useSelector((state) => state.questionsComments);

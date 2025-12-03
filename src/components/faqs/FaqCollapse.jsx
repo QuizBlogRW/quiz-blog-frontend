@@ -24,7 +24,7 @@ const InFeedAd = lazy(() => import('@/components/adsenses/InFeedAd'));
 const FaqCollapse = () => {
   const dispatch = useDispatch();
   const { allFaqs, isLoading } = useSelector((state) => state.faqs);
-  const { user } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.users);
 
   const [activeIndex, setActiveIndex] = useState(null);
 

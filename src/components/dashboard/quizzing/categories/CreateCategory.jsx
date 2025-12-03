@@ -6,7 +6,7 @@ import { Input } from 'reactstrap';
 
 const CreateCategory = () => {
 
-  const { user, isLoading } = useSelector((state) => state.auth);
+  const { user, isLoading } = useSelector((state) => state.users);
   const { allCourseCategories } = useSelector(
     (state) => state.courseCategories
   );

@@ -12,7 +12,7 @@ const RoomMessages = ({ oON1room, onlineList }) => {
     const contacts = useSelector(state => state.contacts);
     const { oneChatRoom, oneRoomMessages, isLoading } = contacts;
     const dispatch = useDispatch();
-    const { user } = useSelector(state => state.auth);
+    const { user } = useSelector(state => state.users);
     const lastMessageRef = useRef(null);
     const [welcomeMessage, setWelcomeMessage] = useState();
     const [roomMessageState, setRoomMessageState] = useState({

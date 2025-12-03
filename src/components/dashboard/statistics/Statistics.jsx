@@ -4,14 +4,14 @@ import SideBar from './sidebar/SideBar';
 import Content from './content/Content';
 import Dashboard from '../Dashboard';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
-import NotAuthenticated from '@/components/auth/NotAuthenticated';
+import NotAuthenticated from '@/components/users/NotAuthenticated';
 import './statistics.css';
 
 const Statistics = () => {
 
   const [sidebarIsOpen, setSidebarOpen] = useState(true);
   const toggleSidebar = () => setSidebarOpen(!sidebarIsOpen);
-  const { isLoading, isAuthenticated, user } = useSelector(state => state.auth);
+  const { isLoading, isAuthenticated, user } = useSelector(state => state.users);
 
   if (!isAuthenticated) {
     return <NotAuthenticated />;

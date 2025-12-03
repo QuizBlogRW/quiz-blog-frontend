@@ -6,7 +6,7 @@ import { notify } from '@/utils/notifyToast';
 const EditQuiz = ({ quizToEdit }) => {
 
     const categories = useSelector(state => state.categories);
-    const { user, isLoading } = useSelector(state => state.auth);
+    const { user, isLoading } = useSelector(state => state.users);
 
     const initialData = {
         quizID: quizToEdit._id,

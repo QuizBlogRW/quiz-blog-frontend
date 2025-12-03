@@ -28,7 +28,7 @@ const ViewCourse = () => {
 
     const { chaptersByCourse, isLoading } = useSelector(state => state.chapters);
     const { oneCourse } = useSelector(state => state.courses);
-    const { user } = useSelector(state => state.auth);
+    const { user } = useSelector(state => state.users);
     const [activeIndex, setActiveIndex] = useState(null);
 
     const collapse = index => {

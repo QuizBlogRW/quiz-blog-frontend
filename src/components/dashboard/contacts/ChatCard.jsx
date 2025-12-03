@@ -9,7 +9,7 @@ const ChatCard = ({ openChat }) => {
 
     const dispatch = useDispatch();
 
-    const { user } = useSelector(state => state.auth);
+    const { user } = useSelector(state => state.users);
     const { isLoading, allContacts, userContacts } = useSelector(state => state.contacts);
     const contactsToUse = allContacts && ((user?.role?.includes('Admin') || user?.role === 'Creator')) ? allContacts : userContacts;
 

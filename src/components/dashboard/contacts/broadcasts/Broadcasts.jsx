@@ -10,7 +10,7 @@ const Broadcasts = () => {
     const dispatch = useDispatch();
 
     const { allBroadcasts = [], isLoading } = useSelector(state => state.broadcasts);
-    const { user } = useSelector(state => state.auth);
+    const { user } = useSelector(state => state.users);
 
     const curUserRole = user?.role || [];
 
@@ -27,10 +27,6 @@ const Broadcasts = () => {
 
     return (
         <div className="broadcasts-section px-3 px-sm-4 py-3 py-sm-5 d-flex flex-column align-items-center">
-
-            {/* ------------------------------- */}
-            {/* JUMBOTRON HEADER (same style)   */}
-            {/* ------------------------------- */}
             <div className="jbtron rounded w-lg-75 px-3 px-sm-4 py-3 py-sm-5 p-2 m-2 
                             text-center border border-info">
 
@@ -45,11 +41,6 @@ const Broadcasts = () => {
                     These are all broadcasts sent to users across the Quiz-Blog platform.
                 </p>
             </div>
-
-
-            {/* ------------------------------- */}
-            {/* BROADCASTS CONTENT              */}
-            {/* ------------------------------- */}
 
             {isLoading ? (
                 <QBLoadingSM title="broadcasts" />

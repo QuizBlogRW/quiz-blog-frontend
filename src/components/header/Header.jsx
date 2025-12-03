@@ -2,15 +2,15 @@ import { useState, useContext, useEffect } from 'react';
 import { Navbar, NavbarBrand, NavLink, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, ListGroup, ListGroupItem } from 'reactstrap';
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import Logout from '@/components/auth/Logout';
+import Logout from '@/components/users/Logout';
 import CatDropdown from './CatDropdown';
 import logo from '@/images/quizLogo.svg';
 import { logRegContext } from '@/contexts/appContexts';
-import EditPictureModal from '@/components/auth/EditPictureModal';
+import EditPictureModal from '@/components/users/EditPictureModal';
 
 const Header = ({ textContent }) => {
 
-    const { user } = useSelector(state => state.auth);
+    const { user } = useSelector(state => state.users);
     const { toggleL, toggleR } = useContext(logRegContext);
     const userId = user && user._id;
 

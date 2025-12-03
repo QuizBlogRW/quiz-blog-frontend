@@ -10,7 +10,7 @@ import DeleteModal from '@/utils/DeleteModal';
 
 const CategoriesTabPane = () => {
   const { allcategories, isLoading } = useSelector((state) => state.categories);
-  const { user } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.users);
 
   const renderCategory = (category) => {
 

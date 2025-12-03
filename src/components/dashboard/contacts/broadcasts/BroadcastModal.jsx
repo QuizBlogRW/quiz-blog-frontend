@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { notify } from '@/utils/notifyToast';
 
 const BroadcastModal = () => {
-    const { user } = useSelector(state => state.auth);
+    const { user } = useSelector(state => state.users);
     const userId = user && user._id;
 
     const initialState = { title: '', message: '' };

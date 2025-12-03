@@ -12,7 +12,7 @@ const ScoresTabPane = () => {
     // Redux
     const dispatch = useDispatch();
     const { isLoading, totalPages, allScores, creatorScores, takerScores } = useSelector(state => state.scores);
-    const { user } = useSelector(state => state.auth);
+    const { user } = useSelector(state => state.users);
     const scoresToUse = allScores && user && user?.role?.includes('Admin') ? allScores : allScores && (user?.role === 'Creator') ? creatorScores : takerScores;
     const [pageNo, setPageNo] = useState(1);
 

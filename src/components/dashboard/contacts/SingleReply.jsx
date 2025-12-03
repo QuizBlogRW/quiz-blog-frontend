@@ -5,7 +5,7 @@ import { Editor, EditorState, convertFromRaw } from 'draft-js';
 
 const SingleReply = ({ reply }) => {
 
-    const { user } = useSelector(state => state.auth);
+    const { user } = useSelector(state => state.users);
     const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
 
     useEffect(() => {

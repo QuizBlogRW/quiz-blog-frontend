@@ -6,14 +6,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import UploadPostPhotos from './UploadPostPhotos';
 import YourImages from './YourImages';
 import { notify } from '@/utils/notifyToast';
-import NotAuthenticated from '@/components/auth/NotAuthenticated';
+import NotAuthenticated from '@/components/users/NotAuthenticated';
 import Dashboard from '@/components/dashboard/Dashboard';
 
 const AddBlogPost = () => {
 
     // redux
     const dispatch = useDispatch();
-    const { user, isAuthenticated, isLoading } = useSelector(state => state.auth);
+    const { user, isAuthenticated, isLoading } = useSelector(state => state.users);
 
     const curUserRole = user?.role;
     const isAuthorized = curUserRole?.includes('Admin') || curUserRole === 'Creator';

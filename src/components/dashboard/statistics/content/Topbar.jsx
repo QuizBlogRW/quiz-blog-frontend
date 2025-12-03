@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { Navbar, Button, NavbarToggler, Collapse, Nav, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import Logout from '@/components/auth/Logout';
+import Logout from '@/components/users/Logout';
 import { useSelector } from 'react-redux';
 
 const Topbar = ({ toggleSidebar }) => {
 
-  const { user } = useSelector(state => state.auth);
+  const { user } = useSelector(state => state.users);
   const [topbarIsOpen, setTopbarOpen] = useState(true);
   const toggleTopbar = () => setTopbarOpen(!topbarIsOpen);
 

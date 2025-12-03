@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 
 const BPTable = ({ bpostsToUse }) => {
 
-    const { user } = useSelector(state => state.auth);
+    const { user } = useSelector(state => state.users);
 
     return (
         <>

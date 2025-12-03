@@ -13,7 +13,7 @@ const GetReady = () => {
     const dispatch = useDispatch();
     const { quizSlug } = useParams();
     const { oneQuiz, isLoading, error } = useSelector(state => state.quizzes);
-    const { user } = useSelector(state => state.auth);
+    const { user } = useSelector(state => state.users);
 
     useEffect(() => {
         if (!oneQuiz || oneQuiz.slug !== quizSlug) dispatch(getOneQuiz(quizSlug));

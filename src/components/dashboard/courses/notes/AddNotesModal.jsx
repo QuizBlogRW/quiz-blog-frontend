@@ -6,7 +6,7 @@ import { notify } from '@/utils/notifyToast';
 
 const AddNotesModal = ({ chapter }) => {
 
-    const { user } = useSelector(state => state.auth);
+    const { user } = useSelector(state => state.users);
 
     const initialState = {
         title: '',

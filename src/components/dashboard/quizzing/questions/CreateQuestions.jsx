@@ -16,13 +16,13 @@ import { addQuestion, getQuestions } from '@/redux/slices/questionsSlice';
 import { getOneQuiz } from '@/redux/slices/quizzesSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { notify } from '@/utils/notifyToast';
-import NotAuthenticated from '@/components/auth/NotAuthenticated';
+import NotAuthenticated from '@/components/users/NotAuthenticated';
 
 const CreateQuestions = () => {
   // Redux
   const oneQuiz = useSelector((state) => state.quizzes.oneQuiz);
   const { user, isAuthenticated, isLoading } = useSelector(
-    (state) => state.auth
+    (state) => state.users
   );
 
   const dispatch = useDispatch();

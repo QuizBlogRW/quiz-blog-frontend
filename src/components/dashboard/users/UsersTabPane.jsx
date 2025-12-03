@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Row, TabPane } from 'reactstrap';
 import SearchInput from '@/utils/SearchInput';
-import { getUsers, getLatestUsers, getAdminsCreators } from '@/redux/slices/authSlice';
+import { getUsers, getLatestUsers, getAdminsCreators } from '@/redux/slices/usersSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import UserToast from './UserToast';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
@@ -9,7 +9,7 @@ import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 const UsersTabPane = () => {
 
     // Redux
-    const { users, isLoadingUsers, isLoadingLatestUsers, isLoadingAdminsCreators, latestUsers, adminsCreators } = useSelector(state => state.auth);
+    const { users, isLoadingUsers, isLoadingLatestUsers, isLoadingAdminsCreators, latestUsers, adminsCreators } = useSelector(state => state.users);
     const dispatch = useDispatch();
 
     // Lifecycle methods

@@ -5,7 +5,7 @@ import { createFq } from '@/redux/slices/faqsSlice';
 import validators from '@/utils/validators';
 
 const CreateFaq = () => {
-    const { user } = useSelector((state) => state.auth);
+    const { user } = useSelector((state) => state.users);
 
     const initialState = {
         title: '',

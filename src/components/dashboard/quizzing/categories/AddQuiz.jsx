@@ -4,7 +4,7 @@ import { createQuiz } from '@/redux/slices/quizzesSlice';
 import validators from '@/utils/validators';
 
 const AddQuiz = ({ category }) => {
-  const { user, isLoading } = useSelector((state) => state.auth);
+  const { user, isLoading } = useSelector((state) => state.users);
 
   const initialState = {
     name: '',

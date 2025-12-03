@@ -5,7 +5,7 @@ import AddIcon from '@/images/plus.svg';
 import { notify } from '@/utils/notifyToast';
 
 const AddCourse = ({ categoryId }) => {
-  const { user, isLoading } = useSelector((state) => state.auth);
+  const { user, isLoading } = useSelector((state) => state.users);
 
   const initialState = { title: '', description: '' };
 

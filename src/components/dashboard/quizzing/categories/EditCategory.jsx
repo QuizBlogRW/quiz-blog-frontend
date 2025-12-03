@@ -4,7 +4,7 @@ import { updateCategory } from '@/redux/slices/categoriesSlice';
 import { notify } from '@/utils/notifyToast';
 
 const EditCategory = ({ categoryToEdit }) => {
-    const { isLoading, user } = useSelector(state => state.auth);
+    const { isLoading, user } = useSelector(state => state.users);
     const { allCourseCategories } = useSelector(state => state.courseCategories);
 
     const initialData = {

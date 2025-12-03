@@ -8,10 +8,10 @@ import { logRegContext } from '@/contexts/appContexts';
 import { getCategories, getCourseCategories, getLandingDisplayNotes, loadUser } from '@/redux/slices';
 import { useSelector, useDispatch } from 'react-redux';
 
-import ForgotPassword from '@/components/auth/ForgotPassword';
-import ResetPassword from '@/components/auth/ResetPassword';
-import Unsubscribe from '@/components/auth/Unsubscribe';
-import EditProfile from '@/components/auth/EditProfile';
+import ForgotPassword from '@/components/users/ForgotPassword';
+import ResetPassword from '@/components/users/ResetPassword';
+import Unsubscribe from '@/components/users/Unsubscribe';
+import EditProfile from '@/components/users/EditProfile';
 import Subscribers from '@/components/dashboard/users/Subscribers';
 import Contact from '@/components/contacts/Contact';
 import ChatWrapper from '@/components/dashboard/contacts/ChatWrapper';
@@ -44,11 +44,11 @@ import ViewBlogPost from '@/components/blog/ViewBlogPost';
 import ByCategory from '@/components/blog/ByCategory';
 import UsersStats from '@/components/dashboard/statistics/content/users/UsersStats';
 import BlogStats from '@/components/dashboard/statistics/content/blogposts/BlogStats';
-import Verify from '@/components/auth/Verify';
+import Verify from '@/components/users/Verify';
 
 const Header = lazy(() => import('@/components/header/Header'));
-const LoginModal = lazy(() => import('@/components/auth/LoginModal'));
-const RegisterModal = lazy(() => import('@/components/auth/RegisterModal'));
+const LoginModal = lazy(() => import('@/components/users/LoginModal'));
+const RegisterModal = lazy(() => import('@/components/users/RegisterModal'));
 const Footer = lazy(() => import('@/components/footer/Footer'));
 const Statistics = lazy(() => import('@/components/dashboard/statistics/Statistics'));
 const LandingQuizzes = lazy(() => import('@/components/home/LandingQuizzes'));
@@ -92,7 +92,7 @@ const App = () => {
         dispatch(getLandingDisplayNotes());
     }, [dispatch]);
 
-    const { user } = useSelector(state => state.auth);
+    const { user } = useSelector(state => state.users);
 
     useEffect(() => {
 

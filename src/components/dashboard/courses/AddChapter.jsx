@@ -5,7 +5,7 @@ import validators from '@/utils/validators';
 import { Input } from 'reactstrap';
 
 const AddChapter = ({ course }) => {
-  const { isLoading, user } = useSelector((state) => state.auth);
+  const { isLoading, user } = useSelector((state) => state.users);
 
   return (
     <AddModal

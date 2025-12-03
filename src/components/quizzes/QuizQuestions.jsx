@@ -13,7 +13,7 @@ import { calculateMarks } from "@/utils/quizUtils";
 
 const QuizQuestions = () => {
     const dispatch = useDispatch();
-    const { user } = useSelector(state => state.auth);
+    const { user } = useSelector(state => state.users);
 
     const { quizSlug } = useParams();
     const navigate = useNavigate();

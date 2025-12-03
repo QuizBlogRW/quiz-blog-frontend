@@ -19,7 +19,7 @@ import { getSummaryStats } from "@/redux/slices/statisticsSlice";
 
 import DatabaseMetricsTab from "./DatabaseMetricsTab";
 import SystemMetricsTab from "./SystemMetricsTab";
-
+import NotAuthenticated from '@/components/users/NotAuthenticated';
 import "./SystemDashboard.css";
 
 const useAccess = () => {
@@ -91,15 +91,6 @@ const LoadingScreen = () => (
     </div>
 );
 
-const NotLoggedIn = () => (
-    <div className="system-dashboard p-4">
-        <Alert color="warning">
-            <i className="fas fa-sign-in-alt me-2"></i>
-            Please log in to access the System Dashboard.
-        </Alert>
-    </div>
-);
-
 const Unauthorized = () => (
     <div className="system-dashboard p-4">
         <Alert color="danger">
@@ -130,7 +121,7 @@ const SystemDashboard = () => {
         localStorage.setItem("activeMetric", tab);
     };
 
-    if (!isAuthenticated) return <NotLoggedIn />;
+    if (!isAuthenticated) return <NotAuthenticated />;
     if (!isAdmin) return <Unauthorized />;
     if (isLoading && (!summaryStats || !summaryStats?.totalUsers)) return <LoadingScreen />;
 

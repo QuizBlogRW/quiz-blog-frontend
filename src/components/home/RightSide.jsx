@@ -12,7 +12,7 @@ const SquareAd = lazy(() => import('@/components/adsenses/SquareAd'));
 
 const RightSide = ({ categories }) => {
     const dispatch = useDispatch();
-    const { user } = useSelector((state) => state.auth);
+    const { user } = useSelector((state) => state.users);
     const [subscriber, setSubscriber] = useState({ name: '', email: '' });
 
     // Pre-fill for logged-in users
@@ -50,11 +50,11 @@ const RightSide = ({ categories }) => {
             </Row>
 
             {/* Responsive Ad */}
-            <Row className="w-100 mb-4 d-flex justify-content-center">
+            {isAdEnabled() && <Row className="w-100 mb-4 d-flex justify-content-center">
                 <Col sm="12" className="d-flex justify-content-center">
                     <ResponsiveAd />
                 </Col>
-            </Row>
+            </Row>}
 
             {/* Subscribe Form */}
             <Row className="mb-5">

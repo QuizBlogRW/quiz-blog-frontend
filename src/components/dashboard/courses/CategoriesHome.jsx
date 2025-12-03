@@ -2,14 +2,14 @@ import { lazy, Suspense } from 'react';
 import { Button } from 'reactstrap';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 import { useSelector } from 'react-redux';
-import NotAuthenticated from '@/components/auth/NotAuthenticated';
+import NotAuthenticated from '@/components/users/NotAuthenticated';
 import isAdEnabled from '@/utils/isAdEnabled';
 
 const GridMultiplex = lazy(() => import('@/components/adsenses/GridMultiplex'));
 
 const CategoriesHome = () => {
 
-    const { user, isAuthenticated } = useSelector(state => state.auth);
+    const { user, isAuthenticated } = useSelector(state => state.users);
 
     if (!isAuthenticated) return <NotAuthenticated />;
     return (<>

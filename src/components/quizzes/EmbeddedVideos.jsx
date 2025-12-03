@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 const EmbeddedVideos = ({ quiz, faq, isFromFaqs }) => {
 
     const dispatch = useDispatch();
-    const { user } = useSelector(state => state.auth);
+    const { user } = useSelector(state => state.users);
 
     const videos = isFromFaqs ? faq && faq.video_links : quiz && quiz.oneQuiz && quiz.oneQuiz.video_links;
     const iD = isFromFaqs ? faq && faq._id : quiz && quiz.oneQuiz && quiz.oneQuiz._id;

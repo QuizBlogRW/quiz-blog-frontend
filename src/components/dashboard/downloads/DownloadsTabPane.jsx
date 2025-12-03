@@ -14,7 +14,7 @@ const DownloadsTabPane = () => {
     const downloads = useSelector(state => state.downloads);
     const { isLoading, totalPages, allDownloads, userDownloads, creatorDownloads } = downloads;
 
-    const { user } = useSelector(state => state.auth);
+    const { user } = useSelector(state => state.users);
     const downloadsToUse = downloads && user?.role?.includes('Admin') ? allDownloads :
         downloads && (user?.role === 'Creator') ? creatorDownloads : userDownloads;
 

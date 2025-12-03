@@ -1,13 +1,13 @@
 import { Row, Col, Toast, ToastBody, ToastHeader, Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import { Link, useParams } from 'react-router-dom';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
-import NotAuthenticated from '@/components/auth/NotAuthenticated';
+import NotAuthenticated from '@/components/users/NotAuthenticated';
 import { useSelector } from 'react-redux';
 
 const SingleCategory = () => {
 
     const { isLoading, allcategories } = useSelector(state => state.categories);
-    const { isAuthenticated } = useSelector(state => state.auth);
+    const { isAuthenticated } = useSelector(state => state.users);
     const { categoryId } = useParams();
 
     const renderCategory = (category) => (
@@ -22,7 +22,7 @@ const SingleCategory = () => {
             </Row>
             <small className="ms-2 one-cat-desc d-flex justify-content-center">
                 <i className="text-success text-start text-capitalize">
-                   {category.description}
+                    {category.description}
                 </i>
             </small>
             <Row className="mx-0 mx-lg-5 mt-2 m-lg-4 d-flex justify-content-between align-items-center text-primary">

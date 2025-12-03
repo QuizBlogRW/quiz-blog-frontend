@@ -14,7 +14,7 @@ const Contact = () => {
 
     // Redux
     const dispatch = useDispatch();
-    const { user } = useSelector(state => state.auth);
+    const { user } = useSelector(state => state.users);
 
     const [state, setState] = useState({
         contact_name: '',

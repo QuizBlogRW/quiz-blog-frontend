@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 
 const DownloadsTable = ({ downloadsToUse, pageNo }) => {
 
-    const { user } = useSelector(state => state.auth);
+    const { user } = useSelector(state => state.users);
 
     return (
         downloadsToUse && downloadsToUse.length > 0 ?

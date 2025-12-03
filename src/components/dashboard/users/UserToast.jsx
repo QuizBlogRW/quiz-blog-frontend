@@ -4,12 +4,12 @@ import uploadimage from '@/images/uploadimage.svg';
 import moment from 'moment';
 import ImageWithFallback from '@/utils/ImageWithFallback';
 import DeleteModal from '@/utils/DeleteModal';
-import { deleteUser } from '@/redux/slices/authSlice';
+import { deleteUser } from '@/redux/slices/usersSlice';
 import { useSelector } from 'react-redux';
 
 const UserToast = ({ userToUse, fromSearch }) => {
 
-    const { user } = useSelector(state => state.auth);
+    const { user } = useSelector(state => state.users);
 
     if (!userToUse) return null;
     const { _id, name, email, image, role, register_date } = userToUse;

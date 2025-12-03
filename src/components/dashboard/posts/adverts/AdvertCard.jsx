@@ -7,7 +7,7 @@ import DeleteModal from '@/utils/DeleteModal';
 
 const AdvertCard = ({ advert }) => {
     const dispatch = useDispatch();
-    const { user } = useSelector(state => state.auth);
+    const { user } = useSelector(state => state.users);
 
     return (
         <Card body className="h-100 shadow-sm">

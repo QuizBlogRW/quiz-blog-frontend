@@ -9,11 +9,11 @@ import DeleteModal from '@/utils/DeleteModal';
 import { deleteCourse } from '@/redux/slices/coursesSlice';
 import { useSelector } from 'react-redux';
 import { notify } from '@/utils/notifyToast';
-import NotAuthenticated from '@/components/auth/NotAuthenticated';
+import NotAuthenticated from '@/components/users/NotAuthenticated';
 
 const CoursesHolder = ({ courses }) => {
 
-  const { user, isAuthenticated } = useSelector((state) => state.auth);
+  const { user, isAuthenticated } = useSelector((state) => state.users);
 
   if (!isAuthenticated) return <NotAuthenticated />;
   if (courses.isByCatLoading) return <QBLoadingSM title="courses" />;
