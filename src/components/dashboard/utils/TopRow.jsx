@@ -34,7 +34,7 @@ const TopRow = () => {
       <div className="dashboard-img d-none d-sm-inline w-auto">
         <img src={dashimg} alt="dashimg" onClick={
           () => {
-            window.location.href = '/contact-chat';
+            window.location.href = '/chat';
           }
         } style={{ cursor: 'pointer', maxHeight: '200px' }} className='shadow-sm animated infinite pulse blink_me' />
       </div>

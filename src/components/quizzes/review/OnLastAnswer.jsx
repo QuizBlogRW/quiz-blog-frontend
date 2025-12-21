@@ -1,6 +1,7 @@
 import { Button } from 'reactstrap';
 import { useNavigate, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import NotAuthenticated from '@/components/users/NotAuthenticated';
 
 const OnLastAnswer = ({ thisQuiz }) => {
     const { isAuthenticated } = useSelector(state => state.users);
@@ -8,13 +9,7 @@ const OnLastAnswer = ({ thisQuiz }) => {
 
     const goBack = () => navigate(-1);
 
-    if (!isAuthenticated) {
-        return (
-            <div className="score-section text-center py-5">
-                <h5 className="fw-bold text-danger">Unauthorized!</h5>
-            </div>
-        );
-    }
+    if (!isAuthenticated) return <NotAuthenticated />;
 
     return (
         <div className="score-section text-center py-5 px-3">

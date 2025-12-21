@@ -65,7 +65,7 @@ const SystemMetricsTab = () => {
     const dispatch = useDispatch();
 
     // Selectors
-    const { user, isAuthenticated } = useSelector((s) => s.auth);
+    const { user, isAuthenticated } = useSelector(state => state.users);
     const { systemMetrics, isLoading, error } = useSelector((s) => s.statistics);
 
     // local UI-only state

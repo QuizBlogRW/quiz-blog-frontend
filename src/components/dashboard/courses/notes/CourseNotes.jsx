@@ -22,8 +22,8 @@ import DeleteIcon from '@/images/trash.svg';
 const CourseNotes = ({ chapter }) => {
 
   const dispatch = useDispatch();
-  const { notesByChapter, isLoading } = useSelector((s) => s.notes);
-  const { user } = useSelector((s) => s.auth);
+  const { notesByChapter, isLoading } = useSelector((state) => state.notes);
+  const { user } = useSelector(state => state.users);
 
   const isVisitor = user?.role === "Visitor";
 
@@ -49,7 +49,7 @@ const CourseNotes = ({ chapter }) => {
     <>
       {!isVisitor && chapter && (
         <div className="my-2 d-flex justify-content-center">
-            <AddNotesModal chapter={chapter} />
+          <AddNotesModal chapter={chapter} />
         </div>
       )}
 

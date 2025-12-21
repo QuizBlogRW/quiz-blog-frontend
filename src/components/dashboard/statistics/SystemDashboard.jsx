@@ -20,10 +20,11 @@ import { getSummaryStats } from "@/redux/slices/statisticsSlice";
 import DatabaseMetricsTab from "./DatabaseMetricsTab";
 import SystemMetricsTab from "./SystemMetricsTab";
 import NotAuthenticated from '@/components/users/NotAuthenticated';
+import Unauthorized from '@/components/users/Unauthorized';
 import "./SystemDashboard.css";
 
 const useAccess = () => {
-    const { user, isAuthenticated } = useSelector((s) => s.auth);
+    const { user, isAuthenticated } = useSelector(state => state.users);
     const isAdmin = isAuthenticated && user?.role?.includes("Admin");
     return { user, isAuthenticated, isAdmin };
 };
@@ -88,15 +89,6 @@ const LoadingScreen = () => (
     >
         <Spinner color="success" size="sm" />
         <span className="ms-3">Loading system statistics...</span>
-    </div>
-);
-
-const Unauthorized = () => (
-    <div className="system-dashboard p-4">
-        <Alert color="danger">
-            <i className="fas fa-shield-alt me-2"></i>
-            Access denied. Admin privileges required to view the System Dashboard.
-        </Alert>
     </div>
 );
 

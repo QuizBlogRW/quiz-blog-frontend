@@ -14,7 +14,8 @@ import Unsubscribe from '@/components/users/Unsubscribe';
 import EditProfile from '@/components/users/EditProfile';
 import Subscribers from '@/components/dashboard/users/Subscribers';
 import Contact from '@/components/contacts/Contact';
-import ChatWrapper from '@/components/dashboard/contacts/ChatWrapper';
+import ContactsArchive from '@/components/dashboard/contacts/archived/ContactsArchive';
+import ChatWrapper from '@/components/dashboard/contacts/chat/ChatWrapper';
 import FaqCollapse from '@/components/faqs/FaqCollapse';
 import About from '@/components/about/About';
 import Privacy from '@/components/misc/Privacy';
@@ -86,11 +87,22 @@ const App = () => {
     }, [location]);
 
     useEffect(() => {
-        dispatch(loadUser());
+        const token = localStorage.getItem('token');
+        if (token) dispatch(loadUser());
         dispatch(getCategories());
         dispatch(getCourseCategories());
         dispatch(getLandingDisplayNotes());
-    }, [dispatch]);
+    }, []);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const token = localStorage.getItem('token');
+            if (token) dispatch(loadUser());
+        }, 3600000); // every 60 minutes
+
+        return () => clearInterval(interval);
+    }, []);
+
 
     const { user } = useSelector(state => state.users);
 
@@ -151,7 +163,8 @@ const App = () => {
                         <Route exact path="/quiz-ranking/:quizID" element={<QuizRanking />} />
                         <Route exact path="/questions-create/:quizSlug" element={<CreateQuestions />} />
                         <Route exact path="/contact" element={<Contact />} />
-                        <Route exact path="/contact-chat" element={<ChatWrapper />} />
+                        <Route exact path="/contacts-archive" element={<ContactsArchive />} />
+                        <Route exact path="/chat" element={<ChatWrapper />} />
                         <Route exact path="/faqs" element={<FaqCollapse />} />
                         <Route path="/all-categories" element={<AllCategories />} />
                         <Route path="/course-notes" element={<Index />} />

@@ -187,43 +187,49 @@ const usersSlice = createSlice({
       localStorage.setItem('confirmLogin', action.payload);
       state.confirmLogin = action.payload;
     },
-    clearToken: (state) => {
-      localStorage.removeItem('token');
-      console.log('Cleared in clearToken');
-      state.token = null;
-    },
-    clearLastLogin: (state) => {
-      console.log('Cleared in clearToken');
-      localStorage.removeItem('confirmLogin');
-      state.confirmLogin = null;
-    },
-    clearPswdResetToken: (state) => {
-      state.pswdResetToken = null;
-    },
   },
 
   // We use the "extraReducers" property to add the createAsyncThunk actions or async actions
   extraReducers: (builder) => {
-    // Fulfilled actions
+
     builder.addCase(loadUser.fulfilled, (state, action) => {
       state.isLoading = false;
 
-      // Check if current token is still valid: Equal to the new token
-      if (!action.payload.current_token || !state.token || action.payload.current_token !== state.token) {
+      const payload = action.payload;
+      if (!payload || !payload.current_token) {
+        // No valid session
         state.isAuthenticated = false;
         state.user = null;
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-      } else {
-        state.isAuthenticated = true;
-
-        state.user = action.payload;
-        localStorage.setItem('user', JSON.stringify(action.payload));
-        
-        state.token = action.payload.current_token;
-        action.payload.current_token && localStorage.setItem('token', action.payload.current_token);
+        state.token = null;
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        return;
       }
+
+      const backendToken = payload.current_token;
+      const storedToken = localStorage.getItem("token");
+
+      // CASE 1: No token in local storage → session expired or browser cleaned
+      if (!storedToken) {
+        state.isAuthenticated = false;
+        return;
+      }
+
+      // CASE 2: Backend sent a *refreshed* token
+      if (backendToken !== storedToken) {
+        console.log("Token was refreshed by backend — updating localStorage");
+
+        localStorage.setItem("token", backendToken);
+        state.token = backendToken;
+      }
+
+      // VALID SESSION
+      state.isAuthenticated = true;
+      state.user = payload;
+      localStorage.setItem("user", JSON.stringify(payload));
     });
+
+
     builder.addCase(login.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isAuthenticated = true;
@@ -390,9 +396,6 @@ const usersSlice = createSlice({
 export const {
   setToken,
   setLastLogin,
-  clearToken,
-  clearLastLogin,
-  clearPswdResetToken,
 } = usersSlice.actions;
 
 // Export the reducer

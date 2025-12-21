@@ -118,7 +118,7 @@ const ReviewQuiz = () => {
   const location = useLocation();
 
   const { isLoading, oneScore } = useSelector((s) => s.scores);
-  const { isAuthenticated, user } = useSelector((s) => s.auth);
+  const { isAuthenticated, user } = useSelector(state => state.users);
 
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [lastAnswer, setLastAnswer] = useState(false);

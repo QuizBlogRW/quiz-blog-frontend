@@ -10,7 +10,8 @@ const Footer = () => {
     if (location.pathname.startsWith('/questions') ||
         location.pathname.startsWith('/dashboard') ||
         location.pathname.startsWith('/statistics') ||
-        location.pathname.startsWith('/contact-chat')) {
+        location.pathname.startsWith('/contacts-archive') ||
+        location.pathname.startsWith('/chat')) {
         return null;
 
     } else return (

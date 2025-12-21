@@ -299,18 +299,6 @@ export const resetToastControl = () => {
   toastControl.lastErrorTime = 0;
 };
 
-export const setAuthToken = (token) => {
-  if (token) {
-    localStorage.setItem('token', token);
-    axiosInstance.defaults.headers.common['x-auth-token'] = token;
-  } else {
-    localStorage.removeItem('token');
-    delete axiosInstance.defaults.headers.common['x-auth-token'];
-  }
-};
-
-export const clearAuthToken = () => setAuthToken(null);
-
 // Health Check Utility
 export const checkBackendHealth = async () => {
   try {

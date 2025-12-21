@@ -1,178 +1,157 @@
-import { io } from 'socket.io-client';
+// src/utils/socket.js
+import { io } from "socket.io-client";
 
-// ----------------------------
-// Backend URLs Configuration
-// ----------------------------
+/* ------------------------------------------------------------------
+   URL CONFIG
+------------------------------------------------------------------- */
 const URLS = {
-    production: 'https://myqb-245fdbd30c9b.herokuapp.com',
-    test: 'https://qb-backend-one.vercel.app',
-    local: 'http://localhost:5000'
+    production: "https://myqb-245fdbd30c9b.herokuapp.com",
+    test: "https://qb-backend-one.vercel.app",
+    local: "http://localhost:5000"
 };
 
-// ----------------------------
-// Platform Detection
-// ----------------------------
-const getSocketUrl = () => {
-    // Priority 1: Explicit environment variable
+function resolveBackendURL() {
     const envUrl = import.meta.env.VITE_BACKEND_URL;
     if (envUrl) return envUrl;
 
-    // Priority 2: Vite mode
-    const mode = import.meta.env.MODE;
-    switch (mode) {
-        case 'development':
+    switch (import.meta.env.MODE) {
+        case "development":
             return URLS.local;
-        case 'test':
+        case "test":
             return URLS.test;
-        case 'production':
+        case "production":
         default:
             return URLS.production;
     }
-};
+}
 
-const isVercelBackend = (url) => {
-    return url.includes('vercel.app');
-};
+/* ------------------------------------------------------------------
+   SOCKET STATE
+------------------------------------------------------------------- */
+let socket = null;
+let isInitialized = false;
 
-const serverUrl = getSocketUrl();
-const mode = import.meta.env.MODE;
+/* ------------------------------------------------------------------
+   UTILS
+------------------------------------------------------------------- */
+const LOGGING = import.meta.env.DEV;
+const log = (...args) => LOGGING && console.log("[SOCKET]", ...args);
 
-// ----------------------------
-// Socket.IO Enable/Disable Logic
-// ----------------------------
-const shouldEnableSocket = () => {
-    // Check 1: Explicit disable flag
-    const explicitDisable = import.meta.env.VITE_DISABLE_SOCKET === 'true';
-    if (explicitDisable) {
-        console.log('🔌 Socket.IO explicitly disabled via VITE_DISABLE_SOCKET');
+const isVercelBackend = (url) => url.includes("vercel.app");
+
+function shouldEnableSocket(url) {
+    if (import.meta.env.VITE_DISABLE_SOCKET === "true") {
+        log("Socket disabled via VITE_DISABLE_SOCKET");
         return false;
     }
 
-    // Check 2: Vercel backend (serverless doesn't support websockets)
-    if (isVercelBackend(serverUrl) && mode === 'test') {
-        console.log('🔌 Socket.IO disabled: Test mode');
+    if (isVercelBackend(url) && import.meta.env.MODE === "test") {
+        log("Sockets disabled due to serverless test backend");
+        return false;
+    }
+
+    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+    if (!token) {
+        log("No auth token found, skipping socket connection");
         return false;
     }
 
     return true;
-};
-
-// ----------------------------
-// Socket.IO Instance
-// ----------------------------
-let socket = null;
-const socketEnabled = shouldEnableSocket();
-
-if (socketEnabled) {
-    console.log(`🔌 Socket connecting to: ${serverUrl}`);
-
-    socket = io(serverUrl, {
-        transports: ['websocket', 'polling'],
-        timeout: 10000,
-        reconnectionDelay: 1000,
-        reconnectionDelayMax: 5000,
-        reconnectionAttempts: 5,
-        autoConnect: true,
-    });
-
-    // Connection event handlers
-    socket.on('connect', () => {
-        console.log('✅ Socket connected:', socket.id);
-    });
-
-    socket.on('disconnect', (reason) => {
-        console.log('⚠️  Socket disconnected:', reason);
-
-        // Auto-reconnect for client-side disconnections
-        if (reason === 'io client disconnect') {
-            socket.connect();
-        }
-    });
-
-    socket.on('connect_error', (err) => {
-        console.error('❌ Socket connection error:', err.message);
-    });
-
-    socket.on('reconnect', (attemptNumber) => {
-        console.log(`🔄 Socket reconnected after ${attemptNumber} attempt(s)`);
-    });
-
-    socket.on('reconnect_attempt', (attemptNumber) => {
-        console.log(`🔄 Socket reconnection attempt ${attemptNumber}...`);
-    });
-
-    socket.on('reconnect_failed', () => {
-        console.error('❌ Socket reconnection failed after all attempts');
-    });
 }
 
-// ----------------------------
-// Safe Socket Methods
-// ----------------------------
-export const socketEmit = (event, ...args) => {
-    if (socket && socket.connected) {
-        socket.emit(event, ...args);
-        return true;
+/* ------------------------------------------------------------------
+   INITIALIZER (Call once from App.jsx)
+------------------------------------------------------------------- */
+export function initSocket() {
+    if (isInitialized) return socket;
+
+    const serverUrl = resolveBackendURL();
+    const enabled = shouldEnableSocket(serverUrl);
+
+    log("Resolved backend:", serverUrl);
+
+    if (!enabled) {
+        log("Socket.IO disabled.");
+        isInitialized = true;
+        return null;
     }
-    console.warn(`⚠️  Socket not available. Cannot emit event: ${event}`);
-    return false;
-};
 
-export const socketOn = (event, callback) => {
-    if (socket) {
-        socket.on(event, callback);
-        return true;
+    const token = localStorage.getItem("token");
+
+    socket = io(serverUrl, {
+        transports: ["websocket", "polling"],
+        reconnection: true,
+        reconnectionAttempts: 5,
+        reconnectionDelay: 800,
+        autoConnect: true,
+        timeout: 10000,
+        auth: { token }
+    });
+
+    /* ------------------ CONNECTION EVENTS ------------------ */
+    socket.on("connect", () => log("Connected:", socket.id));
+    socket.on("disconnect", (reason) => log("Disconnected:", reason));
+    socket.on("connect_error", (e) => log("Connect error:", e.message));
+
+    socket.on("reconnect_attempt", (n) => log("Reconnect attempt:", n));
+    socket.on("reconnect", (n) => log("Reconnected after:", n));
+    socket.on("reconnect_failed", () => log("Reconnection failed"));
+
+    isInitialized = true;
+    return socket;
+}
+
+/* ------------------------------------------------------------------
+   SAFE HELPERS
+------------------------------------------------------------------- */
+export function socketEmit(event, payload) {
+    if (!socket || !socket.connected) {
+        log(`Emit blocked (socket unavailable):`, event);
+        return false;
     }
-    console.warn(`⚠️  Socket not available. Cannot listen to event: ${event}`);
-    return false;
-};
+    socket.emit(event, payload);
+    return true;
+}
 
-export const socketOff = (event, callback) => {
-    if (socket) {
-        socket.off(event, callback);
-        return true;
-    }
-    return false;
-};
+export function socketOn(event, cb) {
+    if (!socket) return false;
+    socket.on(event, cb);
+    return true;
+}
 
-export const isSocketConnected = () => {
-    return socket ? socket.connected : false;
-};
+export function socketOff(event, cb) {
+    if (!socket) return false;
+    socket.off(event, cb);
+    return true;
+}
 
-export const disconnectSocket = () => {
-    if (socket) {
-        socket.disconnect();
-        console.log('🔌 Socket manually disconnected');
-    }
-};
+export const emitTyping = (roomName, user) => socketEmit('typing', { roomName, user });
+export const emitStopTyping = (roomName, user) => socketEmit('stopTyping', { roomName, user });
+export const onUserTyping = (cb) => socketOn('userTyping', cb);
+export const onUserStoppedTyping = (cb) => socketOn('userStoppedTyping', cb);
 
-export const connectSocket = () => {
-    if (socket && !socket.connected) {
-        socket.connect();
-        console.log('🔌 Socket manually connected');
-    }
-};
+export function connectSocket() {
+    if (socket && !socket.connected) socket.connect();
+}
+export function disconnectSocket() {
+    if (socket) socket.disconnect();
+}
 
-// ----------------------------
-// Exports
-// ----------------------------
-export {
-    socket,
-    serverUrl,
-    socketEnabled,
-    mode as buildMode,
-    URLS
-};
+export const isSocketConnected = () => socket?.connected ?? false;
 
-// ----------------------------
-// Debug Info (development only)
-// ----------------------------
-if (import.meta.env.DEV) {
-    console.log('🔍 Socket Configuration:', {
-        serverUrl,
-        mode,
+/* ------------------------------------------------------------------
+   EXPORTED FOR DEBUGGING
+------------------------------------------------------------------- */
+export const socketInstance = () => socket;
+export const backendUrl = resolveBackendURL();
+export const socketEnabled = shouldEnableSocket(backendUrl);
+
+/* DEV DEBUG */
+if (LOGGING) {
+    console.log("🔍 Socket Config:", {
+        backendUrl,
+        mode: import.meta.env.MODE,
         socketEnabled,
-        isVercel: isVercelBackend(serverUrl),
-        socketId: socket?.id || 'N/A'
+        isVercel: isVercelBackend(backendUrl)
     });
 }

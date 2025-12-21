@@ -1,26 +1,22 @@
-import { useContext } from "react";
 import { Button } from "reactstrap";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-import { logRegContext } from "@/contexts/appContexts";
 import QBLoadingSM from "@/utils/rLoading/QBLoadingSM";
 import "./NotAuthenticated.css";
 
-export default function NotAuthenticated({
-    message = "You must be logged in to continue",
-    actionLabel = "Login",
+export default function Unauthorized({
+    message = "You are not authorized to access this page",
+    actionLabel = "Go Back",
     onAction,
 }) {
     const { isLoading } = useSelector((state) => state.users);
+    const navigate = useNavigate();
 
-    const { toggleL } = useContext(logRegContext) ?? {};
-    const handleAction = onAction ?? toggleL;
-
-    // Authentication state still resolving
     if (isLoading) {
         return (
             <div className="vh-100 d-flex justify-content-center align-items-center">
-                <QBLoadingSM title="Checking authentication…" />
+                <QBLoadingSM title="Checking authorization…" />
             </div>
         );
     }
@@ -39,18 +35,11 @@ export default function NotAuthenticated({
 
                 <Button
                     color="warning"
-                    onClick={handleAction}
+                    onClick={onAction ?? (() => navigate(-1))}
                     className="fw-bold px-4 py-2 text-success"
-                    disabled={!handleAction}
                 >
                     {actionLabel}
                 </Button>
-
-                {!handleAction && (
-                    <p className="mt-3 text-muted small">
-                        Login action is currently unavailable.
-                    </p>
-                )}
             </div>
         </div>
     );

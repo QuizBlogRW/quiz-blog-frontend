@@ -2,7 +2,7 @@ import { useState, useEffect, lazy } from 'react';
 import { Button, Col, Row, Form, FormGroup, Input } from 'reactstrap';
 import SquareAd from '@/components/adsenses/SquareAd';
 import isAdEnabled from '@/utils/isAdEnabled';
-import { sendMsg } from '@/redux/slices/contactsSlice';
+import { sendContactMessage } from '@/redux/slices/contactsSlice';
 import { useDispatch } from 'react-redux';
 import './contact.css';
 import mail from '@/images/mail.svg';
@@ -65,8 +65,8 @@ const Contact = () => {
         };
 
         // Attempt to contact
-        dispatch(sendMsg(contactMsg));
-        window.setTimeout(() => window.location.href = '/contact-chat', 4000);
+        dispatch(sendContactMessage(contactMsg));
+        window.setTimeout(() => window.location.href = '/chat', 4000);
 
         // Reset fields
         setState({

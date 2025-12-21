@@ -26,8 +26,7 @@ const LoginModal = () => {
 
     // Lifecycle methods
     useEffect(() => {
-
-        if (loginResponse && loginResponse.type === 'auth/login/rejected') {
+        if (loginResponse?.type === 'users/login/rejected') {
 
             // Extract error message from different possible locations
             const errorMsg = loginResponse.error?.message ||
@@ -79,7 +78,6 @@ const LoginModal = () => {
 
         // Attempt to login
         const res = await dispatch(login(user));
-        console.log("res: ", res)
         setLoginResponse(res);
     };
     return (
