@@ -2,13 +2,14 @@ import { useState, useEffect, lazy } from 'react';
 import { Button, Col, Row, Form, FormGroup, Input } from 'reactstrap';
 import SquareAd from '@/components/adsenses/SquareAd';
 import isAdEnabled from '@/utils/isAdEnabled';
-import { sendContactMessage } from '@/redux/slices/contactsSlice';
+import { sendRoomMessage } from '@/redux/slices/contactsSlice';
 import { useDispatch } from 'react-redux';
 import './contact.css';
 import mail from '@/images/mail.svg';
 import { useSelector } from 'react-redux';
 const ResponsiveHorizontal = lazy(() => import('@/components/adsenses/ResponsiveHorizontal'));
 import { notify } from '@/utils/notifyToast';
+import { useNavigate } from 'react-router-dom';
 
 const Contact = () => {
 
@@ -19,7 +20,7 @@ const Contact = () => {
     const [state, setState] = useState({
         contact_name: '',
         email: '',
-        message: ''
+        content: ''
     });
 
     // Lifecycle methods
@@ -34,10 +35,12 @@ const Contact = () => {
         setState(state => ({ ...state, [name]: value }));
     };
 
+    const navigate = useNavigate();
+
     const onContact = e => {
         e.preventDefault();
 
-        const { contact_name, email, message } = state;
+        const { contact_name, email, content } = state;
 
         // VALIDATE
         if (contact_name.length < 3 || email.length < 4) {
@@ -48,31 +51,30 @@ const Contact = () => {
             notify('Name is too long!', 'error');
             return;
         }
-        else if (message.length < 4) {
+        else if (content.length < 4) {
             notify('Insufficient message!', 'error');
             return;
         }
-        else if (message.length > 1000) {
+        else if (content.length > 1000) {
             notify('Message is too long!', 'error');
             return;
         }
-
-        // Create user object
-        const contactMsg = {
-            contact_name,
-            email,
-            message
-        };
-
         // Attempt to contact
-        dispatch(sendContactMessage(contactMsg));
-        window.setTimeout(() => window.location.href = '/chat', 4000);
+        dispatch(sendRoomMessage({
+            anonymous: {
+                name: contact_name,
+                email
+            },
+            content
+        }))
+            .unwrap()
+            .then(() => user && window.setTimeout(() => navigate('/chat')), 4000);
 
         // Reset fields
         setState({
             contact_name: '',
             email: '',
-            message: ''
+            content: ''
         });
     };
 
@@ -118,7 +120,7 @@ const Contact = () => {
                         </FormGroup>
 
                         <FormGroup>
-                            <Input type="textarea" name="message" placeholder="Message" rows="5" minLength="10" maxLength="1000" onChange={onChangeHandler} value={state.message} />
+                            <Input type="textarea" name="content" placeholder="Message" rows="5" minLength="10" maxLength="1000" onChange={onChangeHandler} value={state.content} />
                         </FormGroup>
                         <Button style={{ backgroundColor: 'var(--brand)', color: 'var(--accent)' }} className='btn-block'>
                             Send Message
