@@ -83,9 +83,7 @@ const MessagesContainer = ({ isArchive, messages, typingUsers }) => {
             lastMessageRef.current.scrollIntoView({ behavior: 'smooth' });
         }
     }, [messages?.length, typingUsers?.length]);
-
-    console.log('messages:', messages);
-
+    
     return (
         <div className="flex-grow-1 overflow-auto px-2 mb-3">
             {messages?.length > 0 ? (

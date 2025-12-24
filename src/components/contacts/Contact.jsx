@@ -51,7 +51,7 @@ const Contact = () => {
             notify('Name is too long!', 'error');
             return;
         }
-        else if (content.length < 4) {
+        else if (content.length < 2) {
             notify('Insufficient message!', 'error');
             return;
         }
@@ -120,7 +120,7 @@ const Contact = () => {
                         </FormGroup>
 
                         <FormGroup>
-                            <Input type="textarea" name="content" placeholder="Message" rows="5" minLength="10" maxLength="1000" onChange={onChangeHandler} value={state.content} />
+                            <Input type="textarea" name="content" placeholder="Message" rows="5" minLength="3" maxLength="1000" onChange={onChangeHandler} value={state.content} />
                         </FormGroup>
                         <Button style={{ backgroundColor: 'var(--brand)', color: 'var(--accent)' }} className='btn-block'>
                             Send Message

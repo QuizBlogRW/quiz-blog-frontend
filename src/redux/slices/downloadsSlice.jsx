@@ -8,8 +8,8 @@ export const getDownloads = createAsyncThunk('downloads/getDownloads', async (pa
 export const getDownloadsByCreator = createAsyncThunk('downloads/getDownloadsByCreator', async (uId, { getState }) =>
   apiCallHelper(`/api/downloads/creator/${uId}`, 'get', null, getState, 'getDownloadsByCreator'));
 
-export const getDownloadsByUser = createAsyncThunk('downloads/getDownloadsByUser', async (userId, { getState }) =>
-  apiCallHelper(`/api/downloads/downloaded-by/${userId}`, 'get', null, getState, 'getDownloadsByUser'));
+export const getDownloadsByUser = createAsyncThunk('downloads/getDownloadsByUser', async (_id, { getState }) =>
+  apiCallHelper(`/api/downloads/downloaded-by/${_id}`, 'get', null, getState, 'getDownloadsByUser'));
 
 export const saveDownload = createAsyncThunk('downloads/saveDownload', async (newDownload, { getState }) =>
   apiCallHelper('/api/downloads', 'post', newDownload, getState, 'saveDownload'));

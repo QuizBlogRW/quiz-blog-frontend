@@ -11,7 +11,7 @@ const Topbar = ({ toggleSidebar }) => {
   const toggleTopbar = () => setTopbarOpen(!topbarIsOpen);
 
   const userName = user && user.name;
-  const userId = user && user._id;
+  const _id = user && user._id;
 
   return (
     <Navbar color="light" light
@@ -56,7 +56,7 @@ const Topbar = ({ toggleSidebar }) => {
           </NavItem>
 
           <NavItem>
-            <Logout userId={userId} />
+            <Logout _id={_id} />
           </NavItem>
 
         </Nav>

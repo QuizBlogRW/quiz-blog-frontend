@@ -26,7 +26,7 @@ export const getChatRooms = createAsyncThunk('chatRgetChatRooms/getChatRooms', a
   apiCallHelper(`/api/chat-rooms?pageNo=${pageNo}`, 'get', null, getState, 'getChatRooms'));
 
 export const getUserChatRooms = createAsyncThunk('contacts/getUserChatRooms', async (payload, { getState }) =>
-  apiCallHelper(`/api/chat-rooms/user/${payload.userID}?pageNo=${payload.pageNo}`, 'get', null, getState, 'getUserChatRooms'));
+  apiCallHelper(`/api/chat-rooms/user/${payload._id}?pageNo=${payload.pageNo}`, 'get', null, getState, 'getUserChatRooms'));
 
 export const getCreateRoom = createAsyncThunk('contacts/getCreateRoom', async (oneOnOneRoom, { getState }) =>
   apiCallHelper(`/api/chat-rooms/room/${oneOnOneRoom.roomName}`, 'post', oneOnOneRoom, getState, 'getCreateRoom'));

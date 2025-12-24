@@ -132,8 +132,9 @@ const RoomMessages = ({ roomOpen, room, onlineList, onClose, showAllChats, isTem
                         roomName: oneChatRoom.name,
                     };
 
-                    dispatch(sendRoomMessage(roomMessage));
-                    socketEmit("roomMessage", roomMessage);
+                    dispatch(sendRoomMessage(roomMessage)).then(() => {
+                        socketEmit("roomMessage", roomMessage);
+                    })
                 }
                 onRoomCreated && onRoomCreated();
             }).catch((error) => {
@@ -153,8 +154,9 @@ const RoomMessages = ({ roomOpen, room, onlineList, onClose, showAllChats, isTem
                 roomName: oneChatRoom.name,
             };
 
-            dispatch(sendRoomMessage(roomMessage));
-            socketEmit("roomMessage", roomMessage);
+            dispatch(sendRoomMessage(roomMessage)).then(() => {
+                socketEmit("roomMessage", roomMessage);
+            })
         }
 
         // Clear input

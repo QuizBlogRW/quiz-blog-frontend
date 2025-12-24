@@ -5,7 +5,7 @@ import { notify } from '@/utils/notifyToast';
 
 const BroadcastModal = () => {
     const { user } = useSelector(state => state.users);
-    const userId = user && user._id;
+    const _id = user && user._id;
 
     const initialState = { title: '', message: '' };
 
@@ -34,7 +34,7 @@ const BroadcastModal = () => {
             throw new Error('validation');
         }
 
-        const newMessage = { title, message, sent_by: userId };
+        const newMessage = { title, message, sent_by: _id };
         return sendBroadcast(newMessage);
     };
 

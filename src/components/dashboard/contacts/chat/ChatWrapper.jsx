@@ -73,7 +73,7 @@ const ChatWrapper = () => {
         if (isAdmin && showAllChats) {
             dispatch(getChatRooms(pageNo));
         } else {
-            dispatch(getUserChatRooms({ userID: user._id, pageNo }));
+            dispatch(getUserChatRooms({ _id: user._id, pageNo }));
         }
     }, [user?._id, isAdmin, showAllChats, pageNo, dispatch]);
 
@@ -144,22 +144,18 @@ const ChatWrapper = () => {
 
         if (!roomsToFetch?.length) return;
 
-        const currentIds = roomsToFetch.map(r => r._id);
-        const idsChanged = JSON.stringify(prevRoomIdsRef.current) !== JSON.stringify(currentIds);
+        const roomsIds = roomsToFetch.map(r => r._id);
+        const idsChanged = JSON.stringify(prevRoomIdsRef.current) !== JSON.stringify(roomsIds);
 
         if (idsChanged) {
-            prevRoomIdsRef.current = currentIds;
-            dispatch(getBatchedRoomMessages(currentIds));
+            prevRoomIdsRef.current = roomsIds;
+            dispatch(getBatchedRoomMessages(roomsIds));
         }
     }, [userChatRooms, allChatRooms, showAllChats, isAdmin, dispatch]);
 
     /* ------------------ CHAT HANDLERS ------------------ */
     const openRoom = useCallback(
         ({ roomName, sender, receiver, receiverName, fromExistingRoom = false }) => {
-            if (!roomName || !sender || !receiver) {
-                notify('Cannot open room: Invalid parameters', 'error');
-                return;
-            }
 
             if (fromExistingRoom) {
                 setChatState({
