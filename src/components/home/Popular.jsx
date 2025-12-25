@@ -36,7 +36,7 @@ const Popular = () => {
                         <u>Top 3 Popular Quizzes Today</u>
                     </h6>
 
-                    {!isLoading ? (
+                    {isLoading ? <QBLoadingSM title="popular quizzes today" /> :
                         <ListGroup flush>
                             {popularQuizzes.map((quiz, index) => (
                                 <ListGroupItem
@@ -51,10 +51,7 @@ const Popular = () => {
                                     <Badge color="success" pill>{quiz.count}</Badge>
                                 </ListGroupItem>
                             ))}
-                        </ListGroup>
-                    ) : (
-                        <QBLoadingSM title="popular quizzes today" />
-                    )}
+                        </ListGroup>}
                 </div>
 
                 {/* User of the Month */}

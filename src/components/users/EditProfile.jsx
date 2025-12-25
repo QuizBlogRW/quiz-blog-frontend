@@ -77,7 +77,7 @@ const EditProfile = () => {
     if (about.length > 2000) return notify('About too long!', 'error');
     if (interests.length > 20) return notify('Interest limit reached!', 'error');
 
-    dispatch(updateProfile({ uId: userId, name, school, level, faculty, year, interests, about }));
+    dispatch(updateProfile({ _id: userId, name, school, level, faculty, year, interests, about }));
   };
 
   if (!isAuthenticated) return <NotAuthenticated />;
@@ -94,7 +94,7 @@ const EditProfile = () => {
       </Row>
 
       {/* Name */}
-      <Form.Group row className="mx-0">
+      <FormGroup row className="mx-0">
         <Label sm={3}>Update Name</Label>
         <Col sm={7}>
           <Input
@@ -108,7 +108,7 @@ const EditProfile = () => {
         <Col sm={2}>
           <Input disabled type="text" value="Current Record" className="text-success" />
         </Col>
-      </Form.Group>
+      </FormGroup>
 
       {/* Select Fields */}
       <SelectField

@@ -146,7 +146,7 @@ const QuizResults = () => {
           <div className="my-sm-5 d-flex justify-content-around align-items-center flex-wrap">
 
             <Link to={`/view-quiz/${thisQuiz?.slug}`}>
-              <button className="btn-retake mt-3 mt-sm-0">Retake</button>
+              <Button outline color="success" className="btn-retake mt-3 mt-sm-0 text-warning">Retake</Button>
             </Link>
 
             {user?.role ? (
@@ -155,7 +155,7 @@ const QuizResults = () => {
 
                 {scoreToSaveID && (
                   <Link to={`/review-quiz/${scoreToSaveID}`} state={scoreToSave}>
-                    <Button outline color="success" className="mt-3 share-btn">
+                    <Button outline color="warning" className="mt-3 share-btn text-success">
                       Review Answers
                     </Button>
                   </Link>

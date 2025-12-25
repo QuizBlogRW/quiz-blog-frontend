@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import { useSelector } from 'react-redux';
 import { Col, Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import srcQuestion from '@/images/undraw_Question2.svg';
@@ -6,10 +7,27 @@ import Adverts from './Adverts';
 import { logRegContext } from '@/contexts/appContexts';
 
 const LandingSection = () => {
+
+  const { isAuthenticated } = useSelector((state) => state.users);
   const { toggleR } = useContext(logRegContext);
   const title = 'Knowledge matters, and so does the joy of quizzing!';
 
   const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+
+  const handleGetStarted = () => {
+    if (!isAuthenticated) {
+      toggleR();
+      return;
+    }
+
+    const target = document.getElementById('latest-quizzes');
+    if (target) {
+      target.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }
+  };
 
   return (
     <section className="intro-landing w-100 d-flex flex-column flex-lg-row justify-content-around align-items-center mx-auto py-5" aria-label="Landing">
@@ -34,7 +52,7 @@ const LandingSection = () => {
         />
 
         <div className="d-flex flex-wrap gap-3 mt-3 justify-content-around">
-          <Button color="success" className="landing-cta px-4 py-2 fw-bold" onClick={toggleR} aria-label="Get started">
+          <Button color="success" className="landing-cta px-4 py-2 fw-bold" onClick={handleGetStarted} aria-label="Get started">
             Get Started
           </Button>
 

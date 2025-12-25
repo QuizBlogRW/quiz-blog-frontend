@@ -127,7 +127,7 @@ const App = () => {
                         <p className='text-danger text-center fw-bolder d-block mb-0'>
                             &nbsp;&nbsp;Your profile is {`${percentage}`} % up to date!
                             &nbsp;&nbsp;
-                            <Link to={`/edit-profile/${user && user._id}`}>
+                            <Link to={`/edit-profile/${user?._id}`}>
                                 <strong className='px-1' style={{ color: 'var(--brand)', textDecoration: 'underline' }}>
                                     Updating your picture + details...
                                 </strong>

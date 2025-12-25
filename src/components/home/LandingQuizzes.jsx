@@ -55,7 +55,7 @@ const LandingQuizzes = () => {
         aria-label="Latest quizzes"
       >
         <Col sm="8" className="px-1 px-lg-4 mt-md-2">
-          <h1 className="mt-0 my-lg-3 py-lg-3 text-center fw-bolder py-2">
+          <h1 className="mt-0 my-lg-3 py-lg-3 text-center fw-bolder py-2" id='latest-quizzes'>
             Latest Quizzes
           </h1>
 

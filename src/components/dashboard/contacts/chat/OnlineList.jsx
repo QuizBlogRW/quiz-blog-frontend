@@ -1,9 +1,9 @@
 import { useMemo } from "react";
-import { ListGroup, ListGroupItem, Col } from "reactstrap";
+import { ListGroup, ListGroupItem, Col, Button } from "reactstrap";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-const OnlineList = ({ openRoom, onlineList, capitalizeName }) => {
+const OnlineList = ({ openRoom, onlineList, capitalizeName, isAdmin }) => {
 
     const user = useSelector(state => state.users.user);
     const userChatRooms = useSelector(state => state.contacts.userChatRooms);
@@ -18,8 +18,24 @@ const OnlineList = ({ openRoom, onlineList, capitalizeName }) => {
         [onlineList, user?._id]
     );
 
+    const navigate = useNavigate();
+
     return (
         <Col xs="12" sm="3" className="d-flex flex-column overflow-auto bg-light rounded p-2" style={{ maxHeight: '100vh' }}>
+
+            {isAdmin && (
+                <div className="mb-2">
+                    <Button
+                        color="warning"
+                        size="sm"
+                        className="w-100"
+                        onClick={() => navigate('/contacts-archive')}
+                    >
+                        View archived contacts
+                    </Button>
+                </div>
+            )}
+
             {onlineUsersCount > 1 ?
                 <>
                     <h5 className="text-center fw-bold my-3">

@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { deleteChatroom } from '@/redux/slices/contactsSlice';
 import QBLoadingSM from "@/utils/rLoading/QBLoadingSM";
 import GenericPanel from '../GenericPanel';
+import { notify } from '@/utils/notifyToast';
 
 const ChatsPanel = ({ chatRooms, openRoom }) => {
 
@@ -18,7 +19,9 @@ const ChatsPanel = ({ chatRooms, openRoom }) => {
     const userId = user?._id;
 
     const handleDelete = roomId => {
-        dispatch(deleteChatroom(roomId));
+        dispatch(deleteChatroom(roomId))
+            .unwrap()
+            .then(() => notify('Chatroom deleted', 'success'));
     };
 
     const getRoomPreview = useCallback((roomId) => {

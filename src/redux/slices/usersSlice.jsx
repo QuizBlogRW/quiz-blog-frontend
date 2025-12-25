@@ -108,7 +108,7 @@ export const updateProfile = createAsyncThunk(
   'users/updateProfile',
   async (updatedProfile, { getState }) =>
     apiCallHelper(
-      `/api/users/user-details/${updatedProfile.id}`,
+      `/api/users/user-details/${updatedProfile._id}`,
       'put',
       updatedProfile,
       getState,

@@ -88,7 +88,7 @@ const RatingQuiz = ({ isOpen, toggle, onSubmit, quiz, score, user }) => {
                     key={i}
                     color={rating === i ? ratingColor(i) : "white"}
                     onClick={() => setRating(i)}
-                    className="border border-secondary rounded-circle m-1 m-lg-2 shadow-sm"
+                    className="border border-secondary rounded-circle m-1 shadow-sm"
                     size="sm"
                 >
                     {i}
@@ -131,8 +131,8 @@ const RatingQuiz = ({ isOpen, toggle, onSubmit, quiz, score, user }) => {
                 </Alert>
             )}
 
-            <ModalBody>
-                <Form>
+            <ModalBody className="p-2">
+                <Form className="p-1">
                     <h6 className="text-center mb-3 fw-bold">How would you rate this quiz?</h6>
 
                     {/* Rating buttons */}

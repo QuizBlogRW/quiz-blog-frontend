@@ -266,7 +266,7 @@ const ChatWrapper = () => {
             />
 
             {/* Right Panel Column: Online Users */}
-            <OnlineList openRoom={openRoom} onlineList={onlineList} capitalizeName={capitalizeName} />
+            <OnlineList openRoom={openRoom} onlineList={onlineList} capitalizeName={capitalizeName} isAdmin={isAdmin} />
         </Row>
     );
 };

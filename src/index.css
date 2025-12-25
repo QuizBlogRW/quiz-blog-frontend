@@ -764,6 +764,7 @@ nav .dropdown-item-text a button {
 /* Logout item: keep badge appearance but disable background hover color change */
 .logout-item {
   padding: 0.25rem 0.5rem;
+  width: auto;
 }
 
 .logout-item:hover,

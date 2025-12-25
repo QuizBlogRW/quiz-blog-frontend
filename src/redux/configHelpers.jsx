@@ -232,12 +232,13 @@ export const apiCallHelper = async (
 // File Upload Helper
 export const apiCallHelperUpload = async (
   url,
+  method = 'post',
   formData,
   getState = null,
+  actionType = null,
   options = {}
 ) => {
   const {
-    method = 'post',
     onUploadProgress = null,
     skipNotification = false,
   } = options;
@@ -245,22 +246,22 @@ export const apiCallHelperUpload = async (
   try {
     const token = getState?.()?.auth?.token || localStorage.getItem('token');
 
-    const config = {
+    const response = await axiosInstance.request({
       method,
-      url: `${API_BASE_URL}${url}`,
+      url,
       data: formData,
       headers: {
         'x-auth-token': token,
         'Content-Type': 'multipart/form-data',
       },
-      timeout: 60000, // 60s for uploads
+      timeout: 60000,
       ...(onUploadProgress && { onUploadProgress }),
-    };
+    });
 
-    const response = await axios(config);
     return response.data;
 
   } catch (error) {
+    console.error('API Error:', error, 'actionType:', actionType);
     const message = error.response?.data?.message || error.message || 'Upload failed';
 
     if (!skipNotification) {

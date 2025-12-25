@@ -160,13 +160,17 @@ const contactsSlice = createSlice({
     builder.addCase(getBatchedRoomMessages.fulfilled, (state, action) => {
       const messages = action.payload;
 
-      messages.forEach(msg => {
-        const roomID = msg.room;
-        if (!state.batchedRoomMessages[roomID]) {
-          state.batchedRoomMessages[roomID] = [];
+      const updatedMessages = {};
+
+      for (const msg of messages) {
+        if (!updatedMessages[msg.room]) {
+          updatedMessages[msg.room] = [];
         }
-        state.batchedRoomMessages[roomID].unshift(msg);
-      });
+        updatedMessages[msg.room].unshift(msg);
+      }
+
+      // Replace the entire room messages
+      state.batchedRoomMessages = updatedMessages;
       state.isLoading = false;
     });
 
@@ -187,7 +191,6 @@ const contactsSlice = createSlice({
       state.allChatRooms = state.allChatRooms.filter(room => room._id !== action.payload._id);
       state.userChatRooms = state.userChatRooms.filter(room => room._id !== action.payload._id);
       state.isLoading = false;
-      notify('Chatroom deleted', 'success');
     });
 
     // Pending actions
