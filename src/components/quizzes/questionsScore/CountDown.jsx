@@ -3,30 +3,35 @@ import { Col, Row } from "reactstrap";
 
 const CountDown = ({ timeInSecs, start, goToNextQuestion }) => {
     const [remaining, setRemaining] = useState(timeInSecs);
-    const hasFired = useRef(false);
+    const intervalRef = useRef(null);
 
+    // Reset timer when question changes
     useEffect(() => {
         setRemaining(timeInSecs);
-        hasFired.current = false;
     }, [timeInSecs]);
 
     useEffect(() => {
         if (!start) return;
 
-        if (remaining <= 0) {
-            if (!hasFired.current) {
-                hasFired.current = true;
-                goToNextQuestion();
-            }
-            return;
-        }
-
-        const interval = setInterval(() => {
-            setRemaining((prev) => prev - 1);
+        intervalRef.current = setInterval(() => {
+            setRemaining(prev => {
+                if (prev <= 1) {
+                    clearInterval(intervalRef.current);
+                    intervalRef.current = null;
+                    goToNextQuestion(); // fire exactly once
+                    return 0;
+                }
+                return prev - 1;
+            });
         }, 1000);
 
-        return () => clearInterval(interval);
-    }, [remaining, start]);
+        return () => {
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+                intervalRef.current = null;
+            }
+        };
+    }, [start, timeInSecs, goToNextQuestion]);
 
     const minutes = Math.floor(remaining / 60);
     const seconds = remaining % 60;

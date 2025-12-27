@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback, useRef } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { createScore } from "@/redux/slices/scoresSlice";
@@ -21,7 +21,7 @@ const QuizQuestions = () => {
     const location = useLocation();
 
     const thisQuiz = location.state;
-    
+
     // Index
     const qnsLength = thisQuiz?.questions?.length || 0;
     const [curQnIndex, setCurQnIndex] = useState(0);
@@ -41,7 +41,7 @@ const QuizQuestions = () => {
         title: thisQuiz?.title,
         description: thisQuiz?.description,
         questions: JSON.parse(JSON.stringify(thisQuiz?.questions || [])),
-    }), []);
+    }), [thisQuiz]);
 
     const [quizToReview, setQuizToReview] = useState(initialReview);
     const [saving, setSaving] = useState(false);
@@ -92,19 +92,15 @@ const QuizQuestions = () => {
         }
     }, [dispatch, scoreToSave, user]);
 
-    const isNavigating = useRef(false);
-
     // Move to next question
     const goToNextQuestion = useCallback(async () => {
-        if (isNavigating.current) return; // Prevent multiple calls
-
+        // If not the last question, just move to next
         if (curQnIndex + 1 < qnsLength) {
-            setCurQnIndex(i => i + 1);
+            setCurQnIndex(prev => prev + 1);
             return;
         }
 
-        isNavigating.current = true; // Set flag before navigation
-
+        // Last question - calculate and navigate to results
         const finalMarks = Math.floor(calculateMarks(quizToReview.questions));
         const mongoScoreID = await saveScore();
 
@@ -119,7 +115,7 @@ const QuizQuestions = () => {
                 scoreToSaveID: scoreToSave.id,
             }
         });
-    }, [curQnIndex, qnsLength, quizToReview, saveScore, navigate, quizSlug, thisQuiz]);
+    }, [curQnIndex, qnsLength, quizToReview, saveScore, navigate, quizSlug, thisQuiz, scoreToSave.id]);
 
     // Auto-advance when user selected all correct options
     useEffect(() => {
@@ -128,7 +124,7 @@ const QuizQuestions = () => {
         const correctCount = currentQn.answerOptions.filter(o => o.isCorrect).length;
         const selectedCount = answers.filter(v => v).length;
 
-        if (selectedCount === correctCount) {
+        if (selectedCount === correctCount && correctCount > 0) {
             const timer = setTimeout(goToNextQuestion, 200);
             return () => clearTimeout(timer);
         }
