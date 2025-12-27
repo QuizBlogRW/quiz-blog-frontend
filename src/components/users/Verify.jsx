@@ -40,7 +40,6 @@ export default function Verify() {
         document.title = "Verify OTP";
     }, []);
 
-    // Countdown timer
     useEffect(() => {
         if (resendTimer === 0) {
             setCanResend(true);

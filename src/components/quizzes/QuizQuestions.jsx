@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { createScore } from "@/redux/slices/scoresSlice";
@@ -12,6 +12,7 @@ import Unavailable from "./questionsScore/Unavailable";
 import { calculateMarks } from "@/utils/quizUtils";
 
 const QuizQuestions = () => {
+
     const dispatch = useDispatch();
     const { user } = useSelector(state => state.users);
 
@@ -20,7 +21,7 @@ const QuizQuestions = () => {
     const location = useLocation();
 
     const thisQuiz = location.state;
-
+    
     // Index
     const qnsLength = thisQuiz?.questions?.length || 0;
     const [curQnIndex, setCurQnIndex] = useState(0);
@@ -91,12 +92,18 @@ const QuizQuestions = () => {
         }
     }, [dispatch, scoreToSave, user]);
 
+    const isNavigating = useRef(false);
+
     // Move to next question
     const goToNextQuestion = useCallback(async () => {
+        if (isNavigating.current) return; // Prevent multiple calls
+
         if (curQnIndex + 1 < qnsLength) {
             setCurQnIndex(i => i + 1);
             return;
         }
+
+        isNavigating.current = true; // Set flag before navigation
 
         const finalMarks = Math.floor(calculateMarks(quizToReview.questions));
         const mongoScoreID = await saveScore();

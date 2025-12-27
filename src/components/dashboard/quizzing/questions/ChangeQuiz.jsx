@@ -9,7 +9,6 @@ const ChangeQuiz = ({ questionID, oldQuizID, questionCatID }) => {
   const dispatch = useDispatch();
   const { isLoading, categoryQuizzes } = useSelector((state) => state.quizzes);
   const { user } = useSelector((state) => state.users);
-  console.log('categoryQuizzes: ', categoryQuizzes);
 
   const initialData = { questionID, newQuizID: '' };
 

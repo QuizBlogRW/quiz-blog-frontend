@@ -1,171 +1,114 @@
-import { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useEffect, useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, TabPane, ListGroup, ListGroupItem, Alert } from 'reactstrap';
+
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
-import { getQuestions } from '@/redux/slices/questionsSlice';
-import { getPaginatedQuizzes, getQuizzes } from '@/redux/slices/quizzesSlice';
-import QuizToast from './QuizToast';
 import SearchInput from '@/utils/SearchInput';
 import Pagination from '@/components/dashboard/utils/Pagination';
 import PageOf from '@/components/dashboard/utils/PageOf';
+import QuizToast from './QuizToast';
+
+import { getQuestions } from '@/redux/slices/questionsSlice';
+import { getPaginatedQuizzes, getQuizzes } from '@/redux/slices/quizzesSlice';
 
 const QuizzesTabPane = () => {
+  const dispatch = useDispatch();
+
+  // -----------------------------
+  // Redux state
+  // -----------------------------
   const { user } = useSelector((state) => state.users);
   const categories = useSelector((state) => state.categories);
 
-  // Redux
-  const dispatch = useDispatch();
-  const { isLoading, loadingPaginated, quizzes, paginatedQuizzes, totalPages } =
-    useSelector((state) => state.quizzes);
-  const questions = useSelector((state) => state.questions);
+  const {
+    isLoading: quizzesLoading,
+    loadingPaginated,
+    quizzes,
+    paginatedQuizzes,
+    totalPages,
+  } = useSelector((state) => state.quizzes);
 
+  const {
+    isLoading: questionsLoading,
+    questionsData,
+  } = useSelector((state) => state.questions);
+
+  // -----------------------------
+  // Local state
+  // -----------------------------
   const [pageNo, setPageNo] = useState(1);
-  const [numberOfPages, setNumberOfPages] = useState(0);
-  const [searchKey, setSearchKey] = useState('');
-  const [searchKeyQ, setSearchKeyQ] = useState('');
+  const [quizSearch, setQuizSearch] = useState('');
+  const [questionSearch, setQuestionSearch] = useState('');
 
-  // Lifecycle methods
+  // -----------------------------
+  // Role helpers
+  // -----------------------------
+  const isAdmin = user?.role?.includes('Admin');
+  const isVisitor = user?.role === 'Visitor';
+
+  // -----------------------------
+  // Effects
+  // -----------------------------
   useEffect(() => {
     dispatch(getQuizzes());
-    dispatch(getPaginatedQuizzes({ pageNo }));
     dispatch(getQuestions());
-  }, [dispatch, pageNo]);
+  }, [dispatch]);
 
   useEffect(() => {
-    setNumberOfPages(totalPages);
-  }, [totalPages]);
+    dispatch(getPaginatedQuizzes({ pageNo }));
+  }, [dispatch, pageNo]);
 
-  // Quizzes to use - CREATED BY ROUTE
-  const creatorQuizzes = paginatedQuizzes && paginatedQuizzes?.filter(
-    (quiz) => quiz.created_by && quiz.created_by._id === user._id
-  );
+  // -----------------------------
+  // Derived data (memoized)
+  // -----------------------------
+  const quizzesToUse = useMemo(() => {
+    if (!paginatedQuizzes) return [];
+    if (isAdmin) return paginatedQuizzes;
 
-  const quizzesToUse =
-    user.role?.includes('Admin')
-      ? paginatedQuizzes
-      : creatorQuizzes;
-
-  // Questions to use
-  const allQuestions = questions && questions.questionsData;
-  const creatorQuestions =
-    questions &&
-    questions.questionsData?.filter(
-      (question) => question.created_by && question.created_by._id === user._id
+    return paginatedQuizzes.filter(
+      (quiz) => quiz.created_by?._id === user?._id
     );
-  const questionsToUse =
-    user.role?.includes('Admin')
-      ? allQuestions
-      : creatorQuestions;
+  }, [paginatedQuizzes, isAdmin, user?._id]);
 
-  return (
-    <TabPane tabId="2">
-      {loadingPaginated ? (
+  const questionsToUse = useMemo(() => {
+    if (!questionsData) return [];
+    if (isAdmin) return questionsData;
+
+    return questionsData.filter(
+      (question) => question.created_by?._id === user?._id
+    );
+  }, [questionsData, isAdmin, user?._id]);
+
+  const filteredQuizzes = useMemo(() => {
+    if (!quizSearch) return [];
+    return quizzes?.filter((quiz) =>
+      quiz.title.toLowerCase().includes(quizSearch.toLowerCase())
+    );
+  }, [quizzes, quizSearch]);
+
+  const filteredQuestions = useMemo(() => {
+    if (!questionSearch) return [];
+    return questionsToUse.filter((question) =>
+      question.questionText
+        .toLowerCase()
+        .includes(questionSearch.toLowerCase())
+    );
+  }, [questionsToUse, questionSearch]);
+
+  // -----------------------------
+  // Loading & empty states
+  // -----------------------------
+  if (loadingPaginated) {
+    return (
+      <TabPane tabId="2">
         <QBLoadingSM title="paginated quizzes" />
-      ) : quizzesToUse && quizzesToUse.length > 0 ? (
-        <>
-          {user?.role?.includes('Admin') ? (
-            <PageOf pageNo={pageNo} numberOfPages={numberOfPages} />
-          ) : null}
+      </TabPane>
+    );
+  }
 
-          {
-            // SEARCH BARS
-            isLoading || questions.isLoading ? (
-              <div className="p-1 m-1 d-flex justify-content-center align-items-center">
-                <QBLoadingSM />{' '}
-              </div>
-            ) : (
-              <Row className="mt-0">
-                <Col sm="6">
-                  <SearchInput
-                    setSearchKey={setSearchKey}
-                    placeholder=" Search quizzes here ...  "
-                  />
-                </Col>
-                <Col sm="6">
-                  <SearchInput
-                    setSearchKey={setSearchKeyQ}
-                    placeholder=" Search questions here ...  "
-                  />
-                </Col>
-              </Row>
-            )
-          }
-
-          {/* Search questions */}
-          <Row>
-            <ListGroup>
-              {questionsToUse
-                ?.filter((question) => {
-                  if (searchKeyQ === '') {
-                    return null;
-                  } else if (
-                    question.questionText
-                      .toLowerCase()
-                      .includes(searchKeyQ.toLowerCase())
-                  ) {
-                    return question;
-                  }
-                  return null;
-                })
-                ?.map((question) => (
-                  <ListGroupItem
-                    key={question._id}
-                    tag="a"
-                    href={`/view-question/${question._id}`}
-                  >
-                    {question.questionText}
-                  </ListGroupItem>
-                ))}
-            </ListGroup>
-          </Row>
-
-          {/* SEARCH QUIZZES */}
-          <Row>
-            {quizzes &&
-              quizzes
-                ?.filter((quiz) => {
-                  if (searchKey === '') {
-                    return null;
-                  } else if (
-                    quiz.title.toLowerCase().includes(searchKey.toLowerCase())
-                  ) {
-                    return quiz;
-                  }
-                  return null;
-                })
-                ?.map((quiz) => (
-                  <QuizToast
-                    fromSearch={true}
-                    key={quiz._id}
-                    categories={categories}
-                    quiz={quiz && quiz}
-                  />
-                ))}
-          </Row>
-
-          {/* LIMITED QUIZZES */}
-          <Row>
-            {quizzesToUse?.map((quiz) => (
-              <QuizToast
-                key={quiz._id}
-                categories={categories}
-                quiz={quiz && quiz}
-              />
-            ))}
-          </Row>
-
-          {/* PAGINATION */}
-          {user?.role !== 'Visitor' ? (
-            <>
-              <Pagination
-                pageNo={pageNo}
-                setPageNo={setPageNo}
-                numberOfPages={numberOfPages}
-              />
-            </>
-          ) : null}
-        </>
-      ) : (
+  if (!quizzesToUse.length) {
+    return (
+      <TabPane tabId="2">
         <Alert
           color="danger"
           className="w-50 text-center mx-auto"
@@ -173,6 +116,75 @@ const QuizzesTabPane = () => {
         >
           You have not created any quiz yet!
         </Alert>
+      </TabPane>
+    );
+  }
+
+  // -----------------------------
+  // Render
+  // -----------------------------
+  return (
+    <TabPane tabId="2">
+      {isAdmin && (
+        <PageOf pageNo={pageNo} numberOfPages={totalPages} />
+      )}
+
+      {(quizzesLoading || questionsLoading) ? (
+        <div className="p-1 m-1 d-flex justify-content-center">
+          <QBLoadingSM />
+        </div>
+      ) : (
+        <Row>
+          <Col sm="6">
+            <SearchInput
+              setSearchKey={setQuizSearch}
+              placeholder="Search quizzes here..."
+            />
+          </Col>
+          <Col sm="6">
+            <SearchInput
+              setSearchKey={setQuestionSearch}
+              placeholder="Search questions here..."
+            />
+          </Col>
+        </Row>
+      )}
+
+      {/* Question search results */}
+      {questionSearch && (
+        <Row>
+          <ListGroup>
+            {filteredQuestions.map((question) => (
+              <ListGroupItem
+                key={question._id}
+                tag="a"
+                href={`/view-question/${question._id}`}
+              >
+                {question.questionText}
+              </ListGroupItem>
+            ))}
+          </ListGroup>
+        </Row>
+      )}
+
+      {/* Quiz search results OR paginated list */}
+      <Row>
+        {(quizSearch ? filteredQuizzes : quizzesToUse).map((quiz) => (
+          <QuizToast
+            key={quiz._id}
+            quiz={quiz}
+            categories={categories}
+            fromSearch={Boolean(quizSearch)}
+          />
+        ))}
+      </Row>
+
+      {!isVisitor && (
+        <Pagination
+          pageNo={pageNo}
+          setPageNo={setPageNo}
+          numberOfPages={totalPages}
+        />
       )}
     </TabPane>
   );

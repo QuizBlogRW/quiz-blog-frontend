@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Col, Row } from "reactstrap";
 
-const CountDown = ({ timeInSecs, qnsLength, curQnIndex, start, goToNextQuestion }) => {
+const CountDown = ({ timeInSecs, start, goToNextQuestion }) => {
     const [remaining, setRemaining] = useState(timeInSecs);
     const hasFired = useRef(false);
 
@@ -16,7 +16,7 @@ const CountDown = ({ timeInSecs, qnsLength, curQnIndex, start, goToNextQuestion 
         if (remaining <= 0) {
             if (!hasFired.current) {
                 hasFired.current = true;
-                goToNextQuestion(curQnIndex, qnsLength);
+                goToNextQuestion();
             }
             return;
         }
@@ -26,7 +26,7 @@ const CountDown = ({ timeInSecs, qnsLength, curQnIndex, start, goToNextQuestion 
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [remaining, start, curQnIndex, qnsLength, goToNextQuestion]);
+    }, [remaining, start]);
 
     const minutes = Math.floor(remaining / 60);
     const seconds = remaining % 60;

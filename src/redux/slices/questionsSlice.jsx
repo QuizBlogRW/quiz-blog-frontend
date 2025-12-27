@@ -98,9 +98,6 @@ const questionsSlice = createSlice({
         question._id === action.payload._id ? action.payload : question
       );
       state.isLoading = false;
-      setTimeout(() => {
-        window.history.back();
-      }, 3000);
     });
     builder.addCase(deleteQuestion.fulfilled, (state, action) => {
       state.questionsData = state.questionsData.filter(

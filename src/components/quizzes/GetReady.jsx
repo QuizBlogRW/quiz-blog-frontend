@@ -10,6 +10,7 @@ import isAdEnabled from '@/utils/isAdEnabled';
 const ResponsiveHorizontal = lazy(() => import('@/components/adsenses/ResponsiveHorizontal'));
 
 const GetReady = () => {
+
     const dispatch = useDispatch();
     const { quizSlug } = useParams();
     const { oneQuiz, isLoading, error } = useSelector(state => state.quizzes);
@@ -39,12 +40,7 @@ const GetReady = () => {
         back: isAmategeko ? 'Garuka' : 'Go Back',
     };
 
-    if (isLoading)
-        return (
-            <div className="vh-100 d-flex justify-content-center align-items-center">
-                <QBLoadingSM />
-            </div>
-        );
+    if (isLoading) return <QBLoadingSM />;
 
     if (error)
         return (
@@ -109,28 +105,28 @@ const GetReady = () => {
 
                         {/* Buttons */}
                         <div className="d-flex flex-wrap justify-content-center gap-3 mt-3">
-                            <Link
-                                to={`/attempt-quiz/${oneQuiz.slug}`}
-                                state={{ ...oneQuiz, questions: shuffledQuestions }}
-                            >
-                                <Button className="btn-brand px-4 py-2 fw-semibold shadow-sm">
-                                    <i className="fa-regular fa-circle-play me-2"></i>
-                                    {texts.attempt}
-                                </Button>
-                            </Link>
-
+                        
                             <Button
-                                color="success"
-                                className="px-4 py-2 fw-semibold shadow-sm d-flex align-items-center"
+                                className="btn-accent px-4 py-2 fw-semibold shadow-sm d-flex align-items-center"
                             >
                                 <i className="fa-brands fa-whatsapp me-2"></i>
                                 <a
-                                    className="text-white text-decoration-none"
+                                    className="text-success text-decoration-none"
                                     href={`https://api.whatsapp.com/send?text=Attempt this ${oneQuiz.title} quiz on Quiz-Blog%0Ahttps://www.quizblog.rw/view-quiz/${oneQuiz.slug}`}
                                 >
                                     {texts.share}
                                 </a>
                             </Button>
+
+                            <Link
+                                to={`/attempt-quiz/${oneQuiz.slug}`}
+                                state={{ ...oneQuiz, questions: shuffledQuestions }}
+                            >
+                                <Button className="px-4 py-2 fw-semibold shadow-sm" color="success">
+                                    <i className="fa-regular fa-circle-play me-2"></i>
+                                    {texts.attempt}
+                                </Button>
+                            </Link>
 
                             <Link to="/">
                                 <Button className="btn-accent px-4 py-2 fw-semibold shadow-sm">

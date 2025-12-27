@@ -1,252 +1,322 @@
-import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { Button, Row, Col, Form, FormGroup, Label, Input, Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import { useEffect, useState, useCallback } from 'react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import {
+    Button,
+    Row,
+    Col,
+    Form,
+    FormGroup,
+    Label,
+    Input,
+    Breadcrumb,
+    BreadcrumbItem,
+} from 'reactstrap';
+import { useDispatch, useSelector } from 'react-redux';
+
 import Dashboard from '../../Dashboard';
 import { getOneQuestion, updateQuestion } from '@/redux/slices/questionsSlice';
-import { useSelector, useDispatch } from 'react-redux';
 import { notify } from '@/utils/notifyToast';
 import NotAuthenticated from '@/components/users/NotAuthenticated';
 import QBLoading from '@/utils/rLoading/QBLoadingSM';
 
+const createClientId = () =>
+    `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+
 const EditQuestion = () => {
-
-    // Redux
     const dispatch = useDispatch();
-    const quest = useSelector(state => state.questions.oneQuestion);
-    const isQnLoading = useSelector(state => state.questions.isLoading);
-    const { isAuthenticated, user, isLoading } = useSelector(state => state.users);
-
-    // Access route parameters & history
+    const navigate = useNavigate();
     const { questionID } = useParams();
 
+    const { oneQuestion: quest, isLoading: isQnLoading } = useSelector(
+        state => state.questions
+    );
+    const { isAuthenticated, user, isLoading: isUserLoading } = useSelector(
+        state => state.users
+    );
 
-    // Lifecycle methods
+    const [form, setForm] = useState(null);
+    const [imageFile, setImageFile] = useState(null);
+
     useEffect(() => {
         dispatch(getOneQuestion(questionID));
     }, [dispatch, questionID]);
 
     useEffect(() => {
-        if (quest) {
-            setQuestionTextState({ questionText: quest.questionText });
-            setQuestion_image(quest.question_image);
-            setDurationState({ duration: quest.duration });
-            setAnswerOptionsState(quest.answerOptions);
-        }
+        if (!quest) return;
+
+        setForm({
+            questionText: quest.questionText || '',
+            duration: quest.duration || 0,
+            answerOptions: (quest.answerOptions || []).map(opt => ({
+                ...opt,
+                clientId: opt._id || createClientId(),
+            })),
+        });
     }, [quest]);
 
-    const thisQnCat = quest && quest.category;
-    const thisQnQZ = quest && quest.quiz;
+    const updateForm = useCallback((name, value) => {
+        setForm(prev => ({ ...prev, [name]: value }));
+    }, []);
 
-    const [questionTextState, setQuestionTextState] = useState({ questionText: '' });
-    const [question_image, setQuestion_image] = useState('');
-    const [durationState, setDurationState] = useState();
-    const [answerOptionsState, setAnswerOptionsState] = useState(quest && quest.answerOptions);
+    const updateAnswer = useCallback((clientId, field, value) => {
+        setForm(prev => ({
+            ...prev,
+            answerOptions: prev.answerOptions.map(opt =>
+                opt.clientId === clientId ? { ...opt, [field]: value } : opt
+            ),
+        }));
+    }, []);
 
-    const onQuestionChangeHandler = e => {
-        const { name, value } = e.target;
-        setQuestionTextState(questionTextState => ({ ...questionTextState, [name]: value }));
+    const addAnswer = () => {
+        setForm(prev => ({
+            ...prev,
+            answerOptions: [
+                ...prev.answerOptions,
+                {
+                    clientId: createClientId(),
+                    answerText: '',
+                    explanations: '',
+                    isCorrect: false,
+                },
+            ],
+        }));
     };
 
-    const onFileHandler = (e) => {
-        setQuestion_image(e.target.files[0]);
+    const removeAnswer = clientId => {
+        setForm(prev => ({
+            ...prev,
+            answerOptions: prev.answerOptions.filter(
+                opt => opt.clientId !== clientId
+            ),
+        }));
     };
 
-    const onDurationChangeHandler = e => {
-        const { name, value } = e.target;
-        setDurationState(durationState => ({ ...durationState, [name]: value }));
-    };
-
-    const handleAnswerChangeInput = (id, event) => {
-        const updatedAnswerOptions = answerOptionsState.map(oneAnswer => {
-            if (id === oneAnswer._id) {
-                return {
-                    ...oneAnswer, [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value
-                };
-            }
-            return oneAnswer;
-        });
-        setAnswerOptionsState(updatedAnswerOptions);
-    };
-
-    const handleSubmit = (e) => {
+    const handleSubmit = async e => {
         e.preventDefault();
+        if (!form) return;
+
+        const { questionText, duration, answerOptions } = form;
+
+        if (questionText.length < 4 || questionText.length > 700) {
+            notify('Question length is invalid', 'error');
+            return;
+        }
+
+        if (duration <= 0) {
+            notify('Duration must be greater than zero', 'error');
+            return;
+        }
+
+        if (answerOptions.length < 2) {
+            notify('At least two answers are required', 'error');
+            return;
+        }
+
+        if (answerOptions.some(a => !a.answerText.trim())) {
+            notify('All answers must have text', 'error');
+            return;
+        }
+
+        if (answerOptions.filter(a => a.isCorrect).length === 0) {
+            notify('Select at least one correct answer', 'error');
+            return;
+        }
 
         const formData = new FormData();
+        formData.append('questionText', questionText);
+        formData.append('duration', duration);
 
-        // VALIDATE
-        if (questionTextState?.questionText?.length < 4) {
-            notify('Insufficient info!', 'error');
-            return;
-        }
-        else if (questionTextState?.questionText?.length > 700) {
-            notify('Question is too long!', 'error');
-            return;
+        if (imageFile) {
+            formData.append('question_image', imageFile);
         }
 
-        else if (answerOptionsState?.length <= 1) {
-            alert('Answers are not sufficient!', 'error');
-            return;
-        }
-
-        else if (answerOptionsState.filter(aOptn => aOptn.isCorrect === true)?.length === 0) {
-            notify('No correct answer selected!', 'error');
-            return;
-        }
-
-        // Add to form data
-        formData.append('question_image', question_image);
-        formData.append('questionText', questionTextState?.questionText);
-        answerOptionsState.forEach(aOptn => {
-            formData.append('answerOptions', JSON.stringify(aOptn));
+        answerOptions.forEach(opt => {
+            const payload = { ...opt };
+            delete payload.clientId;
+            formData.append('answerOptions', JSON.stringify(payload));
         });
-        formData.append('last_updated_by', isLoading === false ? user._id : null);
-        formData.append('duration', durationState.duration);
 
-        // Attempt to update
-        dispatch(updateQuestion({ questionID, formData }));
+        if (!isUserLoading && user?._id) {
+            formData.append('last_updated_by', user._id);
+        }
 
-        // Go back
-        window.history.back();
-    };
+        const result = await dispatch(
+            updateQuestion({ questionID, formData })
+        );
 
-    const handleAddFields = () => {
-        setAnswerOptionsState([...answerOptionsState, { answerText: '', explanations: '', isCorrect: false }]);
-    };
-
-    const handleRemoveFields = _id => {
-
-        const values = [...answerOptionsState];
-        values.splice(values.findIndex(value => value._id === _id), 1);
-
-        setAnswerOptionsState(values);
+        if (updateQuestion.fulfilled.match(result)) {
+            navigate(-1);
+        }
     };
 
     if (!isAuthenticated) return <NotAuthenticated />;
     if (user?.role === 'Visitor') return <Dashboard />;
-    if (isQnLoading) return <QBLoading />;
+    if (isQnLoading || !form) return <QBLoading />;
 
-    return (thisQnQZ && <Form className="my-3 mt-lg-5 mx-3 mx-lg-5 edit-question" onSubmit={handleSubmit}>
+    const { category, quiz } = quest;
 
-        <Row className="mb-0 mb-lg-3 mx-0">
-            <Breadcrumb>
-                <BreadcrumbItem>
-                    <Link to={`/category/${thisQnCat?._id}`}>
-                        {thisQnCat?.title}
-                    </Link>
-                </BreadcrumbItem>
+    const imageSrc =
+        imageFile instanceof File
+            ? URL.createObjectURL(imageFile)
+            : quest.question_image;
 
-                <BreadcrumbItem>
-                    <Link to={`/view-quiz/${thisQnQZ?.slug}`}>
-                        {thisQnQZ?.title}
-                    </Link>
-                </BreadcrumbItem>
+    return (
+        <Form
+            className="mt-3 mt-lg-5 mx-3 mx-lg-5 border rounded shadow-sm bg-white p-3 p-lg-4"
+            onSubmit={handleSubmit}
+        >
+            {/* Breadcrumb */}
+            <Row className="mb-3">
+                <Breadcrumb>
+                    <BreadcrumbItem>
+                        <Link to={`/category/${category?._id}`}>{category?.title}</Link>
+                    </BreadcrumbItem>
+                    <BreadcrumbItem>
+                        <Link to={`/view-quiz/${quiz?.slug}`}>{quiz?.title}</Link>
+                    </BreadcrumbItem>
+                    <BreadcrumbItem active>Edit Question</BreadcrumbItem>
+                </Breadcrumb>
+            </Row>
 
-                <BreadcrumbItem active>Edit Question</BreadcrumbItem>
-            </Breadcrumb>
-        </Row>
-
-        {questionTextState &&
-            <FormGroup row className="mx-0">
-                <Label sm={2}>Question Edit</Label>
+            {/* Question */}
+            <FormGroup row className="mb-4">
+                <Label sm={2} className="fw-semibold">
+                    Question
+                </Label>
                 <Col sm={10}>
-                    <Input type="text" name="questionText"
-                        value={questionTextState?.questionText} placeholder="Question here ..."
-                        onChange={onQuestionChangeHandler} required />
+                    <Input
+                        type="text"
+                        value={form.questionText}
+                        onChange={e => updateForm('questionText', e.target.value)}
+                        required
+                    />
                 </Col>
             </FormGroup>
-        }
 
-        <FormGroup row className="mx-0">
-            {question_image &&
-                <Col sm={12}>
-                    <div className="my-3 mx-sm-5 px-sm-5 d-flex justify-content-center align-items-center">
-                        <img className="w-100 my-2 mt-lg-0" src={question_image} alt="Question Illustration" />
-                    </div>
-                </Col>}
+            {/* Image */}
+            {imageSrc && (
+                <div className="text-center my-3">
+                    <img
+                        src={imageSrc}
+                        className="img-fluid rounded"
+                        alt="Question"
+                    />
+                </div>
+            )}
 
-            <Col sm={12}>
-                <Input bsSize="sm"
-                    type="file"
-                    accept=".jpg, .png, .jpeg, .svg"
-                    name="question_image"
-                    onChange={onFileHandler}
-                    label="Pick an image ..."
-                    id="question_image_pick" />
-            </Col>
-        </FormGroup>
-
-        <FormGroup row className="mx-0">
-            <Label sm={2}>Question Duration</Label>
-            <Col sm={3}>
+            <div className="mb-4">
                 <Input
-                    type="number"
-                    name="duration"
-                    value={durationState && durationState.duration}
-                    placeholder="Time in seconds ..."
-                    onChange={onDurationChangeHandler}
-                    required />
-            </Col>
-        </FormGroup>
+                    type="file"
+                    accept=".jpg,.png,.jpeg,.svg"
+                    onChange={e => setImageFile(e.target.files[0])}
+                />
+            </div>
 
-        {answerOptionsState && answerOptionsState.map(answerOption => {
+            {/* Duration */}
+            <FormGroup row className="mb-4">
+                <Label sm={2} className="fw-semibold">
+                    Duration
+                </Label>
+                <Col sm={3}>
+                    <Input
+                        type="number"
+                        value={form.duration}
+                        onChange={e =>
+                            updateForm('duration', Number(e.target.value))
+                        }
+                        required
+                    />
+                </Col>
+            </FormGroup>
 
-            let explanation = answerOption.explanations ? answerOption.explanations : null;
+            {/* Answers */}
+            {form.answerOptions.map((opt, index) => (
+                <div
+                    key={opt.clientId}
+                    className="border rounded p-3 mb-3 bg-light"
+                >
+                    <FormGroup row className="align-items-center">
+                        <Label sm={2} className="fw-semibold">
+                            Answer {index + 1}
+                        </Label>
 
-            {/* If there is a word in the explanation paragraph that starts with http, make it a link */ }
-            if (explanation) {
-                let words = explanation.split(' ');
-                explanation = words.map(word => {
-                    if (word.startsWith('http')) {
-                        return <a key={word} href={word} target="_blank" rel="noreferrer">{word} </a>;
-                    }
-                    return word + ' ';
-                });
-            }
-            return (
-
-                <div key={answerOption._id}>
-
-                    <FormGroup row className="mx-0">
-                        <Label sm={2}>Answer</Label>
-
-                        <Col sm={10} xl={7}>
-                            <Input type="text" name="answerText" value={answerOption.answerText}
-                                onChange={event => handleAnswerChangeInput(answerOption._id, event)} placeholder="Answer here ..." required />
+                        <Col sm={6}>
+                            <Input
+                                value={opt.answerText}
+                                onChange={e =>
+                                    updateAnswer(
+                                        opt.clientId,
+                                        'answerText',
+                                        e.target.value
+                                    )
+                                }
+                                required
+                            />
                         </Col>
 
-                        <Col sm={6} xl={2} className="my-3 my-sm-2 d-sm-flex justify-content-around">
+                        <Col sm={2} className="d-flex align-items-center">
                             <Input
                                 type="checkbox"
-                                name="isCorrect"
-                                checked={answerOption.isCorrect}
-                                onChange={event => handleAnswerChangeInput(answerOption._id, event)}
-                                id={answerOption._id}
-                                label="Is Correct?" />
+                                checked={opt.isCorrect}
+                                onChange={e =>
+                                    updateAnswer(
+                                        opt.clientId,
+                                        'isCorrect',
+                                        e.target.checked
+                                    )
+                                }
+                                className="mt-0"
+                            />{' '}
+                            <span className="ms-1">Correct</span>
                         </Col>
 
-                        <Col sm={6} xl={1} className="my-3 my-sm-2">
-                            <Button className="px-2 py-1" disabled={answerOptionsState?.length === 1} color="danger" onClick={() => handleRemoveFields(answerOption._id)}> - </Button>{' '}
-                            <Button className="px-2 py-1" color="danger" onClick={handleAddFields}> + </Button>{' '}
+                        <Col sm={2} className="d-flex gap-2">
+                            <Button
+                                color="warning"
+                                size="sm"
+                                disabled={form.answerOptions.length === 1}
+                                onClick={() => removeAnswer(opt.clientId)}
+                                className='text-white font-weight-bolder'
+                            >
+                                –
+                            </Button>
+                            <Button
+                                color="success"
+                                size="sm"
+                                onClick={addAnswer}
+                                className='text-white font-weight-bolder'
+                            >
+                                +
+                            </Button>
                         </Col>
+                    </FormGroup>
 
-                        {explanation && <>
-                            <Label sm={2}>Rationale</Label>
-                            <Col sm={10} xl={7}>
-                                <Input type="textarea" name="explanations" placeholder="Rationales or explanations ..." minLength="5" maxLength="1000" onChange={event => handleAnswerChangeInput(answerOption._id, event)} value={explanation} />
-                            </Col>
-                        </>}
-
+                    <FormGroup row className="mt-2">
+                        <Col sm={{ size: 6, offset: 2 }}>
+                            <Input
+                                type="textarea"
+                                value={opt.explanations || ''}
+                                onChange={e =>
+                                    updateAnswer(
+                                        opt.clientId,
+                                        'explanations',
+                                        e.target.value
+                                    )
+                                }
+                                placeholder="Explanation (optional)"
+                            />
+                        </Col>
                     </FormGroup>
                 </div>
-            );
-        })}
+            ))}
 
-        <FormGroup check row className="mx-0">
-            <Col sm={{ size: 10, offset: 2 }} className="pl-0">
-                <Button className="btn btn-info btn-sm" type="submit">Update</Button>
-            </Col>
-        </FormGroup>
-    </Form>
+            {/* Actions */}
+            <div className="d-flex justify-content-end mt-4">
+                <Button type="submit" color="success">
+                    Update Question
+                </Button>
+            </div>
+        </Form>
     );
 };
 

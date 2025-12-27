@@ -175,9 +175,9 @@ const QuizResults = () => {
                 />
               </>
             ) : (
-              <button type="button" onClick={toggleL} className="btn-retake mt-3">
+              <Button color="warning" onClick={toggleL} className="btn-retake mt-3 text-success">
                 Login to review answers
-              </button>
+              </Button>
             )}
           </div>
 

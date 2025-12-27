@@ -50,7 +50,7 @@ const QuestionsView = ({
                 goToNextQuestion={goToNextQuestion}
                 curQnIndex={curQnIndex}
                 qnsLength={qnsLength}
-                timeInSecs={currentQn.duration + 75}
+                timeInSecs={currentQn.duration}
                 start={imgLoaded}
             />
 

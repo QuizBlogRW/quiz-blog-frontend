@@ -10,14 +10,11 @@ import {
 import { Link, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
-import NotAuthenticated from '@/components/users/NotAuthenticated';
 
 const SingleCategory = () => {
     const { isLoading, allcategories } = useSelector(state => state.categories);
-    const { isAuthenticated } = useSelector(state => state.users);
     const { categoryId } = useParams();
 
-    if (!isAuthenticated) return <NotAuthenticated />;
     if (isLoading) return <QBLoadingSM title="category" />;
 
     const category = allcategories?.find(c => c._id === categoryId);

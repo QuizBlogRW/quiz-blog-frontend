@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
+import { useEffect, useState, useCallback } from 'react';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import {
   Button,
   Col,
@@ -11,355 +10,345 @@ import {
   Breadcrumb,
   BreadcrumbItem,
 } from 'reactstrap';
+import { useDispatch, useSelector } from 'react-redux';
+
 import Dashboard from '../../Dashboard';
 import { addQuestion, getQuestions } from '@/redux/slices/questionsSlice';
 import { getOneQuiz, notifying } from '@/redux/slices/quizzesSlice';
-import { useDispatch, useSelector } from 'react-redux';
 import { notify } from '@/utils/notifyToast';
 import NotAuthenticated from '@/components/users/NotAuthenticated';
 
+/* ---------------------------------------------
+   Local client id (NO nanoid / uuid)
+----------------------------------------------*/
+const createClientId = () =>
+  `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+
+/* ---------------------------------------------
+   Component
+----------------------------------------------*/
 const CreateQuestions = () => {
-  // Redux
-  const oneQuiz = useSelector((state) => state.quizzes.oneQuiz);
-  const { user, isAuthenticated, isLoading } = useSelector(
-    (state) => state.users
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { quizSlug } = useParams();
+
+  const { oneQuiz } = useSelector(state => state.quizzes);
+  const { user, isAuthenticated, isLoading: isUserLoading } = useSelector(
+    state => state.users
   );
 
-  const dispatch = useDispatch();
-
-  // Access route parameters
-  const { quizSlug } = useParams();
-  const [questionText, setQuestionText] = useState({
+  /* ---------------------------------------------
+     Form state
+  ----------------------------------------------*/
+  const [form, setForm] = useState({
     questionText: '',
-  });
-
-  const [question_image, setQuestion_image] = useState('');
-  const [durationState, setDurationState] = useState({
     duration: 24,
+    questionImage: null,
+    answerOptions: [
+      {
+        clientId: createClientId(),
+        answerText: '',
+        explanations: '',
+        isCorrect: false,
+      },
+    ],
   });
 
-  const [answerOptions, setAnswerOptions] = useState([
-    { id: uuidv4(), answerText: '', explanations: '', isCorrect: false },
-  ]);
-
-  // Lifecycle methods
+  /* ---------------------------------------------
+     Fetch quiz & questions
+  ----------------------------------------------*/
   useEffect(() => {
     dispatch(getOneQuiz(quizSlug));
     dispatch(getQuestions(quizSlug));
   }, [dispatch, quizSlug]);
 
-  const onQuestionChangeHandler = (e) => {
-    const { name, value } = e.target;
-    setQuestionText((state) => ({ ...state, [name]: value }));
+  /* ---------------------------------------------
+     Handlers
+  ----------------------------------------------*/
+  const updateForm = useCallback((name, value) => {
+    setForm(prev => ({ ...prev, [name]: value }));
+  }, []);
+
+  const updateAnswer = useCallback((clientId, field, value) => {
+    setForm(prev => ({
+      ...prev,
+      answerOptions: prev.answerOptions.map(opt =>
+        opt.clientId === clientId
+          ? { ...opt, [field]: value }
+          : opt
+      ),
+    }));
+  }, []);
+
+  const addAnswer = () => {
+    setForm(prev => ({
+      ...prev,
+      answerOptions: [
+        ...prev.answerOptions,
+        {
+          clientId: createClientId(),
+          answerText: '',
+          explanations: '',
+          isCorrect: false,
+        },
+      ],
+    }));
   };
 
-  const onFileHandler = (e) => {
-    setQuestion_image(e.target.files[0]);
+  const removeAnswer = clientId => {
+    setForm(prev => ({
+      ...prev,
+      answerOptions: prev.answerOptions.filter(
+        opt => opt.clientId !== clientId
+      ),
+    }));
   };
 
-  const onDurationChangeHandler = (e) => {
-    const { name, value } = e.target;
-    setDurationState((durationState) => ({ ...durationState, [name]: value }));
-  };
-
-  const handleAnswerChangeInput = (id, event) => {
-    const newAnswerOptions = answerOptions.map((i) => {
-      if (id === i.id) {
-        event.target.type === 'checkbox'
-          ? (i[event.target.name] = event.target.checked)
-          : (i[event.target.name] = event.target.value);
-      }
-      return i;
-    });
-
-    setAnswerOptions(newAnswerOptions);
-  };
-
+  /* ---------------------------------------------
+     Validation
+  ----------------------------------------------*/
   const validateForm = () => {
-    const trueAnswer = answerOptions.find((ansop) => ansop.isCorrect === true);
-    if (!questionText.questionText && !question_image) {
-      notify('Please give the title or upload question image!', 'error');
-      return false;
-    } else if (questionText.questionText.length < 4) {
-      notify('Insufficient info!', 'error');
-      return false;
-    } else if (questionText.questionText.length > 700) {
-      notify('Question is too long!', 'error');
-      return false;
-    } else if (answerOptions.length <= 1) {
-      notify('Answers are not sufficient!', 'error');
-      return false;
-    } else if (!trueAnswer) {
-      notify('Please provide a true answer!', 'error');
+    const { questionText, answerOptions } = form;
+
+    if (!questionText && !form.questionImage) {
+      notify('Please provide question text or image', 'error');
       return false;
     }
+
+    if (questionText.length < 4 || questionText.length > 700) {
+      notify('Question length is invalid', 'error');
+      return false;
+    }
+
+    if (answerOptions.length < 2) {
+      notify('At least two answers are required', 'error');
+      return false;
+    }
+
+    if (answerOptions.some(a => !a.answerText.trim())) {
+      notify('All answers must have text', 'error');
+      return false;
+    }
+
+    if (!answerOptions.some(a => a.isCorrect)) {
+      notify('Please select at least one correct answer', 'error');
+      return false;
+    }
+
     return true;
   };
 
-  const handleSubmit = (e) => {
+  /* ---------------------------------------------
+     Submit
+  ----------------------------------------------*/
+  const handleSubmit = async e => {
     e.preventDefault();
     if (!validateForm()) return;
 
     const formData = new FormData();
-    formData.append('question_image', question_image);
-    formData.append('questionText', questionText.questionText);
-    answerOptions.forEach((aOptn) => {
-      formData.append('answerOptions', JSON.stringify(aOptn));
+    formData.append('questionText', form.questionText);
+    formData.append('duration', form.duration);
+
+    if (form.questionImage) {
+      formData.append('question_image', form.questionImage);
+    }
+
+    form.answerOptions.forEach(opt => {
+      const payload = { ...opt };
+      delete payload.clientId;
+      formData.append('answerOptions', JSON.stringify(payload));
     });
-    formData.append('category', oneQuiz?.category?._id);
-    formData.append('quiz', oneQuiz?._id);
-    formData.append('created_by', isLoading === false ? user._id : null);
-    formData.append('duration', durationState.duration);
 
-    // Attempt to create
-    dispatch(addQuestion(formData));
+    formData.append('category', oneQuiz.category._id);
+    formData.append('quiz', oneQuiz._id);
 
-    // Reset form fields
-    setQuestionText({ questionText: '' });
-    setQuestion_image('');
-    setDurationState({ duration: 24 });
-    setAnswerOptions([
-      { id: uuidv4(), answerText: '', explanations: '', isCorrect: false },
-    ]);
+    if (!isUserLoading && user?._id) {
+      formData.append('created_by', user._id);
+    }
+
+    const result = await dispatch(addQuestion(formData));
+
+    if (addQuestion.fulfilled.match(result)) {
+      notify('Question added successfully', 'success');
+    }
+
+    /* Reset */
+    setForm({
+      questionText: '',
+      duration: 24,
+      questionImage: null,
+      answerOptions: [
+        {
+          clientId: createClientId(),
+          answerText: '',
+          explanations: '',
+          isCorrect: false,
+        },
+      ],
+    });
   };
 
-  const handleAddFields = () => {
-    setAnswerOptions([
-      ...answerOptions,
-      { id: uuidv4(), answerText: '', explanations: '', isCorrect: false },
-    ]);
-  };
-
-  const handleRemoveFields = (id) => {
-    const values = [...answerOptions];
-    values.splice(
-      values.findIndex((value) => value.id === id),
-      1
+  /* ---------------------------------------------
+     Finish & notify
+  ----------------------------------------------*/
+  const finishAndNotify = () => {
+    dispatch(
+      notifying({
+        quiz_Id: oneQuiz._id,
+        title: oneQuiz.title,
+        category: oneQuiz.category.title,
+        created_by: oneQuiz.created_by?.name,
+      })
     );
-    setAnswerOptions(values);
+
+    navigate(-1);
   };
 
-  const SendNotification = (quiz_Id, title, category, created_by) => {
-    const newQuizInfo = {
-      quiz_Id,
-      title,
-      category,
-      created_by,
-    };
-
-    // Attempt to notify
-    dispatch(notifying(newQuizInfo))
-
-    // Go back
-    window.history.back();
-  };
-
+  /* ---------------------------------------------
+     Guards
+  ----------------------------------------------*/
   if (!isAuthenticated) return <NotAuthenticated />;
   if (user?.role === 'Visitor') return <Dashboard />;
+  if (!oneQuiz?.category) return null;
 
-  return oneQuiz?.category &&
+  /* ---------------------------------------------
+     Render
+  ----------------------------------------------*/
+  return (
     <Form
       className="my-3 mt-lg-5 mx-3 mx-lg-5 create-question"
-      onSubmit={handleSubmit}>
-      <div key={oneQuiz._id} className="mb-0 mb-lg-3 mx-0">
-        <Breadcrumb key={oneQuiz._id}>
-          <BreadcrumbItem>
-            <Link to="/dashboard">
-              {oneQuiz.category.title}
-            </Link>
-          </BreadcrumbItem>
-          <BreadcrumbItem>
-            <Link
-              to={`/category/${oneQuiz.category._id}`}
-            >
-              {oneQuiz.title}
-            </Link>
-          </BreadcrumbItem>
-          <BreadcrumbItem active>Create Question</BreadcrumbItem>
-        </Breadcrumb>
+      onSubmit={handleSubmit}
+    >
+      <Breadcrumb>
+        <BreadcrumbItem>
+          <Link to="/dashboard">{oneQuiz.category.title}</Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem>
+          <Link to={`/category/${oneQuiz.category._id}`}>
+            {oneQuiz.title}
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem active>Create Question</BreadcrumbItem>
+      </Breadcrumb>
 
-        <Button
-          size="sm"
-          color="danger"
-          style={{
-            display: 'block',
-            marginLeft: 'auto',
-            border: '3px solid black',
-          }}
-          onClick={() =>
-            SendNotification(
-              oneQuiz._id,
-              oneQuiz.title,
-              oneQuiz.category?.title,
-              oneQuiz.created_by?.name
-            )
-          }
-        >
-          Finish & Notify
-        </Button>
-      </div>
+      <Button
+        size="sm"
+        color="danger"
+        className="ms-auto d-block mb-3"
+        onClick={finishAndNotify}
+      >
+        Finish & Notify
+      </Button>
 
-      <FormGroup row className="mx-0">
+      <FormGroup row>
         <Label sm={2}>Question</Label>
         <Col sm={10}>
           <Input
-            type="text"
-            name="questionText"
-            value={questionText.questionText || ''}
-            placeholder="Question here ..."
-            onChange={onQuestionChangeHandler}
+            value={form.questionText}
+            onChange={e =>
+              updateForm('questionText', e.target.value)
+            }
             required
           />
         </Col>
       </FormGroup>
 
-      <FormGroup row className="mx-0">
-        <Label sm={2} for="question_image">
-          <strong>Upload</strong>&nbsp;
-          <small className="text-info">.jpg, .png, .jpeg, .svg</small>
-        </Label>
+      <FormGroup row>
+        <Label sm={2}>Upload</Label>
         <Col sm={10}>
           <Input
-            bsSize="sm"
             type="file"
-            accept=".jpg, .png, .jpeg, .svg"
-            name="question_image"
-            onChange={onFileHandler}
-            label="Pick an image ..."
-            id="question_image_pick"
-            required
+            accept=".jpg,.png,.jpeg,.svg"
+            onChange={e =>
+              updateForm('questionImage', e.target.files[0])
+            }
           />
         </Col>
       </FormGroup>
 
-      <FormGroup row className="mx-0">
-        <Label sm={2}>Question Duration</Label>
+      <FormGroup row>
+        <Label sm={2}>Duration</Label>
         <Col sm={3}>
           <Input
             type="number"
-            name="duration"
-            value={durationState.duration || 0}
-            placeholder="Time in seconds ..."
-            onChange={onDurationChangeHandler}
+            value={form.duration}
+            onChange={e =>
+              updateForm('duration', Number(e.target.value))
+            }
             required
           />
         </Col>
       </FormGroup>
 
-      {answerOptions.map((answerOption) => {
-        let explanation = answerOption.explanations
-          ? answerOption.explanations
-          : null;
+      {form.answerOptions.map(opt => (
+        <FormGroup row key={opt.clientId}>
+          <Label sm={2}>Answer</Label>
 
-        {
-          /* If there is a word in the explanation paragraph that starts with http, make it a link */
-        }
-        if (explanation) {
-          let words = explanation.split(' ');
-          explanation = words.map((word) => {
-            if (word.startsWith('http')) {
-              return (
-                <a key={word} href={word} target="_blank" rel="noreferrer">
-                  {word}{' '}
-                </a>
-              );
-            }
-            return word + ' ';
-          });
-        }
+          <Col sm={7}>
+            <Input
+              value={opt.answerText}
+              onChange={e =>
+                updateAnswer(
+                  opt.clientId,
+                  'answerText',
+                  e.target.value
+                )
+              }
+              required
+            />
+          </Col>
 
-        return (
-          <div key={answerOption.id}>
-            <FormGroup row className="mx-0">
-              <Label sm={2}>Answer</Label>
+          <Col sm={2}>
+            <Input
+              type="checkbox"
+              checked={opt.isCorrect}
+              onChange={e =>
+                updateAnswer(
+                  opt.clientId,
+                  'isCorrect',
+                  e.target.checked
+                )
+              }
+            />{' '}
+            Correct
+          </Col>
 
-              <Col sm={10} xl={7}>
-                <Input
-                  type="text"
-                  name="answerText"
-                  value={answerOption.answerText}
-                  onChange={(event) =>
-                    handleAnswerChangeInput(answerOption.id, event)
-                  }
-                  id="exampleanswer"
-                  placeholder="Answer here ..."
-                  required
-                />
-              </Col>
+          <Col sm={1} className="d-flex gap-2">
+            <Button
+              color="danger"
+              disabled={form.answerOptions.length === 1}
+              onClick={() => removeAnswer(opt.clientId)}
+              className='text-white font-weight-bolder'
+            >
+              –
+            </Button>{' '}
+            <Button color="success" onClick={addAnswer} className='text-white font-weight-bolder'>
+              +
+            </Button>
+          </Col>
 
-              <Col
-                sm={6}
-                xl={2}
-                className="my-3 my-sm-2 d-sm-flex justify-content-around"
-              >
-                <Input
-                  type="checkbox"
-                  name="isCorrect"
-                  value={answerOption.isCorrect}
-                  onChange={(event) =>
-                    handleAnswerChangeInput(answerOption.id, event)
-                  }
-                  id={answerOption.id}
-                  label="Is Correct?"
-                  required
-                />
-              </Col>
+          <Col sm={{ size: 7, offset: 2 }} className="mt-2">
+            <Input
+              type="textarea"
+              value={opt.explanations}
+              onChange={e =>
+                updateAnswer(
+                  opt.clientId,
+                  'explanations',
+                  e.target.value
+                )
+              }
+              placeholder="Explanation (optional)"
+            />
+          </Col>
+        </FormGroup>
+      ))}
 
-              <Col sm={6} xl={1} className="my-3 my-sm-2">
-                <Button
-                  className="px-2 py-1"
-                  disabled={answerOptions.length === 1}
-                  color="danger"
-                  onClick={() => handleRemoveFields(answerOption.id)}
-                >
-                  {' '}
-                  -{' '}
-                </Button>{' '}
-                <Button
-                  className="px-2 py-1"
-                  color="danger"
-                  onClick={handleAddFields}
-                >
-                  {' '}
-                  +{' '}
-                </Button>{' '}
-              </Col>
-
-              {explanation && (
-                <>
-                  <Label sm={2}>Rationale</Label>
-                  <Col sm={10} xl={7}>
-                    <Input
-                      type="textarea"
-                      name="explanations"
-                      placeholder="Rationales or explanations ..."
-                      minLength="5"
-                      maxLength="1000"
-                      onChange={(event) =>
-                        handleAnswerChangeInput(answerOption.id, event)
-                      }
-                      value={explanation}
-                    />
-                  </Col>
-                </>
-              )}
-            </FormGroup>
-          </div>
-        );
-      })}
-
-      <FormGroup check row className="mx-0 pl-3">
-        <Col sm={{ size: 10, offset: 2 }} className="pl-0">
-          <Button
-            className="btn btn-info btn-sm"
-            type="submit"
-            onClick={handleSubmit}
-          >
-            Add New
-          </Button>
-        </Col>
-      </FormGroup>
+      <Button type="submit" color="success" size="sm">
+        Add New
+      </Button>
     </Form>
+  );
 };
 
 export default CreateQuestions;
