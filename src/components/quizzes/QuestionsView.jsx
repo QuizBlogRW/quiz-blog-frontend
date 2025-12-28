@@ -15,26 +15,16 @@ const QuestionsView = ({
 }) => {
     const imgRef = useRef(null);
     const [imgLoaded, setImgLoaded] = useState(true);
-    const [prevImageUrl, setPrevImageUrl] = useState("");
 
     useEffect(() => {
         if (!currentQn?.question_image) {
             setImgLoaded(true);
-            setPrevImageUrl("");
             return;
         }
 
-        if (currentQn.question_image !== prevImageUrl) {
-            setImgLoaded(false);
-            setPrevImageUrl(currentQn.question_image);
+        setImgLoaded(false);
+    }, [currentQn?.question_image]);
 
-            // Check if the image is already cached
-            const imgEl = imgRef.current;
-            if (imgEl?.complete) {
-                setImgLoaded(true);
-            }
-        }
-    }, [currentQn?.question_image, prevImageUrl]);
 
     const handleImgLoad = () => setImgLoaded(true);
     const handleImgError = () => setImgLoaded(true);
@@ -47,11 +37,10 @@ const QuestionsView = ({
         <div className="question-view p-2" style={{ backgroundColor: "#F5F5F5" }}>
             {/* Countdown — only start when image is loaded */}
             <CountDown
-                goToNextQuestion={goToNextQuestion}
-                curQnIndex={curQnIndex}
-                qnsLength={qnsLength}
                 timeInSecs={currentQn.duration}
                 start={imgLoaded}
+                goToNextQuestion={goToNextQuestion}
+                curQnIndex={curQnIndex}
             />
 
             {/* Question Header */}
@@ -98,7 +87,7 @@ const QuestionsView = ({
                             {curQnOpts.map((answerOption, index) => {
                                 const isSelected = selected[index];
                                 return (
-                                    <div key={index} className="my-3 my-lg-4">
+                                    <div key={answerOption.answerText} className="my-3 my-lg-4">
                                         <FormGroup check>
                                             <Label
                                                 check

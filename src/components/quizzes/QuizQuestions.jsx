@@ -40,8 +40,12 @@ const QuizQuestions = () => {
     const initialReview = useMemo(() => ({
         title: thisQuiz?.title,
         description: thisQuiz?.description,
-        questions: JSON.parse(JSON.stringify(thisQuiz?.questions || [])),
+        questions: thisQuiz?.questions.map(q => ({
+            ...q,
+            answerOptions: q.answerOptions.map(a => ({ ...a }))
+        })),
     }), [thisQuiz]);
+
 
     const [quizToReview, setQuizToReview] = useState(initialReview);
     const [saving, setSaving] = useState(false);
@@ -92,14 +96,7 @@ const QuizQuestions = () => {
         }
     }, [dispatch, scoreToSave, user]);
 
-    // Move to next question
-    const goToNextQuestion = useCallback(async () => {
-        // If not the last question, just move to next
-        if (curQnIndex + 1 < qnsLength) {
-            setCurQnIndex(prev => prev + 1);
-            return;
-        }
-
+    const finishQuiz = async () => {
         // Last question - calculate and navigate to results
         const finalMarks = Math.floor(calculateMarks(quizToReview.questions));
         const mongoScoreID = await saveScore();
@@ -115,7 +112,18 @@ const QuizQuestions = () => {
                 scoreToSaveID: scoreToSave.id,
             }
         });
-    }, [curQnIndex, qnsLength, quizToReview, saveScore, navigate, quizSlug, thisQuiz, scoreToSave.id]);
+    };
+
+    // Move to next question
+    const goToNextQuestion = useCallback(async () => {
+        // If not the last question, just move to next
+        if (curQnIndex + 1 < qnsLength) {
+            setCurQnIndex(i => i + 1);
+        } else {
+            finishQuiz();
+        }
+
+    }, [curQnIndex, finishQuiz, qnsLength]);
 
     // Auto-advance when user selected all correct options
     useEffect(() => {
