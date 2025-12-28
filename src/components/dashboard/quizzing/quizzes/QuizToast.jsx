@@ -9,11 +9,11 @@ import { deleteQuiz } from '@/redux/slices/quizzesSlice';
 const QuizToast = ({ fromSearch, quiz }) => {
     
     const toastClass = fromSearch
-        ? 'bg-info text-white py-3 px-1 px-sm-3 my-2 my-sm-3 border'
+        ? 'bg-warning text-success py-3 px-1 px-sm-3 my-2 my-sm-3 border'
         : 'py-3 px-1 px-sm-3 my-2 my-sm-3 border';
 
-    const linkClass = fromSearch ? 'text-white' : 'text-success';
-    const questionLinkClass = fromSearch ? 'text-warning' : 'text-primary';
+    const linkClass = fromSearch ? 'text-success' : 'text-success';
+    const questionLinkClass = fromSearch ? 'text-success' : 'text-primary';
 
     return (
         <Col sm="3" className="mt-3 quiz-toast">
