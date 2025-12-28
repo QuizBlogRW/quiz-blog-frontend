@@ -263,7 +263,6 @@ const usersSlice = createSlice({
     builder.addCase(resendOTP.fulfilled, (state, action) => {
       state.isLoading = false;
       const { user, message } = action.payload;
-      console.log(user)
       user?.email && localStorage.setItem('emailForOTP', user?.email);
       notify(message);
       setTimeout(() => (window.location.href = '/verify'), 3000);
@@ -274,7 +273,6 @@ const usersSlice = createSlice({
       state.user = null;
       state.token = null;
       state.confirmLogin = null;
-      console.log('Cleared in logout');
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       localStorage.removeItem('confirmLogin');

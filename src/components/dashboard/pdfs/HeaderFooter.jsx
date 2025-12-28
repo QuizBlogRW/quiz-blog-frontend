@@ -13,7 +13,7 @@ const HeaderFooter = ({ styles, fromFooter }) => {
         height: 24,
         marginHorizontal: 4,
         borderRadius: 4,
-        border: '1px solid var(--brand)',
+        border: '1px solid #157a6e',
         objectFit: 'cover'
     };
 
@@ -24,7 +24,12 @@ const HeaderFooter = ({ styles, fromFooter }) => {
     };
 
     return (
-        <View style={{ backgroundColor: 'var(--brand)', paddingVertical: 10, paddingHorizontal: 15, borderRadius: 8 }}>
+        <View style={{
+            backgroundColor: '#157a6e', paddingVertical: 10, paddingHorizontal: 15, borderRadius: 8, position: fromFooter ? 'absolute' : 'relative',
+            bottom: fromFooter ? 20 : undefined,
+            left: fromFooter ? 20 : undefined,
+            right: fromFooter ? 20 : undefined,
+        }}>
             <View style={{
                 display: 'flex',
                 flexDirection: 'row',
@@ -49,15 +54,15 @@ const HeaderFooter = ({ styles, fromFooter }) => {
                 <View style={{ display: 'flex', flexDirection: 'column', minWidth: 120, marginVertical: 5 }}>
                     <Text style={contactTextStyle}>
                         <Text style={{ color: '#ffffff', fontWeight: 700 }}>Website: </Text>
-                        <Link src="https://www.quizblog.rw" style={{ color: 'var(--accent)', textDecoration: 'none' }}>www.quizblog.rw</Link>
+                        <Link src="https://www.quizblog.rw" style={{ color: '#ffc107', textDecoration: 'none' }}>www.quizblog.rw</Link>
                     </Text>
                     <Text style={contactTextStyle}>
                         <Text style={{ color: '#ffffff', fontWeight: 700 }}>Email: </Text>
-                        <Link src="mailto:quizblog.rw@gmail.com" style={{ color: 'var(--accent)', textDecoration: 'none' }}>quizblog.rw@gmail.com</Link>
+                        <Link src="mailto:quizblog.rw@gmail.com" style={{ color: '#ffc107', textDecoration: 'none' }}>quizblog.rw@gmail.com</Link>
                     </Text>
                     <Text style={contactTextStyle}>
                         <Text style={{ color: '#ffffff', fontWeight: 700 }}>Phone: </Text>
-                        <Link src="#" style={{ color: 'var(--accent)', textDecoration: 'none' }}>0780579067</Link>
+                        <Link src="#" style={{ color: '#ffc107', textDecoration: 'none' }}>0780579067</Link>
                     </Text>
                 </View>
             </View>

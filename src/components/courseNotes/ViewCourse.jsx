@@ -21,9 +21,7 @@ const ViewCourse = () => {
 
     useEffect(() => {
         dispatch(getChaptersByCourse(courseId));
-        console.log("Finding chapters for: ", courseId)
         dispatch(getOneCourse(courseId));
-        console.log("Finding course: ", courseId)
     }, [dispatch, courseId]);
 
     const { chaptersByCourse, isLoading } = useSelector(state => state.chapters);

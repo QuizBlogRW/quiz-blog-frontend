@@ -11,7 +11,6 @@ const Charts = () => {
     const { isLoading, dailyUserRegistration } = useSelector(state => state.statistics);
 
     const dataSet = dailyUserRegistration;
-    console.log(dailyUserRegistration);
 
     // Convert the array of objects to an array of arrays for the chart by only picking the date and the number of users
     let titles = ['DATE', 'USERS'];

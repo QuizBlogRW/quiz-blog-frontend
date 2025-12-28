@@ -18,7 +18,6 @@ const EditQuiz = ({ quizToEdit }) => {
 
     const renderForm = (formState, setFormState, firstInputRef) => {
 
-        console.log(formState);
         const onChange = (e) => {
             const { name, value } = e.target;
             setFormState((prev) => ({ ...prev, [name]: value }));

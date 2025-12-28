@@ -9,8 +9,7 @@ import {
 import { Button } from "reactstrap";
 import { Link, useLocation } from "react-router-dom";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import { saveFeedback } from "@/redux/slices/feedbacksSlice";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { logRegContext } from "@/contexts/appContexts";
 
 import ResponsiveAd from "@/components/adsenses/ResponsiveAd";
@@ -78,7 +77,6 @@ const PdfDownloadBtn = ({ quiz, review }) => (
 
 // MAIN COMPONENT
 const QuizResults = () => {
-  const dispatch = useDispatch();
   const location = useLocation();
   const { toggleL } = useContext(logRegContext);
   const { user, isAuthenticated } = useSelector((state) => state.users);
@@ -124,12 +122,36 @@ const QuizResults = () => {
 
   // Auto-open rating
   const [modalOpen, setModalOpen] = useState(false);
+
+  // Check if feedback already submitted (use same key format as RatingQuiz)
+  const feedbackKey = `quiz-feedback-${thisQuiz?._id}-${user?._id}`;
+
   useEffect(() => {
+    if (!isAuthenticated || !thisQuiz?._id || !user?._id) return;
+
+    // Check if feedback already exists and is still valid
+    const storedFeedback = localStorage.getItem(feedbackKey);
+
+    if (storedFeedback) {
+      try {
+        const data = JSON.parse(storedFeedback);
+        const ONE_HOUR = 60 * 60 * 1000;
+
+        // If feedback was submitted less than 1 hour ago, don't show modal
+        if (Date.now() - data.timestamp <= ONE_HOUR) {
+          return;
+        } else {
+          // Expired feedback, remove it
+          localStorage.removeItem(feedbackKey);
+        }
+      } catch {
+        localStorage.removeItem(feedbackKey);
+      }
+    }
+    // Open modal after 3 seconds if no recent feedback
     const timer = setTimeout(() => setModalOpen(true), 3000);
     return () => clearTimeout(timer);
-  }, []);
-
-  const submitRating = (data) => dispatch(saveFeedback(data));
+  }, [isAuthenticated, thisQuiz?._id, user?._id, feedbackKey]);
 
   // RENDER
   return (
@@ -168,7 +190,6 @@ const QuizResults = () => {
                 <RatingQuiz
                   isOpen={modalOpen}
                   toggle={() => setModalOpen((s) => !s)}
-                  onSubmit={submitRating}
                   quiz={thisQuiz?._id}
                   score={mongoScoreID}
                   user={user?._id}

@@ -7,6 +7,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#f6f6f5',
         padding: 20,
         fontFamily: 'Helvetica',
+        height: '100%',
+        paddingBottom: 120, 
     },
     reviewHeader: {
         width: '100%',
@@ -17,13 +19,11 @@ const styles = StyleSheet.create({
         marginBottom: 15,
     },
     reviewHeaderImage: {
-        backgroundColor: '#fff',
+        backgroundColor: '#157a6e',
         height: 100,
         width: 100,
-        padding: 5,
-        border: '1px solid rgba(0,0,0,0.1)',
-        borderRadius: 12,
         objectFit: 'cover',
+        borderRadius: 12,
     },
     reviewTitle: {
         textAlign: 'center',
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
 
 const PdfDocument = ({ review }) => {
     return (
-        <Document>
+        <Document style={{ height: "100%" }}>
             <Page size="A4" style={styles.page}>
                 <HeaderFooter styles={styles} />
 

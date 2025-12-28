@@ -10,33 +10,51 @@ import {
     ButtonGroup,
     Alert,
 } from "reactstrap";
+import { notify } from '@/utils/notifyToast';
+import { saveFeedback } from "@/redux/slices/feedbacksSlice";
+import { useDispatch } from "react-redux";
 
-const RatingQuiz = ({ isOpen, toggle, onSubmit, quiz, score, user }) => {
+const RatingQuiz = ({ isOpen, toggle, quiz, score, user }) => {
+
     const [rating, setRating] = useState(-1);
     const [comment, setComment] = useState("");
     const [error, setError] = useState("");
-    const [submitted, setSubmitted] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const dispatch = useDispatch();
 
     const ONE_HOUR = 60 * 60 * 1000;
 
+    // Use consistent key format: quiz-feedback-{quizId}-{userId}
+    const feedbackKey = `quiz-feedback-${quiz}-${user}`;
+
     // --- Load existing feedback from localStorage ---
     useEffect(() => {
-        if (!score) return;
+        if (!quiz || !user) return;
 
-        const stored = localStorage.getItem(score);
-        if (stored) {
+        const stored = localStorage.getItem(feedbackKey);
+        if (!stored) return;
+
+        try {
             const data = JSON.parse(stored);
 
-            // Remove if older than 1 hour
-            if (Date.now() - data.timestamp > ONE_HOUR) {
-                localStorage.removeItem(score);
-            } else {
+            // If feedback is still valid (less than 1 hour old)
+            if (Date.now() - data.timestamp <= ONE_HOUR) {
                 setRating(data.rating);
                 setComment(data.comment);
-                setSubmitted(true);
+
+                // Auto-close modal if already submitted
+                if (isOpen) {
+                    setTimeout(toggle, 2000);
+                }
+            } else {
+                // Expired → remove and allow new submission
+                localStorage.removeItem(feedbackKey);
             }
+        } catch {
+            localStorage.removeItem(feedbackKey);
         }
-    }, [score]);
+    }, [quiz, user, feedbackKey, isOpen, toggle]);
 
     // --- Helpers -------------------------------------------------------
     const validate = () => {
@@ -47,25 +65,44 @@ const RatingQuiz = ({ isOpen, toggle, onSubmit, quiz, score, user }) => {
         return true;
     };
 
-    const handleSubmit = () => {
-        if (!validate()) return;
+    const handleSubmit = async () => {
+        if (!validate() || isSubmitting) return;
 
-        // Save to localStorage
-        const data = {
-            rating,
-            comment,
-            timestamp: Date.now(),
-        };
-        localStorage.setItem(score, JSON.stringify(data));
-
-        onSubmit({ rating, comment, quiz, score, user });
-        setSubmitted(true);
-        toggle();
-
-        // Reset
-        setRating(-1);
-        setComment("");
+        setIsSubmitting(true);
         setError("");
+
+        try {
+            await dispatch(
+                saveFeedback({ rating, comment, quiz, score, user })
+            ).unwrap();
+
+            // Save with timestamp to prevent duplicates
+            const feedbackData = {
+                rating,
+                comment,
+                timestamp: Date.now(),
+                quizId: quiz,
+                scoreId: score,
+            };
+
+            localStorage.setItem(feedbackKey, JSON.stringify(feedbackData));
+
+            notify("Thank you for your feedback!", "success");
+
+            // Close modal after short delay
+            setTimeout(() => {
+                toggle();
+                // Reset form
+                setRating(-1);
+                setComment("");
+            }, 1000);
+
+        } catch (err) {
+            console.error("Feedback submission error:", err);
+            setError("Failed to submit feedback. Please try again.");
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     const borderColor = useMemo(() => {
@@ -87,27 +124,23 @@ const RatingQuiz = ({ isOpen, toggle, onSubmit, quiz, score, user }) => {
                 <Button
                     key={i}
                     color={rating === i ? ratingColor(i) : "white"}
-                    onClick={() => setRating(i)}
+                    onClick={() => {
+                        setRating(i);
+                        setError("");
+                    }}
                     className="border border-secondary rounded-circle m-1 shadow-sm"
                     size="sm"
+                    disabled={isSubmitting}
                 >
                     {i}
                 </Button>
             )),
-        [rating]
+        [rating, isSubmitting]
     );
 
     // --- UI ------------------------------------------------------------
-    if (submitted) {
-        return (
-            <Alert color="success" className="text-center m-3">
-                ✅ You already submitted feedback for this quiz.
-            </Alert>
-        );
-    }
-
     return (
-        <Modal isOpen={isOpen} toggle={toggle} backdrop={false} centered>
+        <Modal isOpen={isOpen} toggle={toggle} backdrop="static" centered>
             {/* Header */}
             <div
                 className="d-flex justify-content-between align-items-center p-2"
@@ -119,7 +152,13 @@ const RatingQuiz = ({ isOpen, toggle, onSubmit, quiz, score, user }) => {
                 }}
             >
                 <span className="fw-bold">Please give us your feedback</span>
-                <Button color="danger" size="sm" outline onClick={toggle}>
+                <Button
+                    color="danger"
+                    size="sm"
+                    outline
+                    onClick={toggle}
+                    disabled={isSubmitting}
+                >
                     X
                 </Button>
             </div>
@@ -150,6 +189,7 @@ const RatingQuiz = ({ isOpen, toggle, onSubmit, quiz, score, user }) => {
                             value={comment}
                             onChange={(e) => setComment(e.target.value)}
                             placeholder="Any suggestions for improvement?"
+                            disabled={isSubmitting}
                             style={{
                                 borderColor,
                                 borderRadius: 8,
@@ -161,10 +201,25 @@ const RatingQuiz = ({ isOpen, toggle, onSubmit, quiz, score, user }) => {
             </ModalBody>
 
             <ModalFooter className="d-flex justify-content-center flex-wrap">
-                <Button color="success" onClick={handleSubmit} outline size="sm" className="m-1">
-                    Submit
+                <Button
+                    color="success"
+                    onClick={handleSubmit}
+                    outline
+                    size="sm"
+                    className="m-1"
+                    disabled={rating === -1 || isSubmitting}
+                >
+                    {isSubmitting ? "Submitting..." : "Submit"}
                 </Button>
-                <Button color="danger" onClick={toggle} outline size="sm" className="m-1">
+
+                <Button
+                    color="danger"
+                    onClick={toggle}
+                    outline
+                    size="sm"
+                    className="m-1"
+                    disabled={isSubmitting}
+                >
                     Cancel
                 </Button>
             </ModalFooter>
