@@ -68,7 +68,13 @@ const Contact = () => {
             content
         }))
             .unwrap()
-            .then(() => user && window.setTimeout(() => navigate('/chat')), 4000);
+            .then(() => {
+                notify('Message sent successfully!', 'success');
+                return user && window.setTimeout(() => navigate('/chat')), 4000;
+            })
+            .catch(() => {
+                notify('Failed to send message!', 'error');
+            });
 
         // Reset fields
         setState({
