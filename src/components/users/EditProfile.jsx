@@ -10,11 +10,15 @@ import NotAuthenticated from '@/components/users/NotAuthenticated';
 import { notify } from '@/utils/notifyToast';
 import SelectField from './SelectField';
 
+const MIN_NAME_LENGTH = 4;
+const MAX_ABOUT_LENGTH = 2000;
+const MAX_INTERESTS = 20;
+
 const EditProfile = () => {
   const { userId } = useParams();
   const dispatch = useDispatch();
 
-  const { user, isAuthenticated } = useSelector((state) => state.users);
+  const { user, isAuthenticated, isLoading } = useSelector((state) => state.users);
   const schools = useSelector((state) => state.schools?.allSchools || []);
   const schoolLevels = useSelector((state) => state.levels?.schoolLevels || []);
   const levelFaculties = useSelector((state) => state.faculties?.levelFaculties || []);
@@ -67,17 +71,61 @@ const EditProfile = () => {
     );
   };
 
-  const handleSubmit = (e) => {
+  const validateProfile = ({ name, school, level, faculty, year, about, interests }) => {
+    if (!name || name.trim().length < MIN_NAME_LENGTH)
+      return 'Name must be at least 4 characters long';
+
+    if (school && (!year || !level || !faculty))
+      return 'Year, Faculty and Level are required when school is provided';
+
+    if (about && about.length > MAX_ABOUT_LENGTH)
+      return `About section cannot exceed ${MAX_ABOUT_LENGTH} characters`;
+
+    if (interests?.length > MAX_INTERESTS)
+      return `You can select up to ${MAX_INTERESTS} interests only`;
+
+    return null;
+  };
+
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     const { name, school, level, faculty, year, about } = profile;
 
-    if (name.length < 4) return notify('Insufficient info!', 'error');
-    if (school && (!year || !level || !faculty))
-      return notify('Year, Faculty & Level required!', 'error');
-    if (about.length > 2000) return notify('About too long!', 'error');
-    if (interests.length > 20) return notify('Interest limit reached!', 'error');
+    const validationError = validateProfile({
+      name,
+      school,
+      level,
+      faculty,
+      year,
+      about,
+      interests,
+    });
 
-    dispatch(updateProfile({ _id: userId, name, school, level, faculty, year, interests, about }));
+    if (validationError) {
+      notify(validationError, 'error');
+      return;
+    }
+
+    try {
+      await dispatch(
+        updateProfile({
+          _id: userId,
+          name,
+          school,
+          level,
+          faculty,
+          year,
+          interests,
+          about,
+        })
+      ).unwrap();
+
+      notify('Profile updated successfully!', 'success');
+    } catch (err) {
+      notify(err?.message || 'Failed to update profile', 'error');
+    }
   };
 
   if (!isAuthenticated) return <NotAuthenticated />;
@@ -203,7 +251,7 @@ const EditProfile = () => {
       <FormGroup check row className="mx-0 mt-md-4">
         <Col sm={{ size: 10, offset: 2 }}>
           <Button type="submit" style={{ backgroundColor: 'var(--brand)' }} className="text-white">
-            Update
+            {isLoading ? 'Saving...' : 'Save Profile'}
           </Button>
         </Col>
       </FormGroup>
