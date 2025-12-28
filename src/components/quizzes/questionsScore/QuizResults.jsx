@@ -43,17 +43,23 @@ const ResultHeader = ({ marks, qnsLength, percentage }) => (
   </h5>
 );
 
-const WhatsAppShareBtn = ({ quiz }) => (
-  <Button color="success" className="mt-3 share-btn">
-    <i className="fa-brands fa-whatsapp"></i>&nbsp;
-    <a
-      className="text-white"
-      href={`https://api.whatsapp.com/send?text=Attempt this ${quiz?.title} quiz:%0Ahttps://www.quizblog.rw/view-quiz/${quiz?.slug}`}
+const WhatsAppShareBtn = ({ quiz }) => {
+  const currentDomain = window.location.origin;
+  const shareText = `Attempt this "${quiz.title}" quiz on Quiz-Blog\n${currentDomain}/view-quiz/${quiz.slug}`;
+  const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
+  return (
+    <Button
+      className="btn-accent px-4 py-2 fw-semibold shadow-sm d-flex align-items-center"
+      tag="a"
+      href={whatsappUrl}
+      target="_blank"
+      rel="noreferrer"
     >
+      <i className="fa-brands fa-whatsapp me-2"></i>
       Share
-    </a>
-  </Button>
-);
+    </Button>
+  );
+}
 
 const PdfDownloadBtn = ({ quiz, review }) => (
   <PDFDownloadLink

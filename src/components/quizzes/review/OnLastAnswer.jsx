@@ -8,7 +8,10 @@ const OnLastAnswer = ({ thisQuiz }) => {
     const navigate = useNavigate();
 
     const goBack = () => navigate(-1);
-
+    const currentDomain = window.location.origin;
+    const shareText = `Attempt this "${thisQuiz.title}" quiz on Quiz-Blog\n${currentDomain}/view-quiz/${thisQuiz.slug}`;
+    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
+    
     if (!isAuthenticated) return <NotAuthenticated />;
 
     return (
@@ -26,11 +29,11 @@ const OnLastAnswer = ({ thisQuiz }) => {
 
                 {/* WhatsApp Share */}
                 <Button
-                    color="success"
-                    className="w-100 mb-3 fw-bold d-flex align-items-center justify-content-center"
+                    className="btn-accent px-4 py-2 fw-semibold shadow-sm d-flex align-items-center"
                     tag="a"
-                    href={`https://api.whatsapp.com/send?text=Attempt this ${thisQuiz.title} on Quiz-Blog\nhttp://www.quizblog.rw/view-quiz/${thisQuiz.slug}`}
+                    href={whatsappUrl}
                     target="_blank"
+                    rel="noreferrer"
                 >
                     <i className="fa-brands fa-whatsapp me-2"></i>
                     Share on WhatsApp

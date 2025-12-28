@@ -15,6 +15,9 @@ const GetReady = () => {
     const { quizSlug } = useParams();
     const { oneQuiz, isLoading, error } = useSelector(state => state.quizzes);
     const { user } = useSelector(state => state.users);
+    const currentDomain = window.location.origin;
+    const shareText = `Attempt this "${oneQuiz.title}" quiz on Quiz-Blog\n${currentDomain}/view-quiz/${oneQuiz.slug}`;
+    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
 
     useEffect(() => {
         if (!oneQuiz || oneQuiz.slug !== quizSlug) dispatch(getOneQuiz(quizSlug));
@@ -50,6 +53,7 @@ const GetReady = () => {
         );
 
     if (!oneQuiz) return null;
+    console.log(oneQuiz)
 
     // If quiz has no questions
     if (shuffledQuestions.length === 0)
@@ -105,17 +109,16 @@ const GetReady = () => {
 
                         {/* Buttons */}
                         <div className="d-flex flex-wrap justify-content-center gap-3 mt-3">
-                        
+
                             <Button
                                 className="btn-accent px-4 py-2 fw-semibold shadow-sm d-flex align-items-center"
+                                tag="a"
+                                href={whatsappUrl}
+                                target="_blank"
+                                rel="noreferrer"
                             >
                                 <i className="fa-brands fa-whatsapp me-2"></i>
-                                <a
-                                    className="text-success text-decoration-none"
-                                    href={`https://api.whatsapp.com/send?text=Attempt this ${oneQuiz.title} quiz on Quiz-Blog%0Ahttps://www.quizblog.rw/view-quiz/${oneQuiz.slug}`}
-                                >
-                                    {texts.share}
-                                </a>
+                                {texts.share}
                             </Button>
 
                             <Link
