@@ -174,16 +174,18 @@ const contactsSlice = createSlice({
       state.isLoading = false;
     });
 
-    builder.addCase(sendRoomMessage.fulfilled, (state, action) => {
-      const message = action.payload;
-      const roomID = message.room;
+    builder.addCase(sendRoomMessage.fulfilled, (state) => {
 
-      // Update both stores
-      state.oneRoomMessages.push(message);
-      if (!state.batchedRoomMessages[roomID]) {
-        state.batchedRoomMessages[roomID] = [];
-      }
-      state.batchedRoomMessages[roomID].unshift(message);
+      // BEING HANDLED BY THE socket.io; emitting to both sender and receiver
+      // const message = action.payload;
+      // const roomID = message.room;
+
+      // // Update both stores
+      // state.oneRoomMessages.push(message);
+      // if (!state.batchedRoomMessages[roomID]) {
+      //   state.batchedRoomMessages[roomID] = [];
+      // }
+      // state.batchedRoomMessages[roomID].unshift(message);
       state.isLoading = false;
     });
 

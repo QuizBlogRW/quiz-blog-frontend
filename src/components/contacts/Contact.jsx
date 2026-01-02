@@ -16,23 +16,18 @@ const Contact = () => {
     // Redux
     const dispatch = useDispatch();
     const { user } = useSelector(state => state.users);
-
-    const [state, setState] = useState({
-        contact_name: '',
-        email: '',
-        content: ''
-    });
+    const [contactState, setContactState] = useState({ contact_name: '', email: '', content: '' });
 
     // Lifecycle methods
     useEffect(() => {
         if (user) {
-            setState(state => ({ ...state, contact_name: user.name, email: user.email }));
+            setContactState(state => ({ ...state, contact_name: user.name, email: user.email }));
         }
     }, [user]);
 
     const onChangeHandler = e => {
         const { name, value } = e.target;
-        setState(state => ({ ...state, [name]: value }));
+        setContactState(state => ({ ...state, [name]: value }));
     };
 
     const navigate = useNavigate();
@@ -40,7 +35,7 @@ const Contact = () => {
     const onContact = e => {
         e.preventDefault();
 
-        const { contact_name, email, content } = state;
+        const { contact_name, email, content } = contactState;
 
         // VALIDATE
         if (contact_name.length < 3 || email.length < 4) {
@@ -59,12 +54,16 @@ const Contact = () => {
             notify('Message is too long!', 'error');
             return;
         }
+
+        const anonymous = user ? null : { name: contact_name, email }
+        const sender = user?._id;
+        const senderEmail = user?.email;
+
         // Attempt to contact
         dispatch(sendRoomMessage({
-            anonymous: {
-                name: contact_name,
-                email
-            },
+            anonymous,
+            sender,
+            senderEmail,
             content
         }))
             .unwrap()
@@ -77,7 +76,7 @@ const Contact = () => {
             });
 
         // Reset fields
-        setState({
+        setContactState({
             contact_name: '',
             email: '',
             content: ''
@@ -119,14 +118,14 @@ const Contact = () => {
                 <Col sm="6" className="mb-5">
                     <Form onSubmit={onContact}>
                         <FormGroup>
-                            <Input type="text" name="contact_name" placeholder="Name" minLength="4" maxLength="30" onChange={onChangeHandler} value={state.contact_name} disabled={user} />
+                            <Input type="text" name="contact_name" placeholder="Name" minLength="4" maxLength="30" onChange={onChangeHandler} value={contactState.contact_name} disabled={user} />
                         </FormGroup>
                         <FormGroup>
-                            <Input type="email" name="email" placeholder="Email" onChange={onChangeHandler} value={state.email} disabled={user} />
+                            <Input type="email" name="email" placeholder="Email" onChange={onChangeHandler} value={contactState.email} disabled={user} />
                         </FormGroup>
 
                         <FormGroup>
-                            <Input type="textarea" name="content" placeholder="Message" rows="5" minLength="3" maxLength="1000" onChange={onChangeHandler} value={state.content} />
+                            <Input type="textarea" name="content" placeholder="Message" rows="5" minLength="3" maxLength="1000" onChange={onChangeHandler} value={contactState.content} />
                         </FormGroup>
                         <Button style={{ backgroundColor: 'var(--brand)', color: 'var(--accent)' }} className='btn-block'>
                             Send Message

@@ -21,7 +21,7 @@ const ConfirmModal = ({ isOpen, toggleModal, handleClick, actionName }) => {
                 <Button color="danger" onClick={handleClick}>
                     {actionName}
                 </Button>
-                <Button color="primary" style={{ backgroundColor: 'var(--brand)' }} onClick={toggleModal}>
+                <Button color="primary" onClick={toggleModal}>
                     Cancel
                 </Button>
             </ModalBody>

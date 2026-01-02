@@ -76,15 +76,15 @@ body,
 }
 
 .btn-primary {
-  color: var(--brand);
-  background-color: var(--accent);
-  border-color: var(--brand);
+  color: var(--brand) !important;
+  background-color: var(--accent) !important;
+  border-color: var(--brand) !important;
 }
 
 .btn-primary:hover {
-  background-color: var(--brand);
-  color: var(--accent);
-  border-color: var(--accent);
+  color: var(--accent) !important;
+  background-color: var(--brand) !important;
+  border-color: var(--accent) !important;
 }
 
 .btn-outline-primary:hover {
@@ -393,9 +393,9 @@ a {
 }
 
 a.btn:hover {
-  background-color: var(--accent)!important;
-  color: var(--brand)!important;
-  border-color: var(--brand-dark)!important;
+  background-color: var(--accent) !important;
+  color: var(--brand) !important;
+  border-color: var(--brand-dark) !important;
 }
 
 header,
@@ -486,6 +486,13 @@ nav .collapse .register-modal a {
   border: 2px solid #ffc107;
   border-radius: 1.5em;
   padding: 1px 8px;
+  color: #fff;
+}
+
+nav .collapse .login-modal a:hover,
+nav .collapse .register-modal a:hover {
+  border: 2px solid var(--brand-dark);
+  color: var(--accent);
 }
 
 nav span.upload-image {
@@ -2094,12 +2101,12 @@ form.subscribe-form img {
     font-size: 0.6rem;
   }
 
-  
+
   .btn-group-sm>.btn,
   .btn-sm {
     font-size: 0.5rem !important;
     padding: 0.2rem 0.3rem !important;
-      line-height: 1 !important;
+    line-height: 1 !important;
   }
 
   form.edit-question,
