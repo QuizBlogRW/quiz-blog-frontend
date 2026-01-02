@@ -1,38 +1,285 @@
-.yourOneImg {
-    padding-left: 3px;
-    padding-right: 3px;
+/* Container */
+.your-images-container {
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
 }
 
-.yourOneImg .btn-info {
-    margin-top: 2px;
+/* Grid spacing */
+.your-images-container .row {
+    margin-left: -0.5rem;
+    margin-right: -0.5rem;
 }
 
-.yourOneImg .card {
-    margin: 8px 0 24px;
-    max-width: 100%;
-    padding: 0;
+.your-images-container .row>[class*='col-'] {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+/* ============================================
+   Image Card
+   ============================================ */
+
+.image-card {
+    margin: 0.5rem 0 1.5rem;
+    border: none;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.image-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* ============================================
+   Image Container
+   ============================================ */
+
+.image-container {
     position: relative;
-    display: flex;
+    background-color: #e9ecef;
+    overflow: hidden;
+    height: 200px;
 }
 
-.yourOneImg .card img {
+.image-container img {
     border: 1px solid rgba(5, 22, 12, 0.2);
     border-radius: 3px;
-    height: auto !important;
-    max-height: 200px;
-    max-width: 100%;
-    width: auto;
-    margin: 0 auto !important;
+    transition: transform 0.3s ease;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.yourOneImg .btn-info small {
-    font-size: .7rem !important;
+.image-card:hover .image-container img {
+    transform: scale(1.05);
+}
+
+/* ============================================
+   Delete Button (Overlay)
+   ============================================ */
+
+.image-card .position-absolute {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.image-card:hover .position-absolute {
+    opacity: 1;
+}
+
+.image-card .btn-danger {
+    font-size: 0.6rem;
+    padding: 0.25rem 0.5rem;
+}
+
+/* ============================================
+   Card Body & Content
+   ============================================ */
+
+.image-card .card-body {
+    padding: 0.75rem;
+}
+
+/* Title text */
+.image-card .text-truncate {
+    font-size: 0.75rem;
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+}
+
+/* ============================================
+   Copy Button
+   ============================================ */
+
+.image-card .btn-info {
+    margin-top: 0.25rem;
+    transition: all 0.2s ease;
+    font-size: 0.875rem;
+}
+
+.image-card .btn-info:hover {
+    transform: scale(1.02);
+}
+
+.image-card .btn-info small {
+    font-size: 0.7rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    display: block;
 }
 
-.yourOneImg .btn-danger {
-    font-size: .6rem !important;
-    margin: 2px;
+/* ============================================
+   Notifications & Alerts
+   ============================================ */
+
+/* Fade-in animation for copy notification */
+.fade-in {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Empty state icon */
+.your-images-container .fa-image {
+    opacity: 0.3;
+}
+
+/* ============================================
+   Loading State
+   ============================================ */
+
+.your-images-container .spinner-border {
+    width: 2rem;
+    height: 2rem;
+}
+
+/* ============================================
+   Header Elements
+   ============================================ */
+
+/* Badge styling */
+.your-images-container .badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    vertical-align: middle;
+}
+
+/* Refresh button */
+.your-images-container .btn-link {
+    padding: 0.25rem 0.5rem;
+    color: #6c757d;
+}
+
+.your-images-container .btn-link:hover {
+    color: #495057;
+}
+
+/* ============================================
+   Tooltips
+   ============================================ */
+
+.tooltip-inner {
+    background-color: #333;
+    color: #fff;
+    font-size: 0.875rem;
+    padding: 0.5rem 0.75rem;
+}
+
+.tooltip.bs-tooltip-top .tooltip-arrow::before {
+    border-top-color: #333;
+}
+
+.tooltip.bs-tooltip-bottom .tooltip-arrow::before {
+    border-bottom-color: #333;
+}
+
+/* ============================================
+   Responsive Design
+   ============================================ */
+
+@media (max-width: 768px) {
+    .your-images-container {
+        padding: 0.5rem;
+    }
+
+    .image-container {
+        height: 150px;
+    }
+
+    .image-card .btn-info small {
+        font-size: 0.65rem;
+    }
+
+    .your-images-container .badge {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.4rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .image-container {
+        height: 120px;
+    }
+
+    .image-card {
+        margin: 0.25rem 0 1rem;
+    }
+}
+
+/* ============================================
+   Accessibility
+   ============================================ */
+
+/* Focus styles for keyboard navigation */
+.image-card .btn:focus {
+    outline: 2px solid #0d6efd;
+    outline-offset: 2px;
+}
+
+/* Ensure sufficient contrast */
+.image-card .text-muted {
+    color: #6c757d !important;
+}
+
+/* ============================================
+   Print Styles
+   ============================================ */
+
+@media print {
+
+    .image-card .position-absolute,
+    .image-card .btn-info,
+    .your-images-container .btn-link {
+        display: none;
+    }
+
+    .image-card {
+        break-inside: avoid;
+    }
+}
+
+/* ============================================
+   Animation Performance
+   ============================================ */
+
+/* Use GPU acceleration for smoother animations */
+.image-card,
+.image-container img,
+.image-card .position-absolute {
+    will-change: transform;
+}
+
+/* Reduce motion for users with motion sensitivity */
+@media (prefers-reduced-motion: reduce) {
+
+    .image-card,
+    .image-container img,
+    .image-card .position-absolute,
+    .image-card .btn-info,
+    .fade-in {
+        transition: none;
+        animation: none;
+    }
+
+    .image-card:hover {
+        transform: none;
+    }
+
+    .image-card:hover .image-container img {
+        transform: none;
+    }
 }

@@ -1,59 +1,92 @@
 import { Container } from 'reactstrap';
+import { useMemo } from 'react';
+
+const ICON_STYLE = {
+    width: 48,
+    height: 48,
+    fontSize: 20,
+    backgroundColor: 'var(--accent)',
+    transition: 'transform 0.2s ease, background-color 0.2s ease',
+};
 
 const BackLikeShare = ({ articleName, articleCreator }) => {
-    const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
-    const whatsappText = encodeURIComponent(`${articleName}\n${currentUrl}`);
-    const twitterText = encodeURIComponent(articleName);
+    const currentUrl = useMemo(() => {
+        if (typeof window === 'undefined') return '';
+        return window.location.href;
+    }, []);
 
-    const socialLinks = [
-        { href: `https://api.whatsapp.com/send?text=${whatsappText}`, icon: 'fab fa-whatsapp', label: 'WhatsApp' },
-        { href: `https://www.facebook.com/share.php?u=${encodeURIComponent(currentUrl)}`, icon: 'fab fa-facebook-f', label: 'Facebook' },
-        { href: `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(currentUrl)}&title=${encodeURIComponent(articleName)}&summary=${encodeURIComponent(articleCreator)}&source=Quiz-Blog`, icon: 'fab fa-linkedin-in', label: 'LinkedIn' },
-        { href: `https://www.instagram.com/?url=${encodeURIComponent(currentUrl)}`, icon: 'fab fa-instagram', label: 'Instagram' },
-        { href: `http://twitter.com/share?text=${twitterText}&url=${encodeURIComponent(currentUrl)}&hashtags=${encodeURIComponent(articleName + ',QuizBlog,' + (articleCreator || ''))}`, icon: 'fab fa-twitter', label: 'Twitter' },
-    ];
+    const socialLinks = useMemo(() => {
+        const encodedUrl = encodeURIComponent(currentUrl);
+        const encodedTitle = encodeURIComponent(articleName || '');
+
+        return [
+            {
+                label: 'WhatsApp',
+                icon: 'fab fa-whatsapp',
+                href: `https://api.whatsapp.com/send?text=${encodedTitle}%0A${encodedUrl}`,
+            },
+            {
+                label: 'Facebook',
+                icon: 'fab fa-facebook-f',
+                href: `https://www.facebook.com/share.php?u=${encodedUrl}`,
+            },
+            {
+                label: 'LinkedIn',
+                icon: 'fab fa-linkedin-in',
+                href: `https://www.linkedin.com/shareArticle?mini=true&url=${encodedUrl}&title=${encodedTitle}&summary=${encodeURIComponent(
+                    articleCreator || ''
+                )}`,
+            },
+            {
+                label: 'Instagram',
+                icon: 'fab fa-instagram',
+                href: `https://www.instagram.com/?url=${encodedUrl}`,
+            },
+            {
+                label: 'Twitter',
+                icon: 'fab fa-twitter',
+                href: `https://twitter.com/share?text=${encodedTitle}&url=${encodedUrl}`,
+            },
+        ];
+    }, [articleName, articleCreator, currentUrl]);
+
+    const handleHover = (e, active) => {
+        e.currentTarget.style.transform = active ? 'scale(1.15)' : 'scale(1)';
+        e.currentTarget.style.backgroundColor = active
+            ? 'var(--brand)'
+            : 'var(--accent)';
+    };
 
     return (
-        <section className="">
-            <Container className="p-4 bg-white rounded-4 shadow-sm d-flex flex-column flex-md-row align-items-center justify-content-between border" style={{ borderColor: 'var(--accent)' }}>
+        <section>
+            <Container className="p-3 bg-white rounded-3 shadow-sm d-flex flex-column flex-md-row align-items-center justify-content-center gap-3">
 
-                {/* Social Icons */}
-                <ul className="list-unstyled d-flex mb-0 gap-3">
-                    <li style={{ color: 'var(--brand)' }}>
-                        <p className='d-flex align-items-center justify-content-center'>
-                            Share on &nbsp;&nbsp;
-                        </p>
-                    </li>
-                    {socialLinks.map((social, idx) => (
-                        <li key={idx}>
+                <strong className="text-center text-md-start mb-2 me-md-3" style={{ color: 'var(--brand)' }}>
+                    Share on
+                </strong>
+
+                <ul className="list-unstyled d-flex gap-2 gap-lg-3 mb-0">
+                    {socialLinks.map(({ href, icon, label }) => (
+                        <li key={label}>
                             <a
-                                href={social.href}
+                                href={href}
                                 target="_blank"
                                 rel="noopener noreferrer"
+                                aria-label={label}
+                                title={label}
                                 className="d-flex align-items-center justify-content-center rounded-circle text-white"
-                                style={{
-                                    width: 50,
-                                    height: 50,
-                                    fontSize: 20,
-                                    backgroundColor: 'var(--accent)',
-                                    transition: 'all 0.3s ease',
-                                }}
-                                aria-label={social.label}
-                                title={social.label}
-                                onMouseOver={(e) => {
-                                    e.currentTarget.style.backgroundColor = 'var(--brand)';
-                                    e.currentTarget.style.transform = 'scale(1.15)';
-                                }}
-                                onMouseOut={(e) => {
-                                    e.currentTarget.style.backgroundColor = 'var(--accent)';
-                                    e.currentTarget.style.transform = 'scale(1)';
-                                }}
+                                style={ICON_STYLE}
+                                onMouseEnter={(e) => handleHover(e, true)}
+                                onMouseLeave={(e) => handleHover(e, false)}
+                                onFocus={(e) => handleHover(e, true)}
+                                onBlur={(e) => handleHover(e, false)}
                             >
-                                <i className={social.icon}></i>
+                                <i className={icon} aria-hidden="true" />
                             </a>
                         </li>
                     ))}
                 </ul>
+
             </Container>
         </section>
     );

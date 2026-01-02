@@ -4,7 +4,8 @@ import { updateCategory } from '@/redux/slices/categoriesSlice';
 import { notify } from '@/utils/notifyToast';
 
 const EditCategory = ({ categoryToEdit }) => {
-    const { isLoading, user } = useSelector(state => state.users);
+
+    const { user } = useSelector(state => state.users);
     const { allCourseCategories } = useSelector(state => state.courseCategories);
 
     const initialUpdateData = {
@@ -66,7 +67,7 @@ const EditCategory = ({ categoryToEdit }) => {
             description,
             oldCourseCatID,
             courseCategory,
-            last_updated_by: isLoading ? null : user._id
+            last_updated_by: user?._id
         };
 
         return (dispatch) => dispatch(updateCategory(updatedCategory));

@@ -10,7 +10,7 @@ import { getOneBlogPost } from '@/redux/slices';
 import { createBlogPostView } from '@/redux/slices/blogPostsViewsSlice';
 import RelatedPosts from './RelatedPosts';
 import LatestPosts from './LatestPosts';
-import altImage from '@/images/dashboard.svg';
+import altImage from '@/images/resourceImg.svg';
 import BackLikeShare from './BackLikeShare';
 import FollowUs from './FollowUs';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
@@ -112,7 +112,7 @@ const ViewBlogPost = () => {
             {isLoading ? (
               <QBLoadingSM />
             ) : (
-              <CardBody className="p-4 p-lg-5">
+              <CardBody className="p-4">
                 {/* Title + Meta */}
                 <header className="text-center mb-4">
                   <h1 className="fw-bold text-dark text-uppercase mb-2">
@@ -151,8 +151,8 @@ const ViewBlogPost = () => {
                 </section>
 
                 {/* Author + Actions */}
-                <footer className="d-flex flex-column flex-md-row justify-content-between align-items-center gap-4 mt-5 p-3 p-md-4 bg-white rounded-4 shadow-sm border">
-                  <div className="d-flex align-items-center gap-3" ref={authorRef}>
+                <footer className="d-flex flex-column flex-md-row justify-content-between align-items-center bg-white rounded-4 shadow-sm border p-3">
+                  <div className="d-flex flex-column align-items-center justify-content-around p-2" ref={authorRef}>
                     <img
                       src={creator?.avatar || altImage}
                       alt={creator?.name}
@@ -165,23 +165,21 @@ const ViewBlogPost = () => {
                         transition: 'transform 0.3s',
                       }}
                     />
-                    <div className="text-start">
-                      <div className="fw-bold text-dark">{creator?.name}</div>
+                    <div className="text-start d-block w-100">
+                      <small style={{ fontSize: ".7rem" }}>{creator?.name}</small>
                       <div className="text-muted small">
                         {postCategory?.name}
                       </div>
                     </div>
                   </div>
 
-                  <div className="mt-3 mt-md-0">
-                    <BackLikeShare
-                      articleName={title}
-                      articleCreator={creator?.name}
-                    />
-                  </div>
+                  <BackLikeShare
+                    articleName={title}
+                    articleCreator={creator?.name}
+                  />
                 </footer>
 
-                <FollowUs className="mt-4" />
+                <FollowUs />
               </CardBody>
             )}
           </Card>
