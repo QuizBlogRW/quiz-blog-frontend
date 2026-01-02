@@ -5,12 +5,15 @@ import {
   useState,
   useEffect,
   useMemo,
+  useRef,
 } from "react";
 import { Button } from "reactstrap";
 import { Link, useLocation } from "react-router-dom";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+
 import { logRegContext } from "@/contexts/appContexts";
+import { createScore } from '@/redux/slices/scoresSlice';
 
 import ResponsiveAd from "@/components/adsenses/ResponsiveAd";
 import QBLoadingSM from "@/utils/rLoading/QBLoadingSM";
@@ -21,6 +24,7 @@ import PdfDocument from "@/components/dashboard/pdfs/PdfDocument";
 import RatingQuiz from "./RatingQuiz";
 import RelatedNotes from "./RelatedNotes";
 import SimilarQuizzes from "./SimilarQuizzes";
+import { notify } from '@/utils/notifyToast';
 
 const ResponsiveHorizontal = lazy(() =>
   import("@/components/adsenses/ResponsiveHorizontal")
@@ -47,6 +51,7 @@ const WhatsAppShareBtn = ({ quiz }) => {
   const currentDomain = window.location.origin;
   const shareText = `Attempt this "${quiz.title}" quiz on Quiz-Blog\n${currentDomain}/view-quiz/${quiz.slug}`;
   const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
+
   return (
     <Button
       className="btn-accent px-4 py-2 fw-semibold shadow-sm d-flex align-items-center"
@@ -59,7 +64,7 @@ const WhatsAppShareBtn = ({ quiz }) => {
       Share
     </Button>
   );
-}
+};
 
 const PdfDownloadBtn = ({ quiz, review }) => (
   <PDFDownloadLink
@@ -83,6 +88,8 @@ const PdfDownloadBtn = ({ quiz, review }) => (
 
 // MAIN COMPONENT
 const QuizResults = () => {
+  const dispatch = useDispatch();
+  const autoSavedRef = useRef(false);
   const location = useLocation();
   const { toggleL } = useContext(logRegContext);
   const { user, isAuthenticated } = useSelector((state) => state.users);
@@ -119,23 +126,75 @@ const QuizResults = () => {
     [scoreToSaveID, marks, qnsLength, thisQuiz, quizToReview, user]
   );
 
-  // Save score for guests
+  // Save score for guests in localStorage
   useEffect(() => {
     if (!isAuthenticated && scoreToSaveID) {
       localStorage.setItem(scoreToSaveID, JSON.stringify(scoreToSave));
     }
   }, [isAuthenticated, scoreToSaveID, scoreToSave]);
 
-  // Auto-open rating
+  // Auto-save score when user logs in
+  useEffect(() => {
+    // Guard clauses
+    if (!isAuthenticated || !user?._id || !scoreToSaveID || autoSavedRef.current) {
+      return;
+    }
+
+    // Check if score exists in localStorage
+    const storedScore = localStorage.getItem(scoreToSaveID);
+    if (!storedScore) return;
+
+    // Parse stored score safely
+    let parsedScore;
+    try {
+      parsedScore = JSON.parse(storedScore);
+    } catch (error) {
+      console.error('Failed to parse stored score:', error);
+      localStorage.removeItem(scoreToSaveID);
+      return;
+    }
+
+    // Prepare payload with authenticated user ID
+    const payload = {
+      ...parsedScore,
+      taken_by: user._id,
+    };
+
+    // Mark as attempted to prevent duplicate saves
+    autoSavedRef.current = true;
+
+    // Dispatch save action
+    dispatch(createScore(payload))
+      .then((res) => {
+        if (res?.type?.includes("fulfilled")) {
+          localStorage.removeItem(scoreToSaveID);
+          notify("Quiz results saved successfully!", "success");
+        } else {
+          // Reset flag to allow retry on failure
+          autoSavedRef.current = false;
+          notify("Failed to save results. Please try again.", "error");
+        }
+      })
+      .catch((error) => {
+        console.error('Error saving score:', error);
+        autoSavedRef.current = false;
+        notify("An error occurred while saving results.", "error");
+      });
+  }, [isAuthenticated, user?._id, scoreToSaveID, dispatch]);
+
+  // Auto-open rating modal
   const [modalOpen, setModalOpen] = useState(false);
 
-  // Check if feedback already submitted (use same key format as RatingQuiz)
-  const feedbackKey = `quiz-feedback-${thisQuiz?._id}-${user?._id}`;
+  // Memoize feedback key
+  const feedbackKey = useMemo(
+    () => `quiz-feedback-${thisQuiz?._id}-${user?._id}`,
+    [thisQuiz?._id, user?._id]
+  );
 
+  // Handle rating modal timing
   useEffect(() => {
     if (!isAuthenticated || !thisQuiz?._id || !user?._id) return;
 
-    // Check if feedback already exists and is still valid
     const storedFeedback = localStorage.getItem(feedbackKey);
 
     if (storedFeedback) {
@@ -143,21 +202,31 @@ const QuizResults = () => {
         const data = JSON.parse(storedFeedback);
         const ONE_HOUR = 60 * 60 * 1000;
 
-        // If feedback was submitted less than 1 hour ago, don't show modal
+        // Don't show modal if feedback submitted recently
         if (Date.now() - data.timestamp <= ONE_HOUR) {
           return;
-        } else {
-          // Expired feedback, remove it
-          localStorage.removeItem(feedbackKey);
         }
-      } catch {
+
+        // Remove expired feedback
+        localStorage.removeItem(feedbackKey);
+      } catch (error) {
+        console.error('Failed to parse feedback data:', error);
         localStorage.removeItem(feedbackKey);
       }
     }
-    // Open modal after 3 seconds if no recent feedback
+
+    // Open modal after 3 seconds
     const timer = setTimeout(() => setModalOpen(true), 3000);
     return () => clearTimeout(timer);
   }, [isAuthenticated, thisQuiz?._id, user?._id, feedbackKey]);
+
+  // Memoize button text based on auth state
+  const reviewButtonText = useMemo(() => {
+    if (user?.role) {
+      return "Review Answers";
+    }
+    return "Login to Review Answers";
+  }, [user?.role]);
 
   // RENDER
   return (
@@ -172,9 +241,14 @@ const QuizResults = () => {
 
           {/* ACTION BUTTONS */}
           <div className="my-sm-5 d-flex justify-content-around align-items-center flex-wrap">
-
             <Link to={`/view-quiz/${thisQuiz?.slug}`}>
-              <Button outline color="success" className="btn-retake mt-3 mt-sm-0 text-warning">Retake</Button>
+              <Button
+                outline
+                color="success"
+                className="btn-retake mt-3 mt-sm-0 text-warning"
+              >
+                Retake
+              </Button>
             </Link>
 
             {user?.role ? (
@@ -183,8 +257,12 @@ const QuizResults = () => {
 
                 {scoreToSaveID && (
                   <Link to={`/review-quiz/${scoreToSaveID}`} state={scoreToSave}>
-                    <Button outline color="warning" className="mt-3 share-btn text-success">
-                      Review Answers
+                    <Button
+                      outline
+                      color="warning"
+                      className="mt-3 share-btn text-success"
+                    >
+                      {reviewButtonText}
                     </Button>
                   </Link>
                 )}
@@ -195,15 +273,19 @@ const QuizResults = () => {
 
                 <RatingQuiz
                   isOpen={modalOpen}
-                  toggle={() => setModalOpen((s) => !s)}
+                  toggle={() => setModalOpen((prev) => !prev)}
                   quiz={thisQuiz?._id}
                   score={mongoScoreID}
                   user={user?._id}
                 />
               </>
             ) : (
-              <Button color="warning" onClick={toggleL} className="btn-retake mt-3 text-success">
-                Login to review answers
+              <Button
+                color="warning"
+                onClick={toggleL}
+                className="btn-retake mt-3 text-success"
+              >
+                Login to Review Answers
               </Button>
             )}
           </div>

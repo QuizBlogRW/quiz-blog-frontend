@@ -2,7 +2,7 @@ import { Container } from 'reactstrap';
 
 const socials = [
     { href: 'https://www.instagram.com/quizblogrw/', icon: 'fab fa-instagram', label: 'Instagram' },
-    { key: 'twitter', icon: 'fab fa-twitter', label: 'Twitter' },
+    { key: 'twitter', icon: 'fab fa-x-twitter', label: 'Twitter' },
     { href: 'https://www.facebook.com/QuizblogRw/', icon: 'fab fa-facebook-f', label: 'Facebook' },
     { href: 'https://www.linkedin.com/company/quiz-blog/', icon: 'fab fa-linkedin-in', label: 'LinkedIn' },
 ];

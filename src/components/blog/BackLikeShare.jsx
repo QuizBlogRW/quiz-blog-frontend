@@ -44,7 +44,7 @@ const BackLikeShare = ({ articleName, articleCreator }) => {
             },
             {
                 label: 'Twitter',
-                icon: 'fab fa-twitter',
+                icon: 'fab fa-x-twitter',
                 href: `https://twitter.com/share?text=${encodedTitle}&url=${encodedUrl}`,
             },
         ];
