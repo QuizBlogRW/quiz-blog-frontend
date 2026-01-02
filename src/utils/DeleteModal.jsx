@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
 import trash from '@/images/trash.svg';
 import { useDispatch } from 'react-redux';
+import { notify } from './notifyToast';
 
 const DeleteModal = ({ delID, delTitle, deleteFn, deleteFnName }) => {
   const dispatch = useDispatch();
@@ -23,6 +24,7 @@ const DeleteModal = ({ delID, delTitle, deleteFn, deleteFnName }) => {
       // Only close modal & show success if fulfilled
       if (result.type.endsWith('/fulfilled')) {
         setModal(false);
+        notify(`Deleting ${delTitle} successful!`, 'success');
         if (deleteFnName === 'deleteQuestion') {
           window.history.back();
         } else if (

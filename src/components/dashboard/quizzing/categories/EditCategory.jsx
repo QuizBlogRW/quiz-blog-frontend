@@ -7,7 +7,7 @@ const EditCategory = ({ categoryToEdit }) => {
     const { isLoading, user } = useSelector(state => state.users);
     const { allCourseCategories } = useSelector(state => state.courseCategories);
 
-    const initialData = {
+    const initialUpdateData = {
         catID: categoryToEdit && categoryToEdit._id,
         name: categoryToEdit && categoryToEdit.title || '',
         description: categoryToEdit && categoryToEdit.description || '',
@@ -77,7 +77,7 @@ const EditCategory = ({ categoryToEdit }) => {
             title="Edit Category"
             submitFn={submitFn}
             renderForm={renderForm}
-            initialData={initialData}
+            initialUpdateData={initialUpdateData}
         />
     );
 };

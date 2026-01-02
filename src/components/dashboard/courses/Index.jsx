@@ -1,34 +1,11 @@
-import { useState, useEffect, lazy, Suspense } from 'react';
-import {
-  Row,
-  Col,
-  Breadcrumb,
-  BreadcrumbItem,
-  Collapse,
-  Navbar,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  NavLink,
-  ListGroup,
-  ListGroupItem,
-  FormGroup,
-  Label,
-  Input,
-} from 'reactstrap';
-import {
-  getCourseCategories,
-  deleteCourseCategory,
-  createCourseCategory,
-} from '@/redux/slices/courseCategoriesSlice';
+import { useState, useEffect, lazy, Suspense, useCallback } from 'react';
+import { Row, Col, Breadcrumb, BreadcrumbItem, Collapse, Navbar, NavbarBrand, Nav, NavItem, NavLink, ListGroup, ListGroupItem, FormGroup, Label, Input } from 'reactstrap';
+import { getCourseCategories, deleteCourseCategory, createCourseCategory } from '@/redux/slices/courseCategoriesSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import AddModal from '@/utils/AddModal';
 import UpdateModal from '@/utils/UpdateModal';
 import { updateCourseCategory } from '@/redux/slices/courseCategoriesSlice';
-import {
-  createCourse,
-  getCoursesByCategory,
-} from '@/redux/slices/coursesSlice';
+import { createCourse, getCoursesByCategory } from '@/redux/slices/coursesSlice';
 import { notify } from '@/utils/notifyToast';
 import validators from '@/utils/validators';
 import CoursesHolder from './CoursesHolder';
@@ -77,30 +54,26 @@ const MobileNavbar = ({
     </button>
     <Collapse isOpen={!collapsed} navbar>
       <Nav navbar>
-        {allCourseCategories && allCourseCategories.length < 1 ? (
-          <>{window.location.reload()}</>
-        ) : (
-          allCourseCategories &&
-          allCourseCategories.map((cCategory) => (
-            <NavItem key={cCategory._id}>
-              <NavLink
-                className={`nav-link item ${activeTab === cCategory.title ? 'active' : ''
-                  }`}
-                id={`v-pills-${cCategory.title}-tab`}
-                data-toggle="pill"
-                href={`#v-pills-${cCategory.title}`}
-                role="tab"
-                aria-controls={`v-pills-${cCategory.title}`}
-                aria-selected="true"
-                onClick={() => {
-                  toggle(cCategory.title);
-                  dispatch(getCoursesByCategory(cCategory._id));
-                }}
-              >
-                {cCategory.title}
-              </NavLink>
-            </NavItem>
-          ))
+        {(allCourseCategories?.map((cCategory) => (
+          <NavItem key={cCategory._id}>
+            <NavLink
+              className={`nav-link item ${activeTab === cCategory.title ? 'active' : ''
+                }`}
+              id={`v-pills-${cCategory.title}-tab`}
+              data-toggle="pill"
+              href={`#v-pills-${cCategory.title}`}
+              role="tab"
+              aria-controls={`v-pills-${cCategory.title}`}
+              aria-selected="true"
+              onClick={() => {
+                toggle(cCategory.title);
+                dispatch(getCoursesByCategory(cCategory._id));
+              }}
+            >
+              {cCategory.title}
+            </NavLink>
+          </NavItem>
+        ))
         )}
       </Nav>
     </Collapse>
@@ -166,16 +139,16 @@ const Index = () => {
     (state) => state.courseCategories
   );
   const catLoading = useSelector((state) => state.courseCategories.isLoading);
-  const courses = useSelector((state) => state.courses);
   const { user, isAuthenticated, isLoading } = useSelector(
     (state) => state.users
   );
   const [collapsed, setCollapsed] = useState(true);
   const toggleNavbar = () => setCollapsed(!collapsed);
   const [activeTab, setActiveTab] = useState('');
-  const toggle = (tab) => {
-    if (activeTab !== tab) setActiveTab(tab);
-  };
+  const toggle = useCallback((tab) => {
+    setActiveTab((current) => (current !== tab ? tab : current));
+  }, []);
+
 
   useEffect(() => {
     dispatch(getCourseCategories());
@@ -260,7 +233,7 @@ const Index = () => {
       {catLoading ? (
         <QBLoadingSM title="course categories" />
       ) : (
-        <Row className="pt-lg-5 courses-content">
+        <Row className="py-lg-3 courses-content">
           <MobileNavbar
             allCourseCategories={allCourseCategories}
             activeTab={activeTab}
@@ -423,7 +396,7 @@ const Index = () => {
                             </>
                             <UpdateModal
                               title="Edit Course Category"
-                              initialData={{
+                              initialUpdateData={{
                                 idToUpdate: cCategory._id,
                                 name: cCategory.title,
                                 description: cCategory.description,
@@ -492,7 +465,7 @@ const Index = () => {
                             />
                           </span>
                         ) : null}
-                        <CoursesHolder courses={courses} />
+                        <CoursesHolder />
                         {cCategory._id === '60f2b2f7bdbf4c47f0fd9430' ? (
                           <div className="d-flex" id="video-professsor-messer">
                             <iframe

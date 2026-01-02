@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
 import edit from '@/images/edit.svg';
 import { useDispatch } from 'react-redux';
+import { notify } from './notifyToast';
 
 /**
  * UpdateModal
@@ -9,27 +10,27 @@ import { useDispatch } from 'react-redux';
  * - title: string - modal title shown in header
  * - submitFn: function - redux action creator or async function to call with formData
  * - renderForm: (formState, setFormState) => ReactNode - render prop that returns the form UI
- * - initialData: object - object to prefill the form (required for updates)
+ * - initialUpdateData: object - object to prefill the form (required for updates)
  */
 const UpdateModal = ({
   title = 'Update',
   submitFn,
   renderForm,
-  initialData = {},
+  initialUpdateData = {},
   children, // optional custom trigger element
   triggerText = null,
 }) => {
   const dispatch = useDispatch();
   const [modal, setModal] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [formState, setFormState] = useState(initialData);
+  const [formState, setFormState] = useState(initialUpdateData);
   const [error, setError] = useState(null);
   const firstInputRef = useRef(null);
   const modalBodySelector = '.update-modal .modal-body';
 
   useEffect(() => {
-    setFormState(initialData);
-  }, [initialData]);
+    setFormState(initialUpdateData);
+  }, [initialUpdateData]);
 
   useEffect(() => {
     if (modal) {
@@ -61,11 +62,11 @@ const UpdateModal = ({
       }, 50);
     } else {
       // reset form when closing to avoid stale state
-      setFormState(initialData);
+      setFormState(initialUpdateData);
       setSubmitting(false);
       setError(null);
     }
-  }, [modal, initialData]);
+  }, [modal, initialUpdateData]);
 
   const toggle = () => setModal(!modal);
 
@@ -74,6 +75,7 @@ const UpdateModal = ({
     const maybeResult = submitFn(data);
     // If the returned value is a function, assume it's a thunk and dispatch it.
     if (typeof maybeResult === 'function') {
+
       return await dispatch(maybeResult);
     } else {
       throw new Error(
@@ -92,12 +94,13 @@ const UpdateModal = ({
       // Only close modal & show success if fulfilled
       if (result.type.endsWith('/fulfilled')) {
         setModal(false);
+        notify('Updating successful!', 'success');
       } else {
         console.error('Submission failed: ', result?.error?.message);
       }
     } catch (err) {
       setSubmitting(false);
-      console.error('AddModal submit error', err);
+      console.error('UpdateModal submit error', err);
     }
   };
 

@@ -8,7 +8,7 @@ const EditQuiz = ({ quizToEdit }) => {
     const { allcategories } = useSelector((state) => state.categories) || {};
     const { user, isLoading } = useSelector((state) => state.users);
 
-    const initialData = {
+    const initialUpdateData = {
         quizID: quizToEdit._id,
         name: quizToEdit.title || '',
         description: quizToEdit.description || '',
@@ -103,7 +103,7 @@ const EditQuiz = ({ quizToEdit }) => {
             title="Edit Quiz"
             submitFn={submitFn}
             renderForm={renderForm}
-            initialData={initialData}
+            initialUpdateData={initialUpdateData}
         />
     );
 };

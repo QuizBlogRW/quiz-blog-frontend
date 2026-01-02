@@ -47,8 +47,8 @@ const chaptersSlice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(createChapter.fulfilled, (state, action) => {
-      state.allChapters.unshift(action.payload);
-      state.chaptersByCourse.unshift(action.payload);
+      state.allChapters.push(action.payload);
+      state.chaptersByCourse.push(action.payload);
       state.isLoading = false;
     });
     builder.addCase(updateChapter.fulfilled, (state, action) => {

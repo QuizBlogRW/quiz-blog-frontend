@@ -1,14 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import {
-  Button,
-  Modal,
-  ModalBody,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  UncontrolledTooltip,
-} from 'reactstrap';
+import { Button, Modal, ModalBody, Form, FormGroup, Label, Input, UncontrolledTooltip } from 'reactstrap';
 import uploadimage from '@/images/uploadimage.svg';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateProfileImage } from '@/redux/slices/usersSlice';

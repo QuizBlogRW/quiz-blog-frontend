@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
 import { useDispatch } from 'react-redux';
 import plus from '@/images/plus.svg';
+import { notify } from './notifyToast';
 
 /**
  * AddModal
@@ -25,10 +26,12 @@ const AddModal = ({
 
   const toggle = () => setModal(!modal);
 
-  const runSubmit = async (data) => {
+  const runSubmit = async (formData) => {
+
     if (!submitFn) return null;
 
-    const maybeResult = submitFn(data);
+    const maybeResult = submitFn(formData);
+
     // If the returned value is a function, assume it's a thunk and dispatch it.
     if (typeof maybeResult === 'function') {
       return await dispatch(maybeResult);
@@ -40,7 +43,9 @@ const AddModal = ({
   };
 
   const onSubmit = async (e) => {
+
     e && e.preventDefault();
+    
     try {
       setSubmitting(true);
       const result = await runSubmit(formState);
@@ -49,6 +54,7 @@ const AddModal = ({
       // Only close modal & show success if fulfilled
       if (result.type.endsWith('/fulfilled')) {
         setModal(false);
+        notify('Creation successfull!', 'success');
       } else {
         console.error('Submission failed: ', result?.error?.message);
       }
@@ -99,12 +105,7 @@ const AddModal = ({
             <Button color="success" type="submit" disabled={submitting}>
               {submitting ? 'Saving...' : 'Save'}
             </Button>
-            <Button
-              color="warning"
-              outline
-              onClick={toggle}
-              className="text-success"
-            >
+            <Button color="warning" outline onClick={toggle} className="text-success">
               Cancel
             </Button>
           </ModalFooter>

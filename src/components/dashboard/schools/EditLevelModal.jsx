@@ -3,7 +3,7 @@ import { updateLevel } from '@/redux/slices/levelsSlice';
 import { notify } from '@/utils/notifyToast';
 
 const EditLevelModal = ({ idToUpdate, editTitle }) => {
-    const initialData = { idToUpdate, title: editTitle || '' };
+    const initialUpdateData = { idToUpdate, title: editTitle || '' };
 
     const renderForm = (formState, setFormState, firstInputRef) => {
         const onChange = (e) => setFormState({ ...formState, [e.target.name]: e.target.value });
@@ -35,7 +35,7 @@ const EditLevelModal = ({ idToUpdate, editTitle }) => {
             title="Edit Level"
             submitFn={submitFn}
             renderForm={renderForm}
-            initialData={initialData}
+            initialUpdateData={initialUpdateData}
 
         />
     );

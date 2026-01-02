@@ -3,7 +3,7 @@ import { updateFaculty } from '@/redux/slices/facultiesSlice';
 import { notify } from '@/utils/notifyToast';
 
 const EditFacultyModal = ({ idToUpdate, editTitle }) => {
-    const initialData = { idToUpdate, title: editTitle || '', years: [] };
+    const initialUpdateData = { idToUpdate, title: editTitle || '', years: [] };
 
     const renderForm = (formState, setFormState, firstInputRef) => {
         const onChange = (e) => setFormState({ ...formState, [e.target.name]: e.target.value });
@@ -53,7 +53,7 @@ const EditFacultyModal = ({ idToUpdate, editTitle }) => {
             title="Edit Faculty"
             submitFn={submitFn}
             renderForm={renderForm}
-            initialData={initialData}
+            initialUpdateData={initialUpdateData}
 
         />
     );

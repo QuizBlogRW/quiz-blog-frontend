@@ -4,7 +4,7 @@ import { notify } from '@/utils/notifyToast';
 
 const EditFaq = ({ faqToEdit }) => {
 
-  const initialData = {
+  const initialUpdateData = {
     faqID: faqToEdit._id,
     title: faqToEdit.title || '',
     answer: faqToEdit.answer || '',
@@ -78,7 +78,7 @@ const EditFaq = ({ faqToEdit }) => {
       title="Edit FAQ"
       submitFn={submitFn}
       renderForm={renderForm}
-      initialData={initialData}
+      initialUpdateData={initialUpdateData}
     />
   );
 };

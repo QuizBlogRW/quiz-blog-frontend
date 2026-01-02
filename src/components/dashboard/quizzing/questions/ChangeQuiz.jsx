@@ -10,7 +10,7 @@ const ChangeQuiz = ({ questionID, oldQuizID, questionCatID }) => {
   const { isLoading, categoryQuizzes } = useSelector((state) => state.quizzes);
   const { user } = useSelector((state) => state.users);
 
-  const initialData = { questionID, newQuizID: '' };
+  const initialUpdateData = { questionID, newQuizID: '' };
 
   useEffect(() => {
     if (questionCatID) dispatch(getQuizzesByCategory(questionCatID));
@@ -64,7 +64,7 @@ const ChangeQuiz = ({ questionID, oldQuizID, questionCatID }) => {
       title="Change Quiz"
       submitFn={submitFn}
       renderForm={renderForm}
-      initialData={initialData}
+      initialUpdateData={initialUpdateData}
       triggerText="Change Quiz"
     />
   );

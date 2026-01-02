@@ -3,7 +3,7 @@ import { updateUser } from '@/redux/slices/usersSlice';
 import { notify } from '@/utils/notifyToast';
 
 const EditUser = ({ userToUse }) => {
-    const initialData = {
+    const initialUpdateData = {
         uId: userToUse?._id,
         name: userToUse?.name || '',
         role: userToUse?.role || '',
@@ -59,7 +59,7 @@ const EditUser = ({ userToUse }) => {
             title="Edit User"
             submitFn={submitFn}
             renderForm={renderForm}
-            initialData={initialData}
+            initialUpdateData={initialUpdateData}
 
         />
     );

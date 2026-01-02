@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import CourseNotes from '@/components/dashboard/courses/notes/CourseNotes';
-import AddModal from '@/utils/AddModal';
-import UpdateModal from '@/utils/UpdateModal';
 import { createChapter, getChaptersByCourse, deleteChapter, updateChapter } from '@/redux/slices/chaptersSlice';
 import { getOneCourse } from '@/redux/slices/coursesSlice';
 import validators from '@/utils/validators';
 import { useSelector, useDispatch } from 'react-redux';
 import { Card, Button, CardTitle, CardText, Alert, Breadcrumb, BreadcrumbItem, Input } from 'reactstrap';
+import { notify } from '@/utils/notifyToast';
+import CourseNotes from '@/components/dashboard/courses/notes/CourseNotes';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 import DeleteModal from '@/utils/DeleteModal';
-import { notify } from '@/utils/notifyToast';
+import UpdateModal from '@/utils/UpdateModal';
+import AddModal from '@/utils/AddModal';
+import NotAuthenticated from '@/components/users/NotAuthenticated';
 
 const ViewCourse = () => {
 
@@ -24,14 +25,36 @@ const ViewCourse = () => {
         dispatch(getOneCourse(courseId));
     }, [dispatch, courseId]);
 
-    const { chaptersByCourse, isLoading } = useSelector(state => state.chapters);
-    const { oneCourse } = useSelector(state => state.courses);
-    const { user } = useSelector(state => state.users);
+    const { chaptersByCourse, isLoading: chaptersLoading } = useSelector(state => state.chapters);
+    const { oneCourse, isLoading: coursesLoading } = useSelector(state => state.courses);
+    const { user, isAuthenticated } = useSelector(state => state.users);
     const [activeIndex, setActiveIndex] = useState(null);
+
+    const initialState = { title: '', description: '', course: oneCourse?._id, courseCategory: oneCourse?.courseCategory, created_by: user?._id }
 
     const collapse = index => {
         if (activeIndex !== index) setActiveIndex(index);
     };
+
+    if (!isAuthenticated) return <NotAuthenticated />;
+    if (chaptersLoading || coursesLoading) return <QBLoadingSM />
+
+    const createFn = data => {
+        const { title, description } = data;
+        const res = validators.validateTitleDesc(title, description, { minTitle: 4, minDesc: 4, maxTitle: 80, maxDesc: 200 });
+        if (!res.ok) {
+            notify('Insufficient info!', 'error');
+            return Promise.reject(new Error('validation'));
+        }
+        return createChapter({ ...data, course: oneCourse?._id, courseCategory: oneCourse?.courseCategory });
+    }
+
+    const newForm = (state, setState, firstInputRef) => (
+        <>
+            <Input ref={firstInputRef} type="text" name="title" id="title" placeholder="Chapter title ..." className="mb-3" value={state.title || ''} onChange={e => setState({ ...state, title: e.target.value })} />
+            <Input type="text" name="description" id="description" placeholder="Chapter description ..." className="mb-3" value={state.description || ''} onChange={e => setState({ ...state, description: e.target.value })} />
+        </>
+    )
 
     return (<div className="mt-2 py-2 py-lg-5 view-course-container">
         <Alert color="success" style={{ backgroundColor: 'var(--brand)', border: '1px solid var(--brand)', color: '#fff' }}>
@@ -49,22 +72,9 @@ const ViewCourse = () => {
                     <AddModal
                         title="Add New Chapter"
                         triggerText="Chapter"
-                        initialState={{ title: '', description: '', course: oneCourse?._id, courseCategory: oneCourse?.courseCategory }}
-                        submitFn={data => {
-                            const { title, description } = data;
-                            const res = validators.validateTitleDesc(title, description, { minTitle: 4, minDesc: 4, maxTitle: 80, maxDesc: 200 });
-                            if (!res.ok) {
-                                notify('Insufficient info!', 'error');
-                                return Promise.reject(new Error('validation'));
-                            }
-                            return createChapter({ ...data, created_by: null });
-                        }}
-                        renderForm={(state, setState, firstInputRef) => (
-                            <>
-                                <Input ref={firstInputRef} type="text" name="title" id="title" placeholder="Chapter title ..." className="mb-3" value={state.title || ''} onChange={e => setState({ ...state, title: e.target.value })} />
-                                <Input type="text" name="description" id="description" placeholder="Chapter description ..." className="mb-3" value={state.description || ''} onChange={e => setState({ ...state, description: e.target.value })} />
-                            </>
-                        )}
+                        initialState={initialState}
+                        submitFn={createFn}
+                        renderForm={newForm}
                     /> : null}
 
             </Breadcrumb>
@@ -80,12 +90,30 @@ const ViewCourse = () => {
         </Alert>
 
 
-        {isLoading ?
-            <QBLoadingSM /> :
+        {chaptersByCourse.length > 0 ?
 
-            chaptersByCourse.length > 0 ?
+            chaptersByCourse.map((chapter, index) => {
 
-                chaptersByCourse.map((chapter, index) => (
+                const initialUpdateData = { idToUpdate: chapter._id, name: chapter.title, description: chapter.description }
+
+                const updateFn = (data) => {
+                    const { name, description } = data;
+                    const res = validators.validateTitleDesc(name, description, { minTitle: 4, minDesc: 4, maxTitle: 80, maxDesc: 200 });
+                    if (!res.ok) {
+                        notify('Insufficient info!', 'error');
+                        return Promise.reject(new Error('validation'));
+                    }
+                    return updateChapter({ ...data, course: oneCourse?._id, courseCategory: oneCourse?.courseCategory });
+                }
+
+                const updateForm = (state, setState, firstInputRef) => (
+                    <>
+                        <Input ref={firstInputRef} type="text" name="name" id="name" placeholder="Chapter title ..." className="mb-3" value={state.name || ''} onChange={e => setState({ ...state, name: e.target.value })} />
+                        <Input type="text" name="description" id="description" placeholder="Chapter description ..." className="mb-3" value={state.description || ''} onChange={e => setState({ ...state, description: e.target.value })} />
+                    </>
+                )
+
+                return (
 
                     <Card key={index} className="mb-3 text-capitalize chapter-card" body style={{ minHeight: 'fit-content', border: '2px solid var(--brand)' }}>
 
@@ -96,19 +124,9 @@ const ViewCourse = () => {
                                 <span className="ms-auto d-flex align-items-center">
                                     <UpdateModal
                                         title="Edit Chapter"
-                                        initialData={{ idToUpdate: chapter._id, name: chapter.title, description: chapter.description }}
-                                        submitFn={data => {
-                                            const { name, description } = data;
-                                            const res = validators.validateTitleDesc(name, description, { minTitle: 4, minDesc: 4, maxTitle: 80, maxDesc: 200 });
-                                            if (!res.ok) return Promise.reject(new Error('validation'));
-                                            return updateChapter({ idToUpdate: data.idToUpdate, title: data.name, description: data.description });
-                                        }}
-                                        renderForm={(state, setState, firstInputRef) => (
-                                            <>
-                                                <Input ref={firstInputRef} type="text" name="name" id="name" placeholder="Chapter title ..." className="mb-3" value={state.name || ''} onChange={e => setState({ ...state, name: e.target.value })} />
-                                                <Input type="text" name="description" id="description" placeholder="Chapter description ..." className="mb-3" value={state.description || ''} onChange={e => setState({ ...state, description: e.target.value })} />
-                                            </>
-                                        )}
+                                        initialUpdateData={initialUpdateData}
+                                        submitFn={updateFn}
+                                        renderForm={updateForm}
                                     />
                                     <DeleteModal deleteFnName="deleteChapter" deleteFn={deleteChapter} delID={chapter._id} delTitle={chapter?.title} />
                                 </span> : null}
@@ -138,32 +156,20 @@ const ViewCourse = () => {
                             </div>
                         </div>
 
-                    </Card>)) :
+                    </Card>)
+            }) :
 
-                <Alert color="danger" className="d-flex justify-content-between" style={{ border: '1px solid var(--brand)' }}>
-                    <strong>No chapters yet for this course!</strong>
-                    {user?.role !== 'Visitor' ?
-                        <AddModal
-                            title="Add New Chapter"
-                            triggerText="Chapter"
-                            initialState={{ title: '', description: '', course: oneCourse?._id, courseCategory: oneCourse?.courseCategory }}
-                            submitFn={data => {
-                                const { title, description } = data;
-                                const res = validators.validateTitleDesc(title, description, { minTitle: 4, minDesc: 4, maxTitle: 80, maxDesc: 200 });
-                                if (!res.ok) {
-                                    notify('Insufficient info!', 'error');
-                                    return Promise.reject(new Error('validation'));
-                                }
-                                return createChapter({ ...data });
-                            }}
-                            renderForm={(state, setState, firstInputRef) => (
-                                <>
-                                    <Input ref={firstInputRef} type="text" name="title" id="title" placeholder="Chapter title ..." className="mb-3" value={state.title || ''} onChange={e => setState({ ...state, title: e.target.value })} />
-                                    <Input type="text" name="description" id="description" placeholder="Chapter description ..." className="mb-3" value={state.description || ''} onChange={e => setState({ ...state, description: e.target.value })} />
-                                </>
-                            )}
-                        /> : null}
-                </Alert>
+            <Alert color="danger" className="d-flex justify-content-between" style={{ border: '1px solid var(--brand)' }}>
+                <strong>No chapters yet for this course!</strong>
+                {user?.role !== 'Visitor' ?
+                    <AddModal
+                        title="Add New Chapter"
+                        triggerText="Chapter"
+                        initialState={initialState}
+                        submitFn={createFn}
+                        renderForm={newForm}
+                    /> : null}
+            </Alert>
         }
     </div>);
 };

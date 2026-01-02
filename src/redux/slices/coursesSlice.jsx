@@ -57,14 +57,17 @@ const coursesSlice = createSlice({
     });
     builder.addCase(createCourse.fulfilled, (state, action) => {
       state.allCourses.unshift(action.payload);
+      state.coursesByCategory.unshift(action.payload);
       state.isLoading = false;
     });
     builder.addCase(updateCourse.fulfilled, (state, action) => {
       state.allCourses = state.allCourses.map(course => course._id === action.payload._id ? action.payload : course);
+      state.coursesByCategory = state.coursesByCategory.map(course => course._id === action.payload._id ? action.payload : course);
       state.isLoading = false;
     });
     builder.addCase(deleteCourse.fulfilled, (state, action) => {
       state.allCourses = state.allCourses.filter(course => course._id !== action.payload._id);
+      state.coursesByCategory = state.coursesByCategory.filter(course => course._id !== action.payload._id);
       state.isLoading = false;
     });
 

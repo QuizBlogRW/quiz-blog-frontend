@@ -10,7 +10,7 @@ const EditSchoolModal = ({ idToUpdate }) => {
 
     useEffect(() => { dispatch(getOneSchool(idToUpdate)); }, [dispatch, idToUpdate]);
 
-    const initialData = { title: oneSchool ? oneSchool.title : '' };
+    const initialUpdateData = { title: oneSchool ? oneSchool.title : '' };
 
     const renderForm = (formState, setFormState, firstInputRef) => {
         const onChange = (e) => setFormState({ ...formState, [e.target.name]: e.target.value });
@@ -42,7 +42,7 @@ const EditSchoolModal = ({ idToUpdate }) => {
             title="Edit School"
             submitFn={submitFn}
             renderForm={renderForm}
-            initialData={initialData}
+            initialUpdateData={initialUpdateData}
 
         />
     );
