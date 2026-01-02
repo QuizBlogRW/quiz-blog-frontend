@@ -3,96 +3,85 @@ import { ListGroup, ListGroupItem } from 'reactstrap';
 import { Collapse } from 'react-collapse';
 import AddIcon from '@/images/plusIcon.svg';
 import SubtractIcon from '@/images/minusIcon.svg';
-import { getFaculties, deleteFaculty } from '@/redux/slices/facultiesSlice';
+import { fetchLevelFaculties, deleteFaculty } from '@/redux/slices/facultiesSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import EditFacultyModal from './EditFacultyModal';
-
 import DeleteModal from '@/utils/DeleteModal';
+import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 
 const FacultiesCollapse = ({ levelID }) => {
+
   // Redux
-  const faculties = useSelector((state) => state.faculties);
+  const { isLoading, levelFaculties } = useSelector((state) => state.faculties);
   const dispatch = useDispatch();
+
+  // State - simplified from object to simple value
+  const [activeIndex, setActiveIndex] = useState(null);
 
   // Lifecycle methods
   useEffect(() => {
-    dispatch(getFaculties());
-  }, [dispatch]);
-
-  const levelFaculties =
-    faculties && faculties.allFaculties.filter((fac) => fac.level === levelID);
-  const [activeState, setActiveState] = useState({ activeIndex: null });
+    if (levelID) dispatch(fetchLevelFaculties(levelID));
+  }, [dispatch, levelID]);
 
   const toggleClass = (index) => {
-    setActiveState({
-      activeIndex: activeState.activeIndex === index ? null : index,
-    });
+    setActiveIndex(activeIndex === index ? null : index);
   };
 
-  let content;
-  const { activeIndex } = activeState;
+  if (isLoading) return <QBLoadingSM />;
 
-  content =
-    levelFaculties && levelFaculties.length > 0
-      ? levelFaculties &&
-        levelFaculties.map((faculty, index) => {
-          return (
-            <li key={index}>
-              <div className="titleToggler">
-                <h3>{faculty.title}</h3>
+  return (
+    <ul className="docsList mt-lg-5">
+      {levelFaculties?.map((faculty) => {
+        const isOpen = activeIndex === faculty._id;
 
-                <span className="d-flex me-3">
-                  <EditFacultyModal
-                    idToUpdate={faculty._id}
-                    editTitle={faculty.title}
-                  />
-                  <DeleteModal
-                    deleteFnName="deleteFaculty"
-                    deleteFn={deleteFaculty}
-                    delID={faculty._id}
-                    delTitle={faculty.title}
-                  />
+        return (
+          <li key={faculty._id}>
+            <div className="titleToggler">
+              <h3>{faculty.title}</h3>
 
-                  <button
-                    className="btn btn-primary btn-xs"
-                    onClick={() => toggleClass(index)}
-                  >
-                    <img
-                      src={
-                        activeState.activeIndex === index
-                          ? SubtractIcon
-                          : AddIcon
-                      }
-                      alt=""
-                      width="24"
-                      height="24"
-                      className="mb-1"
-                    />
-                  </button>
-                </span>
-              </div>
+              <span className="d-flex me-3">
+                <EditFacultyModal
+                  idToUpdate={faculty._id}
+                  editTitle={faculty.title}
+                />
+                <DeleteModal
+                  deleteFnName="deleteFaculty"
+                  deleteFn={deleteFaculty}
+                  delID={faculty._id}
+                  delTitle={faculty.title}
+                />
 
-              <Collapse isOpened={activeIndex === index}>
-                <div
-                  className={`alert alert-info msg ${
-                    activeIndex === index ? 'show' : 'hide'
-                  }`}
+                <button
+                  className="btn btn-primary btn-xs"
+                  onClick={() => toggleClass(faculty._id)}
+                  aria-label={isOpen ? 'Collapse faculty details' : 'Expand faculty details'}
+                  aria-expanded={isOpen}
                 >
-                  <ListGroup>
-                    {typeof faculty.years === 'object'
-                      ? faculty.years.map((yer) => (
-                          <ListGroupItem key={yer}>{yer}</ListGroupItem>
-                        ))
-                      : null}
-                  </ListGroup>
-                </div>
-              </Collapse>
-            </li>
-          );
-        })
-      : null;
+                  <img
+                    src={isOpen ? SubtractIcon : AddIcon}
+                    alt=""
+                    width="24"
+                    height="24"
+                    className="mb-1"
+                  />
+                </button>
+              </span>
+            </div>
 
-  return <ul className="docsList mt-lg-5">{content}</ul>;
+            <Collapse isOpened={isOpen}>
+              <div className="alert alert-info msg">
+                <ListGroup>
+                  {Array.isArray(faculty.years) && faculty.years.map((year) => (
+                    <ListGroupItem key={year}>{year}</ListGroupItem>
+                  ))}
+                </ListGroup>
+              </div>
+            </Collapse>
+          </li>
+        );
+      })}
+    </ul>
+  );
 };
 
 export default FacultiesCollapse;

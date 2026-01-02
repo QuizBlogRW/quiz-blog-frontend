@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Col, Form, FormGroup, Label, Input, Button, Alert, TabPane } from 'reactstrap';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
@@ -44,21 +44,23 @@ const SchoolsTabPane = () => {
         dispatch(fetchSchoolLevels(e.target.value));
     };
 
-    const renderSchoolOptions = () => (
+    // Memoized school options
+    const schoolOptions = useMemo(() => (
         schoolList.map(school => (
             <option key={school._id} value={school._id}>
                 {school.title}
             </option>
         ))
-    );
+    ), [schoolList]);
 
-    const renderLevelTabs = () => (
+    // Memoized level tabs
+    const levelTabs = useMemo(() => (
         levelList.map(level => (
             <Tab key={level._id}>
                 <div className='d-flex'>
                     <h6 className='fw-bolder'>{level.title}</h6>
                     <span>
-                        <Button size="sm" color="link" className="mx-1">
+                        <Button size="sm" color="link" className="mx-1" aria-label={`Edit ${level.title}`}>
                             <EditLevelModal idToUpdate={level._id} editTitle={level.title} />
                         </Button>
                         <DeleteModal deleteFnName="deleteLevel" deleteFn={deleteLevel} delID={level._id} delTitle={level.title} />
@@ -66,9 +68,10 @@ const SchoolsTabPane = () => {
                 </div>
             </Tab>
         ))
-    );
+    ), [levelList]);
 
-    const renderLevelPanels = () => (
+    // Memoized level panels
+    const levelPanels = useMemo(() => (
         levelList.map(level => (
             <TabPanel key={level._id}>
                 <div className="mt-lg-3 ms-lg-5 pl-lg-5 pt-lg-3 d-flex justify-content-around align-items-center">
@@ -77,7 +80,7 @@ const SchoolsTabPane = () => {
                             <AddModal
                                 title="Add New Faculty"
                                 triggerText="Faculty"
-                                initialState={{ title: '', school: level && level.school, level: level && level._id, years: [] }}
+                                initialState={{ title: '', school: level?.school, level: level?._id, years: [] }}
                                 submitFn={data => {
                                     const { title, years } = data;
                                     const res = validators.validateTitleDesc(title, 'x', { minTitle: 3, minDesc: 1, maxTitle: 70, maxDesc: 1 });
@@ -85,21 +88,36 @@ const SchoolsTabPane = () => {
                                         notify('Insufficient info!', 'error');
                                         return Promise.reject(new Error('validation'));
                                     }
-                                    return createFaculty({ ...data, created_by: user && user._id ? user._id : null });
+                                    return createFaculty({ ...data, created_by: user?._id || null });
                                 }}
                                 renderForm={(state, setState, firstInputRef) => (
                                     <FormGroup>
-                                        <Label for="title"><strong>Title</strong></Label>
-                                        <Input ref={firstInputRef} type="text" name="title" id="title" placeholder="Faculty title ..." className="mb-3" value={state.title || ''} onChange={e => setState({ ...state, title: e.target.value })} required />
+                                        <Label htmlFor="faculty-title"><strong>Title</strong></Label>
+                                        <Input
+                                            ref={firstInputRef}
+                                            type="text"
+                                            name="title"
+                                            id="faculty-title"
+                                            placeholder="Faculty title ..."
+                                            className="mb-3"
+                                            value={state.title || ''}
+                                            onChange={e => setState({ ...state, title: e.target.value })}
+                                            required
+                                        />
 
-                                        <Label for="faculty"><strong>Learning years</strong></Label>
-                                        <Input type="select" name="selectYear" onChange={e => {
-                                            const yearsnbr = [];
-                                            for (let i = 1; i <= e.target.value; i++) {
-                                                yearsnbr.push(`Year ${i}`);
-                                            }
-                                            setState({ ...state, years: yearsnbr });
-                                        }}>
+                                        <Label htmlFor="selectYear"><strong>Learning years</strong></Label>
+                                        <Input
+                                            type="select"
+                                            name="selectYear"
+                                            id="selectYear"
+                                            onChange={e => {
+                                                const yearsnbr = [];
+                                                for (let i = 1; i <= e.target.value; i++) {
+                                                    yearsnbr.push(`Year ${i}`);
+                                                }
+                                                setState({ ...state, years: yearsnbr });
+                                            }}
+                                        >
                                             <option>-- Select --</option>
                                             <option value={1}>1</option>
                                             <option value={2}>2</option>
@@ -117,128 +135,177 @@ const SchoolsTabPane = () => {
                 <FacultiesCollapse levelID={level._id} />
             </TabPanel>
         ))
-    );
+    ), [levelList, user]);
 
-    return (<TabPane tabId="3">
-        <div className="add-school mt-lg-5 mx-lg-5 px-lg-5 py-lg-3 d-flex justify-content-around align-items-center border rounded">
-            <h5 className='fw-bolder text-info d-none d-sm-block'>SCHOOLS | LEVELS | FACULTIES | YEARS</h5>
-            <div className="d-inline-block" style={{ display: 'inline', marginLeft: 'auto' }}>
-                <AddModal
-                    title="Add New School"
-                    triggerText="School"
-                    initialState={{ title: '', location: '', website: '' }}
-                    submitFn={data => {
-                        const { title, location, website } = data;
-                        const res = validators.validateTitleDesc(title, location, { minTitle: 3, minDesc: 4, maxTitle: 70, maxDesc: 120 });
-                        if (!res.ok) {
-                            notify('Insufficient info!', 'error');
-                            return Promise.reject(new Error('validation'));
-                        }
-                        if (!validators.validateWebsite(website)) {
-                            notify('Invalid website!', 'error');
-                            return Promise.reject(new Error('validation'));
-                        }
-                        return createSchool({ ...data, created_by: user && user._id ? user._id : null });
-                    }}
-                    renderForm={(state, setState, firstInputRef) => (
-                        <FormGroup>
-                            <Label for="title"><strong>Title</strong></Label>
-                            <Input ref={firstInputRef} type="text" name="title" id="title" placeholder="School title ..." className="mb-3" value={state.title || ''} onChange={e => setState({ ...state, title: e.target.value })} required />
+    // Get selected school title
+    const selectedSchoolTitle = useMemo(() => {
+        return selectedSchool ? schoolList.find(school => school._id === selectedSchool)?.title : '-- Select --';
+    }, [selectedSchool, schoolList]);
 
-                            <Label for="location"><strong>Location</strong></Label>
-                            <Input type="text" name="location" id="location" placeholder="School location ..." className="mb-3" value={state.location || ''} onChange={e => setState({ ...state, location: e.target.value })} required />
+    return (
+        <TabPane tabId="3">
+            <div className="add-school mt-lg-5 mx-lg-5 px-lg-5 py-lg-3 d-flex justify-content-around align-items-center border rounded">
+                <h5 className='fw-bolder text-info d-none d-sm-block'>SCHOOLS | LEVELS | FACULTIES | YEARS</h5>
+                <div className="d-inline-block" style={{ display: 'inline', marginLeft: 'auto' }}>
+                    <AddModal
+                        title="Add New School"
+                        triggerText="School"
+                        initialState={{ title: '', location: '', website: '' }}
+                        submitFn={data => {
+                            const { title, location, website } = data;
+                            const res = validators.validateTitleDesc(title, location, { minTitle: 3, minDesc: 4, maxTitle: 70, maxDesc: 120 });
+                            if (!res.ok) {
+                                notify('Insufficient info!', 'error');
+                                return Promise.reject(new Error('validation'));
+                            }
+                            if (!validators.validateWebsite(website)) {
+                                notify('Invalid website!', 'error');
+                                return Promise.reject(new Error('validation'));
+                            }
+                            return createSchool({ ...data, created_by: user?._id || null });
+                        }}
+                        renderForm={(state, setState, firstInputRef) => (
+                            <FormGroup>
+                                <Label htmlFor="school-title"><strong>Title</strong></Label>
+                                <Input
+                                    ref={firstInputRef}
+                                    type="text"
+                                    name="title"
+                                    id="school-title"
+                                    placeholder="School title ..."
+                                    className="mb-3"
+                                    value={state.title || ''}
+                                    onChange={e => setState({ ...state, title: e.target.value })}
+                                    required
+                                />
 
-                            <Label for="website"><strong>Website</strong></Label>
-                            <Input type="text" name="website" id="website" placeholder="School website ..." className="mb-3" value={state.website || ''} onChange={e => setState({ ...state, website: e.target.value })} required />
-                        </FormGroup>
-                    )}
-                />
-            </div>
-        </div>
+                                <Label htmlFor="location"><strong>Location</strong></Label>
+                                <Input
+                                    type="text"
+                                    name="location"
+                                    id="location"
+                                    placeholder="School location ..."
+                                    className="mb-3"
+                                    value={state.location || ''}
+                                    onChange={e => setState({ ...state, location: e.target.value })}
+                                    required
+                                />
 
-        <div className="select-add-school mt-lg-5 mx-lg-5 px-lg-5 pt-lg-3 d-flex justify-content-around align-items-center bg-light border rounded border-success">
-            {!schools.isLoading ? (
-                <Form>
-                    <FormGroup>
-                        <Label for="schoolSelect" className='mt-2 mt-sm-0'>
-                            <u className='fw-bolder'>Select School</u>
-                        </Label>
-                        <Input type="select" onChange={handleSchoolChange}>
-                            <option value=''>{selectedSchool ? schoolList.find(school => school._id === selectedSchool)?.title : '-- Select --'}</option>
-                            {renderSchoolOptions()}
-                        </Input>
-                    </FormGroup>
-                </Form>
-            ) : (
-                <QBLoadingSM />
-            )}
-
-            <div className="d-flex align-items-center">
-                {selectedSchool && (
-                    <>
-                        <span className="mx-1 d-inline-block">
-                            <EditSchoolModal idToUpdate={selectedSchool} />
-                        </span>
-                        <span className="mx-1 d-inline-block">
-                            <DeleteModal deleteFnName="deleteSchool" deleteFn={deleteSchool} delID={selectedSchool} />
-                        </span>
-                    </>
-                )}
-                <div className="ms-auto mb-3 mb-sm-0 d-inline-block">
-                    <strong>
-                        <AddModal
-                            title="Add New Level"
-                            triggerText="Level"
-                            initialState={{ title: '', school: '' }}
-                            submitFn={data => {
-                                const { title, school } = data;
-                                const res = validators.validateTitleDesc(title, 'x', { minTitle: 3, minDesc: 1, maxTitle: 70, maxDesc: 1 });
-                                if (!res.ok || !school) {
-                                    notify('Insufficient info!', 'error');
-                                    return Promise.reject(new Error('validation'));
-                                }
-                                return createLevel({ ...data, created_by: user && user._id ? user._id : null });
-                            }}
-                            renderForm={(state, setState, firstInputRef) => (
-                                <FormGroup>
-                                    <Label for="title"><strong>Title</strong></Label>
-                                    <Input ref={firstInputRef} type="text" name="title" id="title" placeholder="Level title ..." className="mb-3" value={state.title || ''} onChange={e => setState({ ...state, title: e.target.value })} required />
-
-                                    <Label for="school"><strong>School</strong></Label>
-                                    <Input type="select" name="school" value={state.school || ''} onChange={e => setState({ ...state, school: e.target.value })}>
-                                        <option value="">--Choose a School--</option>
-                                        {schoolList.map(school => (
-                                            <option key={school._id} value={school._id}>{school.title}</option>
-                                        ))}
-                                    </Input>
-                                </FormGroup>
-                            )}
-                        />
-                    </strong>
+                                <Label htmlFor="website"><strong>Website</strong></Label>
+                                <Input
+                                    type="text"
+                                    name="website"
+                                    id="website"
+                                    placeholder="School website ..."
+                                    className="mb-3"
+                                    value={state.website || ''}
+                                    onChange={e => setState({ ...state, website: e.target.value })}
+                                    required
+                                />
+                            </FormGroup>
+                        )}
+                    />
                 </div>
             </div>
-        </div>
 
-        <div className="display-details min-vh-100 mt-lg-2 mx-lg-4 px-lg-5">
-            <Col>
-                <div className="docDetails">
-                    <div className="tabs">
-                        <Tabs>
-                            <TabList>
-                                {levelList.length === 0 ? null : renderLevelTabs()}
-                            </TabList>
+            <div className="select-add-school mt-lg-5 mx-lg-5 px-lg-5 pt-lg-3 d-flex justify-content-around align-items-center bg-light border rounded border-success">
+                {!schools.isLoading ? (
+                    <Form>
+                        <FormGroup>
+                            <Label htmlFor="schoolSelect" className='mt-2 mt-sm-0'>
+                                <u className='fw-bolder'>Select School</u>
+                            </Label>
+                            <Input type="select" id="schoolSelect" onChange={handleSchoolChange}>
+                                <option value=''>{selectedSchoolTitle}</option>
+                                {schoolOptions}
+                            </Input>
+                        </FormGroup>
+                    </Form>
+                ) : (
+                    <QBLoadingSM />
+                )}
 
-                            {levelList.length === 0 ? (
-                                <Alert color="danger">Select school with levels!</Alert>
-                            ) : (
-                                renderLevelPanels()
-                            )}
-                        </Tabs>
+                <div className="d-flex align-items-center">
+                    {selectedSchool && (
+                        <>
+                            <span className="mx-1 d-inline-block">
+                                <EditSchoolModal idToUpdate={selectedSchool} />
+                            </span>
+                            <span className="mx-1 d-inline-block">
+                                <DeleteModal deleteFnName="deleteSchool" deleteFn={deleteSchool} delID={selectedSchool} />
+                            </span>
+                        </>
+                    )}
+                    <div className="ms-auto mb-3 mb-sm-0 d-inline-block">
+                        <strong>
+                            <AddModal
+                                title="Add New Level"
+                                triggerText="Level"
+                                initialState={{ title: '', school: '' }}
+                                submitFn={data => {
+                                    const { title, school } = data;
+                                    const res = validators.validateTitleDesc(title, 'x', { minTitle: 3, minDesc: 1, maxTitle: 70, maxDesc: 1 });
+                                    if (!res.ok || !school) {
+                                        notify('Insufficient info!', 'error');
+                                        return Promise.reject(new Error('validation'));
+                                    }
+                                    return createLevel({ ...data, created_by: user?._id || null });
+                                }}
+                                renderForm={(state, setState, firstInputRef) => (
+                                    <FormGroup>
+                                        <Label htmlFor="level-title"><strong>Title</strong></Label>
+                                        <Input
+                                            ref={firstInputRef}
+                                            type="text"
+                                            name="title"
+                                            id="level-title"
+                                            placeholder="Level title ..."
+                                            className="mb-3"
+                                            value={state.title || ''}
+                                            onChange={e => setState({ ...state, title: e.target.value })}
+                                            required
+                                        />
+
+                                        <Label htmlFor="level-school"><strong>School</strong></Label>
+                                        <Input
+                                            type="select"
+                                            name="school"
+                                            id="level-school"
+                                            value={state.school || ''}
+                                            onChange={e => setState({ ...state, school: e.target.value })}
+                                        >
+                                            <option value="">--Choose a School--</option>
+                                            {schoolList.map(school => (
+                                                <option key={school._id} value={school._id}>{school.title}</option>
+                                            ))}
+                                        </Input>
+                                    </FormGroup>
+                                )}
+                            />
+                        </strong>
                     </div>
                 </div>
-            </Col>
-        </div>
-    </TabPane>
+            </div>
+
+            <div className="display-details min-vh-100 mt-lg-2 mx-lg-4 px-lg-5">
+                <Col>
+                    <div className="docDetails">
+                        <div className="tabs">
+                            <Tabs>
+                                <TabList>
+                                    {levelList.length > 0 && levelTabs}
+                                </TabList>
+                                {levelList.length === 0 ? (
+                                    <Alert color="danger">Select school with levels!</Alert>
+                                ) : (
+                                    levelPanels
+                                )}
+                            </Tabs>
+                        </div>
+                    </div>
+                </Col>
+            </div>
+        </TabPane>
     );
 };
 
