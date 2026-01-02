@@ -26,7 +26,7 @@ const Footer = () => {
                                 <a href="/"><img src={logo} alt="logo" /></a>
                             </div>
 
-                            <ul className="social-network social-circle">
+                            <ul className="d-flex flex-wrap gap-1 social-network social-circle">
                                 <li><a href="https://api.whatsapp.com/send?phone=250780579067" className="icoWhatsapp" title="Whatsapp" target="_blank" rel="noopener noreferrer">
                                     <i className="fa-brands fa-whatsapp"></i>
                                 </a></li>
