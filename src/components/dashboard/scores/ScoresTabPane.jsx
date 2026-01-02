@@ -36,13 +36,15 @@ const ScoresTabPane = () => {
                 <QBLoadingSM title='scores' /> :
 
                 <Row>
-                    <p className='m-3 w-100'>
-                        To see more about quizzes feedbacks, click here 👉<button className="btn btn-sm btn-outline-warning ms-2">
-                            <a href={'/feedbacks'} style={{ color: 'var(--brand)', fontWeight: 'bolder' }}>Feedbacks</a>
-                        </button>
-                    </p>
                     {user?.role?.includes('Admin') ?
-                        <PageOf pageNo={pageNo} numberOfPages={totalPages} /> : null}
+                        <>
+                            <p className='m-3 w-100'>
+                                To see more about quizzes feedbacks, click here 👉<button className="btn btn-sm btn-outline-warning ms-2">
+                                    <a href={'/feedbacks'} style={{ color: 'var(--brand)', fontWeight: 'bolder' }}>Feedbacks</a>
+                                </button>
+                            </p>
+                            <PageOf pageNo={pageNo} numberOfPages={totalPages} />
+                        </> : null}
 
                     <ScoresTable
                         scoresToUse={scoresToUse}

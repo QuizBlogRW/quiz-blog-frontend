@@ -3,6 +3,7 @@ import { Button, Row, Col } from 'reactstrap';
 import { useNavigate, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import NotAuthenticated from '@/components/users/NotAuthenticated';
+import { notify } from '@/utils/notifyToast';
 
 const OnLastAnswer = ({ thisQuiz }) => {
 
@@ -44,10 +45,10 @@ const OnLastAnswer = ({ thisQuiz }) => {
         try {
             await navigator.clipboard.writeText(shareUrls.quizUrl);
             // You could add a toast notification here
-            alert('Quiz link copied to clipboard!');
+            notify('Quiz link copied to clipboard!');
         } catch (error) {
             console.error('Failed to copy link:', error);
-            alert('Failed to copy link. Please try again.');
+            notify('Failed to copy link. Please try again.');
         }
     }, [shareUrls?.quizUrl]);
 
@@ -109,9 +110,8 @@ const OnLastAnswer = ({ thisQuiz }) => {
                 <div className="d-grid gap-3 mb-4">
                     <Link to={`/view-quiz/${thisQuiz.slug}`} className="text-decoration-none">
                         <Button
-                            color="success"
                             className="w-100 py-3 fw-bold d-flex align-items-center justify-content-center"
-                            style={{ fontSize: '1.05rem' }}
+                            style={{ fontSize: '1.05rem', backgroundColor: 'var(--brand)', color: 'var(--accent)', }}
                         >
                             <i className="fa fa-redo me-2"></i>
                             Retake Quiz
@@ -131,7 +131,7 @@ const OnLastAnswer = ({ thisQuiz }) => {
 
                     {/* Back */}
                     <Button
-                        color="secondary"
+                        color="primary"
                         outline
                         className="w-100 py-2 fw-bold d-flex align-items-center justify-content-center"
                         onClick={goBack}
@@ -156,7 +156,7 @@ const OnLastAnswer = ({ thisQuiz }) => {
                         <Row className="g-2 mb-3">
                             <Col xs={6}>
                                 <Button
-                                    color="success"
+                                    color="primary"
                                     outline
                                     className="w-100 py-2"
                                     tag="a"
@@ -171,7 +171,7 @@ const OnLastAnswer = ({ thisQuiz }) => {
                             </Col>
                             <Col xs={6}>
                                 <Button
-                                    color="info"
+                                    color="primary"
                                     outline
                                     className="w-100 py-2"
                                     tag="a"

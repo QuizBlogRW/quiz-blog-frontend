@@ -11,7 +11,6 @@ import AddNotesModal from './AddNotesModal';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 import validators from '@/utils/validators';
 import DeleteIcon from '@/images/trash.svg';
-import Unauthorized from "@/components/users/Unauthorized";
 import NotAuthenticated from "@/components/users/NotAuthenticated";
 
 const CourseNotes = ({ chapter }) => {
@@ -94,11 +93,10 @@ const CourseNotes = ({ chapter }) => {
 
   if (isLoading) return <QBLoadingSM title="notes" />
   if (!isAuthenticated) return <NotAuthenticated />
-  if (isVisitor) return <Unauthorized />
 
   return (
     <>
-      {<AddNotesModal chapter={chapter} />}
+      {!isVisitor && <AddNotesModal chapter={chapter} />}
 
       <Row className='mt-lg-3'>
         {notesByChapter?.map((note) => {
@@ -182,9 +180,9 @@ const CourseNotes = ({ chapter }) => {
                       rel="noopener noreferrer"
                       onClick={() => handleDownload(note)}
                       style={{
-                        backgroundColor: 'var(--accent)',
-                        border: '2px solid var(--brand)',
-                        color: 'var(--brand)',
+                        color: 'var(--accent)',
+                        border: '2px solid var(--accent)',
+                        backgroundColor: 'var(--brand)',
                         fontWeight: 'bold'
                       }}
                     >
