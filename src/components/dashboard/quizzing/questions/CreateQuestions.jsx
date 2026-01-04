@@ -170,22 +170,22 @@ const CreateQuestions = () => {
 
     if (addQuestion.fulfilled.match(result)) {
       notify('Question added successfully', 'success');
-    }
 
-    /* Reset */
-    setForm({
-      questionText: '',
-      duration: 24,
-      questionImage: null,
-      answerOptions: [
-        {
-          clientId: createClientId(),
-          answerText: '',
-          explanations: '',
-          isCorrect: false,
-        },
-      ],
-    });
+      /* Reset */
+      setForm({
+        questionText: '',
+        duration: 24,
+        questionImage: null,
+        answerOptions: [
+          {
+            clientId: createClientId(),
+            answerText: '',
+            explanations: '',
+            isCorrect: false,
+          },
+        ],
+      });
+    }
   };
 
   /* ---------------------------------------------
