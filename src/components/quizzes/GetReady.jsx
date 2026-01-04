@@ -63,7 +63,7 @@ const GetReady = () => {
                     ? 'Kugirango uze kubona uko wasubije, Injira cyangwa ufungure konti 😎'
                     : 'To save and review your answers, please log in or create an account 😎',
             attempt: isAmategeko ? 'Tangira Isuzuma' : 'Start Quiz',
-            share: isAmategeko ? 'Sangiza' : 'Share',
+            share: isAmategeko ? 'Sangiza kuri' : 'Share quiz on',
             back: isAmategeko ? 'Garuka' : 'Back',
             noQuestions: isAmategeko
                 ? 'Iki kizamini nta kibazo gifite!'
@@ -71,6 +71,9 @@ const GetReady = () => {
             browseOthers: isAmategeko
                 ? 'Reba izindi bizamini'
                 : 'Browse Other Quizzes',
+            questions: isAmategeko ? 'Ibibazo' : 'Questions',
+            duration: isAmategeko ? 'Igihe' : 'Duration',
+            copyLink: isAmategeko ? 'Kopiya Linki' : 'Copy Link',
         };
     }, [categoryInfo, user]);
 
@@ -216,13 +219,13 @@ const GetReady = () => {
                                 <Col xs="6" sm="6">
                                     <div className="bg-white bg-opacity-25 rounded p-3">
                                         <div className="fw-bold">{quizStats.questionCount}</div>
-                                        <small>Questions</small>
+                                        <small>{texts.questions}</small>
                                     </div>
                                 </Col>
                                 <Col xs="6" sm="6">
                                     <div className="bg-white bg-opacity-25 rounded p-3">
                                         <div className="fw-bold">~{quizStats.estimatedMinutes} min</div>
-                                        <small>Duration</small>
+                                        <small>{texts.duration}</small>
                                     </div>
                                 </Col>
                             </Row>
@@ -288,7 +291,7 @@ const GetReady = () => {
                                         onClick={handleCopyLink}
                                     >
                                         <i className="fa fa-copy me-2"></i>
-                                        Copy Link
+                                        {texts.copyLink}
                                     </Button>
                                 </Col>
                             </Row>
@@ -297,7 +300,7 @@ const GetReady = () => {
                         {/* Share Section */}
                         {shareUrls && (
                             <div className="mt-3">
-                                <small className="d-block mb-2 opacity-75">Share this quiz:</small>
+                                <small className="d-block mb-2 opacity-75">{texts.share}:</small>
                                 <div className="d-flex justify-content-center gap-2">
                                     <Button
                                         color="light"
