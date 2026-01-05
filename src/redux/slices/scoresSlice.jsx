@@ -5,8 +5,8 @@ import { apiCallHelper, handlePending, handleRejected } from '../configHelpers';
 export const setScores = createAsyncThunk('scores/setScores', async (pageNo, { getState }) =>
   apiCallHelper(`/api/scores?pageNo=${pageNo}`, 'get', null, getState, 'setScores'));
 
-export const setRankingScores = createAsyncThunk('scores/setRankingScores', async (quizID, { getState }) =>
-  apiCallHelper(`/api/scores/quiz-ranking/${quizID}`, 'get', null, getState, 'setRankingScores'));
+export const getRankingScores = createAsyncThunk('scores/getRankingScores', async (quizID, { getState }) =>
+  apiCallHelper(`/api/scores/quiz-ranking/${quizID}`, 'get', null, getState, 'getRankingScores'));
 
 export const getTakerScores = createAsyncThunk('scores/getTakerScores', async (takerId, { getState }) =>
   apiCallHelper(`/api/scores/taken-by/${takerId}`, 'get', null, getState, 'getTakerScores'));
@@ -72,7 +72,7 @@ const scoresSlice = createSlice({
       state.totalPages = action.payload.totalPages;
       state.isLoading = false;
     });
-    builder.addCase(setRankingScores.fulfilled, (state, action) => {
+    builder.addCase(getRankingScores.fulfilled, (state, action) => {
       state.rankingScores = action.payload;
       state.isLoading = false;
     });
@@ -111,7 +111,7 @@ const scoresSlice = createSlice({
 
     // Pending actions
     builder.addCase(setScores.pending, handlePending);
-    builder.addCase(setRankingScores.pending, handlePending);
+    builder.addCase(getRankingScores.pending, handlePending);
     builder.addCase(getTakerScores.pending, handlePending);
     builder.addCase(getCreatorScores.pending, handlePending);
     builder.addCase(getOneScore.pending, handlePending);
@@ -123,7 +123,7 @@ const scoresSlice = createSlice({
 
     // Rejected actions
     builder.addCase(setScores.rejected, handleRejected);
-    builder.addCase(setRankingScores.rejected, handleRejected);
+    builder.addCase(getRankingScores.rejected, handleRejected);
     builder.addCase(getTakerScores.rejected, handleRejected);
     builder.addCase(getCreatorScores.rejected, handleRejected);
     builder.addCase(getOneScore.rejected, handleRejected);

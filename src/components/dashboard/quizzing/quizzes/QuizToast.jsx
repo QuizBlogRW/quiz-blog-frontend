@@ -21,6 +21,7 @@ const QuizToast = ({ fromSearch, quiz }) => {
                 <ToastHeader className="d-flex justify-content-between align-items-start">
                     <Link
                         to={`/quiz-ranking/${quiz._id}`}
+                        state={quiz}
                         className={`mb-0 ${linkClass} text-uppercase`}
                     >
                         {quiz.title} <small>&nbsp;(Ranking)</small>

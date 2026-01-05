@@ -9,15 +9,14 @@ import Comment from '../dashboard/comments/Comment';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 
 const ViewQuizComments = ({ quizID }) => {
+  
   const dispatch = useDispatch();
 
   // Redux selectors
-  const { commentsByQuiz, isLoading: qnLoading } = useSelector(
-    (state) => state.questionsComments
-  );
-  const { quizComments, isLoading: qzLoading } = useSelector(
-    (state) => state.quizzesComments
-  );
+  const { commentsByQuiz } = useSelector((state) => state.questionsComments);
+  const qnLoading = useSelector((state) => state.questionsComments.isLoading.commentsByQuiz);
+  const { quizzesComments } = useSelector((state) => state.quizzesComments);
+  const qzLoading = useSelector((state) => state.quizzesComments.isLoading.quizzesComments);
 
   // Fetch comments on mount
   useEffect(() => {
@@ -30,7 +29,7 @@ const ViewQuizComments = ({ quizID }) => {
   // Combine and organize comments
   const organizedComments = useMemo(() => {
     const questionComments = commentsByQuiz || [];
-    const generalComments = quizComments || [];
+    const generalComments = quizzesComments || [];
 
     // Group question comments by question
     const groupedByQuestion = questionComments.reduce((acc, comment) => {
@@ -52,10 +51,10 @@ const ViewQuizComments = ({ quizID }) => {
       generalComments,
       totalCount: questionComments.length + generalComments.length,
     };
-  }, [commentsByQuiz, quizComments]);
+  }, [commentsByQuiz, quizzesComments]);
 
   // Loading state
-  const isLoading = qnLoading || qzLoading;
+  const isLoading = qnLoading && qzLoading;
 
   // Check if there are any comments
   const hasComments = organizedComments.totalCount > 0;

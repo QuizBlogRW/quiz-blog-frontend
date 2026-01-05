@@ -1,170 +1,80 @@
-import { useEffect, useMemo, useCallback } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useEffect, useMemo } from 'react';
+import { Link, useParams, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  Row,
-  Col,
-  Table,
-  Breadcrumb,
-  BreadcrumbItem,
-  Badge,
-  Card,
-  CardHeader,
-  CardBody
-} from 'reactstrap';
-
-import { setRankingScores } from '@/redux/slices/scoresSlice';
-import Dashboard from '../dashboard/Dashboard';
-import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
+import { Row, Col, Table, Breadcrumb, BreadcrumbItem, Badge, Card, CardHeader, CardBody } from 'reactstrap';
+import { getRankingScores } from '@/redux/slices/scoresSlice';
+import QBLoadingSM from "@/utils/rLoading/QBLoadingSM";
+import NotAuthenticated from "@/components/users/NotAuthenticated";
+import Unauthorized from "@/components/users/Unauthorized";
 import AddVideo from '@/components/dashboard/quizzing/quizzes/AddVideo';
 import ViewQuizComments from './ViewQuizComments';
 
 const QuizRanking = () => {
+
+  const location = useLocation();
   const dispatch = useDispatch();
   const { quizID } = useParams();
+  const thisQuiz = location.state;
 
-  const { rankingScores, isLoading } = useSelector((state) => state.scores);
-  const { user } = useSelector((state) => state.users);
+  const { isLoading, rankingScores } = useSelector((state) => state.scores);
+  const { user, isAuthenticated } = useSelector((state) => state.users);
+  const isAdmin = user?.role?.includes("Admin");
 
   // Fetch rankings on mount
   useEffect(() => {
     if (quizID) {
-      dispatch(setRankingScores(quizID));
+      dispatch(getRankingScores(quizID));
     }
   }, [dispatch, quizID]);
 
   // Memoize quiz metadata
   const quizMetadata = useMemo(() => {
-    const firstRanking = rankingScores?.[0];
+
     return {
-      categoryTitle: firstRanking?.category?.title || 'Category',
-      quizTitle: firstRanking?.quiz?.title || 'Quiz',
-      totalParticipants: rankingScores?.filter(r => r?.quiz?._id === quizID).length || 0,
+      quizTitle: thisQuiz?.title || 'Quiz',
+      categoryTitle: thisQuiz?.category?.title || 'Category',
+      totalParticipants: rankingScores?.length || 0,
     };
-  }, [rankingScores, quizID]);
-
-  // Filter and sort rankings
-  const filteredRankings = useMemo(() => {
-    if (!rankingScores || !quizID) return [];
-
-    return rankingScores
-      .filter((rank) => rank?.quiz?._id === quizID)
-      .sort((a, b) => {
-        // Sort by marks (descending), then by name (ascending)
-        const marksA = a.marks / a.out_of;
-        const marksB = b.marks / b.out_of;
-
-        if (marksB !== marksA) {
-          return marksB - marksA;
-        }
-
-        const nameA = a.taken_by?.name || 'Unknown';
-        const nameB = b.taken_by?.name || 'Unknown';
-        return nameA.localeCompare(nameB);
-      });
   }, [rankingScores, quizID]);
 
   // Calculate statistics
   const statistics = useMemo(() => {
-    if (!filteredRankings.length) {
-      return { average: 0, highest: 0, lowest: 0, passRate: 0 };
+    if (!rankingScores.length) {
+      return null;
     }
 
-    const percentages = filteredRankings.map(r => (r.marks / r.out_of) * 100);
-    const average = percentages.reduce((a, b) => a + b, 0) / percentages.length;
-    const highest = Math.max(...percentages);
-    const lowest = Math.min(...percentages);
-    const passRate = (percentages.filter(p => p >= 50).length / percentages.length) * 100;
+    const percentages = rankingScores
+      .filter(r => r.out_of > 0)
+      .map(r => (r.marks / r.out_of) * 100);
+
+    const avg = percentages.reduce((a, b) => a + b, 0) / percentages.length;
 
     return {
-      average: Math.round(average),
-      highest: Math.round(highest),
-      lowest: Math.round(lowest),
-      passRate: Math.round(passRate),
+      participants: rankingScores.length,
+      average: Math.round(avg),
+      highest: Math.round(Math.max(...percentages)),
+      lowest: Math.round(Math.min(...percentages)),
+      passRate: Math.round(
+        (percentages.filter(p => p >= 50).length / percentages.length) * 100
+      )
     };
-  }, [filteredRankings]);
+  }, [rankingScores]);
 
-  // Get rank badge color
-  const getRankBadgeColor = useCallback((position) => {
-    if (position === 1) return 'warning'; // Gold
-    if (position === 2) return 'secondary'; // Silver
-    if (position === 3) return 'danger'; // Bronze
-    return 'light';
-  }, []);
+  const rankColor = pos =>
+    pos === 1 ? 'warning' :
+      pos === 2 ? 'secondary' :
+        pos === 3 ? 'danger' :
+          'light';
 
-  // Get score badge color
-  const getScoreBadgeColor = useCallback((marks, outOf) => {
-    const percentage = (marks / outOf) * 100;
-    if (percentage >= 80) return 'success';
-    if (percentage >= 50) return 'warning';
-    return 'danger';
-  }, []);
-
-  // Render table rows
-  const renderTableRows = useCallback(() => {
-    if (!filteredRankings.length) {
-      return (
-        <tr>
-          <td colSpan="5" className="text-center text-muted py-4">
-            <i className="fa fa-inbox fa-2x mb-2 d-block"></i>
-            No rankings available yet
-          </td>
-        </tr>
-      );
-    }
-
-    return filteredRankings.map((rank, index) => {
-      const position = index + 1;
-      const percentage = Math.round((rank.marks / rank.out_of) * 100);
-      const isCurrentUser = rank.taken_by?._id === user?._id;
-
-      return (
-        <tr
-          key={rank._id || `rank-${index}`}
-          className={isCurrentUser ? 'table-active' : ''}
-          style={{
-            backgroundColor: isCurrentUser ? '#f0f8ff' : 'transparent',
-            fontWeight: isCurrentUser ? 'bold' : 'normal',
-          }}
-        >
-          <th scope="row">
-            <Badge
-              color={getRankBadgeColor(position)}
-              pill
-              className="px-2"
-            >
-              {position <= 3 && (
-                <i className={`fa fa-trophy me-1`}></i>
-              )}
-              #{position}
-            </Badge>
-          </th>
-          <td>
-            {rank.taken_by?.name || 'Anonymous'}
-            {isCurrentUser && (
-              <Badge color="info" className="ms-2" pill>You</Badge>
-            )}
-          </td>
-          <td className="text-muted small">
-            {rank.taken_by?.email || 'No email'}
-          </td>
-          <td>
-            <Badge color={getScoreBadgeColor(rank.marks, rank.out_of)}>
-              {rank.marks}/{rank.out_of}
-            </Badge>
-          </td>
-          <td>
-            <span className="fw-bold">{percentage}%</span>
-          </td>
-        </tr>
-      );
-    });
-  }, [filteredRankings, user?._id, getRankBadgeColor, getScoreBadgeColor]);
+  const scoreColor = pct =>
+    pct >= 80 ? 'success' :
+      pct >= 50 ? 'warning' :
+        'danger';
 
   // Guard: Visitor role redirect
-  if (user?.role === 'Visitor') {
-    return <Dashboard />;
-  }
+  if (isLoading) return <QBLoadingSM />;
+  if (!isAuthenticated) return <NotAuthenticated />;
+  if (!isAdmin) return <Unauthorized />;
 
   return (
     <>
@@ -192,7 +102,7 @@ const QuizRanking = () => {
         </Row>
 
         {/* Statistics Cards */}
-        {filteredRankings.length > 0 && (
+        {statistics && (
           <Row className="mb-4">
             <Col xs="6" md="3" className="mb-3 mb-md-0">
               <Card className="text-center border-0 shadow-sm">
@@ -275,24 +185,55 @@ const QuizRanking = () => {
               className="overflow-auto p-0"
               style={{ maxHeight: '600px' }}
             >
-              {isLoading ? (
-                <div className="p-5">
-                  <QBLoadingSM />
-                </div>
-              ) : (
-                <Table hover responsive className="mb-0">
-                  <thead className="sticky-top bg-white">
+              <Table hover responsive className="mb-0">
+                <thead className="sticky-top bg-white">
+                  <tr>
+                    <th>Rank</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Score</th>
+                    <th>%</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {!rankingScores.length ? (
                     <tr>
-                      <th>Rank</th>
-                      <th>Name</th>
-                      <th>Email</th>
-                      <th>Score</th>
-                      <th>%</th>
+                      <td colSpan="5" className="text-center text-muted py-4">
+                        <i className="fa fa-inbox fa-2x mb-2 d-block"></i>
+                        No rankings available yet
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody>{renderTableRows()}</tbody>
-                </Table>
-              )}
+                  ) : (
+                    rankingScores.map((rank, i) => {
+                      const pct = rank.out_of
+                        ? Math.round((rank.marks / rank.out_of) * 100)
+                        : 0;
+
+                      const isMe = rank.taken_by?._id === user?._id;
+
+                      return (
+                        <tr key={rank.userId} className={isMe ? 'table-active' : ''}>
+                          <td>
+                            <Badge color={rankColor(i + 1)}>#{i + 1}</Badge>
+                          </td>
+                          <td>
+                            {rank.taken_by?.name}
+                            {isMe && <Badge color="info" pill className="ms-2">You</Badge>}
+                          </td>
+                          <td>{rank.taken_by?.email ?? '-'}</td>
+                          <td>
+                            <Badge color={scoreColor(pct)}>
+                              {rank.marks}/{rank.out_of}
+                            </Badge>
+                          </td>
+                          <td>{pct}%</td>
+                        </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+
+              </Table>
             </CardBody>
           </Card>
         </Col>

@@ -34,7 +34,10 @@ const Comment = ({ comment, isFromPending }) => {
           rounded
         "
             >
-                <Link to={`/quiz-ranking/${quizID}`} className="text-warning fw-bold">
+                <Link 
+                to={`/quiz-ranking/${quizID}`}
+                state={comment?.quiz}
+                className="text-warning fw-bold">
                     {quizTitle}
                 </Link>
 
