@@ -1,10 +1,11 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useMemo } from 'react';
 import moment from 'moment';
 import Markdown from 'react-markdown';
 import rehypeHighlight from 'rehype-highlight';
 import { useParams } from 'react-router-dom';
 import { Container, Row, Col, Card, CardBody } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
+import DOMPurify from 'dompurify';
 
 import { getOneBlogPost } from '@/redux/slices';
 import { createBlogPostView } from '@/redux/slices/blogPostsViewsSlice';
@@ -40,6 +41,39 @@ const deviceType = /Android|iPhone|iPad|iPod|Windows Phone/i.test(
 )
   ? 'mobile'
   : 'desktop';
+
+/**
+ * Detects if content is HTML or Markdown
+ * HTML from Lexical will have tags like <p>, <h1>, <strong>, etc.
+ */
+const isHTMLContent = (content) => {
+  if (!content) return false;
+
+  // Check for common HTML tags
+  const htmlPattern = /<\/?([a-z][a-z0-9]*)\b[^>]*>/i;
+  return htmlPattern.test(content);
+};
+
+/**
+ * Sanitizes HTML to prevent XSS attacks
+ */
+const sanitizeHTML = (html) => {
+  return DOMPurify.sanitize(html, {
+    ALLOWED_TAGS: [
+      'p', 'br', 'strong', 'em', 'u', 'b', 'i',
+      'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+      'ul', 'ol', 'li',
+      'a', 'img',
+      'blockquote', 'code', 'pre',
+      'div', 'span'
+    ],
+    ALLOWED_ATTR: [
+      'href', 'src', 'alt', 'title', 'class', 'style',
+      'width', 'height', 'target', 'rel'
+    ],
+    ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|xmpp|data):|[^a-z]|[a-z+.-]+(?:[^a-z+.\-:]|$))/i,
+  });
+};
 
 // ----------------------------------------------
 // Component
@@ -93,11 +127,30 @@ const ViewBlogPost = () => {
     return () => obs.disconnect();
   }, []);
 
+  // Determine content type and prepare for rendering
+  const contentData = useMemo(() => {
+    if (!oneBlogPost?.markdown) {
+      return { type: 'empty', content: null };
+    }
+
+    const isHTML = isHTMLContent(oneBlogPost.markdown);
+
+    if (isHTML) {
+      return {
+        type: 'html',
+        content: sanitizeHTML(oneBlogPost.markdown)
+      };
+    }
+
+    return {
+      type: 'markdown',
+      content: oneBlogPost.markdown
+    };
+  }, [oneBlogPost?.markdown]);
+
   if (!oneBlogPost) return null;
 
-  const { title, creator, createdAt, markdown, post_image, postCategory } =
-    oneBlogPost;
-
+  const { title, creator, createdAt, post_image, postCategory } = oneBlogPost;
   const formattedDate = moment(createdAt).format('DD MMM YYYY, HH:mm');
 
   // ----------------------------------------------
@@ -143,16 +196,35 @@ const ViewBlogPost = () => {
                   />
                 </div>
 
-                {/* Markdown Content */}
-                <section className="markdown-body mb-4">
-                  <Markdown rehypePlugins={[rehypeHighlight]}>
-                    {markdown}
-                  </Markdown>
+                {/* Content - HTML or Markdown */}
+                <section className="blog-content mb-4">
+                  {contentData.type === 'html' ? (
+                    // Render HTML content from Lexical
+                    <div
+                      className="content-body"
+                      dangerouslySetInnerHTML={{ __html: contentData.content }}
+                    />
+                  ) : contentData.type === 'markdown' ? (
+                    // Render Markdown content (legacy)
+                    <div className="content-body">
+                      <Markdown rehypePlugins={[rehypeHighlight]}>
+                        {contentData.content}
+                      </Markdown>
+                    </div>
+                  ) : (
+                    // Empty state
+                    <div className="text-muted text-center py-4">
+                      <p>No content available.</p>
+                    </div>
+                  )}
                 </section>
 
                 {/* Author + Actions */}
                 <footer className="d-flex flex-column flex-md-row justify-content-between align-items-center bg-white rounded-4 shadow-sm border p-3">
-                  <div className="d-flex flex-column align-items-center justify-content-around p-2" ref={authorRef}>
+                  <div
+                    className="d-flex flex-column align-items-center justify-content-around p-2"
+                    ref={authorRef}
+                  >
                     <img
                       src={creator?.avatar || altImage}
                       alt={creator?.name}
@@ -166,10 +238,8 @@ const ViewBlogPost = () => {
                       }}
                     />
                     <div className="text-start d-block w-100">
-                      <small style={{ fontSize: ".7rem" }}>{creator?.name}</small>
-                      <div className="text-muted small">
-                        {postCategory?.name}
-                      </div>
+                      <small style={{ fontSize: '.7rem' }}>{creator?.name}</small>
+                      <div className="text-muted small">{postCategory?.name}</div>
                     </div>
                   </div>
 

@@ -18,6 +18,7 @@ import {
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { createBlogPost } from '@/redux/slices';
+import LexicalEditor from './LexicalEditor';
 import UploadPostPhotos from './UploadPostPhotos';
 import YourImages from './YourImages';
 import { notify } from '@/utils/notifyToast';
@@ -27,8 +28,8 @@ import NotAuthenticated from '@/components/users/NotAuthenticated';
 const VALIDATION_CONFIG = {
     minTitle: 4,
     maxTitle: 70,
-    minMarkdown: 100,
-    maxMarkdown: 50000,
+    minContent: 100, // Minimum HTML content length
+    maxContent: 50000,
 };
 
 const ACCEPTED_IMAGE_TYPES = {
@@ -73,7 +74,7 @@ const validateImage = (file) => {
 };
 
 const validateBlogPost = (formData) => {
-    const { title, markdown } = formData;
+    const { title, content } = formData;
 
     if (!title || title.trim().length < VALIDATION_CONFIG.minTitle) {
         return {
@@ -89,17 +90,20 @@ const validateBlogPost = (formData) => {
         };
     }
 
-    if (!markdown || markdown.trim().length < VALIDATION_CONFIG.minMarkdown) {
+    // Strip HTML tags for minimum content check
+    const textContent = content.replace(/<[^>]*>/g, '').trim();
+
+    if (!content || textContent.length < VALIDATION_CONFIG.minContent) {
         return {
             ok: false,
-            message: `Content must be at least ${VALIDATION_CONFIG.minMarkdown} characters.`,
+            message: `Content must be at least ${VALIDATION_CONFIG.minContent} characters.`,
         };
     }
 
-    if (markdown.trim().length > VALIDATION_CONFIG.maxMarkdown) {
+    if (content.length > VALIDATION_CONFIG.maxContent) {
         return {
             ok: false,
-            message: `Content must not exceed ${VALIDATION_CONFIG.maxMarkdown} characters.`,
+            message: `Content must not exceed ${VALIDATION_CONFIG.maxContent} characters.`,
         };
     }
 
@@ -160,7 +164,7 @@ const AddBlogPost = () => {
     // Form state
     const [formState, setFormState] = useState({
         title: '',
-        markdown: '',
+        content: '', // Store HTML content from Lexical
         bgColor: '',
     });
     const [postImage, setPostImage] = useState(null);
@@ -178,8 +182,13 @@ const AddBlogPost = () => {
     const handleInputChange = useCallback((e) => {
         const { name, value } = e.target;
         setFormState((prev) => ({ ...prev, [name]: value }));
-        // Clear error for this field
         setErrors((prev) => ({ ...prev, [name]: null }));
+    }, []);
+
+    // Handle editor content change
+    const handleEditorChange = useCallback((htmlContent) => {
+        setFormState((prev) => ({ ...prev, content: htmlContent }));
+        setErrors((prev) => ({ ...prev, content: null }));
     }, []);
 
     // Handle file selection with validation
@@ -190,7 +199,7 @@ const AddBlogPost = () => {
             const validation = validateImage(file);
             if (!validation.ok) {
                 notify(validation.message, 'error');
-                e.target.value = ''; // Reset input
+                e.target.value = '';
                 return;
             }
             setPostImage(file);
@@ -235,7 +244,7 @@ const AddBlogPost = () => {
             // Build form data
             const formData = new FormData();
             formData.append('title', formState.title.trim());
-            formData.append('markdown', formState.markdown.trim());
+            formData.append('markdown', formState.content); // Store HTML in markdown field
             formData.append('bgColor', formState.bgColor || '#ffffff');
             formData.append('post_image', postImage);
             formData.append('postCategory', bPCatID);
@@ -256,7 +265,7 @@ const AddBlogPost = () => {
                     // Reset form
                     setFormState({
                         title: '',
-                        markdown: '',
+                        content: '',
                         bgColor: '',
                     });
                     setPostImage(null);
@@ -287,7 +296,7 @@ const AddBlogPost = () => {
 
     // Character counters
     const titleCharsRemaining = VALIDATION_CONFIG.maxTitle - (formState.title?.length || 0);
-    const markdownCharsRemaining = VALIDATION_CONFIG.maxMarkdown - (formState.markdown?.length || 0);
+    const contentLength = formState.content.replace(/<[^>]*>/g, '').trim().length;
 
     // Early returns
     if (!isAuthenticated) {
@@ -395,26 +404,18 @@ const AddBlogPost = () => {
                                 )}
                             </FormGroup>
 
-                            {/* Markdown Content Field */}
+                            {/* Rich Text Editor */}
                             <FormGroup>
-                                <Label for="markdown" className="fw-bold text-success">
-                                    Content (Markdown) <span className="text-danger">*</span>
+                                <Label className="fw-bold text-success">
+                                    Content <span className="text-danger">*</span>
                                 </Label>
-                                <Input
-                                    type="textarea"
-                                    id="markdown"
-                                    name="markdown"
-                                    placeholder="Write your blog post content in markdown format..."
-                                    value={formState.markdown || ''}
-                                    onChange={handleInputChange}
-                                    rows="15"
-                                    maxLength={VALIDATION_CONFIG.maxMarkdown}
-                                    required
-                                    invalid={!!errors.markdown}
+                                <LexicalEditor
+                                    onChange={handleEditorChange}
+                                    initialValue=""
+                                    minHeight="400px"
                                 />
-                                <FormText color={markdownCharsRemaining < 1000 ? 'warning' : 'muted'}>
-                                    {formState.markdown?.length || 0}/{VALIDATION_CONFIG.maxMarkdown} characters
-                                    (minimum {VALIDATION_CONFIG.minMarkdown})
+                                <FormText color={contentLength < VALIDATION_CONFIG.minContent ? 'warning' : 'muted'}>
+                                    {contentLength} characters (minimum {VALIDATION_CONFIG.minContent})
                                 </FormText>
                             </FormGroup>
 

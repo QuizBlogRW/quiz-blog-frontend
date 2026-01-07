@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { Button, Col } from 'reactstrap';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import moment from 'moment';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 import MessagesContainer from '../MessagesContainer';

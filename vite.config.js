@@ -70,7 +70,6 @@ export default defineConfig(() => {
                         'content-vendor': [
                             'react-markdown',
                             'rehype-highlight',
-                            'draft-js'
                         ],
                         
                         // Analytics and ads

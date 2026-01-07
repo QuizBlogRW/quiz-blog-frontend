@@ -19,6 +19,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateBlogPost, getOneBlogPost } from '@/redux/slices';
 import { getPostCategories } from '@/redux/slices/postCategoriesSlice';
+import LexicalEditor from './LexicalEditor';
 import UploadPostPhotos from './UploadPostPhotos';
 import YourImages from './YourImages';
 import { notify } from '@/utils/notifyToast';
@@ -28,8 +29,8 @@ import NotAuthenticated from '@/components/users/NotAuthenticated';
 const VALIDATION_CONFIG = {
   minTitle: 4,
   maxTitle: 70,
-  minMarkdown: 80,
-  maxMarkdown: 50000,
+  minContent: 80,
+  maxContent: 50000,
 };
 
 const DEFAULT_BG_COLORS = [
@@ -43,7 +44,7 @@ const DEFAULT_BG_COLORS = [
 
 // Validation helper
 const validateBlogPost = (formData) => {
-  const { title, markdown } = formData;
+  const { title, content } = formData;
 
   if (!title || title.trim().length < VALIDATION_CONFIG.minTitle) {
     return {
@@ -59,17 +60,20 @@ const validateBlogPost = (formData) => {
     };
   }
 
-  if (!markdown || markdown.trim().length < VALIDATION_CONFIG.minMarkdown) {
+  // Strip HTML tags for minimum content check
+  const textContent = content.replace(/<[^>]*>/g, '').trim();
+
+  if (!content || textContent.length < VALIDATION_CONFIG.minContent) {
     return {
       ok: false,
-      message: `Content must be at least ${VALIDATION_CONFIG.minMarkdown} characters.`,
+      message: `Content must be at least ${VALIDATION_CONFIG.minContent} characters.`,
     };
   }
 
-  if (markdown.trim().length > VALIDATION_CONFIG.maxMarkdown) {
+  if (content.length > VALIDATION_CONFIG.maxContent) {
     return {
       ok: false,
-      message: `Content must not exceed ${VALIDATION_CONFIG.maxMarkdown} characters.`,
+      message: `Content must not exceed ${VALIDATION_CONFIG.maxContent} characters.`,
     };
   }
 
@@ -99,10 +103,11 @@ const EditBlogPost = () => {
     title: '',
     postCategory: '',
     bgColor: '',
-    markdown: '',
+    content: '', // HTML content from Lexical
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [editorKey, setEditorKey] = useState(0); // Key to force re-render editor
 
   // Check if user is authorized to edit
   const isAuthorized = useMemo(() => {
@@ -130,9 +135,10 @@ const EditBlogPost = () => {
         title: oneBlogPost.title || '',
         postCategory: oneBlogPost.postCategory?._id || '',
         bgColor: oneBlogPost.bgColor || '',
-        markdown: oneBlogPost.markdown || '',
+        content: oneBlogPost.markdown || '', // Load HTML from markdown field
       };
       setFormState(initialState);
+      setEditorKey(prev => prev + 1); // Force editor to reload with new content
     }
   }, [oneBlogPost]);
 
@@ -141,7 +147,7 @@ const EditBlogPost = () => {
     if (oneBlogPost) {
       const hasChanges =
         formState.title !== oneBlogPost.title ||
-        formState.markdown !== oneBlogPost.markdown ||
+        formState.content !== oneBlogPost.markdown ||
         formState.bgColor !== oneBlogPost.bgColor ||
         formState.postCategory !== oneBlogPost.postCategory?._id;
 
@@ -166,6 +172,11 @@ const EditBlogPost = () => {
   const handleInputChange = useCallback((e) => {
     const { name, value } = e.target;
     setFormState((prev) => ({ ...prev, [name]: value }));
+  }, []);
+
+  // Handle editor content change
+  const handleEditorChange = useCallback((htmlContent) => {
+    setFormState((prev) => ({ ...prev, content: htmlContent }));
   }, []);
 
   // Handle form submission
@@ -194,7 +205,7 @@ const EditBlogPost = () => {
         title: formState.title.trim(),
         postCategory: formState.postCategory,
         bgColor: formState.bgColor || '#ffffff',
-        markdown: formState.markdown.trim(),
+        markdown: formState.content, // Store HTML in markdown field
       };
 
       setIsSubmitting(true);
@@ -239,8 +250,7 @@ const EditBlogPost = () => {
 
   // Character counters
   const titleCharsRemaining = VALIDATION_CONFIG.maxTitle - (formState.title?.length || 0);
-  const markdownCharsRemaining =
-    VALIDATION_CONFIG.maxMarkdown - (formState.markdown?.length || 0);
+  const contentLength = formState.content.replace(/<[^>]*>/g, '').trim().length;
 
   // Loading state
   const isLoading = isUserLoading || isBlogPostLoading || isCategoriesLoading;
@@ -254,7 +264,7 @@ const EditBlogPost = () => {
     return (
       <div className="text-center py-5">
         <Spinner color="primary" />
-        <p className="mt-3">Loading blog post...</p>
+        <p className="mt-3">Loading the post...</p>
       </div>
     );
   }
@@ -398,25 +408,19 @@ const EditBlogPost = () => {
                 )}
               </FormGroup>
 
-              {/* Markdown Content Field */}
+              {/* Rich Text Editor */}
               <FormGroup>
-                <Label for="markdown" className="fw-bold">
-                  Content (Markdown) <span className="text-danger">*</span>
+                <Label className="fw-bold">
+                  Content <span className="text-danger">*</span>
                 </Label>
-                <Input
-                  type="textarea"
-                  id="markdown"
-                  name="markdown"
-                  placeholder="Write your blog post content in markdown format..."
-                  value={formState.markdown || ''}
-                  onChange={handleInputChange}
-                  rows="15"
-                  maxLength={VALIDATION_CONFIG.maxMarkdown}
-                  required
+                <LexicalEditor
+                  key={editorKey} // Force re-render when content loads
+                  onChange={handleEditorChange}
+                  initialValue={formState.content}
+                  minHeight="400px"
                 />
-                <FormText color={markdownCharsRemaining < 1000 ? 'warning' : 'muted'}>
-                  {formState.markdown?.length || 0}/{VALIDATION_CONFIG.maxMarkdown}{' '}
-                  characters (minimum {VALIDATION_CONFIG.minMarkdown})
+                <FormText color={contentLength < VALIDATION_CONFIG.minContent ? 'warning' : 'muted'}>
+                  {contentLength} characters (minimum {VALIDATION_CONFIG.minContent})
                 </FormText>
               </FormGroup>
 
