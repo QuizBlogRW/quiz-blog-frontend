@@ -90,10 +90,11 @@
 /* Images */
 .content-body img {
     display: block;
+    padding: 1rem;
     max-width: 100%;
     max-height: 520px;
     margin: 1rem auto;
-    border-radius: 0.5rem;
+    border-radius: 2rem;
     object-fit: cover;
     border: 1px solid rgba(5, 22, 12, 0.06);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
@@ -234,5 +235,6 @@
 
     .content-body img {
         max-height: 300px;
+        padding: 0.5rem;
     }
 }

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import uploadimage from '@/images/uploadimage.svg';
+import resourceImg from '@/images/resourceImg.svg';
 
-const ImageWithFallback = ({ src, alt, fallbackSrc = uploadimage, id, className, ...props }) => {
+const ImageWithFallback = ({ src, alt, fallbackSrc = resourceImg, id, className, ...props }) => {
     const [imageSrc, setImageSrc] = useState(src || fallbackSrc);
 
     // Update imageSrc if src prop changes
