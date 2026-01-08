@@ -61,7 +61,6 @@ export default defineConfig(() => {
                         // Utilities
                         'utils-vendor': [
                             'axios',
-                            'moment',
                             'uuid',
                             'socket.io-client'
                         ],

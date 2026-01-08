@@ -1,4 +1,4 @@
-import moment from 'moment';
+import { formatDateTime } from '@/utils/dateFormat';
 import { Table, Alert } from 'reactstrap';
 import { deleteDownload } from '@/redux/slices/downloadsSlice';
 import DeleteModal from '@/utils/DeleteModal';
@@ -37,11 +37,12 @@ const DownloadsTable = ({ downloadsToUse, pageNo }) => {
                         const dat = download && (user?.role === 'Creator') ? new Date(download.updatedAt) : new Date(download.createdAt);
 
                         const numero = user?.role?.includes('Admin') ? ((pageNo - 1) * 20) + index + 1 : index + 1;
+                        const formattedDate = dat ? formatDateTime(dat) : '';
 
                         return (
                             <tr key={index}>
                                 <th scope="row" className="table-dark">{numero && numero}</th>
-                                <td>{dat && moment(dat).format('YYYY-MM-DD, HH:mm')}</td>
+                                <td>{dat && formattedDate}</td>
                                 <td className='text-uppercase'>{username && username}</td>
                                 <td>{note && note}</td>
                                 <td>{chap && chap}</td>

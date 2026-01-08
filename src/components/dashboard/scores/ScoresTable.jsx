@@ -1,8 +1,8 @@
-import moment from 'moment';
 import { Table, Alert } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import DeleteModal from '@/utils/DeleteModal';
+import { formatDateTime } from '@/utils/dateFormat';
 
 const ScoresTable = ({ scoresToUse, pageNo, deleteScore }) => {
 
@@ -37,10 +37,11 @@ const ScoresTable = ({ scoresToUse, pageNo, deleteScore }) => {
                         let date = score && new Date(score.test_date);
 
                         const numero = user?.role?.includes('Admin') ? ((pageNo - 1) * 20) + index + 1 : index + 1;
+                        const formattedDate = date ? formatDateTime(date) : '';
 
                         return (<tr key={index}>
                             <th scope="row" className="table-dark">{numero && numero}</th>
-                            <td>{date && moment(date).format('YYYY-MM-DD, HH:mm')}</td>
+                            <td>{date && formattedDate}</td>
                             <td className='text-uppercase'>
                                 {taker && taker}
                             </td>

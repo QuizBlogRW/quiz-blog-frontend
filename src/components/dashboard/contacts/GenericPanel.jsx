@@ -1,12 +1,11 @@
 import { Card, Button, CardTitle, CardText, Alert } from 'reactstrap';
-import { memo, useMemo, useState } from 'react';
+import { memo, useState } from 'react';
 import DeleteIcon from '@/images/trash.svg';
-import moment from 'moment';
+import { formatDateTime } from '@/utils/dateFormat';
 import { Link } from 'react-router-dom';
 import ConfirmModal from '@/components/dashboard/utils/ConfirmModal';
 
 // Constants
-const DATE_FORMAT = 'DD MMM YYYY, HH:mm';
 const CARD_HEIGHT = '150px';
 
 // Generic Card Component
@@ -24,10 +23,7 @@ const GenericCard = memo(({ item, config, preview, actions, permissions }) => {
         count = preview?.count || config.getCount?.(item) || 0,
     } = {};
 
-    const formattedDate = useMemo(
-        () => moment(date).format(DATE_FORMAT),
-        [date]
-    );
+    const formattedDate = date ? formatDateTime(date) : '';
 
     const handleCardClick = () => actions?.onClick(item, preview);
 

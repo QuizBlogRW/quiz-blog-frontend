@@ -1,6 +1,6 @@
 import { Table, Alert } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import moment from 'moment';
+import { formatDateTime } from '@/utils/dateFormat';
 import { deleteBlogPost } from '@/redux/slices';
 import DeleteModal from '@/utils/DeleteModal';
 import { useSelector } from 'react-redux';
@@ -36,13 +36,14 @@ const BPTable = ({ bpostsToUse }) => {
                             const creator = bPost && bPost.creator && bPost.creator.name;
                             const creat = bPost && bPost.creator;
                             let date = bPost && new Date(bPost.createdAt);
+                            const formattedDate = date ? formatDateTime(date) : '';
 
                             return (<tr key={index}>
                                 <th scope="row" className="table-dark">{numero && numero}</th>
                                 <td className='text-uppercase'>{bPTitle && bPTitle}</td>
                                 <td>{catg && catg}</td>
                                 <td>{creator && creator}</td>
-                                <td>{date && moment(date).format('YYYY-MM-DD, HH:mm')}</td>
+                                <td>{date && formattedDate}</td>
                                 <td className={`${(user?.role?.includes('Admin') || creat._id === user._id) ? '' : 'd-none'}`}>
                                     <Link to={`/edit-bpost/${bPost.slug}`}>Edit</Link>
                                 </td>

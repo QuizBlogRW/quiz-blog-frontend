@@ -1,7 +1,6 @@
 import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
 import isAdEnabled from '@/utils/isAdEnabled';
 import SquareAd from '@/components/adsenses/SquareAd';
-
 import {
     Row,
     Col,
@@ -10,10 +9,12 @@ import {
     Alert
 } from 'reactstrap';
 
-import moment from 'moment';
+import { formatDate } from '@/utils/dateFormat';
 
 const Privacy = () => {
-    const formattedDate = moment('2025-10-20').format('MMMM D, YYYY');
+
+    const formattedDate = formatDate('2025-10-20');
+
 
     return (
         <div className="py-0 px-3 py-lg-5 w-100">

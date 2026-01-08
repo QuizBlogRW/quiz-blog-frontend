@@ -74,7 +74,7 @@ export default function ForgotPassword() {
                     </p>
 
                     <p className="text-white small mb-0">
-                        It only takes a moment.
+                        It only takes a time.
                     </p>
 
                     <hr

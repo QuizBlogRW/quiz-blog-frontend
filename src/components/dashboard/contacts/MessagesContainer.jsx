@@ -1,9 +1,6 @@
 import { useMemo, memo, useRef, useEffect } from 'react';
-import moment from 'moment';
+import { formatDateTime } from '@/utils/dateFormat';
 import { useSelector } from 'react-redux';
-
-// Constants
-const DATE_FORMAT = 'DD MMM YYYY, HH:mm';
 
 // Parse Draft.js or return plain text
 const parseMessage = (message) => {
@@ -89,9 +86,7 @@ const MessagesContainer = ({ isArchive, messages, typingUsers }) => {
             {messages?.length > 0 ? (
                 <>
                     {messages.map((msg, idx) => {
-
-                        const formattedDate = moment(isArchive ? msg.reply_date : msg.createdAt).format(DATE_FORMAT);
-                        const isValidDate = formattedDate !== 'Invalid date';
+                        const formattedDate = msg.createdAt ? formatDateTime(msg.createdAt) : '';
                         const isMe = isArchive ? msg?.email === user?.email : msg?.sender === user?._id;
 
                         return (
@@ -99,7 +94,7 @@ const MessagesContainer = ({ isArchive, messages, typingUsers }) => {
                                 key={`${msg._id || idx}-${msg.createdAt}`}
                                 message={isArchive ? msg.message : msg.content}
                                 isMe={isMe}
-                                formattedDate={isValidDate ? formattedDate : ''}
+                                formattedDate={formattedDate}
                                 isArchive={isArchive}
                             />
                         );

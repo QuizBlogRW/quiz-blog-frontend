@@ -1,11 +1,11 @@
 import { Card, CardTitle, CardText } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import moment from 'moment';
+import { formatDateTime } from '@/utils/dateFormat';
 
 const NotesPapersItem = ({ note, fromSearch }) => {
 
   const { slug, title, description, courseCategory, course, chapter, createdAt, } = note;
-  const formattedDate = moment(new Date(createdAt)).format('DD MMM YYYY, HH:mm');
+  const formattedDate = createdAt ? formatDateTime(createdAt) : '';
 
   return (
     <Card

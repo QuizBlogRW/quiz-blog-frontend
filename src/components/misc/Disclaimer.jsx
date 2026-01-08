@@ -10,10 +10,10 @@ import {
     Alert
 } from 'reactstrap';
 
-import moment from 'moment';
+import { formatDate } from '@/utils/dateFormat';
 
 const Disclaimer = () => {
-    const lastUpdated = moment().format('MMMM D, YYYY');
+    const lastUpdated = formatDate(new Date());
 
     return (
         <div className="py-0 px-3 py-lg-5 w-100">

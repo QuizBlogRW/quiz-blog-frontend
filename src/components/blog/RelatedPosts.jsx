@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Alert, Card, CardBody, Spinner } from 'reactstrap';
-import moment from 'moment';
+import { formatDate } from '@/utils/dateFormat';
 import { useSelector, useDispatch } from 'react-redux';
 import { getBlogPostsByCategory } from '@/redux/slices';
 import ImageWithFallback from '@/utils/ImageWithFallback';
@@ -8,6 +8,7 @@ import ImageWithFallback from '@/utils/ImageWithFallback';
 const BlogPostItem = ({ blogPost }) => {
 
     const { title, post_image, brand } = blogPost;
+    const formattedDate = blogPost.createdAt ? formatDate(blogPost.createdAt) : '';
 
     return (
         <Card className="mb-3 shadow-sm border-0 rounded-3 hover-effect">
@@ -36,7 +37,7 @@ const BlogPostItem = ({ blogPost }) => {
                     <div className="d-flex justify-content-between align-items-center text-muted small">
                         <span>{blogPost?.creator?.name || 'Unknown'}</span>
                         <span className="text-primary">
-                            {moment(blogPost?.createdAt).format('YYYY-MM-DD')}
+                            {formattedDate}
                         </span>
                     </div>
                 </CardBody>

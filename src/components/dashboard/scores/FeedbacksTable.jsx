@@ -1,5 +1,5 @@
-import moment from 'moment';
 import { Table, Alert } from 'reactstrap';
+import { formatDateTime } from '@/utils/dateFormat';
 
 const FeedbacksTable = ({ feedbacksToUse, pageNo }) => {
 
@@ -36,7 +36,7 @@ const FeedbacksTable = ({ feedbacksToUse, pageNo }) => {
             <tbody>
                 {sortedFeedbacks.map((feedback, index) => {
                     const numero = ((pageNo - 1) * 20) + index + 1;
-                    const formattedDate = moment(feedback.createdAt).format('YYYY-MM-DD, HH:mm');
+                    const formattedDate = feedback.createdAt ? formatDateTime(feedback.createdAt) : '';
 
                     return (
                         <tr key={feedback._id || index}>

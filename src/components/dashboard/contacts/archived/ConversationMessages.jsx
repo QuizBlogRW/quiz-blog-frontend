@@ -1,13 +1,11 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Button, Col } from 'reactstrap';
-import moment from 'moment';
+import { formatDateTime } from '@/utils/dateFormat';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 import MessagesContainer from '../MessagesContainer';
 import SelectChat from "@/components/dashboard/utils/SelectChat";
 
-// Constants
-const DATE_FORMAT = 'DD MMM YYYY, HH:mm';
 
 // Utility function - moved outside component for better performance
 const sortRepliesByDate = (replies) => {
@@ -24,12 +22,7 @@ const ConversationMessages = ({ onClose, isConversationOpen }) => {
     const prevContactIdRef = useRef(null);
     const [replies, setReplies] = useState([]);
 
-    // Memoize formatted date
-    const formattedDate = useMemo(() => {
-        if (!oneContact?.contact_date) return '';
-        const date = moment(oneContact.contact_date).format(DATE_FORMAT);
-        return date === 'Invalid date' ? '' : date;
-    }, [oneContact?.contact_date]);
+    const formattedDate = oneContact?.contact_date ? formatDateTime(oneContact?.contact_date) : '';
 
     // Simplified reply management
     useEffect(() => {

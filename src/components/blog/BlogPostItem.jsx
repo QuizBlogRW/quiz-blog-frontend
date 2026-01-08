@@ -1,13 +1,13 @@
 import { Card, CardBody, CardTitle } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import moment from 'moment';
+import { formatDateTime } from '@/utils/dateFormat';
 import altImage from '@/images/resourceImg.svg';
 import ImageWithFallback from '@/utils/ImageWithFallback';
 
 const BlogPostItem = ({ blogPost }) => {
 
     const { slug, title, postCategory, post_image, brand, creator, createdAt } = blogPost;
-    const formattedDate = moment(new Date(createdAt)).format('DD MMM YYYY, HH:mm');
+    const formattedDate = createdAt ? formatDateTime(createdAt) : '';
 
     return (
         <Card className="bg-light py-3 px-1 px-sm-3 my-2 my-sm-3 border post-card">
@@ -28,7 +28,7 @@ const BlogPostItem = ({ blogPost }) => {
 
                         <div className="small-text text-muted mb-2">
                             <small>
-                                {formattedDate === 'Invalid date' ? '' : formattedDate}
+                                {formattedDate}
                                 {' • '}
                                 {postCategory && postCategory.title}
                                 {creator && creator.name ? ` • ${creator.name}` : ''}

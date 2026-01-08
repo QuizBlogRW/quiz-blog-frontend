@@ -1,7 +1,7 @@
 import { Col, Toast, ToastBody, ToastHeader } from 'reactstrap';
 import EditUser from './EditUser';
 import uploadimage from '@/images/uploadimage.svg';
-import moment from 'moment';
+import { formatDateTime } from '@/utils/dateFormat';
 import ImageWithFallback from '@/utils/ImageWithFallback';
 import DeleteModal from '@/utils/DeleteModal';
 import { deleteUser } from '@/redux/slices/usersSlice';
@@ -13,7 +13,7 @@ const UserToast = ({ userToUse, fromSearch }) => {
 
     if (!userToUse) return null;
     const { _id, name, email, image, role, register_date } = userToUse;
-    const formattedDate = moment(new Date(register_date)).format('DD MMM YYYY, HH:mm');
+    const formattedDate = register_date ? formatDateTime(register_date) : '';
 
     return (
         <Col sm="3" key={_id} className={'mt-3 users-toast'}>

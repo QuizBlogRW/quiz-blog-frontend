@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Col, Row, Button, ListGroup, ListGroupItem } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import moment from 'moment';
+import { formatDateTime } from '@/utils/dateFormat';
 import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
 import isAdEnabled from '@/utils/isAdEnabled';
 import SquareAd from '@/components/adsenses/SquareAd';
@@ -52,7 +52,7 @@ const BlogPosts = () => {
                   AllBPs.map((bp) => {
 
                     const { _id, slug, title, postCategory, creator, createdAt } = bp;
-                    const formattedDate = moment(new Date(createdAt)).format('DD MMM YYYY, HH:mm');
+                    const formattedDate = createdAt ? formatDateTime(createdAt) : '';
 
                     return (
                       <React.Fragment key={_id}>
@@ -91,7 +91,7 @@ const BlogPosts = () => {
                   })
                 ) : (
                   <div className="text-center py-4">
-                    <p className="text-muted">No blog posts available at the moment.</p>
+                    <p className="text-muted">No blog posts available at the time.</p>
                   </div>
                 )}
               </>

@@ -1,10 +1,10 @@
 import { Card, CardTitle, CardText } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import moment from 'moment';
+import { formatDateTime } from '@/utils/dateFormat';
 
 const QuizItem = ({ quiz, fromSearch }) => {
   const { slug, title, description, creation_date, category, questions } = quiz;
-  const formattedDate = moment(new Date(creation_date)).format('DD MMM YYYY, HH:mm');
+  const formattedDate = creation_date ? formatDateTime(creation_date) : '';
 
   return (
     <Card

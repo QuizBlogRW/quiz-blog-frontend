@@ -1,13 +1,6 @@
 import { useEffect, lazy, Suspense } from 'react';
-import {
-  Col,
-  Row,
-  Card,
-  Button,
-  CardTitle,
-  CardText,
-} from 'reactstrap';
-import moment from 'moment';
+import { Col, Row, Card, Button, CardTitle, CardText } from 'reactstrap';
+import { formatDateTime } from '@/utils/dateFormat';
 import { Link, useParams } from 'react-router-dom';
 import { getOneNotePaper } from '@/redux/slices/notesSlice';
 import { saveDownload } from '@/redux/slices/downloadsSlice';
@@ -41,7 +34,7 @@ const ViewNotePaper = () => {
     notes_file,
     createdAt,
   } = noteDownload.oneNotePaper;
-  const formattedDate = moment(new Date(createdAt)).format('DD MMM YYYY, HH:mm');
+  const formattedDate = createdAt ? formatDateTime(createdAt) : '';
 
   const onDownload = (note) => {
     const newDownload = {

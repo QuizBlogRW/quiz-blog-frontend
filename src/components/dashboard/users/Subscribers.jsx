@@ -3,7 +3,7 @@ import { Row, Table, Col } from 'reactstrap';
 import { getSubscribers, deleteSubscriber } from '@/redux/slices/subscribersSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
-import moment from 'moment';
+import { formatDateTime } from '@/utils/dateFormat';
 import DeleteModal from '@/utils/DeleteModal';
 
 const Subscribers = () => {
@@ -63,7 +63,7 @@ const Subscribers = () => {
                                     <tbody>
                                         {subscribedUsers.map((user, index) => {
                                             const { name, email, createdAt, _id } = user;
-                                            const formattedDate = moment(createdAt).format('DD MMM YYYY, HH:mm');
+                                            const formattedDate = createdAt ? formatDateTime(createdAt) : '';
 
                                             return (
                                                 <tr key={_id}>

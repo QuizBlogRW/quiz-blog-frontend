@@ -1,6 +1,6 @@
 import { utils, writeFile } from 'xlsx';
 import { Button } from 'reactstrap';
-import moment from 'moment';
+import { formatDateTime } from '@/utils/dateFormat';
 
 const ExcelButton = ({ data, filename }) => {
 
@@ -34,7 +34,7 @@ const ExcelButton = ({ data, filename }) => {
         arr.map((item, index) => {
 
             if (item instanceof Date && !isNaN(item)) {
-                arr[index] = moment(item, 'DD-MM-YYYY, HH:mm:ss').format('DD-MM-YYYY, HH:mm:ss');
+                arr[index] = formatDateTime(item);
             }
 
             if (typeof item === 'object' && item !== null) {

@@ -86,7 +86,7 @@ const AllBlogPosts = () => {
           ) : (
             <div className="text-center py-4">
               <p className="text-muted">
-                No blog posts available at the moment.
+                No blog posts available at the time.
               </p>
             </div>
           )}

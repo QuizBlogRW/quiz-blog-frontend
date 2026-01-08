@@ -90,38 +90,6 @@ export const getDeviceType = () => {
     return mobileRegex.test(userAgent) ? 'mobile' : 'desktop';
 };
 
-// ============================================
-// Date Formatting
-// ============================================
-
-/**
- * Formats a date string into a readable format
- * @param {string | Date} date - The date to format
- * @returns {string} Formatted date string
- */
-export const formatDate = (date) => {
-    try {
-        const dateObj = new Date(date);
-
-        // Check if date is valid
-        if (isNaN(dateObj.getTime())) {
-            return 'Invalid date';
-        }
-
-        return dateObj.toLocaleString('en-GB', {
-            day: '2-digit',
-            month: 'short',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false,
-        });
-    } catch (error) {
-        console.error('Error formatting date:', error);
-        return 'Invalid date';
-    }
-};
-
 /**
  * Gets relative time (e.g., "2 hours ago")
  * @param {string | Date} date - The date to format

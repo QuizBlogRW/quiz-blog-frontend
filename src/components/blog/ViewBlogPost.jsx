@@ -18,9 +18,9 @@ import ImageWithFallback from '@/utils/ImageWithFallback';
 import {
   sanitizeHTML,
   detectContentType,
-  getDeviceType,
-  formatDate
+  getDeviceType
 } from './utils';
+import { formatDateTime } from '@/utils/dateFormat';
 import './viewPost.css';
 
 // ============================================
@@ -254,7 +254,7 @@ const ViewBlogPost = () => {
   }
 
   const { title, creator, createdAt, post_image, postCategory } = oneBlogPost || {};
-  const formattedDate = createdAt ? formatDate(createdAt) : '';
+  const formattedDate = createdAt ? formatDateTime(createdAt) : '';
 
   // ============================================
   // Render

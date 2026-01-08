@@ -1,5 +1,5 @@
 import { Toast, ToastHeader, ToastBody, CardTitle, Button } from 'reactstrap';
-import moment from 'moment';
+import { formatDateTime } from '@/utils/dateFormat';
 import { Link } from 'react-router-dom';
 import { approveRejectComment } from '@/redux/slices/questionsCommentsSlice';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,7 +14,7 @@ const Comment = ({ comment, isFromPending }) => {
     const { name: commentSender } = comment?.sender || {};
 
     const commentDate = comment?.createdAt;
-    const formattedCDate = commentDate && moment(commentDate).format('YYYY-MM-DD, HH:mm');
+    const formattedCDate = commentDate && formatDateTime(commentDate);
 
     return (
         <div className="my-4 p-3 border rounded bg-light shadow-sm">
