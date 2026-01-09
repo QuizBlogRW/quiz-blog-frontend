@@ -19,6 +19,7 @@ const QuizRanking = () => {
   const { isLoading, rankingScores } = useSelector((state) => state.scores);
   const { user, isAuthenticated } = useSelector((state) => state.users);
   const isAdmin = user?.role?.includes("Admin");
+  const first10Ranks = rankingScores.slice(0, 10);
 
   // Fetch rankings on mount
   useEffect(() => {
@@ -178,7 +179,7 @@ const QuizRanking = () => {
             <CardHeader className="bg-white border-bottom">
               <h5 className="mb-0">
                 <i className="fa fa-trophy me-2 text-warning"></i>
-                Leaderboard
+                Leaderboard - Top 10
               </h5>
             </CardHeader>
             <CardBody
@@ -196,7 +197,7 @@ const QuizRanking = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {!rankingScores.length ? (
+                  {!first10Ranks.length ? (
                     <tr>
                       <td colSpan="5" className="text-center text-muted py-4">
                         <i className="fa fa-inbox fa-2x mb-2 d-block"></i>
@@ -204,7 +205,7 @@ const QuizRanking = () => {
                       </td>
                     </tr>
                   ) : (
-                    rankingScores.map((rank, i) => {
+                    first10Ranks.map((rank, i) => {
                       const pct = rank.out_of
                         ? Math.round((rank.marks / rank.out_of) * 100)
                         : 0;
