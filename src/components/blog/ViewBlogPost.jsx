@@ -225,7 +225,7 @@ const ViewBlogPost = () => {
 
     return {
       type: 'markdown',
-      content: oneBlogPost.markdown,
+      content: oneBlogPost.markdown?.trim() || '',
     };
   }, [oneBlogPost?.markdown]);
 

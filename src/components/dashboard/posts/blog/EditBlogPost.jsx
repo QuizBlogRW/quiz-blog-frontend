@@ -80,6 +80,34 @@ const validateBlogPost = (formData) => {
   return { ok: true };
 };
 
+export const detectContentType = (content = '') => {
+  if (!content.trim()) return 'empty';
+
+  if (/<\/?[a-z][\s\S]*>/i.test(content)) {
+    return 'html';
+  }
+
+  return 'markdown';
+};
+
+import { marked } from 'marked';
+import DOMPurify from 'dompurify';
+
+export const normalizeForEditor = (raw = '') => {
+  if (!raw.trim()) return '';
+
+  const type = detectContentType(raw);
+
+  if (type === 'html') {
+    return DOMPurify.sanitize(raw);
+  }
+
+  // markdown → html
+  const html = marked.parse(raw);
+  return DOMPurify.sanitize(html);
+};
+
+
 // Main Component
 const EditBlogPost = () => {
   const dispatch = useDispatch();
@@ -107,7 +135,6 @@ const EditBlogPost = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-  const [editorKey, setEditorKey] = useState(0); // Key to force re-render editor
 
   // Check if user is authorized to edit
   const isAuthorized = useMemo(() => {
@@ -128,32 +155,38 @@ const EditBlogPost = () => {
   }, [bPSlug, dispatch]);
 
   // Initialize form state when blog post loads
+  const [isContentReady, setIsContentReady] = useState(false);
+
   useEffect(() => {
     if (oneBlogPost) {
-      const initialState = {
+      const normalizedContent = normalizeForEditor(oneBlogPost.markdown);
+      setFormState({
         blogPostID: oneBlogPost._id || '',
         title: oneBlogPost.title || '',
         postCategory: oneBlogPost.postCategory?._id || '',
         bgColor: oneBlogPost.bgColor || '',
-        content: oneBlogPost.markdown || '', // Load HTML from markdown field
-      };
-      setFormState(initialState);
-      setEditorKey(prev => prev + 1); // Force editor to reload with new content
+        content: normalizedContent,
+      });
+      // Mark content as ready after a brief delay to ensure state is updated
+      setTimeout(() => setIsContentReady(true), 100);
     }
   }, [oneBlogPost]);
 
   // Track unsaved changes
   useEffect(() => {
-    if (oneBlogPost) {
-      const hasChanges =
-        formState.title !== oneBlogPost.title ||
-        formState.content !== oneBlogPost.markdown ||
-        formState.bgColor !== oneBlogPost.bgColor ||
-        formState.postCategory !== oneBlogPost.postCategory?._id;
+    if (!oneBlogPost) return;
 
-      setHasUnsavedChanges(hasChanges);
-    }
+    const originalHTML = normalizeForEditor(oneBlogPost.markdown);
+
+    const hasChanges =
+      formState.title !== oneBlogPost.title ||
+      formState.bgColor !== oneBlogPost.bgColor ||
+      formState.postCategory !== oneBlogPost.postCategory?._id ||
+      formState.content !== originalHTML;
+
+    setHasUnsavedChanges(hasChanges);
   }, [formState, oneBlogPost]);
+
 
   // Warn before leaving with unsaved changes
   useEffect(() => {
@@ -204,8 +237,8 @@ const EditBlogPost = () => {
         blogPostID: formState.blogPostID,
         title: formState.title.trim(),
         postCategory: formState.postCategory,
-        bgColor: formState.bgColor || '#ffffff',
-        markdown: formState.content, // Store HTML in markdown field
+        bgColor: formState.bgColor,
+        contentHtml: formState.content, // always HTML
       };
 
       setIsSubmitting(true);
@@ -409,20 +442,27 @@ const EditBlogPost = () => {
               </FormGroup>
 
               {/* Rich Text Editor */}
-              <FormGroup>
-                <Label className="fw-bold">
-                  Content <span className="text-danger">*</span>
-                </Label>
-                <LexicalEditor
-                  key={editorKey} // Force re-render when content loads
-                  onChange={handleEditorChange}
-                  initialValue={formState.content}
-                  minHeight="400px"
-                />
-                <FormText color={contentLength < VALIDATION_CONFIG.minContent ? 'warning' : 'muted'}>
-                  {contentLength} characters (minimum {VALIDATION_CONFIG.minContent})
-                </FormText>
-              </FormGroup>
+              {isContentReady ? (
+                <FormGroup>
+                  <Label className="fw-bold">
+                    Content <span className="text-danger">*</span>
+                  </Label>
+                  {console.log('Rendering LexicalEditor with content length:', formState.content)}
+                  <LexicalEditor
+                    onChange={handleEditorChange}
+                    initialValue={formState.content}
+                    minHeight="400px"
+                  />
+                  <FormText color={contentLength < VALIDATION_CONFIG.minContent ? 'warning' : 'muted'}>
+                    {contentLength} characters (minimum {VALIDATION_CONFIG.minContent})
+                  </FormText>
+                </FormGroup>
+              ) : (
+                <div className="text-center my-4">
+                  <Spinner color="primary" />
+                  <p className="mt-2">Loading editor...</p>
+                </div>
+              )}
 
               {/* Action Buttons */}
               <div className="d-flex gap-2 mt-4">

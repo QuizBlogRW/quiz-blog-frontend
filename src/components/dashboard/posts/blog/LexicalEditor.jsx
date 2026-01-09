@@ -3,7 +3,6 @@ import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
-import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
 import { HeadingNode, QuoteNode, $createHeadingNode } from '@lexical/rich-text';
 import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
@@ -18,7 +17,6 @@ import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext
 import { $generateHtmlFromNodes, $generateNodesFromDOM } from '@lexical/html';
 import {
     $getRoot,
-    $insertNodes,
     $createParagraphNode,
     DecoratorNode,
     FORMAT_TEXT_COMMAND,
@@ -495,21 +493,20 @@ function OnChangePlugin({ onChange }) {
 // Plugin to load initial HTML content
 function LoadInitialContentPlugin({ content }) {
     const [editor] = useLexicalComposerContext();
-    const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
-        if (content && !loaded) {
-            editor.update(() => {
-                const parser = new DOMParser();
-                const dom = parser.parseFromString(content, 'text/html');
-                const nodes = $generateNodesFromDOM(editor, dom);
-                const root = $getRoot();
-                root.clear();
-                $insertNodes(nodes);
-            });
-            setLoaded(true);
-        }
-    }, [content, editor, loaded]);
+        if (!content) return;
+
+        editor.update(() => {
+            const parser = new DOMParser();
+            const dom = parser.parseFromString(content, 'text/html');
+            const nodes = $generateNodesFromDOM(editor, dom);
+
+            const root = $getRoot();
+            root.clear();
+            root.append(...nodes);
+        });
+    }, [content, editor]);
 
     return null;
 }
@@ -589,7 +586,6 @@ export default function LexicalEditor({ onChange, initialValue, minHeight = '300
                         ErrorBoundary={LexicalErrorBoundary}
                     />
                     <HistoryPlugin />
-                    <AutoFocusPlugin />
                     <ListPlugin />
                     <LinkPlugin />
                     <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
