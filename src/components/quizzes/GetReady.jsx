@@ -8,6 +8,7 @@ import EmbeddedVideos from './EmbeddedVideos';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
 import isAdEnabled from '@/utils/isAdEnabled';
 import { notify } from '@/utils/notifyToast';
+import { calculateQuestionsDurationInMinutes } from "@/utils/quizUtils";
 
 const ResponsiveHorizontal = lazy(() =>
     import('@/components/adsenses/ResponsiveHorizontal')
@@ -117,7 +118,7 @@ const GetReady = () => {
         if (!oneQuiz) return null;
 
         const questionCount = shuffledQuestions.length;
-        const estimatedMinutes = Math.ceil(questionCount * 0.5); // 30 seconds per question
+        const estimatedMinutes = calculateQuestionsDurationInMinutes(shuffledQuestions);
         const difficulty = oneQuiz.difficulty || 'Medium';
 
         return {

@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { Card, CardBody, Button, Row, Col, Badge } from 'reactstrap';
 import Unavailable from './Unavailable';
 import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
+import { calculateQuestionsDurationInMinutes } from "@/utils/quizUtils";
 
 const SimilarQuizzes = ({ thisQuiz }) => {
   const { allcategories, isLoading, error } = useSelector(
@@ -103,8 +104,9 @@ const SimilarQuizzes = ({ thisQuiz }) => {
       {/* Quiz Cards */}
       <Row className="g-3 g-md-4">
         {similarQuizzes.map((quiz, index) => {
+
           const questionCount = quiz.questions?.length || 0;
-          const estimatedMinutes = Math.ceil(questionCount * 0.5);
+          const estimatedMinutes = calculateQuestionsDurationInMinutes(quiz.questions || []);
 
           return (
             <Col xs="12" md="6" lg="4" key={quiz._id || index}>
