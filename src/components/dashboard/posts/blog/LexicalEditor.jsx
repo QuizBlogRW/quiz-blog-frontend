@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
@@ -19,12 +19,16 @@ import {
     $getRoot,
     $createParagraphNode,
     DecoratorNode,
+    $isElementNode,
+    $isDecoratorNode,
+    $isTextNode,
     FORMAT_TEXT_COMMAND,
     $getSelection,
     $isRangeSelection,
     SELECTION_CHANGE_COMMAND,
     COMMAND_PRIORITY_CRITICAL
 } from 'lexical';
+
 import { $setBlocksType } from '@lexical/selection';
 import { Button, Input, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
@@ -270,7 +274,11 @@ function ToolbarPlugin() {
 
             if ($isRangeSelection(selection)) {
                 // Insert at current selection
-                selection.insertNodes([imageNode, paragraphNode]);
+                selection.insertNodes([
+                    imageNode,
+                    $createParagraphNode()
+                ]);
+
             } else {
                 // Fallback: append to end of document
                 const root = $getRoot();
@@ -477,9 +485,15 @@ function ToolbarPlugin() {
 // Plugin to handle HTML content changes
 function OnChangePlugin({ onChange }) {
     const [editor] = useLexicalComposerContext();
+    const isFirstUpdate = useRef(true);
 
     useEffect(() => {
         return editor.registerUpdateListener(({ editorState }) => {
+            if (isFirstUpdate.current) {
+                isFirstUpdate.current = false;
+                return;
+            }
+
             editorState.read(() => {
                 const htmlString = $generateHtmlFromNodes(editor, null);
                 onChange(htmlString);
@@ -490,7 +504,8 @@ function OnChangePlugin({ onChange }) {
     return null;
 }
 
-// Plugin to load initial HTML content
+
+// Plugin to load initial HTML content - FIXED VERSION
 function LoadInitialContentPlugin({ content }) {
     const [editor] = useLexicalComposerContext();
 
@@ -500,19 +515,41 @@ function LoadInitialContentPlugin({ content }) {
         editor.update(() => {
             const parser = new DOMParser();
             const dom = parser.parseFromString(content, 'text/html');
-            const nodes = $generateNodesFromDOM(editor, dom);
 
+            const nodes = $generateNodesFromDOM(editor, dom);
             const root = $getRoot();
             root.clear();
-            root.append(...nodes);
+
+            let paragraph = null;
+
+            nodes.forEach((node) => {
+                if ($isElementNode(node) || $isDecoratorNode(node)) {
+                    if (paragraph) {
+                        root.append(paragraph);
+                        paragraph = null;
+                    }
+                    root.append(node);
+                } else if ($isTextNode(node)) {
+                    if (!paragraph) {
+                        paragraph = $createParagraphNode();
+                    }
+                    paragraph.append(node);
+                }
+                // Any other node types are intentionally ignored
+            });
+
+            if (paragraph) {
+                root.append(paragraph);
+            }
         });
     }, [content, editor]);
 
     return null;
 }
 
+
 // Main Editor Component
-export default function LexicalEditor({ onChange, initialValue, minHeight = '300px' }) {
+export default function LexicalEditor({ onChange, initialValue, minHeight = '300px', editorKey }) {
     const initialConfig = {
         namespace: 'BlogEditor',
         theme: {
@@ -555,7 +592,7 @@ export default function LexicalEditor({ onChange, initialValue, minHeight = '300
 
     return (
         <div style={{ border: '1px solid #ddd', borderRadius: '4px', overflow: 'hidden' }}>
-            <LexicalComposer initialConfig={initialConfig}>
+            <LexicalComposer initialConfig={initialConfig} key={editorKey}>
                 <ToolbarPlugin />
                 <div style={{ position: 'relative', backgroundColor: 'white' }}>
                     <RichTextPlugin

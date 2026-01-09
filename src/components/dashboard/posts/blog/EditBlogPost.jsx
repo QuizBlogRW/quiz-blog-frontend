@@ -154,9 +154,6 @@ const EditBlogPost = () => {
     dispatch(getPostCategories());
   }, [bPSlug, dispatch]);
 
-  // Initialize form state when blog post loads
-  const [isContentReady, setIsContentReady] = useState(false);
-
   useEffect(() => {
     if (oneBlogPost) {
       const normalizedContent = normalizeForEditor(oneBlogPost.markdown);
@@ -167,8 +164,6 @@ const EditBlogPost = () => {
         bgColor: oneBlogPost.bgColor || '',
         content: normalizedContent,
       });
-      // Mark content as ready after a brief delay to ensure state is updated
-      setTimeout(() => setIsContentReady(true), 100);
     }
   }, [oneBlogPost]);
 
@@ -442,27 +437,24 @@ const EditBlogPost = () => {
               </FormGroup>
 
               {/* Rich Text Editor */}
-              {isContentReady ? (
-                <FormGroup>
-                  <Label className="fw-bold">
-                    Content <span className="text-danger">*</span>
-                  </Label>
-                  {console.log('Rendering LexicalEditor with content length:', formState.content)}
+              <FormGroup>
+                <Label className="fw-bold">
+                  Content <span className="text-danger">*</span>
+                </Label>
+
+                {formState.content !== '' && (
                   <LexicalEditor
+                    key={`${oneBlogPost._id}-${formState.content.length}`}
+                    editorKey={oneBlogPost._id}
                     onChange={handleEditorChange}
                     initialValue={formState.content}
                     minHeight="400px"
                   />
-                  <FormText color={contentLength < VALIDATION_CONFIG.minContent ? 'warning' : 'muted'}>
-                    {contentLength} characters (minimum {VALIDATION_CONFIG.minContent})
-                  </FormText>
-                </FormGroup>
-              ) : (
-                <div className="text-center my-4">
-                  <Spinner color="primary" />
-                  <p className="mt-2">Loading editor...</p>
-                </div>
-              )}
+                )}
+                <FormText color={contentLength < VALIDATION_CONFIG.minContent ? 'warning' : 'muted'}>
+                  {contentLength} characters (minimum {VALIDATION_CONFIG.minContent})
+                </FormText>
+              </FormGroup>
 
               {/* Action Buttons */}
               <div className="d-flex gap-2 mt-4">
