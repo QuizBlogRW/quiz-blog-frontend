@@ -1,24 +1,9 @@
 import { useState, useCallback, useMemo } from 'react';
-import {
-    Button,
-    Form,
-    FormGroup,
-    Label,
-    Input,
-    Row,
-    Col,
-    Alert,
-    Breadcrumb,
-    BreadcrumbItem,
-    FormText,
-    Card,
-    CardBody,
-    Spinner,
-} from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, Row, Col, Alert, Breadcrumb, BreadcrumbItem, FormText, Card, CardBody, Spinner } from 'reactstrap';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { createBlogPost } from '@/redux/slices';
-import LexicalEditor from './LexicalEditor';
+import TipTapEditor from './TipTapEditor';
 import UploadPostPhotos from './UploadPostPhotos';
 import YourImages from './YourImages';
 import { notify } from '@/utils/notifyToast';
@@ -409,7 +394,7 @@ const AddBlogPost = () => {
                                 <Label className="fw-bold text-success">
                                     Content <span className="text-danger">*</span>
                                 </Label>
-                                <LexicalEditor
+                                <TipTapEditor
                                     onChange={handleEditorChange}
                                     initialValue=""
                                     minHeight="400px"

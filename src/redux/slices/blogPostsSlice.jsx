@@ -58,10 +58,10 @@ export const createBlogPost = createAsyncThunk(
 export const updateBlogPost = createAsyncThunk(
   'blogPosts/updateBlogPost',
   async (updatedBP, { getState }) =>
-    apiCallHelper(
+    apiCallHelperUpload(
       `/api/blog-posts/${updatedBP.blogPostID}`,
       'put',
-      updatedBP,
+      updatedBP.formData,
       getState,
       'updateBlogPost'
     )

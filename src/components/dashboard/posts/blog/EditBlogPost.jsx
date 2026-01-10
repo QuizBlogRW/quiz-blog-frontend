@@ -1,29 +1,16 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import {
-  Button,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  Row,
-  Col,
-  Alert,
-  Breadcrumb,
-  BreadcrumbItem,
-  FormText,
-  Card,
-  CardBody,
-  Spinner,
-} from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, Row, Col, Alert, Breadcrumb, BreadcrumbItem, FormText, Card, CardBody, Spinner } from 'reactstrap';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateBlogPost, getOneBlogPost } from '@/redux/slices';
 import { getPostCategories } from '@/redux/slices/postCategoriesSlice';
-import LexicalEditor from './LexicalEditor';
+import TipTapEditor from './TipTapEditor';
 import UploadPostPhotos from './UploadPostPhotos';
 import YourImages from './YourImages';
 import { notify } from '@/utils/notifyToast';
 import NotAuthenticated from '@/components/users/NotAuthenticated';
+import { marked } from 'marked';
+import DOMPurify from 'dompurify';
 
 // Constants
 const VALIDATION_CONFIG = {
@@ -32,6 +19,14 @@ const VALIDATION_CONFIG = {
   minContent: 80,
   maxContent: 50000,
 };
+
+const ACCEPTED_IMAGE_TYPES = {
+  extensions: ['.jpg', '.jpeg', '.png', '.svg', '.webp'],
+  mimeTypes: ['image/jpeg', 'image/png', 'image/svg+xml', 'image/webp'],
+  displayText: '.jpg, .jpeg, .png, .svg, .webp',
+};
+
+const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB
 
 const DEFAULT_BG_COLORS = [
   { value: '#f8f9fa', label: 'Light Gray' },
@@ -42,7 +37,30 @@ const DEFAULT_BG_COLORS = [
   { value: '#fff3e0', label: 'Light Orange' },
 ];
 
-// Validation helper
+// Validation helpers
+const validateImage = (file) => {
+  if (!file) {
+    return { ok: true }; // Image is optional on edit
+  }
+
+  if (file.size > MAX_IMAGE_SIZE) {
+    return {
+      ok: false,
+      message: `Image size must be less than ${MAX_IMAGE_SIZE / 1024 / 1024}MB.`,
+    };
+  }
+
+  const fileExtension = `.${file.name.split('.').pop().toLowerCase()}`;
+  if (!ACCEPTED_IMAGE_TYPES.extensions.includes(fileExtension)) {
+    return {
+      ok: false,
+      message: `Invalid file type. Accepted formats: ${ACCEPTED_IMAGE_TYPES.displayText}`,
+    };
+  }
+
+  return { ok: true };
+};
+
 const validateBlogPost = (formData) => {
   const { title, content } = formData;
 
@@ -60,7 +78,6 @@ const validateBlogPost = (formData) => {
     };
   }
 
-  // Strip HTML tags for minimum content check
   const textContent = content.replace(/<[^>]*>/g, '').trim();
 
   if (!content || textContent.length < VALIDATION_CONFIG.minContent) {
@@ -82,16 +99,11 @@ const validateBlogPost = (formData) => {
 
 export const detectContentType = (content = '') => {
   if (!content.trim()) return 'empty';
-
   if (/<\/?[a-z][\s\S]*>/i.test(content)) {
     return 'html';
   }
-
   return 'markdown';
 };
-
-import { marked } from 'marked';
-import DOMPurify from 'dompurify';
 
 export const normalizeForEditor = (raw = '') => {
   if (!raw.trim()) return '';
@@ -102,11 +114,50 @@ export const normalizeForEditor = (raw = '') => {
     return DOMPurify.sanitize(raw);
   }
 
-  // markdown → html
   const html = marked.parse(raw);
   return DOMPurify.sanitize(html);
 };
 
+// Image Preview Component
+const ImagePreview = ({ file, currentImage, onRemove }) => {
+  const [previewUrl, setPreviewUrl] = useState(null);
+
+  useEffect(() => {
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setPreviewUrl(url);
+      return () => URL.revokeObjectURL(url);
+    }
+  }, [file]);
+
+  // Show new preview or current image
+  const imageToShow = previewUrl || currentImage;
+
+  if (!imageToShow) return null;
+
+  return (
+    <div className="mt-3">
+      <div className="d-flex justify-content-between align-items-center mb-2">
+        <small className="text-success">
+          {file ? (
+            <>✓ New image: {file.name} ({(file.size / 1024).toFixed(2)} KB)</>
+          ) : (
+            <>Current image</>
+          )}
+        </small>
+        <Button color="danger" size="sm" outline onClick={onRemove}>
+          Remove {file ? 'New' : 'Current'} Image
+        </Button>
+      </div>
+      <img
+        src={imageToShow}
+        alt="Post preview"
+        className="img-thumbnail"
+        style={{ maxWidth: '100%', maxHeight: '200px', objectFit: 'cover' }}
+      />
+    </div>
+  );
+};
 
 // Main Component
 const EditBlogPost = () => {
@@ -131,8 +182,10 @@ const EditBlogPost = () => {
     title: '',
     postCategory: '',
     bgColor: '',
-    content: '', // HTML content from Lexical
+    content: '',
   });
+  const [newImage, setNewImage] = useState(null);
+  const [removeCurrentImage, setRemoveCurrentImage] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
@@ -177,11 +230,12 @@ const EditBlogPost = () => {
       formState.title !== oneBlogPost.title ||
       formState.bgColor !== oneBlogPost.bgColor ||
       formState.postCategory !== oneBlogPost.postCategory?._id ||
-      formState.content !== originalHTML;
+      formState.content !== originalHTML ||
+      newImage !== null ||
+      removeCurrentImage;
 
     setHasUnsavedChanges(hasChanges);
-  }, [formState, oneBlogPost]);
-
+  }, [formState, oneBlogPost, newImage, removeCurrentImage]);
 
   // Warn before leaving with unsaved changes
   useEffect(() => {
@@ -207,6 +261,35 @@ const EditBlogPost = () => {
     setFormState((prev) => ({ ...prev, content: htmlContent }));
   }, []);
 
+  // Handle file selection with validation
+  const handleFileChange = useCallback((e) => {
+    const file = e.target.files?.[0] || null;
+
+    if (file) {
+      const validation = validateImage(file);
+      if (!validation.ok) {
+        notify(validation.message, 'error');
+        e.target.value = '';
+        return;
+      }
+      setNewImage(file);
+      setRemoveCurrentImage(false); // If uploading new, don't remove current
+    }
+  }, []);
+
+  // Remove current or new image
+  const handleRemoveImage = useCallback(() => {
+    if (newImage) {
+      // Remove the newly selected image
+      setNewImage(null);
+      const fileInput = document.getElementById('post_image_pick');
+      if (fileInput) fileInput.value = '';
+    } else {
+      // Mark current image for removal
+      setRemoveCurrentImage(true);
+    }
+  }, [newImage]);
+
   // Handle form submission
   const handleSubmit = useCallback(
     async (e) => {
@@ -227,33 +310,82 @@ const EditBlogPost = () => {
         return;
       }
 
-      // Prepare update data
-      const updatedBP = {
-        blogPostID: formState.blogPostID,
-        title: formState.title.trim(),
-        postCategory: formState.postCategory,
-        bgColor: formState.bgColor,
-        contentHtml: formState.content, // always HTML
-      };
+      // Validate new image if provided
+      if (newImage) {
+        const imageValidation = validateImage(newImage);
+        if (!imageValidation.ok) {
+          notify(imageValidation.message, 'error');
+          return;
+        }
+      }
 
       setIsSubmitting(true);
 
       try {
-        const result = await dispatch(updateBlogPost(updatedBP));
+        // If there's a new image or we're removing the current one, use FormData
+        console.log("Submitting update with image changes:", { newImage, removeCurrentImage });
+        if (newImage || removeCurrentImage) {
+          const formData = new FormData();
+          formData.append('title', formState.title.trim());
+          formData.append('markdown', formState.content);
+          formData.append('postCategory', formState.postCategory);
+          formData.append('bgColor', formState.bgColor || '#ffffff');
 
-        if (updateBlogPost.fulfilled.match(result)) {
-          notify('Blog post updated successfully!', 'success');
-          setHasUnsavedChanges(false);
+          if (newImage) {
+            formData.append('post_image', newImage);
+          }
 
-          // Navigate back to the blog post
-          setTimeout(() => {
-            navigate(`/view-blog-post/${bPSlug}`);
-          }, 2000);
-        } else {
-          notify(
-            result.error?.message || 'Failed to update blog post. Please try again.',
-            'error'
+          if (removeCurrentImage) {
+            formData.append('removeImage', 'true');
+          }
+
+          const result = await dispatch(
+            updateBlogPost({
+              blogPostID: formState.blogPostID,
+              formData,
+            })
           );
+
+          if (updateBlogPost.fulfilled.match(result)) {
+            notify('Blog post updated successfully!', 'success');
+            setHasUnsavedChanges(false);
+            setNewImage(null);
+            setRemoveCurrentImage(false);
+
+            setTimeout(() => {
+              navigate(`/view-blog-post/${bPSlug}`);
+            }, 2000);
+          } else {
+            notify(
+              result.error?.message || 'Failed to update blog post. Please try again.',
+              'error'
+            );
+          }
+        } else {
+          // No image changes, use regular JSON update
+          const updatedBP = {
+            blogPostID: formState.blogPostID,
+            title: formState.title.trim(),
+            postCategory: formState.postCategory,
+            bgColor: formState.bgColor,
+            markdown: formState.content,
+          };
+
+          const result = await dispatch(updateBlogPost(updatedBP));
+
+          if (updateBlogPost.fulfilled.match(result)) {
+            notify('Blog post updated successfully!', 'success');
+            setHasUnsavedChanges(false);
+
+            setTimeout(() => {
+              navigate(`/view-blog-post/${bPSlug}`);
+            }, 2000);
+          } else {
+            notify(
+              result.error?.message || 'Failed to update blog post. Please try again.',
+              'error'
+            );
+          }
         }
       } catch (error) {
         console.error('Error updating blog post:', error);
@@ -262,7 +394,7 @@ const EditBlogPost = () => {
         setIsSubmitting(false);
       }
     },
-    [formState, dispatch, navigate, bPSlug, isSubmitting]
+    [formState, newImage, removeCurrentImage, dispatch, navigate, bPSlug, isSubmitting]
   );
 
   // Handle cancel
@@ -273,7 +405,7 @@ const EditBlogPost = () => {
       );
       if (!confirmLeave) return;
     }
-    navigate(`/blog-post/${bPSlug}`);
+    navigate(`/view-blog-post/${bPSlug}`);
   }, [hasUnsavedChanges, navigate, bPSlug]);
 
   // Character counters
@@ -330,6 +462,9 @@ const EditBlogPost = () => {
     );
   }
 
+  // Determine which image to show
+  const currentImageUrl = !removeCurrentImage ? oneBlogPost.post_image : null;
+
   return (
     <Row className="p-2 pt-lg-5">
       <Col sm="8" className="mt-md-2">
@@ -338,7 +473,7 @@ const EditBlogPost = () => {
             <a href="/blog">Blog</a>
           </BreadcrumbItem>
           <BreadcrumbItem>
-            <a href={`/blog-post/${bPSlug}`}>{oneBlogPost.title}</a>
+            <a href={`/view-blog-post/${bPSlug}`}>{oneBlogPost.title}</a>
           </BreadcrumbItem>
           <BreadcrumbItem active>Edit</BreadcrumbItem>
         </Breadcrumb>
@@ -443,9 +578,7 @@ const EditBlogPost = () => {
                 </Label>
 
                 {formState.content !== '' && (
-                  <LexicalEditor
-                    key={`${oneBlogPost._id}-${formState.content.length}`}
-                    editorKey={oneBlogPost._id}
+                  <TipTapEditor
                     onChange={handleEditorChange}
                     initialValue={formState.content}
                     minHeight="400px"
@@ -454,6 +587,36 @@ const EditBlogPost = () => {
                 <FormText color={contentLength < VALIDATION_CONFIG.minContent ? 'warning' : 'muted'}>
                   {contentLength} characters (minimum {VALIDATION_CONFIG.minContent})
                 </FormText>
+              </FormGroup>
+
+              {/* Image Upload Field */}
+              <FormGroup>
+                <Label for="post_image_pick" className="fw-bold">
+                  Representing Image
+                </Label>
+                <Input
+                  type="file"
+                  id="post_image_pick"
+                  name="post_image"
+                  accept={ACCEPTED_IMAGE_TYPES.extensions.join(',')}
+                  onChange={handleFileChange}
+                />
+                <FormText color="muted">
+                  {newImage || currentImageUrl ? (
+                    <>Upload a new image to replace the current one</>
+                  ) : (
+                    <>Upload a new representing image</>
+                  )}
+                  <br />
+                  Accepted formats: {ACCEPTED_IMAGE_TYPES.displayText}
+                  <br />
+                  Maximum size: {MAX_IMAGE_SIZE / 1024 / 1024}MB
+                </FormText>
+                <ImagePreview
+                  file={newImage}
+                  currentImage={currentImageUrl}
+                  onRemove={handleRemoveImage}
+                />
               </FormGroup>
 
               {/* Action Buttons */}
