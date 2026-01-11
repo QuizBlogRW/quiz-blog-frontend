@@ -14,7 +14,7 @@ const CreateCategory = () => {
   return (
     <AddModal
       title="Create Category"
-      triggerText="Create Category"
+      triggerText="Category"
       initialState={{ name: '', description: '', courseCategory: '' }}
       submitFn={(data) => {
         const { name, description, courseCategory } = data;

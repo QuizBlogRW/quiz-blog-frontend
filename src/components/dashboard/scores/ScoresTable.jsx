@@ -13,15 +13,15 @@ const ScoresTable = ({ scoresToUse, pageNo, deleteScore }) => {
             <Table bordered className='all-scores table-success' hover responsive striped size="sm">
                 <thead className='text-uppercase table-dark'>
                     <tr>
-                        <th scope="col">#</th>
+                        <th scope="col" className='d-none d-sm-inline'>#</th>
                         <th scope="col">Date</th>
                         <th scope="col">Taker</th>
                         <th scope="col">Quiz</th>
                         <th scope="col">Category</th>
-                        <th scope="col">Marks</th>
-                        <th scope="col">Out of</th>
-                        <th scope="col">Reviewing</th>
-                        <th scope="col" className={`${user?.role?.includes('Admin') ? '' : 'd-none'}`}><span role="img" aria-label="pointing">❌</span></th>
+                        <th scope="col">M</th>
+                        <th scope="col">O</th>
+                        <th scope="col">👁️</th>
+                        <th scope="col" className={`${user?.role?.includes('Admin') ? '' : 'd-none'}`}><span role="img" aria-label="pointing">🚮</span></th>
                     </tr>
                 </thead>
 
@@ -40,7 +40,7 @@ const ScoresTable = ({ scoresToUse, pageNo, deleteScore }) => {
                         const formattedDate = date ? formatDateTime(date) : '';
 
                         return (<tr key={index}>
-                            <th scope="row" className="table-dark">{numero && numero}</th>
+                            <th scope="row" className="table-dark d-none d-sm-inline">{numero && numero}</th>
                             <td>{date && formattedDate}</td>
                             <td className='text-uppercase'>
                                 {taker && taker}

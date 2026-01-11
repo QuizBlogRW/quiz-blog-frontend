@@ -254,7 +254,7 @@ const AddNotesModal = ({ chapter }) => {
     return (
         <AddModal
             title="Add Notes"
-            triggerText="Add Notes"
+            triggerText="Notes"
             submitFn={handleSubmit}
             renderForm={(state, setState, ref) => (
                 <NotesForm state={state} setState={setState} firstInputRef={ref} />

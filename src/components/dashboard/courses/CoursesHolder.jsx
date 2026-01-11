@@ -100,7 +100,7 @@ const CourseActions = ({
     <div className="d-flex gap-2 flex-wrap">
       <AddModal
         title="Add New Chapter"
-        triggerText="Add Chapter"
+        triggerText="Chapter"
         initialState={{
           title: '',
           description: '',

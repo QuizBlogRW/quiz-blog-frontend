@@ -7,7 +7,7 @@ const CreateAdvert = () => {
     return (
         <AddModal
             title="Create Advert"
-            triggerText="Create Advert"
+            triggerText="Advert"
             initialState={{ caption: '', phone: '', owner: '', email: '', link: '', advert_image: null }}
             submitFn={data => {
                 const { caption, phone, owner, email, link, advert_image } = data;

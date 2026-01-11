@@ -202,7 +202,7 @@ const AddRelatedQuiz = ({ note }) => {
                     Add Related Quiz
                 </span>
             }
-            triggerText="Add Quiz"
+            triggerText="Quiz"
             triggerButtonProps={{
                 size: 'sm',
                 color: 'primary',

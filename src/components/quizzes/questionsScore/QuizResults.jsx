@@ -33,58 +33,219 @@ const GridMultiplex = lazy(() =>
   import("@/components/adsenses/GridMultiplex")
 );
 
-// REUSABLE INLINE BLOCKS
+// Constants
+const ONE_HOUR_MS = 60 * 60 * 1000;
+const RATING_MODAL_DELAY = 3000;
+
+// REUSABLE COMPONENTS
 const LazyAd = ({ children }) =>
   isAdEnabled() ? (
     <Suspense fallback={<QBLoadingSM />}>{children}</Suspense>
   ) : null;
 
 const ResultHeader = ({ marks, qnsLength, percentage }) => (
-  <h5 className="fw-bolder">
-    You answered <b className="text-brand">{marks}</b> out of{" "}
-    <b className="text-brand">{qnsLength}</b> questions correctly.
-    <small className="text-primary fw-bolder">&nbsp;(~{percentage}%)</small>
-  </h5>
+  <div className="mb-4">
+    <h5 className="fw-bolder fs-6 fs-sm-5 px-2">
+      You answered <b className="text-brand">{marks}</b> out of{" "}
+      <b className="text-brand">{qnsLength}</b>
+      <span className="d-none d-sm-inline"> questions</span> correctly.
+      <small className="text-primary fw-bolder d-block d-sm-inline">
+        &nbsp;(~{percentage}%)
+      </small>
+    </h5>
+  </div>
 );
 
-const WhatsAppShareBtn = ({ quiz }) => {
+const RetakeButton = ({ quizSlug }) => (
+  <Link to={`/view-quiz/${quizSlug}`} className="text-decoration-none">
+    <Button
+      outline
+      color="success"
+      className="px-3 px-sm-4 py-2 fw-semibold shadow-sm d-flex align-items-center justify-content-center"
+      style={{
+        minWidth: '120px',
+        transition: 'all 0.2s ease-in-out',
+      }}
+    >
+      <i className="fa fa-redo me-2"></i>
+      <span className="d-none d-sm-inline">Retake Quiz</span>
+      <span className="d-inline d-sm-none">Retake</span>
+    </Button>
+  </Link>
+);
+
+const WhatsAppShareButton = ({ quiz }) => {
   const currentDomain = window.location.origin;
   const shareText = `Attempt this "${quiz.title}" quiz on Quiz-Blog\n${currentDomain}/view-quiz/${quiz.slug}`;
   const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
 
   return (
     <Button
-      className="btn-accent px-4 py-2 fw-semibold shadow-sm d-flex align-items-center"
+      className="px-3 px-sm-4 py-2 fw-semibold shadow-sm d-flex align-items-center justify-content-center"
+      style={{
+        backgroundColor: '#25D366',
+        border: 'none',
+        color: 'white',
+        minWidth: '120px',
+        transition: 'all 0.2s ease-in-out',
+      }}
       tag="a"
       href={whatsappUrl}
       target="_blank"
       rel="noreferrer"
     >
       <i className="fa-brands fa-whatsapp me-2"></i>
-      Share
+      <span className="d-none d-sm-inline">Share Quiz</span>
+      <span className="d-inline d-sm-none">Share</span>
     </Button>
   );
 };
 
-const PdfDownloadBtn = ({ quiz, review }) => (
+const ReviewAnswersButton = ({ scoreToSaveID, scoreToSave }) => (
+  <Link
+    to={`/review-quiz/${scoreToSaveID}`}
+    state={scoreToSave}
+    className="text-decoration-none"
+  >
+    <Button
+      outline
+      color="warning"
+      className="px-3 px-sm-4 py-2 fw-semibold shadow-sm d-flex align-items-center justify-content-center"
+      style={{
+        minWidth: '120px',
+        transition: 'all 0.2s ease-in-out',
+      }}
+    >
+      <i className="fa fa-eye me-2"></i>
+      <span className="d-none d-sm-inline">Review Answers</span>
+      <span className="d-inline d-sm-none">Review</span>
+    </Button>
+  </Link>
+);
+
+const PdfDownloadButton = ({ quiz, review }) => (
   <PDFDownloadLink
     document={<PdfDocument review={review} />}
     fileName={`${quiz?.title}-shared-by-Quiz-Blog.pdf`}
-    className="mt-3"
   >
-    {({ loading, error }) =>
-      loading ? (
-        <small className="text-warning">Generating PDF...</small>
-      ) : error ? (
-        <small className="text-danger">{error.message}</small>
-      ) : (
-        <Button color="success" className="share-btn">
-          Download PDF
+    {({ loading, error }) => {
+      if (loading) {
+        return (
+          <Button
+            color="secondary"
+            className="px-3 px-sm-4 py-2 fw-semibold shadow-sm d-flex align-items-center justify-content-center"
+            style={{ minWidth: '120px' }}
+            disabled
+          >
+            <i className="fa fa-spinner fa-spin me-2"></i>
+            <span className="d-none d-sm-inline">Generating...</span>
+            <span className="d-inline d-sm-none">...</span>
+          </Button>
+        );
+      }
+
+      if (error) {
+        return (
+          <Button
+            color="danger"
+            className="px-3 px-sm-4 py-2 fw-semibold shadow-sm d-flex align-items-center justify-content-center"
+            style={{ minWidth: '120px' }}
+            disabled
+          >
+            <i className="fa fa-exclamation-triangle me-2"></i>
+            <span className="d-none d-sm-inline">Error</span>
+            <span className="d-inline d-sm-none">!</span>
+          </Button>
+        );
+      }
+
+      return (
+        <Button
+          color="success"
+          className="px-3 px-sm-4 py-2 fw-semibold shadow-sm d-flex align-items-center justify-content-center"
+          style={{
+            minWidth: '120px',
+            transition: 'all 0.2s ease-in-out',
+          }}
+        >
+          <i className="fa fa-download me-2"></i>
+          <span className="d-none d-sm-inline">Download PDF</span>
+          <span className="d-inline d-sm-none">PDF</span>
         </Button>
-      )
-    }
+      );
+    }}
   </PDFDownloadLink>
 );
+
+const LoginPromptButton = ({ toggleL }) => (
+  <Button
+    color="warning"
+    onClick={toggleL}
+    className="px-3 px-sm-4 py-2 fw-semibold shadow-sm d-flex align-items-center justify-content-center"
+    style={{
+      minWidth: '120px',
+      transition: 'all 0.2s ease-in-out',
+    }}
+  >
+    <i className="fa fa-sign-in-alt me-2"></i>
+    <span className="d-none d-sm-inline">Login to Review</span>
+    <span className="d-inline d-sm-none">Login</span>
+  </Button>
+);
+
+// Action Buttons Section Component
+const ActionButtons = ({
+  quiz,
+  user,
+  scoreToSaveID,
+  scoreToSave,
+  quizToReview,
+  toggleL
+}) => {
+  const isAuthenticated = !!user?.role;
+  const isAdmin = user?.role?.includes("Admin");
+
+  return (
+    <div className="my-4 my-sm-5">
+      <div className="d-flex flex-column flex-sm-row justify-content-center align-items-stretch align-items-sm-center gap-2 gap-sm-3 flex-wrap px-2 px-sm-0">
+        {/* Retake Button - Always visible */}
+        <RetakeButton quizSlug={quiz?.slug} />
+
+        {isAuthenticated ? (
+          <>
+            {/* WhatsApp Share */}
+            <WhatsAppShareButton quiz={quiz} />
+
+            {/* Review Answers */}
+            {scoreToSaveID && (
+              <ReviewAnswersButton
+                scoreToSaveID={scoreToSaveID}
+                scoreToSave={scoreToSave}
+              />
+            )}
+
+            {/* PDF Download - Admin only */}
+            {isAdmin && (
+              <PdfDownloadButton quiz={quiz} review={quizToReview} />
+            )}
+          </>
+        ) : (
+          /* Login Prompt for guests */
+          <LoginPromptButton toggleL={toggleL} />
+        )}
+      </div>
+
+      {/* Helper text for mobile */}
+      {!isAuthenticated && (
+        <div className="text-center mt-3 d-sm-none">
+          <small className="text-muted">
+            Login to review answers and share your results
+          </small>
+        </div>
+      )}
+    </div>
+  );
+};
 
 // MAIN COMPONENT
 const QuizResults = () => {
@@ -135,16 +296,13 @@ const QuizResults = () => {
 
   // Auto-save score when user logs in
   useEffect(() => {
-    // Guard clauses
     if (!isAuthenticated || !user?._id || !scoreToSaveID || autoSavedRef.current) {
       return;
     }
 
-    // Check if score exists in localStorage
     const storedScore = localStorage.getItem(scoreToSaveID);
     if (!storedScore) return;
 
-    // Parse stored score safely
     let parsedScore;
     try {
       parsedScore = JSON.parse(storedScore);
@@ -154,23 +312,19 @@ const QuizResults = () => {
       return;
     }
 
-    // Prepare payload with authenticated user ID
     const payload = {
       ...parsedScore,
       taken_by: user._id,
     };
 
-    // Mark as attempted to prevent duplicate saves
     autoSavedRef.current = true;
 
-    // Dispatch save action
     dispatch(createScore(payload))
       .then((res) => {
         if (res?.type?.includes("fulfilled")) {
           localStorage.removeItem(scoreToSaveID);
           notify("Quiz results saved successfully!", "success");
         } else {
-          // Reset flag to allow retry on failure
           autoSavedRef.current = false;
           notify("Failed to save results. Please try again.", "error");
         }
@@ -182,10 +336,9 @@ const QuizResults = () => {
       });
   }, [isAuthenticated, user?._id, scoreToSaveID, dispatch]);
 
-  // Auto-open rating modal
+  // Rating modal state
   const [modalOpen, setModalOpen] = useState(false);
 
-  // Memoize feedback key
   const feedbackKey = useMemo(
     () => `quiz-feedback-${thisQuiz?._id}-${user?._id}`,
     [thisQuiz?._id, user?._id]
@@ -200,14 +353,11 @@ const QuizResults = () => {
     if (storedFeedback) {
       try {
         const data = JSON.parse(storedFeedback);
-        const ONE_HOUR = 60 * 60 * 1000;
 
-        // Don't show modal if feedback submitted recently
-        if (Date.now() - data.timestamp <= ONE_HOUR) {
+        if (Date.now() - data.timestamp <= ONE_HOUR_MS) {
           return;
         }
 
-        // Remove expired feedback
         localStorage.removeItem(feedbackKey);
       } catch (error) {
         console.error('Failed to parse feedback data:', error);
@@ -215,84 +365,45 @@ const QuizResults = () => {
       }
     }
 
-    // Open modal after 3 seconds
-    const timer = setTimeout(() => setModalOpen(true), 3000);
+    const timer = setTimeout(() => setModalOpen(true), RATING_MODAL_DELAY);
     return () => clearTimeout(timer);
   }, [isAuthenticated, thisQuiz?._id, user?._id, feedbackKey]);
-
-  // Memoize button text based on auth state
-  const reviewButtonText = useMemo(() => {
-    if (user?.role) {
-      return "Review Answers";
-    }
-    return "Login to Review Answers";
-  }, [user?.role]);
 
   // RENDER
   return (
     <>
-      <div className="p-sm-5 text-center score-section" id="pdf-container">
+      <div className="p-2 p-sm-5 text-center score-section" id="pdf-container">
         <LazyAd>
           <ResponsiveHorizontal />
         </LazyAd>
 
-        <div className="p-2 p-sm-5 m-2 my-5 mx-sm-auto shadow bg-body rounded border-brand">
+        <div className="p-3 p-sm-5 m-2 my-4 my-sm-5 mx-auto shadow bg-body rounded border-brand" style={{ maxWidth: '900px' }}>
           <ResultHeader marks={marks} qnsLength={qnsLength} percentage={percentage} />
 
           {/* ACTION BUTTONS */}
-          <div className="my-sm-5 d-flex justify-content-around align-items-center flex-wrap">
-            <Link to={`/view-quiz/${thisQuiz?.slug}`}>
-              <Button
-                outline
-                color="success"
-                className="btn-retake mt-3 mt-sm-0 text-warning"
-              >
-                Retake
-              </Button>
-            </Link>
-
-            {user?.role ? (
-              <>
-                <WhatsAppShareBtn quiz={thisQuiz} />
-
-                {scoreToSaveID && (
-                  <Link to={`/review-quiz/${scoreToSaveID}`} state={scoreToSave}>
-                    <Button
-                      outline
-                      color="warning"
-                      className="mt-3 share-btn text-success"
-                    >
-                      {reviewButtonText}
-                    </Button>
-                  </Link>
-                )}
-
-                {user?.role?.includes("Admin") && (
-                  <PdfDownloadBtn quiz={thisQuiz} review={quizToReview} />
-                )}
-
-                <RatingQuiz
-                  isOpen={modalOpen}
-                  toggle={() => setModalOpen((prev) => !prev)}
-                  quiz={thisQuiz?._id}
-                  score={mongoScoreID}
-                  user={user?._id}
-                />
-              </>
-            ) : (
-              <Button
-                color="warning"
-                onClick={toggleL}
-                className="btn-retake mt-3 text-success"
-              >
-                Login to Review Answers
-              </Button>
-            )}
-          </div>
+          <ActionButtons
+            quiz={thisQuiz}
+            user={user}
+            scoreToSaveID={scoreToSaveID}
+            scoreToSave={scoreToSave}
+            quizToReview={quizToReview}
+            toggleL={toggleL}
+          />
 
           <MarksStatus score={marks} qnLength={qnsLength} passMark={passMark} />
         </div>
       </div>
+
+      {/* Rating Modal */}
+      {isAuthenticated && (
+        <RatingQuiz
+          isOpen={modalOpen}
+          toggle={() => setModalOpen((prev) => !prev)}
+          quiz={thisQuiz?._id}
+          score={mongoScoreID}
+          user={user?._id}
+        />
+      )}
 
       {/* BELOW RESULTS */}
       <SimilarQuizzes thisQuiz={thisQuiz} />

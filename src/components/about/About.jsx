@@ -8,7 +8,7 @@ import './about.css';
 
 const About = () => {
     return (
-        <div className="about-section py-3 py-md-5">
+        <div className="about-section py-1 py-md-5">
             <Intro />
             {/* responsive ad (only in production) */}
             {isAdEnabled() && <Row className="justify-content-center my-4">
