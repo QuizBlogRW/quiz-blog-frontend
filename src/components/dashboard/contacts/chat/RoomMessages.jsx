@@ -2,11 +2,10 @@ import { useState, useEffect, useRef, useMemo, memo, useCallback } from 'react';
 import { Button, Col } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { pushRoomMessage, sendRoomMessage, getCreateRoom } from '@/redux/slices/contactsSlice';
-import QBLoadingSM from '@/utils/rLoading/QBLoadingSM';
-import SelectChat from "@/components/dashboard/utils/SelectChat";
 import { notify } from '@/utils/notifyToast';
 import { socketEmit, socketOn, socketOff } from '@/utils/socket';
 import { useTypingIndicator } from '@/hooks/useTypingIndicator';
+import SelectChat from "@/components/dashboard/utils/SelectChat";
 import MessagesContainer from '../MessagesContainer';
 import MessageInputForm from './MessageInputForm';
 
@@ -54,7 +53,7 @@ MessageBubble.displayName = 'MessageBubble';
 const RoomMessages = ({ roomOpen, room, onlineList, onClose, showAllChats, isTemporary, onRoomCreated }) => {
 
     const dispatch = useDispatch();
-    const oneChatRoom = useSelector(state => state.contacts.oneChatRoom);
+    const existingRoom = useSelector(state => state.contacts.oneChatRoom);
     const oneRoomMessages = useSelector(state => state.contacts.oneRoomMessages);
     const isLoading = useSelector(state => state.contacts.isLoading);
     const user = useSelector(state => state.users.user);
@@ -67,7 +66,7 @@ const RoomMessages = ({ roomOpen, room, onlineList, onClose, showAllChats, isTem
 
     // Typing indicator hook
     const { typingUsers, handleTyping } = useTypingIndicator(
-        oneChatRoom?._id,
+        existingRoom?._id,
         { id: user?._id, name: user?.name }
     );
 
@@ -107,20 +106,17 @@ const RoomMessages = ({ roomOpen, room, onlineList, onClose, showAllChats, isTem
             return;
         }
 
-        if (!oneChatRoom?._id) {
-            notify('Chat room not found', 'error');
-            return;
-        }
-
         // If we are in a temporary room, create it first
         if (isTemporary) {
             setIsCreatingRoom(true);
             dispatch(getCreateRoom({
-                roomName: oneChatRoom.name,
+                roomName: room?.roomName,
                 sender: room.sender,
                 receiver: room.receiver,
                 receiverName: room.receiverName,
-            })).then((res) => {
+            }))
+            .unwrap()
+            .then((res) => {
 
                 // Dispatch action to send message to room
                 if (res) {
@@ -129,7 +125,7 @@ const RoomMessages = ({ roomOpen, room, onlineList, onClose, showAllChats, isTem
                         receiver: room.receiver,
                         content: trimmedMessage,
                         roomID: res.payload._id,
-                        roomName: oneChatRoom.name,
+                        roomName: room?.roomName,
                     };
 
                     dispatch(sendRoomMessage(roomMessage)).then(() => {
@@ -150,8 +146,8 @@ const RoomMessages = ({ roomOpen, room, onlineList, onClose, showAllChats, isTem
                 sender: room.sender,
                 receiver: room.receiver,
                 content: trimmedMessage,
-                roomID: oneChatRoom._id,
-                roomName: oneChatRoom.name,
+                roomID: existingRoom?._id,
+                roomName: existingRoom?.name,
             };
 
             dispatch(sendRoomMessage(roomMessage)).then(() => {
@@ -163,38 +159,42 @@ const RoomMessages = ({ roomOpen, room, onlineList, onClose, showAllChats, isTem
         setMessageContent('');
         messageRef.current = '';
 
-        socketEmit('stopTyping', {
-            roomID: oneChatRoom._id,
+        existingRoom && socketEmit('stopTyping', {
+            roomID: existingRoom?._id,
             user: { id: user._id, name: user.name }
         });
 
         // Focus back on textarea
         textareaRef.current?.focus();
-    }, [messageContent, room, oneChatRoom, dispatch, user, isCreatingRoom]);
+    }, [messageContent, room, existingRoom, dispatch, user, isCreatingRoom]);
 
     /* ------------------ SOCKET LISTENERS ------------------ */
     const handleNewMessage = useCallback((newMessage) => {
-        if (!oneChatRoom?._id) return;
+        if (!existingRoom?._id) return;
 
-        if (newMessage.roomID !== oneChatRoom._id) {
+        if (newMessage.roomID !== existingRoom?._id) {
             return;
         }
 
         dispatch(pushRoomMessage({
-            roomID: oneChatRoom._id,
+            roomID: existingRoom?._id,
             message: newMessage,
         }));
-    }, [oneChatRoom?._id, dispatch]);
+    }, [existingRoom?._id, dispatch]);
 
     const handleUserJoined = useCallback((data) => {
         setWelcomeMessage(data.message || '');
-        // Clear welcome message after 3 seconds
-        const timeoutId = setTimeout(() => setWelcomeMessage(''), 3000);
-        return () => clearTimeout(timeoutId);
     }, []);
 
     useEffect(() => {
-        if (!oneChatRoom?._id) return;
+        if (!welcomeMessage) return;
+
+        const id = setTimeout(() => setWelcomeMessage(''), 3000);
+        return () => clearTimeout(id);
+    }, [welcomeMessage]);
+
+    useEffect(() => {
+        if (!existingRoom?._id) return;
 
         socketOn('userJoinedRoom', handleUserJoined);
         socketOn('newMessage', handleNewMessage);
@@ -204,7 +204,7 @@ const RoomMessages = ({ roomOpen, room, onlineList, onClose, showAllChats, isTem
             socketOff('userJoinedRoom', handleUserJoined);
         };
 
-    }, [oneChatRoom?._id, dispatch, handleNewMessage]);
+    }, [existingRoom?._id, handleNewMessage]);
 
     /* ------------------ KEYBOARD SHORTCUTS ------------------ */
     useEffect(() => {
@@ -226,7 +226,6 @@ const RoomMessages = ({ roomOpen, room, onlineList, onClose, showAllChats, isTem
         return () => textarea?.removeEventListener('keydown', handleKeyDown);
     }, [sendChatMessage]);
 
-    if (isLoading) return <QBLoadingSM title='Loading messages' />;
     if (!room) return <SelectChat message="Select a contact to start chatting" />;
 
     return (

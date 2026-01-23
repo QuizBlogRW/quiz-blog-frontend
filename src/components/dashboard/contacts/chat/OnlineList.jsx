@@ -39,7 +39,7 @@ const OnlineList = ({ openRoom, onlineList, capitalizeName, isAdmin }) => {
             {onlineUsersCount > 1 ?
                 <>
                     <h5 className="text-center fw-bold my-3">
-                        CHAT WITH ({onlineUsersCount})
+                        Chat with ({onlineUsersCount})
                     </h5>
                     <ListGroup flush className="mb-3">
                         {/* Current User */}
