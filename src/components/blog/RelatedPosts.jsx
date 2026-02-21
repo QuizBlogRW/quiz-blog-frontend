@@ -1,60 +1,100 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo, memo } from 'react';
 import { Alert, Card, CardBody, Spinner } from 'reactstrap';
+import { Link } from 'react-router-dom';
 import { formatDate } from '@/utils/dateFormat';
 import { useSelector, useDispatch } from 'react-redux';
 import { getBlogPostsByCategory } from '@/redux/slices';
 import ImageWithFallback from '@/utils/ImageWithFallback';
+import './relatedLatest.css';
 
-const BlogPostItem = ({ blogPost }) => {
+const BlogPostItem = memo(({ blogPost }) => {
 
-    const { title, post_image, brand } = blogPost;
-    const formattedDate = blogPost.createdAt ? formatDate(blogPost.createdAt) : '';
+    const {
+        title = '',
+        post_image = '',
+        brand = '',
+        slug = '',
+        postCategory,
+        creator,
+        createdAt
+    } = blogPost || {};
+
+    const formattedDate = useMemo(
+        () => createdAt ? formatDate(createdAt) : '',
+        [createdAt]
+    );
 
     return (
         <Card className="mb-3 shadow-sm border-0 rounded-3 hover-effect">
-            <div className="d-flex flex-column flex-lg-row align-items-start gap-3 p-3">
+            <div className="d-flex flex-column flex-lg-row align-items-center gap-3 p-3">
+
                 <ImageWithFallback
                     src={post_image}
                     alt={brand || title}
                     className="rounded"
                     style={{
                         width: '100%',
-                        maxWidth: '120px',
-                        height: '80px',
+                        maxWidth: '140px',
+                        height: '100px',
                         objectFit: 'cover',
                     }}
                 />
+
                 <CardBody className="p-0 d-flex flex-column justify-content-between">
-                    <a
-                        href={`/view-blog-post/${blogPost?.slug}`}
-                        className="fw-bold text-dark mb-1"
+
+                    <Link
+                        to={`/view-blog-post/${slug}`}
+                        className="mt-2 fw-bold text-dark mb-1 text-decoration-none"
                     >
-                        {blogPost?.title}
-                    </a>
+                        {title}
+                    </Link>
+
                     <div className="text-muted small mb-2 text-uppercase">
-                        {blogPost?.postCategory?.title || 'Uncategorized'}
+                        {postCategory?.title || 'Uncategorized'}
                     </div>
-                    <div className="d-flex justify-content-between align-items-center text-muted small">
-                        <span>{blogPost?.creator?.name || 'Unknown'}</span>
-                        <span className="text-primary">
-                            {formattedDate}
-                        </span>
+
+                    <div className="mt-2 d-flex justify-content-between text-muted small">
+                        <span>{creator?.name || 'Unknown'}</span>
+                        <span className="text-primary">{formattedDate}</span>
                     </div>
+
                 </CardBody>
+
             </div>
         </Card>
-    )
-}
+    );
+});
+
+BlogPostItem.displayName = 'BlogPostItem';
 
 const RelatedPosts = ({ bPCatID }) => {
+
     const dispatch = useDispatch();
-    const bposts = useSelector(state => state.blogPosts);
+
+    const { blogPostsByCategory = [], isLoading } = useSelector(
+        state => state.blogPosts
+    );
 
     useEffect(() => {
-        if (bPCatID) dispatch(getBlogPostsByCategory(bPCatID));
-    }, [dispatch, bPCatID]);
+        if (bPCatID && !blogPostsByCategory.length) {
+            dispatch(getBlogPostsByCategory(bPCatID));
+        }
+    }, [dispatch, bPCatID, blogPostsByCategory.length]);
 
-    if (bposts.isLoading) {
+    const shuffledPosts = useMemo(() => {
+
+        const copy = [...blogPostsByCategory];
+
+        for (let i = copy.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [copy[i], copy[j]] = [copy[j], copy[i]];
+        }
+
+        return copy.slice(0, 7);
+
+    }, [blogPostsByCategory]);
+
+    if (isLoading) {
         return (
             <div className="d-flex justify-content-center py-5">
                 <Spinner color="primary" />
@@ -64,17 +104,21 @@ const RelatedPosts = ({ bPCatID }) => {
 
     return (
         <div className="mt-4 mt-lg-5">
+
             <Alert className="border border-warning text-uppercase mb-3 fw-bold text-center">
                 Related Posts
             </Alert>
-            {bposts?.blogPostsByCategory?.length > 0 ? (
-                [...bposts.blogPostsByCategory]
-                    .sort(() => 0.5 - Math.random())
-                    .slice(0, 7)
-                    .map(blogPost => <BlogPostItem key={blogPost._id} blogPost={blogPost} />)
+
+            {shuffledPosts.length > 0 ? (
+                shuffledPosts.map(post => (
+                    <BlogPostItem key={post._id} blogPost={post} />
+                ))
             ) : (
-                <p className="text-muted text-center">No related posts found.</p>
+                <p className="text-muted text-center">
+                    No related posts found.
+                </p>
             )}
+
         </div>
     );
 };

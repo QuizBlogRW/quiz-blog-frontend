@@ -23,9 +23,6 @@ import {
 import { formatDateTime } from '@/utils/dateFormat';
 import './viewPost.css';
 
-// ============================================
-// Constants
-// ============================================
 const AUTHOR_AVATAR_STYLE = {
   width: 70,
   height: 70,
@@ -50,15 +47,8 @@ const INTERSECTION_OPTIONS = {
   rootMargin: '50px',
 };
 
-// ============================================
-// Memoized Child Components
-// ============================================
 const RelatedPostsMemo = memo(RelatedPosts);
 const LatestPostsMemo = memo(LatestPosts);
-
-// ============================================
-// Custom Hooks
-// ============================================
 
 /**
  * Hook to track blog post view with analytics
@@ -122,9 +112,6 @@ const useRevealOnScroll = (elementRef, dependency) => {
   }, [dependency]);
 };
 
-// ============================================
-// Content Renderer Component
-// ============================================
 const ContentRenderer = memo(({ content, type }) => {
   if (type === 'empty') {
     return (
@@ -155,9 +142,6 @@ const ContentRenderer = memo(({ content, type }) => {
 
 ContentRenderer.displayName = 'ContentRenderer';
 
-// ============================================
-// Author Info Component
-// ============================================
 const AuthorInfo = memo(({ creator, postCategory, authorRef }) => (
   <div
     className="d-flex flex-column align-items-center justify-content-around p-2"
@@ -183,9 +167,6 @@ const AuthorInfo = memo(({ creator, postCategory, authorRef }) => (
 
 AuthorInfo.displayName = 'AuthorInfo';
 
-// ============================================
-// Main Component
-// ============================================
 const ViewBlogPost = () => {
   const dispatch = useDispatch();
   const { bPSlug } = useParams();
@@ -256,9 +237,6 @@ const ViewBlogPost = () => {
   const { title, creator, createdAt, post_image, postCategory } = oneBlogPost || {};
   const formattedDate = createdAt ? formatDateTime(createdAt) : '';
 
-  // ============================================
-  // Render
-  // ============================================
   return (
     <Container fluid className="py-4 px-2 px-lg-5 bg-light">
       <Row className="gy-4">
@@ -291,6 +269,7 @@ const ViewBlogPost = () => {
                       fallbackSrc={altImage}
                       alt={title || 'Blog post image'}
                       style={POST_IMAGE_STYLE}
+                      className="mh-100"
                       loading="eager"
                     />
                   </figure>

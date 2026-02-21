@@ -67,4 +67,10 @@
         max-height: 400px !important;
         max-width: 100% !important;
     }
+
+    .small span {
+        display: block;
+        text-align: center;
+        font-size: 0.75rem !important;
+    }
 }
