@@ -70,7 +70,7 @@ export default function ForgotPassword() {
                     </h1>
 
                     <p className="text-white mt-2 mb-1">
-                        Enter the email linked to your account and we’ll send you a reset link.
+                        Enter the correct and operational email linked to your account and we’ll send you a reset link.
                     </p>
 
                     <p className="text-white small mb-0">
