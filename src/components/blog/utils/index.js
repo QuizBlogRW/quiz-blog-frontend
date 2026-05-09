@@ -82,13 +82,30 @@ export const sanitizeHTML = (html) => {
  * Detects if the user is on mobile or desktop
  * @returns {'mobile' | 'desktop'} The device type
  */
-export const getDeviceType = () => {
+export const getDeviceType = async () => {
     const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
     const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
 
     return mobileRegex.test(userAgent) ? 'mobile' : 'desktop';
 };
+
+export async function getDeviceCountry() {
+
+    try {
+        const ip = await fetch('https://api.ipify.org').then(res => res.text());
+        const response = await fetch(`https://api.ipquery.io/${encodeURIComponent(ip)}?format=json`)
+        if (!response.ok) {
+            throw new Error(`Country lookup failed with status ${response.status}`)
+        }
+
+        const data = await response.json()
+        return data?.location?.country || 'Unknown'
+    } catch (error) {
+        console.error('Failed to get country:', error)
+        return 'Unknown'
+    }
+}
 
 /**
  * Gets relative time (e.g., "2 hours ago")

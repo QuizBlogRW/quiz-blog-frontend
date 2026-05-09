@@ -41,7 +41,7 @@ const subscribersSlice = createSlice({
     builder.addCase(subscribeToPosts.fulfilled, (state, action) => {
       state.subscribedUsers.unshift(action.payload);
       state.isLoading = false;
-      notify('Thank for subscribing to our posts!');
+      notify('Thank for subscribing!');
     });
     builder.addCase(deleteSubscriber.fulfilled, (state, action) => {
       state.subscribedUsers = state.subscribedUsers.filter(subscriber => subscriber.email !== action.payload.email);

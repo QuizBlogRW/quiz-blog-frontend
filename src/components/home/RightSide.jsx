@@ -6,6 +6,8 @@ import ResponsiveAd from '@/components/adsenses/ResponsiveAd';
 import isAdEnabled from '@/utils/isAdEnabled';
 import { useSelector, useDispatch } from 'react-redux';
 import { subscribeToPosts } from '@/redux/slices/subscribersSlice';
+import validators from '@/utils/validators';
+import { notify } from '@/utils/notifyToast';
 
 const ViewCategories = lazy(() => import('./categories/ViewCategories'));
 const SquareAd = lazy(() => import('@/components/adsenses/SquareAd'));
@@ -29,6 +31,16 @@ const RightSide = ({ categories }) => {
 
     const handleSubscribe = (e) => {
         e.preventDefault();
+
+        // Validate inputs
+        if (!validators.validateEmail(subscriber.email)) {
+            return notify('Please enter a valid email address.', 'error');
+        }
+        if (!validators.validateName(subscriber.name)) {
+            return notify('Please enter a valid name (only letters and spaces, 3-30 characters).', 'error');
+        }
+
+        // Attempt to subscribe
         dispatch(subscribeToPosts(subscriber));
         setSubscriber({ name: '', email: '' });
     };

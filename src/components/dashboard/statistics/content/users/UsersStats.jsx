@@ -167,6 +167,7 @@ const UsersStats = () => {
     // Generate filename 
     const filename = location.pathname.split('/')[2];
 
+
     return (
         <div style={{ position: 'relative' }} className="p-1 m-1 d-flex justify-content-center align-items-center overflow-auto">
 

@@ -55,9 +55,10 @@ a:focus {
   background: #157A6E;
 }
 
-.nav-item:hover {
-  color: #157A6E;
-  background: #fff;
+.nav-item a:hover,
+.nav-item a:focus {
+  color: #157A6E !important;
+  background: #fff !important;
 }
 
 .items-menu {
@@ -102,6 +103,8 @@ li a.dropdown-toggle::after {
     CONTENT STYLE
 ----------------------------------------------------- */
 .content {
+  flex: 1;
+  min-width: 0;
   padding: 20px;
   margin-left: 0;
   height: 100vh;

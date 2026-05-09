@@ -4,63 +4,49 @@ import { formatDateTime } from '@/utils/dateFormat';
 
 const ExcelButton = ({ data, filename }) => {
 
-    // CONVERT THE FIELDS WITH EMPTY STRINGS TO NULL - DONE INPLACE
-    // Create a new array with modified values
-    const modifiedData = data && data.map((obj) => {
-        // Create a new object with modified values
-        const modifiedObj = { ...obj };
-        Object.keys(modifiedObj).forEach(key => {
-            if (modifiedObj[key] === '') {
-                modifiedObj[key] = null;
-            }
-        });
-        return modifiedObj;
-    });
-
-    // CONVERT THE OBJECTS TO ARRAYS
-    const dataArr = modifiedData && modifiedData.map(obj => Object.values(obj));
-
-    // GET THE HEADERS
-    const headers = modifiedData && Object.keys(modifiedData[0]);
-
-    // CHANGE THE HEADERS TO UPPER CASE LETTERS - INPLACE
-    headers && headers.map((header, index) => headers[index] = header.toUpperCase());
-
-    // ADD THE HEADERS TO THE ARRAY
-    dataArr.unshift(headers);
-
-    // IF THE VALUE IN dataArr IS AN OBJECT, AND HAS PROPERTY title, THEN CHANGE THE VALUE TO title
-    dataArr && dataArr.map((arr) => {
-        arr.map((item, index) => {
-
-            if (item instanceof Date && !isNaN(item)) {
-                arr[index] = formatDateTime(item);
-            }
-
-            if (typeof item === 'object' && item !== null) {
-
-                if (Object.prototype.hasOwnProperty.call(item, 'title')) {
-                    arr[index] = item.title;
-                }
-                else if (Object.prototype.hasOwnProperty.call(item, 'name')) {
-                    arr[index] = item.name;
-                }
-
-                // IF IT IS AN ARRAY
-                else if (Array.isArray(item)) {
-                    arr[index] = item.map(interest => interest.favorite).join('; ');
-                }
-
-                // IF IT IS NULL
-                else arr[index] = null;
-            }
-            return null;
-        });
-        return null;
-    });
-
     const handleExport = () => {
-        // Assume that the data you want to export is stored in a 2D array called "data"
+        const modifiedData = data && data.map((obj) => {
+            const modifiedObj = { ...obj };
+
+            Object.keys(modifiedObj).forEach((key) => {
+                if (modifiedObj[key] === '') {
+                    modifiedObj[key] = null;
+                }
+            });
+
+            return modifiedObj;
+        });
+
+        const dataArr = modifiedData && modifiedData.map((obj) => Object.values(obj));
+        const headers = modifiedData && Object.keys(modifiedData[0]);
+
+        headers && headers.forEach((header, index) => {
+            headers[index] = header.toUpperCase();
+        });
+
+        dataArr?.unshift(headers);
+
+        dataArr && dataArr.forEach((arr) => {
+            arr.forEach((item, index) => {
+                if (item instanceof Date && !isNaN(item)) {
+                    arr[index] = formatDateTime(item);
+                }
+
+                if (typeof item === 'object' && item !== null) {
+                    if (Object.prototype.hasOwnProperty.call(item, 'title')) {
+                        arr[index] = item.title;
+                    }
+                    else if (Object.prototype.hasOwnProperty.call(item, 'name')) {
+                        arr[index] = item.name;
+                    }
+                    else {
+                        arr[index] = null;
+                    }
+                }
+            });
+        });
+
+        // Data to export stored in a 2D array
         // Convert the 2D array to a worksheet
         const ws = utils.aoa_to_sheet(dataArr);
 

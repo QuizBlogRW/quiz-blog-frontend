@@ -15,9 +15,21 @@ export const validateWebsite = (website = '') => {
   return websiteTest.test(website);
 };
 
+export const validateEmail = (email = '') => {
+  const emailTest = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailTest.test(email);
+}
+
+export const validateName = (name = '') => {
+  const nameTest = /^[a-zA-Z\s]+$/;
+  return nameTest.test(name) && minLength(name, 4) && maxLength(name, 30);
+}
+
 export default {
   minLength,
   maxLength,
   validateTitleDesc,
-  validateWebsite
+  validateWebsite,
+  validateEmail,
+  validateName,
 };

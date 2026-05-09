@@ -18,7 +18,8 @@ import ImageWithFallback from '@/utils/ImageWithFallback';
 import {
   sanitizeHTML,
   detectContentType,
-  getDeviceType
+  getDeviceType,
+  getDeviceCountry,
 } from './utils';
 import { formatDateTime } from '@/utils/dateFormat';
 import './viewPost.css';
@@ -59,20 +60,19 @@ const useBlogPostView = (blogPostId, userId) => {
   const [viewError, setViewError] = useState(null);
 
   useEffect(() => {
-    if (!blogPostId || hasSentView.current) return;
+    // if (!blogPostId || hasSentView.current) return;
 
     const trackView = async () => {
       try {
-        // Use browser timezone instead of IP-based country for privacy
-        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        const device = getDeviceType();
+        const country = await getDeviceCountry();
+        const device = await getDeviceType();
 
         await dispatch(
           createBlogPostView({
             blogPost: blogPostId,
-            user: userId,
+            viewer: userId,
             device,
-            timezone,
+            country,
           })
         ).unwrap();
 
