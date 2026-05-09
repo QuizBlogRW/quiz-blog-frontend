@@ -16,7 +16,7 @@ const ChangeQuiz = ({ questionID, oldQuizID, questionCatID }) => {
     if (questionCatID) dispatch(getQuizzesByCategory(questionCatID));
   }, [questionCatID, dispatch]);
 
-  const renderForm = (formState, setFormState, firstInputRef) => {
+  const renderForm = (formState, setFormState) => {
     const onChange = (e) =>
       setFormState({ ...formState, [e.target.name]: e.target.value });
     return (

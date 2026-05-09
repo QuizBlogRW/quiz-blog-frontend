@@ -24,6 +24,9 @@ const reactRecommendedWithRuntime = {
 
 // Export the configuration array
 export default [
+  {
+    ignores: ["build/**", "dist/**", "coverage/**", "node_modules/**"],
+  },
   // Apply standard JS recommended rules
   js.configs.recommended,
   {
@@ -42,4 +45,3 @@ export default [
   // but overriding rules explicitly is often clearer.
   // ...pluginReact.configs.flat.all, // use 'all' for verbose configs if you like
 ];
-
