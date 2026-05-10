@@ -5,9 +5,9 @@ import {
     Row,
     Col,
     Card,
-    CardBody,
-    Alert
+    CardBody
 } from 'reactstrap';
+
 
 import { formatDate } from '@/utils/dateFormat';
 
@@ -19,63 +19,39 @@ const Privacy = () => {
     return (
         <div className="py-0 px-3 py-lg-5 w-100">
 
-            {/* Jumbotron styled like FAQs */}
-            <div className="jbtron rounded px-3 px-sm-4 py-3 py-sm-5 p-2 py-lg-4 my-3 my-sm-4 text-center border border-info">
-                <h1 className="display-5 fw-bolder text-white">Privacy Policy</h1>
-
-                <p className="lead mb-1 text-white">
+            <div className="mt-4 mb-3 text-center">
+                <h1 className="fw-bolder" style={{ color: 'var(--brand)' }}>
+                    Privacy Policy
+                </h1>
+                <p className="mb-2" style={{ color: '#1a1a1a', opacity: 0.85 }}>
                     Learn how Quiz-Blog collects, uses, and protects your data.
                 </p>
-
-                <p className="text-white">
-                    We prioritize transparency so you understand exactly what happens with your information.
-                </p>
-
-                <small className="fw-bolder text-white">
+                <small className="fw-bolder" style={{ color: 'var(--brand)' }}>
                     Have questions? Contact us at{' '}
-                    <a
-                        href="mailto:quizblog.rw@gmail.com"
-                        style={{ color: 'var(--accent)' }}
-                    >
+                    <a href="mailto:quizblog.rw@gmail.com" style={{ color: 'var(--accent)' }}>
                         <u>quizblog.rw@gmail.com</u>
                     </a>
                     .
                 </small>
-
-                <hr
-                    className="my-2"
-                    style={{
-                        height: '2px',
-                        borderWidth: 0,
-                        backgroundColor: 'var(--brand)',
-                    }}
-                />
+                <hr className="my-3" style={{ height: '2px', borderWidth: 0, backgroundColor: 'var(--brand)' }} />
             </div>
 
             {/* Main Content Wrapper */}
             <Row className="m-lg-4 px-lg-5 text-primary">
                 <Col lg={12}>
-                    <Card className="border rounded shadow-sm mb-4">
-                        <CardBody className="p-4">
+                    <Card className="border-0 mb-4" style={{ background: 'transparent' }}>
+                        <CardBody className="p-2 p-sm-3 p-lg-4">
 
-                            {/* Summary Box */}
-                            <div className="bg-light p-4 rounded border mb-4 text-center">
-                                <h2 className="h4 fw-bold mb-2">Privacy at a Glance</h2>
-                                <p className="mb-0">
-                                    We collect minimal data to operate, improve, and secure Quiz-Blog.
-                                </p>
-                            </div>
+                            <h2 className="h4 fw-bold mb-2" style={{ color: 'var(--brand)' }}>
+                                Privacy at a Glance
+                            </h2>
+                            <p className="mb-3" style={{ opacity: 0.9 }}>
+                                We collect minimal data to operate, improve, and secure Quiz-Blog.
+                            </p>
 
-                            {/* Last updated */}
-                            <Alert
-                                color="warning"
-                                className="d-flex align-items-start gap-3 flex-column flex-md-row mb-4"
-                            >
-                                <i className="fas fa-calendar h4 mb-2 mb-md-0"></i>
-                                <div>
-                                    Last updated: <strong>{formattedDate}</strong>
-                                </div>
-                            </Alert>
+                            <p className="mb-4" style={{ fontWeight: 700, color: 'var(--brand-dark)' }}>
+                                Last updated: <span style={{ color: 'var(--brand)' }}>{formattedDate}</span>
+                            </p>
 
                             {/* Introduction */}
                             <p>
@@ -83,9 +59,12 @@ const Privacy = () => {
                                 information. By using our Service, you agree to the practices described here.
                             </p>
 
-                            {/* Section: Definitions */}
-                            <h2 className="h4 fw-bold mt-4">Interpretation & Definitions</h2>
-                            <p>Capitalized terms have the meanings defined below.</p>
+                            <h2 className="h4 fw-bold mt-4" style={{ color: 'var(--brand)' }}>
+                                Interpretation & Definitions
+                            </h2>
+                            <p className="mb-2" style={{ opacity: 0.9 }}>
+                                Capitalized terms have the meanings defined below.
+                            </p>
 
                             {isAdEnabled() && (
                                 <Row className="my-4">
@@ -95,8 +74,8 @@ const Privacy = () => {
                                 </Row>
                             )}
 
-                            <h3 className="fw-bold">Key Definitions</h3>
-                            <ul>
+                            <h3 className="fw-bold" style={{ color: 'var(--brand-dark)' }}>Key Definitions</h3>
+                            <ul className="mb-4">
                                 <li><strong>Account:</strong> A unique profile created to access our Service.</li>
                                 <li><strong>Company:</strong> Refers to Quiz-Blog (“We”, “Us”).</li>
                                 <li><strong>Cookies:</strong> Files stored on your device to enhance browsing.</li>
@@ -107,26 +86,31 @@ const Privacy = () => {
                                 <li><strong>You:</strong> The person using the Service.</li>
                             </ul>
 
-                            {/* Section: Collected Data */}
-                            <h2 className="h4 fw-bold mt-4">Collecting & Using Your Data</h2>
-                            <p>We collect the following categories of data:</p>
+                            <h2 className="h4 fw-bold mt-4" style={{ color: 'var(--brand)' }}>
+                                Collecting & Using Your Data
+                            </h2>
+                            <p className="mb-2" style={{ opacity: 0.9 }}>
+                                We collect the following categories of data:
+                            </p>
 
-                            <h3 className="fw-bold">Personal Data</h3>
-                            <ul>
+                            <h3 className="fw-bold" style={{ color: 'var(--brand-dark)' }}>Personal Data</h3>
+                            <ul className="mb-4">
                                 <li>Email address</li>
                                 <li>First and last name</li>
                                 <li>Usage data</li>
                             </ul>
 
-                            <h3 className="fw-bold">Usage Data</h3>
-                            <p>
+                            <h3 className="fw-bold" style={{ color: 'var(--brand-dark)' }}>Usage Data</h3>
+                            <p className="mb-2" style={{ opacity: 0.9 }}>
                                 Automatically collected information may include IP address, browser type, pages
                                 visited, time spent on pages, and device identifiers.
                             </p>
 
-                            <h3 className="fw-bold">Cookies & Tracking Technologies</h3>
-                            <p>We use cookies and similar technologies to enhance your experience.</p>
-                            <ul>
+                            <h3 className="fw-bold" style={{ color: 'var(--brand-dark)' }}>Cookies & Tracking Technologies</h3>
+                            <p className="mb-2" style={{ opacity: 0.9 }}>
+                                We use cookies and similar technologies to enhance your experience.
+                            </p>
+                            <ul className="mb-4">
                                 <li><strong>Session Cookies:</strong> Required for authentication and functionality.</li>
                                 <li><strong>Persistent Cookies:</strong> Store preferences and track cookie consent.</li>
                             </ul>
@@ -139,9 +123,8 @@ const Privacy = () => {
                                 </Row>
                             )}
 
-                            {/* Section: How We Use Data */}
-                            <h2 className="h4 fw-bold mt-4">How We Use Your Data</h2>
-                            <ul>
+                            <h2 className="h4 fw-bold mt-4" style={{ color: 'var(--brand)' }}>How We Use Your Data</h2>
+                            <ul className="mb-4">
                                 <li>To provide and maintain our Service</li>
                                 <li>To manage user accounts and registration</li>
                                 <li>To send important updates or offers</li>
@@ -149,55 +132,58 @@ const Privacy = () => {
                                 <li>For legal compliance and business transfers</li>
                             </ul>
 
-                            {/* Section: Data Sharing */}
-                            <h2 className="h4 fw-bold mt-4">Data Sharing</h2>
-                            <p>We may share your data with:</p>
-                            <ul>
+                            <h2 className="h4 fw-bold mt-4" style={{ color: 'var(--brand)' }}>Data Sharing</h2>
+                            <p className="mb-2" style={{ opacity: 0.9 }}>We may share your data with:</p>
+                            <ul className="mb-4">
                                 <li>Analytics and support service providers</li>
                                 <li>Business partners and affiliates</li>
                                 <li>Other users in shared/public areas</li>
                                 <li>Authorities, as required by law</li>
                             </ul>
 
-                            {/* Section: Retention & Security */}
-                            <h2 className="h4 fw-bold mt-4">Retention & Security</h2>
-                            <p>
+                            <h2 className="h4 fw-bold mt-4" style={{ color: 'var(--brand)' }}>Retention & Security</h2>
+                            <p className="mb-3" style={{ opacity: 0.9 }}>
                                 We keep your data only as long as necessary and apply commercially reasonable
                                 security measures. However, no online method is fully secure.
                             </p>
 
-                            {/* Section: Children's Privacy */}
-                            <h2 className="h4 fw-bold mt-4">Children&apos;s Privacy</h2>
-                            <p>
+                            <h2 className="h4 fw-bold mt-4" style={{ color: 'var(--brand)' }}>Children&apos;s Privacy</h2>
+                            <p className="mb-3" style={{ opacity: 0.9 }}>
                                 Our Service is not intended for children under 13, and we do not knowingly collect
                                 information from them.
                             </p>
 
-                            {/* Section: External Links */}
-                            <h2 className="h4 fw-bold mt-4">External Links</h2>
-                            <p>
+                            <h2 className="h4 fw-bold mt-4" style={{ color: 'var(--brand)' }}>External Links</h2>
+                            <p className="mb-3" style={{ opacity: 0.9 }}>
                                 Quiz-Blog is not responsible for content on third-party websites. Always review their
                                 privacy policies.
                             </p>
 
-                            {/* Section: Changes */}
-                            <h2 className="h4 fw-bold mt-4">Changes to This Policy</h2>
-                            <p>
+                            <h2 className="h4 fw-bold mt-4" style={{ color: 'var(--brand)' }}>Changes to This Policy</h2>
+                            <p className="mb-3" style={{ opacity: 0.9 }}>
                                 We may update this Privacy Policy. Changes will be posted here, and we may notify
                                 you by email or on our website.
                             </p>
 
-                            {/* Contact Section */}
-                            <h2 className="h4 fw-bold mt-4">Contact Us</h2>
-                            <p>You can contact us via:</p>
-                            <ul>
-                                <li>Email: <a href="mailto:quizblog.rw@gmail.com">quizblog.rw@gmail.com</a></li>
+                            <h2 className="h4 fw-bold mt-4" style={{ color: 'var(--brand)' }}>Contact Us</h2>
+                            <p className="mb-2" style={{ opacity: 0.9 }}>You can contact us via:</p>
+                            <ul className="mb-4">
+                                <li>
+                                    Email:{' '}
+                                    <a
+                                        href="mailto:quizblog.rw@gmail.com"
+                                        style={{ color: 'var(--brand)', fontWeight: 800, textDecoration: 'underline' }}
+                                    >
+                                        quizblog.rw@gmail.com
+                                    </a>
+                                </li>
                                 <li>
                                     Website:{' '}
                                     <a
                                         href="https://www.quizblog.rw/contact"
                                         target="_blank"
                                         rel="noopener noreferrer"
+                                        style={{ color: 'var(--brand)', fontWeight: 800, textDecoration: 'underline' }}
                                     >
                                         Contact Page
                                     </a>
