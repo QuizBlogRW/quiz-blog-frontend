@@ -18,66 +18,53 @@ const Disclaimer = () => {
     return (
         <div className="py-0 px-3 py-lg-5 w-100">
 
-            {/* Jumbotron - matching FAQ style */}
-            <div className="jbtron rounded px-3 px-sm-4 py-3 py-sm-5 p-2 py-lg-4 my-3 my-sm-4 text-center border border-info">
-                <h1 className="display-5 fw-bolder text-white">Disclaimer</h1>
-
-                <p className="lead mb-1 text-white">
+            <div className="mt-4 mb-3 text-center">
+                <h1 className="fw-bolder" style={{ color: 'var(--brand)' }}>
+                    Disclaimer
+                </h1>
+                <p className="mb-2" style={{ color: '#1a1a1a', opacity: 0.85 }}>
                     Important information about our terms of use and liability limitations.
                 </p>
-
-                <p className="text-white">
+                <p className="mb-2" style={{ color: '#1a1a1a', opacity: 0.85 }}>
                     This page explains what you can expect from Quiz-Blog and what we expect from users.
                 </p>
-
-                <small className="fw-bolder text-white">
+                <small className="fw-bolder" style={{ color: 'var(--brand)' }}>
                     Need clarification? Contact us at{' '}
                     <a
                         href="mailto:quizblog.rw@gmail.com"
-                        style={{ color: 'var(--accent)' }}
+                        style={{ color: 'var(--brand)' }}
                     >
-                        <u>quizblog.rw@gmail.com</u>
+                        <u style={{ textDecorationThickness: '2px' }}>quizblog.rw@gmail.com</u>
                     </a>
                     .
                 </small>
-
-                <hr
-                    className="my-2"
-                    style={{
-                        height: '2px',
-                        borderWidth: 0,
-                        backgroundColor: 'var(--brand)',
-                    }}
-                />
+                <hr className="my-3" style={{ height: '2px', borderWidth: 0, backgroundColor: 'var(--brand)' }} />
             </div>
+
 
             {/* Main Content Section */}
             <Row className="m-lg-4 px-lg-5 text-primary">
                 <Col lg={12}>
-                    <Card className="border rounded shadow-sm mb-4">
-                        <CardBody className="p-4">
+                    <Card className="border-0 mb-4" style={{ background: 'transparent' }}>
+                        <CardBody className="p-2 p-sm-3 p-lg-4">
 
-                            {/* Quick summary box styled like FAQ content blocks */}
-                            <div className="bg-light p-4 rounded border mb-4 text-center">
-                                <h2 className="h4 fw-bold mb-2">Quick Summary</h2>
-                                <p className="mb-0">
-                                    This disclaimer outlines the limits of liability for content on quizblog.rw.
-                                </p>
-                            </div>
+                            <h2 className="h4 fw-bold mb-2" style={{ color: 'var(--brand)' }}>
+                                Quick Summary
+                            </h2>
+                            <p className="mb-4" style={{ opacity: 0.9 }}>
+                                This disclaimer outlines the limits of liability for content on quizblog.rw.
+                            </p>
 
-                            {/* Contact info alert like FAQ */}
-                            <Alert
-                                color="info"
-                                className="d-flex align-items-start gap-3 flex-column flex-md-row mb-4"
-                            >
-                                <i className="fas fa-info-circle h4 mb-2 mb-md-0"></i>
-                                <div>
-                                    For more details or questions, contact us at{' '}
-                                    <a href="mailto:quizblog.rw@gmail.com" className="alert-link">
-                                        quizblog.rw@gmail.com
-                                    </a>.
-                                </div>
-                            </Alert>
+
+                            <p className="mb-4" style={{ opacity: 0.9 }}>
+                                For more details or questions, contact us at{' '}
+                                <a
+                                    href="mailto:quizblog.rw@gmail.com"
+                                    style={{ color: 'var(--brand)', fontWeight: 800, textDecoration: 'underline' }}
+                                >
+                                    quizblog.rw@gmail.com
+                                </a>.
+                            </p>
 
                             {isAdEnabled() && (
                                 <Row className="mb-4">
