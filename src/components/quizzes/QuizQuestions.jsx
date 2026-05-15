@@ -177,8 +177,8 @@ const QuizQuestions = () => {
         const selectedCount = answers.filter((v) => v).length;
 
         // Only auto-advance if user selected exactly the right number of answers
-        if (selectedCount === correctCount && correctCount > 0) {
-            const timer = setTimeout(goToNextQuestion, 400);
+        if (correctCount > 0 && selectedCount >= correctCount) {
+            const timer = setTimeout(goToNextQuestion, 300);
             return () => clearTimeout(timer);
         }
     }, [answers, currentQn, goToNextQuestion]);
