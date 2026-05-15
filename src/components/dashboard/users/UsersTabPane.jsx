@@ -43,7 +43,7 @@ const UsersTabPane = () => {
                         {
                             isLoadingUsers ?
                                 <QBLoadingSM title='users' /> :
-                                <SearchInput setSearchKey={setSearchKey} placeholder={` Search here any user from ${users.length} available users...  `} />
+                                users.length  > 0 && <SearchInput setSearchKey={setSearchKey} placeholder={` Search here any user from ${users.length} available users...  `} />
                         }
                     </div>
 

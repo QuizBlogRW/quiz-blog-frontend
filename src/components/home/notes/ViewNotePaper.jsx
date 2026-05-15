@@ -52,7 +52,7 @@ const ViewNotePaper = () => {
 
   return (
     user.role === 'Visitor' ? <Dashboard /> :
-      noteDownload.isOneNotePaperLoading ? <QBLoadingSM /> :
+      noteDownload?.isLoading ? <QBLoadingSM /> :
         !notes_file ?
           <div className="pt-5 d-flex justify-content-center align-items-center flex-column">
             <h4 className="mb-3">This file is unavailable!</h4>
