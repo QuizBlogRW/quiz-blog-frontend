@@ -7,155 +7,171 @@ import {
 } from '../configHelpers';
 import { notify } from '@/utils/notifyToast';
 
+const createApiThunk = (type, url, method, helper = apiCallHelper) =>
+  createAsyncThunk(type, async (payload, { getState, rejectWithValue }) => {
+    try {
+      return await helper(url, method, payload, getState, type);
+    } catch (error) {
+      return rejectWithValue(error?.response?.data ?? error);
+    }
+  });
+
 // Async actions with createAsyncThunk
-export const loadUser = createAsyncThunk(
-  'users/loadUser',
-  async (_, { getState }) =>
-    apiCallHelper('/api/users/loadUser', 'get', null, getState, 'loadUser')
-);
+export const register = createApiThunk('users/register', '/api/users/register', 'post');
 
-export const register = createAsyncThunk(
-  'users/register',
-  async ({ name, email, password }, { getState }) =>
-    apiCallHelper(
-      '/api/users/register',
-      'post',
-      { name, email, password },
-      getState,
-      'register'
-    )
-);
+export const verify = createApiThunk('users/verify-otp', '/api/users/verify-otp', 'post');
 
-export const verify = createAsyncThunk(
-  'users/verify-otp',
-  async ({ email, otp }, { getState }) =>
-    apiCallHelper(
-      '/api/users/verify-otp',
-      'post',
-      { email, otp },
-      getState,
-      'verify'
-    )
-);
-
-export const resendOTP = createAsyncThunk(
-  'users/resendOTP',
-  async ({ email }, { getState }) =>
-    apiCallHelper(
-      '/api/users/resend-otp',
-      'post',
-      { email },
-      getState,
-      'resendOTP'
-    )
-);
+export const resendOTP = createApiThunk('users/resendOTP', '/api/users/resend-otp', 'post');
 
 export const login = createAsyncThunk(
   'users/login',
-  async ({ email, password, confirmLogin }, { getState }) =>
-    apiCallHelper(
-      '/api/users/login',
-      'post',
-      { email, password, confirmLogin },
-      getState,
-      'login'
-    )
+  async ({ email, password, confirmLogin }, { getState, rejectWithValue }) => {
+    try {
+      return await apiCallHelper(
+        '/api/users/login',
+        'post',
+        { email, password, confirmLogin },
+        getState,
+        'login'
+      );
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
 );
 
-export const getUsers = createAsyncThunk(
-  'users/getUsers',
-  async (_, { getState }) =>
-    apiCallHelper('/api/users', 'get', null, getState, 'getUsers')
+export const loadUser = createAsyncThunk(
+  'users/loadUser',
+  async (_, { getState, rejectWithValue }) => {
+    try {
+      return await apiCallHelper(
+        '/api/users/loadUser',
+        'get',
+        null,
+        getState,
+        'loadUser'
+      );
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
 );
 
-export const getLatestUsers = createAsyncThunk(
-  'users/getLatestUsers',
-  async (_, { getState }) =>
-    apiCallHelper('/api/users/latest', 'get', null, getState, 'getLatestUsers')
-);
+export const getUsers = createApiThunk('users/getUsers', '/api/users', 'get');
 
-export const getAdminsCreators = createAsyncThunk(
+export const getLatestUsers = createApiThunk('users/getLatestUsers', '/api/users/latest', 'get');
+
+export const getAdminsCreators = createApiThunk(
   'users/getAdminsCreators',
-  async (_, { getState }) =>
-    apiCallHelper(
-      '/api/users/admins-creators',
-      'get',
-      null,
-      getState,
-      'getAdminsCreators'
-    )
+  '/api/users/admins-creators',
+  'get'
 );
 
 export const logout = createAsyncThunk(
   'users/logout',
-  async (userId, { getState }) =>
-    apiCallHelper('/api/users/logout', 'put', { userId }, getState, 'logout')
+  async (userId, { getState, rejectWithValue }) => {
+    try {
+      return await apiCallHelper('/api/users/logout', 'put', { userId }, getState, 'logout');
+    } catch (error) {
+      return rejectWithValue(error?.response?.data ?? error);
+    }
+  }
 );
 
 export const updateUser = createAsyncThunk(
   'users/updateUser',
-  async (updatedUser, { getState }) =>
-    apiCallHelper(
-      `/api/users/${updatedUser.uId}`,
-      'put',
-      updatedUser,
-      getState,
-      'updateUser'
-    )
+  async (updatedUser, { getState, rejectWithValue }) => {
+    try {
+      return await apiCallHelper(
+        `/api/users/${updatedUser.uId}`,
+        'put',
+        updatedUser,
+        getState,
+        'updateUser'
+      );
+    } catch (error) {
+      return rejectWithValue(error?.response?.data ?? error);
+    }
+  }
 );
 
 export const updateProfile = createAsyncThunk(
   'users/updateProfile',
-  async (updatedProfile, { getState }) =>
-    apiCallHelper(
-      `/api/users/user-details/${updatedProfile._id}`,
-      'put',
-      updatedProfile,
-      getState,
-      'updateProfile'
-    )
+  async (updatedProfile, { getState, rejectWithValue }) => {
+    try {
+      return await apiCallHelper(
+        `/api/users/user-details/${updatedProfile._id}`,
+        'put',
+        updatedProfile,
+        getState,
+        'updateProfile'
+      );
+    } catch (error) {
+      return rejectWithValue(error?.response?.data ?? error);
+    }
+  }
 );
 
 export const updateProfileImage = createAsyncThunk(
   'users/updateProfileImage',
-  async ({ formData, id }, { getState }) =>
-    apiCallHelperUpload(
-      `/api/users/user-image/${id}`,
-      'put',
-      formData,
-      getState,
-      'updateProfileImage'
-    )
+  async ({ formData, id }, { getState, rejectWithValue }) => {
+    try {
+      return await apiCallHelperUpload(
+        `/api/users/user-image/${id}`,
+        'put',
+        formData,
+        getState,
+        'updateProfileImage'
+      );
+    } catch (error) {
+      return rejectWithValue(error?.response?.data ?? error);
+    }
+  }
 );
 
 export const sendResetLink = createAsyncThunk(
   'users/sendResetLink',
-  async (fEmail, { getState }) =>
-    apiCallHelper(
-      '/api/users/forgot-password',
-      'post',
-      fEmail,
-      getState,
-      'sendResetLink'
-    )
+  async (fEmail, { getState, rejectWithValue }) => {
+    try {
+      return await apiCallHelper(
+        '/api/users/forgot-password',
+        'post',
+        fEmail,
+        getState,
+        'sendResetLink'
+      );
+    } catch (error) {
+      return rejectWithValue(error?.response?.data ?? error);
+    }
+  }
 );
 
 export const sendNewPassword = createAsyncThunk(
   'users/sendNewPassword',
-  async (updatePsw, { getState }) =>
-    apiCallHelper(
-      '/api/users/reset-password',
-      'post',
-      updatePsw,
-      getState,
-      'sendNewPassword'
-    )
+  async (updatePsw, { getState, rejectWithValue }) => {
+    try {
+      return await apiCallHelper(
+        '/api/users/reset-password',
+        'post',
+        updatePsw,
+        getState,
+        'sendNewPassword'
+      );
+    } catch (error) {
+      return rejectWithValue(error?.response?.data ?? error);
+    }
+  }
 );
 
 export const deleteUser = createAsyncThunk(
   'users/deleteUser',
-  async (id, { getState }) =>
-    apiCallHelper(`/api/users/${id}`, 'delete', null, getState, 'deleteUser')
+  async (id, { getState, rejectWithValue }) => {
+    try {
+      return await apiCallHelper(`/api/users/${id}`, 'delete', null, getState, 'deleteUser');
+    } catch (error) {
+      return rejectWithValue(error?.response?.data ?? error);
+    }
+  }
 );
 
 // USERS SLICE
@@ -195,9 +211,8 @@ const usersSlice = createSlice({
     builder.addCase(loadUser.fulfilled, (state, action) => {
       state.isLoading = false;
 
-      const payload = action.payload;
-      if (!payload || !payload.current_token) {
-        // No valid session
+      // No valid session
+      if (!action.payload?.current_token) {
         state.isAuthenticated = false;
         state.user = null;
         state.token = null;
@@ -206,7 +221,7 @@ const usersSlice = createSlice({
         return;
       }
 
-      const backendToken = payload.current_token;
+      const backendToken = action.payload.current_token;
       const storedToken = localStorage.getItem("token");
 
       // CASE 1: No token in local storage → session expired or browser cleaned
@@ -223,22 +238,21 @@ const usersSlice = createSlice({
 
       // VALID SESSION
       state.isAuthenticated = true;
-      state.user = payload;
-      localStorage.setItem("user", JSON.stringify(payload));
+      state.user = action.payload;
+      localStorage.setItem("user", JSON.stringify(action.payload));
     });
-
 
     builder.addCase(login.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isAuthenticated = true;
       state.user = action.payload;
       state.token = action.payload.current_token;
-      action.payload.current_token && localStorage.setItem('token', action.payload.current_token);
       localStorage.setItem('user', JSON.stringify(action.payload));
-      notify(`Welcome ${action.payload.name}!`);
 
-      // reload after 2 seconds
-      // setTimeout(() => window.location.reload(), 2000);
+      if (action.payload.current_token) {
+        localStorage.setItem('token', action.payload.current_token);
+      }
+      notify(`Welcome ${action.payload.name}!`);
     });
     builder.addCase(register.fulfilled, (state, action) => {
       state.isLoading = false;
@@ -250,12 +264,14 @@ const usersSlice = createSlice({
     builder.addCase(verify.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isAuthenticated = true;
-
       state.user = action.payload;
-      action.payload.user && localStorage.setItem('user', JSON.stringify(action.payload));
 
+      localStorage.setItem('user', JSON.stringify(action.payload));
+
+      if (action.payload.current_token) {
+        localStorage.setItem('token', action.payload.current_token);
+      }
       state.token = action.payload.current_token;
-      action.payload.current_token && localStorage.setItem('token', action.payload.current_token);
       notify('Account verified! Welcome to Quiz-Blog!');
     });
     builder.addCase(resendOTP.fulfilled, (state, action) => {

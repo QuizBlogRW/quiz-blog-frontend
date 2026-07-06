@@ -29,11 +29,8 @@ const LoginModal = () => {
         if (loginResponse?.type === 'users/login/rejected') {
 
             // Extract error message from different possible locations
-            const errorMsg = loginResponse.error?.message ||
-                loginResponse.payload ||
-                loginResponse.error ||
-                'Login failed';
-            const errCode = loginResponse.error?.code || null;
+            const errorMsg = loginResponse.payload?.message || loginResponse.error?.message || 'Login failed';
+            const errCode = loginResponse.payload?.code || loginResponse.error?.code || null;
 
             if (errCode === 'CONFIRM_ERR') {
                 setConfirmLogin(true);
