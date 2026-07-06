@@ -11,66 +11,55 @@ import isAdEnabled from '@/utils/isAdEnabled';
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX_RESEND_ATTEMPTS = 3;
 const RESEND_ATTEMPTS_KEY = 'otpResendAttempts';
+const RESEND_COOLDOWN = 30;
 
 export default function Verify() {
     const [otp, setOtp] = useState("");
-    const [resendTimer, setResendTimer] = useState(30);
+    const [resendTimer, setResendTimer] = useState(RESEND_COOLDOWN);
     const [canResend, setCanResend] = useState(false);
     const [isResending, setIsResending] = useState(false);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { isLoading, isAuthenticated } = useSelector((state) => state.users);
+    const { isLoading, user } = useSelector((state) => state.users);
 
-    const emailForOTP = localStorage.getItem("emailForOTP") || "";
+    const [emailForOTP] = useState(() => localStorage.getItem("emailForOTP") || "");
     const [resendAttempts, setResendAttempts] = useState(() => {
         const savedAttempts = Number(localStorage.getItem(RESEND_ATTEMPTS_KEY));
         return Number.isNaN(savedAttempts) ? 0 : savedAttempts;
     });
+
+    const isSessionValid = Boolean(emailForOTP) && EMAIL_REGEX.test(emailForOTP);
 
     const clearVerificationSession = useCallback(() => {
         localStorage.removeItem("emailForOTP");
         localStorage.removeItem(RESEND_ATTEMPTS_KEY);
     }, []);
 
-    // Redirect if session expired
+    // Redirect if already verified or session expired
     useEffect(() => {
-        if (!emailForOTP || !EMAIL_REGEX.test(emailForOTP)) {
+        if (user?.verified) {
             clearVerificationSession();
-            notify("Verification session expired. Please start again.", "error");
-            navigate("/login", { replace: true });
-        }
-    }, [clearVerificationSession, emailForOTP, navigate]);
-
-    // Redirect if already authenticated
-    useEffect(() => {
-        if (isAuthenticated) navigate("/dashboard", { replace: true });
-    }, [isAuthenticated, navigate]);
-
-    // Page title
-    useEffect(() => {
-        document.title = "Verify OTP";
-    }, []);
-
-    useEffect(() => {
-        if (resendTimer === 0) {
-            setCanResend(resendAttempts < MAX_RESEND_ATTEMPTS);
+            notify("Your account is already verified.", "info");
+            navigate("/", { replace: true });
             return;
         }
 
-        const interval = setInterval(() => {
-            setResendTimer((prev) => {
-                if (prev <= 1) {
-                    clearInterval(interval);
-                    setCanResend(true);
-                    return 0;
-                }
-                return prev - 1;
-            });
-        }, 1000);
+        if (!isSessionValid) {
+            clearVerificationSession();
+            notify("Verification session expired. Please start again.", "error");
+            navigate("/", { replace: true });
+        }
+    }, [clearVerificationSession, isSessionValid, navigate, user]);
 
-        return () => clearInterval(interval);
-    }, [resendAttempts, resendTimer]);
+    useEffect(() => {
+        if (resendTimer <= 0) {
+            setCanResend(resendAttempts < MAX_RESEND_ATTEMPTS);
+            return;
+        }
+        const id = setTimeout(() => setResendTimer((t) => t - 1), 1000);
+        return () => clearTimeout(id);
+    }, [resendTimer, resendAttempts]);
 
     const handleChange = useCallback((e) => {
         const value = e.target.value.replace(/\D/g, "");
@@ -83,16 +72,13 @@ export default function Verify() {
         if (otp.length !== 6) return notify("Please enter the 6-digit code.", "error");
 
         try {
-            const result = await dispatch(verify({ email: emailForOTP, otp }));
-            if (result.payload?.user) {
-                clearVerificationSession();
-                notify("Verified successfully!", "success");
-                setOtp("");
-                setTimeout(() => navigate("/dashboard"), 1000);
-            }
+            await dispatch(verify({ email: emailForOTP, otp })).unwrap();
+            clearVerificationSession();
+            notify("Verified successfully!", "success");
+            setOtp("");
+            setTimeout(() => navigate("/"), 1000);
         } catch (err) {
-            console.error(err);
-            notify("Could not verify your code. Please try again.", "error");
+            notify(err?.message || "Could not verify your code. Please try again.", "error");
         }
     };
 
@@ -110,28 +96,19 @@ export default function Verify() {
 
         setIsResending(true);
         try {
-            await dispatch(resendOTP({ email: emailForOTP }));
+            await dispatch(resendOTP({ email: emailForOTP })).unwrap();
             const nextAttempts = resendAttempts + 1;
             localStorage.setItem(RESEND_ATTEMPTS_KEY, String(nextAttempts));
             setResendAttempts(nextAttempts);
-            setResendTimer(30);
+            setResendTimer(RESEND_COOLDOWN);
             setCanResend(false);
-            console.log(`A new code has been sent. Resends used: ${nextAttempts}/${MAX_RESEND_ATTEMPTS}.`, "success");
+            notify(`A new code has been sent. Resends used: ${nextAttempts}/${MAX_RESEND_ATTEMPTS}.`, "success");
         } catch (err) {
-            console.error(err);
-            notify("Failed to resend code. Try again.", "error");
+            notify(err?.message || "Failed to resend code. Try again.", "error");
         } finally {
             setIsResending(false);
         }
     };
-
-    if (!emailForOTP || !EMAIL_REGEX.test(emailForOTP)) {
-        return (
-            <Row className="mt-5 d-flex justify-content-center align-items-center text-danger" style={{ minHeight: "70vh" }}>
-                <h1>Verification session expired. Please start again.</h1>
-            </Row>
-        );
-    }
 
     const renderAds = () => isAdEnabled() && (
         <>
@@ -139,6 +116,10 @@ export default function Verify() {
             <Row className="w-100 mt-4"><Col sm="12"><ResponsiveAd /></Col></Row>
         </>
     );
+
+    if (isLoading || user?.verified || !isSessionValid) {
+        return null;
+    }
 
     return (
         <div className="forgot-password mt-4">

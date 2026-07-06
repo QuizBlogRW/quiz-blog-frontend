@@ -61,14 +61,9 @@ axiosInstance.interceptors.request.use(
       config.headers['x-auth-token'] = token;
     }
 
-    if (import.meta.env.VITE_DEBUG === 'true') {
-      console.log('📤 API Request:', config.method?.toUpperCase(), config.url);
-    }
-
     return config;
   },
   (error) => {
-    console.error('❌ Request interceptor error:', error);
     return Promise.reject(error);
   }
 );
@@ -76,9 +71,6 @@ axiosInstance.interceptors.request.use(
 // Response Interceptor
 axiosInstance.interceptors.response.use(
   (response) => {
-    if (import.meta.env.VITE_DEBUG === 'true') {
-      console.log('✅ API Response:', response.status, response.config?.url);
-    }
 
     // Reset error toast control on successful request
     if (toastControl.error) {
@@ -90,17 +82,14 @@ axiosInstance.interceptors.response.use(
   },
   (error) => {
     // Build standardized error object
-    const errorData = {
-      code: error.response?.data?.code || error?.code || 'UNKNOWN_ERROR',
-      name: error.response?.data?.name || error.response?.statusText || error?.name || 'Unknown Error',
+    let errorData = {
+      name: error.response?.data?.name || error.response?.statusText || 'Unknown Error',
       message: error.response?.data?.message || 'Unknown error occurred',
       status: error.response?.status || null,
       isNetworkError: !error.response && error.request,
     };
-
-    if (import.meta.env.VITE_DEBUG === 'true') {
-      console.error('❌ API Error:', error);
-    }
+    if (error.response?.data?.code) errorData.code = error.response.data.code;
+    if (error.response?.data?.email) errorData.email = error.response.data.email;
 
     return Promise.reject(errorData);
   }
@@ -116,7 +105,6 @@ const RETRY_CONFIG = {
 
 // Error Notification Helper
 const notifyError = (message, code) => {
-  console.log(`Message: ${message}, Code: ${code}`)
   // Skip notifications for specific error codes
   const skipCodes = ['NO_TOKEN_LOAD_USER_ERROR', 'TOKEN_EXPIRED'];
   if (skipCodes.includes(code)) {
@@ -192,7 +180,6 @@ export const apiCallHelper = async (
       return response.data;
 
     } catch (error) {
-      console.error('API Error:', error, 'actionType:', actionType);
       attempt++;
 
       const willRetry = shouldRetry(error, attempt, retries);
@@ -204,7 +191,6 @@ export const apiCallHelper = async (
             `Retrying in ${retryDelay / 1000}s... (${attempt}/${retries})`,
             'error'
           );
-          console.log(`Retrying API call to ${url} (attempt ${attempt} of ${retries})`);
           toastControl.retryNotified = true;
         }
 
@@ -217,12 +203,14 @@ export const apiCallHelper = async (
         notifyError(error.message, error.code);
       }
 
-      throw {
+      let errorObject = {
         message: error.message,
         code: error.code,
         status: error.status,
         name: error.name,
       };
+      if (error.email) errorObject.email = error.email;
+      throw errorObject;
     }
   }
 };
@@ -259,7 +247,6 @@ export const apiCallHelperUpload = async (
     return response.data;
 
   } catch (error) {
-    console.error('API Error:', error, 'actionType:', actionType);
     const message = error.response?.data?.message || error.message || 'Upload failed';
 
     if (!skipNotification) {
@@ -287,7 +274,17 @@ export const handleFulfilled = (state) => {
 
 export const handleRejected = (state, action) => {
   state.isLoading = false;
-  state.error = action.payload?.message || action.error?.message || 'An error occurred';
+  state.error = action.payload?.message || 'An error occurred';
+
+  // If account is not verified (code: NOT_VERIFIED), go to verify page
+  if (action.payload?.code === 'NOT_VERIFIED') {
+    state.isAuthenticated = false;
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    localStorage.setItem('emailForOTP', action.payload?.email);
+    setTimeout(() => (window.location.href = '/verify'), 3000);
+    return;
+  }
 };
 
 // Utility Functions
@@ -318,13 +315,3 @@ export const checkBackendHealth = async () => {
 
 // Cleanup on Page Unload
 window.addEventListener('beforeunload', resetToastControl);
-
-// Debug Info
-if (import.meta.env.DEV) {
-  console.log('🔍 API Configuration:', {
-    baseURL: API_BASE_URL,
-    mode: import.meta.env.MODE,
-    isVercel: isVercelBackend,
-    retryConfig: RETRY_CONFIG,
-  });
-}

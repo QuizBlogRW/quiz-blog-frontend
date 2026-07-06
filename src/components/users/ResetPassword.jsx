@@ -64,7 +64,7 @@ export default function ResetPassword() {
             )
                 .unwrap()
                 .then(() => {
-                    navigate("/dashboard", { replace: true });
+                    navigate("/", { replace: true });
                 });
         } catch (err) {
             console.error(err);

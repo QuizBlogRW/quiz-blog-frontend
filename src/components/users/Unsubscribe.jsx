@@ -19,7 +19,6 @@ export default function Unsubscribe() {
     const email = searchParams.get("email");
 
     useEffect(() => {
-        document.title = "Unsubscribe";
         if (!id || !email) {
             setInvalidLink(true);
         }
